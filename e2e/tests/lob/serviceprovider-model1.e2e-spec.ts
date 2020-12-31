@@ -2005,7 +2005,7 @@ describe('Service Provider Data Model Tests', () => {
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
             await browser.sleep(3000); // wait untile result gets reflect
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(knowledgeTitle)).toEqual(undefined);
-            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toContain(undefined);
+            await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toEqual(undefined);
         });
 
         it('[DRDMV-23673]: Verify KingstoneHR and Oracle HR Case Access in between LOB', async () => {

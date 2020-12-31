@@ -683,14 +683,14 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             }
 
             knowledgeSetDataFacilities = {
-                knowledgeSetTitle: `KS HR ${randomStr}`,
-                knowledgeSetDesc: `${randomStr}_Desc_HR`,
+                knowledgeSetTitle: `KS Facilities ${randomStr}`,
+                knowledgeSetDesc: `${randomStr}_Desc_Facilitiesssss`,
                 company: 'Petramco',
                 lineOfBusiness: 'Facilities'
             }
 
             knowledgeArticleDataDiffLOB = {
-                "knowledgeSet": 'HR',
+                "knowledgeSet": 'Facilities',
                 "title": `${randomStr} title Diff LOB`,
                 "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
                 "assignedCompany": "Petramco",
@@ -709,9 +709,10 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Psilon");
             await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "US Support 3");
             await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "Psilon Support Group1");
-            await browser.sleep(9000); //Waiting for user data to be reflected
-            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
             await apiHelper.associatePersonToCompany('ncage', "Psilon");
+            await browser.sleep(9000); //Waiting for user data to be reflected
+            await apiHelper.apiLogin("fritz");
+            await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
         });
         it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
@@ -742,7 +743,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
             await changeAssignmentBladePo.selectSupportGroup('US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
-            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeTruthy('User is present on Assignment blade');
+            expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             //Saving the Article
@@ -758,10 +759,10 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
             expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
+            // expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
             await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
-            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
+            expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeFalsy();
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
 
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
@@ -772,6 +773,9 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
             expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePo.setCategoryTier1('Payroll');
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Payroll');
@@ -780,8 +784,8 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
             await changeAssignmentBladePo.selectCompany('Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
             await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
@@ -797,12 +801,14 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
+            await navigationPage.signOut();
         });
         it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
-            await navigationPage.signOut();
             await loginPage.login('ppeter');
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -811,6 +817,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -819,6 +826,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('monika');
             await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.selectLineOfBusiness('Finance');
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
             await utilityGrid.selectLineOfBusiness('Human Resource');

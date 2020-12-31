@@ -12,10 +12,10 @@ class EditCaseTemplate {
         caseDescriptionGuid: '3b3506af-b9a2-47bd-88f7-032092bc1264',
         saveButton: '[rx-view-component-id="60fae5e7-7bf2-477f-9e60-8be66292e6b5"] button',
         cancelButton: '[rx-view-component-id="a68b0e71-032d-4ecf-9d12-e0cd49f4b652"] button',
-        templateStatusReadOnly:'[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] .ui-select-match',
+        templateStatusReadOnly: '[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] .ui-select-match',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
         flowset: '12abf0f1-146b-4c94-bd9b-d7a55200153d',
-        resolveCaseOnLastTaskCompletion:'e4956197-0230-4272-8fc4-87358bd084bf',
+        resolveCaseOnLastTaskCompletion: 'e4956197-0230-4272-8fc4-87358bd084bf',
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
         caseStatusGuid: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
         statusReason: 'cfde7589-436d-4835-aab8-f5d71e04f91a',
@@ -53,65 +53,67 @@ class EditCaseTemplate {
         priorityGuid: 'c933ab70-9004-4347-9537-3ae65ec633b9',
         companyGuid: '39db6cc5-79ae-4934-a4bc-74765278fcda',
         saveTemplateData: '[rx-view-component-id="16f6e232-26f8-4c72-a30a-b4e765fd09b6"] button',
-        caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .ui-select-toggle', 
+        caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .ui-select-toggle',
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
-        dynamicFieldsName:'[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
+        dynamicFieldsName: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
         caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown',
-        labelValue : '[rx-view-component-id="a18b9936-ef9a-48cd-b79b-9a4da61a679a"] .ui-select-match-text',
+        labelValue: '[rx-view-component-id="a18b9936-ef9a-48cd-b79b-9a4da61a679a"] .ui-select-match-text',
+        dropdownBox: '.ui-select-toggle',
+
     }
 
     async clickOnCopyCaseTemplate(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.copyTemplate)));
         await $(this.selectors.copyTemplate).click();
     }
 
     async clickSaveCaseTemplate(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnTaskFlowButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskFlow)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.taskFlow)));
         await $(this.selectors.taskFlow).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async clickOnMangeDyanmicLink(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicFieldsLink)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.manageDynamicFieldsLink)));
         await $(this.selectors.manageDynamicFieldsLink).click();
     }
 
     async clickOnCancelTemplateMetaData(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelTemplateMetaData)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelTemplateMetaData)));
         await $(this.selectors.cancelTemplateMetaData).click();
     }
 
     async getCaseTemplateID(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseTemplateId)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseTemplateId)));
         return await $(this.selectors.caseTemplateId).getText();
     }
 
     async clickOnSaveCaseTemplateMetadata(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveTemplateMetaData)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveTemplateMetaData)));
         await $(this.selectors.saveTemplateMetaData).click();
     }
 
     async clickOnEditCaseTemplateMetadata(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editTemplateMetaData)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editTemplateMetaData)));
         await $(this.selectors.editTemplateMetaData).click();
     }
 
     async clickEditCaseTemplate(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editcaseTemplate)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.editcaseTemplate)));
         await $(this.selectors.editcaseTemplate).click();
     }
 
     async clickOnClearButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.clearButton)));
         await $(this.selectors.clearButton).click();
     }
 
@@ -122,22 +124,22 @@ class EditCaseTemplate {
     }
 
     async getValueOfTier1(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.tier1ValueOnCaseTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.tier1ValueOnCaseTemplate)));
         return await $(this.selectors.tier1ValueOnCaseTemplate).getText();
     }
 
     async getValueOfTier2(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.tier2ValueOnCaseTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.tier2ValueOnCaseTemplate)));
         return await $(this.selectors.tier2ValueOnCaseTemplate).getText();
     }
 
     async getValueOfTier3(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.tier3ValueOnCaseTemplate)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.tier3ValueOnCaseTemplate)));
         return await $(this.selectors.tier3ValueOnCaseTemplate).getText();
     }
 
     async getValueOfTier4(): Promise<string> {
-    return await $(this.selectors.tier4ValueOnCaseTemplate).getText();
+        return await $(this.selectors.tier4ValueOnCaseTemplate).getText();
     }
 
     async changeCategoryTier1(tier1Value: string): Promise<void> {
@@ -169,7 +171,7 @@ class EditCaseTemplate {
     }
 
     async changeReopenTimelineDays(reopenDaysValues: string) {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.reopentimelineDays)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.reopentimelineDays)));
         await $(this.selectors.reopentimelineDays).sendKeys(reopenDaysValues);
     }
 
@@ -214,7 +216,7 @@ class EditCaseTemplate {
     }
 
     async clickOnChangeAssignmentButton(): Promise<void> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await $(this.selectors.changeAssignmentButton).click();
     }
 
@@ -226,13 +228,13 @@ class EditCaseTemplate {
         await utilCommon.selectToggleButton(this.selectors.resolutionDescription, value)
     }
 
-    async clearCaseSummary():Promise<void>{
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
+    async clearCaseSummary(): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();
     }
 
     async changeCaseSummary(caseSummaryValue: string): Promise<void> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();
         await $(this.selectors.caseSummary).sendKeys(caseSummaryValue);
     }
@@ -242,29 +244,29 @@ class EditCaseTemplate {
     }
 
     async getValueOfAssignmentMethod(): Promise<string> {
-//        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignmentMethodValue)));
-        return await $(this.selectors.assignmentMethodValue).getText(); 
-     }
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.assignmentMethodValue)));
+        return await $(this.selectors.assignmentMethodValue).getText();
+    }
 
-     async isCaseCompanyDisabled(): Promise<string> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
+    async isCaseCompanyDisabled(): Promise<string> {
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
         return await $(this.selectors.editCaseCompany).getAttribute('disabled');
     }
 
     async isCaseSummaryReadOnly(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
-        return await $(this.selectors.caseSummary).getAttribute('readonly') =='true'? true:false;        
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummary)));
+        return await $(this.selectors.caseSummary).getAttribute('readonly') == 'true' ? true : false;
     }
 
     async isSaveButtonOnMetaDataIsDisabled(): Promise<boolean> {
-//        await browser.wait(this.EC.visibilityOf($(this.selectors.saveTemplateMetaData)));
-        return await $(this.selectors.saveTemplateMetaData).getAttribute('disabled') == 'true' ? true : false;        
+        //        await browser.wait(this.EC.visibilityOf($(this.selectors.saveTemplateMetaData)));
+        return await $(this.selectors.saveTemplateMetaData).getAttribute('disabled') == 'true' ? true : false;
     }
 
     async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
         await utilCommon.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
     }
-    
+
     async isPriorityRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
         return await utilCommon.isRequiredTagToField(this.selectors.priorityGuid);
@@ -359,6 +361,14 @@ class EditCaseTemplate {
             else return false;
         });
     }
+
+    async clickOnFlowsetDropDown(): Promise<void> {
+        const dropDown = await $(`[rx-view-component-id="12abf0f1-146b-4c94-bd9b-d7a55200153d"]`);
+        const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+        await browser.executeScript("arguments[0].scrollIntoView();", dropDownBoxElement);
+        await dropDownBoxElement.click();
+    }
+
 }
 
 export default new EditCaseTemplate();
