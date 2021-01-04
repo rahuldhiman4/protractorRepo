@@ -232,8 +232,8 @@ describe('Create Case Task', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             let templateData = {
-                "templateName": `${randomStr} manualTaskTemplateActive`,
-                "templateSummary": `manualTaskTemplateActive ${randomStr}`,
+                "templateName": randomStr + 'manualTaskTemplateActive',
+                "templateSummary": randomStr + 'manualTaskTemplateActive',
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -241,8 +241,8 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             let templateData1 = {
-                "templateName": `manualTaskTemplateInActive ${randomStr}`,
-                "templateSummary": `manualTaskTemplateInActive ${randomStr}`,
+                "templateName": randomStr + 'manualTaskTemplateInActive',
+                "templateSummary": randomStr + 'manualTaskTemplateInActive',
                 "templateStatus": "Inactive",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -250,8 +250,8 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             let templateData2 = {
-                "templateName": `manualTaskTemplateDraft ${randomStr}`,
-                "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+                "templateName": randomStr + 'manualTaskTemplateDraft',
+                "templateSummary": randomStr + 'manualTaskTemplateDraft',
                 "templateStatus": "Draft",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -259,8 +259,8 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             let templateData4 = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateName": randomStr + 'AutomatedTaskTemplateActive',
+                "templateSummary": randomStr + 'AutomatedTaskTemplateActive',
                 "templateStatus": "Active",
                 "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 1 ${randomStr}`,
@@ -270,8 +270,8 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             let templateData5 = {
-                "templateName": `AutomatedTaskTemplateInActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateInActive ${randomStr}`,
+                "templateName": randomStr + 'AutomatedTaskTemplateInActive',
+                "templateSummary": randomStr + 'AutomatedTaskTemplateInActive',
                 "templateStatus": "Inactive",
                 "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 2 ${randomStr}`,
@@ -281,8 +281,8 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             let templateData6 = {
-                "templateName": `AutomatedTaskTemplateDraft ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateDraft ${randomStr}`,
+                "templateName": randomStr + 'AutomatedTaskTemplateDraft',
+                "templateSummary": randomStr + 'AutomatedTaskTemplateDraft',
                 "templateStatus": "Draft",
                 "processBundle": "com.petramco.human-resource",
                 "processName": `Case Process 3 ${randomStr}`,
@@ -302,7 +302,7 @@ describe('Create Case Task', () => {
         it('[DRDMV-7124]: Verify the manual Active task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`${randomStr} manualTaskTemplateActive`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
@@ -312,7 +312,7 @@ describe('Create Case Task', () => {
         it('[DRDMV-7124]: Verify the manual inActive task template ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateInActive ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateInActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
@@ -322,7 +322,7 @@ describe('Create Case Task', () => {
         it('[DRDMV-7124]: Verify the manual Draft task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateDraft ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateDraft');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
@@ -332,7 +332,7 @@ describe('Create Case Task', () => {
         it('[DRDMV-7124]: Verify the Automation Active task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
@@ -342,7 +342,7 @@ describe('Create Case Task', () => {
         it('[DRDMV-7124]: Verify the Automation inActive task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateInActive ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateInActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
@@ -352,7 +352,7 @@ describe('Create Case Task', () => {
         it('[DRDMV-7124]: [Automatic Task] - Task Template UI in Edit mode: New fields validations', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateDraft ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateDraft');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
