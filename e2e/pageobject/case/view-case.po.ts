@@ -588,6 +588,8 @@ class ViewCasePage {
             allFieldsText[i] = await $$('.btn-link').get(i).getText();
         }
         let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
+        console.log(">>>>><<<<<<<<<",findDuplicates.length);
+        
         return findDuplicates.length == 0;
     }
 

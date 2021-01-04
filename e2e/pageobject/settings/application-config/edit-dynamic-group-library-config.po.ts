@@ -6,22 +6,25 @@ class CreateDynamicGroupLibrary {
 
     selectors = {
         title: '.modal-title',
-        addDynamicField: '[rx-view-component-id="a7cd73fd-b1e3-4598-9b6a-e25d860028b1"] a',
-        dynamicGroupName: '59bbcd1b-82ef-46ec-844b-277246baa5ea',
-        displayLabel: '1e0ad22a-8692-48ca-b625-ac2ce600b8e8',
-        lineOfBusiness: 'a07f69a6-9b62-446f-8e1c-c48b45e03a11',
-        dynamicGroupNameInput: '[rx-view-component-id="59bbcd1b-82ef-46ec-844b-277246baa5ea"] input',
-        displayLabelLink: '[rx-view-component-id="1e0ad22a-8692-48ca-b625-ac2ce600b8e8"] button',
-        displayLabelField: '[rx-view-component-id="1e0ad22a-8692-48ca-b625-ac2ce600b8e8"] input',
+        addDynamicField: '[rx-view-component-id="8de11ae4-d229-4815-9d60-4841a847e816"] a',
+        dynamicGroupName: '2eb48e70-e559-4394-b551-e204a3c67f77',
+        displayLabel: 'e56f279b-9e7b-4fc6-b855-bf2628689d3c',
+        lineOfBusiness: 'e5ab571f-f66e-47e6-b5bf-eb9fc333c58e',
+        dynamicGroupNameInput: '[rx-view-component-id="2eb48e70-e559-4394-b551-e204a3c67f77"] input',
+        displayLabelLink: '[rx-view-component-id="e56f279b-9e7b-4fc6-b855-bf2628689d3c"] button',
+        displayLabelField: '[rx-view-component-id="e56f279b-9e7b-4fc6-b855-bf2628689d3c"] input',
         localizedValueInput: '.modal-content input[aria-label="Value for default locale"]',
         localizedValueSaveBtn: '.modal-content .d-button_primary',
         localizedValueCancelBtn: '.modal-content .d-button_secondary',
         dynamicGroupWarningMsg: 'div.alert-warning div',
-        status: 'd17e9d98-3760-4c7f-b0d9-9ae40a3cab72',
+        status: '76eaa168-a4fb-4687-a838-280983d01700',
         dynamicFieldNameInput: 'input.ac-input-field-name',
         dynamicFieldDescriptionInput: 'input.ac-input-description',
-        dynamicGroupSaveBtn: '[rx-view-component-id="063a9878-3e83-4e00-84a8-793bde3fc704"] button',
-        dynamicGroupCancelBtn: '[rx-view-component-id="eeaf8414-aa18-4217-889b-020c2e6b385d"] button',
+        dynamicGroupSaveBtn: '[rx-view-component-id="1dd1a2a9-28fb-47b5-9941-f73063e860d7"] .d-button_primary',
+        dynamicGroupCancelBtn: '[rx-view-component-id="c0d7ec27-1a72-4943-b487-87f7559fff95"] .d-button_secondary',
+        lineOfBusinessInput: '[rx-view-component-id="e5ab571f-f66e-47e6-b5bf-eb9fc333c58e"] .ui-select-match-text',
+        statusValue: '[rx-view-component-id="76eaa168-a4fb-4687-a838-280983d01700"] .ui-select-match-text',
+        dynamicFields: '.column-name',
     }
 
     async verifyTitle(value: string): Promise<boolean> {
@@ -104,16 +107,30 @@ class CreateDynamicGroupLibrary {
         return await $(this.selectors.dynamicGroupWarningMsg).getText();
     }
 
-    async setLocalizedValue(localizedValue: string):Promise<void>{
-        await $(this.selectors.localizedValueInput).clear();
-        await $(this.selectors.localizedValueInput).sendKeys(localizedValue);
+    async getDynamicGroupName(): Promise<string> {
+        return await $(this.selectors.dynamicGroupNameInput).getAttribute("value");
     }
 
-    async getDynamicGroupDisplayLabelText(): Promise<string> {
+    async getDynamicGroupDisplayLabel(): Promise<string> {
         return await $(this.selectors.displayLabelField).getAttribute("value");
     }
 
+    async getDynamicGroupLineOfBusiness(): Promise<string> {
+        return await $(this.selectors.lineOfBusinessInput).getText();
+    }
 
+    async getDynamicGroupStatusValue(): Promise<string> {
+        return await $(this.selectors.statusValue).getText();
+    }
+
+
+    async isDynamicFieldsDisplayed(): Promise<boolean> {
+        return await $(this.selectors.dynamicFields).isPresent().then(async (link) => {
+            if (link) {
+                return await $(this.selectors.dynamicFields).isDisplayed();
+            } else return false;
+        });
+    }
 
 }
 
