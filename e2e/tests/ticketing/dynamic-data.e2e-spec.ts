@@ -194,10 +194,10 @@ describe('Dynamic data', () => {
     describe('[DRDMV-19270]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-        let caseTemplateName = 'caseTempRDMV-192700lp3ir' + randomStr;
-        let caseTemaplateSummary = 'caseTempRDMV-19270Template' + randomStr;
-        let taskTemplateName = 'ManualtaskDRDMV-19270' + randomStr;
-        let manualTaskSummary = 'ManualSummaryDRDMV-19270' + randomStr;
+        let caseTemplateName = 'caseTempRDMV192700lp3ir' + randomStr;
+        let caseTemaplateSummary = 'caseTempRDMV19270Template' + randomStr;
+        let taskTemplateName = 'ManualtaskDRDMV19270' + randomStr;
+        let manualTaskSummary = 'ManualSummaryDRDMV19270' + randomStr;
         beforeAll(async () => {
             let casetemplateData = {
                 "templateName": `${caseTemplateName}`,
@@ -234,7 +234,7 @@ describe('Dynamic data', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await consoleNotificationTemplatePo.clickOnCreateNotificationTemplate();
-            await createNotificationTemplatePo.selectEvent('Approval Rejection');
+            await createNotificationTemplatePo.selectEvent('Approve');
             await createNotificationTemplatePo.selectModuleName('Cases');
             await createNotificationTemplatePo.setTemplateName("Notification" + randomStr);
             await createNotificationTemplatePo.setDescription("Notification Description " + randomStr);

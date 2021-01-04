@@ -111,15 +111,19 @@ describe('Ericsson Model Test Extended', () => {
                 "ownerGroup": "US Support 1",
                 "lineOfBusiness": "Ericsson HR"
             };
+            await apiHelper.apiLogin('tadmin');
+            let categoryTier1Guid = await coreApi.getCategoryGuid('Employee Relations');
+            let categoryTier2Guid = await coreApi.getCategoryGuid('Compensation');
+            let categoryTier3Guid = await coreApi.getCategoryGuid('Bonus');
             let caseData = {
                 "Requester": "rdonald",
                 "Summary": commonName,
                 "Assigned Company": "Ericsson HR",
                 "Business Unit": "Ericsson United States Support",
                 "Support Group": "US Support 1",
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
+                "categoryTier1": categoryTier1Guid,
+                "categoryTier2": categoryTier2Guid,
+                "categoryTier3": categoryTier3Guid,
                 "Assignee": "rdustin",
                 "Line Of Business": "Ericsson HR"
             };
