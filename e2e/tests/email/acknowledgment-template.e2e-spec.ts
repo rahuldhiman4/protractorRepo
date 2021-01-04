@@ -64,7 +64,7 @@ describe('Email Acknowledgment Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10896,DRDMV-10901,DRDMV-10922,DRDMV-10895]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+    describe('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

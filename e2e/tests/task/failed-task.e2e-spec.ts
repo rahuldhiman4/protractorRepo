@@ -15,6 +15,7 @@ import taskViewPage from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import taskConsolePo from '../../pageobject/task/console-task.po';
 
 describe('Failed Task', () => {
     beforeAll(async () => {
@@ -208,20 +209,15 @@ describe('Failed Task', () => {
         it('[DRDMV-10056]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', async () => {
             await statusUpdateBladePo.changeCaseStatus('In Progress');
             await statusUpdateBladePo.clickSaveStatus('In Progress');
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
-
-            await viewCasePage.openTaskCard(1);
-            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary2)).toContain('Failed');
-            await manageTaskBlade.clickCloseButton();
-            await viewCasePage.clickOnRefreshTaskList();
-            await viewCasePage.openTaskCard(2);
-            expect(await manageTaskBlade.getTaskStatus(manualTaskTemplateData.templateSummary)).toContain('Staged');
-            await manageTaskBlade.clickCloseButton();
-
-            await viewCasePage.openTaskCard(3);
-            expect(await manageTaskBlade.getTaskStatus(automatedTaskTemplateSummary1)).toContain('Staged');
-            await manageTaskBlade.clickCloseButton();
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePo.searchAndOpenTask(automatedTaskTemplateSummary2);
+            expect(await taskViewPage.getTaskStatusValue()).toContain('Failed');
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePo.searchAndOpenTask(manualTaskTemplateData.templateSummary);
+            expect(await taskViewPage.getTaskStatusValue()).toContain('Staged');
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePo.searchAndOpenTask(automatedTaskTemplateSummary1);
+            expect(await taskViewPage.getTaskStatusValue()).toContain('Staged');
         });
     });
 

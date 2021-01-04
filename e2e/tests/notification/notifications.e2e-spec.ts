@@ -16,6 +16,7 @@ import utilityGrid from '../../utils/utility.grid';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 
 describe("Notifications", () => {
     const caseModule = 'Case';
@@ -203,7 +204,6 @@ describe("Notifications", () => {
             incomingMailBoxName: "IncomingMail",
         }
         let caseResponse = undefined;
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.setDefaultNotificationForUser('qfeng', 'AlertAndEmail');
@@ -215,8 +215,7 @@ describe("Notifications", () => {
             await apiHelper.createEmailConfiguration(emailConfig);
             await apiHelper.apiLogin('qtao');
             caseResponse = await apiHelper.createCase(caseData);
-        })
-
+        });
         it('[DRDMV-24404]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
@@ -224,9 +223,12 @@ describe("Notifications", () => {
             await notificationTempGridPage.clickCopyTemplate();
             await copyNotificationTemplatePage.setCompanyValue('Petramco');
             await copyNotificationTemplatePage.clickOnCreateCopyButton();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await utilGrid.addFilter('Company', 'Petramco', 'text');
             await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
+            await browser.sleep(2000);
             await editNotificationTemplatePage.updateAlertEmailMsgs('Hi' + Key.ENTER + 'Hello' + Key.ENTER + 'Hey' + Key.ENTER);
             await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
             await addFieldsPopup.clickOnCase();
@@ -236,7 +238,9 @@ describe("Notifications", () => {
             await addFieldsPopup.clickOnCase();
             await addFieldsPopup.selectDynamicField('Resolution Description');
             await addFieldsPopup.clickOnOkButtonOfEditor();
+            await editMessageTextBladePo.clickOnSaveButton();
             await editNotificationTemplatePage.clickOnEmailTab();
+            await editNotificationTemplatePage.openEmailBodyEditMessageText();
             await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
             await addFieldsPopup.clickOnCase();
             await addFieldsPopup.selectDynamicField('Description');
@@ -245,17 +249,17 @@ describe("Notifications", () => {
             await addFieldsPopup.clickOnCase();
             await addFieldsPopup.selectDynamicField('Resolution Description');
             await addFieldsPopup.clickOnOkButtonOfEditor();
-            await createNotificationTemplatePage.clickOnInsertFieldOfEmail();
+            await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
             await addFieldsPopup.clickOnCase();
             await addFieldsPopup.selectDynamicField('Display ID');
             await addFieldsPopup.clickOnOkButtonOfEditor();
-            await editNotificationTemplatePage.clickOnSaveButton();
+            await editMessageTextBladePo.clickOnSaveButton();
+            await editNotificationTemplatePage.clickOnCancelButton();
             await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
-            expect(editNotificationTemplatePage.getNthLine(1)).toBe('Hello');
-            expect(editNotificationTemplatePage.getNthLine(2)).toBe('Hey');
+            expect(await editNotificationTemplatePage.getNthLine(1)).toBe('Hello');
+            expect(await editNotificationTemplatePage.getNthLine(2)).toBe('Hey');
         });
-
         it('[DRDMV-24404]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');

@@ -22,7 +22,7 @@ class Copytaskpage {
         ownerGroupValueOnCopy: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-match-text',
         ownerBusinessUnitGuid: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
         showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button.more',
-        rightAlignLocator: '[rx-view-component-id="b9b752cf-8cef-4598-9a8d-85748b13f0d7"] div[style="text-align: right;"]',
+        rightAlignLocator: '[rx-view-component-id="b9b752cf-8cef-4598-9a8d-85748b13f0d7"] div.cke_wysiwyg_div'
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {

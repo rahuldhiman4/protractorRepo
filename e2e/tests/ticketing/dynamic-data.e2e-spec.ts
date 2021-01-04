@@ -16,8 +16,8 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import consoleNotestemplatePo from '../../pageobject/settings/common/console-notestemplate.po';
 import createNotestemplatePo from '../../pageobject/settings/common/create-notestemplate.po';
-import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/document-template-console.po';
 import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
+import consoleDocumentTemplatePo from '../../pageobject/settings/document-management/document-template-console.po';
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
@@ -573,10 +573,10 @@ describe('Dynamic data', () => {
         const filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
         let fileName2: string[] = ['bwfJpg.jpg', 'bwfPdf.pdf', 'bwfWord2.rtf'];
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
-        let caseTemplateName = 'caseTemplateDRDMV13948' + randomStr;
-        let caseTemaplateSummary = 'caseTemplateDRDMV13948' + randomStr;
-        let taskTemplateName = 'ManualtaskDRDMV13948' + randomStr;
-        let manualTaskSummary = 'ManualSummaryDRDMV13948' + randomStr;
+        let caseTemplateName = randomStr + 'caseTemplateDRDMV13948';
+        let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV13948';
+        let taskTemplateName = randomStr + 'ManualtaskDRDMV13948';
+        let manualTaskSummary = randomStr + 'ManualSummaryDRDMV13948';
         //delete existing files
         beforeAll(async () => {
             for (let i: number = 0; i <= fileName1.length; i++) {
@@ -1213,7 +1213,7 @@ describe('Dynamic data', () => {
 
     describe('[DRDMV-24405]: Verify Dynamic Fields for Task are populated if Case template has been changed', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplatePetramcoWithTaskFlowData, caseTemplatePetramcoWithoutTaskFlowData, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData;
+        let caseId, caseTemplatePetramcoWithTaskFlowData, caseTemplatePetramcoWithoutTaskFlowData, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramcoWithTaskFlowData = {
@@ -1231,7 +1231,7 @@ describe('Dynamic data', () => {
             let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplatePetramcoWithTaskFlowData);
 
             caseTemplatePetramcoWithoutTaskFlowData = {
-                "templateName":`Simple flow ${randomStr}`,
+                "templateName": `Simple flow ${randomStr}`,
                 "templateSummary": randomStr + ' caseTemplate without TF',
                 "templateStatus": "Active",
                 "casePriority": "Low",
@@ -1302,9 +1302,8 @@ describe('Dynamic data', () => {
             }
             let automatedTasktemplateResponse = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
             await apiHelper.createDynamicDataOnTemplate(automatedTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS_AUTOMATED');
-            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(caseTemplateResponse.displayId, manualTasktemplateResponse.displayId, externalTasktemplateResponse.displayId, automatedTasktemplateResponse.displayId);
+            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(caseTemplateResponse.displayId, automatedTasktemplateResponse.displayId, manualTasktemplateResponse.displayId, externalTasktemplateResponse.displayId);
         });
-
         it('[DRDMV-24405]: Verify Dynamic Fields for Task are populated if Case template has been changed', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -1315,16 +1314,15 @@ describe('Dynamic data', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplatePetramcoWithoutTaskFlowData.templateName);
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePo.getCaseID();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplatePetramcoWithTaskFlowData.templateName);
             await editCasePo.clickSaveCase();
-            let caseId= await viewCasePo.getCaseID();
-            await navigationPage.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await utilityGrid.searchAndOpenHyperlink(caseId)
         });
         it('[DRDMV-24405]: Verify Dynamic Fields for Task are populated if Case template has been changed', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId)
             await viewCasePo.clickOnTaskLink(manualTaskTemplateData.templateName);
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempTextC')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempNumberC')).toBeTruthy();
@@ -1332,7 +1330,7 @@ describe('Dynamic data', () => {
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempBooleanC')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempDateTimeC')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempTimeC')).toBeTruthy();
-            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempAttachmentC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempAttachmentC')).toBeFalsy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempText')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempNumber')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('manualtempDate')).toBeTruthy();
@@ -1349,7 +1347,7 @@ describe('Dynamic data', () => {
             expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempBooleanC')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempDateTimeC')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempTimeC')).toBeTruthy();
-            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempAttachmentC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempAttachmentC')).toBeFalsy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempText')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempNumber')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('externaltempDate')).toBeTruthy();
@@ -1364,18 +1362,17 @@ describe('Dynamic data', () => {
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempNumberC')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDateC')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempBooleanC')).toBeTruthy();
-            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDateTimeC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDateTimeC')).toBeFalsy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempTimeC')).toBeTruthy();
-            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempAttachmentC')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempAttachmentC')).toBeFalsy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempText')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempNumber')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDate')).toBeTruthy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempBoolean')).toBeTruthy();
-            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDateTime')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempDateTime')).toBeFalsy();
             expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempTime')).toBeTruthy();
-            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempAttachment')).toBeTruthy();
+            expect(await viewTaskPo.isDynamicFieldDisplayed('automatedtempAttachment')).toBeFalsy();
             await viewTaskPo.clickOnViewCase();
-
         });
     });
 });

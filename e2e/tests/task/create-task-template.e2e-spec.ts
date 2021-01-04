@@ -7,6 +7,7 @@ import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
+import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -17,6 +18,7 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTaskTemplate from "../../pageobject/settings/task-management/edit-tasktemplate.po";
 import viewTaskTemplate from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import taskConsolePo from '../../pageobject/task/console-task.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
@@ -25,7 +27,6 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 
 describe('Create Task Template', () => {
     let businessData, departmentData, suppGrpData, personData;
@@ -499,7 +500,7 @@ describe('Create Task Template', () => {
 
     describe('[DRDMV-5284]: [Tasks] Tasks status when resolving the case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, taskName1, taskName2;
+        let newCase, tasktemp, tasktemp1, tasktemp2, manualTemplateData;
         beforeAll(async () => {
             //adhoc task Template
             let templateData = {
@@ -517,7 +518,7 @@ describe('Create Task Template', () => {
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
-            let CaseTemplateData = {
+            let caseTemplateData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'casTemplateSummary' + randomStr,
                 "caseStatus": "Assigned",
@@ -528,7 +529,7 @@ describe('Create Task Template', () => {
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3",
             }
-            let manualTemplateData = {
+            manualTemplateData = {
                 "templateName": 'manualTaskTemplate' + randomStr,
                 "templateSummary": 'manualTaskSummary' + randomStr,
                 "templateStatus": "Active",
@@ -543,13 +544,13 @@ describe('Create Task Template', () => {
             manualTemplateData.templateName = 'manualTaskTemplate1' + randomStr;
             manualTemplateData.templateSummary = 'manualTaskSummary1' + randomStr;
             await apiHelper.createManualTaskTemplate(manualTemplateData);
-            await apiHelper.createCaseTemplate(CaseTemplateData);
+            await apiHelper.createCaseTemplate(caseTemplateData);
             newCase = await apiHelper.createCase(caseData1);
-            let tasktemp = await apiHelper.createAdhocTask(newCase.id, templateData);
-            taskName1 = templateData.taskName = 'manualTaskTemplateInProgress' + randomStr;
-            let tasktemp1 = await apiHelper.createAdhocTask(newCase.id, templateData);
-            taskName2 = templateData.taskName = 'manualTaskTemplatePending' + randomStr;
-            let tasktemp2 = await apiHelper.createAdhocTask(newCase.id, templateData);
+            tasktemp = await apiHelper.createAdhocTask(newCase.id, templateData);
+            templateData.taskName = 'manualTaskTemplateInProgress' + randomStr;
+            tasktemp1 = await apiHelper.createAdhocTask(newCase.id, templateData);
+            templateData.taskName = 'manualTaskTemplatePending' + randomStr;
+            tasktemp2 = await apiHelper.createAdhocTask(newCase.id, templateData);
             await apiHelper.updateCaseStatus(newCase.id, 'InProgress');
             await apiHelper.updateTaskStatus(tasktemp.id, 'Assigned');
             await apiHelper.updateTaskStatus(tasktemp1.id, 'InProgress');
@@ -569,18 +570,16 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.changeCaseStatus("Canceled");
             await updateStatusBladePo.setStatusReason("Customer Canceled");
             await updateStatusBladePo.clickSaveStatus();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink('manualTaskTemplateAssigned' + randomStr);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePo.searchAndOpenTask(tasktemp.displayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
-            await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
         });
         it('[DRDMV-5284]: Veify the task status when case status is canceled', async () => {
-            await manageTask.clickTaskLink(taskName1);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePo.searchAndOpenTask(tasktemp1.displayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
-            await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(taskName2);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePo.searchAndOpenTask(tasktemp2.displayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
         });
         it('[DRDMV-5284]: Create second case and validate it', async () => {
@@ -602,8 +601,8 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closeAllBlades();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink('manualTaskSummary' + randomStr);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePo.searchAndOpenTask('manualTaskSummary' + randomStr);
             await viewTask.clickOnEditTask();
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
@@ -615,8 +614,8 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closeAllBlades();
             await viewTask.clickOnViewCase();
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink('manualTaskSummary1' + randomStr);
+            await navigationPage.gotoTaskConsole();
+            await taskConsolePo.searchAndOpenTask('manualTaskSummary1' + randomStr);
             await viewTask.clickOnEditTask();
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
