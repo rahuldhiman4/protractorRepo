@@ -228,7 +228,7 @@ describe("Notifications", () => {
             await utilGrid.addFilter('Company', 'Petramco', 'text');
             await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
-            await browser.sleep(2000);
+            await browser.sleep(2000); // required to load edit message tab completely
             await editNotificationTemplatePage.updateAlertEmailMsgs('Hi' + Key.ENTER + 'Hello' + Key.ENTER + 'Hey' + Key.ENTER);
             await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
             await addFieldsPopup.clickOnCase();

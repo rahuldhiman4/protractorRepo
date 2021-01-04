@@ -161,7 +161,7 @@ describe('Knowledge Article Set', () => {
             await createKnowledgeSetPo.setCompanyValue('Petramco');
             await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
             await createKnowledgeSetPo.clickSaveBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222161): Knowledge Set with name Facilities already exists for selected company.')).toBeTruthy("Error message absent");
+            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222161): Knowledge Set with name ${knowledgesetFacilities} already exists for selected company.`)).toBeTruthy("Error message absent");
             await createKnowledgeSetPo.clickCancelBtn();
             await utilCommon.clickOnWarningOk();
         });
