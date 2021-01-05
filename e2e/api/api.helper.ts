@@ -287,8 +287,8 @@ class ApiHelper {
         return deleteAllEmailConfig == deleteAllIncomingMail == deleteAllOutgoingMail;
     }
 
-    async getHTMLBodyOfEmail(emailSubject: string): Promise<string> {
-        return await apiCoreUtil.getEmailHTMLBody(emailSubject);
+    async getHTMLBodyOfEmail(emailSubject: string, sentTo: string): Promise<string> {
+        return await apiCoreUtil.getEmailHTMLBody(emailSubject, sentTo);
     }
 
     async getSenderMailId(emailSubject: string): Promise<string> {
