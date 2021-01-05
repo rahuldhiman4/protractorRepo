@@ -5,7 +5,7 @@ class NavigationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         menu: '.a-menu__text',
-        settingsButton: '[title="My Application Settings"]',
+        settingsButton: 'button.d-icon-gear',
         profileMenu: 'rx-shell adapt-profile button',
         helpIcon: '//*[@class="d-n-menu__link d-icon-left-question_circle"]',
         knowledgeConsoleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
@@ -26,7 +26,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            let createCase: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Case $/)).isPresent();
+            let createCase: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link', /^Case $/)).isPresent();
             await $$(this.selectors.closeHambergerMenu).get(2).click();
             return createCase;
         } else {
@@ -48,7 +48,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Create')).click();
-            let createKnowledge: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Knowledge $/)).isPresent();
+            let createKnowledge: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link', /^Knowledge $/)).isPresent();
             await $$(this.selectors.closeHambergerMenu).get(2).click();
             return createKnowledge;
         } else return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
@@ -58,7 +58,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            let caseConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Case $/)).isDisplayed();
+            let caseConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link', /^Case $/)).isDisplayed();
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return caseConsole;
         } else {
@@ -71,7 +71,7 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            let knowledgeConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Knowledge $/)).isDisplayed();
+            let knowledgeConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link', /^Knowledge $/)).isDisplayed();
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return knowledgeConsole;
         } else return await element(by.cssContainingText(this.selectors.menu, /^Knowledge$/)).isDisplayed();
@@ -81,14 +81,13 @@ class NavigationPage {
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
             await element(by.linkText('Workspace')).click();
-            let taskConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link',/^Task $/)).isDisplayed();
+            let taskConsole: boolean = await element(by.cssContainingText('button.a-hamburger__menu-link', /^Task $/)).isDisplayed();
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return taskConsole;
         } else return await element(by.cssContainingText(this.selectors.menu, /^Task$/)).isDisplayed();
     }
 
     async gotoCaseConsole(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -106,7 +105,6 @@ class NavigationPage {
     }
 
     async gotoKnowledgeConsole(consoleFromKA?: boolean): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (consoleFromKA) {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -132,7 +130,6 @@ class NavigationPage {
     }
 
     async gotoTaskConsole(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -150,7 +147,6 @@ class NavigationPage {
     }
 
     async gotoCreateCase(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -168,7 +164,6 @@ class NavigationPage {
     }
 
     async gotoQuickCase(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -182,7 +177,6 @@ class NavigationPage {
     }
 
     async gotoSearch(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -196,7 +190,6 @@ class NavigationPage {
     }
 
     async gotoCreateKnowledge(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -214,7 +207,6 @@ class NavigationPage {
     }
 
     async gotoPersonProfile(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -231,10 +223,10 @@ class NavigationPage {
     }
 
     async gotoSettingsPage(): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await $(this.selectors.settingsButton).click();
-        await this.switchToAngularJsTab();
+        await $('button.d-icon-angle_right').click();// workaroud until Platform drop 6
+        await $('button.d-icon-angle_right').click();// workaroud until Platform drop 6
     }
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
@@ -287,8 +279,6 @@ class NavigationPage {
 
     async signOut(): Promise<void> {
         try {
-            await this.switchToAngularTab();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();
                 await element(by.buttonText('Sign Out')).click().then(async () => {
@@ -309,7 +299,6 @@ class NavigationPage {
     }
 
     async switchToApplication(applicationName: string): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await $(this.selectors.adaptIconTiles).click();
         await $(this.selectors.TileSearchInput).clear();
@@ -317,18 +306,6 @@ class NavigationPage {
         await $(this.selectors.TileSearchInput).sendKeys(applicationName);
         await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
         await utilityCommon.switchToNewTab(1);
-    }
-
-    async switchToJSApplication(applicationName: string): Promise<void> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        await $(this.selectors.adaptIconTiles).click();
-        await $(this.selectors.TileSearchInput).clear();
-        await $(this.selectors.TileSearchInput).click();
-        await $(this.selectors.TileSearchInput).sendKeys(applicationName);
-        await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
-        await this.switchToAngularJsTab();
-        await browser.sleep(3000); // Required To Settle Focus On New Tab.
     }
 
     async isSettingPanelTextMatches(text: string): Promise<boolean> {
@@ -340,26 +317,7 @@ class NavigationPage {
         });
     }
 
-    async switchToAngularJsTab(): Promise<void> {
-        await browser.sleep(2000); // Required To Settle Focus On New Tab.
-        await browser.getAllWindowHandles().then(async function (handles) {
-            await browser.switchTo().window(handles[1]);
-        });
-    }
-
-    async switchToAngularTab(): Promise<void> {
-        await browser.sleep(2000); // Required To Settle Focus On New Tab.
-        await browser.getAllWindowHandles().then(async function (handles) {
-            for (let i = handles.length; i > 1; i--) {
-                await browser.switchTo().window(handles[i - 1]);
-                await browser.close();
-            }
-            await browser.switchTo().window(handles[0]);
-        });
-    }
-
     async isPersonProfileDisplayed(): Promise<boolean> {
-        if ((await browser.getCurrentUrl()).includes("isettings")) await this.switchToAngularTab();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();

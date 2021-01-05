@@ -1435,7 +1435,6 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication('Knowledge Management');
-
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData = {
                 "knowledgeSet": "HR",

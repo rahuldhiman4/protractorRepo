@@ -372,7 +372,7 @@ describe("Case General Approval Tests", () => {
         it('[DRDMV-10832]:Reject the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Reject');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -436,7 +436,7 @@ describe("Case General Approval Tests", () => {
         it('[DRDMV-10832]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
