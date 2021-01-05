@@ -164,7 +164,7 @@ describe("Case Approval UI Validations", () => {
         it('[DRDMV-1367,DRDMV-10823]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case', 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -202,7 +202,7 @@ describe("Case Approval UI Validations", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case', 'Reject');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -373,7 +373,7 @@ describe("Case Approval UI Validations", () => {
         it('[DRDMV-14049,DRDMV-10824]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary1, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -407,7 +407,7 @@ describe("Case Approval UI Validations", () => {
         it('[DRDMV-14049,DRDMV-10824]:Verify the approvals details on case activity', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary1, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -440,7 +440,7 @@ describe("Case Approval UI Validations", () => {
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary2, 'Reject');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -597,7 +597,7 @@ describe("Case Approval UI Validations", () => {
         it('[DRDMV-10828]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');

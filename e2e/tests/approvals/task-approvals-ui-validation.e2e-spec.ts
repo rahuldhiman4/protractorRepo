@@ -204,7 +204,7 @@ describe("Task Approval UI Validations", () => {
         it('[DRDMV-21583]: Approve the task with approver', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(manualTaskTemplateData.templateSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qstrong');

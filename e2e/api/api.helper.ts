@@ -973,8 +973,7 @@ class ApiHelper {
             newLOB.headers.location);
         console.log('Get New Support Group Details API Status =============>', lobDetails.status);
         let recordGUID: string = lobDetails.data.id;
-        // this time required because lob creation took time to reflection
-        await browser.sleep(30000);
+        await browser.sleep(30000); // lob creation takes time to reflect on UI
 
         await this.updateLineOfBuisness(data);
         return recordGUID;
