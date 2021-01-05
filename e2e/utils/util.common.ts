@@ -464,11 +464,6 @@ export class Util {
         return textAfterTag;
     }
 
-    async getNthLineBRText(lineNo: number, locator: ElementFinder): Promise<string> {
-        if (await locator.$$('br').isPresent())
-            return await locator.$$('br').get(lineNo - 1).getText();
-        else return null;
-    }
 }
 
 export default new Util();

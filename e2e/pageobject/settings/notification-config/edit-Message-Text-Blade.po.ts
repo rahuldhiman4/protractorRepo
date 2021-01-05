@@ -98,5 +98,9 @@ class EditMessageTextBlade {
         await $(this.selectors.saveButton).click();
     }
 
+    async getMessageBody(): Promise<string> {
+        return await $(this.selectors.messageBody).getText();
+    }
+
 }
 export default new EditMessageTextBlade();

@@ -19,7 +19,7 @@ import createEmailTemplatePo from '../../pageobject/settings/email/create-email-
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
 import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
 import copyNotificationTemplatePo from '../../pageobject/settings/notification-config/copy-notification-template.po';
-import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
+import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-message-text-blade.po';
 import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
@@ -79,19 +79,19 @@ describe("Compose Email", () => {
         let newCase;
         beforeAll(async () => {
             let caseData = {
-                "Requester": "qkatawazi",
+                "Requester": "qtao",
                 "Summary": "Test case for DRDMV-20368 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 3",
                 "Assignee": "qheroux"
             }
-            await apiHelper.apiLogin('qheroux');
+            await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
         });
         it('[DRDMV-20368,DRDMV-20371]: Verify Able to insert table,hyperlink, images and Copy paste images in Notification template and notifications received by user with these contents', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qheroux');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await utilGrid.clearFilter();
@@ -171,11 +171,11 @@ describe("Compose Email", () => {
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            let subject = `Quigley Heroux changed the status of ${newCase.displayId} to In Progress`;
+            let subject = `Qadim Katawazi changed the status of ${newCase.displayId} to In Progress`;
             console.log("Subject of the email: ", subject);
             await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
-            let body = await apiHelper.getHTMLBodyOfEmail(subject);
+            let body = await apiHelper.getHTMLBodyOfEmail(subject,'qheroux@petramco.com');
             console.log('body:', body);
             //color span
             await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
@@ -195,7 +195,7 @@ describe("Compose Email", () => {
             await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeTruthy('Underline Font is not present');
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('qheroux');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change', 'Petramco');
             await navigationPage.signOut();
             await loginPage.login("qtao");

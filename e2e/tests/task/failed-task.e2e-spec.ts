@@ -141,8 +141,8 @@ describe('Failed Task', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
-                "templateName": 'caseTemplateName DRDMV-10056' + randomStr,
-                "templateSummary": 'caseTemplateName DRDMV-10056' + randomStr,
+                "templateName": randomStr + 'CaseTemplateNameDRDMV10056',
+                "templateSummary": randomStr + 'CaseTemplateNameDRDMV10056',
                 "templateStatus": "Active",
                 "casePriority": "Low",
                 "caseStatus": "New",
@@ -158,8 +158,8 @@ describe('Failed Task', () => {
             await newCaseTemplate.displayId;
 
             manualTaskTemplateData = {
-                "templateName": 'Manual task10056' + randomStr,
-                "templateSummary": 'Manual task10056' + randomStr,
+                "templateName": randomStr + 'ManualTask10056',
+                "templateSummary": randomStr + 'ManualTask10056',
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -172,8 +172,8 @@ describe('Failed Task', () => {
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
             let automatedTaskTemplateData = {
-                "templateName": 'Automated task10056' + randomStr,
-                "templateSummary": 'Automated task10056' + randomStr,
+                "templateName": randomStr + 'AutomatedTask10056',
+                "templateSummary": randomStr + 'AutomatedTask10056',
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces' + randomStr,
@@ -187,7 +187,7 @@ describe('Failed Task', () => {
             }
             automatedTaskTemplateSummary1 = automatedTaskTemplateData.templateSummary;
             let automatedTaskTemplate1 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
-            automatedTaskTemplateSummary2 = automatedTaskTemplateData.templateSummary = automatedTaskTemplateData.templateName = 'Automated2 task10057' + randomStr;
+            automatedTaskTemplateSummary2 = automatedTaskTemplateData.templateSummary = automatedTaskTemplateData.templateName = randomStr + 'Automated2Task10057';
             automatedTaskTemplateData.processName = 'Auto Proces2' + randomStr;
             let automatedTaskTemplate2 = await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
             await apiHelper.apiLogin('qkatawazi');
