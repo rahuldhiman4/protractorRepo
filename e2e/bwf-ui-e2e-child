@@ -5,7 +5,7 @@ node("${NODE}"){
 	def environment = suiteAndEnv[1];
 	def reportDir = "${PARENTDIR}/artefact"
 	stage('Clone & Build ' + suiteName) {
-		git branch: '20.08.01',
+		git branch: 'master',
             credentialsId: user,
             url: 'https://github.bmc.com/DSM-Apps/bwf-e2e-protractor.git'
         bat "IF EXIST e2e\\reports RMDIR /S /Q e2e\\reports"
