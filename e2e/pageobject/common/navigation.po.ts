@@ -231,22 +231,24 @@ class NavigationPage {
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
-        let menuItemStr = '//div[contains(@class,"tree-selected")]';
-        let ismenuItemSelected: boolean = false;
-        try {
-            ismenuItemSelected = await element(by.xpath(menuItemStr)).isEnabled();
-        } catch (Ex) {
-            ismenuItemSelected == false;
-        }
+        let menuItemStr = '.a-tree__label.is-flip adapt-highlight';
+        let ismenuItemSelected =  await $(menuItemStr).isPresent().then(async (result) => {
+            if(result) return await $(menuItemStr).isDisplayed();
+            else return false;
+        });
         if (ismenuItemSelected) {
-            let menuItemVal = await element(by.xpath(menuItemStr)).getText();
+            let menuItemVal = await $(menuItemStr).getText();
             if (menuItems.includes(menuItemVal)) console.log("Menu Item already selected.");
         } else {
             for (let i = 0; i < menuItems.length; i++) {
+                let submenuItemLocator = await $$('.a-tree__content');
                 if (i < menuItems.length - 1) {
-                    await element(by.xpath(`//rx-administration-settings//*[text()="${menuItems[i]}"]/../*[@class="tree-branch-head"]`)).click();
+                    for(let j =0; j<submenuItemLocator.length; j++) {
+                        if(await submenuItemLocator[j].$('adapt-highlight').getText() == menuItems[i])
+                            await submenuItemLocator[j].$('span.a-tree__toggle').click();
+                    }
                 } else {
-                    await element(by.xpath(`//li[@class="tree-expanded"]//*[text()="${menuItems[i]}"]`)).click();
+                    await element(by.cssContainingText('.a-tree__children adapt-highlight', menuItems[i])).click();
                 }
             }
         }
