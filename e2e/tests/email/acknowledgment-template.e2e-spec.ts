@@ -213,7 +213,7 @@ describe('Email Acknowledgment Template', () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to case BA with multiple LOB access');
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to case BA with multiple LOB access');
-            await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
+            await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName2);
             await editAcknowledgmentTemplatePo.selectStatusDropDown('Inactive');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
