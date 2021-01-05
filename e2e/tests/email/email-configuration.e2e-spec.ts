@@ -701,7 +701,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
-            await createAcknowledgmentTemplatesPo.setTemplateName('templateName' + randomStr);
+            await createAcknowledgmentTemplatesPo.setTemplateName('companytemplateName' + randomStr);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
             await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
             await createAcknowledgmentTemplatesPo.setDescription('description');
@@ -720,10 +720,9 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('templateName' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown(templateData.templateName)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('companytemplateName' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
         });
-
 
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template is accessible to Line of business Case Manager', async () => {
             await navigationPage.signOut();
@@ -731,8 +730,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case Manager of same LOB');
-            expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case Manager of same LOB');
-
+            expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case Manager of same LOB');
         });
 
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template is accessible to other Line of business Case BA', async () => {
@@ -741,7 +739,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+            expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
 
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName('FacilitiesGlobalAckTemplate' + randomStr);
@@ -767,10 +765,9 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case manager of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case manager of Facilities LOB');
+            expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case manager of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case manager of same LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case manager of same LOB');
-
         });
 
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
@@ -780,28 +777,38 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+            expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
         });
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
+            expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
 
         });
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('templateName' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown(templateData.templateName)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('companytemplateName' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
+        });
+
+        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await utilGrid.searchAndOpenHyperlink(emailID);
+            await editEmailConfigPo.selectTab("Acknowledgment Templates");
+            await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
-            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesAckTemplate'+ randomStr)).toBeFalsy();
         });
 
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
@@ -811,29 +818,17 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeFalsy('Global Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
+            expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Human Resource LOB are displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
 
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
-            expect(await utilGrid.isGridRecordPresent('templateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
         });
         it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
+            expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
-
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(emailID);
-            await editEmailConfigPo.selectTab("Acknowledgment Templates");
-            await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
-        });
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
-            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('templateName' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown(templateData.templateName)).toBeTruthy();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
-            expect(await editEmailConfigPo.isAcknowledgementPresentnDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
         });
 
         afterAll(async () => {

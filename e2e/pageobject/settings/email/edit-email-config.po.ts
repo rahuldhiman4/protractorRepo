@@ -268,7 +268,7 @@ export class EditEmailConfig {
         if (count >= 1) { return true; } else { return false; }
     }
 
-    async isAcknowledgementPresentnDropDown(template: string): Promise<boolean> {
+    async isAcknowledgementPresentInDropDown(template: string): Promise<boolean> {
         await $(this.selectors.inputFieldAcknowledgementTemplate).clear();
         await $(this.selectors.inputFieldAcknowledgementTemplate).sendKeys(template);
         let count = await $$(this.selectors.acknowledgementTemplateList).count();
