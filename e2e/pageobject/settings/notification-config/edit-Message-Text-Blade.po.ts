@@ -1,4 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, Key, browser } from "protractor";
+
 class EditMessageTextBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 

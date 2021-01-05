@@ -19,7 +19,7 @@ import createEmailTemplatePo from '../../pageobject/settings/email/create-email-
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
 import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
 import copyNotificationTemplatePo from '../../pageobject/settings/notification-config/copy-notification-template.po';
-import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-message-text-blade.po';
+import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';

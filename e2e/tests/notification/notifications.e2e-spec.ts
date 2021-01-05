@@ -11,7 +11,7 @@ import statusConfig from '../../pageobject/settings/common/status-config.po';
 import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
 import copyNotificationTemplatePage from '../../pageobject/settings/notification-config/copy-notification-template.po';
 import createNotificationTemplatePage from '../../pageobject/settings/notification-config/create-notification-template.po';
-import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-message-text-blade.po';
+import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
