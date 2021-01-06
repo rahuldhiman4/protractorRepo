@@ -12,14 +12,14 @@ class CreateCategorizationMapping {
         companyGuid: '8a8d1e53-ea2b-41fc-8802-bc52816d69b8',
         datasetGuid: '01f2d7f9-8b72-4744-a7c3-c2bc6ee29fe6',
         enabledmappingGuid: 'c7760d77-0af6-44af-9965-879a3d06423a',
-        enabledmappingRequired: '[rx-view-component-id="c7760d77-0af6-44af-9965-879a3d06423a"] rx-boolean',
+        enabledmappingRequired: '[rx-view-component-id="c7760d77-0af6-44af-9965-879a3d06423a"] button',
         caseCreatedAutomatically: '[rx-view-component-id="fc7311b8-2860-4bab-ba26-2c89426c20d0"] input',
         caseCreatedAutomaticallyGuid: 'fc7311b8-2860-4bab-ba26-2c89426c20d0',
         caseCreatedByAgent: '[rx-view-component-id="dd334f2c-5f89-4230-bb94-0147984a3e6e"] input',
         caseCreatedByAgentGuid: 'dd334f2c-5f89-4230-bb94-0147984a3e6e',
         saveButton: '[rx-view-component-id="1371fc4f-c111-457f-807b-93bfe73a5474"] button',
         cancelButton: '[rx-view-component-id="3470b89f-4c59-456b-ace7-768770016907"] button',
-        maximumValueErrorMessage: '.d-error',
+        maximumValueErrorMessage: '.rx-feedback-alert.text-danger',
     }
 
     async setMappingName(mapping: string): Promise<void> {

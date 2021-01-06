@@ -12,14 +12,14 @@ class EditTemplateMapping {
         companyGuid: '70f0c36d-c155-43f0-837c-48977710b8ee',
         datasetGuid: '6af46bf0-d2db-4cc1-8686-91f90d6c503e',
         enabledmappingGuid: 'd0f55567-9833-471f-88bf-d6cde326386c',
-        enabledmappingRequiredText: '[rx-view-component-id="d0f55567-9833-471f-88bf-d6cde326386c"] rx-boolean',
+        enabledmappingRequiredText: '[rx-view-component-id="d0f55567-9833-471f-88bf-d6cde326386c"] button',
         caseCreatedAutomatically: '[rx-view-component-id="cbb7ba8d-6636-4337-841a-fda0f10f18aa"] input',
         caseCreatedAutomaticallyGuid: 'cbb7ba8d-6636-4337-841a-fda0f10f18aa',
         caseCreatedByAgent: '[rx-view-component-id="63e0c9b9-6592-4de1-972e-cf151854a261"] input',
         caseCreatedByAgentGuid: '63e0c9b9-6592-4de1-972e-cf151854a261',
         saveButton: '[rx-view-component-id="a14c053b-7d3f-4d9e-8554-aa79d8402081"] button',
         cancelButton: '[rx-view-component-id="0c27cc95-5cd4-4c3d-a750-4bfaac79aa87"] button',
-        maximumValueErrorMessage: '.d-error',
+        maximumValueErrorMessage: '.rx-feedback-alert.text-danger',
 
     }
 
