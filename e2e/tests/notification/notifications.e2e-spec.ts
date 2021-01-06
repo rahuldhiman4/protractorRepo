@@ -1,21 +1,23 @@
 import { browser, Key } from "protractor";
+import apiHelper from '../../api/api.helper';
+import editCasePage from '../../pageobject/case/edit-case.po';
+import viewCasePage from '../../pageobject/case/view-case.po';
+import addFieldsPopup from '../../pageobject/common/add-fields-pop.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
-import apiHelper from '../../api/api.helper';
 import notificationPo from '../../pageobject/notification/notification.po';
 import statusConfig from '../../pageobject/settings/common/status-config.po';
 import notificationTempGridPage from "../../pageobject/settings/notification-config/console-notification-template.po";
-import utilGrid from '../../utils/util.grid';
 import copyNotificationTemplatePage from '../../pageobject/settings/notification-config/copy-notification-template.po';
-import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import createNotificationTemplatePage from '../../pageobject/settings/notification-config/create-notification-template.po';
-import addFieldsPopup from '../../pageobject/common/add-fields-pop.po';
+import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
+import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
+import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
+import utilCommon from '../../utils/util.common';
+import utilGrid from '../../utils/util.grid';
+import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import editCasePage from '../../pageobject/case/edit-case.po';
-import viewCasePage from '../../pageobject/case/view-case.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 
 describe("Notifications", () => {
     const caseModule = 'Case';
@@ -95,7 +97,7 @@ describe("Notifications", () => {
             await loginPage.login('qkatawazi');
         });
     });
-    
+
     //asahitya
     it('[DRDMV-8319]: [Alerts] Notification alerts on Case status update, for case with assignee', async () => {
         let caseData = {
@@ -203,7 +205,6 @@ describe("Notifications", () => {
             incomingMailBoxName: "IncomingMail",
         }
         let caseResponse = undefined;
-
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.setDefaultNotificationForUser('qfeng', 'AlertAndEmail');
@@ -215,8 +216,7 @@ describe("Notifications", () => {
             await apiHelper.createEmailConfiguration(emailConfig);
             await apiHelper.apiLogin('qtao');
             caseResponse = await apiHelper.createCase(caseData);
-        })
-
+        });
         it('[DRDMV-24404]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
@@ -224,9 +224,12 @@ describe("Notifications", () => {
             await notificationTempGridPage.clickCopyTemplate();
             await copyNotificationTemplatePage.setCompanyValue('Petramco');
             await copyNotificationTemplatePage.clickOnCreateCopyButton();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await utilGrid.addFilter('Company', 'Petramco', 'text');
             await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
+            await browser.sleep(2000); // required to load edit message tab completely
             await editNotificationTemplatePage.updateAlertEmailMsgs('Hi' + Key.ENTER + 'Hello' + Key.ENTER + 'Hey' + Key.ENTER);
             await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
             await addFieldsPopup.clickOnCase();
@@ -236,7 +239,9 @@ describe("Notifications", () => {
             await addFieldsPopup.clickOnCase();
             await addFieldsPopup.selectDynamicField('Resolution Description');
             await addFieldsPopup.clickOnOkButtonOfEditor();
+            await editMessageTextBladePo.clickOnSaveButton();
             await editNotificationTemplatePage.clickOnEmailTab();
+            await editNotificationTemplatePage.openEmailBodyEditMessageText();
             await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
             await addFieldsPopup.clickOnCase();
             await addFieldsPopup.selectDynamicField('Description');
@@ -245,17 +250,20 @@ describe("Notifications", () => {
             await addFieldsPopup.clickOnCase();
             await addFieldsPopup.selectDynamicField('Resolution Description');
             await addFieldsPopup.clickOnOkButtonOfEditor();
-            await createNotificationTemplatePage.clickOnInsertFieldOfEmail();
+            await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
             await addFieldsPopup.clickOnCase();
             await addFieldsPopup.selectDynamicField('Display ID');
             await addFieldsPopup.clickOnOkButtonOfEditor();
-            await editNotificationTemplatePage.clickOnSaveButton();
+            await editMessageTextBladePo.clickOnSaveButton();
+            await editNotificationTemplatePage.clickOnCancelButton();
             await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
-            expect(editNotificationTemplatePage.getNthLine(1)).toBe('Hello');
-            expect(editNotificationTemplatePage.getNthLine(2)).toBe('Hey');
+            expect(await editMessageTextBladePo.getMessageBody()).toContain('Hello');
+            expect(await editMessageTextBladePo.getMessageBody()).toContain('Hey');
+            await editMessageTextBladePo.clickOnSaveButton();
+            await utilCommon.closeBladeOnSettings();
+            await utilGrid.clearFilter();
         });
-
         it('[DRDMV-24404]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -266,14 +274,19 @@ describe("Notifications", () => {
             await editCasePage.clickSaveCase();
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssignee('Petramco', 'United States Support', 'US Support 3', 'qfeng');
+            await changeAssignmentBladePo.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Qiao Feng');
             await editCasePage.clickSaveCase();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            expect(await notificationPo.isAlertPresent('test abc\n.\n.\.test pqr hfg\lmn')).toBeTruthy();
+            expect(await notificationPo.isAlertPresent('test abc\n.\n.\ntest pqr')).toBeTruthy();
+            await browser.sleep(2000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
-            expect(await apiHelper.getHTMLBodyOfEmail(`${caseResponse.displayId} has been assigned to you.`)).toBe('test abc\n.\n.\.test pqr hfg\lmn');
+            expect(await apiHelper.getHTMLBodyOfEmail(`${caseResponse.displayId} has been assigned to you.`, 'qfeng@petramco.com')).toContain('<p>test abc<br>.<br>.<br>test pqr');
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.deleteEmailOrNotificationTemplate('Case Agent Assignment', 'Petramco');
         });
     });
 });

@@ -372,14 +372,14 @@ describe('Case And Employee Relationship', () => {
             await addRelatedPopupPage.addPerson('Qadim Katawazi', 'Inspector');
             await relatedTabPage.clickRelatedPersonEmail('Qadim Katawazi');
             await composeEmailPage.setSubject(subject);
-            //            CASE-0000000239:CASE-0000000239:Email Subject w7t05kmfmby2pi0
+            // CASE-0000000239:CASE-0000000239:Email Subject w7t05kmfmby2pi0
             await composeEmailPage.setEmailBody('DRDMV-16247 ' + randomStr);
             await composeEmailPage.clickOnSendButton();
             let subjectInArSys = `${caseInfo.displayId}:${subject}`;
             console.log(`Subject of the email = ${subjectInArSys}`);
-            await browser.sleep(8000); // hardwait to appear email message in "AR System Email Messages"
+            await browser.sleep(2000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
-            let body = await apiHelper.getHTMLBodyOfEmail(subjectInArSys);
+            let body = await apiHelper.getHTMLBodyOfEmail(subjectInArSys, 'qkatawazi@petramco.com');
             console.log('body:', body);
             expect(body.includes('<br>DRDMV-16247')).toBeTruthy('Email does not match');
         });

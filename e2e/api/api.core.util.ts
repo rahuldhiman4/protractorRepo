@@ -93,10 +93,10 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     }
 
-    async getEmailHTMLBody(emailSubject: string): Promise<string> {
+    async getEmailHTMLBody(emailSubject: string, sentTo: string): Promise<string> {
         let allRecords = await this.getGuid("AR System Email Messages");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[18090] === emailSubject;
+            return (obj[18090] === emailSubject && obj[18085] === sentTo);
         });
         return entityObj.length >= 1 ? entityObj[0]['18290'] || null : null;
     }

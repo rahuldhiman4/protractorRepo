@@ -19,7 +19,7 @@ class CreateKnowledgeSet {
         selectBtn: '[rx-view-component-id="c2ce9041-fee1-46f4-ba92-9808055976a9"] button',
         saveBtn: '[rx-view-component-id="ba009fba-499a-49c6-b5a5-0de6e6c8e402"] button',
         cancelBtn: '[rx-view-component-id="4bd4c11d-1c58-4674-8a11-4bafce192e1e"] button',
-        lobValue: '[rx-view-component-id="3cc1c59a-a73d-40a2-b598-e17d0d73873a"] .pull-left'
+        lobValue: '[rx-view-component-id="28753d8c-c1a7-48f0-8e9d-7997762aedd4"] .pull-left'
     }
 
     async clickCreateNewApplicationCancelBtn(): Promise<void> {

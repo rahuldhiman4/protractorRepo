@@ -1714,6 +1714,7 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
+            await activityTabPo.clickOnRefreshButton();
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
@@ -1853,7 +1854,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB case notes template is visible to case BA with multiple LOB access');
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB case notes template is not visible to case BA with multiple LOB access');
-            await utilGrid.searchOnGridConsole(templateName);
+            await utilGrid.searchAndOpenHyperlink(templateName);
             await editNotetemplate.changeStatusValue('Inactive');
             await editNotetemplate.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');

@@ -24,6 +24,9 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import createDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-group-library-config.po';
+import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-group-library-config-console.po';
+import editDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-group-library-config.po';
 
 
 describe('Dynamic Library Configuration', () => {
@@ -37,36 +40,66 @@ describe('Dynamic Library Configuration', () => {
         await navigationPage.signOut();
     });
 
-    it('[DRDMV-13109]: [-ve] [Dynamic Data] - Create another Field with Same Name (ID) from Field Library', async () => {
+    describe('[DRDMV-13109]: [-ve] [Dynamic Data] - Create another Field with Same Name (ID) from Field Library', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteDynamicFieldAndGroup();
-        //field Text type    
-        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
-        await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField' + randomString);
-        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-        await localizeValuePopPo.setLocalizeValue('LibTextField' + randomString);
-        await localizeValuePopPo.clickOnSaveButton();
-        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
-        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
-        await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
-        await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-        //field Number Type  
-        await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
-        await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField' + randomString);
-        await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-        await localizeValuePopPo.setLocalizeValue('LibNumberField' + randomString);
-        await localizeValuePopPo.clickOnSaveButton();
-        await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
-        await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
-        await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
-        await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy();
-        await utilCommon.closePopUpMessage();
-        await createDynamicFieldLibraryConfigPo.clickCancelButton();
-        await utilCommon.clickOnWarningOk();
+        let dynamicFieldName = "LibTextField" + randomString;
+
+        it('[DRDMV-13109]: [-ve] [Dynamic Data] - Create another Field with Same Name (ID) from Field Library', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteDynamicFieldAndGroup();
+            //field Text type    
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName(dynamicFieldName);
+            await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue(dynamicFieldName);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            //field Number Type  
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName(dynamicFieldName);
+            await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue(dynamicFieldName);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy();
+            await utilCommon.closePopUpMessage();
+            await createDynamicFieldLibraryConfigPo.clickCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+
+        it('[DRDMV-13113]: create same name record in different LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
+            await createDynamicFieldLibraryConfigPo.setFieldName(dynamicFieldName);
+            await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue(dynamicFieldName);
+            await localizeValuePopPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
+            await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
+            await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
+
     });
 
     describe('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
@@ -741,4 +774,130 @@ describe('Dynamic Library Configuration', () => {
             }
         });
     });
+
+    describe('[DRDMV-17912]: [Dynamic Data Group] Add dynamic groups to Dynamic Field Group Library', async () => {
+        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let dynamicGrpText = "Custom Dynamic Group " + randomString;
+        let dynamicGrpDisplayLabel = "Custom Dynamic Group Display Text " + randomString;
+        let dynamicGroupWarningText = "A group must contain at least one field.";
+        let dynamicFieldText = "Custom Dynamic Field " + randomString;
+        let dynamicFieldDesc = "Custom Dynamic Field Desc Text " + randomString;
+
+        it('[DRDMV-17912]: [Dynamic Data Group] - Add dynamic group to dynamic field group library', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
+            expect(await createDynamicGroupLibraryConfigPo.verifyTitle('Create Group')).toBeTruthy("Dynamic Group Library Screen title did not matched");
+            expect(await createDynamicGroupLibraryConfigPo.isDynamicGroupNameRequiredText()).toBeTruthy();
+            expect(await createDynamicGroupLibraryConfigPo.isLineofBusinessRequiredText()).toBeTruthy();
+            expect(await createDynamicGroupLibraryConfigPo.isStatusRequiredText()).toBeTruthy();
+
+            await createDynamicGroupLibraryConfigPo.setDynamicGroupName(dynamicGrpText);
+            await createDynamicGroupLibraryConfigPo.clickOnDisplayLabelocalizedLink();
+            await createDynamicGroupLibraryConfigPo.setLocalizedValue(dynamicGrpDisplayLabel);
+            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
+            expect(await createDynamicGroupLibraryConfigPo.getDynamicGroupWarningMessage()).toBe(dynamicGroupWarningText);
+
+            await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
+            await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
+            await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
+            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
+
+            await utilGrid.searchAndOpenHyperlink(dynamicGrpText);
+            expect(await editDynamicGroupLibraryConfigPo.getDynamicGroupName()).toBe(dynamicGrpText);
+            expect(await editDynamicGroupLibraryConfigPo.getDynamicGroupDisplayLabel()).toBe(dynamicGrpDisplayLabel);
+            expect(await editDynamicGroupLibraryConfigPo.getDynamicGroupLineOfBusiness()).toBe('Human Resource');
+            expect(await editDynamicGroupLibraryConfigPo.getDynamicGroupStatusValue()).toBe('Active');
+            expect(await editDynamicGroupLibraryConfigPo.isDynamicFieldsDisplayed()).toBeTruthy();
+
+            await editDynamicGroupLibraryConfigPo.setStatusValue('Inactive');
+            await editDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
+            await editDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText+"updated");
+            await editDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
+            await editDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
+        });
+
+        it('[DRDMV-17912]: Verify if dynamic fields groups are accessible to same LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qdu');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
+        });
+
+        it('[DRDMV-17912]: Verify if dynamic fields groups are accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case BA.');
+        });
+
+        it('[DRDMV-17912]: Verify if dynamic fields groups are accessible to different LOB Case Manager', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('frieda');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case Manager.');
+        });
+
+        it('[DRDMV-17912]: Verify if dynamic fields groups are accessible to Case BA belonging to different company with same LOB', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('gwixillian');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is displayed to different company but same LOB Case BA.');
+        });
+
+        it('[DRDMV-17912]: create same name record in same LOB', async () => {
+            //create same name record in same LOB
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            await utilGrid.selectLineOfBusiness('Human Resource');
+            await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
+            await createDynamicGroupLibraryConfigPo.setDynamicGroupName(dynamicGrpText);
+            await createDynamicGroupLibraryConfigPo.clickOnDisplayLabelocalizedLink();
+            await createDynamicGroupLibraryConfigPo.setLocalizedValue(dynamicGrpDisplayLabel);
+            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
+
+            await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
+            await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
+            await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
+            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic group with same name and line of business already exists.')).toBeTruthy("Error message absent");
+            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupCancelButton();
+            await utilCommon.clickOnWarningOk();
+        });
+
+        it('[DRDMV-17912]: create same name record in different LOB', async () => {
+            //create same name record in different LOB
+            await utilGrid.selectLineOfBusiness('Facilities');
+            await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
+            await createDynamicGroupLibraryConfigPo.setDynamicGroupName(dynamicGrpText);
+            await createDynamicGroupLibraryConfigPo.clickOnDisplayLabelocalizedLink();
+            await createDynamicGroupLibraryConfigPo.setLocalizedValue(dynamicGrpDisplayLabel);
+            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
+
+            await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
+            await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
+            await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
+            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
+            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
+
+            await utilGrid.selectLineOfBusiness('Human Resource');
+        });
+
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
+        });
+    });
+
 });

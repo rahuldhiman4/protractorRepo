@@ -1,4 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, Key, browser } from "protractor";
+
 class EditMessageTextBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -96,6 +97,10 @@ class EditMessageTextBlade {
 
     async clickOnSaveButton():Promise<void>{
         await $(this.selectors.saveButton).click();
+    }
+
+    async getMessageBody(): Promise<string> {
+        return await $(this.selectors.messageBody).getText();
     }
 
 }

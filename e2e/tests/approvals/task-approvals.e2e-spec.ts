@@ -159,7 +159,7 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21584]: Approve the task with approver and verify the details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -195,7 +195,7 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21584]:Verify the approvals details on task activity', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -238,7 +238,7 @@ describe("Task Approval Tests", () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Reject');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -388,7 +388,7 @@ describe("Task Approval Tests", () => {
         it('[DRDMV-21587]: Approve the task with approver', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -430,7 +430,7 @@ describe("Task Approval Tests", () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(autoTaskTemplateData.templateSummary, 'Reject');
             await navigationPage.signOut();
             await loginPage.login('qfeng');

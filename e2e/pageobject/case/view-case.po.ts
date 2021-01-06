@@ -583,12 +583,22 @@ class ViewCasePage {
     }
 
     async isDuplicateFieldsAreNotPresentOnCase(): Promise<boolean> {
-        let allFieldsText: string[] = undefined;
-        for (let i = 0; i < await $$('.btn-link').length; i++) {
-            allFieldsText[i] = await $$('.btn-link').get(i).getText();
+        let allFieldsText: string[] = [];
+        let filtered: string[] = [];
+        let recordsCount: number = await $$('rx-read-only-field label').count();
+        for (let i = 0; i < recordsCount; i++) {
+            let ab: string = await $$('rx-read-only-field label').get(i).getText();
+            allFieldsText[i] = ab;
         }
-        let findDuplicates = arr => arr.filter((item, index) => arr.indexOf(item) != index);
-        return findDuplicates.length == 0;
+        filtered = allFieldsText.filter(function (el) {
+            return el != '';
+        });
+        filtered.sort();
+        for (let i = 1; i < filtered.length; i++) {
+            if (filtered[i - 1] == filtered[i])
+                return false;
+        }
+        return true;
     }
 
     async clickFirstRecommendedCases(): Promise<void> {

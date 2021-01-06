@@ -347,9 +347,5 @@ class EditNotificationTemplate {
         return (allValues.replace(/\s/g, "")).includes(value.replace(/\s/g, ""));
     }
 
-    async getNthLine(lineNo): Promise<string> {
-        return await utilCommon.getNthLineBRText(lineNo, await $('.cke_editable_themed p'));
-    }
-
 }
 export default new EditNotificationTemplate();

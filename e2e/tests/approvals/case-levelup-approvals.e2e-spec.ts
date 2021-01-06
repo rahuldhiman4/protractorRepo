@@ -152,7 +152,7 @@ describe("Case Level Up Approval Tests", () => {
         it('[DRDMV-16542]:approve the created case and verify the approval details on case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -191,7 +191,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Reject');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -230,7 +230,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -394,7 +394,7 @@ describe("Case Level Up Approval Tests", () => {
         it('[DRDMV-10833]:approve the created case and verify the approval details on case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -433,7 +433,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Reject');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -471,7 +471,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -646,7 +646,7 @@ describe("Case Level Up Approval Tests", () => {
         it('[DRDMV-1369,DRDMV-1368]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -681,7 +681,7 @@ describe("Case Level Up Approval Tests", () => {
         it('[DRDMV-1369,DRDMV-1368]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'On Hold');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -843,7 +843,7 @@ describe("Case Level Up Approval Tests", () => {
         it('[DRDMV-12182]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -1008,7 +1008,7 @@ describe("Case Level Up Approval Tests", () => {
         it('[DRDMV-12181]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToJSApplication('Approval');
+            await navigationPage.switchToApplication('Approval');
             await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
