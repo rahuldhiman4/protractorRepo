@@ -8,8 +8,8 @@ class Copytaskpage {
         sourceProcessname: '[rx-view-component-id="9f29e10e-dedf-4bab-8372-5b40002d999a"] input',
         toggleBox: '[rx-view-component-id="6c10fd9d-675a-44ec-abbf-bf9f694099a8"] .d-icon-circle_slash_o',
         toggleBox1: '6c10fd9d-675a-44ec-abbf-bf9f694099a8',
-        processName: '[ng-model="process.name"] .rx-input',
-        newProcessName: '[rx-view-component-id="e8a2406c-6991-4ea1-bfdf-bde29abe2ef7"] input',
+        processName: '[rx-view-component-id="2e4ef0dc-9b73-4c8f-afe6-221ddf0594c7"] input',
+        newProcessName: '[rx-view-component-id="47cc38e9-cb7f-451b-9ac8-e1b436dd3f3b"] input',
         templateStatus: '09db292a-212a-433e-8c20-a92f8c4e5168',
         saveCopyTemplate: '[rx-view-component-id="5001f6ea-4438-4485-bdd2-c952a12a1a34"] button',
         cancelCopyTemplate: '[rx-view-component-id="3f760e5f-70e9-4fbf-8b05-cd7d460f8818"] button',
@@ -18,11 +18,11 @@ class Copytaskpage {
         sourceProcessNameValue: '[rx-view-component-id="9f29e10e-dedf-4bab-8372-5b40002d999a"] input',
         companyGiud: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
         ownerCompanyGiud: '87ec3995-3350-4e3f-ab19-0f1e7846fbd7',
-        ownerGroupGuid: '61278673-8106-419c-83e4-a9e00f12f835',
-        ownerGroupValueOnCopy: '[rx-view-component-id="61278673-8106-419c-83e4-a9e00f12f835"] .ui-select-match-text',
-        ownerBusinessUnitGuid: 'a81cc2df-7b89-4367-81f7-f0ad5e786ca2',
-        showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button.more',
-        rightAlignLocator: '[rx-view-component-id="b9b752cf-8cef-4598-9a8d-85748b13f0d7"] div[style="text-align: right;"]',
+        ownerGroupGuid: 'e5794ca0-c022-475f-95e3-132221b19e3b',
+        ownerGroupValueOnCopy: '[rx-view-component-id="e5794ca0-c022-475f-95e3-132221b19e3b"] .dropdown-toggle',
+        ownerBusinessUnitGuid: 'd4b7f9fd-5a48-4e56-be28-40133acaae54',
+        showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button',
+        rightAlignLocator: '[rx-view-component-id="b9b752cf-8cef-4598-9a8d-85748b13f0d7"] p[style="text-align: right;"]',
     }
 
     async unSelectCopyExistingProcess(): Promise<string> {

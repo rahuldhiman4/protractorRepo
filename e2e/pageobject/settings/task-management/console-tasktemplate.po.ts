@@ -5,20 +5,19 @@ class TaskTemplateGridPage {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        addColumnCheckBox: '.d-dropdown__menu-options .d-dropdown__menu-options-item-option',
         manualTaskTemplateButton: '[rx-view-component-id="6843466b-bf58-47d1-baf4-97b3c9be4598"] button',
         automationtaskTemplateButton: '[rx-view-component-id="847d80e6-19ca-46ef-b01a-5a3581f784d7"] button',
         externalTaskTemplateButton: '[rx-view-component-id="df859ce0-47e3-4b61-937d-8d7ff3b64c0a"] button',
         copyTaskTemplate: '[rx-view-component-id="48afba80-4d39-4c1a-a420-1c01992cd937"] button',
-        searchTemplate: '[rx-id="search-text-input"]',
-        recommendedTemplateLink: '.ui-grid__link',
-        recommendedTemplateCheckBox: '.ui-grid-icon-ok',
-        filter: '.rx-search-filter__trigger',
-        availableFilterDrpDown: '.d-accordion__title',
-        applyFilter: '.rx-search-filter-heading__apply',
-        removeFilter: '..d-tag-remove-button',
+        searchTemplate: '.adapt-search-triggerable input',
+        recommendedTemplateLink: '.ui-selectable-row a',
+        recommendedTemplateCheckBox: '.radio__label input',
+        filter: 'button.d-icon-left-filter',
+        availableFilterDrpDown: '.advanced-filter__container .advanced-filter__accordion-tab .text-direction span',
+        refreshButton: 'button[rx-id="refresh-button"]',
+        removeFilter: '.close-inverse',
         taskTemplateGuid: 'a302e830-198e-4fcc-b176-5679fc1fef43',
-        columnTitle: '.ui-grid-header-cell-label',
+        columnTitle: '.c-header__separator',
     }
 
     async setTaskSearchBoxValue(input: string): Promise<void> {
@@ -82,7 +81,7 @@ class TaskTemplateGridPage {
             const dropDown = await $(`[title="${filterName}"]`);
             await dropDown.sendKeys(filtervalue, Key.ENTER);
         }
-        await $(this.selectors.applyFilter).click();
+        await $(this.selectors.filter).click();
     };
 
     async isTaskTypeFilterValue(taskTypeValue: string): Promise<boolean> {
