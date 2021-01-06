@@ -248,7 +248,8 @@ class NavigationPage {
                             await submenuItemLocator[j].$('span.a-tree__toggle').click();
                     }
                 } else {
-                    await element(by.cssContainingText('.a-tree__children adapt-highlight', menuItems[i])).click();
+                    let regex = new RegExp("^" + menuItems[i] + "$");
+                    await element(by.cssContainingText('.a-tree__children adapt-highlight', regex)).click();
                 }
             }
         }
@@ -283,12 +284,12 @@ class NavigationPage {
         try {
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();
-                await element(by.buttonText('Sign Out')).click().then(async () => {
+                await element(by.buttonText('Sign out')).click().then(async () => {
                     await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
                 });
             } else {
                 await $(this.selectors.profileMenu).click();
-                await element(by.buttonText('Sign Out')).click().then(async () => {
+                await element(by.buttonText('Sign out')).click().then(async () => {
                     await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
                 });
             }

@@ -174,7 +174,7 @@ class ApiCoreUtil {
     }
 
     async getPersonGuid(personName: string): Promise<string> {
-        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Person");
+        let allRecords = await this.getGuid("CTM:People");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[4] === personName;
         });

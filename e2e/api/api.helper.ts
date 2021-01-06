@@ -605,11 +605,12 @@ class ApiHelper {
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
-        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
-        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
-        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? data.ownerCompany : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? data.taskCompany : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? data.ownerBusinessUnit : templateData.fieldInstances[450000401].value;
+        //#LOB Comments
+        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
             let templateDataAssignee = {
@@ -619,14 +620,14 @@ class ApiHelper {
             templateData.fieldInstances["450000152"] = templateDataAssignee;
         }
         if (data.supportGroup) {
-            let assignedCompanyGuid = await apiCoreUtil.getOrganizationGuid(data.ownerCompany);
+            let assignedCompanyGuid = data.ownerCompany;
             let taskTemplateDataassignedCompany = {
                 "id": 450000153,
                 "value": `${assignedCompanyGuid}`
             }
             templateData.fieldInstances["450000153"] = taskTemplateDataassignedCompany;
 
-            let assigneeSupportGroup = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
+            let assigneeSupportGroup = data.supportGroup;
             let templateDataSupportGroup = {
                 "id": 1000000217,
                 "value": `${assigneeSupportGroup}`
@@ -634,7 +635,7 @@ class ApiHelper {
             templateData.fieldInstances["1000000217"] = templateDataSupportGroup;
         }
         if (data.businessUnit) {
-            let assigneeBusinessUnit = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
+            let assigneeBusinessUnit = data.businessUnit;
             let templateDataBusinessUnit = {
                 "id": 450000381,
                 "value": `${assigneeBusinessUnit}`
@@ -642,7 +643,8 @@ class ApiHelper {
             templateData.fieldInstances["450000381"] = templateDataBusinessUnit;
         }
         if (data.category1) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category1);
+            //let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category1);
+            let categoryGuid = data.category1;
             let templateCategory1 = {
                 "id": 1000000063,
                 "value": `${categoryGuid}`
@@ -650,7 +652,8 @@ class ApiHelper {
             templateData.fieldInstances["1000000063"] = templateCategory1;
         }
         if (data.category2) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category2);
+            //let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category2);
+            let categoryGuid = data.category2;
             let templateCategory2 = {
                 "id": 1000000064,
                 "value": `${categoryGuid}`
@@ -658,7 +661,8 @@ class ApiHelper {
             templateData.fieldInstances["1000000064"] = templateCategory2;
         }
         if (data.category3) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category3);
+            //let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category3);
+            let categoryGuid = data.category3;
             let templateCategory3 = {
                 "id": 1000000065,
                 "value": `${categoryGuid}`
@@ -666,7 +670,8 @@ class ApiHelper {
             templateData.fieldInstances["1000000065"] = templateCategory3;
         }
         if (data.category4) {
-            let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.category4);
+            //let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.category4);
+            let categoryTier4 = data.category4;
             let caseTemplateDataCategoryTier4 = {
                 "id": 450000157,
                 "value": `${categoryTier4}`
@@ -714,11 +719,12 @@ class ApiHelper {
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
-        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
-        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
-        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? data.ownerCompany : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? data.taskCompany : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? data.ownerBusinessUnit : templateData.fieldInstances[450000401].value;
+        //#LOB Comments
+        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
             let templateDataAssignee = {
@@ -729,14 +735,14 @@ class ApiHelper {
         }
 
         if (data.supportGroup) {
-            let assignedCompanyGuid = await apiCoreUtil.getOrganizationGuid(data.ownerCompany);
+            let assignedCompanyGuid = data.ownerCompany;
             let taskTemplateDataassignedCompany = {
                 "id": 450000153,
                 "value": `${assignedCompanyGuid}`
             }
             templateData.fieldInstances["450000153"] = taskTemplateDataassignedCompany;
 
-            let assigneeSupportGroup = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
+            let assigneeSupportGroup = data.supportGroup;
             let templateDataSupportGroup = {
                 "id": 1000000217,
                 "value": `${assigneeSupportGroup}`
@@ -745,7 +751,7 @@ class ApiHelper {
         }
 
         if (data.businessUnit) {
-            let assigneeBusinessUnit = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
+            let assigneeBusinessUnit = data.businessUnit;
             let templateDataBusinessUnit = {
                 "id": 450000381,
                 "value": `${assigneeBusinessUnit}`
@@ -753,7 +759,8 @@ class ApiHelper {
             templateData.fieldInstances["450000381"] = templateDataBusinessUnit;
         }
         if (data.category1) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category1);
+            //let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category1);
+            let categoryGuid = data.category1;
             let templateCategory1 = {
                 "id": 1000000063,
                 "value": `${categoryGuid}`
@@ -761,7 +768,8 @@ class ApiHelper {
             templateData.fieldInstances["1000000063"] = templateCategory1;
         }
         if (data.category2) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category2);
+            //let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category2);
+            let categoryGuid = data.category2;
             let templateCategory2 = {
                 "id": 1000000064,
                 "value": `${categoryGuid}`
@@ -769,7 +777,7 @@ class ApiHelper {
             templateData.fieldInstances["1000000064"] = templateCategory2;
         }
         if (data.category3) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category3);
+            let categoryGuid = data.category3;
             let templateCategory3 = {
                 "id": 1000000065,
                 "value": `${categoryGuid}`
@@ -804,10 +812,11 @@ class ApiHelper {
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[450000154].value = data.processBundle;
         templateData.fieldInstances[450000141].value = data.processName;
-        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.taskCompany ? await apiCoreUtil.getOrganizationGuid(data.taskCompany) : templateData.fieldInstances[1000000001].value;
-        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
-        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBusinessUnit) : templateData.fieldInstances[450000401].value;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? data.ownerCompany : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.taskCompany ? data.taskCompany : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? data.ownerBusinessUnit : templateData.fieldInstances[450000401].value;
+        //#LOB Comments
         templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
@@ -818,7 +827,8 @@ class ApiHelper {
             templateData.fieldInstances["1000000164"] = taskTemplateDataPriority;
         }
         if (data.category1) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category1);
+            //let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category1);
+            let categoryGuid = data.category1;
             let templateCategory1 = {
                 "id": 1000000063,
                 "value": `${categoryGuid}`
@@ -826,7 +836,8 @@ class ApiHelper {
             templateData.fieldInstances["1000000063"] = templateCategory1;
         }
         if (data.category2) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category2);
+            //let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category2);
+            let categoryGuid = data.category2;
             let templateCategory2 = {
                 "id": 1000000064,
                 "value": `${categoryGuid}`
@@ -834,7 +845,8 @@ class ApiHelper {
             templateData.fieldInstances["1000000064"] = templateCategory2;
         }
         if (data.category3) {
-            let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category3);
+            //let categoryGuid = await apiCoreUtil.getCategoryGuid(data.category3);
+            let categoryGuid = data.category3;
             let templateCategory3 = {
                 "id": 1000000065,
                 "value": `${categoryGuid}`
@@ -865,7 +877,7 @@ class ApiHelper {
         processData.targetTemplateId = taskTemplateDetails.data.id;
         processData.targetTemplateName = data.templateName;
         processData.targetProcess = data.processBundle + ":" + data.processName;
-        data.ownerCompany ? processData.targetProcessTag = await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : processData.targetProcessTag;
+        data.ownerCompany ? processData.targetProcessTag = data.ownerCompany : processData.targetProcessTag;
         let newAutoTemplateProcess: AxiosResponse = await apiCoreUtil.createProcessForAutoTaskTemplate(processData);
         console.log('Create Process for Automated Task Template API Status =============>', newAutoTemplateProcess.status);
 
@@ -2196,11 +2208,12 @@ class ApiHelper {
         let adhocTaskPayload = cloneDeep(ADHOC_TASK_PAYLOAD);
         adhocTaskPayload.fieldInstances[8].value = taskData.taskName;
         adhocTaskPayload.fieldInstances[536870913].value = caseGuid;
-        adhocTaskPayload.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(taskData.company);
+        adhocTaskPayload.fieldInstances[1000000001].value = taskData.company;
         adhocTaskPayload.fieldInstances[450000152].value = await apiCoreUtil.getPersonGuid(taskData.assignee);
-        adhocTaskPayload.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(taskData.businessUnit);
-        adhocTaskPayload.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(taskData.supportGroup);
+        adhocTaskPayload.fieldInstances[450000381].value = taskData.businessUnit;
+        adhocTaskPayload.fieldInstances[1000000217].value = taskData.supportGroup;
         taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
+        //#LOB Comments
         adhocTaskPayload.fieldInstances[450000411].value = taskData.lineOfBusiness ? await constants.LOB[taskData.lineOfBusiness] : adhocTaskPayload.fieldInstances[450000411].value;
         if (taskData.description) {
             let taskDescription = {
@@ -2210,7 +2223,8 @@ class ApiHelper {
             adhocTaskPayload.fieldInstances["1000000000"] = taskDescription;
         }
         if (taskData.category1) {
-            let category1Guid = await apiCoreUtil.getCategoryGuid(taskData.category1);
+            //let category1Guid = await apiCoreUtil.getCategoryGuid(taskData.category1);
+            let category1Guid = taskData.category1;
             let taskCategory1 = {
                 "id": "1000000063",
                 "value": category1Guid
@@ -2218,7 +2232,8 @@ class ApiHelper {
             adhocTaskPayload.fieldInstances["1000000063"] = taskCategory1;
         }
         if (taskData.category2) {
-            let category2Guid = await apiCoreUtil.getCategoryGuid(taskData.category2);
+            //let category2Guid = await apiCoreUtil.getCategoryGuid(taskData.category2);
+            let category2Guid = taskData.category2;
             let taskCategory2 = {
                 "id": "1000000064",
                 "value": category2Guid
@@ -2226,7 +2241,8 @@ class ApiHelper {
             adhocTaskPayload.fieldInstances["1000000064"] = taskCategory2;
         }
         if (taskData.category3) {
-            let category3Guid = await apiCoreUtil.getCategoryGuid(taskData.category3);
+            //let category3Guid = await apiCoreUtil.getCategoryGuid(taskData.category3);
+            let category3Guid = taskData.category3;
             let taskCategory3 = {
                 "id": "1000000065",
                 "value": category3Guid
