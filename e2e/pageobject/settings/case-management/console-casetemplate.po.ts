@@ -11,8 +11,8 @@ class CaseTemplateConsole {
         copyCaseTemplate: '[rx-view-component-id="92e13921-bf7b-494e-9d65-609a07c36505"] button',
         gridGUID: "1c10246e-18ed-4201-91b7-210e7a975f9c",
         searchButton: "1c10246e-18ed-4201-91b7-210e7a975f9c",
-        gridLink: '.ui-grid__link',
-        recordvalue: '.ui-grid-canvas .ui-grid-row'
+        gridLink: 'a.no-href-link',
+        recordvalue: '.at-radiobutton-cell input'
     }
 
     async clickOnCreateCaseTemplateButton(): Promise<void> {

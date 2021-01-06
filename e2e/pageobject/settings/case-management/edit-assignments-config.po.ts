@@ -5,20 +5,20 @@ class AssignmentConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        editAssignmentMappingFields: '[rx-view-component-id="64a33e3d-2657-4b94-b357-ab0192d7f187"] .d-textfield__item',
+        editAssignmentMappingFields: '[rx-view-component-id="64a33e3d-2657-4b94-b357-ab0192d7f187"] .form-control-label',
         editName: '[rx-view-component-id="b268be04-346e-424c-be99-7ad16da78037"] input',
         defaultToggle: '[rx-view-component-id="7ca691fd-c299-411f-90fa-9639cbe083c1"] button',
         saveButton: '[rx-view-component-id="0661b9a6-3c08-455c-9972-a2b6f9ca2c0e"] button',
-        assignee: '[rx-view-component-id="50f4da8f-6473-4356-994f-67ebe94b100e"] .ui-select-toggle',
+        assignee: '[rx-view-component-id="6ea0773a-64a8-47c7-ae17-a265d2ee72f8"] .dropdown-toggle',
         companyDrpDwn: '7caa75fa-dfd6-4eca-8dec-2ef096eb6722',
-        assigneeGuid: '50f4da8f-6473-4356-994f-67ebe94b100e',
+        assigneeGuid: '6ea0773a-64a8-47c7-ae17-a265d2ee72f8',
         defaultToggleGuid: '7ca691fd-c299-411f-90fa-9639cbe083c1',
         cancelButton: '[rx-view-component-id="83133eec-6274-4b89-bdff-b5880658ef4b"] button',
-        categoryTier2Guid: 'b2dc177f-4ad0-4c12-8809-c9211cda502b',
-        categoryTier3Guid: 'a373976b-498a-46da-a97f-5573fc6c3b03',
-        categoryTier4Guid: '647bd05c-d3b3-46dd-8747-b67a87013d1b',
-        labelValue: '[rx-view-component-id="ef7b61e9-8bc0-49cb-8fdc-d1ba41db5bcd"] .ui-select-match-text',
-        labelGuid: 'ef7b61e9-8bc0-49cb-8fdc-d1ba41db5bcd',
+        categoryTier2Guid: '9df40e9c-d285-4dfd-9fb3-a7500fa996b0',
+        categoryTier3Guid: '97db4cf9-62d6-4237-918c-04dff857eb9e',
+        categoryTier4Guid: 'ac87041f-3b96-497a-b314-d540908378df',
+        labelValue: '[rx-view-component-id="bb4291cc-a7f9-4116-8bf9-b3f52e0731d0"] .dropdown-toggle',
+        labelGuid: 'bb4291cc-a7f9-4116-8bf9-b3f52e0731d0',
         lobValue: '[rx-view-component-id="168c91ba-ee0e-4f79-8287-a6859be12778"] .pull-left'
     }
 

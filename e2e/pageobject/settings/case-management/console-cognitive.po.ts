@@ -7,7 +7,7 @@ class CognitiveConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        addButton: '[class="d-button d-icon-left-plus d-button_link"]',
+        addButton: '.d-icon-left-plus',
         categorizationConsoleGuid: '3c8c8144-6110-4cee-8f30-3e5106c1bc31',
         templateConsoleGuid: '7163990a-b8b8-4b92-a7c6-5aa4d06634f1',
     }

@@ -5,7 +5,6 @@ class ReadAccessConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        supportGroup: '[rx-view-component-id="59fae521-483b-4d6a-93ed-84c88919351a"] .d-textfield__label',
         editName: '[rx-view-component-id="5aa348b9-f853-4b0f-bbff-a23d2e153f6a"] input',
         defaultToggle: '[rx-view-component-id="fa6bad05-195e-4df6-a7f1-daf55b2e0571"] button',
         saveButton: '[rx-view-component-id="5ea49da6-8472-4848-a29e-917a0932ea24"] button',
@@ -13,13 +12,13 @@ class ReadAccessConfigEditPage {
         companyGuid: '2d60a97e-67aa-41fe-94f9-72e83556789b',
         cancelButton: '[rx-view-component-id="4161aa6c-2565-4f6e-85af-088df3db222e"] button',
         defaultToggleGuid: 'fa6bad05-195e-4df6-a7f1-daf55b2e0571',
-        flowsetGuid: '15430b06-186f-4dde-985c-2308d8a21a5d',
+        flowsetGuid: 'cf6a98ad-ac7b-49ab-9df1-f9531905290e',
         priorityGuid: '732d1377-9873-476d-a5ee-bee0eb9ee5f3',
-        supportGroupGuid: '59fae521-483b-4d6a-93ed-84c88919351a',
-        businessUnitGuid: '2d897e8d-c447-4a0f-b494-50c0eb0fc3ac',
-        categoryTier4Guid: '0ad049c9-856d-4945-82f1-9981d2d62465',
-        labelValue: '[rx-view-component-id="0ea3f865-68f7-45a8-859c-a1dc86e69742"] .ui-select-match-text',
-        labelGuid: '324d4505-e365-4371-a28b-4ab8bdd2565c',
+        supportGroupGuid: '3a1b5bb1-5d8e-460c-adc4-df2871e03f64',
+        businessUnitGuid: 'bbc67a21-674b-4a0a-baf8-5c39e1c0f995',
+        categoryTier4Guid: '236c2bd3-b189-4531-8791-f06319a3a312',
+        labelValue: '[rx-view-component-id="692fed6d-f2b5-4f72-8f4e-d7e7ec192cfb"] .dropdown-toggle',
+        labelGuid: '692fed6d-f2b5-4f72-8f4e-d7e7ec192cfb',
         lobValue: '[rx-view-component-id="fa35a8a4-bcb2-4617-ba34-11361be50488"] .pull-left'
     }
 
