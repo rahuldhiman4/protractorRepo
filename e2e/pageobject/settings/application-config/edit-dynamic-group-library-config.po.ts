@@ -5,8 +5,8 @@ class CreateDynamicGroupLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        title: '.modal-title',
-        addDynamicField: '[rx-view-component-id="8de11ae4-d229-4815-9d60-4841a847e816"] a',
+        title: '[class="dp-title"]',
+        addDynamicField: '[rx-view-component-id="8de11ae4-d229-4815-9d60-4841a847e816"] button[btn-type="tertiary"]',
         dynamicGroupName: '2eb48e70-e559-4394-b551-e204a3c67f77',
         displayLabel: 'e56f279b-9e7b-4fc6-b855-bf2628689d3c',
         lineOfBusiness: 'e5ab571f-f66e-47e6-b5bf-eb9fc333c58e',
@@ -14,17 +14,17 @@ class CreateDynamicGroupLibrary {
         displayLabelLink: '[rx-view-component-id="e56f279b-9e7b-4fc6-b855-bf2628689d3c"] button',
         displayLabelField: '[rx-view-component-id="e56f279b-9e7b-4fc6-b855-bf2628689d3c"] input',
         localizedValueInput: '.modal-content input[aria-label="Value for default locale"]',
-        localizedValueSaveBtn: '.modal-content .d-button_primary',
-        localizedValueCancelBtn: '.modal-content .d-button_secondary',
+        localizedValueSaveBtn: 'button[rx-id="save-button"]',
+        localizedValueCancelBtn: 'button[rx-id="cancel-button"]',
         dynamicGroupWarningMsg: 'div.alert-warning div',
         status: '76eaa168-a4fb-4687-a838-280983d01700',
-        dynamicFieldNameInput: 'input.ac-input-field-name',
-        dynamicFieldDescriptionInput: 'input.ac-input-description',
-        dynamicGroupSaveBtn: '[rx-view-component-id="1dd1a2a9-28fb-47b5-9941-f73063e860d7"] .d-button_primary',
-        dynamicGroupCancelBtn: '[rx-view-component-id="c0d7ec27-1a72-4943-b487-87f7559fff95"] .d-button_secondary',
+        dynamicFieldNameInput: '.d-textfield_required input[id="adapt-textfield-0_input"]',
+        dynamicFieldDescriptionInput: '.d-textfield_required input[id="adapt-textfield-2_input"]',
+        dynamicGroupSaveBtn: '[rx-view-component-id="1dd1a2a9-28fb-47b5-9941-f73063e860d7"] button',
+        dynamicGroupCancelBtn: '[rx-view-component-id="c0d7ec27-1a72-4943-b487-87f7559fff95"] button',
         lineOfBusinessInput: '[rx-view-component-id="e5ab571f-f66e-47e6-b5bf-eb9fc333c58e"] .ui-select-match-text',
-        statusValue: '[rx-view-component-id="76eaa168-a4fb-4687-a838-280983d01700"] .ui-select-match-text',
-        dynamicFields: '.column-name',
+        statusValue: '[rx-view-component-id="76eaa168-a4fb-4687-a838-280983d01700"] button',
+        dynamicFields: '.card-header .left-header-block',
     }
 
     async verifyTitle(value: string): Promise<boolean> {

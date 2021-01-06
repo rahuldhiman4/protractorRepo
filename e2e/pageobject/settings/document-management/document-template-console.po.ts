@@ -6,7 +6,7 @@ class DocumentTemplateConsolePage {
     selectors = {
             gridGuid: '9a22b025-c87e-4ddb-b8ce-472ccbf39a63',
             pageHeader: '.rx-theme-main-text-color h2',
-            deleteButton: '[rx-view-component-id="93f7643a-ab88-41be-9ff4-7a9130dbbff0"] .d-button_small span',
+            deleteButton: '[rx-view-component-id="93f7643a-ab88-41be-9ff4-7a9130dbbff0"] button',
             addDocumentTemplateBtn: '[rx-view-component-id="3acdcc85-9981-433a-84dd-6891fedcc243"] button'
     }
 

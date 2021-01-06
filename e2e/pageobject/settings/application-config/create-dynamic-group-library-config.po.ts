@@ -5,8 +5,8 @@ class CreateDynamicGroupLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        title: '.modal-title',
-        addDynamicField: '[rx-view-component-id="a7cd73fd-b1e3-4598-9b6a-e25d860028b1"] a',
+        title: 'fieldset .dp-header',
+        addDynamicField: 'div[class="bwf-dynamic-field-group"] button[btn-type="tertiary"]',
         dynamicGroupName: '59bbcd1b-82ef-46ec-844b-277246baa5ea',
         displayLabel: '1e0ad22a-8692-48ca-b625-ac2ce600b8e8',
         lineOfBusiness: 'a07f69a6-9b62-446f-8e1c-c48b45e03a11',
@@ -14,12 +14,12 @@ class CreateDynamicGroupLibrary {
         displayLabelLink: '[rx-view-component-id="1e0ad22a-8692-48ca-b625-ac2ce600b8e8"] button',
         displayLabelField: '[rx-view-component-id="1e0ad22a-8692-48ca-b625-ac2ce600b8e8"] input',
         localizedValueInput: '.modal-content input[aria-label="Value for default locale"]',
-        localizedValueSaveBtn: '.modal-content .d-button_primary',
-        localizedValueCancelBtn: '.modal-content .d-button_secondary',
+        localizedValueSaveBtn: 'button[rx-id="save-button"]',
+        localizedValueCancelBtn: 'button[rx-id="cancel-button"]',
         dynamicGroupWarningMsg: 'div.alert-warning div',
         status: 'd17e9d98-3760-4c7f-b0d9-9ae40a3cab72',
-        dynamicFieldNameInput: 'input.ac-input-field-name',
-        dynamicFieldDescriptionInput: 'input.ac-input-description',
+        dynamicFieldNameInput: '.d-textfield_required input[id="adapt-textfield-0_input"]',
+        dynamicFieldDescriptionInput: '.d-textfield_required input[id="adapt-textfield-2_input"]',
         dynamicGroupSaveBtn: '[rx-view-component-id="063a9878-3e83-4e00-84a8-793bde3fc704"] button',
         dynamicGroupCancelBtn: '[rx-view-component-id="eeaf8414-aa18-4217-889b-020c2e6b385d"] button',
     }
