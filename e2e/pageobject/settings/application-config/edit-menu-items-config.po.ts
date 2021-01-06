@@ -5,11 +5,11 @@ class MenuItemsConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        status: '[rx-view-component-id="42deb4bb-67da-4350-b92a-60b620d9d271"] .d-textfield__label .ui-select-match',
+        status: '[rx-view-component-id="42deb4bb-67da-4350-b92a-60b620d9d271"] button',
         saveButton: '[rx-view-component-id="0f58c8ab-46fe-4643-8c42-31409af17d05"] button',
         cancelButton: '[rx-view-component-id="3fbaa9bf-7a3d-42b5-8afe-bc2c0f982520"] button',
         defaultToggle: '[rx-view-component-id="d2fb228a-e6ca-4906-8b60-80537b45d75f"] button',
-        menuNameDropDown: '[rx-view-component-id="181d2e28-3cbe-4bcd-9489-2015adbb6e37"] .btn-default',
+        menuNameDropDown: '[rx-view-component-id="181d2e28-3cbe-4bcd-9489-2015adbb6e37"] button',
         localizeLink: '[rx-view-component-id="7db36dc7-3a4a-4be7-877a-cb44d4c39ecd"] .d-icon-left-pencil',
         statusDropDownGuid: '42deb4bb-67da-4350-b92a-60b620d9d271',
         toggleButtonGuid: 'd2fb228a-e6ca-4906-8b60-80537b45d75f',

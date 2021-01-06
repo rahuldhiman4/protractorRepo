@@ -7,7 +7,7 @@ class CreateDynamicFieldLibrary {
     selectors = {
         title: '.rx-search-option-container .d-textfield__item',
         cancelButton: '[rx-view-component-id="39134e3e-3a8c-40cd-8a20-b4c90ca7fce9"] button',
-        fieldName: '[rx-view-component-id="3f126998-430d-4d80-9061-e6bb90ddcef5"] .d-textfield__input',
+        fieldName: '[rx-view-component-id="3f126998-430d-4d80-9061-e6bb90ddcef5"] input',
         fieldNameGuid: '3f126998-430d-4d80-9061-e6bb90ddcef5',
         localizeButton: '[rx-view-component-id="827cea0b-82d6-4741-8051-1cc52b83b770"] button',
         fieldDescriptionGuid: '827cea0b-82d6-4741-8051-1cc52b83b770',
@@ -15,7 +15,7 @@ class CreateDynamicFieldLibrary {
         fieldValueType: 'bfcc7610-2202-45aa-87b7-bc37af6e8954',
         informationSource: 'b9b14785-4b48-4fde-83ac-dc012eb36858',
         saveButton: '[rx-view-component-id="2f8db2c3-2352-4732-81b9-fdaf46ccbde7"] button',
-        activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[uib-btn-radio="trueValue"]',
+        activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[aria-label="True"]',
         requiredWarningmessage: '.localized-character-field-design div',
         lobValue: '[rx-view-component-id="a9446eac-d1a5-4bff-8915-51aac36918e6"] .pull-left'
     }

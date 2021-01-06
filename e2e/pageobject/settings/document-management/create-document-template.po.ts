@@ -7,14 +7,14 @@ class CreateDocumentTemplate {
         addTemplate: '.d-icon-left-plus',
         templateName: '[rx-view-component-id="98493095-1421-4405-8927-dd684b0d2006"] input',
         company: 'a80a3c32-ce91-485b-a56b-3bac1f78d40f',
-        labelDropDownGuid: '93d439ff-ca35-4a86-a6b3-d45e705be23d',
-        description: '[rx-view-component-id="e976be62-48e8-4b2a-8db5-713843068652"] textarea',
+        labelDropDownGuid: '02d4e346-ca1c-4eeb-a80e-322eab42ad02',
+        description: '[rx-view-component-id="933dd491-7d55-4735-b30a-f2826afe1461"] input',
         documentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] div.cke_wysiwyg_div',
         saveButton: '[rx-view-component-id="01906a54-d879-427b-a057-a5c5d4834487"] button',
         cancelButton: '[rx-view-component-id="cfab43d9-cdba-4bec-99f3-6aefdf9fae9d"] button',
         pageHeader: '.modal-title',
-        insertFieldLinkOnDocumentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__expressioneditor_icon',
-        clickImageButton: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] .cke_button__image',
+        insertFieldLinkOnDocumentBody: 'a[id="cke_47"]',
+        clickImageButton: '[class="cke_button_icon cke_button__image_icon"]',
         dynamicField: '[class="cke_contents cke_reset"] span',
         lobValue: '[rx-view-component-id="bdee70fc-d43c-4b44-9422-c344d62676c7"] .pull-left'
     }
