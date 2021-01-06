@@ -6,18 +6,14 @@ class TemplateAccessTab {
 
     selectors = {
         removeSupportWarningYes: '.ac-remove-group-yes',
-        agentAccess: '.rx-case-access .rx-case-access-block .d-icon-right-angle_down',
-        dropDownType: '.flex-item .dropdown-toggle',
-        searchCompany: '[placeholder="Search Organizations"]',
-        searchBuisnessUnit: '[placeholder="Search for Business Unit"]',
-        searchSupportGroup: '[placeholder="Search for Support Groups"]',
+        agentAccess: '[rx-view-component-id="30ed35ec-487c-4bc2-8e96-2b3565d77adc"] .access-group .btn-link',
+        dropDownType: '[rx-view-component-id="30ed35ec-487c-4bc2-8e96-2b3565d77adc"] .rx-select__search-button-title',
+        searchType: '[placeholder="Filter options"]',
         suppGrupList: '.bwf-selection-group.ac-support-group-field li',
-        companyList: '.bwf-selection-group.ac-company-field li[role="button"]',
+        dropdownList: '.rx-select__option-content div',
         buisnessUnitList: '.bwf-selection-group.ac-business-unit-field li',
-        addBuisnessUnit: 'button.ac-business-unit-add',
-        addSuppGrup: 'button.ac-support-group-add',
-        addDepartment: 'ac-support-department-add',
-        assignWriteAccess: '.d-checkbox__item.ac-message-assign-write-group',
+        addButton: '.input-group-btn button.btn-secondary',
+        assignWriteAccess: '.checkbox__input',
     }
 
     async clickOnAccessButton(agentName: string): Promise<void> {
@@ -26,13 +22,13 @@ class TemplateAccessTab {
     
     async selectCompany(companyValue: string, dropDownList: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
-        await $(this.selectors.searchCompany).sendKeys(companyValue);
-        await element(by.cssContainingText(this.selectors.companyList, companyValue)).click();
+        await $(this.selectors.searchType).sendKeys(companyValue);
+        await element(by.cssContainingText(this.selectors.dropdownList, companyValue)).click();
     }
     
     async selectSupportGroup(SupportValue: string, dropDownList: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
-        await $(this.selectors.searchSupportGroup).sendKeys(SupportValue);
+        await $(this.selectors.searchType).sendKeys(SupportValue);
         await element(by.cssContainingText("li[ng-repeat*='option']", SupportValue)).isDisplayed().then(async (displayed) => {
             if (displayed) await element(by.cssContainingText(".is-open li[ng-repeat*='option']", SupportValue)).click();
         });
@@ -40,7 +36,7 @@ class TemplateAccessTab {
     
     async selectBusinessUnit(businessUnitValue: string, dropDownList: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
-        await $(this.selectors.searchBuisnessUnit).sendKeys(businessUnitValue);
+        await $(this.selectors.searchType).sendKeys(businessUnitValue);
         await element(by.cssContainingText("li[ng-repeat*='option']", businessUnitValue)).isDisplayed().then(async (displayed) => {
             if (displayed) await element(by.cssContainingText(".is-open li[ng-repeat*='option']", businessUnitValue)).click();
         });
@@ -49,15 +45,15 @@ class TemplateAccessTab {
     async clickOnReadAccessAddButton(dropdownName: string): Promise<void> {
         switch (dropdownName) {
             case "Add Business Unit": {
-                await $(this.selectors.addBuisnessUnit).click();
+                await $(this.selectors.addButton).click();
                 break;
             }
             case "Add Support Department": {
-                await $(this.selectors.addDepartment).click();
+                await $(this.selectors.addButton).click();
                 break;
             }
             case "Add Support Group": {
-                await $(this.selectors.addSuppGrup).click();
+                await $(this.selectors.addButton).click();
                 break;
             }
             default: {
@@ -71,17 +67,17 @@ class TemplateAccessTab {
         switch (dropdownName) {
             case "Add Business Unit": {
                 await $$(this.selectors.assignWriteAccess).get(0).click();
-                await $(this.selectors.addBuisnessUnit).click();
+                await $(this.selectors.addButton).click();
                 break;
             }
             case "Add Support Department": {
                 await $$(this.selectors.assignWriteAccess).get(1).click();
-                await $(this.selectors.addDepartment).click();
+                await $(this.selectors.addButton).click();
                 break;
             }
             case "Add Support Group": {
                 await $$(this.selectors.assignWriteAccess).get(2).click();
-                await $(this.selectors.addSuppGrup).click();
+                await $(this.selectors.addButton).click();
                 break;
             }
             default: {
