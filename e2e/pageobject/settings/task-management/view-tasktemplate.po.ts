@@ -1,54 +1,55 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
 import utilCommon from '../../../utils/util.common';
+import utilityCommon from "../../../utils/utility.common";
 
 class ViewTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         manageDynamicField: '[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] button',
         dynamicFieldTitle: '.simple-field .d-textfield__item',
-        processnameValue: '[rx-view-component-id="5e792424-a4d7-4235-8715-be24149be51b"] p',
+        processnameValue: '[rx-view-component-id="5e792424-a4d7-4235-8715-be24149be51b"] .read-only-content',
         copyTaskButton: '[rx-view-component-id="e2ec0e87-e65d-4926-9efc-25e3ad329e52"] button',
         templateName: '[rx-view-component-id="72010a6d-c0d7-433a-ab9d-3203fb373518"] span',
-        templateStatus: '[rx-view-component-id="d17d9cf8-a5ac-47de-acae-a4b69e086855"] p',
-        summaryValue: '[rx-view-component-id="80087f51-1b1f-4b47-9fde-36aed981db13"] p',
-        taskTypeValue: '[rx-view-component-id="27f3842f-613a-4439-a29c-bedd51b0eecd"] p',
-        taskDescriptionValue: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] [ux-bind-html]',
-        taskCompanyValue: '[rx-view-component-id="2717de6b-2e4e-47d2-a39e-b5ade14ea3e9"] p',
-        categoryTier1Value: '[rx-view-component-id="d49969eb-ffcc-4c7e-98ad-b94d6c3d67cb"] p',
-        categoryTier2Value: '[rx-view-component-id="c427cb37-5018-4bc6-b951-46f31a679d93"] p',
-        categoryTier3Value: '[rx-view-component-id="118170eb-e94d-4056-9d0b-cb944ff96ebb"] p',
-        categoryTier4Value: '[rx-view-component-id="d88c4135-b283-4b9a-9909-80f1e83e6087"] p',
+        templateStatus: '[rx-view-component-id="d8b9ff29-11a1-406c-b746-81ac9491ce23"] .read-only-content',
+        summaryValue: '[rx-view-component-id="80087f51-1b1f-4b47-9fde-36aed981db13"] .read-only-content',
+        taskTypeValue: '[rx-view-component-id="27f3842f-613a-4439-a29c-bedd51b0eecd"] .read-only-content',
+        taskDescriptionValue: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] p',
+        taskCompanyValue: '[rx-view-component-id="2717de6b-2e4e-47d2-a39e-b5ade14ea3e9"] .read-only-content',
+        categoryTier1Value: '[rx-view-component-id="636d53eb-5cf3-4fbd-9af4-e258cf3424c2"] .read-only-content',
+        categoryTier2Value: '[rx-view-component-id="a52e2f89-e120-442c-8df4-e466cafeb657"] .read-only-content',
+        categoryTier3Value: '[rx-view-component-id="9529c556-08ef-4e5d-aa41-57db84d3e416"] .read-only-content',
+        categoryTier4Value: '[rx-view-component-id="965bc2ec-34c6-43ae-8636-68f904c58ea7"] .read-only-content',
         editProcessLink: '[rx-view-component-id="bb9a3cc7-a8e9-4291-a447-f3a5c33afd1e"] button',
-        ownerCompanyValue: '[rx-view-component-id="37dd629c-6d13-4e6d-b70e-90b91dd5b484"] p',
-        ownerGroupValue: '[rx-view-component-id="f02e4c7b-93f9-4b35-af23-f522d56daa4b"] p',
-        buisnessunitValue: '[rx-view-component-id="787a1a66-06fc-4e1c-8bf4-172c32be397d"] p',
+        ownerCompanyValue: '[rx-view-component-id="37dd629c-6d13-4e6d-b70e-90b91dd5b484"] .read-only-content',
+        ownerGroupValue: '[rx-view-component-id="f02e4c7b-93f9-4b35-af23-f522d56daa4b"] .read-only-content',
+        buisnessunitValue: '[rx-view-component-id="787a1a66-06fc-4e1c-8bf4-172c32be397d"] .read-only-content',
         departmentValue: '[rx-view-component-id="03314749-1da7-4741-8b0d-8296933e966f"] p',
-        label: '[rx-view-component-id="bae4bb58-1146-4f96-a695-543deecc5cc1"] p',
-        editLink: '[rx-view-component-id="0ff4dfc7-09f3-4d12-bc32-5c9426f6cc6c"] .rx-record-editor-edit',
-        taskTemplateId: '.text-field',
+        label: '[rx-view-component-id="bae4bb58-1146-4f96-a695-543deecc5cc1"] .read-only-content',
+        editLink: '[rx-view-component-id="0ff4dfc7-09f3-4d12-bc32-5c9426f6cc6c"] .justify-content-end button',
+        taskTemplateId: '[rx-view-component-id="5109350d-c09f-49ae-85b3-fbc5280fd4e4"] .text-field',
         taskSummaryGuid: '80087f51-1b1f-4b47-9fde-36aed981db13',
         taskTypeGuid: '27f3842f-613a-4439-a29c-bedd51b0eecd',
         taskCompanyGuid: '2717de6b-2e4e-47d2-a39e-b5ade14ea3e9',
-        taskCategoryTier1Guid: 'd49969eb-ffcc-4c7e-98ad-b94d6c3d67cb',
-        taskCategoryTier2Guid: 'c427cb37-5018-4bc6-b951-46f31a679d93',
-        taskCategoryTier3Guid: '118170eb-e94d-4056-9d0b-cb944ff96ebb',
-        taskCategoryTier4Guid: 'd88c4135-b283-4b9a-9909-80f1e83e6087',
+        taskCategoryTier1Guid: '636d53eb-5cf3-4fbd-9af4-e258cf3424c2',
+        taskCategoryTier2Guid: 'a52e2f89-e120-442c-8df4-e466cafeb657',
+        taskCategoryTier3Guid: '9529c556-08ef-4e5d-aa41-57db84d3e416',
+        taskCategoryTier4Guid: '965bc2ec-34c6-43ae-8636-68f904c58ea7',
         taskLabelGuid: 'bae4bb58-1146-4f96-a695-543deecc5cc1',
         taskProcessGuid: '5e792424-a4d7-4235-8715-be24149be51b',
-        templateStatusGuid: 'd17d9cf8-a5ac-47de-acae-a4b69e086855',
+        templateStatusGuid: 'd8b9ff29-11a1-406c-b746-81ac9491ce23',
         ownerCompanyGuid: '37dd629c-6d13-4e6d-b70e-90b91dd5b484',
         ownerGroupGuid: 'f02e4c7b-93f9-4b35-af23-f522d56daa4b',
         taskDescriptonGuid: 'cce67ce7-e6a5-4ed6-aa50-c57ea75d2854',
-        supportGroupGuid: '244607b3-1fd7-490c-975b-7640a6b2c615',
-        assigneeGuid: 'bb18eb5c-ba9c-47e1-8593-cd79aefac190',
-        dynamicField: '[rx-view-component-id="7ac78e56-c471-4e50-bca8-53568ad6e4af"] label span',
-        assigneeNameValue: '[rx-view-component-id="bb18eb5c-ba9c-47e1-8593-cd79aefac190"] .person-main a',
-        assigneeBusinessUnitValue: '[rx-view-component-id="e4548927-a25e-439e-8e9c-d495c7c87378"] p',
+        supportGroupGuid: 'fd172dbd-f8b0-4985-8905-4f07be498a0b',
+        assigneeGuid: 'fd172dbd-f8b0-4985-8905-4f07be498a0b',
+        dynamicField: '[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] .d-textfield__item',
+        assigneeNameValue: '[rx-view-component-id="fd172dbd-f8b0-4985-8905-4f07be498a0b"] .person-main a',
+        assigneeBusinessUnitValue: '[rx-view-component-id="fd172dbd-f8b0-4985-8905-4f07be498a0b"] .read-only-content',
         assigneeDepartmentValue: '[rx-view-component-id="ea7695f8-ebd3-41e6-b85f-ebd800e9c913"] p',
-        editMetaData: '[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] .edit-link',
-        priorityValue: '.selection-field',
-        showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button.more',
+        editMetaData: '[rx-view-component-id="8b8bfec6-0ee2-42a3-be4b-ac4f37d060f1"] button',
+        priorityValue: '[rx-view-component-id="5109350d-c09f-49ae-85b3-fbc5280fd4e4"] .selection-field',
+        showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button',
         taskDescription: 'cce67ce7-e6a5-4ed6-aa50-c57ea75d2854',
         backArrowButton: '[rx-view-component-id="ae1743d3-c8e3-47f7-b257-fba698a2e6e0"] button',
         lobValue: '[rx-view-component-id="0785d5e5-8f5d-432f-b5c7-fadc110fd26a"] p'
@@ -180,63 +181,63 @@ class ViewTaskTemplate {
     }
 
     async isTaskSummaryTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskSummaryGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskSummaryGuid, input);
     }
 
     async isTaskTypeTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskTypeGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskTypeGuid, input);
     }
 
     async isTaskCompanyTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCompanyGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCompanyGuid, input);
     }
 
     async isTaskCategoryTier1TitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier1Guid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier1Guid, input);
     }
 
     async isTaskCategoryTier2TitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier2Guid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier2Guid, input);
     }
 
     async isTaskCategoryTier3TitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier3Guid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier3Guid, input);
     }
 
     async isTaskCategoryTier4TitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier4Guid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier4Guid, input);
     }
 
     async isTaskLabelTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskLabelGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskLabelGuid, input);
     }
 
     async isTaskProcessTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskProcessGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskProcessGuid, input);
     }
 
     async isTaskDescriptionTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskDescriptonGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskDescriptonGuid, input);
     }
 
     async isTemplateStatusTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.templateStatusGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.templateStatusGuid, input);
     }
 
     async isOwnerCompanyTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.ownerCompanyGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.ownerCompanyGuid, input);
     }
 
     async isOwnerGroupTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.ownerGroupGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.ownerGroupGuid, input);
     }
 
     async isAssigneeTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.assigneeGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.assigneeGuid, input);
     }
 
     async isSupportGuidTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.supportGroupGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportGroupGuid, input);
     }
 
     async isEditButtonPresent(): Promise<boolean> {

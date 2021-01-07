@@ -26,17 +26,18 @@ export const MENU_ITEM = {
             "id": 450000154,
             "value": "name7"
         },
-        "450000420":{
-            "resourceType":"com.bmc.arsys.rx.services.record.domain.FieldInstance",
-            "id":450000420,
-            "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
-            "permissionType":"CHANGE"
-         },
-         "1000000001":{
-            "resourceType":"com.bmc.arsys.rx.services.record.domain.FieldInstance",
-            "id":1000000001,
-            "value":"- Global -",
-            "permissionType":"CHANGE"
-         }
+        //#LOB Comments
+        // "450000420":{
+        //     "resourceType":"com.bmc.arsys.rx.services.record.domain.FieldInstance",
+        //     "id":450000420,
+        //     "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+        //     "permissionType":"CHANGE"
+        //  },
+        "1000000001": {
+            "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
+            "id": 1000000001,
+            "value": "- Global -",
+            "permissionType": "CHANGE"
+        }
     }
 }

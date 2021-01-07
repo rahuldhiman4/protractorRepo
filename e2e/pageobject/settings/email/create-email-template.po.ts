@@ -1,5 +1,5 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$, Key } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
 
 class CreateEmailTemplate {
@@ -40,39 +40,39 @@ class CreateEmailTemplate {
     }
 
     async selectCompany(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, value);
     }
 
     async isCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isTemplateRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.templateGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.templateGuid);
     }
 
     async islineOfBusinessRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.lineOfBusinessGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.lineOfBusinessGuid);
     }
 
     async isStatusRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusGuid);
     }
 
     async isDescriptionRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.descriptionGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.descriptionGuid);
     }
 
     async isSubjectRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.subjectGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.subjectGuid);
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, value);
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, value);
     }
 
     async setDescription(value: string): Promise<void> {
