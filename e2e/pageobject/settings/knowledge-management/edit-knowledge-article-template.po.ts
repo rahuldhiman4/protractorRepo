@@ -4,9 +4,8 @@ class EditKnowledgeArticleTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        sectionTitle: '.rx-template-editor-text-fields [ng-model="item.title"]',
-        cancelButton: '.template-editor-action-buttons button[type="button"] ',
-        modelContent: '.modal-content',
+        sectionTitle: 'div.textfield__wrapper input.ng-valid',
+        cancelButton: 'div.modal-footer .btn-secondary',
         lobValue: '[title="Line of Business"] .pull-left'
     }
 

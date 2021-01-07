@@ -6,16 +6,15 @@ class CreateApprovalMapping {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        addApprovalMappingHeading: '.modal-header h3',
+        addApprovalMappingHeading: '.dp-header span',
         approvalMappingName: '[rx-view-component-id="e8dba551-c9d2-4ef3-b807-e62ed7bea43b"] input',
         approvalMappingNameGuid: 'e8dba551-c9d2-4ef3-b807-e62ed7bea43b',
         companyGuid: '3977b1a0-245f-44a8-9c25-c2dc55f50daf',
         statusTriggerDropDownGuid: '5641bfb3-d68b-40dd-a0e0-3f1f6521aa8a',
         statusTriggerDropDown: '[rx-view-component-id="5641bfb3-d68b-40dd-a0e0-3f1f6521aa8a"]',
-        statusTriggerDropDownField: '.rx-multiselect__trigger',
-        statusTriggerInputBox: 'input.d-textfield__input',
-        statusTriggerCheckBox: '.d-checkbox__item',
-        approvalTriggerProcessHelptext: '[rx-view-component-id="4d837936-df13-4d15-8c7f-d2b7f6991249"] span',
+        statusTriggerDropDownField: 'span.dropdown-toggle-title',
+        statusTriggerInputBox: 'input.ng-touched',
+        statusTriggerCheckBox: 'span.checkbox__item',
         statusMappingHelptext: '[rx-view-component-id="8cb76e4f-cbe1-4eb8-8f42-2e5e94cd70e5"] p',
         statusMappingLabel: '[rx-view-component-id="b782b185-a19a-45ad-b5b3-13bf50c89e3c"] span',
         saveButton: '[rx-view-component-id="186c361c-6f73-4382-9313-90596e00d821"] button',
