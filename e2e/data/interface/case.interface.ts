@@ -1,4 +1,5 @@
 export interface ICaseAssignmentMapping {
+    siteGroup?: string;
     assignmentMappingName: string;
     company: string;
     supportCompany: string;

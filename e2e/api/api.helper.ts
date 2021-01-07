@@ -19,7 +19,7 @@ import { MAILBOX_CONFIG, INCOMINGMAIL_DEFAULT, EMAIL_PROFILE, EMAIL_OUTGOING, UP
 import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
-import { UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP,DELETE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
+import { UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP, DELETE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
@@ -391,15 +391,16 @@ class ApiHelper {
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
         templateData.fieldInstances[7].value = constants.CaseTemplate[data.templateStatus];
-        templateData.fieldInstances[301566300].value = data.ownerCompany ? await apiCoreUtil.getOrganizationGuid(data.ownerCompany) : templateData.fieldInstances[301566300].value;
-        templateData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : templateData.fieldInstances[1000000001].value;
-        templateData.fieldInstances[450000401].value = data.ownerBU ? await apiCoreUtil.getBusinessUnitGuid(data.ownerBU) : templateData.fieldInstances[450000401].value;
-        templateData.fieldInstances[300287900].value = data.ownerGroup ? await apiCoreUtil.getSupportGroupGuid(data.ownerGroup) : templateData.fieldInstances[300287900].value;
-        templateData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : templateData.fieldInstances[1000000063].value;
-        templateData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000064].value;
-        templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
+        templateData.fieldInstances[301566300].value = data.ownerCompany ? data.ownerCompany : templateData.fieldInstances[301566300].value;
+        templateData.fieldInstances[1000000001].value = data.company ? data.company : templateData.fieldInstances[1000000001].value;
+        templateData.fieldInstances[450000401].value = data.ownerBU ? data.ownerBU : templateData.fieldInstances[450000401].value;
+        templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
+        templateData.fieldInstances[1000000063].value = data.categoryTier1 ? data.categoryTier1 : templateData.fieldInstances[1000000063].value;
+        templateData.fieldInstances[1000000064].value = data.categoryTier2 ? data.categoryTier2 : templateData.fieldInstances[1000000064].value;
+        templateData.fieldInstances[1000000065].value = data.categoryTier3 ? data.categoryTier3 : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
-        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        //#LOB Comments
+        // templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
             let caseTemplateStatus = {
@@ -487,25 +488,22 @@ class ApiHelper {
         }
 
         if (data.supportGroup) {
-            let assignedCompanyGuid = await apiCoreUtil.getOrganizationGuid(data.company);
             let taskTemplateDataassignedCompany = {
                 "id": 450000154,
-                "value": `${assignedCompanyGuid}`
+                "value": `${data.company}`
             }
             templateData.fieldInstances["450000154"] = taskTemplateDataassignedCompany;
 
-            let assigneeSupportGroup = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
             let caseTemplateDataSupportAssignee = {
                 "id": 1000000217,
-                "value": `${assigneeSupportGroup}`
+                "value": `${data.supportGroup}`
             }
             templateData.fieldInstances["1000000217"] = caseTemplateDataSupportAssignee;
         }
         if (data.businessUnit) {
-            let assigneeBusinessUnit = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
             let caseTemplateDataBusinessUnit = {
                 "id": 450000381,
-                "value": `${assigneeBusinessUnit}`
+                "value": `${data.businessUnit}`
             }
             templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
         }
@@ -518,10 +516,10 @@ class ApiHelper {
             templateData.fieldInstances["450000371"] = caseTemplateDataDepartment;
         }
         if (data.categoryTier4) {
-            let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.categoryTier4);
+            // let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.categoryTier4);
             let caseTemplateDataCategoryTier4 = {
                 "id": 450000158,
-                "value": `${categoryTier4}`
+                "value": `${data.categoryTier4}`
             }
             templateData.fieldInstances["450000158"] = caseTemplateDataCategoryTier4;
         }
@@ -570,19 +568,19 @@ class ApiHelper {
         let assignmentMappingData = cloneDeep(CASE_ASSIGNMENT_PAYLOAD);
         assignmentMappingData.fieldInstances[8].value = data.assignmentMappingName;
         assignmentMappingData.fieldInstances[1000001437].value = data.assignmentMappingName;
-        assignmentMappingData.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
-        assignmentMappingData.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.supportCompany);
-        assignmentMappingData.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
+        assignmentMappingData.fieldInstances[1000000001].value = data.company;
+        assignmentMappingData.fieldInstances[450000153].value = data.supportCompany;
+        assignmentMappingData.fieldInstances[1000000217].value = data.supportGroup;
         assignmentMappingData.fieldInstances[450000121].value = data.flowset ? await apiCoreUtil.getFlowsetGuid(data.flowset) : assignmentMappingData.fieldInstances[450000121].value;
-        assignmentMappingData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : assignmentMappingData.fieldInstances[1000000063].value;
-        assignmentMappingData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : assignmentMappingData.fieldInstances[1000000064].value;
-        assignmentMappingData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : assignmentMappingData.fieldInstances[1000000065].value;
-        assignmentMappingData.fieldInstances[450000158].value = data.categoryTier4 ? await apiCoreUtil.getCategoryGuid(data.categoryTier4) : assignmentMappingData.fieldInstances[450000158].value;
+        assignmentMappingData.fieldInstances[1000000063].value = data.categoryTier1;
+        assignmentMappingData.fieldInstances[1000000064].value = data.categoryTier2;
+        assignmentMappingData.fieldInstances[1000000065].value = data.categoryTier3;
+        assignmentMappingData.fieldInstances[450000158].value = data.categoryTier4;
         assignmentMappingData.fieldInstances[450000159].value = data.label ? await apiCoreUtil.getLabelGuid(data.label) : assignmentMappingData.fieldInstances[450000159].value;
-        assignmentMappingData.fieldInstances[450000157].value = data.region ? await apiCoreUtil.getRegionGuid(data.region) : assignmentMappingData.fieldInstances[450000157].value;
-        assignmentMappingData.fieldInstances[450000156].value = data.site ? await apiCoreUtil.getSiteGuid(data.site) : assignmentMappingData.fieldInstances[450000156].value;
-        assignmentMappingData.fieldInstances[450000381].value = data.businessUnit ? await apiCoreUtil.getBusinessUnitGuid(data.businessUnit) : assignmentMappingData.fieldInstances[450000381].value;
-        assignmentMappingData.fieldInstances[450000371].value = data.department ? await apiCoreUtil.getDepartmentGuid(data.department) : assignmentMappingData.fieldInstances[450000371].value;
+        assignmentMappingData.fieldInstances[450000157].value = data.region;
+        assignmentMappingData.fieldInstances[200000007].value = data.siteGroup;
+        assignmentMappingData.fieldInstances[450000156].value = data.site;
+        assignmentMappingData.fieldInstances[450000381].value = data.businessUnit;
         assignmentMappingData.fieldInstances[450000152].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : assignmentMappingData.fieldInstances[450000152].value;
         assignmentMappingData.fieldInstances[1000000164].value = data.priority ? constants.CasePriority[data.priority] : assignmentMappingData.fieldInstances[1000000164].value;
         if (data.useAsDefault) assignmentMappingData.fieldInstances[450000001].value = data.useAsDefault ? "1" : "0";
@@ -2388,8 +2386,8 @@ class ApiHelper {
     async changeCaseAssignment(caseGuid: string, businessUnit: string, supportGroup: string, assignee?: string): Promise<boolean> {
         let updateCaseAssignment = cloneDeep(UPDATE_CASE_ASSIGNMENT);
         updateCaseAssignment.id = caseGuid;
-        updateCaseAssignment.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(businessUnit);
-        updateCaseAssignment.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(supportGroup);
+        updateCaseAssignment.fieldInstances[450000381].value = businessUnit;
+        updateCaseAssignment.fieldInstances[1000000217].value = supportGroup;
         if (assignee) updateCaseAssignment.fieldInstances[450000152].value = await apiCoreUtil.getPersonGuid(assignee);
         let updateAssignmentResponse = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.case-lib:Case', caseGuid, updateCaseAssignment);
         console.log('Update Case Assignment API Status =============>', updateAssignmentResponse.status);
@@ -2638,41 +2636,41 @@ class ApiHelper {
 
     async createReadAccessMapping(data: IReadAccess): Promise<boolean> {
         let caseReadAccess = cloneDeep(CASE_READ_ACCESS);
-        caseReadAccess.fieldInstances[450000381].value = await apiCoreUtil.getBusinessUnitGuid(data.businessUnit);
-        caseReadAccess.fieldInstances[1000000217].value = await apiCoreUtil.getSupportGroupGuid(data.supportGroup);
-        caseReadAccess.fieldInstances[450000153].value = await apiCoreUtil.getOrganizationGuid(data.assignedCompany);
+        caseReadAccess.fieldInstances[450000381].value = data.businessUnit;
+        caseReadAccess.fieldInstances[1000000217].value = data.supportGroup;
+        caseReadAccess.fieldInstances[450000153].value = data.assignedCompany;
         caseReadAccess.fieldInstances[1000001437].value = data.configName;
-        caseReadAccess.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(data.company);
+        caseReadAccess.fieldInstances[1000000001].value = data.company;
         caseReadAccess.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : caseReadAccess.fieldInstances[450000420].value;
         if (data.category1) {
-            let categoryTier1 = await apiCoreUtil.getCategoryGuid(data.category1);
+            // let categoryTier1 = await apiCoreUtil.getCategoryGuid(data.category1);
             let category1Data = {
                 "id": 1000000063,
-                "value": `${categoryTier1}`
+                "value": `${data.category1}`
             }
             caseReadAccess.fieldInstances["1000000063"] = category1Data;
         }
         if (data.category2) {
-            let categoryTier2 = await apiCoreUtil.getCategoryGuid(data.category2);
+            // let categoryTier2 = await apiCoreUtil.getCategoryGuid(data.category2);
             let category2Data = {
                 "id": 1000000064,
-                "value": `${categoryTier2}`
+                "value": `${data.category2}`
             }
             caseReadAccess.fieldInstances["1000000064"] = category2Data;
         }
         if (data.category3) {
-            let categoryTier3 = await apiCoreUtil.getCategoryGuid(data.category3);
+            // let categoryTier3 = await apiCoreUtil.getCategoryGuid(data.category3);
             let category3Data = {
                 "id": 1000000065,
-                "value": `${categoryTier3}`
+                "value": `${data.category3}`
             }
             caseReadAccess.fieldInstances["1000000065"] = category3Data;
         }
         if (data.category4) {
-            let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.category4);
+            // let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.category4);
             let category4Data = {
                 "id": 450000158,
-                "value": `${categoryTier4}`
+                "value": `${data.category4}`
             }
             caseReadAccess.fieldInstances["450000158"] = category4Data;
         }
