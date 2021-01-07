@@ -3,18 +3,18 @@ import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$ }
 class ApplicationConfiguration {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        applicationConfiguration: '.column-pill-text',
-        selectConfigurationDropDownArrow: '.arrow-pointer',
+        applicationConfiguration: 'ul[class="list-unstyled"] span',
+        selectConfigurationDropDownArrow: 'span[class="arrow-icon d-icon-right-angle_down"]',
         configurationDefaultValue: '[class="d-textfield_required d-textfield"] input',
-        addConfigurationValueButton: '.configuration-values-list-wrapper .d-icon-left-plus_circle',
-        configurationValueText: '[class="d-textfield_required d-textfield"] input',
-        companyDropDown: '.ui-select-match span',
-        companyDropdownList: '.ui-select-choices-row-inner',
-        saveButton: '[class="rx-record-grid-column-editor-action-buttons"] .ac-button-save',
-        cancelButton: '[class="rx-record-grid-column-editor-action-buttons"] .ac-button-cancel',
-        removeButton: '.ac-text-remove',
-        columnValue: '[class="column-name"]',
-        configurationHeaderValue: '.rx-record-grid-column-editor-data-header .cv-heading-wrapper',
+        addConfigurationValueButton: '[class="col-md-8"] span[class="d-icon-left-plus_circle"]',
+        configurationValueText: '.form-group input',
+        companyDropDown: '.btn-secondary',
+        companyDropdownList: '.dropdown_select__menu--mobile button',
+        saveButton: 'div[class="float-right"] button[btn-type="primary"]',
+        cancelButton: 'div[class="float-right"] button[btn-type="secondary"]',
+        removeButton: '.d-icon-left-cross',
+        columnValue: '[class="card-title rx-ellipsis"]',
+        configurationHeaderValue: 'div[class="col-md-8"] div[class="header"]',
     }
 
     async setConfigurationValueText(value: string): Promise<void> {

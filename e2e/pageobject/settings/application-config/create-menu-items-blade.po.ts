@@ -6,19 +6,19 @@ class CreateNewMenuOptionPage {
 
     selectors = {
         menuOptionLink: '[rx-view-component-id="306a51e0-cb89-45db-9270-c40b4ec3b149"] button',
-        menuNameDropDown: '[rx-view-component-id="5ed046bf-8801-4f76-aa9b-017a944c62a2"] .ui-select-match .btn-default',
-        menuNameDropDownGuid: "5ed046bf-8801-4f76-aa9b-017a944c62a2",
+        menuNameDropDown: '[rx-view-component-id="da9b9818-7b4c-43ec-9c4b-41e0cda49b8d"] button',
+        menuNameDropDownGuid: "da9b9818-7b4c-43ec-9c4b-41e0cda49b8d",
         menuOptionId: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"]',
-        menuOption: '.d-textfield__label .d-textfield__input[aria-label]',
-        statusDropDown: '[rx-view-component-id="a548d907-8c6b-46ab-bc83-88a5310e04b7"] .ui-select-match-text',
+        menuOption: 'input[id="rx-textfield-43"]',
+        statusDropDown: '[rx-view-component-id="a548d907-8c6b-46ab-bc83-88a5310e04b7"] button',
         statusDropDownGuid: "a548d907-8c6b-46ab-bc83-88a5310e04b7",
         toggleButtonId: '[rx-view-component-id="39a7280b-4078-4f9a-8058-2b0ff972c151"]',
         toggleButtonGuid: '39a7280b-4078-4f9a-8058-2b0ff972c151',
         localizeLink: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] .d-icon-left-pencil',
-        toggleButtonCheckIcon: '[rx-view-component-id="39a7280b-4078-4f9a-8058-2b0ff972c151"] .d-button-group__item .d-icon-check',
-        toggleButtonCircleIcon: '.d-icon-circle_slash_o',
-        saveButton: '[rx-view-component-id="010dbf48-bda5-495c-9cb7-6376a28f5c43"] .d-button_primary',
-        cancelButton: '[rx-view-component-id="4d21900d-87ce-40b1-839b-01c72ff77014"] .d-button_secondary',
+        toggleButtonCheckIcon: '[rx-view-component-id="39a7280b-4078-4f9a-8058-2b0ff972c151"] button[rx-id="true-button"]',
+        toggleButtonCircleIcon: '[rx-view-component-id="39a7280b-4078-4f9a-8058-2b0ff972c151"] button[rx-id="false-button"]',
+        saveButton: '[rx-view-component-id="010dbf48-bda5-495c-9cb7-6376a28f5c43"] button',
+        cancelButton: '[rx-view-component-id="4d21900d-87ce-40b1-839b-01c72ff77014"] button',
         createNewMenuOptionDialogueBox: 'a.modal-dialog .modal-contentsf',
         menuOptionGuid: 'd40aa6f2-090d-4641-9779-ae724673575c',
         lob: '[rx-view-component-id="21ec7b66-2f5f-4c92-baa1-ce5721dafa4d"] input',
@@ -26,22 +26,18 @@ class CreateNewMenuOptionPage {
     }
 
     async isCreateNewMenuOptionBladeDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createNewMenuOptionDialogueBox)));
         return await $(this.selectors.createNewMenuOptionDialogueBox).isEnabled();
     }
 
     async clickOnSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
 
     async clickOnLocalizeLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.localizeLink)));
         await $(this.selectors.localizeLink).click();
     }
 
@@ -65,7 +61,6 @@ class CreateNewMenuOptionPage {
     }
 
     async isStatusDropDownPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.statusDropDown)));
         return await $(this.selectors.statusDropDown).isDisplayed();
     }
 
@@ -74,18 +69,15 @@ class CreateNewMenuOptionPage {
     }
 
     async isMenuNameDropDownPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuNameDropDown)));
         return await $(this.selectors.menuNameDropDown).isDisplayed();
     }
 
     async isMenuOptionTextBoxPresent(): Promise<boolean> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionId)));
         let menuOptionstr = $(this.selectors.menuOptionId);
         return await (menuOptionstr.$(this.selectors.menuOption)).isDisplayed();
     }
 
     async clickOnMenuOptionLink(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.menuOptionLink)));
         await $(this.selectors.menuOptionLink).click();
     }
 

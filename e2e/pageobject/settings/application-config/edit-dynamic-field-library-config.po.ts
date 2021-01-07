@@ -6,17 +6,17 @@ class EditDynamicFieldLibrary {
 
     selectors = {
         cancelButton: '[rx-view-component-id="c4189be2-69be-4138-8e04-1fddec50d12c"] button',
-        fieldName: '[rx-view-component-id="ae00a9fd-9963-44b4-80ed-ea3311a41eaa"] .d-textfield__input',
+        fieldName: '[rx-view-component-id="ae00a9fd-9963-44b4-80ed-ea3311a41eaa"] input',
         fieldNameGuid: 'ae00a9fd-9963-44b4-80ed-ea3311a41eaa',
         localizeButton: '[rx-view-component-id="f502e31f-69c2-4b63-aeb7-e6ee0be7dfd0"] button',
         fieldDescriptionGuid: 'f502e31f-69c2-4b63-aeb7-e6ee0be7dfd0',
         status: 'ab5addeb-3b2c-4f40-91f1-fd8121031e6b',
         fieldValueTypeGuid: '41cd2c04-a9ef-40ab-921b-3edde31e8c34',
-        fieldValueType: '[rx-view-component-id="41cd2c04-a9ef-40ab-921b-3edde31e8c34"] .ui-select-container',
+        fieldValueType: '[rx-view-component-id="41cd2c04-a9ef-40ab-921b-3edde31e8c34"] button',
         informationSource: 'b4cc0f8f-36d8-4737-9cbf-845e417cfc23',
         saveButton: '[rx-view-component-id="cca7e4ea-99f5-4d56-9b21-ecf1a45b7ff3"] button',
-        activeConfidentialsCheckbox: '[rx-view-component-id="cca7e4ea-99f5-4d56-9b21-ecf1a45b7ff3"] button[uib-btn-radio="trueValue"]',
-        enabledRequiredRadioButton: '[rx-view-component-id="635e3839-5821-4960-9551-0f4843f5a666"] [uib-btn-radio="trueValue"]',
+        activeConfidentialsCheckbox: '[rx-view-component-id="f89c29d3-56a2-4c8b-95c8-a03b0f5d1e52"] button[rx-id="true-button"]',
+        enabledRequiredRadioButton: '[rx-view-component-id="635e3839-5821-4960-9551-0f4843f5a666"] button[rx-id="true-button"]',
         lobValue: '[rx-view-component-id="ffd8033c-5dc5-4f97-82e4-ad62bf9cdd4c"] .pull-left'
     }
 

@@ -4,12 +4,12 @@ import utilCommon from '../../../utils/util.common';
 class EditDocumentLibraryPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        titleTextBox: '[rx-view-component-id="64f47195-458a-43ee-8169-cab57666a856"] .rx-character-field__input',
-        company: '[rx-view-component-id="0484edce-0480-421f-9d7f-105447889a49"] .ui-select-toggle',
-        ownerGroup: '[rx-view-component-id="048757f9-8d97-4bcc-8cd9-ad236b093157"] .btn-default',
-        ownerGroupGuid: '048757f9-8d97-4bcc-8cd9-ad236b093157',
+        titleTextBox: '[rx-view-component-id="64f47195-458a-43ee-8169-cab57666a856"] input',
+        company: '[rx-view-component-id="0484edce-0480-421f-9d7f-105447889a49"] button',
+        ownerGroup: '[rx-view-component-id="fba3b3b6-a710-44ba-a65d-bc027aaed776"] button',
+        ownerGroupGuid: 'fba3b3b6-a710-44ba-a65d-bc027aaed776',
         statusGuid: '0a8b7179-dd0a-47f9-8515-7c7aceda3118',
-        status: '[rx-view-component-id="0a8b7179-dd0a-47f9-8515-7c7aceda3118"] .btn-default',
+        status: '[rx-view-component-id="0a8b7179-dd0a-47f9-8515-7c7aceda3118"] button',
         saveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
         deleteButton: '[rx-view-component-id="6e44c878-cc4a-4de1-8626-c786b5d309d7"] button',
         cancelButton: '[rx-view-component-id="61a48596-d3c0-462d-825b-4d6172e351b3"] button',
@@ -18,38 +18,36 @@ class EditDocumentLibraryPage {
         attachmentField: '[rx-view-component-id="8cfc0c35-081a-40cb-ae85-527045bede0c"] button',
         bussinessUnit: '[rx-view-component-id="43f01d2a-f8cc-450d-9209-5ac53426f3bb"] .btn-default',
         department: '[rx-view-component-id="04c57da2-5942-407c-9f87-5670a08ab18e"] .btn-default',
-        shareExternallyToggleButton: '[rx-view-component-id="422e33d2-be19-42f7-985b-af73daf4d87f"] .ng-valid-required',
+        shareExternallyToggleButton: '[rx-view-component-id="422e33d2-be19-42f7-985b-af73daf4d87f"] button',
         shareExternallyToggleButtonGuid: '422e33d2-be19-42f7-985b-af73daf4d87f',
-        keywords: '.d-input-tags input',
-        categoryTier1: '[rx-view-component-id="40c387f8-1355-4186-86f6-f7061a3a3815"] .ui-select-toggle',
-        categoryTier1Guid: '40c387f8-1355-4186-86f6-f7061a3a3815',
-        categoryTier2: '[rx-view-component-id="400ac801-1c40-43c7-87c3-a21e1d5531e9"] .ui-select-toggle',
-        categoryTier3: '[rx-view-component-id="6d35f3df-e3eb-4e6c-8ba8-ff0c683a9bb7"] .ui-select-toggle',
-        categoryTier4: '[rx-view-component-id="a82103c1-077b-4bae-8ef5-69093da58be8"] .ui-select-toggle',
-        categorTier4Guid: 'a82103c1-077b-4bae-8ef5-69093da58be8',
-        region: '[rx-view-component-id="836aa6d7-1d77-46b4-b270-50d7d25424ba"] .ui-select-toggle',
-        regionGuid: '836aa6d7-1d77-46b4-b270-50d7d25424ba',
-        site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] .ui-select-toggle',
+        keywords: '[rx-view-component-id="3d940c59-00f7-477a-915b-b1e7fc8a91f6"] .adapt-mt-item',
+        categoryTier1: '[rx-view-component-id="1152892f-a3af-44e3-807d-abb4c0980aa5"] button',
+        categoryTier1Guid: '1152892f-a3af-44e3-807d-abb4c0980aa5',
+        categoryTier2: '[rx-view-component-id="28db9a0c-f87e-402a-88fe-35087e0fc777"] button',
+        categoryTier3: '[rx-view-component-id="648c0f80-5d82-4430-ae8d-67be4a6cb158"] button',
+        categoryTier4: '[rx-view-component-id="4abcb2f3-a730-4e34-8126-52ff2c2888c2"] button',
+        categorTier4Guid: '4abcb2f3-a730-4e34-8126-52ff2c2888c2',
+        region: '[rx-view-component-id="14f9b86f-8225-44a1-aa29-b6b463244f01"] button',
+        regionGuid: '14f9b86f-8225-44a1-aa29-b6b463244f01',
+        site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] button',
         siteGuid: '6b73d5aa-fdeb-4d10-aa35-14e842e35a95',
         businessUnitGuid: '43f01d2a-f8cc-450d-9209-5ac53426f3bb',
-        tabs: '.rx-tab',
+        tabs: 'ul[role="tablist"] li',
         supportGroupAccessButton: '.rx-case-access-block .ac-manage-support',
-        addCompany: '.flex-item .ac-company-field .dropdown-toggle',
-        addCompanyAddButton: '.flex-item .ac-add-company',
+        addCompany: 'button[id="rx-select-31"]',
+        addCompanyAddButton: 'span[class="input-group-btn ng-tns-c606-284"] button',
         addBussinessUnit: '.ac-business-unit-field .dropdown-toggle',
         addBussinessUnitAddButton: '.flex-item .ac-business-unit-add',
         addSupportDepartment: '.ac-support-department-field button',
         addSupportDepartmentAddButton: '.ac-support-department-add',
-        addSupportGroup: '.ac-support-group-field button',
-        addSupportGroupAddButton: '.flex-item .ac-support-group-add',
-        attachedItem: '.rx-attachment-view-thumbnail',
+        addSupportGroup: 'button[id="rx-select-29"]',
+        addSupportGroupAddButton: 'span[class="input-group-btn ng-tns-c606-284"] button',
+        attachedItem: '[rx-view-component-id="8cfc0c35-081a-40cb-ae85-527045bede0c"] .bwf-attachment-container__thumbnail',
         addCompanyGuid: '3fa92444-5e60-4ac2-9f4e-aab0e2acfc31',
         removeGroupAccessWarningMsg: '.ac-remove-group-access-massage span[ng-bind-html="groupRemoveMessage"]',
         removeGroupWarningMsgYesButton: '.ac-remove-group-yes',
         groupAccessDropDownInput: '.flex-item .search-box [placeholder="Search Organizations"]',
         sameSupportGroupErrorMsg: '.ac-group-not-unique .rx-case-access-remove-text',
-        editDocumentRegionGuid: '836aa6d7-1d77-46b4-b270-50d7d25424ba',
-        editDocumentSiteGuid: '6b73d5aa-fdeb-4d10-aa35-14e842e35a95',
         readAcessCrossButton: '[rx-view-component-id="3fa92444-5e60-4ac2-9f4e-aab0e2acfc31"] .d-icon-cross:not([aria-hidden])',
         clickOnReadAccessDropDown: '.ui-select-bootstrap button',
         searchFieldReadAccessDropDown: '.field input',
@@ -154,7 +152,7 @@ class EditDocumentLibraryPage {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addCompanyAddButton)));
         if (dropdownName == 'Add Company') {
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addCompanyAddButton)));
-            await $(this.selectors.addCompanyAddButton).click();
+            await $$(this.selectors.addCompanyAddButton).get(0).click();
             //            await utilCommon.waitUntilSpinnerToHide();
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
         }
@@ -174,7 +172,7 @@ class EditDocumentLibraryPage {
 
         else if (dropdownName == 'Add Support Group') {
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportGroupAddButton)));
-            await $(this.selectors.addSupportGroupAddButton).click();
+            await $$(this.selectors.addSupportGroupAddButton).get(1).click();
             //            await utilCommon.waitUntilSpinnerToHide();
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
         }
@@ -190,7 +188,7 @@ class EditDocumentLibraryPage {
 
     async clickOnSupportGroupAddButton(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroupAddButton)));
-        await $(this.selectors.addSupportGroupAddButton).click();
+        await $$(this.selectors.addSupportGroupAddButton).get(1).click();
 
     }
 
@@ -332,7 +330,7 @@ class EditDocumentLibraryPage {
 
     async isAddCompanyAddButtonDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addCompanyAddButton)));
-        return await $(this.selectors.addCompanyAddButton).getAttribute('disabled') == 'true';
+        return await $$(this.selectors.addCompanyAddButton).get(0).getAttribute('disabled') == 'true';
     }
 
     async isAddBussinessUnitDropDownDisabled(): Promise<boolean> {
@@ -362,7 +360,7 @@ class EditDocumentLibraryPage {
 
     async isAddSupportGroupAddButtonDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroupAddButton)));
-        return await $(this.selectors.addSupportGroupAddButton).getAttribute('disabled') == 'true';
+        return await $$(this.selectors.addSupportGroupAddButton).get(1).getAttribute('disabled') == 'true';
     }
 
     async isDeleteButtonDisplayed(): Promise<boolean> {
@@ -472,7 +470,7 @@ class EditDocumentLibraryPage {
 
     async isAddCompanyAddButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addCompanyAddButton)));
-        return await $(this.selectors.addCompanyAddButton).isDisplayed();
+        return await $(this.selectors.addCompanyAddButton).get(0).isDisplayed();
     }
 
     async isAddBussinessUnitDropDownDisplayed(): Promise<boolean> {
@@ -502,7 +500,7 @@ class EditDocumentLibraryPage {
 
     async isAddSupportGroupAddButtonDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroupAddButton)));
-        return await $(this.selectors.addSupportGroupAddButton).isDisplayed();
+        return await $$(this.selectors.addSupportGroupAddButton).get(1).isDisplayed();
     }
 
     async getRegionSelectedValue(fieldName: string): Promise<string> {
