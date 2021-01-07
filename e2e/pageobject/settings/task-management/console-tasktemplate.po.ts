@@ -1,5 +1,4 @@
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
 import utilityGrid from '../../../utils/utility.grid';
 
 class TaskTemplateGridPage {
@@ -37,11 +36,11 @@ class TaskTemplateGridPage {
     }
 
     async addColumn(columnName: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.taskTemplateGuid, columnName)
+        await utilityGrid.addGridColumn(columnName,this.selectors.taskTemplateGuid);
     }
 
     async removeColumn(columnName: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.taskTemplateGuid, columnName)
+        await utilityGrid.removeGridColumn(columnName, this.selectors.taskTemplateGuid);
     }
 
     async clickOnManualTaskTemplateButton(): Promise<void> {
@@ -86,7 +85,7 @@ class TaskTemplateGridPage {
     };
 
     async isTaskTypeFilterValue(taskTypeValue: string): Promise<boolean> {
-        let arr: string[] = await utilGrid.getAllValuesFromColoumn((this.selectors.taskTemplateGuid), 'Task Type');
+        let arr: string[] = await utilityGrid.getAllValuesFromColumn('Task Type', this.selectors.taskTemplateGuid);
         let unique = arr.filter(function (elem, index, self) {
             return index === self.indexOf(elem);
         });
@@ -103,7 +102,7 @@ class TaskTemplateGridPage {
     }
 
     async isAllColumnTitleDisplayed(data: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.taskTemplateGuid, data);
+        return await utilityGrid.areColumnHeaderMatches(data, this.selectors.taskTemplateGuid);
     }
 
     async clickOnColumnAndIsColumnSortedAsending(column: string): Promise<boolean> {
@@ -115,7 +114,7 @@ class TaskTemplateGridPage {
     }
 
     async getFirstRecordValue(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.taskTemplateGuid, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName,this.selectors.taskTemplateGuid);
     }
 
     async isAddManualTaskTemplateBtnDisplayed(): Promise<boolean> {
@@ -151,7 +150,7 @@ class TaskTemplateGridPage {
     }
 
     async isCompanyColumnValueMatches(expectedValues: string[]): Promise<boolean> {
-        let actualValues: string[] = await utilGrid.getAllValuesFromColoumn(this.selectors.taskTemplateGuid, 'Task Company');
+        let actualValues: string[] = await utilityGrid.getAllValuesFromColumn(this.selectors.taskTemplateGuid, 'Task Company');
         actualValues.sort(function (a, b) {
             return a.localeCompare(b);
         });
