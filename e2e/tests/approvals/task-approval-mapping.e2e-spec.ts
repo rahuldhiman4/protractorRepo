@@ -66,7 +66,7 @@ describe("Task Approval Mapping Tests", () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-21582,DRDMV-22120]:[Task Approval] - Create/Update Approval Mapping', () => {
+    describe('[3592,3514]:[Task Approval] - Create/Update Approval Mapping', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskApprovalMappingStr = `Task Mapping ${randomStr}`;
         let manualTaskTemplateData, autoTaskTemplateData, manualTaskGlobalTemplateData, manualTaskTemplateDraftData, manualTaskTemplateInactiveData, psilonManualTaskTemplateData, autoTaskTemplateFacilitiesGlobalData, manualTaskId, automatedTaskId = "";
@@ -337,7 +337,7 @@ describe("Task Approval Mapping Tests", () => {
             await apiHelper.createManualTaskTemplate(psilonManualTaskTemplateData);
         })
 
-        it('[DRDMV-21582,DRDMV-22120]: Create Task Approval Mapping UI Validation', async () => {
+        it('[3592,3514]: Create Task Approval Mapping UI Validation', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -406,7 +406,7 @@ describe("Task Approval Mapping Tests", () => {
 
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Create Task Approval Mapping', async () => {
+        it('[3592,3514]: Create Task Approval Mapping', async () => {
             await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -426,7 +426,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.getStatusMappingErrorOption()).toBe('Canceled');
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Create Task Approval Mapping Task Template Selection Validation', async () => {
+        it('[3592,3514]: Create Task Approval Mapping Task Template Selection Validation', async () => {
             await editApprovalMappingPage.searchTaskTemplate(manualTaskGlobalTemplateData.templateName);
             expect(await editApprovalMappingPage.getSearchedTaskTemplate()).toBe(manualTaskGlobalTemplateData.templateName);
             await editApprovalMappingPage.searchTaskTemplate(manualTaskTemplateData.templateName);
@@ -472,7 +472,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeTruthy('Searched case template is not displayed.');
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Task template filteration validation on task approval mapping', async () => {
+        it('[3592,3514]: Task template filteration validation on task approval mapping', async () => {
             //Validations for different LOB task templates not displayed on task approval mapping of Facilities LOB
             await editApprovalMappingPage.searchTaskTemplate(autoTaskTemplateDataHRPetramco.templateName);
             expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeFalsy('Petramco Automated task template for Facilities LOB is displayed on Human Resource task approval mapping.');
@@ -517,7 +517,7 @@ describe("Task Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping is accessible to Line of business Case Manager', async () => {
+        it('[3592,3514]: Verify Task Approval Mapping is accessible to Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -525,7 +525,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are displayed to the Case Manager of same LOB');
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping is accessible to other Line of business Case BA', async () => {
+        it('[3592,3514]: Verify Task Approval Mapping is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -533,7 +533,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping is accessible to other Line of business Case Manager', async () => {
+        it('[3592,3514]: Verify Task Approval Mapping is accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -541,7 +541,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[3592,3514]: Verify Task Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -553,7 +553,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: Verify Task Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[3592,3514]: Verify Task Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -584,7 +584,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: create same name record in same LOB', async () => {
+        it('[3592,3514]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
             await createApprovalMappingPage.selectCompany('Petramco');
@@ -627,7 +627,7 @@ describe("Task Approval Mapping Tests", () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-21582,DRDMV-22120]: create same name record in different LOB', async () => {
+        it('[3592,3514]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
@@ -653,7 +653,7 @@ describe("Task Approval Mapping Tests", () => {
         });
     });
 
-    describe('[DRDMV-22950]:[Task] Approval Mapping to configure such as Approvals to be triggered on Case created without template', () => {
+    describe('[3411]:[Task] Approval Mapping to configure such as Approvals to be triggered on Case created without template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskApprovalMappingStr = `Task Mapping ${randomStr}`;
         let manualTaskTemplateData, autoTaskTemplateData;
@@ -684,7 +684,7 @@ describe("Task Approval Mapping Tests", () => {
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         })
 
-        it('[DRDMV-22950]: Task approval mapping creation with case Business analyst permission', async () => {
+        it('[3411]: Task approval mapping creation with case Business analyst permission', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -715,7 +715,7 @@ describe("Task Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickTaskTemplateforApprovalRightArrawBtn();
         });
 
-        it('[DRDMV-22950]: Verify task approval mapping details with respect to case manager permission', async () => {
+        it('[3411]: Verify task approval mapping details with respect to case manager permission', async () => {
             await navigationPage.signOut();
             await loginPage.login("qdu");
             await navigationPage.gotoSettingsPage();

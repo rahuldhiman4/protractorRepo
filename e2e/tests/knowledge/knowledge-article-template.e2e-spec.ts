@@ -28,7 +28,7 @@ describe('Knowledge Article Template', () => {
         await navigationPage.signOut();
     });
 
-    it('[DRDMV-1062]: [Create Mode] Article template is not saved when user goes away from Create new Knowledge Article Template', async () => {
+    it('[6375]: [Create Mode] Article template is not saved when user goes away from Create new Knowledge Article Template', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName('template1062' + randomStr);
@@ -38,7 +38,7 @@ describe('Knowledge Article Template', () => {
         expect(await utilGrid.isGridRecordPresent('template1062' + randomStr)).toBeFalsy('Record should not be created');
     });
 
-    it('[DRDMV-1088]: [Create Mode] Unable to create the duplicate template', async () => {
+    it('[6360]: [Create Mode] Unable to create the duplicate template', async () => {
         let templateName = 'Template Name DRDMV_1088';
 
         //Creating an Article Template from API
@@ -83,7 +83,7 @@ describe('Knowledge Article Template', () => {
         await utilGrid.selectLineOfBusiness('Human Resource');
     });
 
-    describe('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', () => {
+    describe('[6435,6372,6342]: [Create Mode] Create a template for Knowledge article', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             let knowledgeSetData = {
@@ -105,7 +105,7 @@ describe('Knowledge Article Template', () => {
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
         });
 
-        it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: Create templates for Knowledge article', async () => {
+        it('[6435,6372,6342]: Create templates for Knowledge article', async () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.gotoSettingsPage();
@@ -162,7 +162,7 @@ describe('Knowledge Article Template', () => {
             await navigationPage.gotoCreateKnowledge();
         });
 
-        it('[DRDMV-619,DRDMV-1065,DRDMV-1180]: [Create Mode] Create a template for Knowledge article', async () => {
+        it('[6435,6372,6342]: [Create Mode] Create a template for Knowledge article', async () => {
             expect(await createKnowledgePage.isTemplatePresent('DRDMV1065')).toBeTruthy('Template DRDMV1065 is not present');
             expect(await createKnowledgePage.isTemplatePresent('DRDMV619')).toBeTruthy('Template DRDMV619 is not present');
 

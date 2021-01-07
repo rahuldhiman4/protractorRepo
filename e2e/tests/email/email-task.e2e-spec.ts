@@ -45,7 +45,7 @@ describe('Email Task', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {
+    describe('[3907]: Automated task should not have email options but other type of task should have email option	', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task19011' + randomStr;
         let manualTaskSummary = 'ManualSummary19011' + randomStr;
@@ -103,7 +103,7 @@ describe('Email Task', () => {
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
-        it('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {
+        it('[3907]: Automated task should not have email options but other type of task should have email option	', async () => {
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskSummary);
@@ -116,7 +116,7 @@ describe('Email Task', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnViewCase();
         });
-        it('[DRDMV-19011]: Automated task should not have email options but other type of task should have email option	', async () => {
+        it('[3907]: Automated task should not have email options but other type of task should have email option	', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
@@ -134,7 +134,7 @@ describe('Email Task', () => {
     });
 
     //Failed due to application issue...defect logged DRDMV-21883
-    describe('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
+    describe('[3910]: Email icon and Requester email link should open compose email dialog in Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual task19008' + randomStr;
         let manualTaskSummary = 'ManualSummary19008' + randomStr;
@@ -176,7 +176,7 @@ describe('Email Task', () => {
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
-        it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
+        it('[3910]: Email icon and Requester email link should open compose email dialog in Task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
@@ -198,7 +198,7 @@ describe('Email Task', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnRequesterEmail();
         });
-        it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
+        it('[3910]: Email icon and Requester email link should open compose email dialog in Task', async () => {
             //story changes
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
@@ -226,7 +226,7 @@ describe('Email Task', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnRequesterEmail();
         });
-        it('[DRDMV-19008]: Email icon and Requester email link should open compose email dialog in Task', async () => {
+        it('[3910]: Email icon and Requester email link should open compose email dialog in Task', async () => {
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
@@ -240,7 +240,7 @@ describe('Email Task', () => {
         });
     });
 
-    describe('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
+    describe('[3909]: Verify Subject of Email from Task Compose email', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let displayId;
         let taskTemplateName = 'Manual  task19009' + randomStr;
@@ -282,7 +282,7 @@ describe('Email Task', () => {
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
-        it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
+        it('[3909]: Verify Subject of Email from Task Compose email', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
@@ -305,7 +305,7 @@ describe('Email Task', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewTaskPo.clickOnViewCase();
         });
-        it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
+        it('[3909]: Verify Subject of Email from Task Compose email', async () => {
             await viewCasePo.clickAddTaskButton();
             //verify activity email post
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
@@ -323,7 +323,7 @@ describe('Email Task', () => {
             await emailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
-        it('[DRDMV-19009]: Verify Subject of Email from Task Compose email', async () => {
+        it('[3909]: Verify Subject of Email from Task Compose email', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoTaskConsole();
@@ -345,7 +345,7 @@ describe('Email Task', () => {
         });
     });
 
-    it('[DRDMV-19558]: Verify social notes other than email should not have reply and reply all options', async () => {
+    it('[3841]: Verify social notes other than email should not have reply and reply all options', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manualtask123' + randomStr;
         let manualTaskSummary = 'ManualSummary123' + randomStr;
@@ -387,7 +387,7 @@ describe('Email Task', () => {
     });
 
     //Failed due to application issue...defect logged DRDMV-21883
-    describe('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
+    describe('[3843]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'Manual  task' + randomStr;
         let manualTaskSummary = 'ManualSummary' + randomStr;
@@ -428,7 +428,7 @@ describe('Email Task', () => {
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
-        it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
+        it('[3843]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
@@ -446,7 +446,7 @@ describe('Email Task', () => {
             await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
             await emailPo.clickOnSendButton();
         });
-        it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
+        it('[3843]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
             expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
             expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + ManualtaskID + ':' + manualTaskSummary);
@@ -469,7 +469,7 @@ describe('Email Task', () => {
             await emailPo.clickOnSendButton();
             await viewTaskPo.clickOnViewCase();
         });
-        it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
+        it('[3843]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             let externaltaskID = await viewTaskPo.getTaskID();
@@ -488,7 +488,7 @@ describe('Email Task', () => {
             await activityTabPo.clickOnReplyAll();
             await emailPo.isComposeEmailUIDisplay();
         });
-        it('[DRDMV-19556]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
+        it('[3843]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
             expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
             expect(await emailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
             expect(await emailPo.getEmailBody()).toContain('------ While replying, please do not add information below this line -----');
@@ -509,7 +509,7 @@ describe('Email Task', () => {
         });
     });
 
-    it('[DRDMV-19557]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
+    it('[3842]: For Reply / Reply All earlier email context should be copied as part of email composition on Case', async () => {
         let caseData = {
             "Requester": "qtao",
             "Company": "Petramco",
@@ -553,7 +553,7 @@ describe('Email Task', () => {
         await emailPo.clickOnSendButton();
     });
 
-    describe('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
+    describe('[3844]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let emailTemplateDataForTest1, emailTemplateDataForTest2;
         let taskTemplateName = 'Manual task19555' + randomStr;
@@ -603,7 +603,7 @@ describe('Email Task', () => {
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
-        it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
+        it('[3844]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
@@ -623,7 +623,7 @@ describe('Email Task', () => {
             await emailTemplateBladePo.clickOnApplyButton();
             await emailPo.clickOnSendButton();
         });
-        it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
+        it('[3844]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
             expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Qiang Du');
             await activityTabPo.clickOnReply();
@@ -645,7 +645,7 @@ describe('Email Task', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
         });
-        it('[DRDMV-19555]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
+        it('[3844]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
             await viewTaskPo.clickOnRequesterEmail();
             await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await emailPo.clickOnSelectTempalteButton();
@@ -668,7 +668,7 @@ describe('Email Task', () => {
     
     });
 
-    it('[DRDMV-19552]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
+    it('[3845]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         expect(await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows')).toEqual('Email Ack Template Console - Business Workflows');
         await utilGrid.searchAndOpenHyperlink('Task Update Ack Template');
@@ -681,7 +681,7 @@ describe('Email Task', () => {
         expect(await editAcknowledgmentTemplatePo.getSubjectMessageValue()).toContain('Task $1$ :$450000029$ Successfully updated');
     });
 
-    describe('[DRDMV-19550]: Email Templates option driven by Task assignee permission for case', async () => {
+    describe('[3846]: Email Templates option driven by Task assignee permission for case', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let displayId, ManualtaskID, taskTemplateName = 'Manual  task19550' + randomStr;
         let manualTaskSummary = 'ManualSummary19550' + randomStr;
@@ -723,7 +723,7 @@ describe('Email Task', () => {
             let newCaseTemplate = await apiHelper.createCase(caseData);
             displayId = newCaseTemplate.displayId;
         });
-        it('[DRDMV-19550]: Email Templates option driven by Task assignee permission for case', async () => {
+        it('[3846]: Email Templates option driven by Task assignee permission for case', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(displayId);
             await viewCasePo.clickAddTaskButton();
@@ -740,7 +740,7 @@ describe('Email Task', () => {
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickOnViewCase();
         });
-        it('[DRDMV-19550]: Email Templates option driven by Task assignee permission for case', async () => {
+        it('[3846]: Email Templates option driven by Task assignee permission for case', async () => {
             await viewCasePo.clickAddTaskButton();
             //verify activity email post
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
@@ -756,7 +756,7 @@ describe('Email Task', () => {
             await emailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('[DRDMV-19550]: Email Templates option driven by Task assignee permission for case', async () => {
+        it('[3846]: Email Templates option driven by Task assignee permission for case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoTaskConsole();

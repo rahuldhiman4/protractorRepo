@@ -32,7 +32,7 @@ describe("Case Level Up Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-16542]:Verify Manager Approval Flow - Approve Reject Approve', async () => {
+    describe('[4263]:Verify Manager Approval Flow - Approve Reject Approve', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated Manager Level Approval" + randomStr;
@@ -80,7 +80,7 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-16542]:Create Level Up Approval Flow', async () => {
+        it('[4263]:Create Level Up Approval Flow', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -117,7 +117,7 @@ describe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-16542]:Create a case and verify approval details on case', async () => {
+        it('[4263]:Create a case and verify approval details on case', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -149,7 +149,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-16542]:approve the created case and verify the approval details on case', async () => {
+        it('[4263]:approve the created case and verify the approval details on case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -164,7 +164,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-16542]:Verify the approvals details on case activity after case approved', async () => {
+        it('[4263]:Verify the approvals details on case activity after case approved', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -181,7 +181,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-16542]:update the case status to approval trigger status and see if approval is triggered', async () => {
+        it('[4263]:update the case status to approval trigger status and see if approval is triggered', async () => {
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -204,7 +204,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was rejected');
         });
 
-        it('[DRDMV-16542]:Verify the case details after the case is rejected', async () => {
+        it('[4263]:Verify the case details after the case is rejected', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -220,7 +220,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-16542]:update the case status to approval trigger status and see if approval is triggered', async () => {
+        it('[4263]:update the case status to approval trigger status and see if approval is triggered', async () => {
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -242,7 +242,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-16542]:Verify the approvals details on case activity', async () => {
+        it('[4263]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -269,7 +269,7 @@ describe("Case Level Up Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10833]:[Approval] - Case Re Approval by moving Case Status back to Trigger status', async () => {
+    describe('[5149]:[Approval] - Case Re Approval by moving Case Status back to Trigger status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated General Level Approval" + randomStr;
@@ -317,7 +317,7 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-10833]:Create General Approval Flow', async () => {
+        it('[5149]:Create General Approval Flow', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -359,7 +359,7 @@ describe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-10833]:Create a case and verify approval details on case', async () => {
+        it('[5149]:Create a case and verify approval details on case', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -391,7 +391,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10833]:approve the created case and verify the approval details on case', async () => {
+        it('[5149]:approve the created case and verify the approval details on case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -406,7 +406,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-10833]:Verify the approvals details on case activity after case approved', async () => {
+        it('[5149]:Verify the approvals details on case activity after case approved', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -423,7 +423,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10833]:update the case status to approval trigger status and see if approval is triggered', async () => {
+        it('[5149]:update the case status to approval trigger status and see if approval is triggered', async () => {
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -445,7 +445,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was rejected');
         });
 
-        it('[DRDMV-10833]:Verify the case details after the case is rejected', async () => {
+        it('[5149]:Verify the case details after the case is rejected', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -461,7 +461,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10833]:update the case status to approval trigger status and see if approval is triggered', async () => {
+        it('[5149]:update the case status to approval trigger status and see if approval is triggered', async () => {
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -483,7 +483,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-10833]:Verify the approvals details on case activity', async () => {
+        it('[5149]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -510,7 +510,7 @@ describe("Case Level Up Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-1369,DRDMV-1368]:[Approval] Details of approvers in sequenced approval', async () => {
+    describe('[6218,6219]:[Approval] Details of approvers in sequenced approval', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseData = undefined;
@@ -572,7 +572,7 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Create One must approval configuration', async () => {
+        it('[6218,6219]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -613,7 +613,7 @@ describe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Create a case and verify Show Approvers Blade information', async () => {
+        it('[6218,6219]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -643,7 +643,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Approve the case and verify the case details', async () => {
+        it('[6218,6219]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -654,7 +654,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Verify the approvals details on case activity', async () => {
+        it('[6218,6219]:Verify the approvals details on case activity', async () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewCasePo.getShowPendingApproversInfo()).toContain('Pending Approval :1');
@@ -678,7 +678,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-1369,DRDMV-1368]:Approve the case and verify the case details', async () => {
+        it('[6218,6219]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -707,7 +707,7 @@ describe("Case Level Up Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-12182]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when case enters approval cycle', async () => {
+    describe('[4982]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when case enters approval cycle', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated One must Approval Case" + randomStr;
@@ -769,7 +769,7 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-12182]:Create One must approval configuration', async () => {
+        it('[4982]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -811,7 +811,7 @@ describe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-12182]:Create a case and verify approval mapping trigger preference', async () => {
+        it('[4982]:Create a case and verify approval mapping trigger preference', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -840,7 +840,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-12182]:Approve the case and verify the case details', async () => {
+        it('[4982]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -855,7 +855,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-12182]:Verify the approvals details on case activity', async () => {
+        it('[4982]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -885,7 +885,7 @@ describe("Case Level Up Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-12181]:[Approval] Case enters approval cycle for global company', async () => {
+    describe('[4983]:[Approval] Case enters approval cycle for global company', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated One must Approval Case" + randomStr;
@@ -934,7 +934,7 @@ describe("Case Level Up Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-12181]:Create One must approval configuration', async () => {
+        it('[4983]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -976,7 +976,7 @@ describe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-12181]:Create a case and verify approval mapping triggered based on global company', async () => {
+        it('[4983]:Create a case and verify approval mapping triggered based on global company', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -1005,7 +1005,7 @@ describe("Case Level Up Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-12181]:Approve the case and verify the case details', async () => {
+        it('[4983]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -1020,7 +1020,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-12181]:Verify the approvals details on case activity', async () => {
+        it('[4983]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');

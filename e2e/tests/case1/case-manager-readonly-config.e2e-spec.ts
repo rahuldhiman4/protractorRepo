@@ -70,7 +70,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18033]: Check Case manager is not able to perform Create Update Delete operation on Case Assignment Mapping', async () => {
+    it('[4020]: Check Case manager is not able to perform Create Update Delete operation on Case Assignment Mapping', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
@@ -84,7 +84,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    describe('[DRDMV-18037]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
+    describe('[4018]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
         let readAccessMappingData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             readAccessMappingData = {
@@ -99,7 +99,7 @@ describe('Case Manager Read-only Config', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createReadAccessMapping(readAccessMappingData);
         });
-        it('[DRDMV-18037]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
+        it('[4018]: Check Case manager is not able to perform Create Update Delete operation on Read Access mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             expect(await caseReadAccessConfigConsole.isAddButtonDisplayed()).toBeFalsy();
@@ -146,7 +146,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    describe('[DRDMV-18069]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
+    describe('[4003]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label;
         beforeAll(async () => {
@@ -157,7 +157,7 @@ describe('Case Manager Read-only Config', () => {
             await apiHelper.apiLogin('elizabeth');
             await apiHelper.createNewMenuItem(menuItemData);
         });
-        it('[DRDMV-18069]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
+        it('[4003]: Check Case manager is not able to perform Create Update operation on Menu Items', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             expect(await menuItemsConfigConsole.isAddButtonDisplayed()).toBeFalsy();
@@ -169,7 +169,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18038]: Check Case manager is not able to perform Create Update Delete operation on Case-> Status Configuration', async () => {
+    it('[4017]: Check Case manager is not able to perform Create Update Delete operation on Case-> Status Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
         await statusConfig.setCompanyDropdown("Petramco", 'case');
@@ -177,7 +177,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18057]: Check Case manager is not able to perform Create Update Delete operation on Task->Status Configuration', async () => {
+    it('[4007]: Check Case manager is not able to perform Create Update Delete operation on Task->Status Configuration', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
@@ -186,7 +186,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18169]: Check Case manager is not able to perform Create Update operation on Goal Type', async () => {
+    it('[3964]: Check Case manager is not able to perform Create Update operation on Goal Type', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type - Business Workflows');
         expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisplayed()).toBeFalsy("Add button is enabled");
@@ -196,7 +196,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18095]: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
+    it('[3993]: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
         console.log("bbb");
@@ -210,7 +210,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18093]: Check Case manager is not able to perform Create Update operation on Business Time Shared Entity', async () => {
+    it('[3994]: Check Case manager is not able to perform Create Update operation on Business Time Shared Entity', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createBusinessTimeSharedEntity('India Business Hours');
         await navigationPage.gotoSettingsPage();
@@ -225,7 +225,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18083]: Check Case manager is not able to perform Create Update operation on Business Time Segment', async () => {
+    it('[4001]: Check Case manager is not able to perform Create Update operation on Business Time Segment', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createBusinessTimeSegment('India Available M-F 9AM-5PM');
         await navigationPage.gotoSettingsPage();
@@ -238,7 +238,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18034]: Check Case manager is not able to perform Create Update Delete operation on Note template', async () => {
+    it('[4019]: Check Case manager is not able to perform Create Update Delete operation on Note template', async () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -257,7 +257,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18056]: Check Case manager is not able to perform Create Update Delete operation on Task->Note Template', async () => {
+    it('[4008]: Check Case manager is not able to perform Create Update Delete operation on Task->Note Template', async () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -275,7 +275,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     // asahitya
-    it('[DRDMV-18042]: Check Case manager is not able to perform Create Update Delete operation on People->Note Template', async () => {
+    it('[4015]: Check Case manager is not able to perform Create Update Delete operation on People->Note Template', async () => {
         //API call to create the case notes template
         await apiHelper.apiLogin('qkatawazi');
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -389,7 +389,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     //asahitya
-    it('[DRDMV-18170]: Check Case manager is not able to perform Create Update operation on Service Target', async () => {
+    it('[3963]: Check Case manager is not able to perform Create Update operation on Service Target', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
         const svtData = {
@@ -427,9 +427,9 @@ describe('Case Manager Read-only Config', () => {
         expect(await editServiceTargetConfigPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
 
-    it('[DRDMV-18171]: Check Case manager is not able to perform Create Update Delete operation on Service Target Group', async () => {
+    it('[3962]: Check Case manager is not able to perform Create Update Delete operation on Service Target Group', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let svtGrpName = 'DRDMV-18171' + randomStr;
+        let svtGrpName = '3962' + randomStr;
         await apiHelper.apiLogin('qkatawazi');
         const svtData = {
             "terms": "'1000000063'=\"cb500f4763edeb302d4644e2d5cf22372543dedda74717135ffc927758066570c1a59648f541d5392790876c312fcf2a0501a76d13290562cce65a69c48e7356\"",
@@ -441,13 +441,13 @@ describe('Case Manager Read-only Config', () => {
             "goalTimeMinutes": "4",
             "dataSource": "Case Management",
             "company": "Petramco",
-            "svtName": "DRDMV-18171"
+            "svtName": "3962"
         }
         let svtGropuData = {
             "svtGroupName": svtGrpName,
             "dataSource": "Case Management",
         }
-        svtData.svtName = "DRDMV-18171" + randomStr;
+        svtData.svtName = "3962" + randomStr;
         await apiHelper.createSVT(svtData);
         await apiHelper.createServiceTargetGroup(svtGropuData);
         await navigationPage.gotoSettingsPage();
@@ -489,7 +489,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     //asahitya
-    it('[DRDMV-18032]: Check Case manager is not able to perform Create Update Delete operation on Case Approval Mapping', async () => {
+    it('[4021]: Check Case manager is not able to perform Create Update Delete operation on Case Approval Mapping', async () => {
         //Create Approval Mapping
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
@@ -516,7 +516,7 @@ describe('Case Manager Read-only Config', () => {
         await utilCommon.closeBladeOnSettings();
         await utilGrid.searchAndSelectGridRecord("Approval Mapping Name" + randomStr);
         expect(await approvalMappingConsolePO.isDeleteApprovalMappingBtnDisplayed()).toBeFalsy('Delete button is displayed');
-        //Case Template selection disabled part is covered in test case DRDMV-1303
+        //Case Template selection disabled part is covered in test case 6267
     });
 
     //asahitya
@@ -553,11 +553,11 @@ describe('Case Manager Read-only Config', () => {
     });
 
     //asahitya
-    it('[DRDMV-18039]: Check Case manager is not able to perform Create operation on Case template', async () => {
+    it('[4016]: Check Case manager is not able to perform Create operation on Case template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData = {
-            "templateName": 'DRDMV-18039 Name' + randomStr,
-            "templateSummary": 'DRDMV-18039 Summary' + randomStr,
+            "templateName": '4016 Name' + randomStr,
+            "templateSummary": '4016 Summary' + randomStr,
             "templateStatus": "Draft",
             "company": "Petramco",
             "businessUnit": "United States Support",
@@ -571,10 +571,10 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         expect(await caseTemplateConsolePage.isAddCaseTemplateBtnDisplayed()).toBeFalsy('Add Case Template button is displayed');
-        await caseTemplateConsolePage.searchAndselectCaseTemplate('DRDMV-18039 Name' + randomStr);
+        await caseTemplateConsolePage.searchAndselectCaseTemplate('4016 Name' + randomStr);
         expect(await caseTemplateConsolePage.isCopyCaseTemplateBtnDisplayed()).toBeFalsy('Copy Case Template button is displayed');
         await utilGrid.clearGridSearchBox();
-        await utilGrid.searchAndOpenHyperlink('DRDMV-18039 Name' + randomStr);
+        await utilGrid.searchAndOpenHyperlink('4016 Name' + randomStr);
         await editCaseTemplatePage.clickEditCaseTemplate();
         expect(await editCaseTemplatePage.isCaseStatusFieldDisabled()).toBeTruthy('Case status field is enabled');
         expect(await editCaseTemplatePage.isCaseSummaryFieldDisabled()).toBeTruthy('Case summary field is enabled');
@@ -587,8 +587,8 @@ describe('Case Manager Read-only Config', () => {
     });
 
     //asahitya
-    it('[DRDMV-18059]: Check Case manager is not able to perform Create operation on Task template', async () => {
-        let taskTemplateName = 'DRDMV-18059' + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    it('[4005]: Check Case manager is not able to perform Create operation on Task template', async () => {
+        let taskTemplateName = '4005' + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateData = {
             "templateName": taskTemplateName,
             "templateSummary": taskTemplateName,

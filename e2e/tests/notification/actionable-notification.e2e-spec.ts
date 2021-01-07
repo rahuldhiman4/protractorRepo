@@ -55,7 +55,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16854]: Check out of the box notification-"Case Reopened" is actionable for type Alert', async () => {
+    it('[4166]: Check out of the box notification-"Case Reopened" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await apiHelper.updateCaseStatus(response.id, 'Resolved', 'Customer Follow-Up Required');
@@ -85,7 +85,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16807]: Check out of the box notification-Case Agent "Assignment" is actionable for type Alert', async () => {
+    it('[4200]: Check out of the box notification-Case Agent "Assignment" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await navigationPage.gotoSettingsPage();
@@ -117,7 +117,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16695,DRDMV-8378]: Check out of the box notification-"Case group Assignment" is actionable for type Alert', async () => {
+    it('[4242,5514]: Check out of the box notification-"Case group Assignment" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithoutAssignee']);
         await apiHelper.updateCaseStatus(response.id, 'Assigned');
@@ -152,7 +152,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16833]: Check out of the box notification-"Case Status Change" is actionable for type Alert', async () => {
+    it('[4186]: Check out of the box notification-"Case Status Change" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -186,7 +186,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16849]: Check out of the box notification-"Case Watchlist - Assignment Change" is actionable for type Alert', async () => {
+    it('[4171]: Check out of the box notification-"Case Watchlist - Assignment Change" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await apiHelper.addCaseToWatchlistAllEvents(response.id);
@@ -221,7 +221,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16852]: Check out of the box notification-"Case Watchlist - Status Change" is actionable for type Alert', async () => {
+    it('[4168]: Check out of the box notification-"Case Watchlist - Status Change" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await apiHelper.addCaseToWatchlistAllEvents(response.id);
@@ -255,7 +255,7 @@ describe("Actionable Notifications", () => {
         }
     });
 
-    it('[DRDMV-16850]: Check out of the box notification-"Case Watchlist - Group Assignment Change " is actionable for type Alert', async () => {
+    it('[4170]: Check out of the box notification-"Case Watchlist - Group Assignment Change " is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         let caseId = response.displayId;
@@ -293,7 +293,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16796]: Check out of the box notification-"Task Agent Assignment" is actionable for type Alert', async () => {
+    it('[4208]: Check out of the box notification-"Task Agent Assignment" is actionable for type Alert', async () => {
         let taskData = {
             "taskName": "DRDMV-16976",
             "company": "Petramco",
@@ -335,9 +335,9 @@ describe("Actionable Notifications", () => {
         }
     });
 
-    it('[DRDMV-16835]: Check out of the box notification-Task Status Change is actionable for type Alert', async () => {
+    it('[4184]: Check out of the box notification-Task Status Change is actionable for type Alert', async () => {
         let taskData = {
-            "taskName": "DRDMV-16835",
+            "taskName": "4184",
             "company": "Petramco",
             "businessUnit": "United States Support",
             "supportGroup": "US Support 1",
@@ -379,7 +379,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16837]: Check out of the box notification-"Notes from Activity Feed in Case" is actionable for type Alert', async () => {
+    it('[4182]: Check out of the box notification-"Notes from Activity Feed in Case" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await apiHelper.postActivityCommentsWithoutAttachments('Actionable Notifications', 'Case', response1.id);
@@ -414,9 +414,9 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16841]: Check out of the box notification-"Notes from Activity Feed in Task" is actionable for type Alert', async () => {
+    it('[4178]: Check out of the box notification-"Notes from Activity Feed in Task" is actionable for type Alert', async () => {
         let taskData = {
-            "taskName": "DRDMV-16841",
+            "taskName": "4178",
             "company": "Petramco",
             "businessUnit": "United States Support",
             "supportGroup": "US Support 3",
@@ -459,7 +459,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16801]: Check out of the box notification-"Task group Assignment" is actionable for type Alert', async () => {
+    it('[4204]: Check out of the box notification-"Task group Assignment" is actionable for type Alert', async () => {
         let taskData = {
             "taskName": "DRDMV-16976",
             "company": "Petramco",
@@ -503,7 +503,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16839]: Check out of the box notification-"Notes from Activity Feed in Case with attachment" is actionable for type Alert', async () => {
+    it('[4180]: Check out of the box notification-"Notes from Activity Feed in Case with attachment" is actionable for type Alert', async () => {
         const attachment = 'e2e/data/ui/attachment/articleStatus.png';
         await apiHelper.apiLogin('qtao');
         let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
@@ -538,9 +538,9 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-16844]: Check out of the box notification-"Notes from Activity Feed in Task with attachment" is actionable for type Alert', async () => {
+    it('[4175]: Check out of the box notification-"Notes from Activity Feed in Task with attachment" is actionable for type Alert', async () => {
         let taskData = {
-            "taskName": "DRDMV-16841",
+            "taskName": "4178",
             "company": "Petramco",
             "businessUnit": "United States Support",
             "supportGroup": "US Support 3",
@@ -584,7 +584,7 @@ describe("Actionable Notifications", () => {
     });
 
     //ptidke
-    it('[DRDMV-22377]: Verify Alert at Requester On case submit , Case Pending-Customer Response Notification, Case Resolution and Case Canceled Notification', async () => {
+    it('[3483]: Verify Alert at Requester On case submit , Case Pending-Customer Response Notification, Case Resolution and Case Canceled Notification', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.updateNotificationEventStatus('Case Pending - Customer Response - Requester Notification', 'Human Resource', 'Enabled');
         await apiHelper.updateNotificationEventStatus('Case Canceled - Requester Notification', 'Human Resource', 'Enabled');
@@ -608,7 +608,7 @@ describe("Actionable Notifications", () => {
     });
 
     //asahitya
-    describe('[DRDMV-16828,DRDMV-16832,DRDMV-16830]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', () => {
+    describe('[4191,4187,4189]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let articleResponse = undefined;
         beforeAll(async () => {
@@ -619,11 +619,11 @@ describe("Actionable Notifications", () => {
             await apiHelper.deleteApprovalMapping('Knowledge');
         });
 
-        it('[DRDMV-16828,DRDMV-16832,DRDMV-16830]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', async () => {
+        it('[4191,4187,4189]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', async () => {
             //Create Article
             let articleData = {
                 "knowledgeSet": "HR",
-                "title": `DRDMV-16828 ${randomStr}`,
+                "title": `4191 ${randomStr}`,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco"
             }
@@ -671,7 +671,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.cancelEmailBodyBlade();
         });
 
-        it('[DRDMV-16828,DRDMV-16832,DRDMV-16830]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', async () => {
+        it('[4191,4187,4189]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', async () => {
             await browser.sleep(60000); //Wait till due date and overdue dates are passed
 
             //Login with khardison and verify notifications are actionable
@@ -702,7 +702,7 @@ describe("Actionable Notifications", () => {
         });
     });
 
-    describe('[DRDMV-16826]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', () => {
+    describe('[4193]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', () => {
         let caseResponse = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -716,7 +716,7 @@ describe("Actionable Notifications", () => {
                 "goalTimeMinutes": "2",
                 "dataSource": "Case Management",
                 "company": "Petramco",
-                "svtName": 'DRDMV-16826'
+                "svtName": '4193'
             }
             let svtResponse = await apiHelper.createSVT(svtCreateData);
             await apiHelper.attachMilestone(svtResponse.id, 'CASE');
@@ -735,7 +735,7 @@ describe("Actionable Notifications", () => {
             caseResponse = await apiHelper.createCase(caseData);
         });
 
-        it('[DRDMV-16826]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', async () => {
+        it('[4193]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await utilGrid.searchAndOpenHyperlink('Case SLA Missed');
@@ -749,7 +749,7 @@ describe("Actionable Notifications", () => {
             await browser.sleep(120000); //Wait to miss the SLM Goals
         });
 
-        it('[DRDMV-16826]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', async () => {
+        it('[4193]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
@@ -762,11 +762,11 @@ describe("Actionable Notifications", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteServiceTargets('DRDMV-16826');
+            await apiHelper.deleteServiceTargets('4193');
         });
     });
 
-    describe('[DRDMV-16846]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', () => {
+    describe('[4173]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', () => {
         let caseResponse, taskResponse = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -780,7 +780,7 @@ describe("Actionable Notifications", () => {
                 "goalTimeMinutes": "1",
                 "dataSource": "Task Management",
                 "company": "Petramco",
-                "svtName": 'DRDMV-16846'
+                "svtName": '4173'
             }
             let svtResponse = await apiHelper.createSVT(svtCreateData);
             await apiHelper.attachMilestone(svtResponse.id, 'TASK');
@@ -789,7 +789,7 @@ describe("Actionable Notifications", () => {
                 "Company": "Petramco",
                 "Requester": "tcruise",
                 "Priority": "1000",
-                "Summary": "Case SLM Actionable Notification DRDMV-16846",
+                "Summary": "Case SLM Actionable Notification 4173",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -811,7 +811,7 @@ describe("Actionable Notifications", () => {
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress')
         });
 
-        it('[DRDMV-16846]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', async () => {
+        it('[4173]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
             await utilGrid.searchAndOpenHyperlink('Task SLA Missed');
@@ -825,7 +825,7 @@ describe("Actionable Notifications", () => {
             await browser.sleep(90000); //Wait to miss the SLM Goals
         });
 
-        it('[DRDMV-16846]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', async () => {
+        it('[4173]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', async () => {
             await browser.sleep(30000); //Wait to miss the SLM Goals
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -839,11 +839,11 @@ describe("Actionable Notifications", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteServiceTargets('DRDMV-16846');
+            await apiHelper.deleteServiceTargets('4173');
         });
     });
 
-    describe('[DRDMV-17006]: Check newly created notification template is actionable', () => {
+    describe('[4133]: Check newly created notification template is actionable', () => {
         let caseDisplayId: string = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -851,7 +851,7 @@ describe("Actionable Notifications", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
         });
-        it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
+        it('[4133]: Check newly created notification template is actionable', async () => {
             //Create Automated Task Template
             await taskTemplateConsolePage.clickOnAutomationTaskTemplateButton();
             await createTaskTemplatePage.setTemplateName('Actionable Notification template');
@@ -875,7 +875,7 @@ describe("Actionable Notifications", () => {
             await createNotificationEventPage.setDescription('NotificationEvent for Actionable Notification');
             await createNotificationEventPage.saveEventConfig();
         });
-        it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
+        it('[4133]: Check newly created notification template is actionable', async () => {
             //Create NotificationTemplate
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
@@ -904,7 +904,7 @@ describe("Actionable Notifications", () => {
             //Create new case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("Allen");
-            await createCasePage.setSummary("DRDMV-16241");
+            await createCasePage.setSummary("4285");
             await createCasePage.clickChangeAssignmentButton();
             await assignmentBladePO.selectCompany('Petramco');
             await assignmentBladePO.selectBusinessUnit('United States Support');
@@ -915,7 +915,7 @@ describe("Actionable Notifications", () => {
             await previewCasePo.clickGoToCaseButton();
             caseDisplayId = await viewCasePage.getCaseID();
         });
-        it('[DRDMV-17006]: Check newly created notification template is actionable', async () => {
+        it('[4133]: Check newly created notification template is actionable', async () => {
             //Attach the Automated Task from Task Template as created above
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate('Actionable Notification template');

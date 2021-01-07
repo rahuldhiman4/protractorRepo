@@ -64,7 +64,7 @@ describe('Case Bulk Operation', () => {
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
     }
 
-    it('[DRDMV-15953]: Verify if Case Agent can select and change the assignee of multiple cases', async () => {
+    it('[4398]: Verify if Case Agent can select and change the assignee of multiple cases', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseId: string[] = [];
         let caseDataForTest = caseData['bulkCaseAssignee_New'];
@@ -88,7 +88,7 @@ describe('Case Bulk Operation', () => {
         }
     });
 
-    it('[DRDMV-15954]: Verify if Case Agent can select and un-select all the Cases using checkbox beside Case column', async () => {
+    it('[4397]: Verify if Case Agent can select and un-select all the Cases using checkbox beside Case column', async () => {
         await navigationPage.gotoQuickCase(); // navigation requried if above test failes
         await navigationPage.gotoCaseConsole(); // navigation requried if above test failes
         await utilityGrid.clearFilter();
@@ -98,20 +98,20 @@ describe('Case Bulk Operation', () => {
         expect(await caseConsolePage.isAllCasesUnSelected()).toBeTruthy("All cases are selected");
     });
 
-    describe('[DRDMV-15984]: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
+    describe('[4383]: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
         let caseId: string[] = [];
         let caseDataForTest;
         beforeAll(async () => {
             caseDataForTest = caseData['bulkCaseAssignee_New'];
             await apiHelper.apiLogin(qfengStr);
-            caseDataForTest.Summary = "DRDMV-15984 Bulk Case Assignee";
+            caseDataForTest.Summary = "4383 Bulk Case Assignee";
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
             await utilityGrid.clickRefreshIcon();
         });
-        it('[DRDMV-15984]: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
+        it('[4383]: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
@@ -137,10 +137,10 @@ describe('Case Bulk Operation', () => {
         });
     });
 
-    it('[DRDMV-15978]: Verify user having case read access cannot change assignee of the case using bulk assignment', async () => {
+    it('[4389]: Verify user having case read access cannot change assignee of the case using bulk assignment', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['bulkCaseAssignee_New'];
-        caseDataForTest.Summary = "DRDMV-15978 Bulk Case Assignee";
+        caseDataForTest.Summary = "4389 Bulk Case Assignee";
         let newCase1 = await apiHelper.createCase(caseDataForTest);
         let newCase2 = await apiHelper.createCase(caseDataForTest);
 
@@ -181,20 +181,20 @@ describe('Case Bulk Operation', () => {
         }
     });
 
-    describe('[DRDMV-15980]: Verify that Assignment change information is visible in Actvity section', async () => {
+    describe('[4387]: Verify that Assignment change information is visible in Actvity section', async () => {
         let caseId: string[] = [], caseGuid: string[] = [];
         let caseDataForTest;
         beforeAll(async () => {
             await apiHelper.apiLogin(qfengStr);
             caseDataForTest = caseData['bulkCaseAssignee_New'];
-            caseDataForTest.Summary = "DRDMV-15980 Bulk Case Assignee";
+            caseDataForTest.Summary = "4387 Bulk Case Assignee";
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest)
                 caseId[i] = response.displayId;
                 caseGuid[i] = response.id;
             }
         });
-        it('[DRDMV-15980]: Verify that Assignment change information is visible in Actvity section', async () => {
+        it('[4387]: Verify that Assignment change information is visible in Actvity section', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 1; i++) {
@@ -230,10 +230,10 @@ describe('Case Bulk Operation', () => {
         });
     });
 
-    it('[DRDMV-15981]: Verify that Agent is able to change the Assignee if status is Assigned or In Progress or Resolved', async () => {
+    it('[4386]: Verify that Agent is able to change the Assignee if status is Assigned or In Progress or Resolved', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['bulkCaseAssignee_New'];
-        caseDataForTest.Summary = "DRDMV-15981 Bulk Case Assignee";
+        caseDataForTest.Summary = "4386 Bulk Case Assignee";
         let caseId: string[] = [];
         caseId[0] = (await apiHelper.createCase(caseDataForTest)).displayId;
         caseId[1] = (await apiHelper.createCase(caseDataForTest)).displayId;
@@ -256,20 +256,20 @@ describe('Case Bulk Operation', () => {
 
     });
 
-    describe('[DRDMV-16109]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
+    describe('[4301]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
         let caseId: string[] = [], caseGuid: string[] = [];
         let caseDataForTest;
         beforeAll(async () => {
             await apiHelper.apiLogin(qfengStr);
             caseDataForTest = caseData['bulkCaseAssignee_New'];
-            caseDataForTest.Summary = "DRDMV-16109 Bulk Case Assignee";
+            caseDataForTest.Summary = "4301 Bulk Case Assignee";
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
                 caseGuid[i] = response.id;
             }
         });
-        it('[DRDMV-16109]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
+        it('[4301]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
@@ -309,19 +309,19 @@ describe('Case Bulk Operation', () => {
         });
     });
 
-    describe('[DRDMV-16110]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
+    describe('[4300]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
         let caseId: string[] = [];
         let caseDataForTest;
         beforeAll(async () => {
             caseDataForTest = caseData['bulkCaseAssigneeWithAllAssigneeFields'];
-            caseDataForTest.Summary = "DRDMV-16110 Bulk Case Assignee";
+            caseDataForTest.Summary = "4300 Bulk Case Assignee";
             await apiHelper.apiLogin(personData.userId + '@petramco.com', "Password_1234");
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
             }
         });
-        it('[DRDMV-16110]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
+        it('[4300]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData.userId + '@petramco.com', "Password_1234");
             await navigationPage.gotoCaseConsole();
@@ -350,12 +350,12 @@ describe('Case Bulk Operation', () => {
         });
     });
 
-    it('[DRDMV-16107]: Verify if Agent Bulk Assign the cases with at least one closed status then Agent should get the error', async () => {
+    it('[4303]: Verify if Agent Bulk Assign the cases with at least one closed status then Agent should get the error', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseId: string[] = [];
 
         let caseDataForTest = caseData['bulkCaseAssignee_New'];
-        caseDataForTest.Summary = "DRDMV-16107 Bulk Case Assignee";
+        caseDataForTest.Summary = "4303 Bulk Case Assignee";
         for (let i = 0; i < 2; i++) {
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[i] = response.displayId;
@@ -379,7 +379,7 @@ describe('Case Bulk Operation', () => {
         await caseConsolePage.selectAllCases();
     });
 
-    it('[DRDMV-15982]: Verify that Agent is unable to change the Assignee if status is Pending or Canceled', async () => {
+    it('[4385]: Verify that Agent is unable to change the Assignee if status is Pending or Canceled', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData = {
             "templateName": 'caseTemplateName' + randomStr,
@@ -424,7 +424,7 @@ describe('Case Bulk Operation', () => {
 
         let caseData = {
             "Requester": "qkatawazi",
-            "Summary": "All Categories selected DRDMV-15982",
+            "Summary": "All Categories selected 4385",
             "Origin": "Agent",
             "Case Template ID": caseTemplateDisplayId
         }

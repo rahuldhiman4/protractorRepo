@@ -21,12 +21,12 @@ describe('Copy Task Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        // user for DRDMV-13548
+        // user for 4737
         userData13548 = {
             "firstName": "Fname13548",
             "lastName": "Lname13548",
-            "userId": "DRDMV-13548",
-            "emailId": "DRDMV-13548@petramco.com",
+            "userId": "4737",
+            "emailId": "4737@petramco.com",
             "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.apiLogin('tadmin');
@@ -51,7 +51,7 @@ describe('Copy Task Template', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-14214]: Automated Task template Copy using existing Process', () => {
+    describe('[4570]: Automated Task template Copy using existing Process', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let automatedTaskTemplateName = 'DRDMV14214AutomationTask2' + randomStr;
         let templateData;
@@ -70,7 +70,7 @@ describe('Copy Task Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
         });
-        it('[DRDMV-14214]: Create copy of task', async () => {
+        it('[4570]: Create copy of task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
@@ -84,7 +84,7 @@ describe('Copy Task Template', () => {
             await utilCommon.clickOnWarningOk();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-14214]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
+        it('[4570]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             let caseData = {
@@ -116,7 +116,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    describe('[DRDMV-13548]: Create Copy of Task template Submitter not from any Support Group', () => {
+    describe('[4737]: Create Copy of Task template Submitter not from any Support Group', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData;
         let newManualTaskTemplate = 'NewManualtaskDRDMV13548' + randomStr;
@@ -134,7 +134,7 @@ describe('Copy Task Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
         });
-        it('[DRDMV-13548]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
+        it('[4737]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData13548.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -153,7 +153,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    describe('[DRDMV-14218,DRDMV-13573]: Automated Task template copy created across company', () => {
+    describe('[4566,4715]: Automated Task template copy created across company', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData;
         let autoTemplate1 = 'AutomationTemplateDRDMV14218_1' + randomStr;
@@ -179,7 +179,7 @@ describe('Copy Task Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
         });
-        it('[DRDMV-14218,DRDMV-13573]: Fields copied while creating copy of Automated Task template', async () => {
+        it('[4566,4715]: Fields copied while creating copy of Automated Task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -197,7 +197,7 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Bonus');
         });
-        it('[DRDMV-14218,DRDMV-13573]: User having Petramco and Psilon access', async () => {
+        it('[4566,4715]: User having Petramco and Psilon access', async () => {
             await navigationPage.signOut();
             await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -214,7 +214,7 @@ describe('Copy Task Template', () => {
             await utilCommon.closePopUpMessage();
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
         });
-        it('[DRDMV-14218,DRDMV-13573]: Login through only Petramco User', async () => {
+        it('[4566,4715]: Login through only Petramco User', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -222,7 +222,7 @@ describe('Copy Task Template', () => {
             await selectTaskTemplate.searchAndOpenTaskTemplate(autoTemplate1);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
         });
-        it('[DRDMV-14218,DRDMV-13573]: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process', async () => {
+        it('[4566,4715]: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process', async () => {
             //Login through only Psilon User
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -237,7 +237,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    describe('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
+    describe('[4567,4636]: Copy of Automated task template created across company and no new Process is created', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
         beforeAll(async () => {
@@ -255,7 +255,7 @@ describe('Copy Task Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
         });
-        it('[DRDMV-14217,DRDMV-13737]: Copy of Automated task template created across company and no new Process is created', async () => {
+        it('[4567,4636]: Copy of Automated task template created across company and no new Process is created', async () => {
             await navigationPage.signOut();
             await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -282,7 +282,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    describe('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type Manual', () => {
+    describe('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newManualTaskTemplate = 'NewManualTaskDRDMV13540' + randomStr;
         let newmanualTaskSummary = 'NewSummaryDRDMV13540' + randomStr;
@@ -300,7 +300,7 @@ describe('Copy Task Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
         });
-        it('[DRDMV-13540,DRDMV-13556]: Create copy of task manual template', async () => {
+        it('[4742,4731]: Create copy of task manual template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndSelectTaskTemplate(templateData.templateName);
@@ -310,7 +310,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-13540,DRDMV-13556]: Case Business Analyst can create a copy of Task Template type Manual', async () => {
+        it('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', async () => {
             expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("US Support 3");
@@ -321,7 +321,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    describe('[DRDMV-14215]: Create Copy of an automated Task and check execution', () => {
+    describe('[4569]: Create Copy of an automated Task and check execution', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, newCase;
         let newProcessName = 'NewProcessDRDMV14215' + randomStr;
@@ -351,7 +351,7 @@ describe('Copy Task Template', () => {
             await apiHelper.createAutomatedTaskTemplate(templateData);
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-14215]: Create copy of task template', async () => {
+        it('[4569]: Create copy of task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -364,7 +364,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-14215]: Create Copy of an automated Task and check execution', async () => {
+        it('[4569]: Create Copy of an automated Task and check execution', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
@@ -382,7 +382,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    describe('[DRDMV-14221]: Copy Automated template with same process Name and different field data', () => {
+    describe('[4563]: Copy Automated template with same process Name and different field data', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedTaskTemplate = randomStr + 'DRDMV14221UpdatedTask';
         let templateData;
@@ -401,7 +401,7 @@ describe('Copy Task Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
         });
-        it('[DRDMV-14221]: Copy Automated Task template', async () => {
+        it('[4563]: Copy Automated Task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName)
@@ -411,7 +411,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-14221]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
+        it('[4563]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
             await copyTemplatePage.clickCancelCopytemplate();
             await utilCommon.clickOnWarningOk();
             await utilCommon.clickOnBackArrow();
@@ -425,7 +425,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    describe('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
+    describe('[4714,4734]: Fields copied while creating copy of External Task template', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
         beforeAll(async () => {
@@ -445,7 +445,7 @@ describe('Copy Task Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createExternalTaskTemplate(templateData);
         });
-        it('[DRDMV-13574,DRDMV-13553]: Fields copied while creating copy of External Task template', async () => {
+        it('[4714,4734]: Fields copied while creating copy of External Task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -466,7 +466,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    it('[DRDMV-13547,DRDMV-13572]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
+    it('[4738,4716]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let taskTemplate = 'DRDMV13547TaskTemplate' + randomStr;
@@ -517,7 +517,7 @@ describe('Copy Task Template', () => {
         }
     });
 
-    describe('[DRDMV-13569,DRDMV-14220]: Dynamic Field get copied upon creating copy of Task Template', () => {
+    describe('[4719,4564]: Dynamic Field get copied upon creating copy of Task Template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dynamicFieldName1 = 'DRDMV14220FieldName1' + randomStr;
         let dynamicFieldName2 = 'DRDMV14220FieldName2' + randomStr;
@@ -542,7 +542,7 @@ describe('Copy Task Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);
         });
-        it('[DRDMV-13569,DRDMV-14220]: Add Dynamic Field', async () => {
+        it('[4719,4564]: Add Dynamic Field', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -554,7 +554,7 @@ describe('Copy Task Template', () => {
             await utilCommon.closePopUpMessage();
             await utilCommon.clickOnBackArrow();
         });
-        it('[DRDMV-13569,DRDMV-14220]: Verify dynamic field is present', async () => {
+        it('[4719,4564]: Verify dynamic field is present', async () => {
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
@@ -564,7 +564,7 @@ describe('Copy Task Template', () => {
             await utilCommon.closePopUpMessage();
             expect(await viewTaskTemplate.isDynamicFieldPresent(dynamicFieldDescription1)).toBeTruthy(`${dynamicFieldDescription1} dynamic field not present`);
         });
-        it('[DRDMV-13569,DRDMV-14220]: Verify Warning message when Dynamic fields are added to a Automated Task template', async () => {
+        it('[4719,4564]: Verify Warning message when Dynamic fields are added to a Automated Task template', async () => {
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
             await dynamicField.setFieldName(dynamicFieldName2);

@@ -76,8 +76,8 @@ describe('Case Status Verification', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-22306]: Reopen Case With Resolved Status Without And With Case Template Configuration', async () => {
-        it('[DRDMV-22306]: Create case1 without case template', async () => {
+    describe('[3490]: Reopen Case With Resolved Status Without And With Case Template Configuration', async () => {
+        it('[3490]: Create case1 without case template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
@@ -91,7 +91,7 @@ describe('Case Status Verification', () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-22306]: Verify case1 without case template', async () => {
+        it('[3490]: Verify case1 without case template', async () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
@@ -101,7 +101,7 @@ describe('Case Status Verification', () => {
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[DRDMV-22306]: Create case2 with case template1 (', async () => {
+        it('[3490]: Create case2 with case template1 (', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
@@ -112,7 +112,7 @@ describe('Case Status Verification', () => {
             await previewCasePo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-22306]: Verify case2 with case template (Allow Case Reopen =Yes)', async () => {
+        it('[3490]: Verify case2 with case template (Allow Case Reopen =Yes)', async () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
@@ -123,7 +123,7 @@ describe('Case Status Verification', () => {
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[DRDMV-22306]: Create case3 with case template2 & verify reopen not display (', async () => {
+        it('[3490]: Create case3 with case template2 & verify reopen not display (', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
@@ -141,8 +141,8 @@ describe('Case Status Verification', () => {
         });
     });
 
-    describe('[DRDMV-22321]: Reopen Case With Closed Status Without And With Case Template Configuration', async () => {
-        it('[DRDMV-22321]: Create case1 without case template', async () => {
+    describe('[3489]: Reopen Case With Closed Status Without And With Case Template Configuration', async () => {
+        it('[3489]: Create case1 without case template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
@@ -153,7 +153,7 @@ describe('Case Status Verification', () => {
             await previewCasePo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-22321]: Verify case1 without case template', async () => {
+        it('[3489]: Verify case1 without case template', async () => {
             await updateStatusBladePo.changeCaseStatus(statusResolved);
             await updateStatusBladePo.setStatusReason("Auto Resolved");
             await updateStatusBladePo.clickSaveStatus();
@@ -168,7 +168,7 @@ describe('Case Status Verification', () => {
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[DRDMV-22321]: Create case2 with case template1', async () => {
+        it('[3489]: Create case2 with case template1', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('case2_Summary');
@@ -179,7 +179,7 @@ describe('Case Status Verification', () => {
             await previewCasePo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-22321]: Verify case2 with case template (Allow Case Reopen =Yes)', async () => {
+        it('[3489]: Verify case2 with case template (Allow Case Reopen =Yes)', async () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
@@ -190,7 +190,7 @@ describe('Case Status Verification', () => {
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[DRDMV-22321]: Create case3 with case template2 & verify reopen not display', async () => {
+        it('[3489]: Create case3 with case template2 & verify reopen not display', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('case3_Summary');
@@ -208,7 +208,7 @@ describe('Case Status Verification', () => {
         });
     });
 
-    it('[DRDMV-22322]: Verify Reopen Button Not Displayed With Some Case Statuses', async () => {
+    it('[3488]: Verify Reopen Button Not Displayed With Some Case Statuses', async () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('adam');
         await createCasePage.setSummary('Summary');
@@ -238,9 +238,9 @@ describe('Case Status Verification', () => {
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg10: Case Reopen link displayed');
     });
 
-    describe('[DRDMV-22361]: Verify Case Reopen Functionailty with Assignee/Write Access/Read Access Users', async () => {
+    describe('[3484]: Verify Case Reopen Functionailty with Assignee/Write Access/Read Access Users', async () => {
         let case1, case2;
-        it('[DRDMV-22361]: Create case1  With Resolved Status', async () => {
+        it('[3484]: Create case1  With Resolved Status', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             // Create case1
@@ -257,7 +257,7 @@ describe('Case Status Verification', () => {
             case1 = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-22361]: Give Access To Users For case1', async () => {
+        it('[3484]: Give Access To Users For case1', async () => {
             //Give Read Access User3
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
@@ -276,7 +276,7 @@ describe('Case Status Verification', () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-22361]: Create case2  With Closed Status', async () => {
+        it('[3484]: Create case2  With Closed Status', async () => {
             // Create case2
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -291,7 +291,7 @@ describe('Case Status Verification', () => {
             case2 = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-22361]: Give Access To Users For Case2 And Change Case Status To Closed', async () => {
+        it('[3484]: Give Access To Users For Case2 And Change Case Status To Closed', async () => {
             //Give Read Access User3
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
@@ -311,7 +311,7 @@ describe('Case Status Verification', () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-22361]: Verify Reopen Button With Read Only Users3', async () => {
+        it('[3484]: Verify Reopen Button With Read Only Users3', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
             await caseConsolePo.searchAndOpenCase(case1);
@@ -325,7 +325,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg4: Close status is missing');
         });
 
-        it('[DRDMV-22361]: Verify Reopen Button With Write Access Users2', async () => {
+        it('[3484]: Verify Reopen Button With Write Access Users2', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(case1);
@@ -361,7 +361,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg13: Closed status is missing');
         });
 
-        it('[DRDMV-22361]: Verify Reopen Button With Assignee Users1', async () => {
+        it('[3484]: Verify Reopen Button With Assignee Users1', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux')
             await caseConsolePo.searchAndOpenCase(case1);

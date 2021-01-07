@@ -66,7 +66,7 @@ describe('Ericsson Model Test Extended', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+    describe('[60194]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
         let ericssonSAMcaseTemplateData, caseTemplateDataEricssonSAMGlobal;
         let articleData, caseTemplateDataGlobal, ericssonGlobalcaseTemplateData, ericssonHRcaseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
@@ -183,7 +183,7 @@ describe('Ericsson Model Test Extended', () => {
             await apiHelper.createCaseTemplate(ericssonSAMcaseTemplateData);
             await apiHelper.createCaseTemplate(caseTemplateDataEricssonSAMGlobal);
         });
-        it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60194]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('rdustin');
             expect(await quickCasePo.selectCaseTemplate(ericssonSAMcaseTemplateData.templateName)).toBeFalsy('template is present');
@@ -193,7 +193,7 @@ describe('Ericsson Model Test Extended', () => {
             expect(await caseTemplatePreviewPo.getLineOfBusinessValue()).toBe('Ericsson HR');
             await caseTemplatePreviewPo.clickOnBackButton();
         });
-        it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60194]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await browser.sleep(7000); //Hard wait for KA Indexing
             expect(await resourcesTabPo.getKnowledgeArticleInfo()).toContain('Ericsson HR', 'LOB is not correct');
             await resourcesTabPo.clickOnAdvancedSearchOptions();
@@ -208,7 +208,7 @@ describe('Ericsson Model Test Extended', () => {
             await quickCasePo.createCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60194]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Fixed Assets')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Field is enabled');
@@ -231,7 +231,7 @@ describe('Ericsson Model Test Extended', () => {
             expect(await viewCasePage.getAssignedGroupText()).toBe("US Support 2");
             expect(await viewCasePage.getAssigneeText()).toBe("Rudner Rita");
         });
-        it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60194]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(ericssonGlobalcaseTemplateData.templateName);
@@ -278,7 +278,7 @@ describe('Ericsson Model Test Extended', () => {
             expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson SAM');
             await quickCasePo.gotoCaseButton();
         });
-        it('[DRDMV-23634]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60194]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('tkenneth');
             await quickCasePo.selectCaseTemplate(caseTemplateDataEricssonSAMGlobal.templateName);
@@ -306,7 +306,7 @@ describe('Ericsson Model Test Extended', () => {
     });
 
     //kiran
-    describe('[DRDMV-23664]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
+    describe('[12043]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDataGlobalEricssonGlobalSAM, knowledgeSetDataEricssonHR, caseTemplateDataGlobalEricssonHR, caseTemplateDataEricssonHR, caseIdEricssonHR, caseIdEricssonSAM, caseTemplateDataEricssonSAM, caseTemplateDataGlobalEricssonSAM, caseTemplateDataGlobalEricssonGlobalHR;
         let knowledgeTitle = "knowledgeTitleDRDMV23664" + randomStr;
@@ -442,7 +442,7 @@ describe('Ericsson Model Test Extended', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataEricssonSAM);
         });
 
-        it('[DRDMV-23664]: Verify Negative Scenrio between Ericsson HR and Ericsson SAM with Global Requester', async () => {
+        it('[12043]: Verify Negative Scenrio between Ericsson HR and Ericsson SAM with Global Requester', async () => {
             await navigationPage.signOut();
             await loginPage.login(ericssonHRAndSamLOBUserName, password);
             await utilityGrid.selectLineOfBusiness('Ericsson HR');
@@ -510,7 +510,7 @@ describe('Ericsson Model Test Extended', () => {
             await changeAssignmentBladePo.clickOnCancelButton();
         });
 
-        it('[DRDMV-23664]: Create case without case template', async () => {
+        it('[12043]: Create case without case template', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Ericsson HR');
             await navigationPage.gotoCreateCase();
@@ -536,7 +536,7 @@ describe('Ericsson Model Test Extended', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23664]: Create case with case template', async () => {
+        it('[12043]: Create case with case template', async () => {
             await createCasePage.selectRequester('tted');
             expect(await createCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
             await createCasePage.setSummary(summary);
@@ -574,7 +574,7 @@ describe('Ericsson Model Test Extended', () => {
             caseIdEricssonHR = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23664]: Verify Edit Case Page', async () => {
+        it('[12043]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Total Rewards');
@@ -619,7 +619,7 @@ describe('Ericsson Model Test Extended', () => {
             await viewCasePage.clickOnTaskLink('adhocTask');
         });
 
-        it('[DRDMV-23664]: create knowledge article and verify with Resources Tab', async () => {
+        it('[12043]: create knowledge article and verify with Resources Tab', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -641,7 +641,7 @@ describe('Ericsson Model Test Extended', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(summary);
         });
 
-        it('[DRDMV-23664]: Create case With Ericsson SAM User and verify data', async () => {
+        it('[12043]: Create case With Ericsson SAM User and verify data', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Ericsson SAM');
             await navigationPage.gotoCreateCase();
@@ -686,7 +686,7 @@ describe('Ericsson Model Test Extended', () => {
             caseIdEricssonSAM = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23664]: Verify Knowledge Article and case with Resources Tab', async () => {
+        it('[12043]: Verify Knowledge Article and case with Resources Tab', async () => {
             await viewCasePage.clickOnTab('Resources');
             await resourcesTabPo.clickOnAdvancedSearchOptions();
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
@@ -695,7 +695,7 @@ describe('Ericsson Model Test Extended', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(undefined);
         });
 
-        it('[DRDMV-23664]: Verify case access between Ericsson HR and Ericsson SAM LOB', async () => {
+        it('[12043]: Verify case access between Ericsson HR and Ericsson SAM LOB', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(caseIdEricssonSAM)).toBeTruthy('caseIdEricssonSAM Missing on grid');
@@ -713,7 +713,7 @@ describe('Ericsson Model Test Extended', () => {
     });
 
     //kiran
-    describe('[DRDMV-23665]: [Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
+    describe('[12042]: [Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDataGlobalEricssonGlobalSAM, caseTemplateDataGlobalEricssonGlobalHR, knowledgeSetDataEricssonSAM, knowledgeSetDataEricssonHR, caseTemplateDataGlobalEricssonSAM, caseTemplateDataEricssonSAM, caseTemplateDataGlobalEricssonHR, caseTemplateDataEricssonHR, caseIdKingstoneHR, caseIdOracleHR;
 
@@ -889,7 +889,7 @@ describe('Ericsson Model Test Extended', () => {
 
         });
 
-        it('[DRDMV-23665]: Create Article Data For Ericsson HR', async () => {
+        it('[12042]: Create Article Data For Ericsson HR', async () => {
             //Create Knowledge Article Ericsson HR
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Ericsson HR');
@@ -905,7 +905,7 @@ describe('Ericsson Model Test Extended', () => {
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
         });
 
-        it('[DRDMV-23665]: Create Article Data For Ericsson SAM', async () => {
+        it('[12042]: Create Article Data For Ericsson SAM', async () => {
             //Create Knowledge Article Ericsson SAM
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Ericsson SAM');
@@ -921,7 +921,7 @@ describe('Ericsson Model Test Extended', () => {
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
         });
 
-        it('[DRDMV-23665]: Create Quick Case Negative scenario With Ericsson HR', async () => {
+        it('[12042]: Create Quick Case Negative scenario With Ericsson HR', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Ericsson HR');
             await navigationPage.gotoQuickCase();
@@ -954,7 +954,7 @@ describe('Ericsson Model Test Extended', () => {
 
         });
 
-        it('[DRDMV-23665]: Create Quick Case without template and verify Ericsson HR in recommended data', async () => {
+        it('[12042]: Create Quick Case without template and verify Ericsson HR in recommended data', async () => {
             await quickCasePo.selectRequesterName('tted');
             await quickCasePo.setCaseSummary(caseSummaryEricssonHR);
             expect(await resourcesTabPo.isRecommendedCasePresent(caseSummaryEricssonHR)).toBeTruthy(`${caseSummaryEricssonHR} caseSummaryEricssonHR displayed in Recommended Knowledge`);
@@ -985,7 +985,7 @@ describe('Ericsson Model Test Extended', () => {
 
         });
 
-        it('[DRDMV-23665]: Create Quick Case without case template', async () => {
+        it('[12042]: Create Quick Case without case template', async () => {
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('tted');
             await quickCasePo.setCaseSummary(caseSummaryEricssonHR);
@@ -994,14 +994,14 @@ describe('Ericsson Model Test Extended', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23665]: Create Quick Case with case template', async () => {
+        it('[12042]: Create Quick Case with case template', async () => {
             await quickCasePo.selectRequesterName('rwillie');
             await quickCasePo.selectCaseTemplate(caseTemplateDataEricssonHR.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-23665]: Verify Edit Case Page', async () => {
+        it('[12042]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             expect(await editCasePo.getLobValue()).toBe('Ericsson HR');
@@ -1051,7 +1051,7 @@ describe('Ericsson Model Test Extended', () => {
             await editCasePo.clickSaveCase();
         });
 
-        it('[DRDMV-23665]: Verify Adhoc Task With Ericsson HR', async () => {
+        it('[12042]: Verify Adhoc Task With Ericsson HR', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary('adhocTask')
@@ -1061,7 +1061,7 @@ describe('Ericsson Model Test Extended', () => {
             await viewCasePage.clickOnTaskLink('adhocTask');
         });
 
-        it('[DRDMV-23665]: Create Quick Case without case template with Ericson HR Requester', async () => {
+        it('[12042]: Create Quick Case without case template with Ericson HR Requester', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('rwillie');
             await quickCasePo.setCaseSummary('DRDMV23665TestCaseSummaryEricssonHR');
@@ -1070,7 +1070,7 @@ describe('Ericsson Model Test Extended', () => {
             await casePreviewPo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-23665]: Verify Edit Case Page with Ericson HR', async () => {
+        it('[12042]: Verify Edit Case Page with Ericson HR', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             expect(await editCasePo.getLobValue()).toBe('Ericsson HR');
@@ -1100,7 +1100,7 @@ describe('Ericsson Model Test Extended', () => {
             await editCasePo.clickSaveCase();
         });
 
-        it('[DRDMV-23665]: Create Quick Case scenario With Ericsson SAM', async () => {
+        it('[12042]: Create Quick Case scenario With Ericsson SAM', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Ericsson SAM');
             await navigationPage.gotoQuickCase();
@@ -1132,7 +1132,7 @@ describe('Ericsson Model Test Extended', () => {
 
         });
 
-        it('[DRDMV-23665]: Create Quick Case without template and verify Ericsson SAM in recommended data ', async () => {
+        it('[12042]: Create Quick Case without template and verify Ericsson SAM in recommended data ', async () => {
             await quickCasePo.selectRequesterName('tted');
             await quickCasePo.setCaseSummary(caseSummaryEricssonSAM);
             expect(await resourcesTabPo.isRecommendedCasePresent(caseSummaryEricssonSAM)).toBeTruthy(`${caseSummaryEricssonSAM} caseSummaryEricssonSAM displayed in Recommended Knowledge`);
@@ -1166,14 +1166,14 @@ describe('Ericsson Model Test Extended', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23665]: Create Quick Case with case template Ericsson SAM', async () => {
+        it('[12042]: Create Quick Case with case template Ericsson SAM', async () => {
             await quickCasePo.selectRequesterName('sbenjamin');
             await quickCasePo.selectCaseTemplate(caseTemplateDataEricssonSAM.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-23665]: Verify Edit Case Page for Ericsson SAM', async () => {
+        it('[12042]: Verify Edit Case Page for Ericsson SAM', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             expect(await editCasePo.getLobValue()).toBe('Ericsson SAM');
@@ -1223,7 +1223,7 @@ describe('Ericsson Model Test Extended', () => {
             await editCasePo.clickSaveCase();
         });
 
-        it('[DRDMV-23665]: Verify Edit Case Page for Ericsson SAM', async () => {
+        it('[12042]: Verify Edit Case Page for Ericsson SAM', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary('adhocTask2')
@@ -1237,7 +1237,7 @@ describe('Ericsson Model Test Extended', () => {
         });
     });
 
-    describe('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', () => {
+    describe('[60196]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', () => {
         let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeSetDataEricssonHR, knowledgeSetDataEricssonSAM, articleId, knowledgeArticleDataDiffLOB, knowledgeArticleTemplateDataHR, knowledgeArticleTemplateDataSAM, knowledgeSetDataEricssonGlobal, knowledgeArticleTemplateDataGlobal, knowledgeArticleDataDiffLOBGlobal;
 
@@ -1261,21 +1261,21 @@ describe('Ericsson Model Test Extended', () => {
             }
 
             knowledgeSetDataEricssonHR = {
-                knowledgeSetTitle: `DRDMV-23636 ER HR ${randomStr}`,
+                knowledgeSetTitle: `60196 ER HR ${randomStr}`,
                 knowledgeSetDesc: `${randomStr}_Desc_ER_HR`,
                 company: 'Ericsson HR',
                 lineOfBusiness: 'Ericsson HR'
             }
 
             knowledgeSetDataEricssonSAM = {
-                knowledgeSetTitle: `DRDMV-23636 ER SAM ${randomStr}`,
+                knowledgeSetTitle: `60196 ER SAM ${randomStr}`,
                 knowledgeSetDesc: `${randomStr}_Desc_ER_SAM`,
                 company: 'Ericsson SAM',
                 lineOfBusiness: 'Ericsson SAM'
             }
 
             knowledgeSetDataEricssonGlobal = {
-                knowledgeSetTitle: `DRDMV-23636 Global SAM ${randomStr}`,
+                knowledgeSetTitle: `60196 Global SAM ${randomStr}`,
                 knowledgeSetDesc: `${randomStr}_Desc_ER_Global`,
                 company: 'Ericsson Global',
                 lineOfBusiness: 'Ericsson Global'
@@ -1311,7 +1311,7 @@ describe('Ericsson Model Test Extended', () => {
             await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOBGlobal);
         });
 
-        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[60196]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('rwillie');
             await navigationPage.gotoCreateKnowledge();
@@ -1353,7 +1353,7 @@ describe('Ericsson Model Test Extended', () => {
             articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
         });
 
-        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[60196]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Ericsson HR');
             expect(await editKnowledgePo.isLobSectionEnabled()).toBeTruthy();
@@ -1404,7 +1404,7 @@ describe('Ericsson Model Test Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
         });
 
-        it('[DRDMV-23636]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[60196]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
@@ -1434,7 +1434,7 @@ describe('Ericsson Model Test Extended', () => {
         });
     });
 
-    describe('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', () => {
+    describe('[12041]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', () => {
         let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeSetDataEricssonHR, knowledgeSetDataEricssonSAM, articleId, knowledgeArticleDataDiffLOB, knowledgeArticleTemplateDataHR, knowledgeArticleTemplateDataSAM, knowledgeArticleTemplateDataGlobal, knowledgeSetDataEricssonGlobal, knowledgeArticleDataDiffLOBGlobal;
 
@@ -1458,21 +1458,21 @@ describe('Ericsson Model Test Extended', () => {
             }
 
             knowledgeSetDataEricssonHR = {
-                knowledgeSetTitle: `DRDMV-23636 ER HR ${randomStr}`,
+                knowledgeSetTitle: `60196 ER HR ${randomStr}`,
                 knowledgeSetDesc: `${randomStr}_Desc_ER_HR`,
                 company: 'Ericsson HR',
                 lineOfBusiness: 'Ericsson HR'
             }
 
             knowledgeSetDataEricssonSAM = {
-                knowledgeSetTitle: `DRDMV-23636 ER SAM ${randomStr}`,
+                knowledgeSetTitle: `60196 ER SAM ${randomStr}`,
                 knowledgeSetDesc: `${randomStr}_Desc_ER_SAM`,
                 company: 'Ericsson SAM',
                 lineOfBusiness: 'Ericsson SAM'
             }
 
             knowledgeSetDataEricssonGlobal = {
-                knowledgeSetTitle: `DRDMV-23636 Global SAM ${randomStr}`,
+                knowledgeSetTitle: `60196 Global SAM ${randomStr}`,
                 knowledgeSetDesc: `${randomStr}_Desc_ER_Global`,
                 company: 'Ericsson Global',
                 lineOfBusiness: 'Ericsson Global'
@@ -1508,7 +1508,7 @@ describe('Ericsson Model Test Extended', () => {
             await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOBGlobal);
         });
 
-        it('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+        it('[12041]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('sbruce');
             await navigationPage.gotoCreateKnowledge();
@@ -1559,7 +1559,7 @@ describe('Ericsson Model Test Extended', () => {
             articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
         });
 
-        it('[DRDMV-23666]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+        it('[12041]: [Ericsson Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Ericsson HR');
             expect(await editKnowledgePo.isLobSectionEnabled()).toBeFalsy();

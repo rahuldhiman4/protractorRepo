@@ -53,7 +53,7 @@ describe('Document Library Consume Permission', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
+    describe('[4797]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
         let publish: string[] = ['drdmv13458_publish_document1', 'drdmv13458_publish_document2', 'drdmv13458_publish_document5'];
         let files1: string[] = [filePath1, filePath2, filePath5];
         let publishDocLibData2, draftDocLibData;
@@ -95,7 +95,7 @@ describe('Document Library Consume Permission', () => {
             await apiHelper.apiLogin('elizabeth');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
+        it('[4797]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoCreateCase();
@@ -107,7 +107,7 @@ describe('Document Library Consume Permission', () => {
             await editCasePo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
         });
-        it('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
+        it('[4797]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
             await attachDocumentBladePo.searchRecord(publishDocLibData2.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData2.docLibTitle)).toBeFalsy('FailuerMsg: publishDocLib3 doc is displayed');
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
@@ -117,7 +117,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.clickOnAttachButton();
             await editCasePo.clickSaveCase();
         });
-        it('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
+        it('[4797]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
             expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
@@ -129,7 +129,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[2]);
             await editCasePo.clickSaveCase();
         });
-        it('[DRDMV-13458]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
+        it('[4797]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
             expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
@@ -147,7 +147,7 @@ describe('Document Library Consume Permission', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-13537]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
+    describe('[4745]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
         let caseData, publishDocLibData1, docLib1, summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             publishDocLibData1 = {
@@ -158,7 +158,7 @@ describe('Document Library Consume Permission', () => {
             }
             caseData = {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-8377RandVal" + summary,
+                "Summary": "Test case for 5515RandVal" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -172,14 +172,14 @@ describe('Document Library Consume Permission', () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
         });
-        it('[DRDMV-13537]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
+        it('[4745]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.setCaseSummary(publishDocLibData1.docLibTitle);
             expect(await quickCasePo.isRecommendedKnowledgeEmpty()).toBeTruthy('FailuerMsg: Recommended knowledge is not empty');
             await navigationPage.gotoCaseConsole();
         });
-        it('[DRDMV-13537]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
+        it('[4745]: Availability of documents on knowledge search under Quick case, Resources tab', async () => {
             await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             let newCase = await apiHelper.createCase(caseData);
             let caseId: string = newCase.displayId;
@@ -197,7 +197,7 @@ describe('Document Library Consume Permission', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
+    describe('[4760]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
         let draftDocLibData, templateData, taskTemplateDataSet, publishDocLibData1, publishDocLibData2, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let adhocTaskSummary1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let adhocTaskSummary2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -280,7 +280,7 @@ describe('Document Library Consume Permission', () => {
             await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
+        it('[4760]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
@@ -293,7 +293,7 @@ describe('Document Library Consume Permission', () => {
             await adhoctaskTemplate.setSummary(adhocTaskSummary1);
             await adhoctaskTemplate.clickAttachButton();
         });
-        it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
+        it('[4760]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
             await attachDocumentBladePo.searchRecord(publishDocLibData1.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(publishDocLibData1.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13517_publish_document3 doc is displayed');
@@ -310,7 +310,7 @@ describe('Document Library Consume Permission', () => {
             await viewTaskPo.clickOnAttachedDocumentFile('bwfJpg.jpg');
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
         });
-        it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
+        it('[4760]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
@@ -323,7 +323,7 @@ describe('Document Library Consume Permission', () => {
             await utilityCommon.closePopUpMessage();
             await manageTask.clickTaskLink(adhocTaskSummary2);
         });
-        it('[DRDMV-13517]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
+        it('[4760]: Add Task - Case agent attaches published document from document library where case agent is author of the document', async () => {
             expect(await viewTaskPo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await viewTaskPo.clickOnAttachedDocumentFile('bwfPdf.pdf');
@@ -341,7 +341,7 @@ describe('Document Library Consume Permission', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+    describe('[4747]: Search and UI Validation of document library search view', async () => {
         let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // create 11 doc lib to see pagination
         let publish: string[] = ['drdmv13534_publish_document1', 'drdmv13534_publish_document2', 'drdmv13534_publish_document3', 'drdmv13534_publish_document4', 'drdmv13534_publish_document5', 'drdmv13534_publish_document6', 'drdmv13534_publish_document7', 'drdmv13534_publish_document8', 'drdmv13534_publish_document9', 'drdmv13534_publish_document10', 'drdmv13534_publish_document11'];
@@ -363,7 +363,7 @@ describe('Document Library Consume Permission', () => {
                 await apiHelper.publishDocumentLibrary(docLib);
             }
         });
-        it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+        it('[4747]: Search and UI Validation of document library search view', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
@@ -391,7 +391,7 @@ describe('Document Library Consume Permission', () => {
             await previewCasePo.clickGoToCaseButton();
             await activityTabPo.addActivityNote(addNoteText);
         });
-        it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+        it('[4747]: Search and UI Validation of document library search view', async () => {
             await activityTabPo.addActivityNote(addNoteText);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.clickOnAdvanceSearchButton();
@@ -405,7 +405,7 @@ describe('Document Library Consume Permission', () => {
             expect(await attachDocumentBladePo.isDocumentInfoDisplayed(documentDate)).toBeTruthy('Failure: Date is missing');
             expect(await attachDocumentBladePo.isDocumentInfoDisplayed('bwfJpg.jpg')).toBeTruthy('Failure: File name is missing');
         });
-        it('[DRDMV-13534]: Search and UI Validation of document library search view', async () => {
+        it('[4747]: Search and UI Validation of document library search view', async () => {
             await attachDocumentBladePo.searchRecord('%');
             expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
@@ -452,7 +452,7 @@ describe('Document Library Consume Permission', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+    describe('[4746]: Attach documents from local drive and document library at the same time', async () => {
         let caseId, excelFile = '../../data/ui/attachment/bwfXlsx.xlsx';
         let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let publish: string[] = ['drdmv13536_publish_document1', 'drdmv13536_publish_document2'];
@@ -475,7 +475,7 @@ describe('Document Library Consume Permission', () => {
                 await apiHelper.publishDocumentLibrary(docLib);
             }
         });
-        it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+        it('[4746]: Attach documents from local drive and document library at the same time', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await navigationPage.gotoCreateCase();
@@ -493,7 +493,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
             await activityTabPo.clickOnPostButton();
         });
-        it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+        it('[4746]: Attach documents from local drive and document library at the same time', async () => {
             await activityTabPo.applyActivityFilter('General Notes');
             expect(await activityTabPo.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('show more link is not displayed')
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
@@ -505,7 +505,7 @@ describe('Document Library Consume Permission', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
             expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
         });
-        it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+        it('[4746]: Attach documents from local drive and document library at the same time', async () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfXlsx.xlsx')).toBeTruthy('FailureMsg:bwfXlsx.xlsx Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
@@ -520,7 +520,7 @@ describe('Document Library Consume Permission', () => {
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quigley Heroux', 'Read')).toBeTruthy('Failuer: Fritz Schulz Name is missing');
         });
-        it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+        it('[4746]: Attach documents from local drive and document library at the same time', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -539,7 +539,7 @@ describe('Document Library Consume Permission', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfXlsx.xlsx');
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailureMsg: bwfXlsx.xlsx File is not downloaded.');
         });
-        it('[DRDMV-13536]: Attach documents from local drive and document library at the same time', async () => {
+        it('[4746]: Attach documents from local drive and document library at the same time', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -559,7 +559,7 @@ describe('Document Library Consume Permission', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+    describe('[4769]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
         let loginId2 = 'casemanagerwithdocmanager';
         let password = 'Password_1234';
         let caseAgentuserData1, publishDocLibData1, draftDocLibData;
@@ -622,7 +622,7 @@ describe('Document Library Consume Permission', () => {
             await apiHelper.apiLogin(caseAgentuserData1.userId + "@petramco.com", password);
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
-        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+        it('[4769]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData1.userId + "@petramco.com", password);
             await navigationPage.gotoCreateCase();
@@ -639,7 +639,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord(draftDocLibData.docLibTitle);
             expect(await attachDocumentBladePo.isDocumentLibaryPresent(draftDocLibData.docLibTitle)).toBeFalsy('FailuerMsg: drdmv13508_draft_document doc is displayed');
         });
-        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+        it('[4769]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
@@ -651,7 +651,7 @@ describe('Document Library Consume Permission', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfJpg.jpg');
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailuerMsg: bwfJpg.jpg File is not downloaded.');
         });
-        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+        it('[4769]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnAttachmentLink();
             await attachDocumentBladePo.searchAndAttachDocument(publish[1]);
@@ -660,7 +660,7 @@ describe('Document Library Consume Permission', () => {
             await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             await composeMailPo.clickOnSendButton();
         });
-        it('[DRDMV-13508]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
+        it('[4769]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is delete sucessfully');
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
@@ -679,7 +679,7 @@ describe('Document Library Consume Permission', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
+    describe('[4750]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
         let caseId, publishDocLibData1, publishDocLibData2;
         beforeAll(async () => {
             publishDocLibData1 = {
@@ -707,7 +707,7 @@ describe('Document Library Consume Permission', () => {
             let docLib2 = await apiHelper.createDocumentLibrary(publishDocLibData2, filePath2);
             await apiHelper.publishDocumentLibrary(docLib2);
         });
-        it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
+        it('[4750]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await navigationPage.gotoCreateCase();
@@ -729,7 +729,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchAndAttachDocument(publishDocLibData2.docLibTitle);
             await editCasePo.clickSaveCase();
         });
-        it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
+        it('[4750]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
             expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg Attached Document is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is delete sucessfully');
             await viewCasePo.clickOnAttachedDocumentFile('bwfJpg.jpg');
@@ -740,7 +740,7 @@ describe('Document Library Consume Permission', () => {
             await viewCasePo.clickOnAttachedDocumentFile('bwfPdf.pdf');
             expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailureMsg: bwfPdf.pdf File is not downloaded.');
         });
-        it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
+        it('[4750]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -750,7 +750,7 @@ describe('Document Library Consume Permission', () => {
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('FailureMsg: bwfJpg.jpg File is not downloaded.');
             expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf Attached Document is displayed');
         });
-        it('[DRDMV-13528]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
+        it('[4750]: Access to the documents attached on case when case is re-assigned to some other support group', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
             await caseConsolePo.searchAndOpenCase(caseId);

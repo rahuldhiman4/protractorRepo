@@ -22,7 +22,7 @@ describe('Knowledge Article Set', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteKnowledgeSet('DRDMV-1062');
+        await apiHelper.deleteKnowledgeSet('6375');
         await loginPage.login('elizabeth');
     });
 
@@ -31,11 +31,11 @@ describe('Knowledge Article Set', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-1105]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
+    describe('[6357]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgesetFacilities= "knowledgeSetFacilities_"+randomStr;
 
-        it('[DRDMV-1105]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
+        it('[6357]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
@@ -50,7 +50,7 @@ describe('Knowledge Article Set', () => {
             expect(await createKnowledgeSetPo.isFieldRequired('Application ID')).toBeTruthy('Application ID field is not tagged as required');
             expect(await createKnowledgeSetPo.isFieldRequired('Application Bundle ID')).toBeTruthy('Application Bundle ID field is not tagged as required');
             await createKnowledgeSetPo.clickCreateNewApplicationCancelBtn();
-            await createKnowledgeSetPo.setKnowledgeSetName('DRDMV-1062' + randomStr);
+            await createKnowledgeSetPo.setKnowledgeSetName('6375' + randomStr);
             await createKnowledgeSetPo.setCompanyValue('Petramco');
             await createKnowledgeSetPo.setDescriptionValue('Sample Description' + randomStr);
             await createKnowledgeSetPo.addNewApplication('Approval', 'desc1' + randomStr);
@@ -64,14 +64,14 @@ describe('Knowledge Article Set', () => {
             await createKnowledgeSetPo.clickSelectBtn();
             await createKnowledgeSetPo.clickSaveBtn();
             await utilCommon.closeBladeOnSettings();
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Record is not Present');
-            await utilGrid.searchAndOpenHyperlink('DRDMV-1062' + randomStr);
+            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Record is not Present');
+            await utilGrid.searchAndOpenHyperlink('6375' + randomStr);
             expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.arsys.rx.approval')).toBeTruthy('Approval Application is not present');
             expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.arsys.rx.assignment')).toBeTruthy('Assignment Application is not present');
             expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.dsm.case-lib')).toBeTruthy('Case Management Application is not present');
             await utilCommon.closeBladeOnSettings();
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
-            await createKnowledgeSetPo.setKnowledgeSetName('DRDMV-1062_1' + randomStr);
+            await createKnowledgeSetPo.setKnowledgeSetName('6375_1' + randomStr);
             await createKnowledgeSetPo.setCompanyValue('Petramco');
             await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
             await createKnowledgeSetPo.clickAssociateBtn();
@@ -79,16 +79,16 @@ describe('Knowledge Article Set', () => {
             await createKnowledgeSetPo.clickSelectBtn();
             await createKnowledgeSetPo.clickSaveBtn();
             await utilCommon.closeBladeOnSettings();
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Record is not Present');
+            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Record is not Present');
         });
 
-        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to different LOB Case BA', async () => {
+        it('[6357]: Verify if case assignment mapping is accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
+            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
             await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
             await createKnowledgeSetPo.setCompanyValue('Petramco');
@@ -102,54 +102,54 @@ describe('Knowledge Article Set', () => {
             expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Record is not Present');
         });
 
-        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[6357]: Verify if case assignment mapping is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company.');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company');
+            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company.');
+            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company');
             expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to same LOB Case BA.');
         });
 
-        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[6357]: Verify if case assignment mapping is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
             await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
             expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
             await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
             expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
         });
 
-        it('[DRDMV-1105]: Verify if case assignment mapping is accessible to Case BA user having access to multiple LOB', async () => {
+        it('[6357]: Verify if case assignment mapping is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
             await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
             expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
             await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent('DRDMV-1062_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
             expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
 
-            await utilGrid.searchAndOpenHyperlink('DRDMV-1062' + randomStr);
-            await editKnowledgeSet.setKnowledgeSetName('DRDMV-1062_updated' + randomStr);
+            await utilGrid.searchAndOpenHyperlink('6375' + randomStr);
+            await editKnowledgeSet.setKnowledgeSetName('6375_updated' + randomStr);
             await editKnowledgeSet.removeApplicationAssociation('com.bmc.arsys.rx.approval');
             await editKnowledgeSet.clickSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilCommon.closePopUpMessage();
             await utilCommon.closeBladeOnSettings();
         });
-        it('[DRDMV-1105]: create same name record in same LOB', async () => {
+        it('[6357]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -165,7 +165,7 @@ describe('Knowledge Article Set', () => {
             await createKnowledgeSetPo.clickCancelBtn();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-1105]: create same name record in different LOB', async () => {
+        it('[6357]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Human Resource');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
@@ -190,7 +190,7 @@ describe('Knowledge Article Set', () => {
     });
 
 
-    describe('[DRDMV-7022]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
+    describe('[5594]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeSetTitle = 'KnowledgeSet_' + randomStr, articleData, articleDetails;
         const knowledgeTemplateStr = 'ArticleTemplate_' + randomStr;
@@ -226,7 +226,7 @@ describe('Knowledge Article Set', () => {
             }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData);
         });
-        it('[DRDMV-7022]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
+        it('[5594]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -234,7 +234,7 @@ describe('Knowledge Article Set', () => {
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitle, 'Article set is not displayed');
         });
-        it('[DRDMV-7022]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
+        it('[5594]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -247,7 +247,7 @@ describe('Knowledge Article Set', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitle, 'Article set is not displayed');
         });
-        it('[DRDMV-7022]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
+        it('[5594]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
@@ -263,7 +263,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent(knowledgeTemplateStr)).toBeTruthy(`Template ${knowledgeTemplateStr} is not present`);
         });
-        it('[DRDMV-7022]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
+        it('[5594]:Knowledge Article Template visibility contains Knowledge Set associated with KM and BWF', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();

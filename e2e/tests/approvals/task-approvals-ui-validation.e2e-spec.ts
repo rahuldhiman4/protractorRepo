@@ -34,7 +34,7 @@ describe("Task Approval UI Validations", () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-21583]:[Task Approval] - Case General Approval - One Must Sign', () => {
+    describe('[3591]:[Task Approval] - Case General Approval - One Must Sign', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Task One Must Approval Flow' + randomStr;
         let caseData = undefined;
@@ -85,7 +85,7 @@ describe("Task Approval UI Validations", () => {
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         })
 
-        it('[DRDMV-21583]:Create One Must Approval Flow For Task', async () => {
+        it('[3591]:Create One Must Approval Flow For Task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(taskApprovalRecordDefinition);
@@ -126,7 +126,7 @@ describe("Task Approval UI Validations", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-21583]:Create task approval mapping', async () => {
+        it('[3591]:Create task approval mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -151,7 +151,7 @@ describe("Task Approval UI Validations", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
-        it('[DRDMV-21583]:Create case and assign tasks to it', async () => {
+        it('[3591]:Create case and assign tasks to it', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -163,7 +163,7 @@ describe("Task Approval UI Validations", () => {
             await manageTask.clickCloseButton();
         });
 
-        it('[DRDMV-21583]: Verify if task approved is triggered for manual task', async () => {
+        it('[3591]: Verify if task approved is triggered for manual task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -175,7 +175,7 @@ describe("Task Approval UI Validations", () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-21583]: Verify the task approval details', async () => {
+        it('[3591]: Verify the task approval details', async () => {
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(manualTaskId);
@@ -201,7 +201,7 @@ describe("Task Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         })
 
-        it('[DRDMV-21583]: Approve the task with approver', async () => {
+        it('[3591]: Approve the task with approver', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');

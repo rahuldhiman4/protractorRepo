@@ -52,7 +52,7 @@ describe("Notifications", () => {
     });
 
     //asahitya
-    describe('[DRDMV-16036]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
+    describe('[4355]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('idphylum1@petramco.com', 'Password_1234');
@@ -65,12 +65,12 @@ describe("Notifications", () => {
             await statusConfig.addCustomStatus('Resolved', 'Closed', 'AfterResolved');
         });
 
-        it('[DRDMV-16036]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', async () => {
+        it('[4355]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', async () => {
             await apiHelper.apiLogin('idphylum2@petramco.com', "Password_1234");
             let caseData = {
-                "Description": "DRDMV-16036-Desc",
+                "Description": "4355-Desc",
                 "Requester": "idphylum2",
-                "Summary": "DRDMV-16036-Summary",
+                "Summary": "4355-Summary",
                 "Assigned Company": "Phylum",
                 "Business Unit": "Phylum Support Org1",
                 "Support Group": "Phylum Support Group1",
@@ -99,11 +99,11 @@ describe("Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-8319]: [Alerts] Notification alerts on Case status update, for case with assignee', async () => {
+    it('[5530]: [Alerts] Notification alerts on Case status update, for case with assignee', async () => {
         let caseData = {
-            "Description": "DRDMV-8319 Desc",
+            "Description": "5530 Desc",
             "Requester": "Elizabeth",
-            "Summary": "DRDMV-8319 Summary",
+            "Summary": "5530 Summary",
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
@@ -157,7 +157,7 @@ describe("Notifications", () => {
     });
 
     //asahitya
-    it('[DRDMV-22964]: [Notifications] Case created without Case Template that has assignee - Assignee', async () => {
+    it('[3409]: [Notifications] Case created without Case Template that has assignee - Assignee', async () => {
         let caseData = {
             "Description": "Actionable Notification Desc",
             "Requester": "Elizabeth",
@@ -189,7 +189,7 @@ describe("Notifications", () => {
         }
     });
 
-    describe('[DRDMV-24404]: Formatting for notifications-multi line data appearing in notification', () => {
+    describe('[59944]: Formatting for notifications-multi line data appearing in notification', () => {
         let caseData = {
             "Description": "Notification check",
             "Requester": "qkatawazi",
@@ -217,7 +217,7 @@ describe("Notifications", () => {
             await apiHelper.apiLogin('qtao');
             caseResponse = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-24404]: Formatting for notifications-multi line data appearing in notification', async () => {
+        it('[59944]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await utilGrid.searchAndSelectGridRecord("Case Agent Assignment");
@@ -264,7 +264,7 @@ describe("Notifications", () => {
             await utilCommon.closeBladeOnSettings();
             await utilGrid.clearFilter();
         });
-        it('[DRDMV-24404]: Formatting for notifications-multi line data appearing in notification', async () => {
+        it('[59944]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);

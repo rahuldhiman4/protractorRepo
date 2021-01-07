@@ -25,7 +25,7 @@ describe('Conditional Task Life Cycle', () => {
     });
 
     //asahitya
-    describe('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', () => {
+    describe('[4503]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDoNotProceed, caseTemplateProceedWithNextTask, manualTaskTemplateData, externalTaskTemplateData, responseCaseDNP, responseCasePWNT, responseCaseNT, adhocTaskData, manualTaskDNPResponse, manualTaskNTResponse, manualTaskPWNTResponse, externalTaskDNPResponse, externalTaskNTResponse, externalTaskPWNTResponse, automatedTaskDNPResponse, automatedTaskNTResponse, automatedTaskPWNTResponse, manualTaskDNPId, manualTaskNTId, manualTaskPWNTId, externalTaskDNPId, externalTaskNTId, externalTaskPWNTId, automatedTaskTemplateData, automatedTaskDNPId, automatedTaskNTId, automatedTaskPWNTId;
         let completedStr: string = 'Completed';
@@ -121,7 +121,7 @@ describe('Conditional Task Life Cycle', () => {
             //Create Cases
             let caseDataDNP = {
                 "Requester": "qkatawazi",
-                "Summary": `DRDMV-14996 Summary DNP ${randomStr}`,
+                "Summary": `4503 Summary DNP ${randomStr}`,
                 "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDNPDisplayId
@@ -130,7 +130,7 @@ describe('Conditional Task Life Cycle', () => {
 
             let caseDataPWNT = {
                 "Requester": "qkatawazi",
-                "Summary": `DRDMV-14996 Summary PWNT ${randomStr}`,
+                "Summary": `4503 Summary PWNT ${randomStr}`,
                 "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplatePWNTDisplayId
@@ -139,7 +139,7 @@ describe('Conditional Task Life Cycle', () => {
 
             let caseDataWithoutTemplate = {
                 "Requester": "qkatawazi",
-                "Summary": `DRDMV-14996 Summary NT ${randomStr}`,
+                "Summary": `4503 Summary NT ${randomStr}`,
                 "Assigned Company": "Petramco",
                 "Line of Business": "Facilities",
                 "Business Unit": "Facilities Support",
@@ -150,7 +150,7 @@ describe('Conditional Task Life Cycle', () => {
 
             //Add Adhoc Task in all Cases
             adhocTaskData = {
-                "taskName": `DRDMV-14996 ${randomStr}`,
+                "taskName": `4503 ${randomStr}`,
                 "company": "Petramco",
                 "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -214,7 +214,7 @@ describe('Conditional Task Life Cycle', () => {
             await apiHelper.updateCaseStatus(responseCasePWNT.id, 'InProgress');
             await apiHelper.updateTaskStatus(adhocTaskPWNTResponse.id, 'Completed', 'Successful');
         });
-        it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
+        it('[4503]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 1)
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(responseCaseDNP.displayId);
@@ -233,7 +233,7 @@ describe('Conditional Task Life Cycle', () => {
             expect(await manageTaskBlade.getTaskStatus(externalTaskTemplateData.templateName)).toContain('Staged');
             await manageTaskBlade.clickCloseButton();
         });
-        it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
+        it('[4503]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 2)
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(responseCaseNT.displayId);
@@ -261,7 +261,7 @@ describe('Conditional Task Life Cycle', () => {
             expect(await utilityCommon.isPopUpMessagePresent('The case contains active tasks. Please close all the tasks and resolve the case.')).toBeTruthy();
             await updateStatusBlade.clickCancelButton();
         });
-        it('[DRDMV-14996]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
+        it('[4503]: [Task] Case created with CaseTemplate (with no TaskFlow) and without CaseTemplate', async () => {
             //Update Adhoc task to Completed and check manual task status(CASE 3)
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(responseCasePWNT.displayId);
@@ -300,14 +300,14 @@ describe('Conditional Task Life Cycle', () => {
     });
 
     //asahitya
-    describe('[DRDMV-15000]: [Task] - Adhoc task in Case with multiple Series and parallel tasks with condition', () => {
+    describe('[4499]: [Task] - Adhoc task in Case with multiple Series and parallel tasks with condition', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData, caseResponseMeduimPriority, caseResponseCriticalPriority;
         beforeAll(async () => {
             await apiHelper.apiLogin('fritz');
             caseTemplatePetramco = {
-                "templateName": 'caseTemplateName DRDMV-15000' + randomStr,
-                "templateSummary": 'caseTemplateName DRDMV-15000' + randomStr,
+                "templateName": 'caseTemplateName 4499' + randomStr,
+                "templateSummary": 'caseTemplateName 4499' + randomStr,
                 "templateStatus": "Active",
                 "categoryTier1": "Purchasing Card",
                 "categoryTier2": "Policies",
@@ -374,7 +374,7 @@ describe('Conditional Task Life Cycle', () => {
 
             let caseDataMediumPriority = {
                 "Requester": "qkatawazi",
-                "Summary": `DRDMV-15000 Medium Priority ${randomStr}`,
+                "Summary": `4499 Medium Priority ${randomStr}`,
                 "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId,
@@ -384,7 +384,7 @@ describe('Conditional Task Life Cycle', () => {
 
             let caseDataCriticalPriority = {
                 "Requester": "qkatawazi",
-                "Summary": `DRDMV-15000 Medium Priority ${randomStr}`,
+                "Summary": `4499 Medium Priority ${randomStr}`,
                 "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId,
@@ -394,13 +394,13 @@ describe('Conditional Task Life Cycle', () => {
             await apiHelper.updateCaseStatus(caseResponseCriticalPriority.id, 'InProgress');
         });
 
-        it('[DRDMV-15000]: [Task] - Adhoc task in Case with multiple Series and parallel tasks with condition', async () => {
+        it('[4499]: [Task] - Adhoc task in Case with multiple Series and parallel tasks with condition', async () => {
             //Verify Case 1 with Automated task
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponseMeduimPriority.displayId);
             expect(await viewCasePage.getTaskCardCount()).toEqual(0);
             let adhocTaskData = {
-                "taskName": `DRDMV-15000 ${randomStr}`,
+                "taskName": `4499 ${randomStr}`,
                 "company": "Petramco",
                 "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -443,7 +443,7 @@ describe('Conditional Task Life Cycle', () => {
             expect(await viewCasePage.getTaskCardCount()).toEqual(2);
         });
 
-        it('[DRDMV-15000]: [Task] - Adhoc task in Case with multiple Series and parallel tasks with condition', async () => {
+        it('[4499]: [Task] - Adhoc task in Case with multiple Series and parallel tasks with condition', async () => {
             //Get taskguid of External and Manual Task
             await apiHelper.apiLogin('fritz');
             let manualTaskGuid = await coreApi.getTaskGuid(manualTaskTemplateData.templateSummary);
@@ -482,7 +482,7 @@ describe('Conditional Task Life Cycle', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
 
-        it('[DRDMV-15000]: Validate the status of Task Activities', async () => {
+        it('[4499]: Validate the status of Task Activities', async () => {
             let taskDisplayIds = await viewCasePage.getAllTasksDisplayId();
             await navigationPage.gotoPersonProfile();
             await activityPage.applyActivityFilter('Status Change');
@@ -495,15 +495,15 @@ describe('Conditional Task Life Cycle', () => {
     });
 
     //asahitya
-    describe('[DRDMV-15001]: [Task] Change Case Template in a Case which already have some tasks', () => {
+    describe('[4498]: [Task] Change Case Template in a Case which already have some tasks', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData1, caseTemplateData2, manualTaskTemplateData1, externalTaskTemplateData1, automatedTaskTemplateData1, manualTaskTemplateData2, externalTaskTemplateData2, caseTemplateResponse1, caseTemplateResponse2, caseResponse1, caseResponse2;
         beforeAll(async () => {
             await apiHelper.apiLogin('fritz');
             //Creating Case Template 1
             caseTemplateData1 = {
-                "templateName": 'CT_DRDMV-15001_1' + randomStr,
-                "templateSummary": 'CT_DRDMV-15001_1' + randomStr,
+                "templateName": 'CT_4498_1' + randomStr,
+                "templateSummary": 'CT_4498_1' + randomStr,
                 "templateStatus": "Active",
                 "casePriority": "Low",
                 "caseStatus": "New",
@@ -519,8 +519,8 @@ describe('Conditional Task Life Cycle', () => {
 
             //Creating Case Template 2
             caseTemplateData2 = {
-                "templateName": 'CT_DRDMV-15001_2' + randomStr,
-                "templateSummary": 'CT_DRDMV-15001_2' + randomStr,
+                "templateName": 'CT_4498_2' + randomStr,
+                "templateSummary": 'CT_4498_2' + randomStr,
                 "templateStatus": "Active",
                 "casePriority": "Low",
                 "caseStatus": "New",
@@ -536,8 +536,8 @@ describe('Conditional Task Life Cycle', () => {
 
             //Creating the task templates for Case Template 1 and associate with Tempkate 1
             manualTaskTemplateData1 = {
-                "templateName": 'MTT_DRDMV-15001_1' + randomStr,
-                "templateSummary": 'MTT_DRDMV-15001_1' + randomStr,
+                "templateName": 'MTT_4498_1' + randomStr,
+                "templateSummary": 'MTT_4498_1' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -551,8 +551,8 @@ describe('Conditional Task Life Cycle', () => {
             let manualTasktemplateResponse1 = await apiHelper.createManualTaskTemplate(manualTaskTemplateData1);
 
             externalTaskTemplateData1 = {
-                "templateName": 'ETT_DRDMV-15001_1' + randomStr,
-                "templateSummary": 'ETT_DRDMV-15001_1' + randomStr,
+                "templateName": 'ETT_4498_1' + randomStr,
+                "templateSummary": 'ETT_4498_1' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -566,8 +566,8 @@ describe('Conditional Task Life Cycle', () => {
             let externalTasktemplateResponse1 = await apiHelper.createExternalTaskTemplate(externalTaskTemplateData1);
 
             automatedTaskTemplateData1 = {
-                "templateName": 'ATT_DRDMV-15001_1' + randomStr,
-                "templateSummary": 'ATT_DRDMV-15001_1' + randomStr,
+                "templateName": 'ATT_4498_1' + randomStr,
+                "templateSummary": 'ATT_4498_1' + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces' + randomStr,
@@ -585,8 +585,8 @@ describe('Conditional Task Life Cycle', () => {
 
             //Creating the task templates for Case Template 2 and associate with Tempkate 2
             manualTaskTemplateData2 = {
-                "templateName": 'MTT_DRDMV-15001_2' + randomStr,
-                "templateSummary": 'MTT_DRDMV-15001_2' + randomStr,
+                "templateName": 'MTT_4498_2' + randomStr,
+                "templateSummary": 'MTT_4498_2' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -600,8 +600,8 @@ describe('Conditional Task Life Cycle', () => {
             let manualTasktemplateResponse2 = await apiHelper.createManualTaskTemplate(manualTaskTemplateData2);
 
             externalTaskTemplateData2 = {
-                "templateName": 'ETT_DRDMV-15001_2' + randomStr,
-                "templateSummary": 'ETT_DRDMV-15001_2' + randomStr,
+                "templateName": 'ETT_4498_2' + randomStr,
+                "templateSummary": 'ETT_4498_2' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -630,7 +630,7 @@ describe('Conditional Task Life Cycle', () => {
 
             //Adding 2 Adhoc tasks to Case 1
             let adhocTaskData1 = {
-                "taskName": `DRDMV-15001_1 ${randomStr}`,
+                "taskName": `4498_1 ${randomStr}`,
                 "company": "Petramco",
                 "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -639,7 +639,7 @@ describe('Conditional Task Life Cycle', () => {
             }
 
             let adhocTaskData2 = {
-                "taskName": `DRDMV-15001_2 ${randomStr}`,
+                "taskName": `4498_2 ${randomStr}`,
                 "company": "Petramco",
                 "lineOfBusiness": "Facilities",
                 "businessUnit": "Facilities Support",
@@ -650,12 +650,12 @@ describe('Conditional Task Life Cycle', () => {
             await apiHelper.createAdhocTask(caseResponse1.id, adhocTaskData2);
         });
 
-        it('[DRDMV-15001]: [Task] Change Case Template in a Case which already have some tasks', async () => {
+        it('[4498]: [Task] Change Case Template in a Case which already have some tasks', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
             await viewCasePage.openTaskCard(1);
-            expect(await manageTaskBlade.getTaskStatus(`DRDMV-15001_1 ${randomStr}`)).toContain('Staged');
-            expect(await manageTaskBlade.getTaskStatus(`DRDMV-15001_2 ${randomStr}`)).toContain('Staged');
+            expect(await manageTaskBlade.getTaskStatus(`4498_1 ${randomStr}`)).toContain('Staged');
+            expect(await manageTaskBlade.getTaskStatus(`4498_2 ${randomStr}`)).toContain('Staged');
             await manageTaskBlade.clickCloseButton();
 
             await viewCasePage.clickEditCaseButton();
@@ -686,11 +686,11 @@ describe('Conditional Task Life Cycle', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
 
-        it('[DRDMV-15001]: [Task] Change Case Template in a Case which already have some tasks', async () => {
+        it('[4498]: [Task] Change Case Template in a Case which already have some tasks', async () => {
             //Create Case 2 with case template 1
             let caseData2 = {
                 "Requester": "qkatawazi",
-                "Summary": `DRDMV-15000 Medium Priority ${randomStr}`,
+                "Summary": `4499 Medium Priority ${randomStr}`,
                 "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse1.displayId

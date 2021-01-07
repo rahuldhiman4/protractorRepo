@@ -43,12 +43,12 @@ let advancedSearchOptionCategoryTier1 = "Operational Category Tier 1";
 let advancedSearchOptionCategoryTier1ForDocumentLibrary = "Operational Category 1";
 let applyBtn = "Apply";
 let emptyStr = '';
-let articleInDraftStatus = 'DRDMV-19004 KnowledgeArticle_Draft';
-let articleInSMEReviewStatus = 'DRDMV-19004 KnowledgeArticle_SMEReview';
-let articleInPublishedStatus = 'DRDMV-19004 KnowledgeArticle_Published';
-let articleInRetiredStatus = 'DRDMV-19004 KnowledgeArticle_Retired';
-let articleInClosedStatus = 'DRDMV-19004 KnowledgeArticle_Closed';
-let articleInCanceledStatus = 'DRDMV-19004 KnowledgeArticle_Canceled';
+let articleInDraftStatus = '3914 KnowledgeArticle_Draft';
+let articleInSMEReviewStatus = '3914 KnowledgeArticle_SMEReview';
+let articleInPublishedStatus = '3914 KnowledgeArticle_Published';
+let articleInRetiredStatus = '3914 KnowledgeArticle_Retired';
+let articleInClosedStatus = '3914 KnowledgeArticle_Closed';
+let articleInCanceledStatus = '3914 KnowledgeArticle_Canceled';
 let companyStr = "Petramco";
 let documentLibraryStatus = "Published";
 let draftStatus = "Draft";
@@ -58,7 +58,7 @@ let publishedStatus = "Published";
 let retiredStatus = "Retired";
 let closedStatus = "Closed";
 let canceledStatus = "Canceled";
-let title = "DRDMV-19004 KnowledgeArticle";
+let title = "3914 KnowledgeArticle";
 
 describe('Knowledge Articles - Categorization Tests', () => {
     const filePath = '../../../data/ui/attachment/articleStatus.png';
@@ -170,11 +170,11 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await browser.sleep(2000); //waiting for data to be reflected on UI
     }
 
-    describe('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', () => {
+    describe('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', () => {
         let categoryTierFieldColumns: string[] = ["Category Tier 1", "Category Tier 2", "Category Tier 3"];
         let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Category Tier 1", "Category Tier 2", "Category Tier 3"];
         let categoryTier1Val, categoryTier2Val, categoryTier3Val;
-        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+        it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //* Login with Case BA
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
@@ -201,7 +201,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
         });
-        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+        it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with case Manager
             await navigationPage.signOut();
             await loginPage.login(caseManagerUser);
@@ -230,7 +230,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier3Val).toEqual(emptyStr);
         });
 
-        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+        it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with Case Agent user
             await navigationPage.signOut();
             await loginPage.login(caseAgentUser);
@@ -258,7 +258,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
         });
-        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+        it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge candidate user
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
@@ -288,7 +288,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier3Val).toEqual(emptyStr);
         });
 
-        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+        it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge contributor 
             await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
@@ -317,7 +317,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(emptyStr);
             expect(categoryTier3Val).toEqual(emptyStr);
         });
-        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+        it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge Publisher
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
@@ -347,7 +347,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier3Val).toEqual(emptyStr);
         });
 
-        it('[DRDMV-18999,DRDMV-19000,DRDMV-19002]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
+        it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge coach 
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -382,8 +382,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
         });
     });
 
-    describe('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', () => {
-        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
+    describe('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', () => {
+        it('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //* Check the Availability of Category Tiers with Case BA
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
@@ -438,7 +438,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
         });
 
-        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
+        it('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -498,7 +498,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
         });
 
-        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
+        it('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Login with Case Manager
             await navigationPage.signOut();
             await loginPage.login(caseManagerUser);
@@ -555,7 +555,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
         });
 
-        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
+        it('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -616,7 +616,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
         });
 
-        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
+        it('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Login with Case Agent
             await navigationPage.signOut();
             await loginPage.login(caseAgentUser);
@@ -673,7 +673,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInCanceledStatus)).toEqual(articleInCanceledStatus);
         });
 
-        it('[DRDMV-19004]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
+        it('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //Navigate to Create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
@@ -741,10 +741,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
         });
     });
 
-    describe('[DRDMV-19005]:Verify the document search based on category tier from attachments', () => {
+    describe('[3913]:Verify the document search based on category tier from attachments', () => {
         let caseData = {
             "Requester": "qdu",
-            "Summary": "DRDMV-19005",
+            "Summary": "3913",
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 1",
@@ -752,13 +752,13 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
         let title = `Document-${new Date().valueOf()}`;
 
-        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+        it('[3913]:Verify the document search based on category tier from attachments', async () => {
             //Create a document library
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            title = "DRDMV-19005Case " + title;
+            title = "3913Case " + title;
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title);
@@ -775,7 +775,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
-        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+        it('[3913]:Verify the document search based on category tier from attachments', async () => {
             //Login with Case Manager
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -796,7 +796,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+        it('[3913]:Verify the document search based on category tier from attachments', async () => {
             //Login with Case Agent
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -816,7 +816,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-19005]:Verify the document search based on category tier from attachments', async () => {
+        it('[3913]:Verify the document search based on category tier from attachments', async () => {
             //Login with Case BA
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
@@ -841,7 +841,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         });
     });
 
-    it('[DRDMV-19356,DRDMV-19082]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
+    it('[3860,3901]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
         let knowledgeSetData = {
             knowledgeSetTitle: `${knowledgeSetTitleStr}`,

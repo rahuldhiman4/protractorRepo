@@ -32,11 +32,11 @@ describe("Notification Template", () => {
     });
 
     //radhiman
-    describe('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
+    describe('[3898]: [Copy Notification] - UI behavior when copying a notification template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let notificationTemplateName = 'DRDMV-19109_CopiedTemplate' + randomStr;
-        let notificationTemplateNameUpdated = 'DRDMV-19109_CopiedTemplate_Updated' + randomStr;
-        it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
+        let notificationTemplateName = '3898_CopiedTemplate' + randomStr;
+        let notificationTemplateNameUpdated = '3898_CopiedTemplate_Updated' + randomStr;
+        it('[3898]: [Copy Notification] - UI behavior when copying a notification template', async () => {
             await expect(notificationTempGridPage.isCopyTemplateButtonDisabled()).toBeTruthy();
             await utilGrid.searchAndSelectGridRecord("Task SLA Missed");
             await notificationTempGridPage.clickCopyTemplate();
@@ -64,7 +64,7 @@ describe("Notification Template", () => {
             expect(await utilGrid.isGridRecordPresent(notificationTemplateName)).toBeTruthy("Notification template not copied");
         });
 
-        it('[DRDMV-19109]: [Copy Notification] - UI behavior when copying a notification template', async () => {
+        it('[3898]: [Copy Notification] - UI behavior when copying a notification template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await utilGrid.searchAndSelectGridRecord("Case Agent Assignment");
@@ -80,7 +80,7 @@ describe("Notification Template", () => {
             expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy("Notification template not copied");
         });
 
-        it('[DRDMV-19109]: Verify if copied notification templates are accessible to same LOB Case Manager', async () => {
+        it('[3898]: Verify if copied notification templates are accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -88,7 +88,7 @@ describe("Notification Template", () => {
             expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to same LOB case manager');
         });
 
-        it('[DRDMV-19109]: Verify if copied notification templates are accessible to different LOB Case BA', async () => {
+        it('[3898]: Verify if copied notification templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -96,7 +96,7 @@ describe("Notification Template", () => {
             expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is not visible to different LOB case BA');
         });
 
-        it('[DRDMV-19109]: Verify if copied notification templates are accessible to different LOB Case Manager', async () => {
+        it('[3898]: Verify if copied notification templates are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -104,7 +104,7 @@ describe("Notification Template", () => {
             expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is not visible to different LOB case manager');
         });
 
-        it('[DRDMV-19109]: Verify if copied notification templates are accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[3898]: Verify if copied notification templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -112,7 +112,7 @@ describe("Notification Template", () => {
             expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to same LOB with different case BA');
         });
 
-        it('[DRDMV-19109]: Verify if copied notification templates are accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[3898]: Verify if copied notification templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -124,7 +124,7 @@ describe("Notification Template", () => {
             expect(await utilGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is visible to case manager with multiple LOB access');
         });
 
-        it('[DRDMV-19109]: Verify if copied notification templates are accessible to Case BA user having access to multiple LOB', async () => {
+        it('[3898]: Verify if copied notification templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -146,7 +146,7 @@ describe("Notification Template", () => {
     });
 
     //asahitya  
-    describe('[DRDMV-14062]: To create new template with an event', async () => {
+    describe('[4589]: To create new template with an event', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notificationEventHRGlobal = "Case Notification Event HR Global" + randomStr;
         let notificationEventHRPetramco = "Case Notification Event HR Petramco" + randomStr;
@@ -233,13 +233,13 @@ describe("Notification Template", () => {
 
         });
 
-        it('[DRDMV-14062]: Verify notification event validation wrt same LOB ', async () => {
+        it('[4589]: Verify notification event validation wrt same LOB ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName(notificationEventHRGlobal);
             await createNotificationEventPage.setCompanyValue('Petramco');
-            await createNotificationEventPage.setDescription('DRDMV-14062 Desc');
+            await createNotificationEventPage.setDescription('4589 Desc');
             await createNotificationEventPage.saveEventConfig();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222104): An Event with same name already exists.')).toBeTruthy("Error message absent");
             await createNotificationEventPage.setEventName('Case Priority Change' + randomStr);
@@ -257,7 +257,7 @@ describe("Notification Template", () => {
             await editNotificationEventPage.cancelEventConfig();
         });
 
-        it('[DRDMV-14062]: To create new template with an event', async () => {
+        it('[4589]: To create new template with an event', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
@@ -286,8 +286,8 @@ describe("Notification Template", () => {
             await createNotificationTemplatePage.clearNotificationEventFromDropDown();
             expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesPetramcoInactive)).toBeFalsy('Notification Event is displayed.');
             await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
-            await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.setTemplateName('4589' + randomStr);
+            await createNotificationTemplatePage.setDescription('4589' + randomStr);
             await createNotificationTemplatePage.setAlertMessage('Priority is change');
             await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Priority is change');
@@ -297,7 +297,7 @@ describe("Notification Template", () => {
             await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
             await createNotificationTemplatePage.clickOnSaveButton();
             await utilCommon.closeBladeOnSettings();
-            await utilGrid.searchAndOpenHyperlink('DRDMV-14062' + randomStr);
+            await utilGrid.searchAndOpenHyperlink('4589' + randomStr);
             expect(await editNotificationTemplate.getEventName()).toBe('Case Priority Change' + randomStr);
             expect(await editNotificationTemplate.getModuleName()).toBe('Cases');
             expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assignee's Manager", "BCC")).toBeTruthy();
@@ -306,14 +306,14 @@ describe("Notification Template", () => {
             await utilCommon.closeBladeOnSettings();
         });
 
-        it('[DRDMV-14062]: Verify notification template validation wrt same LOB ', async () => {
+        it('[4589]: Verify notification template validation wrt same LOB ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.selectModuleName('Cases');
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
-            await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
-            await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.setTemplateName('4589' + randomStr);
+            await createNotificationTemplatePage.setDescription('4589' + randomStr);
             await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
             await createNotificationTemplatePage.setAlertMessage('Priority is change');
             await createNotificationTemplatePage.clickOnEmailTab();
@@ -326,7 +326,7 @@ describe("Notification Template", () => {
             await utilCommon.closeBladeOnSettings();
         });
 
-        it('[DRDMV-14062]: Verify notification event validation wrt different LOB ', async () => {
+        it('[4589]: Verify notification event validation wrt different LOB ', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -334,19 +334,19 @@ describe("Notification Template", () => {
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName(notificationEventHRGlobal);
             await createNotificationEventPage.setCompanyValue('Petramco');
-            await createNotificationEventPage.setDescription('DRDMV-14062 Desc');
+            await createNotificationEventPage.setDescription('4589 Desc');
             await createNotificationEventPage.saveEventConfig();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("record saved successful message is not displayed.");
         });
 
-        it('[DRDMV-14062]: Verify notification template validation wrt different LOB ', async () => {
+        it('[4589]: Verify notification template validation wrt different LOB ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.selectModuleName('Cases');
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
-            await createNotificationTemplatePage.setTemplateName('DRDMV-14062' + randomStr);
-            await createNotificationTemplatePage.setDescription('DRDMV-14062' + randomStr);
+            await createNotificationTemplatePage.setTemplateName('4589' + randomStr);
+            await createNotificationTemplatePage.setDescription('4589' + randomStr);
             await createNotificationTemplatePage.setAlertMessage('Priority is change');
             await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Priority is change');
@@ -370,7 +370,7 @@ describe("Notification Template", () => {
     });
 
     //asahitya
-    it('[DRDMV-2835]: AC: Notification Template_Console Columns', async () => {
+    it('[5917]: AC: Notification Template_Console Columns', async () => {
         let columns: string[] = ['GUID', 'ID', 'Label'];
         let allColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name', 'GUID', 'ID', 'Label'];
         let defaultColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name'];
@@ -388,8 +388,8 @@ describe("Notification Template", () => {
     });
 
     //asahitya
-    describe('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
-        it('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
+    describe('[4590]: Availability of Recipient List on OOB Global Template', async () => {
+        it('[4590]: Availability of Recipient List on OOB Global Template', async () => {
             await utilGrid.searchAndOpenHyperlink('New Signature Template');
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
             await utilCommon.closeBladeOnSettings();
@@ -400,7 +400,7 @@ describe("Notification Template", () => {
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List of Cases Module is not matching');
             await utilCommon.closeBladeOnSettings();
         });
-        it('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
+        it('[4590]: Availability of Recipient List on OOB Global Template', async () => {
             await utilGrid.searchAndOpenHyperlink('Article Reviewer Assignment');
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Reviewer", "Assignee", "Assignee's Manager", "Reviewer's Manager"])).toBeTruthy('Recipient List of Knowledge Module is not matching');
             await utilCommon.closeBladeOnSettings();
@@ -411,7 +411,7 @@ describe("Notification Template", () => {
             expect(await createNotificationTemplatePage.areRecipientsMatches([])).toBeTruthy('Recipient List of SLA Module is not matching');
             await utilCommon.closeBladeOnSettings();
         });
-        it('[DRDMV-14061]: Availability of Recipient List on OOB Global Template', async () => {
+        it('[4590]: Availability of Recipient List on OOB Global Template', async () => {
             await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Case');
             expect(await createNotificationTemplatePage.areRecipientsMatches([])).toBeTruthy('Recipient List of Social Module is not matching');
             await utilCommon.closeBladeOnSettings();
@@ -427,15 +427,15 @@ describe("Notification Template", () => {
         });
     });
 
-    it('[DRDMV-14082]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
+    it('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
         let eventData = {
-            eventName: 'DRDMV-14082' + randomStr
+            eventName: '4588' + randomStr
         }
         let notificationData = {
-            description: 'DRDMV-14082 desc',
+            description: '4588 desc',
             module: 'Cases',
-            eventName: 'DRDMV-14082' + randomStr,
-            templateName: 'DRDMV-14082 name' + randomStr,
+            eventName: '4588' + randomStr,
+            templateName: '4588 name' + randomStr,
             alertMessage: 'Alert Message text',
             emailBody: 'Email Body text',
             emailSubject: 'Email Subject text'
@@ -444,7 +444,7 @@ describe("Notification Template", () => {
         await apiHelper.createNotificationEvent(eventData);
         await apiHelper.createNotificationTemplate(notificationData);
 
-        await utilGrid.searchAndOpenHyperlink('DRDMV-14082 name' + randomStr);
+        await utilGrid.searchAndOpenHyperlink('4588 name' + randomStr);
         await editNotificationTemplate.clickAddRecipientsBtn();
         expect(await editNotificationTemplate.isSearchRecipientDispalyed()).toBeTruthy('Search Recipient field is not dispalyed');
         expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Recipient Type');
@@ -473,22 +473,22 @@ describe("Notification Template", () => {
         await editNotificationTemplate.clickRecipientsCheckbox('SG - Australia Support - AU Support 1', 'CC');
         await editNotificationTemplate.clickOnSaveButton();
 
-        await utilGrid.searchAndOpenHyperlink('DRDMV-14082 name' + randomStr);
+        await utilGrid.searchAndOpenHyperlink('4588 name' + randomStr);
         await editNotificationTemplate.clickRecipientsCheckbox('Elizabeth Peters', 'TO');
         await editNotificationTemplate.clickRecipientsCheckbox('SG - Australia Support - AU Support 1', 'CC');
         await editNotificationTemplate.clickOnSaveButton();
 
-        await utilGrid.searchAndOpenHyperlink('DRDMV-14082 name' + randomStr);
+        await utilGrid.searchAndOpenHyperlink('4588 name' + randomStr);
         expect(await editNotificationTemplate.isRecipientDisplayed('Elizabeth Peters')).toBeTruthy('Elizabeth is not present in Recipient list');
         expect(await editNotificationTemplate.isRecipientDisplayed('SG - Australia Support - AU Support 1')).toBeTruthy('AU Support 1 is not present in Recipient list');
         await utilCommon.closeBladeOnSettings();
     });
 
-    describe('[DRDMV-16012]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
-        it('[DRDMV-16012]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
+    describe('[4371]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
+        it('[4371]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
-            await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16012');
+            await createNotificationTemplatePage.setTemplateName('Email Based Approval 4371');
             await createNotificationTemplatePage.selectModuleName('Case - Approval');
             await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 1);
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(true);
@@ -507,12 +507,12 @@ describe("Notification Template", () => {
         });
     });
 
-    it('[DRDMV-16034]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
+    it('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
         await notificationTempGridPage.clickOnCreateNotificationTemplate();
         expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
-        await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16034');
+        await createNotificationTemplatePage.setTemplateName('Email Based Approval 4357');
         await createNotificationTemplatePage.selectModuleName('Case - Approval');
         await createNotificationTemplatePage.selectDefaultNotificationMethod('Alert');
         await createNotificationTemplatePage.selectEvent('Email Based Approval');
@@ -526,14 +526,14 @@ describe("Notification Template", () => {
         expect(await utilCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
         await utilCommon.closeBladeOnSettings();
         await notificationTempGridPage.clickOnCreateNotificationTemplate();
-        await createNotificationTemplatePage.setTemplateName('Email Based Approval DRDMV-16034');
+        await createNotificationTemplatePage.setTemplateName('Email Based Approval 4357');
         await createNotificationTemplatePage.selectModuleName('Case - Approval');
         await createNotificationTemplatePage.selectEvent('Case Reopened');
         expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
         await utilCommon.closeBladeOnSettings();
     });
 
-    it('[DRDMV-16035]: Verify OOB Notification Event and Template for Email based Approval', async () => {
+    it('[4356]: Verify OOB Notification Event and Template for Email based Approval', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
         await utilGrid.clearFilter();

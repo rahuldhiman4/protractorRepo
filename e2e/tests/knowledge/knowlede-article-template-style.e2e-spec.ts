@@ -21,7 +21,7 @@ describe('Knowledge article template style', () => {
         await navigationPage.signOut();
     });
 
-    it('[DRDMV-5013]: [Template Styles] Availability of default styles on OOB templates', async () => {
+    it('[5723]: [Template Styles] Availability of default styles on OOB templates', async () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.gotoSettingsPage();
@@ -34,14 +34,14 @@ describe('Knowledge article template style', () => {
         expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Paragraph');
     });
 
-    describe('[DRDMV-5019]: [Template Styles] Deletion of template styles - OOB/Custom Templates', () => {
-        it('[DRDMV-5019]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
+    describe('[5719]: [Template Styles] Deletion of template styles - OOB/Custom Templates', () => {
+        it('[5719]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-            await createKnowledgeArticleTemplatePo.setTemplateName("DRDMV-5019" + randomStr);
+            await createKnowledgeArticleTemplatePo.setTemplateName("5719" + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
@@ -65,10 +65,10 @@ describe('Knowledge article template style', () => {
             await browser.navigate().back();
         });
 
-        it('[DRDMV-5019]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
+        it('[5719]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
-            await articleTemplateStylePo.navigateToTemplateName('Human Resource', "DRDMV-5019" + randomStr); // Custom Template is getting created under LOB , cc: @tus
+            await articleTemplateStylePo.navigateToTemplateName('Human Resource', "5719" + randomStr); // Custom Template is getting created under LOB , cc: @tus
             expect(await articleTemplateStylePo.isDeleteStyleButtonPresent()).toBeFalsy('Delete Button should not be Present');
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(randomStr);
@@ -86,7 +86,7 @@ describe('Knowledge article template style', () => {
         });
     });
 
-    it('[DRDMV-5020]: [Article Styles] Mandatory field validation on template styles', async () => {
+    it('[5718]: [Article Styles] Mandatory field validation on template styles', async () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.gotoSettingsPage();
@@ -109,9 +109,9 @@ describe('Knowledge article template style', () => {
         expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
     });
 
-    describe('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', () => {
-        let styleName: string = "DRDMV-5014" + randomStr;
-        it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
+    describe('[5722,5717]: [Template Styles] Availability of default styles on custom templates', () => {
+        let styleName: string = "5722" + randomStr;
+        it('[5722,5717]: [Template Styles] Availability of default styles on custom templates', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
@@ -125,7 +125,7 @@ describe('Knowledge article template style', () => {
             await browser.navigate().back();
         });
 
-        it('[DRDMV-5014,DRDMV-5022]: [Template Styles] Availability of default styles on custom templates', async () => {
+        it('[5722,5717]: [Template Styles] Availability of default styles on custom templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
             await articleTemplateStylePo.navigateToTemplateName('Human Resource', styleName);
@@ -146,8 +146,8 @@ describe('Knowledge article template style', () => {
         });
     });
 
-    describe('[DRDMV-5023,DRDMV-5018,DRDMV-5015]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
-        it('[DRDMV-5023,DRDMV-5018,DRDMV-5015]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
+    describe('[5716,5720,5721]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
+        it('[5716,5720,5721]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
@@ -200,11 +200,11 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-5023,DRDMV-5018,DRDMV-5015]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
+        it('[5716,5720,5721]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-            await createKnowledgeArticleTemplatePo.setTemplateName("DRDMV-5023" + randomStr);
+            await createKnowledgeArticleTemplatePo.setTemplateName("5716" + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setSectionTitle('NewThings' + randomStr);
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
@@ -212,7 +212,7 @@ describe('Knowledge article template style', () => {
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
-            await articleTemplateStylePo.navigateToTemplateName('Human Resource', "DRDMV-5023" + randomStr);
+            await articleTemplateStylePo.navigateToTemplateName('Human Resource', "5716" + randomStr);
             expect(await articleTemplateStylePo.isDeleteStyleButtonPresent()).toBeFalsy('Delete Button should not be Present');
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(randomStr);
