@@ -45,7 +45,7 @@ export class Utility {
             console.log(`Selecting dropdown value: ${value}`);
             let isSearchPresent: boolean = await dropDownInputElement.isPresent();
             if (isSearchPresent) await dropDownInputElement.sendKeys(value);
-//this changes is required on create email template screen to select status and other fields
+            //this changes is required on create email template screen to select status and other fields
             let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown-item`;
             let option = await element(by.cssContainingText(optionCss, value));
             await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
@@ -68,7 +68,7 @@ export class Utility {
             if (result) {
                 await $(this.selectors.warningWindowCloseBtn).click();
             } else {
-                console.log( "Closed window not present");
+                console.log("Closed window not present");
             }
         });
     }
@@ -197,16 +197,18 @@ export class Utility {
         return await $(`[rx-view-component-id="${guid}"] button`).getText()
     }
 
+    //unable to identify values on task template screen    
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
-        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span, [rx-view-component-id='${guid}'] bwf-read-only-field label, [rx-view-component-id='${guid}'] adapt-select .form-control-label span, .clearfix label, [rx-view-component-id='${guid}'] label, .saved-advanced-filters-header, .form-control-label`;
+        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span,[rx-view-component-id='${guid}'] bwf-read-only-field label, [rx-view-component-id='${guid}'] adapt-select .form-control-label span`;
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
             } else {
-                console.log(fieldName, " not present");
-                return false;
+                let fieldLabel = `.clearfix label, [rx-view-component-id='${guid}'] label, .saved-advanced-filters-header, .form-control-label, [rx-view-component-id='${guid}'] span span, [rx-view-component-id='${guid}'] label span`;
+                return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
             }
         });
+
     }
 
     async isRequiredAttributePresent(locator: any): Promise<boolean> {
