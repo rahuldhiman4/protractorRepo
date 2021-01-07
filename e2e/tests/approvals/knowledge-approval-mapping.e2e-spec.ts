@@ -54,7 +54,7 @@ describe("Knowledge Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login("fritz");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Approvals - Settings - Business Workflows');
             await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
             expect(await createApprovalMappingKnowledgePo.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
             expect(await createApprovalMappingKnowledgePo.isApprovalMappingNameFieldMandatory()).toBeTruthy();
