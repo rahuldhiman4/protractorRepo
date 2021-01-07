@@ -1,13 +1,14 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilCommon from "../../../utils/util.common";
+import utilityCommon from "../../../utils/utility.common";
 
 class EditApprovalMapping {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        editApprovalMappingHeading: '.modal-header h3',
-        approvalMappingName: '[rx-view-component-id="5c55018a-ee92-40bf-b501-0b165e12e6ea"] .d-textfield__input',
+        editApprovalMappingHeading: '.dp-header .dp-title',
+        approvalMappingName: '[rx-view-component-id="5c55018a-ee92-40bf-b501-0b165e12e6ea"] input',
         approvalMappingNameField: '[rx-view-component-id="5c55018a-ee92-40bf-b501-0b165e12e6ea"] input',
         approvalMappingNameGuid: '5c55018a-ee92-40bf-b501-0b165e12e6ea',
         companyGuid: 'c890cbd8-561e-4299-afd4-6abc79bed924',
@@ -16,24 +17,23 @@ class EditApprovalMapping {
         statusMappingNoApprovalFound: '13ca95fb-771f-43cd-8514-f2e2d6a4e236',
         statusMappingRejected: 'd8f2513d-919f-4a15-851e-b75ff53797f1',
         statusMappingError: '581eeeb0-2bbb-4a16-91fd-e1babce7b121',
-        companyDropDown: '[rx-view-component-id="c890cbd8-561e-4299-afd4-6abc79bed924"] .ui-select-match-text',
-        statusTriggerDropDownField: '[rx-view-component-id="a5f872e6-0382-46b9-bfb6-8c09dc584b80"] .ui-select-match-text',
-        statusMappingApprovedDropDownField: '[rx-view-component-id="5428d9e1-4fb8-475c-8139-1e604e3d3c8d"] .ui-select-match-text',
-        statusMappingNoApprovalFoundDropDownField: '[rx-view-component-id="13ca95fb-771f-43cd-8514-f2e2d6a4e236"] .ui-select-match-text',
-        statusMappingRejectedDropDownField: '[rx-view-component-id="d8f2513d-919f-4a15-851e-b75ff53797f1"] .ui-select-match-text',
-        statusMappingErrorDropDownField: '[rx-view-component-id="581eeeb0-2bbb-4a16-91fd-e1babce7b121"] .ui-select-match-text',
+        companyDropDown: '[rx-view-component-id="c890cbd8-561e-4299-afd4-6abc79bed924"] button',
+        statusTriggerDropDownField: '[rx-view-component-id="a5f872e6-0382-46b9-bfb6-8c09dc584b80"] button',
+        statusMappingApprovedDropDownField: '[rx-view-component-id="5428d9e1-4fb8-475c-8139-1e604e3d3c8d"] button',
+        statusMappingNoApprovalFoundDropDownField: '[rx-view-component-id="13ca95fb-771f-43cd-8514-f2e2d6a4e236"] button',
+        statusMappingRejectedDropDownField: '[rx-view-component-id="d8f2513d-919f-4a15-851e-b75ff53797f1"] button',
+        statusMappingErrorDropDownField: '[rx-view-component-id="581eeeb0-2bbb-4a16-91fd-e1babce7b121"] button',
         approvalTriggerProcessHelptext: '[rx-view-component-id="b09113c8-aea8-4207-b5a9-20589fb7bf81"] span',
         saveButton: '[rx-view-component-id="e45457ac-b932-42f9-b44c-12c113234907"] button',
         cancelButton: '[rx-view-component-id="a18a6162-4769-4eba-b544-2cf7714193ec"] button',
         taskTemplateSelectionHelpText: '[rx-view-component-id="737a879c-2e55-40b4-adf1-54f1fcaab444"] p',
-        taskTemplateLabel: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .bottom-margin',
-        selectTaskTemplateInputField: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] input',
-        selectTaskTemplateBtn: 'button.d-icon-arrow_right',
-        deselectTaskTemplateBtn: 'button.d-icon-arrow_left',
-        searchedTaskTemplateText: '.km-group-list-item__info .title span',
-        selectTaskTemplate: 'div .d-icon-square_o',
-        taskTemplateSelectionArea: '.list-container',
-        searchedTaskTemplatesRecords: '.record-list-item',
+        taskTemplateLabel: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .bwf-label',
+        selectTaskTemplateInputField: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .adapt-search-field-wrapper input',
+        selectDeselectTaskTemplateBtn: '.bwf-association-actions .btn-secondary',
+        searchedTaskTemplateText: '.list-item-active',
+        selectTaskTemplate: '.checkbox__input',
+        taskTemplateSelectionArea: '.bwf-association-selector .list-group',
+        searchedTaskTemplatesRecords: 'list-group-item',
         tasksCreatedWithoutTemplateToggleBtnGuid: '0a3df2cb-8645-4eac-8edf-4846c82c81e7',
         taskApprovalMappingToggleBtnHelpText: '[rx-view-component-id="7df649b3-ec1b-4a9d-af4e-4c8f426a036a"] p'
     }
@@ -52,7 +52,7 @@ class EditApprovalMapping {
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async isApprovalMappingNameDisabled(): Promise<boolean> {
@@ -91,13 +91,13 @@ class EditApprovalMapping {
                 break;
             }
         }
-        let locator = `[rx-view-component-id="${dropDownGuid}"] .ui-select-toggle`;
-        return await $(locator).getAttribute("disabled") == "true" ? true : false;
+        let locator = `[rx-view-component-id="${dropDownGuid}"] .disabled, [rx-view-component-id="${dropDownGuid}"] button[disabled]`;
+        return await $(locator).isPresent();
     }
 
     async isTasksCreatedWithoutTemplateToggleDisabled(): Promise<boolean> {
-        let locator: string = `[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"] rx-boolean`;
-        return await $(locator).getAttribute("disabled") == "true" ? true : false;
+        let locator: string = `[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"] .disabled`;
+        return await $(locator).isPresent();
     }
 
     async getSelectedCompany(): Promise<string> {
@@ -125,23 +125,23 @@ class EditApprovalMapping {
     }
 
     async selectStatusTrigger(approvalStatusTrigger: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
+        await utilityCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
     }
 
     async selectStatusMappingApproved(approvedStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingApproved, approvedStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingApproved, approvedStatusMapping);
     }
 
     async selectStatusMappingNoApprovalFound(NoApprovalFoundStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
     }
 
     async selectStatusMappingRejected(rejectedStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingRejected, rejectedStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingRejected, rejectedStatusMapping);
     }
 
     async selectStatusMappingError(errorStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
     }
 
     async isStatusTriggerDropDownOptionsMatches(approvalStatusTrigger: string[]): Promise<boolean> {
@@ -202,25 +202,25 @@ class EditApprovalMapping {
     }
 
     async isSelectTaskTemplateforApprovalRightArrawBtnEnabled(): Promise<boolean> {
-        return await $(this.selectors.selectTaskTemplateBtn).isPresent().then(async (result) => {
-            if (result) return await $(this.selectors.selectTaskTemplateBtn).getAttribute("disabled") == "disabled";
+        return await $$(this.selectors.selectDeselectTaskTemplateBtn).get(0).isPresent().then(async (result) => {
+            if (result) return await $$(this.selectors.selectDeselectTaskTemplateBtn).get(0).getAttribute("disabled") == "disabled";
             else return false;
         });
     }
 
     async isSelectTaskTemplateforApprovalLeftArrawBtnEnabled(): Promise<boolean> {
-        return await $(this.selectors.deselectTaskTemplateBtn).isPresent().then(async (result) => {
-            if (result) return await $(this.selectors.deselectTaskTemplateBtn).getAttribute("disabled") == "disabled";
+        return await $$(this.selectors.selectDeselectTaskTemplateBtn).get(1).isPresent().then(async (result) => {
+            if (result) return await $$(this.selectors.selectDeselectTaskTemplateBtn).get(1).getAttribute("disabled") == "disabled";
             else return false;
         });
     }
 
     async clickTaskTemplateforApprovalRightArrawBtn(): Promise<void> {
-        await $(this.selectors.selectTaskTemplateBtn).click();
+        await $$(this.selectors.selectDeselectTaskTemplateBtn).get(0).click();
     }
 
     async clickTaskTemplateforApprovalLeftArrawBtn(): Promise<void> {
-        await $(this.selectors.deselectTaskTemplateBtn).click();
+        await $$(this.selectors.selectDeselectTaskTemplateBtn).get(1).click();
     }
 
     async getSearchedTaskTemplate(): Promise<string> {
@@ -279,7 +279,7 @@ class EditApprovalMapping {
     }
 
     async setTaskCreatedUsingTemplateGoInApprovalToggle(enable: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid, enable);
+        await utilityCommon.selectToggleButton(this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid, enable);
     }
 
 
