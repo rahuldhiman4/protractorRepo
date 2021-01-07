@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 class TaskTemplateGridPage {
 
@@ -26,13 +27,13 @@ class TaskTemplateGridPage {
     }
 
     async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndOpenHyperlink(taskName);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(taskName);
     }
 
     async searchAndSelectTaskTemplate(taskName: string): Promise<void> {
-        await utilGrid.clearFilter();
-        await utilGrid.searchAndSelectGridRecord(taskName);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndSelectGridRecord(taskName);
     }
 
     async addColumn(columnName: string[]): Promise<void> {
@@ -106,11 +107,11 @@ class TaskTemplateGridPage {
     }
 
     async clickOnColumnAndIsColumnSortedAsending(column: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(column, 'ascending', this.selectors.taskTemplateGuid);
+        return await utilityGrid.isGridColumnSorted(column, 'ascending', this.selectors.taskTemplateGuid);
     }
 
     async clickOnColumnAndIsColumnSortedDescending(column: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(column, 'descending', this.selectors.taskTemplateGuid);
+        return await utilityGrid.isGridColumnSorted(column, 'descending', this.selectors.taskTemplateGuid);
     }
 
     async getFirstRecordValue(columnName: string): Promise<string> {

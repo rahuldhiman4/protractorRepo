@@ -1,6 +1,7 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
 import utilCommon from '../../../utils/util.common';
+import utilityCommon from "../../../utils/utility.common";
 
 class ViewTaskTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -180,63 +181,63 @@ class ViewTaskTemplate {
     }
 
     async isTaskSummaryTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskSummaryGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskSummaryGuid, input);
     }
 
     async isTaskTypeTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskTypeGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskTypeGuid, input);
     }
 
     async isTaskCompanyTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCompanyGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCompanyGuid, input);
     }
 
     async isTaskCategoryTier1TitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier1Guid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier1Guid, input);
     }
 
     async isTaskCategoryTier2TitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier2Guid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier2Guid, input);
     }
 
     async isTaskCategoryTier3TitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier3Guid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier3Guid, input);
     }
 
     async isTaskCategoryTier4TitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier4Guid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryTier4Guid, input);
     }
 
     async isTaskLabelTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskLabelGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskLabelGuid, input);
     }
 
     async isTaskProcessTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskProcessGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskProcessGuid, input);
     }
 
     async isTaskDescriptionTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskDescriptonGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskDescriptonGuid, input);
     }
 
     async isTemplateStatusTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.templateStatusGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.templateStatusGuid, input);
     }
 
     async isOwnerCompanyTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.ownerCompanyGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.ownerCompanyGuid, input);
     }
 
     async isOwnerGroupTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.ownerGroupGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.ownerGroupGuid, input);
     }
 
     async isAssigneeTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.assigneeGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.assigneeGuid, input);
     }
 
     async isSupportGuidTitlePresent(input: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.supportGroupGuid, input);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.supportGroupGuid, input);
     }
 
     async isEditButtonPresent(): Promise<boolean> {

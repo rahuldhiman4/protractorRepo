@@ -1,3 +1,4 @@
+import utilityCommon from "../../../utils/utility.common";
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
@@ -50,11 +51,11 @@ class CreateTaskTemplatePage {
     }
 
     async setTaskDescription(inputValue: string): Promise<void> {
-        await utilCommon.setCKEditor(inputValue, this.selectors.taskDescriptionGuid);
+        await utilityCommon.setCKEditor(inputValue, this.selectors.taskDescriptionGuid);
     }
 
     async updateTaskDescription(inputValue: string): Promise<void> {
-        await utilCommon.updateCKEditor(inputValue, this.selectors.taskDescriptionGuid);
+        await utilityCommon.updateCKEditor(inputValue, this.selectors.taskDescriptionGuid);
     }
 
     async clickOnAssignment(): Promise<void> {
@@ -70,55 +71,55 @@ class CreateTaskTemplatePage {
     }
 
     async selectCompanyByName(companyName: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCompny, companyName);
+        await utilityCommon.selectDropDown(this.selectors.taskCompny, companyName);
     }
 
     async isProcessTitlePresent(newProcess: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.newprocessGuid, newProcess);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.newprocessGuid, newProcess);
     }
 
     async selectTaskPriority(priority: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskPriority, priority);
+        await utilityCommon.selectDropDown(this.selectors.taskPriority, priority);
     }
 
     async selectLabel(label: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.label, label);
+        await utilityCommon.selectDropDown(this.selectors.label, label);
     }
 
     async selectTaskCategoryTier1(category1: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
     }
 
     async selectTaskCategoryTier2(category2: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
     }
 
     async selectTaskCategoryTier3(category3: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
     }
 
     async selectTaskCategoryTier4(category4: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
     }
 
     async selectTemplateStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.templateStatus, status);
+        await utilityCommon.selectDropDown(this.selectors.templateStatus, status);
     }
 
     async selectOwnerCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerCompany, company);
+        await utilityCommon.selectDropDown(this.selectors.ownerCompany, company);
     }
 
     async selectBuisnessUnit(buisnessunit: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.buisnessUnit, buisnessunit);
+        await utilityCommon.selectDropDown(this.selectors.buisnessUnit, buisnessunit);
     }
 
     async selectDepartment(departmentname: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.department, departmentname);
+        await utilityCommon.selectDropDown(this.selectors.department, departmentname);
     }
 
     async selectOwnerGroup(ownergroup: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerGroup, ownergroup);
+        await utilityCommon.selectDropDown(this.selectors.ownerGroup, ownergroup);
     }
 
     async setNewProcessName(inputValue: string): Promise<void> {
@@ -127,7 +128,7 @@ class CreateTaskTemplatePage {
     }
 
     async setExistingProcessName(processName: string): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.toggleBox, false);
+        await utilityCommon.selectToggleButton(this.selectors.toggleBox, false);
         await $(this.selectors.processBundleIdDrpDownForExistingProcess).click();
         await $(this.selectors.searchProcess).click();
         await $(this.selectors.setInputdataInProcess).sendKeys(processName);
@@ -136,30 +137,30 @@ class CreateTaskTemplatePage {
     }
 
     async setcreateNewProcess(processName: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.toggleBox, processName);
+        await utilityCommon.selectToggleButton(this.selectors.toggleBox, processName);
     }
     async isTemplateNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.templateNameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.templateNameGuid);
     }
 
     async isTaskSummaryRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.taskSummaryGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.taskSummaryGuid);
     }
 
     async isTaskPriorityRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.taskPriority);
+        return await utilityCommon.isRequiredTagToField(this.selectors.taskPriority);
     }
 
     async isTemplateStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.templateStatus);
+        return await utilityCommon.isRequiredTagToField(this.selectors.templateStatus);
     }
 
     async isOwnerComapnyRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.ownerCompany);
+        return await utilityCommon.isRequiredTagToField(this.selectors.ownerCompany);
     }
 
     async isOwnerGroupRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.ownerGroup);
+        return await utilityCommon.isRequiredTagToField(this.selectors.ownerGroup);
     }
 
     async isCreateNewProcessRequiredText(): Promise<boolean> {
@@ -168,31 +169,31 @@ class CreateTaskTemplatePage {
     }
 
     async isProcessBundleIdRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.processBundleIdRequiredTxt);
+        return await utilityCommon.isRequiredTagToField(this.selectors.processBundleIdRequiredTxt);
     }
 
     async isNewProcessNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.newprocessGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.newprocessGuid);
     }
 
     async isTaskDescriptionTitlePresent(value: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskDescriptionGuid, value);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskDescriptionGuid, value);
     }
 
     async isTaskCategoryTier1TitlePresent(value: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown1, value);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown1, value);
     }
 
     async isTaskCategoryTier2TitlePresent(value: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown2, value);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown2, value);
     }
 
     async isTaskCategoryTier3TitlePresent(value: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown3, value);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown3, value);
     }
 
     async isTaskCategoryTier4TitlePresent(value: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown4, value);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskCategoryDrpDown4, value);
     }
 
     async isAddTaskTemplateTitleDisplayed(value: string): Promise<boolean> {
@@ -235,7 +236,7 @@ class CreateTaskTemplatePage {
                 break;
             }
         }
-        return await utilCommon.isValuePresentInDropDown(guid, value);
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
     }
 
     async getLobValue(): Promise<string> {

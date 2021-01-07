@@ -1,5 +1,6 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilCommon from "../../../utils/util.common";
+import utilityCommon from "../../../utils/utility.common";
 
 class EditApprovalMapping {
 
@@ -27,7 +28,7 @@ class EditApprovalMapping {
         cancelButton: '[rx-view-component-id="a18a6162-4769-4eba-b544-2cf7714193ec"] button',
         taskTemplateSelectionHelpText: '[rx-view-component-id="737a879c-2e55-40b4-adf1-54f1fcaab444"] p',
         taskTemplateLabel: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .bwf-label',
-        selectTaskTemplateInputField: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .adapt-search-icon',
+        selectTaskTemplateInputField: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .adapt-search-field-wrapper input',
         selectDeselectTaskTemplateBtn: '.bwf-association-actions .btn-secondary',
         searchedTaskTemplateText: '.list-item-active',
         selectTaskTemplate: '.checkbox__input',
@@ -51,7 +52,7 @@ class EditApprovalMapping {
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async isApprovalMappingNameDisabled(): Promise<boolean> {
@@ -90,13 +91,13 @@ class EditApprovalMapping {
                 break;
             }
         }
-        let locator = `[rx-view-component-id="${dropDownGuid}"] .ui-select-toggle`;
-        return await $(locator).getAttribute("disabled") == "true" ? true : false;
+        let locator = `[rx-view-component-id="${dropDownGuid}"] .disabled, [rx-view-component-id="${dropDownGuid}"] button[disabled]`;
+        return await $(locator).isPresent();
     }
 
     async isTasksCreatedWithoutTemplateToggleDisabled(): Promise<boolean> {
-        let locator: string = `[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"] rx-boolean`;
-        return await $(locator).getAttribute("disabled") == "true" ? true : false;
+        let locator: string = `[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"] .disabled`;
+        return await $(locator).isPresent();
     }
 
     async getSelectedCompany(): Promise<string> {
@@ -124,23 +125,23 @@ class EditApprovalMapping {
     }
 
     async selectStatusTrigger(approvalStatusTrigger: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
+        await utilityCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
     }
 
     async selectStatusMappingApproved(approvedStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingApproved, approvedStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingApproved, approvedStatusMapping);
     }
 
     async selectStatusMappingNoApprovalFound(NoApprovalFoundStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
     }
 
     async selectStatusMappingRejected(rejectedStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingRejected, rejectedStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingRejected, rejectedStatusMapping);
     }
 
     async selectStatusMappingError(errorStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
     }
 
     async isStatusTriggerDropDownOptionsMatches(approvalStatusTrigger: string[]): Promise<boolean> {
@@ -278,7 +279,7 @@ class EditApprovalMapping {
     }
 
     async setTaskCreatedUsingTemplateGoInApprovalToggle(enable: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid, enable);
+        await utilityCommon.selectToggleButton(this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid, enable);
     }
 
 

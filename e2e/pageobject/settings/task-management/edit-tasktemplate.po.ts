@@ -1,5 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$ } from "protractor";
 import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
 
 class EditTaskTemplate {
@@ -36,7 +37,7 @@ class EditTaskTemplate {
     }
 
     async selectPriorityValue(priority: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.priority, priority);
+        await utilityCommon.selectDropDown(this.selectors.priority, priority);
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
@@ -48,23 +49,23 @@ class EditTaskTemplate {
     }
 
     async selectTaskCategoryTier1(category1: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
     }
 
     async selectTaskCategoryTier2(category2: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
     }
 
     async selectTaskCategoryTier3(category3: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
     }
 
     async selectTaskCategoryTier4(category4: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
     }
 
     async selectLabel(label: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.label, label);
+        await utilityCommon.selectDropDown(this.selectors.label, label);
     }
 
     async getLabelValue(): Promise<string> {
@@ -72,23 +73,23 @@ class EditTaskTemplate {
     }
 
     async selectTaskCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.taskCompany, company);
+        await utilityCommon.selectDropDown(this.selectors.taskCompany, company);
     }
 
     async selectOwnerCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerCompany, company);
+        await utilityCommon.selectDropDown(this.selectors.ownerCompany, company);
     }
 
     async selectTemplateStatus(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.templateStatusGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.templateStatusGuid, company);
     }
 
     async selectOwnerGroup(group: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerGroup, group);
+        await utilityCommon.selectDropDown(this.selectors.ownerGroup, group);
     }
 
     async selectBusinessUnit(business: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.businessGuid, business);
+        await utilityCommon.selectDropDown(this.selectors.businessGuid, business);
     }
 
     async clickOnSaveButton() {
@@ -104,7 +105,7 @@ class EditTaskTemplate {
     }
 
     async setDescription(input: string) {
-        await utilCommon.setCKEditor(input, this.selectors.descriptionGuid);
+        await utilityCommon.setCKEditor(input, this.selectors.descriptionGuid);
     }
 
     async setSummary(input: string) {

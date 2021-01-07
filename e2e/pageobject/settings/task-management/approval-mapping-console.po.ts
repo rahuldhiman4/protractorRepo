@@ -1,3 +1,4 @@
+import utilityGrid from '../../../utils/utility.grid';
 import { $, protractor, ProtractorExpectedConditions, $$, browser } from 'protractor';
 
 class ApprovalMappingConsole {
@@ -24,6 +25,9 @@ class ApprovalMappingConsole {
         });
     }
 
+    async searchAndOpenApproval(value : string):Promise<void>{
+        await utilityGrid.searchAndOpenHyperlink(value);
+    }
 }
 
 export default new ApprovalMappingConsole();
