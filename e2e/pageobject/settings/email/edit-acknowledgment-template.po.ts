@@ -1,6 +1,7 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
-import utilsGrid from "../../../utils/util.grid";
+import utilGrid from '../../../utils/util.grid';
+import utilityCommon from '../../../utils/utility.common';
+import utilityGrid from '../../../utils/utility.grid';
 
 class EditAcknowledgementTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -58,21 +59,21 @@ class EditAcknowledgementTemplate {
 
     async getSubjectMessageValue(): Promise<string> {
        await  $(this.selectors.searchButton).click();
-        await utilsGrid.searchAndSelectGridRecord('subject', '8b59641c-2fca-4d96-8395-03e232cf05de');
-        return await utilsGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
+        await utilityGrid.searchAndSelectGridRecord('subject', '8b59641c-2fca-4d96-8395-03e232cf05de');
+        return await utilGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
     }
 
     async getBodyMessageValue(): Promise<string> {
-        return await utilsGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
+        return await utilGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
     }
 
     async searchAndSelectEmailTemplate(value: string): Promise<void> {
-        await utilsGrid.searchAndSelectGridRecord(value);
+        await utilityGrid.searchAndSelectGridRecord(value);
     }
 
     async searchAndSelectBody(value: string): Promise<void> {
         await $(this.selectors.searchButton).click();
-        await utilsGrid.searchAndSelectGridRecord(value, '8b59641c-2fca-4d96-8395-03e232cf05de');
+        await utilityGrid.searchAndSelectGridRecord(value, '8b59641c-2fca-4d96-8395-03e232cf05de');
     }
 
     async clickOnLocalizeMessageButton(): Promise<void> {
@@ -80,7 +81,7 @@ class EditAcknowledgementTemplate {
     }
 
     async selectLocalizeDropDownOfNewLocalizedEmailMessage(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.newLocalizeMessageEmailMessageLocalizeDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.newLocalizeMessageEmailMessageLocalizeDropDownGuid, value);
     }
 
     async setSubjectOfNewLocalizedEmailMessage(subject: string): Promise<void> {
@@ -96,7 +97,7 @@ class EditAcknowledgementTemplate {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilsGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
     }
 
     async clickOnGridSearchIcon(): Promise<void> {
@@ -104,11 +105,11 @@ class EditAcknowledgementTemplate {
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
-        await utilsGrid.searchOnGridConsole(value);
+        await utilityGrid.searchRecord(value);
     }
 
     async searchAndSelectGridRecord(value: string): Promise<void> {
-        await utilsGrid.searchAndSelectGridRecord(value);
+        await utilityGrid.searchAndSelectGridRecord(value);
     }
 
     async isModuleNameDisabled(): Promise<boolean> {
@@ -124,11 +125,11 @@ class EditAcknowledgementTemplate {
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, value);
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, value);
     }
 
     async updateDescription(descriptionText: string): Promise<void> {
@@ -137,7 +138,7 @@ class EditAcknowledgementTemplate {
     }
 
     async selectlocaleDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.localeGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.localeGuid, value);
     }
 
     async updateEditMessageTextBladeBody(body: string): Promise<void> {
@@ -171,10 +172,10 @@ class EditAcknowledgementTemplate {
     }
 
     async clearGridSearchBox(): Promise<void> {
-        await utilsGrid.clearGridSearchBox();
+        await utilityGrid.clearSearchBox();
     }
     async isLocaleDropDownValueDisplayed(arr:string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.localeGuid,arr);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.localeGuid,arr);
     }
 
     async isLocalizedMessageButtonEnabled(): Promise<boolean>{

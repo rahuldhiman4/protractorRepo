@@ -45,8 +45,8 @@ export class Utility {
             console.log(`Selecting dropdown value: ${value}`);
             let isSearchPresent: boolean = await dropDownInputElement.isPresent();
             if (isSearchPresent) await dropDownInputElement.sendKeys(value);
-
-            let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown_select__menu-content button`;
+//this changes is required on create email template screen to select status and other fields
+            let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown-item`;
             let option = await element(by.cssContainingText(optionCss, value));
             await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
                 await option.click();
