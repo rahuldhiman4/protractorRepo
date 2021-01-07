@@ -65,37 +65,37 @@ describe('Person Profile test', () => {
     }
 
     //asahitya
-    it('[DRDMV-17018]: Check agent can not add notes to own Person profile in agent work history tab', async () => {
+    it('[4129]: Check agent can not add notes to own Person profile in agent work history tab', async () => {
         expect(await personProfile.isActivityNotesDisplayed()).toBeFalsy("Activity Notes are available");
     });
 
     //asahitya
-    it('[DRDMV-14086]: Verify Profile picture of Managar-Logged in user on My Profile page', async () => {
+    it('[4585]: Verify Profile picture of Managar-Logged in user on My Profile page', async () => {
         expect(await personProfile.isPersonManagerImageDisplayed()).toBeTruthy("Person Manager image is not displayed");
     });
 
     //asahitya
-    it('[DRDMV-14087]: Verify cases visible in Requested cases tab of My profile page are according to permissions of logged in user', async () => {
+    it('[4584]: Verify cases visible in Requested cases tab of My profile page are according to permissions of logged in user', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
-        let response = await apiHelper.createCase(caseData['DRDMV-14087']);
+        let response = await apiHelper.createCase(caseData['4584']);
         let caseDisplayId = response.displayId;
         await personProfile.clickOnTab("Requested Cases");
         expect(await personProfile.isCasePresentOnRequestedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
     //asahitya
-    it('[DRDMV-14088]: Verify cases visible in Assiged cases tab of My profile page are according to permissions of logged in user', async () => {
+    it('[4583]: Verify cases visible in Assiged cases tab of My profile page are according to permissions of logged in user', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
-        let response = await apiHelper.createCase(caseData['DRDMV-14088']);
+        let response = await apiHelper.createCase(caseData['4583']);
         let caseDisplayId = response.displayId;
         await personProfile.clickOnTab("Assigned Cases");
         expect(await personProfile.isCasePresentOnAssignedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
     //asahitya
-    it('[DRDMV-14023,DRDMV-16812,DRDMV-14085]: Verify My Profile Console', async () => {
+    it('[4596,4198,4586]: Verify My Profile Console', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoPersonProfile();
         expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
@@ -141,14 +141,14 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-16803]: Person profile display for case assignee', async () => {
+    it('[4202]: Person profile display for case assignee', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.updateFoundationEntity('Person', 'qfeng', { vipStatus: 'Yes' });
         await apiHelper.apiLogin('elizabeth');
 
         let caseData = {
             "Requester": "araisin",
-            "Summary": "Test case for DRDMV-16803",
+            "Summary": "Test case for 4202",
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
@@ -203,14 +203,14 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-16806]: Person profile display for person from activity/history tab', async () => {
+    it('[4201]: Person profile display for person from activity/history tab', async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.updateFoundationEntity('Person', 'qfeng', { vipStatus: 'Yes' });
         await apiHelper.apiLogin('elizabeth');
 
         let caseData = {
             "Requester": "qyuan",
-            "Summary": "Test case for DRDMV-16803",
+            "Summary": "Test case for 4202",
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
@@ -266,21 +266,21 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    describe('[DRDMV-16802]: Person profile display for Contact', () => {
+    describe('[4203]: Person profile display for Contact', () => {
         let response = undefined;
         afterEach(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
 
-        it('[DRDMV-16802]: Person profile display for non Agent Contact', async () => {
+        it('[4203]: Person profile display for non Agent Contact', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'apavlik', { vipStatus: 'Yes' });
             await apiHelper.apiLogin('elizabeth');
 
             let caseData = {
                 "Requester": "araisin",
-                "Summary": "Test case for DRDMV-16803",
+                "Summary": "Test case for 4202",
                 "Contact": "apavlik",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -324,7 +324,7 @@ describe('Person Profile test', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
-        it('[DRDMV-16802]: Person profile display for non Agent Contact', async () => {
+        it('[4203]: Person profile display for non Agent Contact', async () => {
             //Modify the Person to Person relationship
             await navigationPage.signOut();
             await loginPage.login('tadmin');
@@ -355,14 +355,14 @@ describe('Person Profile test', () => {
             expect(await relatedTabPage.isRelatedPersonPresent('Adam Pavlik')).toBeFalsy('Adam Pavlik is available in Related tab');
         });
 
-        it('[DRDMV-16802]: Person profile display for Contact', async () => {
+        it('[4203]: Person profile display for Contact', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'qfeng', { vipStatus: 'Yes' });
             await apiHelper.apiLogin('elizabeth');
 
             let caseData = {
                 "Requester": "araisin",
-                "Summary": "Test case for DRDMV-16803",
+                "Summary": "Test case for 4202",
                 "Contact": "qfeng",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -412,7 +412,7 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-14025]: Verify navigation to Managers Profile from My Profile->Assigned Manager', async () => {
+    it('[4595]: Verify navigation to Managers Profile from My Profile->Assigned Manager', async () => {
         await navigationPage.gotoPersonProfile();
         await personProfile.clickOnManagerLink();
         await utilityCommon.switchToNewTab(1);
@@ -428,11 +428,11 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-17020]: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', async () => {
+    it('[4127]: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', async () => {
         try {
-            await activityTabPage.addActivityNote("DRDMV-17020");
+            await activityTabPage.addActivityNote("4127");
             await activityTabPage.clickOnPostButton();
-            expect(await activityTabPage.isTextPresentInNote("DRDMV-17020")).toBeTruthy("Activity notes is missing");
+            expect(await activityTabPage.isTextPresentInNote("4127")).toBeTruthy("Activity notes is missing");
         }
         catch (ex) { throw ex; }
         finally {
@@ -441,34 +441,34 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-17019]: Check agent can view notes to own Person profile in agent work history tab', async () => {
+    it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
         await navigationPage.gotoPersonProfile();
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
         await relatedTabPage.clickRelatedPersonName('Qiang Du');
         await utilityCommon.switchToNewTab(1);
-        await activityTabPage.addActivityNote("DRDMV-17019");
+        await activityTabPage.addActivityNote("4128");
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnRefreshButton();
-        expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeTruthy("Elizabeth cannot see post on qdu's activity");
+        expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on qdu's activity");
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         await activityTabPage.clickOnRefreshButton();
-        expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeTruthy("Elizabeth cannot see post on his own activity");
+        expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on his own activity");
         try {
             await navigationPage.signOut();
             await loginPage.login("qdu");
             await navigationPage.gotoPersonProfile();
-            expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeTruthy("Qiang Du cannot see post on his own activity");
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Qiang Du cannot see post on his own activity");
 
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
             await navigationPage.gotoPersonProfile();
-            expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeFalsy("Qadim can see post on his own activity");
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeFalsy("Qadim can see post on his own activity");
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Qiang Du');
             await utilityCommon.switchToNewTab(1);
-            expect(await activityTabPage.isTextPresentInNote("DRDMV-17019")).toBeFalsy("Qadim can see post on qdu's activity");
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeFalsy("Qadim can see post on qdu's activity");
         }
         catch (e) {
             throw e;
@@ -480,15 +480,15 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    it('[DRDMV-14028]: Verify Requested Cases tab of My Profile console', async () => {
+    it('[4594]: Verify Requested Cases tab of My Profile console', async () => {
         await navigationPage.gotoPersonProfile();
         await personProfile.clickOnTab("Requested Cases");
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         for (let i: number = 0; i < 4; i++) {
             let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            caseData['DRDMV-14087'].summary = "DRDMV-14028 " + randomStr;
-            await apiHelper.createCase(caseData['DRDMV-14087']);
+            caseData['4584'].summary = "4594 " + randomStr;
+            await apiHelper.createCase(caseData['4584']);
         }
 
         //Verifying default column matching
@@ -507,14 +507,14 @@ describe('Person Profile test', () => {
     });//, 150 * 1000);
 
     //asahitya
-    it('[DRDMV-14029]: Verify Assigned Cases tab of My Profile console', async () => {
+    it('[4593]: Verify Assigned Cases tab of My Profile console', async () => {
         await personProfile.clickOnTab("Assigned Cases");
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         for (let i: number = 0; i < 4; i++) {
             let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            caseData['DRDMV-14088'].summary = "DRDMV-14029 " + randomStr;
-            await apiHelper.createCase(caseData['DRDMV-14088']);
+            caseData['4583'].summary = "4593 " + randomStr;
+            await apiHelper.createCase(caseData['4583']);
         }
 
         //Verifying default column matching
@@ -532,8 +532,8 @@ describe('Person Profile test', () => {
         expect(await personProfile.isAssignedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
     });//, 160 * 1000);
 
-    describe('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', () => {
-        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
+    describe('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', () => {
+        it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'qheroux', { functionalRole: 'Person Activity Read' });
             await navigationPage.gotoCaseConsole();
@@ -545,20 +545,20 @@ describe('Person Profile test', () => {
             await browser.sleep(3000); //Wait for new tab to load properly
         });
 
-        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
-            await activityTabPage.addActivityNote("DRDMV-17021");
+        it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
+            await activityTabPage.addActivityNote("4126");
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isInfoTooltipIconDisplayed()).toBeTruthy('Tooltip icon is not displayed');
             expect(await activityTabPage.getInfoTooltipMessage()).toBe('The notes related to a person are private and accessible ONLY to the note submitter and person with “Person Activity Read” role');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await activityTabPage.clickOnRefreshButton();
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-17021')).toBeTruthy('DRDMV-17021 log activity is not present on elizabeth activity');
+            expect(await activityTabPage.isTextPresentInActivityLog('4126')).toBeTruthy('4126 log activity is not present on elizabeth activity');
             expect(await activityTabPage.isTextPresentInActivityLog('Quin Strong')).toBeTruthy('Quin Strong is not present on elizabeth activity');
             expect(await activityTabPage.isTextPresentInActivityLog('Elizabeth Peters')).toBeTruthy('Elizabeth Peters is not present on elizabeth activity');
             expect(await activityTabPage.isTextPresentInActivityLog('added a note for')).toBeTruthy('added a note for is not present on elizabeth activity');
         });
 
-        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
+        it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoPersonProfile();
@@ -566,20 +566,20 @@ describe('Person Profile test', () => {
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
             await utilityCommon.switchToNewTab(1);
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-17021')).toBeTruthy('DRDMV-17021 log activity is not visible to qheroux');
+            expect(await activityTabPage.isTextPresentInActivityLog('4126')).toBeTruthy('4126 log activity is not visible to qheroux');
             expect(await activityTabPage.isTextPresentInActivityLog('Quin Strong')).toBeTruthy('Quin Strong is not visible to qheroux');
             expect(await activityTabPage.isTextPresentInActivityLog('Elizabeth Peters')).toBeTruthy('Elizabeth Peters is not visible to qheroux');
             expect(await activityTabPage.isTextPresentInActivityLog('added a note for')).toBeTruthy('added a note for is not visible to qheroux');
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-17021]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
+        it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
             await loginPage.login('franz');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-17021')).toBeFalsy('DRDMV-17021 log activity is present');
+            expect(await activityTabPage.isTextPresentInActivityLog('4126')).toBeFalsy('4126 log activity is present');
             expect(await activityTabPage.isTextPresentInActivityLog('Elizabeth Peters')).toBeFalsy('Elizabeth Peters is present in activity');
             expect(await activityTabPage.isTextPresentInActivityLog('added a note for')).toBeFalsy('added a note for is present in activity');
         });
@@ -590,7 +590,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    describe('[DRDMV-14186]: Verify My Profile icon with different business roles', () => {
+    describe('[4573]: Verify My Profile icon with different business roles', () => {
         let userData = {
             "firstName": "Person1",
             "lastName": "Person1",
@@ -603,7 +603,7 @@ describe('Person Profile test', () => {
             await apiHelper.createNewUser(userData);
         });
 
-        it('[DRDMV-14186]: Verify My Profile icon with different business roles', async () => {
+        it('[4573]: Verify My Profile icon with different business roles', async () => {
             //Check the Person Profile Menu of Case Agent
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -615,7 +615,7 @@ describe('Person Profile test', () => {
             await navigationPage.gotoPersonProfile();
         });
 
-        it('[DRDMV-14186]: Verify My Profile icon with different business roles', async () => {
+        it('[4573]: Verify My Profile icon with different business roles', async () => {
             //Check the Person Profile Menu of Knowledge Coach
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
@@ -634,9 +634,9 @@ describe('Person Profile test', () => {
         });
     });
 
-    describe('[DRDMV-16815]: Configuration - person-to-person relationship', () => {
+    describe('[4197]: Configuration - person-to-person relationship', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-16815]: Configuration - person-to-person relationship', async () => {
+        it('[4197]: Configuration - person-to-person relationship', async () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
@@ -659,8 +659,8 @@ describe('Person Profile test', () => {
 
             //Create a active person to person relationship
             await relationshipsConfigsPage.clickAddRelationshipButton();
-            await relationshipsConfigsPage.setNewRelationshipName(`DRDMV-14186 Rname ${randomStr}`);
-            await relationshipsConfigsPage.setNewReverseRelationshipName(`DRDMV-14186 RRname ${randomStr}`);
+            await relationshipsConfigsPage.setNewRelationshipName(`4573 Rname ${randomStr}`);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(`4573 RRname ${randomStr}`);
             await relationshipsConfigsPage.saveConfig();
 
             //Verify the Relationship type reflected to Add Relationships
@@ -668,28 +668,28 @@ describe('Person Profile test', () => {
             await loginPage.login('elizabeth');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Fabian Krause', `DRDMV-14186 Rname ${randomStr}`);
+            await addRelatedPopupPage.addPerson('Fabian Krause', `4573 Rname ${randomStr}`);
             await utilityCommon.closePopUpMessage();
 
             //Verify recently added Person relationship
-            expect(await relatedTabPage.getRelatedPersonRelationship('Fabian Krause')).toBe(`DRDMV-14186 Rname ${randomStr}`);
+            expect(await relatedTabPage.getRelatedPersonRelationship('Fabian Krause')).toBe(`4573 Rname ${randomStr}`);
             await relatedTabPage.clickRelatedPersonName('Fabian Krause');
             await utilityCommon.switchToNewTab(1);
             await browser.sleep(3000); //Hard Wait to load the new page
-            expect(await relatedTabPage.getRelatedPersonRelationship('Elizabeth Peters')).toBe(`DRDMV-14186 RRname ${randomStr}`);
+            expect(await relatedTabPage.getRelatedPersonRelationship('Elizabeth Peters')).toBe(`4573 RRname ${randomStr}`);
             await relatedTabPage.removeRelatedPerson('Elizabeth Peters');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
-        it('[DRDMV-16815]: Configuration - person-to-person relationship', async () => {
+        it('[4197]: Configuration - person-to-person relationship', async () => {
             //Verify the Relationship Type with Inactive status
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
             await relationshipsConfigsPage.clickAddRelationshipButton();
-            await relationshipsConfigsPage.setNewRelationshipName(`DRDMV-14186 Rname Inactive ${randomStr}`);
-            await relationshipsConfigsPage.setNewReverseRelationshipName(`DRDMV-14186 RRname Inacitve ${randomStr}`);
+            await relationshipsConfigsPage.setNewRelationshipName(`4573 Rname Inactive ${randomStr}`);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(`4573 RRname Inacitve ${randomStr}`);
             await relationshipsConfigsPage.setNewRelationshipStatus('Inactive');
             await relationshipsConfigsPage.saveConfig();
             await navigationPage.signOut();
@@ -698,7 +698,7 @@ describe('Person Profile test', () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.searchAndSelectPerson('Qing Yuan');
             await addRelatedPopupPage.clickNextButton();
-            expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`DRDMV-14186 Rname Inactive ${randomStr}`)).toBeFalsy();
+            expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`4573 Rname Inactive ${randomStr}`)).toBeFalsy();
             await utilityCommon.closeAllBlades();
 
             await navigationPage.signOut();
@@ -707,8 +707,8 @@ describe('Person Profile test', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
             await relationshipsConfigsPage.clickAddRelationshipButton();
-            await relationshipsConfigsPage.setNewRelationshipName(`DRDMV-14186 Rname Deprecated ${randomStr}`);
-            await relationshipsConfigsPage.setNewReverseRelationshipName(`DRDMV-14186 RRname Deprecated ${randomStr}`);
+            await relationshipsConfigsPage.setNewRelationshipName(`4573 Rname Deprecated ${randomStr}`);
+            await relationshipsConfigsPage.setNewReverseRelationshipName(`4573 RRname Deprecated ${randomStr}`);
             await relationshipsConfigsPage.setNewRelationshipStatus('Deprecated');
             await relationshipsConfigsPage.saveConfig();
             await navigationPage.signOut();
@@ -717,7 +717,7 @@ describe('Person Profile test', () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.searchAndSelectPerson('Qing Yuan');
             await addRelatedPopupPage.clickNextButton();
-            expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`DRDMV-14186 Rname Deprecated ${randomStr}`)).toBeFalsy();
+            expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`4573 Rname Deprecated ${randomStr}`)).toBeFalsy();
             await utilityCommon.closeAllBlades();
         });
         afterAll(async () => {
@@ -727,20 +727,20 @@ describe('Person Profile test', () => {
     });
 
     //asahitya
-    describe('[DRDMV-16799]: Person profile display for requester', () => {
+    describe('[4206]: Person profile display for requester', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
 
-        it('[DRDMV-16799]: Person profile display for requester', async () => {
+        it('[4206]: Person profile display for requester', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'araisin', { vipStatus: 'Yes' });
             await apiHelper.apiLogin('elizabeth');
 
             let caseData = {
                 "Requester": "araisin",
-                "Summary": "Test case for DRDMV-16799_1",
+                "Summary": "Test case for 4206_1",
                 "Assigned Company": "Petramco",
                 "Business Unit": "HR Support",
                 "Support Group": "Compensation and Benefits"
@@ -789,7 +789,7 @@ describe('Person Profile test', () => {
             expect(await relatedTabPage.isRelatedPersonPresent('Alex Raisin')).toBeFalsy('Alex Raisin is available in Related tab');
         });
 
-        it('[DRDMV-16799]: Person profile display for requester', async () => {
+        it('[4206]: Person profile display for requester', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await apiHelper.apiLogin('tadmin');
@@ -798,7 +798,7 @@ describe('Person Profile test', () => {
 
             let caseData = {
                 "Requester": "qnorton",
-                "Summary": "Test case for DRDMV-16799_2",
+                "Summary": "Test case for 4206_2",
                 "Assigned Company": "Petramco",
                 "Business Unit": "HR Support",
                 "Support Group": "Compensation and Benefits"
@@ -846,7 +846,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    describe('[DRDMV-24406]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', () => {
+    describe('[59946]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', () => {
         let caseResponse;
         let caseData = {
             "Status": "2000",
@@ -909,7 +909,7 @@ describe('Person Profile test', () => {
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQcespedes);
         });
 
-        it('[DRDMV-24406]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
+        it('[59946]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
@@ -953,7 +953,7 @@ describe('Person Profile test', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
-        it('[DRDMV-24406]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
+        it('[59946]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
             await navigationPage.signOut();
             await loginPage.login('qcespedes');
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
@@ -986,8 +986,8 @@ describe('Person Profile test', () => {
         });
     });
     
-    describe('[DRDMV-24390]: Create case-case, case-person and person-person relationships using tadmin', async () => {
-        it('[DRDMV-24390]:Case to Case Relation same name LOB validation', async () => {
+    describe('[59950]: Create case-case, case-person and person-person relationships using tadmin', async () => {
+        it('[59950]:Case to Case Relation same name LOB validation', async () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             let caseToCaseRelation = 'HR C2C';
@@ -1018,7 +1018,7 @@ describe('Person Profile test', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
             //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToCaseRelation)).toBeFalsy("same name relation created");
         });
-        it('[DRDMV-24390]:Person to Person Relation same name LOB validation', async () => {
+        it('[59950]:Person to Person Relation same name LOB validation', async () => {
             //create same name record in same LOB
             let caseToPersonRelation = 'HR C2P';
             let caseToPersonReverseRelation = 'HR C2P Reverse';
@@ -1047,7 +1047,7 @@ describe('Person Profile test', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
             //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToPersonRelation)).toBeFalsy("same name relation created");
         });
-        it('[DRDMV-24390]:Person to Person Relation same name LOB validation', async () => {
+        it('[59950]:Person to Person Relation same name LOB validation', async () => {
             //create same name record in same LOB
             let personToPersonRelation = 'HR P2P';
             let personToPersonReverseRelation = 'HR P2P Reverse';

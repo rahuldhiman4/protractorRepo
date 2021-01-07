@@ -172,7 +172,7 @@ describe('Global Search Category Validation', () => {
     }
 
     //kgaikwad
-    describe('[DRDMV-16065]: Global search UI and availability of fields - cross verify with mockup', async () => {
+    describe('[4334]: Global search UI and availability of fields - cross verify with mockup', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseSummary = 'caseSummaryDRDMV16065' + randomStr;
         let caseId;
@@ -183,7 +183,7 @@ describe('Global Search Category Validation', () => {
             await navigationPage.gotoSearch();
         });
 
-        it('[DRDMV-16065]: Verify UI Fields', async () => {
+        it('[4334]: Verify UI Fields', async () => {
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             expect(await searchPo.isSearchBoxLabelDisplayed()).toBeTruthy('FailureMsg2: Search Box Label is missing');
             await searchPo.searchRecordOnLeftPannel(caseSummary, caseModule);
@@ -193,7 +193,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isAdvanceFilterButtonDisplayed()).toBeTruthy('FailureMsg5: Advance Filter button is missing');
             expect(await searchPo.isLeftGlobalSearchPannelDisplayed()).toBeTruthy('FailureMsg6: Left Global Search is missing');
         });
-        it('[DRDMV-16065]: Verify Case Preview Field Label', async () => {
+        it('[4334]: Verify Case Preview Field Label', async () => {
             expect(await casePreviewPo.isFieldLabelDisplayed('Requester')).toBeTruthy('FailureMsg7: Requester label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg8: Site label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Source')).toBeTruthy('FailureMsg9: Source label is missing');
@@ -207,7 +207,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isFieldLabelDisplayed('Assigned Group')).toBeTruthy('FailureMsg17: Assigned Group label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Assigned Company')).toBeTruthy('FailureMsg18: Assigned Company label is missing');
         });
-        it('[DRDMV-16065]: Verify Case Preview Field Values', async () => {
+        it('[4334]: Verify Case Preview Field Values', async () => {
             expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('FailureMsg19: Case Summary label is missing');
             expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseId)).toBeTruthy('FailureMsg20: Case id is missing');
             expect(await casePreviewPo.isCaseStatusDisplayed('Assigned')).toBeTruthy('FailureMsg21: Case Status is missing');
@@ -223,14 +223,14 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isAssignedGroupDisplayed('CA Support 1')).toBeTruthy('FailureMsg31: Assigned Support Group Value is missing');
             expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg32: Assigned Company Value is missing');
         });
-        it('[DRDMV-16065]: Verify Modules Catergoy drop down ', async () => {
+        it('[4334]: Verify Modules Catergoy drop down ', async () => {
             let category: string[] = ['All', 'Case', 'Task', 'People', 'Knowledge', 'Document', 'Case Template', 'Task Template'];
             expect(await searchPo.isCategoryAllDropDownValuesMatches(category)).toBeTruthy('FailureMsg33: Category options mismatch');
         });
     });
 
     //kgaikwad
-    describe('[DRDMV-16102]: Global search with only Case Category', async () => {
+    describe('[4307]: Global search with only Case Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = 'summaryDRDMV16102' + randomStr;
         let description = 'descriptionDRDMV16102' + randomStr;
@@ -266,7 +266,7 @@ describe('Global Search Category Validation', () => {
                 caseDisplayId4[0] = caseDetails3.displayId;
         });
 
-        it('[DRDMV-16102]: Verify Module Title & Pagination', async () => {
+        it('[4307]: Verify Module Title & Pagination', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue(caseModule);
@@ -280,7 +280,7 @@ describe('Global Search Category Validation', () => {
             await searchPo.clickOnLeftPannelRecord(caseDisplayId1[0], caseModule);
         });
 
-        it('[DRDMV-16102]: Verify Case Preview Fields', async () => {
+        it('[4307]: Verify Case Preview Fields', async () => {
             expect(await casePreviewPo.isFieldLabelDisplayed('Requester')).toBeTruthy('FailureMsg20: Requester label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg21: Site label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Source')).toBeTruthy('FailureMsg22: Source label is missing');
@@ -317,12 +317,12 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeTruthy('FailureMsg49: Case Description is missing');
         });
 
-        it('[DRDMV-16102]: Click On Goto Case button and verify ', async () => {
+        it('[4307]: Click On Goto Case button and verify ', async () => {
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasetemplatePo.getCaseTemplateId()).toBe(caseDisplayId2[0], 'FailureMsg50: Case id is missing on view case page');
         });
 
-        it('[DRDMV-16102]: Verify Case with non matching Case summary and description Also Verify case summary and description who have not access of the case', async () => {
+        it('[4307]: Verify Case with non matching Case summary and description Also Verify case summary and description who have not access of the case', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
             expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (4)', caseModule)).toBeTruthy('FailureMsg47: Case module title is missing');
@@ -339,7 +339,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg60: ${caseDisplayId3} case id  is displayed`);
         });
 
-        it('[DRDMV-16102]: Clear search and verify record displayed on left pannel ', async () => {
+        it('[4307]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(summary);
             expect(await searchPo.isModuleTitleDisplayed(summary, 'Cases (4)', caseModule)).toBeTruthy('FailureMsg61: Case module title is missing');
             await searchPo.clickClearSearchButton();
@@ -347,14 +347,14 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg63: ${caseDisplayId4[0]} case id  is missing`);
         });
 
-        it('[DRDMV-16102]: Verify search functionality with dummy text ', async () => {
+        it('[4307]: Verify search functionality with dummy text ', async () => {
             await searchPo.searchRecord(dummyDescription);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyDescription, caseModule)).toBeFalsy(`FailureMsg64: ${dummyDescription} dummyText  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(dummyDescription, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg65: Case module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(caseModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
         });
 
-        it('[DRDMV-16102]: Verify search case with Requester', async () => {
+        it('[4307]: Verify search case with Requester', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSearch();
@@ -378,7 +378,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg77: ${caseDisplayId3} case id  is displayed`);
         });
 
-        it('[DRDMV-16102]: Verify search case with assignee user', async () => {
+        it('[4307]: Verify search case with assignee user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSearch();
@@ -401,7 +401,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[0], caseModule)).toBeTruthy(`FailureMsg98: ${caseDisplayId4[0]} case id  is displayed`);
         });
 
-        it('[DRDMV-16102]: Verify search case by other group user  ', async () => {
+        it('[4307]: Verify search case by other group user  ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
@@ -426,7 +426,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg109: ${caseDisplayId3} case id  is displayed`);
         });
 
-        it('[DRDMV-16102]: Verify Cases are accessible to other Line of business Case BA', async () => {
+        it('[4307]: Verify Cases are accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSearch();
@@ -439,7 +439,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg109: ${caseDisplayId3} case id  is displayed`);
         });
 
-        it('[DRDMV-16102]: Verify Cases are accessible to other Line of business Case Manager', async () => {
+        it('[4307]: Verify Cases are accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSearch();
@@ -452,7 +452,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId3, caseModule)).toBeFalsy(`FailureMsg109: ${caseDisplayId3} case id  is displayed`);
         });
 
-        it('[DRDMV-16102]: Verify Cases are accessible to user belonging to multiple Line of business Case BA', async () => {
+        it('[4307]: Verify Cases are accessible to user belonging to multiple Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -468,7 +468,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg11: ${caseDisplayId2[1]} case id  is missing`);
         });
 
-        it('[DRDMV-16102]: Verify Cases are accessible to user belonging to multiple Line of business Case Manager', async () => {
+        it('[4307]: Verify Cases are accessible to user belonging to multiple Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -492,7 +492,7 @@ describe('Global Search Category Validation', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16115]:Global search with only Task Category', async () => {
+    describe('[4296]:Global search with only Task Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = 'summaryDRDMV16115' + randomStr;
         let summary2 = 'twoSummaryDRDMV16115' + randomStr;
@@ -527,7 +527,7 @@ describe('Global Search Category Validation', () => {
             }
         });
 
-        it('[DRDMV-16115]: Verify Module Title & Pagination', async () => {
+        it('[4296]: Verify Module Title & Pagination', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue(taskModule);
@@ -544,7 +544,7 @@ describe('Global Search Category Validation', () => {
             await searchPo.clickOnLeftPannelRecord(taskDisplayId[0], taskModule);
         });
 
-        it('[DRDMV-16115]: Verify Case Preview Field Label', async () => {
+        it('[4296]: Verify Case Preview Field Label', async () => {
             expect(await taskPreviewPo.isFieldLabelDisplayed('Requester')).toBeTruthy('FailureMsg20: Requester label is missing');
             expect(await taskPreviewPo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg21: Site label is missing');
             expect(await taskPreviewPo.isFieldLabelDisplayed('Task Summary')).toBeTruthy('FailureMsg22: Task Summary is missing');
@@ -577,12 +577,12 @@ describe('Global Search Category Validation', () => {
             expect(await taskPreviewPo.isTaskDescriptionDisplayed(description)).toBeTruthy('FailureMsg44: Task Description is missing');
         });
 
-        it('[DRDMV-16115]: Click On Goto Task button and verify ', async () => {
+        it('[4296]: Click On Goto Task button and verify ', async () => {
             await taskPreviewPo.clickGotoTaskButton();
             expect(await viewTaskPo.getTaskID()).toBe(taskDisplayId[0], 'FailureMsg45: Task id is missing on view task page');
         });
 
-        it('[DRDMV-16115]: Verify Task with non matching Task summary and description Also Verify Task summary and description who have not access of the task', async () => {
+        it('[4296]: Verify Task with non matching Task summary and description Also Verify Task summary and description who have not access of the task', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
             expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg54: Task module title is missing');
@@ -596,7 +596,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId3[1], taskModule)).toBeFalsy(`FailureMsg49: ${taskDisplayId3[1]} task id  is displayed`);
         });
 
-        it('[DRDMV-16115]: Clear search and verify record displayed on left pannel ', async () => {
+        it('[4296]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(summary);
             expect(await searchPo.isModuleTitleDisplayed(summary, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg54: Task module title is missing');
             await searchPo.clickClearSearchButton();
@@ -604,14 +604,14 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg56: ${taskDisplayId3[0]} task id  is missing`);
         });
 
-        it('[DRDMV-16115]: Verify search functionality with dummy text ', async () => {
+        it('[4296]: Verify search functionality with dummy text ', async () => {
             await searchPo.searchRecord(dummyDescription);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyDescription, taskModule)).toBeFalsy(`FailureMsg57: ${dummyDescription} dummyText  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(dummyDescription, 'Tasks (0)', taskModule)).toBeTruthy('FailureMsg58: Task module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(taskModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
         });
 
-        it('[DRDMV-16115]: Verify search Task with case reqester', async () => {
+        it('[4296]: Verify search Task with case reqester', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSearch();
@@ -630,7 +630,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId[0]} task id  is displayed`);
         });
 
-        it('[DRDMV-16115]: Verify search Task with assignee user ', async () => {
+        it('[4296]: Verify search Task with assignee user ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qcolumbcille');
             await navigationPage.gotoSearch();
@@ -653,7 +653,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId2, taskModule)).toBeTruthy(`FailureMsg48: ${taskDisplayId2} task id  is missing`);
         });
 
-        it('[DRDMV-16115]: Verify search task with other group user', async () => {
+        it('[4296]: Verify search task with other group user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
@@ -673,7 +673,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId[0]} task id  is displayed`);
         });
 
-        it('[DRDMV-16115]: Verify search Task with case assignee user ', async () => {
+        it('[4296]: Verify search Task with case assignee user ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSearch();
@@ -688,7 +688,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg9: ${taskDisplayId[4]} task id  is missing`);
         });
 
-        it('[DRDMV-16115]: Verify Tasks are accessible to other Line of business Case BA', async () => {
+        it('[4296]: Verify Tasks are accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSearch();
@@ -699,7 +699,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId[0]} task id  is displayed`);
         });
 
-        it('[DRDMV-16115]: Verify Tasks are accessible to other Line of business Case Manager', async () => {
+        it('[4296]: Verify Tasks are accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSearch();
@@ -710,7 +710,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeFalsy(`FailureMsg48: ${taskDisplayId[0]} task id  is displayed`);
         });
 
-        it('[DRDMV-16115]: Verify Tasks are accessible to user belonging to multiple Line of business Case BA', async () => {
+        it('[4296]: Verify Tasks are accessible to user belonging to multiple Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
             await navigationPage.gotoSearch();
@@ -724,7 +724,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[4], taskModule)).toBeTruthy(`FailureMsg9: ${taskDisplayId[4]} task id  is missing`);
         });
 
-        it('[DRDMV-16115]: Verify Tasks are accessible to user belonging to multiple Line of business Case Manager', async () => {
+        it('[4296]: Verify Tasks are accessible to user belonging to multiple Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
             await navigationPage.gotoSearch();
@@ -745,7 +745,7 @@ describe('Global Search Category Validation', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16114]: Global search with only Knowledge Articles Category', async () => {
+    describe('[4297]: Global search with only Knowledge Articles Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch2.json';
         let summary1 = '1summaryDRDMV16114' + randomStr;
@@ -806,7 +806,7 @@ describe('Global Search Category Validation', () => {
 
         });
 
-        it('[DRDMV-16114]: Create KA version 2 also verify version 1 with publish status and also verify KA as Draft status', async () => {
+        it('[4297]: Create KA version 2 also verify version 1 with publish status and also verify KA as Draft status', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary5);
             expect(await searchPo.isModuleTitleDisplayed(summary5, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
@@ -831,7 +831,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg59: No result found validation is missing`);
         });
 
-        it('[DRDMV-16114]: Verify Module Title & Pagination', async () => {
+        it('[4297]: Verify Module Title & Pagination', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Knowledge');
@@ -859,7 +859,7 @@ describe('Global Search Category Validation', () => {
             await searchPo.clickOnLeftPannelRecord(kaDisplayId1[0], KAModule);
         });
 
-        it('[DRDMV-16114]: Verify KA Preview Fields', async () => {
+        it('[4297]: Verify KA Preview Fields', async () => {
             expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Question')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Answer')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Technical Notes')).toBeTruthy('FailureMsg22: field label displayed');
@@ -883,12 +883,12 @@ describe('Global Search Category Validation', () => {
             expect(await knowledgeArticlePreview.isKnowledgeArticleID()).toBeTruthy('FailureMsg48: KA id is missing');
         });
 
-        it('[DRDMV-16114]: Click On Goto KA button and verify ', async () => {
+        it('[4297]: Click On Goto KA button and verify ', async () => {
             await knowledgeArticlePreview.clickGoToArticleButton();
             expect(await viewKnowledgeArticlePo.isKnowledgeArticleIdDisplayed(kaDisplayId3)).toBeTruthy('FailureMsg50: KA id is missing on view case page');
         });
 
-        it('[DRDMV-16114]: Verify vesion 2 with publish status ', async () => {
+        it('[4297]: Verify vesion 2 with publish status ', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary5);
             expect(await searchPo.isModuleTitleDisplayed(summary5, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
@@ -899,7 +899,7 @@ describe('Global Search Category Validation', () => {
             expect(await knowledgeArticlePreview.getStatusOfKA()).toBe('Published', 'FailureMsg26: version 2 is missing on KA preview');
         });
 
-        it('[DRDMV-16114]: Verify KA with non matching KA summary Also Verify case summary  who have not access of the case', async () => {
+        it('[4297]: Verify KA with non matching KA summary Also Verify case summary  who have not access of the case', async () => {
             await searchPo.searchRecord(summary1);
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(nonMatchingSummary, KAModule)).toBeFalsy(`FailureMsg51: ${nonMatchingSummary} KA non matching is missing`);
@@ -908,7 +908,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId5[1], KAModule)).toBeFalsy(`FailureMsg57: ${kaDisplayId5[1]} KA id  is displayed`);
         });
 
-        it('[DRDMV-16114]: Clear search and verify record displayed on left pannel ', async () => {
+        it('[4297]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(summary1);
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg59: KA module title is missing');
             await searchPo.clickClearSearchButton();
@@ -916,14 +916,14 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg61: ${kaDisplayId1[0]} KA id  is missing`);
         });
 
-        it('[DRDMV-16114]: Verify search functionality with dummy text ', async () => {
+        it('[4297]: Verify search functionality with dummy text ', async () => {
             await searchPo.searchRecord(dummyText);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyText, KAModule)).toBeFalsy(`FailureMsg62: ${dummyText} dummyText  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(dummyText, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg63: KA module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
         });
 
-        it('[DRDMV-16114]: Verify search KA with assignee user ', async () => {
+        it('[4297]: Verify search KA with assignee user ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSearch();
@@ -943,7 +943,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId5[1], KAModule)).toBeTruthy(`FailureMsg50: ${kaDisplayId5[1]} KA id  is missing`);
         });
 
-        it('[DRDMV-16114]: Verify saerch KA with other group user', async () => {
+        it('[4297]: Verify saerch KA with other group user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoSearch();
@@ -964,7 +964,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeTruthy(`FailureMsg8: ${kaDisplayId4} KA id  is displayed`);
         });
 
-        it('[DRDMV-16114]: Verify saerch KA with other company user', async () => {
+        it('[4297]: Verify saerch KA with other company user', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
 
@@ -990,7 +990,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId4, KAModule)).toBeFalsy(`FailureMsg11: ${kaDisplayId4} KA id  is displayed`);
         });
 
-        it('[DRDMV-16114]: Verify article search with different LOB case manager', async () => {
+        it('[4297]: Verify article search with different LOB case manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSearch();
@@ -1004,7 +1004,7 @@ describe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[4], KAModule)).toBeTruthy(`FailureMsg9: ${kaDisplayId1[4]} KA id  is missing`);
         });
 
-        it('[DRDMV-16114]: Verify article search with different LOB case BA', async () => {
+        it('[4297]: Verify article search with different LOB case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSearch();

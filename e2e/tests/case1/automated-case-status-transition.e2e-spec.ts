@@ -28,9 +28,9 @@ describe('Automated Case Status Transition', () => {
     });
 
     //asahitya
-    describe('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
+    describe('[4112]: Case business analyst - automatic case status transtion rule console', async () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-17551]: Create two records', async () => {
+        it('[4112]: Create two records', async () => {
             await apiHelper.apiLogin('jbarnes');
             await apiHelper.deleteAutomatedCaseStatusTransition();
 
@@ -56,7 +56,7 @@ describe('Automated Case Status Transition', () => {
             await utilGrid.addFilter("Name", configName1.name, 'text');
             expect(await utilGrid.isGridRecordPresent(configName1.name)).toBeTruthy();
         });
-        it('[DRDMV-17551]: Case business analyst - automatic case status transtion rule console', async () => {
+        it('[4112]: Case business analyst - automatic case status transtion rule console', async () => {
             await utilGrid.clearGridSearchBox();
             expect(await utilGrid.isGridRecordPresent(configName2.name)).toBeFalsy();
             await utilGrid.clearGridSearchBox();
@@ -84,9 +84,9 @@ describe('Automated Case Status Transition', () => {
     });
 
     //asahitya
-    describe('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
+    describe('[4111]: Case manager - automatic case status transtion rule console validations', async () => {
         let configName1, configName2, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-17553]: Search and presence of existing rule test', async () => {
+        it('[4111]: Search and presence of existing rule test', async () => {
             await apiHelper.apiLogin('jbarnes');
             await apiHelper.deleteAutomatedCaseStatusTransition();
             await navigationPage.gotoSettingsPage();
@@ -106,7 +106,7 @@ describe('Automated Case Status Transition', () => {
             await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(configName2);
         });
-        it('[DRDMV-17553]: Search and presence of existing rule test', async () => {
+        it('[4111]: Search and presence of existing rule test', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoCaseConsole();
@@ -125,7 +125,7 @@ describe('Automated Case Status Transition', () => {
             expect(await utilGrid.isGridRecordPresent(configName2.name)).toBeTruthy('Record 2 is missing');
             await utilGrid.clearGridSearchBox();
         });
-        it('[DRDMV-17553]: Case manager - automatic case status transtion rule console validations', async () => {
+        it('[4111]: Case manager - automatic case status transtion rule console validations', async () => {
             //Filter test
             await utilGrid.addFilter("Name", configName1.name, 'text');
             expect(await utilGrid.isGridRecordPresent(configName1.name)).toBeTruthy('Record 1 is missing');
@@ -149,7 +149,7 @@ describe('Automated Case Status Transition', () => {
     });
 
     //asahitya
-    it('[DRDMV-17561]: Toggle status for Automatic case status transition configuration rule', async () => {
+    it('[4105]: Toggle status for Automatic case status transition configuration rule', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteAutomatedCaseStatusTransition();
 
@@ -169,7 +169,7 @@ describe('Automated Case Status Transition', () => {
         expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name)).toBe('True');
     });
 
-    it('[DRDMV-17557]: Duplicate detection - create new automatic case transition rule which has field values same as existing rule', async () => {
+    it('[4108]: Duplicate detection - create new automatic case transition rule which has field values same as existing rule', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteAutomatedCaseStatusTransition();
 
@@ -204,7 +204,7 @@ describe('Automated Case Status Transition', () => {
         await utilCommon.clickOnWarningOk();
     });
 
-    it('[DRDMV-17566]: Automatic status transition of a case - Notification is sent to assignee', async () => {
+    it('[4101]: Automatic status transition of a case - Notification is sent to assignee', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteAutomatedCaseStatusTransition();
 
@@ -244,7 +244,7 @@ describe('Automated Case Status Transition', () => {
     });
 
     //ankagraw
-    it('[DRDMV-17567]: Automated case status transtion rule -Creation form validations', async () => {
+    it('[4100]: Automated case status transtion rule -Creation form validations', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteAutomatedCaseStatusTransition();
 

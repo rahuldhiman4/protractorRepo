@@ -26,9 +26,9 @@ describe('Application Configuration', () => {
 
             userData = {
                 "firstName": "Case BA User - 22773",
-                "lastName": "DRDMV-22773",
+                "lastName": "3428",
                 "userId": "22773User",
-                "emailId": "DRDMV-22773_User@petramco.com",
+                "emailId": "3428_User@petramco.com",
                 "userPermission": ["Case Business Analyst", "Foundation Read", "Human Resource"]
             }
             await apiHelper.createNewUser(userData);
@@ -41,7 +41,7 @@ describe('Application Configuration', () => {
             await apiHelper.associatePersonToCompany(userData.userId, "Google");
         });
 
-        it('[DRDMV-22773]:[Common Config] - Only Operating, Service Provider, Customer type of Primary organizations and global company should be returned in company field', async () => {
+        it('[3428]:[Common Config] - Only Operating, Service Provider, Customer type of Primary organizations and global company should be returned in company field', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId+'@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();

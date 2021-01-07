@@ -45,7 +45,7 @@ describe('Service Provider Model Tests Extended', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-23678,DRDMV-23683,DRDMV-23762,DRDMV-23746]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', () => {
+    describe('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', () => {
         let knowledgeArticleTemplateData, knowledgeSetDataKingstanLegalWithKingstanCompany, knowledgeSetDataKingstanLegal, knowledgeKingstanLegalID, knowledgeArticleData, knowledgeSetDataKingstan, articleData, knowledgeSetDataFinance, knowledgeOrcleID, knowledgeKingstanID, knowledgeSetDataOracle, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             // Create Data with Kingston HR LOB
@@ -117,7 +117,7 @@ describe('Service Provider Model Tests Extended', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetDataKingstanLegalWithKingstanCompany);
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
         });
-        it('[DRDMV-23678,DRDMV-23683,DRDMV-23762,DRDMV-23746]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.gotoCreateKnowledge();
             expect(await createKnowledgePage.isTemplatePresent(knowledgeArticleTemplateData.templateName)).toBeFalsy();
             await createKnowledgePage.clickOnTemplate('Reference');
@@ -144,7 +144,7 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await previewKnowledgePo.getKnowledgeArticleSection()).toContain('KnowledgeReference' + randomStr, 'section not correct');
             await previewKnowledgePo.clickGoToArticleButton();
         });
-        it('[DRDMV-23678,DRDMV-23683,DRDMV-23762,DRDMV-23746]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Applications');
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Social');
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Chatter');
@@ -169,7 +169,7 @@ describe('Service Provider Model Tests Extended', () => {
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(knowledgeArticleData.displayId)).toBeFalsy();
         });
-        it('[DRDMV-23678,DRDMV-23683,DRDMV-23762,DRDMV-23746]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login(oracleUserName, password);
             await navigationPage.gotoCreateKnowledge();
@@ -189,7 +189,7 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(knowledgeArticleData.displayId)).toBeFalsy();
             expect(await utilityGrid.isGridRecordPresent(knowledgeOrcleID)).toBeTruthy();
         });
-        it('[DRDMV-23678,DRDMV-23683,DRDMV-23762,DRDMV-23746]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login(kingstonAndOracleUserName, password);
             await navigationPage.gotoKnowledgeConsole();
@@ -206,7 +206,7 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(knowledgeKingstanID)).toBeFalsy();
         });
 
-        it('[DRDMV-23678,DRDMV-23683,DRDMV-23762,DRDMV-23746]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login(kingstonLegalUserName, password);
             await navigationPage.gotoCreateKnowledge();
@@ -230,7 +230,7 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(knowledgeOrcleID)).toBeFalsy();
             expect(await utilityGrid.isGridRecordPresent(knowledgeKingstanID)).toBeFalsy();
         });
-        it('[DRDMV-23678,DRDMV-23683,DRDMV-23762,DRDMV-23746]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login(kingstoneUserName, password);
             await navigationPage.gotoKnowledgeConsole();
@@ -251,7 +251,7 @@ describe('Service Provider Model Tests Extended', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', () => {
+    describe('[12037,12023,12019]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', () => {
         let response1, response2, response3, caseDataKingston, caseDataOracle, caseDataGlobal, templateDataPhytoCompany, newCaseTemplateKingston, newCaseTemplateOracle, newCaseTemplateGlobal, templateDataGlobalCompany, templateDataKingstanCompany, templateDataOracleCompany, newCaseTemplatePhyto, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, response11, response21, response31, caseDataKingston1, caseDataOracle1, caseDataGlobal1, newCaseTemplatePhyto1, templateDataPhytoCompany1, newCaseTemplateKingston1, newCaseTemplateOracle1, newCaseTemplateGlobal1, templateDataGlobalCompany1, templateDataKingstanCompany1, templateDataOracleCompany1;
         beforeAll(async () => {
@@ -410,7 +410,7 @@ describe('Service Provider Model Tests Extended', () => {
             response21 = await apiHelper.createCase(caseDataOracle1);
             response31 = await apiHelper.createCase(caseDataGlobal1);
         });
-        it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
+        it('[12037,12023,12019]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('David Kramer');
             await quickCasePo.setCaseSummary(templateDataPhytoCompany.templateName);
@@ -441,7 +441,7 @@ describe('Service Provider Model Tests Extended', () => {
             await quickCasePo.saveCase();
 
         });
-        it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
+        it('[12037,12023,12019]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getLineOfBusinessValue()).toBe("Kingston HR");
             await viewCasePo.clickEditCaseButton();
@@ -468,7 +468,7 @@ describe('Service Provider Model Tests Extended', () => {
             caseId = await viewCasePo.getCaseID();
             expect(await viewCasePo.getRequesterName()).toBe('David Kramer');
         });
-        it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
+        it('[12037,12023,12019]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
             await navigationPage.gotoCaseConsole();
             expect(await utilityGrid.isGridRecordPresent(response1.displayId)).toBeTruthy();
             expect(await utilityGrid.isGridRecordPresent(response2.displayId)).toBeTruthy();
@@ -478,7 +478,7 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await utilityGrid.isGridRecordPresent(response31.displayId)).toBeFalsy();
 
         });
-        it('[DRDMV-23674,DRDMV-23745,DRDMV-23761]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
+        it('[12037,12023,12019]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
             await navigationPage.signOut();
             await loginPage.login(oracleUserName, password);
             await navigationPage.gotoCaseConsole();
@@ -497,7 +497,7 @@ describe('Service Provider Model Tests Extended', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', () => {
+    describe('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', () => {
         let flowsetHumanResourceData, flowsetHumanResourceData1, flowsetHumanResourceGlobalData, flowsetFacilitiesData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -531,7 +531,7 @@ describe('Service Provider Model Tests Extended', () => {
             flowsetFacilitiesData["lineOfBusiness"] = "Facilities";
             await apiHelper.createNewFlowset(flowsetFacilitiesData);
         });
-        it('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
+        it('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown("Petramco", 'case');
@@ -540,7 +540,7 @@ describe('Service Provider Model Tests Extended', () => {
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
             await statusConfigPo.clickOnBackButton();
         });
-        it('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
+        it('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -563,7 +563,7 @@ describe('Service Provider Model Tests Extended', () => {
             await createCasetemplatePo.setCaseStatusValue('customStatus');
             await createCasetemplatePo.clickSaveCaseTemplate();
         });
-        it('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
+        it('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
             expect(await viewCasetemplatePo.getCategoryTier1()).toBe("Applications");
             expect(await viewCasetemplatePo.getCaseStatusValue()).toBe("customStatus");
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
@@ -580,7 +580,7 @@ describe('Service Provider Model Tests Extended', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
         });
-        it('[DRDMV-18473]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
+        it('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName("CaseTemplateFacilities" + randomStr);
             await createCasetemplatePo.setCompanyName("Petramco");

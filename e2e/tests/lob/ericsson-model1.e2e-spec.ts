@@ -56,7 +56,7 @@ describe('Ericsson Data Model Tests', () => {
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
     }
 
-    describe('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+    describe('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         let caseTemplateData, caseTemplateDataGlobal, caseTemplateDataEricssonGlobal, ericssonSAMcaseTemplateData, caseTemplateDataEricssonSAMGlobal;
         beforeAll(async () => {
@@ -128,12 +128,12 @@ describe('Ericsson Data Model Tests', () => {
             await apiHelper.createCaseTemplate(ericssonSAMcaseTemplateData);
             await apiHelper.createCaseTemplate(caseTemplateDataEricssonSAMGlobal);
         });
-        it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('syakov');
             expect(await createCasePo.isLineOfBusinessDisabled()).toBeTruthy('Line of Buisness Field is Enabled');
             expect(await createCasePo.getLineOfBusinessValue()).toBe('Ericsson HR', 'Line of Buisness Field is Enabled');
-            await createCasePo.setSummary('DRDMV-23629Summary' + randomStr);
+            await createCasePo.setSummary('60209Summary' + randomStr);
             expect(await createCasePo.isValuePresentInDropdown("Category Tier 1", 'Purchasing Card')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeTruthy('Value is present in  Category Tier 1 drop down');
@@ -145,7 +145,7 @@ describe('Ericsson Data Model Tests', () => {
             expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
             expect(await createCasePo.getCategoryTier3Value()).toBe('Bonus');
         });
-        it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await createCasePo.clickChangeAssignmentButton();
             expect(await changeAssignmentBladePo.businessUnitOptionsPresent('Ericsson Asset Management - USA')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -161,7 +161,7 @@ describe('Ericsson Data Model Tests', () => {
             expect(await viewCasePage.getCaseTemplateText()).toBe(caseTemplateData.templateName);
             expect(await viewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
         });
-        it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Fixed Assets')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Field is enabled');
@@ -184,7 +184,7 @@ describe('Ericsson Data Model Tests', () => {
             expect(await viewCasePage.getAssignedGroupText()).toBe("US Support 2");
             expect(await viewCasePage.getAssigneeText()).toBe("Rudner Rita");
         });
-        it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
@@ -195,7 +195,7 @@ describe('Ericsson Data Model Tests', () => {
             await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Ericsson HR Support', 'Read')).toBeTruthy('FailuerMsg1: Agent Name is missing');
         });
-        it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('rdustin');
             await createCasePo.setSummary('New Case 3');
@@ -224,7 +224,7 @@ describe('Ericsson Data Model Tests', () => {
             expect(await selectCasetemplateBladePo.isRecordPresent(caseTemplateDataEricssonSAMGlobal.templateName)).toBeFalsy();
             await selectCasetemplateBladePo.clickOnCancelButton();
         });
-        it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('rwillie');
             await quickCasePo.selectCaseTemplate(caseTemplateDataEricssonGlobal.templateName);
@@ -242,12 +242,12 @@ describe('Ericsson Data Model Tests', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
         });
-        it('[DRDMV-23629]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('sbruce');
             await utilityGrid.clearFilter();
-            await utilityGrid.searchRecord('DRDMV-23629Summary' + randomStr);
-            expect(await utilityGrid.isGridRecordPresent('DRDMV-23629Summary' + randomStr)).toBeFalsy('DRDMV-23629Summary' + randomStr);
+            await utilityGrid.searchRecord('60209Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent('60209Summary' + randomStr)).toBeFalsy('60209Summary' + randomStr);
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('sjoel');
             await quickCasePo.setCaseSummary('new case');
@@ -271,7 +271,7 @@ describe('Ericsson Data Model Tests', () => {
         });
     });
 
-    describe('[DRDMV-23635]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+    describe('[60195]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response, notesTemplate, templateData, externaltemplateData, automatedtemplateData, emailTemplateDataEricsson;
         let notesTemplateSAM, templateDataSAM, externaltemplateDataSAM, automatedtemplateDataSAM, emailTemplateDataEricssonSAM;
@@ -365,7 +365,7 @@ describe('Ericsson Data Model Tests', () => {
             };
             response = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-23635]:Create Ericsson SAM data', async () => {
+        it('[60195]:Create Ericsson SAM data', async () => {
             await apiHelper.apiLogin('ttristan');
             templateDataSAM = {
                 "templateName": 'Manual taskSAM' + randomStr,
@@ -434,7 +434,7 @@ describe('Ericsson Data Model Tests', () => {
             notesTemplate.company = "Ericsson Global";
             await apiHelper.createNotesTemplate("Case", notesTemplate);
         });
-        it('[DRDMV-23635]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+        it('[60195]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -454,7 +454,7 @@ describe('Ericsson Data Model Tests', () => {
             await composeMailPo.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-23635]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+        it('[60195]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddTaskFromTemplateButton();
             await manageTaskBladePo.searchTaskTemplate(templateData.templateSummary);
@@ -473,7 +473,7 @@ describe('Ericsson Data Model Tests', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externaltemplateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
         });
-        it('[DRDMV-23635]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+        it('[60195]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
             // Verify Case Notes Template
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -489,7 +489,7 @@ describe('Ericsson Data Model Tests', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog(notesTemplate.body)).toBeTruthy();
         });
-        it('[DRDMV-23635]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+        it('[60195]:[Ericsson Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
             // Verify Resolution Code
             await viewCasePage.clickEditCaseButton();
             await editCasePo.updateResolutionCode(resolutionCode);

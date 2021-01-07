@@ -99,7 +99,7 @@ describe('Knowledge Article', () => {
     }
 
     //ptidke
-    it('[DRDMV-2604]: [Flag an Article] Unflag a published artilcles by Asignee_Knowledge publisher', async () => {
+    it('[5952]: [Flag an Article] Unflag a published artilcles by Asignee_Knowledge publisher', async () => {
         try {
             let knowledgeTitile = 'knowledge2604' + randomStr;
             await apiHelper.apiLogin('peter');
@@ -141,7 +141,7 @@ describe('Knowledge Article', () => {
     });//, 140 * 1000);
 
     //ptidke
-    it('[DRDMV-13646,DRDMV-13681]: Create a Knowledge article and check Knowledge Preview', async () => {
+    it('[4671,4663]: Create a Knowledge article and check Knowledge Preview', async () => {
         try {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
@@ -163,7 +163,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    it('[DRDMV-1164]: PermissionModel_Knowledge Coach permission create knowledge articles', async () => {
+    it('[6344]: PermissionModel_Knowledge Coach permission create knowledge articles', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -194,7 +194,7 @@ describe('Knowledge Article', () => {
 
     //ptidke
     //Bug='DRDMV-21644
-    it('[DRDMV-2374]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
+    it('[6016]: [Edit Knowledge Article] Article creation not possible by selecting disabled templates', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -221,7 +221,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    it('[DRDMV-774,DRDMV-2447]: [Knowledge Article] [SearchArticle] Knowledge article search with article ID and title', async () => {
+    it('[6400,5988]: [Knowledge Article] [SearchArticle] Knowledge article search with article ID and title', async () => {
         let knowledgeGridColumnFields: string[] = ["Assigned Group", "Assignee Login Name", "Author", "GUID", "Region", "Review Status", "Category Tier 1", "Category Tier 2", "Category Tier 3"];
         let knowledgeTitle = 'knowledge774' + randomStr;
         await apiHelper.apiLogin('elizabeth');
@@ -248,7 +248,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    describe('[DRDMV-3095]: Submitter can cancel the article from Draft status_Submitter is assignee', () => {
+    describe('[5870]: Submitter can cancel the article from Draft status_Submitter is assignee', () => {
         let displayID = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin("tadmin");
@@ -268,7 +268,7 @@ describe('Knowledge Article', () => {
             displayID = KADetails.displayId;
         });
 
-        it('[DRDMV-3095]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
+        it('[5870]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -284,7 +284,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-3095]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
+        it('[5870]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -312,7 +312,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-3095]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
+        it('[5870]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -340,7 +340,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-3095]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
+        it('[5870]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
             //login with coach
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -374,7 +374,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    it('[DRDMV-792]: [KM-BWF integration] [Knowledge Article] Edit the knowledge article from the Knowledge Workspace', async () => {
+    it('[6387]: [KM-BWF integration] [Knowledge Article] Edit the knowledge article from the Knowledge Workspace', async () => {
         let knowledgeTitile = 'knowledge792' + randomStr;
         await apiHelper.apiLogin('peter');
         let articleData = {
@@ -398,7 +398,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    describe('[DRDMV-3093]: Submitter can cancel the article from In Progress status_Submitter is assignee', () => {
+    describe('[5871]: Submitter can cancel the article from In Progress status_Submitter is assignee', () => {
         let KADetails = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin("elizabeth");
@@ -417,7 +417,7 @@ describe('Knowledge Article', () => {
             KADetails = await apiHelper.createKnowledgeArticle(articleData);
         });
 
-        it('[DRDMV-3093]: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
+        it('[5871]: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -450,7 +450,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-3093]: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
+        it('[5871]: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -501,7 +501,7 @@ describe('Knowledge Article', () => {
     });
 
     //ptidke
-    describe('[DRDMV-2586]: [Flag an Article] Flag an article and post a comment', () => {
+    describe('[5969]: [Flag an Article] Flag an article and post a comment', () => {
         let KADetails = undefined;
         beforeAll(async () => {
             let knowledgeTitile = 'knowledge2586' + randomStr;
@@ -518,7 +518,7 @@ describe('Knowledge Article', () => {
             KADetails = await apiHelper.createKnowledgeArticle(articleData);
         });
 
-        it('[DRDMV-2586]: [Flag an Article] Flag an article and post a comment', async () => {
+        it('[5969]: [Flag an Article] Flag an article and post a comment', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -553,7 +553,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-2586]: [Flag an Article] Flag an article and post a comment', async () => {
+        it('[5969]: [Flag an Article] Flag an article and post a comment', async () => {
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -578,7 +578,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-2586]: [Flag an Article] Flag an article and post a comment', async () => {
+        it('[5969]: [Flag an Article] Flag an article and post a comment', async () => {
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -608,7 +608,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    it('[DRDMV-1064]:[Create Mode] Removing sections with the Remove button', async () => {
+    it('[6373]:[Create Mode] Removing sections with the Remove button', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -640,7 +640,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('[DRDMV-2444]: KA Console - Article Navigation', async () => {
+    it('[5991]: KA Console - Article Navigation', async () => {
         let knowledgeTitile = 'knowledge2444' + randomStr;
         await apiHelper.apiLogin('peter');
         let articleData = {
@@ -658,7 +658,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit link is not displaying');
     });
 
-    it('[DRDMV-5193]: [Knowledge]-Assigning current user as the Assignee of an article', async () => {
+    it('[5681]: [Knowledge]-Assigning current user as the Assignee of an article', async () => {
         let knowledgeTitile = 'knowledge5193' + randomStr;
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
@@ -692,7 +692,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Kane Williamson');
     });
 
-    it('[DRDMV-5195]: [Knowledge]-Assigning the article using Assignment component', async () => {
+    it('[5680]: [Knowledge]-Assigning the article using Assignment component', async () => {
         let knowledgeTitile = 'knowledge5195' + randomStr;
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
@@ -730,7 +730,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
     });
 
-    it('[DRDMV-1186,DRDMV-768]: [Knowledge Article] [ArticleCreation] Closing the article without saving it', async () => {
+    it('[6340,6406]: [Knowledge Article] [ArticleCreation] Closing the article without saving it', async () => {
         let knowledgeTitle = 'knowledge1186' + randomStr;
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
@@ -757,7 +757,7 @@ describe('Knowledge Article', () => {
         expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(0);
     });
 
-    it('[DRDMV-5158]: Click on thumbs up and thumbs down', async () => {
+    it('[5684]: Click on thumbs up and thumbs down', async () => {
         let knowledgeTitile = 'knowledge5158' + randomStr;
         await apiHelper.apiLogin('peter');
         let articleData = {
@@ -793,7 +793,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getPercentageValue() == percentage).toBeFalsy('Percentage are equal to previous');
     });
 
-    it('[DRDMV-5162]: [Knowledge]- Click on thumps down and enable the flag option.', async () => {
+    it('[5683]: [Knowledge]- Click on thumps down and enable the flag option.', async () => {
         let knowledgeTitile = 'knowledge5162' + randomStr;
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
@@ -828,8 +828,8 @@ describe('Knowledge Article', () => {
         expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
     });
 
-    describe('[DRDMV-13707]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', () => {
-        it('[DRDMV-13707]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', async () => {
+    describe('[4645]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', () => {
+        it('[4645]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -860,7 +860,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-5192]: Unflag the article', async () => {
+    describe('[5682]: Unflag the article', async () => {
         let knowledgeArticleData, knowledgeArticleDataSecond;
         let knowledgeTitile = 'knowledge5192' + randomStr;
         let knowledgeTitileSecond = 'knowledgeNewUnflag' + randomStr;
@@ -897,7 +897,7 @@ describe('Knowledge Article', () => {
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleDataFirst);
             knowledgeArticleDataSecond = await apiHelper.createKnowledgeArticle(articleDataSecond);
         });
-        it('[DRDMV-5192]: Unflag the article', async () => {
+        it('[5682]: Unflag the article', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
@@ -920,7 +920,7 @@ describe('Knowledge Article', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(activityTabPo.getFirstPostContent()).toContain(knowledgeTitileSecond, 'Post not present on activity');
         });
-        it('[DRDMV-5192]: Unflag the article', async () => {
+        it('[5682]: Unflag the article', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -951,7 +951,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    it('[DRDMV-1784]: [Knowledge Article] Changing the template for the article', async () => {
+    it('[6075]: [Knowledge Article] Changing the template for the article', async () => {
         try {
             let knowledgeTitile = 'knowledgeCoachUser1784' + randomStr;
             await navigationPage.gotoKnowledgeConsole();
@@ -994,7 +994,7 @@ describe('Knowledge Article', () => {
         }
     });
 
-    it('[DRDMV-777]:[Edit Knowledge Article] Modify knowledge article by removing all optional data on edit article view', async () => {
+    it('[6398]:[Edit Knowledge Article] Modify knowledge article by removing all optional data on edit article view', async () => {
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
             "knowledgeSet": "HR",
@@ -1026,7 +1026,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
     });
 
-    it('[DRDMV-772,DRDMV-4264]:[Edit Knowledge Article] Modify Knowledge metadata on edit knowledge screen', async () => {
+    it('[6402,5761]:[Edit Knowledge Article] Modify Knowledge metadata on edit knowledge screen', async () => {
         let fileName: string[] = [];
         fileName = ['bwfJpg.jpg', 'bwfXlsx.xlsx', 'bwfXml.xml', 'bwfPdf.pdf', 'bwfWord1.rtf', 'demo.txt'];
         await apiHelper.apiLogin(knowledgeCoachUser);
@@ -1083,7 +1083,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('demo')).toBeTruthy();
     });
 
-    it('[DRDMV-3461,DRDMV-12610]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
+    it('[5858,4934]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1130,7 +1130,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
     });
 
-    it('[DRDMV-2448]:KA Console - Search Article by name, keywords', async () => {
+    it('[5987]:KA Console - Search Article by name, keywords', async () => {
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
             "knowledgeSet": "HR",
@@ -1162,7 +1162,7 @@ describe('Knowledge Article', () => {
         expect(await utilityGrid.isGridRecordPresent(articleData.assignedCompany)).toBeTruthy();
     });
 
-    it('[DRDMV-2608]:Create KA - with only required and with all fields populating', async () => {
+    it('[5949]:Create KA - with only required and with all fields populating', async () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1198,7 +1198,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
     });
 
-    it('[DRDMV-1182]:ArticleCreation_User assign knowledge article to a specific support group', async () => {
+    it('[6341]:ArticleCreation_User assign knowledge article to a specific support group', async () => {
         let articleData = {
             "knowledgeSet": "HR",
             "title": 'knowledge2746' + randomStr,
@@ -1248,7 +1248,7 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Elizabeth Peters');
     });
 
-    describe('[DRDMV-4266,DRDMV-4267]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
+    describe('[5760,5759]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
         let kaDetails1, kaDetails2, articleData1, articleData2;
         let fileName: string[] = ['bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord1.rtf', 'bwfWord2.rtf', 'bwfWord3.rtf', 'bwfWord4.rtf', 'bwfWord5.rtf', 'articleStatus.png', 'bwfContact.contact', 'bwfXlsx.xlsx', 'bwfXlsx1.xlsx', 'bwfXsl.xsl', 'bwfXsl1.xsl', 'bwfXml.xml', 'bwfXml1.xml', 'demo.txt', 'demo1.txt'];
         beforeAll(async () => {
@@ -1274,7 +1274,7 @@ describe('Knowledge Article', () => {
             kaDetails1 = await apiHelper.createKnowledgeArticle(articleData1);
             kaDetails2 = await apiHelper.createKnowledgeArticle(articleData2);
         });
-        it('[DRDMV-4266,DRDMV-4267]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
+        it('[5760,5759]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1297,7 +1297,7 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getAttachmentCountFromKA()).toBe(0);
         });
-        it('[DRDMV-4266,DRDMV-4267]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
+        it('[5760,5759]:[Attachment] - Create article with maximum attachment - 30 attachments', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
@@ -1318,7 +1318,7 @@ describe('Knowledge Article', () => {
         });
     });
     
-    it('[DRDMV-4018]:CK Editor - Should be able to upload image using url', async () => {
+    it('[5783]:CK Editor - Should be able to upload image using url', async () => {
         let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
         let imageUrlFieldIndex = 0;
         await navigationPage.signOut();
@@ -1337,8 +1337,8 @@ describe('Knowledge Article', () => {
         expect(await viewKnowledgeArticlePo.isImageDisplayedOnDescription(uploadURL)).toBeTruthy('Image is not displayed');
     });
 
-    describe('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
-        let knowledgeSetTitle = undefined, title = "DRDMV-21679 KnowledgeArticle", knowledgeArticleGUID, knowledgeArticleData;
+    describe('[3576,3575]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
+        let knowledgeSetTitle = undefined, title = "3576 KnowledgeArticle", knowledgeArticleGUID, knowledgeArticleData;
         beforeAll(async () => {
             await apiHelper.apiLogin('elizabeth');
             let knowledgeSetData = {
@@ -1389,7 +1389,7 @@ describe('Knowledge Article', () => {
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             knowledgeArticleGUID = knowledgeArticleData.id;
         });
-        it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
+        it('[3576,3575]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1403,7 +1403,7 @@ describe('Knowledge Article', () => {
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
         });
-        it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
+        it('[3576,3575]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
             await apiHelper.apiLogin('elizabeth');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
@@ -1415,7 +1415,7 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeTruthy();
             expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeTruthy();
         });
-        it('[DRDMV-21679,DRDMV-21681]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
+        it('[3576,3575]:Tiggered the Approval on Article and check KA screen by Approver should show Approval component', async () => {
             await navigationPage.signOut();
             await loginPage.login('kayo');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1432,8 +1432,8 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-20944]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
-        let articleData, knowledgeSetTitle = undefined, title = "DRDMV-20944 KnowledgeArticle" + randomStr, knowledgeArticleGUID, knowledgeArticleData;
+    describe('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
+        let articleData, knowledgeSetTitle = undefined, title = "3627 KnowledgeArticle" + randomStr, knowledgeArticleGUID, knowledgeArticleData;
         beforeAll(async () => {
             await apiHelper.apiLogin('elizabeth');
             let knowledgeSetData = {
@@ -1464,7 +1464,7 @@ describe('Knowledge Article', () => {
             await apiHelper.createApprovalMapping(knowledgeModule, knowledgeApprovalMappingData);
             articleData = {
                 "knowledgeSet": "HR",
-                "title": "DRDMV-20944KnowledgeArticle_" + randomStr,
+                "title": "3627KnowledgeArticle_" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Applications",
                 "categoryTier2": "Help Desk",
@@ -1481,7 +1481,7 @@ describe('Knowledge Article', () => {
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             knowledgeArticleGUID = knowledgeArticleData.id;
         });
-        it('[DRDMV-20944]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
+        it('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
             await apiHelper.apiLogin('elizabeth');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
@@ -1501,7 +1501,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             expect(await editKnowledgePage.getStatusValue()).toContain('Request Cancelation', 'Status Not set');
         });
-        it('[DRDMV-20944]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
+        it('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1518,7 +1518,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             expect(await editKnowledgePage.getStatusValue()).toContain('Publish Approval', 'Status Not set');
         });
-        it('[DRDMV-20944]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
+        it('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1535,7 +1535,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setKnowledgeStatus('Retire Approval');
             expect(await editKnowledgePage.getStatusValue()).toContain('Retire Approval', 'Status Not set');
         });
-        it('[DRDMV-20944]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
+        it('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1558,7 +1558,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-1249,DRDMV-1250,DRDMV-1225,DRDMV-2695]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
+    describe('[6286,6285,6309,5939]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeArticleData1, knowledgeArticleData2, caseData, createCaseResponse;
         beforeAll(async () => {
@@ -1608,7 +1608,7 @@ describe('Knowledge Article', () => {
             createCaseResponse = await apiHelper.createCase(caseData);
             await browser.sleep(5000); // hardwait to populate resource tab data
         });
-        it('[DRDMV-1249,DRDMV-1250,DRDMV-1225,DRDMV-2695]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
+        it('[6286,6285,6309,5939]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoCaseConsole();
@@ -1633,7 +1633,7 @@ describe('Knowledge Article', () => {
             await viewCasePage.clickOnTab('Resources');
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();
         });
-        it('[DRDMV-1249,DRDMV-1250,DRDMV-1225,DRDMV-2695]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
+        it('[6286,6285,6309,5939]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePo.setCaseSummary("compensation" + "_" + randomStr);
             await editCasePo.clickSaveCase();
@@ -1661,7 +1661,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
+    describe('[6434]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
         let articleData1, articleData2, articleData3, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -1671,7 +1671,7 @@ describe('Knowledge Article', () => {
         beforeAll(async () => {
             await knowledgeConfigCreation();
         });
-        it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {
+        it('[6434]: Advanced Search UI verification on the Quick Case view', async () => {
             articleData1 = {
                 "knowledgeSet": `${knowledgeSetTitleStr}`,
                 "title": randomStr + 'KA1',
@@ -1719,7 +1719,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData3.id, 'PublishApproval')).toBeTruthy('Status Not Set');
         });
-        it('[DRDMV-620]: Advanced Search UI verification on the Quick Case view', async () => {
+        it('[6434]: Advanced Search UI verification on the Quick Case view', async () => {
             await navigationPage.signOut();
             await loginPage.login('kmills');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1737,7 +1737,7 @@ describe('Knowledge Article', () => {
             let statusFieldValues: string[] = ["None", "Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Request Cancelation"];
             expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
         });
-        it('[DRDMV-620]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
+        it('[6434]: [Advanced Search] Advanced Search UI verification on the Knowledge Edit view', async () => {
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
@@ -1782,7 +1782,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-623]: [Advanced Search] Advanced Search UI verification on the Case Edit view', async () => {
+    describe('[6433]: [Advanced Search] Advanced Search UI verification on the Case Edit view', async () => {
         let knowledgeArticleData, caseDisplayId: string, knowledgeArticleData1, articleData1, articleData2, articleData3, articleData4, articleData5, articleData6, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -1886,7 +1886,7 @@ describe('Knowledge Article', () => {
             let knowledgeArticleGUID = knowledgeArticleData1.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
         });
-        it('[DRDMV-623]: [Advanced Search] Advanced Search UI verification on the Case Edit view', async () => {
+        it('[6433]: [Advanced Search] Advanced Search UI verification on the Case Edit view', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
@@ -1903,7 +1903,7 @@ describe('Knowledge Article', () => {
             let statusFieldValues: string[] = ["None", "Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Request Cancelation"];
             expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
         });
-        it('[DRDMV-623]: [Advanced Search] Advanced Search UI verification on the Case Edit view', async () => {
+        it('[6433]: [Advanced Search] Advanced Search UI verification on the Case Edit view', async () => {
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnBackButton();
             await resources.clickOnAdvancedSearchOptions();
@@ -1948,7 +1948,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
+    describe('[6432]: Advanced Search UI verification on the Quick Case view', async () => {
         let articleData, kaDetails, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let currentDate = new Date();
         let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -1975,7 +1975,7 @@ describe('Knowledge Article', () => {
             await apiHelper.createKnowledgeArticle(articleData);
             await apiHelper.createKnowledgeArticle(articleData);
         });
-        it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
+        it('[6432]: Advanced Search UI verification on the Quick Case view', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("qkatawazi");
             await quickCasePo.setCaseSummary(articleData.title);
@@ -1990,7 +1990,7 @@ describe('Knowledge Article', () => {
             expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
         });
-        it('[DRDMV-624]: Advanced Search UI verification on the Quick Case view', async () => {
+        it('[6432]: Advanced Search UI verification on the Quick Case view', async () => {
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("qkatawazi");
             await quickCasePo.setCaseSummary(articleData.title);
@@ -2021,7 +2021,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-5064]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
+    describe('[5698]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
         let knowledgeArticleData;
         beforeAll(async () => {
             let articleData = {
@@ -2042,7 +2042,7 @@ describe('Knowledge Article', () => {
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
         });
-        it('[DRDMV-5064]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
+        it('[5698]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -2053,7 +2053,7 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy();
         });
-        it('[DRDMV-5064]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
+        it('[5698]: Article Reviewer Assignment notification for article moved to SME Review status', async () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -2074,7 +2074,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-8167]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
+    describe('[5532]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
         let knowledgeArticleData;
         let arr1: string[] = ["Assignee", "Assigned Group", "Template Name", "Knowledge Set", "Article ID"];
         let arr2: string[] = ["Company", "Reviewer", "GUID", "Author", "Review Status", "Article ID"];
@@ -2099,7 +2099,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, "SMEReview", "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
         });
-        it('[DRDMV-8167]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
+        it('[5532]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
             await navigationPage.signOut();
             await loginPage.login('peter');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -2122,7 +2122,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);
             expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Knowledge Set')).toBe("HR", 'Filter Knowledge Set is missing in column');
         });
-        it('[DRDMV-8167]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
+        it('[5532]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
             await utilityGrid.clearFilter();
             await knowledgeArticlesConsolePo.removeColumnOnGrid(arr1);
             await knowledgeArticlesConsolePo.addColumnOnGrid(arr2);
@@ -2142,7 +2142,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);
             expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Review Status')).toBe("Pending Review", 'Filter Review Status is missing in column');
         });
-        it('[DRDMV-8167]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
+        it('[5532]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
             let finalDate: string = await utilCommon.getCurrentDate();
             let createdDate = new Date();
             let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
@@ -2176,7 +2176,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);
             expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Modified Date')).toContain(dateFormate, 'Filter Modified Date is missing in column');
         });
-        it('[DRDMV-8167]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
+        it('[5532]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await viewKnowledgeArticlePo.isFlagArticleOptionDisplayed()).toBeTruthy('Flag Article option is displayed.');
             await viewKnowledgeArticlePo.clickOnFlagButton();
@@ -2195,7 +2195,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-766]: [Knowledge Article] Knowledge Article creation', async () => {
+    describe('[6408]: [Knowledge Article] Knowledge Article creation', async () => {
         let knowledgeArticleData;
         let articleData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -2216,7 +2216,7 @@ describe('Knowledge Article', () => {
             await apiHelper.apiLogin('kWilliamson');
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         });
-        it('[DRDMV-766]:[Knowledge Article] Knowledge Article creation', async () => {
+        it('[6408]:[Knowledge Article] Knowledge Article creation', async () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -2244,7 +2244,7 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+    describe('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
         let knowledgeArticleData;
         let articleData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let businessData = businessDataFile['BusinessUnitData'];
@@ -2268,7 +2268,7 @@ describe('Knowledge Article', () => {
             await apiHelper.apiLogin('kWilliamson');
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         });
-        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+        it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -2306,7 +2306,7 @@ describe('Knowledge Article', () => {
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('fnPerson lnPerson', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
-        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+        it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickRemoveAccess(businessData.orgName, true);
             await accessTabPo.clickAccessRemoveWarningBtn('Yes');
@@ -2319,7 +2319,7 @@ describe('Knowledge Article', () => {
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData.orgName, 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
         });
-        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+        it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
@@ -2354,7 +2354,7 @@ describe('Knowledge Article', () => {
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('fnPerson lnPerson', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
-        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+        it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickRemoveAccess(businessData.orgName, true);
             await accessTabPo.clickAccessRemoveWarningBtn('Yes');
@@ -2367,7 +2367,7 @@ describe('Knowledge Article', () => {
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Write')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData.orgName, 'Write')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
         });
-        it('[DRDMV-21674]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+        it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
@@ -2395,8 +2395,8 @@ describe('Knowledge Article', () => {
         });
     });
 
-    describe('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
-        it('[DRDMV-753]:[Advanced Search] Knowledge Creation', async () => {
+    describe('[6418]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+        it('[6418]:[Advanced Search] Knowledge Creation', async () => {
             await apiHelper.apiLogin('qkatawazi');
             let articleData = {
                 "knowledgeSet": "HR",
@@ -2443,7 +2443,7 @@ describe('Knowledge Article', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID7, 'PublishApproval')).toBeTruthy('Status Not Set');
             await browser.sleep(10000); //Hard wait for KA Indexing
         });
-        it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+        it('[6418]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -2457,7 +2457,7 @@ describe('Knowledge Article', () => {
             await resources.pinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
         });
-        it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+        it('[6418]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
@@ -2469,7 +2469,7 @@ describe('Knowledge Article', () => {
             await resources.pinRecommendedKnowledgeArticles(2);
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(3);
         });
-        it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+        it('[6418]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Resources');
@@ -2484,7 +2484,7 @@ describe('Knowledge Article', () => {
             await resources.unpinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeFalsy();
         });
-        it('[DRDMV-753]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+        it('[6418]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");

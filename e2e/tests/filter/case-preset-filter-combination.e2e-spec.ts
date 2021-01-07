@@ -23,7 +23,7 @@ describe('Case Console Filter Combinations', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', () => {
+    describe('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', () => {
         let caseId: string[] = [];
 
         beforeAll(async () => {
@@ -56,7 +56,7 @@ describe('Case Console Filter Combinations', () => {
 
         });
 
-        it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', 'Elizabeth Peters', 'text');
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
@@ -80,7 +80,7 @@ describe('Case Console Filter Combinations', () => {
             }
         });
 
-        it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             //Verify the fetched records with filter Assigned Group = "Employee Relations" and Status = "New"
 
             await navigationPage.gotoCaseConsole();
@@ -98,7 +98,7 @@ describe('Case Console Filter Combinations', () => {
             }
         });
 
-        it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             //Verify all the fetched records with Assignee = NULL "$NULL$"
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', '$NULL$', 'text');
@@ -114,7 +114,7 @@ describe('Case Console Filter Combinations', () => {
             }
         });
 
-        it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'US Support 1', 'text');
@@ -150,7 +150,7 @@ describe('Case Console Filter Combinations', () => {
             }
         });
 
-        it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'IN Support 1', 'text');
@@ -166,7 +166,7 @@ describe('Case Console Filter Combinations', () => {
             }
         });
 
-        it('[DRDMV-23477]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             await utilityGrid.clearSearchBox();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridColumnSorted('Case ID', 'asc')).toBeTruthy('Ascendigly not sorted');
@@ -184,7 +184,7 @@ describe('Case Console Filter Combinations', () => {
             await utilityGrid.clearFilter();
         });
     });
-    describe('[DRDMV-23479]:Verify records are fetched on case console with case Site, Region, Status combinations', () => {
+    describe('[12088]:Verify records are fetched on case console with case Site, Region, Status combinations', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
             await apiHelper.apiLogin('elizabeth');
@@ -204,7 +204,7 @@ describe('Case Console Filter Combinations', () => {
             let response5 = await apiHelper.createCase(caseData.Case_Pending_FILTER_8);
             caseId.push(response5.displayId);
         });
-        it('[DRDMV-23479]:Verify records are fetched on case console with case Site, Region, Status combinations', async () => {
+        it('[12088]:Verify records are fetched on case console with case Site, Region, Status combinations', async () => {
             await utilityGrid.addFilter('Status', 'New', 'text');
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
             await utilityGrid.addFilter('Case Site', 'Pune', 'text');
@@ -219,7 +219,7 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23479]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
+        it('[12088]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Region', 'South Asia', 'text');
             await utilityGrid.clickRefreshIcon()
@@ -231,7 +231,7 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23479]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
+        it('[12088]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', 'text');
             await utilityGrid.addFilter('Region', 'North America', 'text');
@@ -244,7 +244,7 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23479]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
+        it('[12088]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', 'text');
             await utilityGrid.addFilter('Case Site', 'Petramco Site1', 'text');
@@ -260,7 +260,7 @@ describe('Case Console Filter Combinations', () => {
             await utilityGrid.clearFilter();
         });
     });
-    describe('[DRDMV-23492]:Verify records are fetched on case console with Label and Assigned group combinations', () => {
+    describe('[12078]:Verify records are fetched on case console with Label and Assigned group combinations', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId: string[] = [];
         let label;
@@ -285,7 +285,7 @@ describe('Case Console Filter Combinations', () => {
             let response4 = await apiHelper.createCase(caseData.Case_Pending_FILTER_13);
             caseId.push(response4.displayId);
         });
-        it('[DRDMV-23492]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
+        it('[12078]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             await utilityGrid.addFilter('Assigned Group', 'Workforce Administration', 'text');
@@ -299,7 +299,7 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23492]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
+        it('[12078]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Label', label, 'text');
             await utilityGrid.addFilter('Assigned Group', 'US Support 3', 'text');
@@ -312,7 +312,7 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23492]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
+        it('[12078]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Compensation and Benefits', 'text');
             await utilityGrid.addFilter('Category Tier 1', 'Payroll', 'text');
@@ -334,7 +334,7 @@ describe('Case Console Filter Combinations', () => {
             await utilityGrid.clearFilter();
         });
     });
-    describe('[DRDMV-23480]:Verify records are fetched on case console with Source and Assignee combinations', () => {
+    describe('[12087]:Verify records are fetched on case console with Source and Assignee combinations', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
             await navigationPage.gotoSettingsPage();
@@ -367,7 +367,7 @@ describe('Case Console Filter Combinations', () => {
             caseId.push(response5.displayId);
 
         });
-        it('[DRDMV-23480]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
+        it('[12087]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'New', 'text');
@@ -384,7 +384,7 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23480]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
+        it('[12087]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Requester', 'Harry Potter', 'text');
             await utilityGrid.addFilter('Source', 'Agent', 'text');
@@ -397,7 +397,7 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
         });
-        it('[DRDMV-23480]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
+        it('[12087]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await utilityGrid.clearFilter();
             await browser.sleep(60000); // Time required for SLM Status to move in Breach 
             await utilityGrid.addFilter('SLM Status', 'Breached', 'checkbox');
@@ -414,7 +414,7 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23480]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
+        it('[12087]:Verify records are fetched on case console with Source and Assignee combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Priority', 'Critical', 'checkbox');
             await utilityGrid.addFilter('Assignee', 'Anju Joshi', 'text');

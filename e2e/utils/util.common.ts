@@ -50,7 +50,7 @@ export class Util {
     async selectDropDown(guid: string, value: string): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
         const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
-        await utilityCommon.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus e.g. DRDMV-16276
+        await utilityCommon.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus e.g. 4277
         await dropDown.$(this.selectors.dropdownBox).click();
         //        await browser.wait(this.EC.visibilityOf(dropDownInputElement));
         await dropDownInputElement.sendKeys(value);

@@ -49,7 +49,7 @@ describe('Email Acknowledgment Template', () => {
     });
 
     //ankagraw
-    it('[DRDMV-10897]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
+    it('[5123]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -64,7 +64,7 @@ describe('Email Acknowledgment Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+    describe('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -73,7 +73,7 @@ describe('Email Acknowledgment Template', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr: string[] = ["Label"];
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+        it('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -87,7 +87,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+        it('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr);
             let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
             expect(await consoleAcknowledgmentTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
@@ -109,7 +109,7 @@ describe('Email Acknowledgment Template', () => {
             await utilCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Acknowledgment Template : Acknowledgment Template creation', async () => {
+        it('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Public template name is missing');
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Public template subject is missing');
@@ -151,7 +151,7 @@ describe('Email Acknowledgment Template', () => {
             await utilCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to same LOB Case Manager', async () => {
+        it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -160,7 +160,7 @@ describe('Email Acknowledgment Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
         });
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to different LOB Case BA', async () => {
+        it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -170,7 +170,7 @@ describe('Email Acknowledgment Template', () => {
 
         });
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to different LOB Case Manager', async () => {
+        it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -179,7 +179,7 @@ describe('Email Acknowledgment Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
         });
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -188,7 +188,7 @@ describe('Email Acknowledgment Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
         });
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -201,7 +201,7 @@ describe('Email Acknowledgment Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is visible to case manager with multiple LOB access');
         });
 
-        it('[DRDMV-10896,DRDMV-10901,DRDMV-10922]: Verify if acknowledgment templates are accessible to Case BA user having access to multiple LOB', async () => {
+        it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -228,7 +228,7 @@ describe('Email Acknowledgment Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
+    describe('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -238,7 +238,7 @@ describe('Email Acknowledgment Template', () => {
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let body2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr2: string[] = ["Label"];
-        it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
+        it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -252,7 +252,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
+        it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName2);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
@@ -264,8 +264,8 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
-            // DRDMV-10900
+        it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
+            // 5121
             await utilGrid.clearFilter();
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
             expect(await editAcknowledgmentTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
@@ -284,7 +284,7 @@ describe('Email Acknowledgment Template', () => {
             await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
+        it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             await editAcknowledgmentTemplatePo.searchAndSelectGridRecord('subject');
             await editAcknowledgmentTemplatePo.clickOnGridEditButton();
             await editAcknowledgmentTemplatePo.updateEditMessageTextBladeSubject(subject2);
@@ -296,8 +296,8 @@ describe('Email Acknowledgment Template', () => {
             expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
         });
-        it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
-            // DRDMV-10924
+        it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
+            // 5115
             await consoleAcknowledgmentTemplatePo.clearGridFilter();
             await consoleAcknowledgmentTemplatePo.clearGridSearchBox();
             await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr2);
@@ -311,12 +311,12 @@ describe('Email Acknowledgment Template', () => {
             await consoleAcknowledgmentTemplatePo.addFilter('Company', 'Petramco', 'text');
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Filter Company is missing in column');
         });
-        it('[DRDMV-10900,DRDMV-10924,DRDMV-10923]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
+        it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             await consoleAcknowledgmentTemplatePo.addFilter('Subject', subject2, 'text');
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject2, 'Filter Subject is missing in column');
             await consoleAcknowledgmentTemplatePo.removeColumnOnGrid(arr2);
             await consoleAcknowledgmentTemplatePo.clearGridFilter();
-            // DRDMV-10923
+            // 5116
             await consoleAcknowledgmentTemplatePo.searchOnGridConsole(templateName2);
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Search Template Name is missing in column');
             await consoleAcknowledgmentTemplatePo.searchOnGridConsole(subject);
@@ -327,13 +327,13 @@ describe('Email Acknowledgment Template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
+    describe('[5119]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
         let templateName4 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName5 = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
+        it('[5119]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -346,7 +346,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
         });
-        it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
+        it('[5119]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -362,7 +362,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
+        it('[5119]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName5);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
@@ -373,7 +373,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
         });
-        it('[DRDMV-10902]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
+        it('[5119]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName5);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('- Global -');
@@ -390,7 +390,7 @@ describe('Email Acknowledgment Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-10902]: create same name record in same LOB', async () => {
+        it('[5119]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -406,7 +406,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-10902]: create same name record in different LOB', async () => {
+        it('[5119]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();

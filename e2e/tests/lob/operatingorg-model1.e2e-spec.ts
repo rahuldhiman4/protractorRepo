@@ -105,12 +105,12 @@ describe('Operating Orgnization Data Model Tests', () => {
     }
 
     //asahitya
-    describe('[DRDMV-23621]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', () => {
+    describe('[60201]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let twoCompanyUser;
         let caseTemplateDataPetramcoHR = {
-            "templateName": 'DRDMV-23621 Name HR' + randomStr,
-            "templateSummary": 'DRDMV-23621 Summary HR' + randomStr,
+            "templateName": '60201 Name HR' + randomStr,
+            "templateSummary": '60201 Summary HR' + randomStr,
             "templateStatus": "Active",
             "company": "Petramco",
             "businessUnit": "United States Support",
@@ -120,8 +120,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             "lineOfBusiness": "Human Resource"
         }
         let caseTemplateDataPetramcoFacilities = {
-            "templateName": 'DRDMV-23621 Name Facilities' + randomStr,
-            "templateSummary": 'DRDMV-23621 Summary Facilities' + randomStr,
+            "templateName": '60201 Name Facilities' + randomStr,
+            "templateSummary": '60201 Summary Facilities' + randomStr,
             "templateStatus": "Active",
             "company": "Petramco",
             "businessUnit": "Facilities Support",
@@ -131,8 +131,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             "lineOfBusiness": "Facilities"
         }
         let caseTemplateDataGlobalHR = {
-            "templateName": 'DRDMV-23621 Name HR' + randomStr,
-            "templateSummary": 'DRDMV-23621 Summary HR' + randomStr,
+            "templateName": '60201 Name HR' + randomStr,
+            "templateSummary": '60201 Summary HR' + randomStr,
             "templateStatus": "Active",
             "company": "- Global -",
             "ownerCompany": "Petramco",
@@ -144,8 +144,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             "categoryTier3": "Reporting"
         }
         let caseTemplateDataGlobalFacilities = {
-            "templateName": 'DRDMV-23621 Name Facilities' + randomStr,
-            "templateSummary": 'DRDMV-23621 Summary Facilities' + randomStr,
+            "templateName": '60201 Name Facilities' + randomStr,
+            "templateSummary": '60201 Summary Facilities' + randomStr,
             "templateStatus": "Active",
             "company": "- Global -",
             "ownerBU": "Facilities Support",
@@ -153,8 +153,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             "lineOfBusiness": "Facilities"
         }
         let caseTemplateDataPsilonHR = {
-            "templateName": 'DRDMV-23621 Name Psilon HR' + randomStr,
-            "templateSummary": 'DRDMV-23621 Summary Psilon HR' + randomStr,
+            "templateName": '60201 Name Psilon HR' + randomStr,
+            "templateSummary": '60201 Summary Psilon HR' + randomStr,
             "templateStatus": "Active",
             "company": "Psilon",
             "businessUnit": "Psilon Support Org1",
@@ -189,7 +189,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "US Support 3");
         });
 
-        it('[DRDMV-23621]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
+        it('[60201]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
@@ -219,7 +219,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             caseId = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23621]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
+        it('[60201]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qfeng');
             await createCasePo.clickSelectCaseTemplateButton();
@@ -261,7 +261,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             await changeAssignmentBladePo.clickOnCancelButton();
         });
 
-        it('[DRDMV-23621]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
+        it('[60201]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             expect(await utilityGrid.isGridRecordPresent(caseId)).toBeFalsy();
@@ -308,12 +308,12 @@ describe('Operating Orgnization Data Model Tests', () => {
     });
 
     //asahitya
-    describe('[DRDMV-23608]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
+    describe('[60228]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let caseId = undefined;
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDataPetramcoHR = {
-            "templateName": randomStr + 'DRDMV-23621 Name HR',
-            "templateSummary": 'DRDMV-23621 Summary HR' + randomStr,
+            "templateName": randomStr + '60201 Name HR',
+            "templateSummary": '60201 Summary HR' + randomStr,
             "templateStatus": "Active",
             "company": "Petramco",
             "businessUnit": "United States Support",
@@ -323,8 +323,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             "lineOfBusiness": "Human Resource"
         }
         let caseTemplateDataPetramcoFacilities = {
-            "templateName": randomStr + 'DRDMV-23621 Name Facilities',
-            "templateSummary": 'DRDMV-23621 Summary Facilities' + randomStr,
+            "templateName": randomStr + '60201 Name Facilities',
+            "templateSummary": '60201 Summary Facilities' + randomStr,
             "templateStatus": "Active",
             "company": "Petramco",
             "businessUnit": "Facilities Support",
@@ -334,8 +334,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             "lineOfBusiness": "Facilities"
         }
         let caseTemplateDataGlobalHR = {
-            "templateName": randomStr + 'DRDMV-23621NameHRGloabl',
-            "templateSummary": 'DRDMV-23621 Summary HR' + randomStr,
+            "templateName": randomStr + '60201NameHRGloabl',
+            "templateSummary": '60201 Summary HR' + randomStr,
             "templateStatus": "Active",
             "company": "- Global -",
             "ownerBU": "United States Support",
@@ -346,8 +346,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             "categoryTier3": "Reporting"
         }
         let caseTemplateDataGlobalFacilities = {
-            "templateName": randomStr + 'DRDMV-23621 Name Facilities',
-            "templateSummary": 'DRDMV-23621 Summary Facilities' + randomStr,
+            "templateName": randomStr + '60201 Name Facilities',
+            "templateSummary": '60201 Summary Facilities' + randomStr,
             "templateStatus": "Active",
             "company": "- Global -",
             "businessUnit": "Facilities Support",
@@ -357,8 +357,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             "lineOfBusiness": "Facilities"
         }
         let caseTemplateDataPsilon = {
-            "templateName": randomStr + 'DRDMV-23621 Name Psilon',
-            "templateSummary": 'DRDMV-23621 Summary Psilon' + randomStr,
+            "templateName": randomStr + '60201 Name Psilon',
+            "templateSummary": '60201 Summary Psilon' + randomStr,
             "templateStatus": "Active",
             "company": "Psilon",
             "businessUnit": "Canada Support",
@@ -377,7 +377,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             await apiHelper.apiLogin('gderuno');
             await apiHelper.createCaseTemplate(caseTemplateDataPsilon);
         });
-        it('[DRDMV-23608]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
+        it('[60228]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
             await navigationPage.gotoCreateCase();
             expect(await createCasePo.getLineOfBusinessValue()).toBe('Human Resource');
             await createCasePo.selectRequester('qtao');
@@ -406,7 +406,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             caseId = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23608]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
+        it('[60228]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qfeng');
             await createCasePo.clickSelectCaseTemplateButton();
@@ -449,7 +449,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             await changeAssignmentBladePo.clickOnCancelButton();
         });
 
-        it('[DRDMV-23608]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
+        it('[60228]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoCreateCase();
@@ -481,7 +481,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataGlobalHR.templateName);
         });
 
-        it('[DRDMV-23608]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
+        it('[60228]: [Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
             await navigationPage.gotoCreateCase();
@@ -524,7 +524,7 @@ describe('Operating Orgnization Data Model Tests', () => {
         });
     });
 
-    describe('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+    describe('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         let caseTemplateDataFacilities;
         let confidentialSupportGroup = "Employee Relations Sensitive Data Access";
@@ -542,14 +542,14 @@ describe('Operating Orgnization Data Model Tests', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(caseTemplateDataFacilities);
         });
-        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             expect(await createCasePo.isLineOfBusinessDisabled()).toBeTruthy('Line of Buisness Field is Enabled');
             expect(await createCasePo.getLineOfBusinessValue()).toBe('Facilities', 'Line of Buisness Field is Enabled');
-            await createCasePo.setSummary('DRDMV-23519Summary' + randomStr);
+            await createCasePo.setSummary('12063Summary' + randomStr);
             expect(await createCasePo.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             await createCasePo.clickAssignToMeButton();
             expect(await createCasePo.isValuePresentInDropdown("Category Tier 1", 'Facilities')).toBeTruthy('Value is present in  Category Tier 1 drop down');
@@ -563,7 +563,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await createCasePo.getCategoryTier3Value()).toBe('Furniture');
             expect(await createCasePo.getCategoryTier4Value()).toBe('Chair');
         });
-        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await createCasePo.clickChangeAssignmentButton();
             expect(await changeAssignmentBladePo.businessUnitOptionsPresent('United States Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -579,7 +579,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await viewCasePage.getCaseTemplateText()).toBe(caseTemplateDataFacilities.templateName);
             expect(await viewCasePage.getLineOfBusinessValue()).toBe('Facilities');
         });
-        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Field is enabled');
@@ -602,7 +602,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await viewCasePage.getAssignedGroupText()).toBe("Pantry Service");
             expect(await viewCasePage.getAssigneeText()).toBe("Qing Yuan");
         });
-        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
@@ -615,12 +615,12 @@ describe('Operating Orgnization Data Model Tests', () => {
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
             expect(await accessTabPo.isOptionsPresent(confidentialSupportGroup, 'Select Support Group', true)).toBeFalsy();
         });
-        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await utilityGrid.clearFilter();
-            await utilityGrid.searchRecord('DRDMV-23519Summary' + randomStr);
-            expect(await utilityGrid.isGridRecordPresent('DRDMV-23519Summary' + randomStr)).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            await utilityGrid.searchRecord('12063Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent('12063Summary' + randomStr)).toBeFalsy('12063Summary' + randomStr);
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.setCaseSummary('new case');
@@ -631,17 +631,17 @@ describe('Operating Orgnization Data Model Tests', () => {
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
             expect(await accessTabPo.isOptionsPresent(confidentialSupportGroup, 'Select Support Group', true)).toBeTruthy();
         });
-        it('[DRDMV-23486]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('oprusr@petramco.com', 'Password_1234');
             await utilityGrid.clearFilter();
-            expect(await utilityGrid.isGridRecordPresent('DRDMV-23519Summary' + randomStr)).toBeTruthy('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent('12063Summary' + randomStr)).toBeTruthy('12063Summary' + randomStr);
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteFoundationEntity("oprusr", { functionalRole: "Case Agent,Case Business Analyst,Knowledge Publisher" });
             await navigationPage.gotoQuickCase();
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
-            expect(await utilityGrid.isGridRecordPresent('DRDMV-23519Summary' + randomStr)).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent('12063Summary' + randomStr)).toBeFalsy('12063Summary' + randomStr);
         });
     });
 });

@@ -26,7 +26,7 @@ describe('Complex Surveys', () => {
         await navigationPage.gotoCaseConsole();
     });
 
-    it('[DRDMV-18118]: [Complex Survey] - Survey Details in Case having Stars', async () => {
+    it('[3985]: [Complex Survey] - Survey Details in Case having Stars', async () => {
         await apiHelper.apiLogin("qkatawazi");
 
         //Testing the UI with Date Time at top
@@ -201,7 +201,7 @@ describe('Complex Surveys', () => {
         await activityTabPage.closeSurveyInformation();
     });
 
-    it('[DRDMV-18117]: [Simple Survey] - Survey Details in Case which is submitted from DWP with different options', async () => {
+    it('[3986]: [Simple Survey] - Survey Details in Case which is submitted from DWP with different options', async () => {
         await apiHelper.apiLogin("qkatawazi");
 
         //Create and check the Simple Survey with Long feedback
@@ -244,7 +244,7 @@ describe('Complex Surveys', () => {
         expect(await activityTabPage.isViewSurveyInformationLinkPresent()).toBeFalsy("Link is present");
     });
 
-    it('[DRDMV-19366]: [Complex Survey] - Survey Details in Case having Emoji', async () => {
+    it('[3859]: [Complex Survey] - Survey Details in Case having Emoji', async () => {
         await apiHelper.apiLogin("qkatawazi");
         let serviceReqId: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -274,7 +274,7 @@ describe('Complex Surveys', () => {
         await activityTabPage.closeSurveyInformation();
     });
 
-    it('[DRDMV-18123]: [Complex Survey] - Survey Details Order in Case Activity', async () => {
+    it('[3982]: [Complex Survey] - Survey Details Order in Case Activity', async () => {
         await apiHelper.apiLogin("qkatawazi");
         let serviceReqId: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -287,7 +287,7 @@ describe('Complex Surveys', () => {
         expect(await activityTabPage.isComplexSurveyOrderIsThird()).toBeTruthy();
     });
 
-    it('[DRDMV-18125]: [Complex Survey] - Filter survey details in Case Activity', async () => {
+    it('[3981]: [Complex Survey] - Filter survey details in Case Activity', async () => {
         await apiHelper.apiLogin("qkatawazi");
         let serviceReqId: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = require('../../data/ui/case/case.ui.json');

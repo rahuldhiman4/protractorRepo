@@ -50,7 +50,7 @@ describe("Create Case", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-15253]: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
+    it('[4427]: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
         try {
             await navigationPage.signOut();
             await loginPage.login('qtao')
@@ -70,13 +70,13 @@ describe("Create Case", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', () => {
+    describe('[4082]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId: string = undefined;
         beforeAll(async () => {
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-2530",
+                "Summary": "Test case for 5981",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -87,7 +87,7 @@ describe("Create Case", () => {
             caseId = newCase1.displayId;
         });
 
-        it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
+        it('[4082]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
@@ -103,7 +103,7 @@ describe("Create Case", () => {
             expect(await $(viewCasePage.selectors.resolutionDescriptionLabel).isDisplayed()).toBeTruthy('Missing Resolution Description Text');
         });
 
-        it('[DRDMV-17653]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
+        it('[4082]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', async () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.updateResolutionCode(randVal);
             await editCasePage.setResolutionDescription(randVal);
@@ -131,13 +131,13 @@ describe("Create Case", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', () => {
+    describe('[4022]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId1, caseId2;
         beforeAll(async () => {
             let caseData1 = {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-2530",
+                "Summary": "Test case for 5981",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -146,7 +146,7 @@ describe("Create Case", () => {
 
             let caseData2 = {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-2530",
+                "Summary": "Test case for 5981",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -159,7 +159,7 @@ describe("Create Case", () => {
             caseId2 = newCase2.displayId;
         });
 
-        it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
+        it('[4022]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
             await navigationPage.gotoSettingsPage();
@@ -181,7 +181,7 @@ describe("Create Case", () => {
             await utilityCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-18031]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
+        it('[4022]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await menuItemConsole.searchAndEditMenuOption(randVal);
@@ -201,7 +201,7 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    it('[DRDMV-1191,DRDMV-1198]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
+    it('[6338,6331]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
         let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseSummary = 'Case Summary ' + randomStr;
@@ -224,11 +224,11 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-1193,DRDMV-1190]: [Case Creation] Case Create view (UI verification) ', () => {
+    describe('[6336,6339]: [Case Creation] Case Create view (UI verification) ', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseSummary = 'Summary ' + randomStr;
 
-        it('[DRDMV-1193,DRDMV-1190]: [Case Creation] Case Create view (UI verification) ', async () => {
+        it('[6336,6339]: [Case Creation] Case Create view (UI verification) ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
@@ -274,7 +274,7 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    it('[DRDMV-1237]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
+    it('[6297]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
         try {
             await navigationPage.gotoCaseConsole();
             await navigationPage.signOut();
@@ -298,8 +298,8 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', () => {
-        it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
+    describe('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', () => {
+        it('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
             await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
@@ -319,7 +319,7 @@ describe("Create Case", () => {
             await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
         });
 
-        it('[DRDMV-7027]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
+        it('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
@@ -338,7 +338,7 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', () => {
+    describe('[5454]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, caseTemplateData;
         beforeAll(async () => {
@@ -366,7 +366,7 @@ describe("Create Case", () => {
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
 
-        it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
+        it('[5454]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await navigationPage.gotoCreateCase();
@@ -399,7 +399,7 @@ describe("Create Case", () => {
             await previewCasePo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-8868]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
+        it('[5454]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddTaskFromTemplateButton();
             await manageTask.searchAndOpenTaskTemplate(templateData.templateName);
@@ -429,8 +429,8 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', () => {
-        it('[DRDMV-5479,DRDMV-1192]: Verify case assignment on Create Case', async () => {
+    describe('[5659,6337]: Verify case assignment on Create Case', () => {
+        it('[5659,6337]: Verify case assignment on Create Case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoCreateCase();
@@ -470,7 +470,7 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    it('[DRDMV-1614]: [Case] Fields validation for case in New status ', async () => {
+    it('[6084]: [Case] Fields validation for case in New status ', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseSummary = 'Case Summary ' + randomStr;
@@ -510,7 +510,7 @@ describe("Create Case", () => {
         }
     });
 
-    it('[DRDMV-1620]: [Case] Fields validation for case in Closed status ', async () => {
+    it('[6078]: [Case] Fields validation for case in Closed status ', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseWithClosedStatus = {
@@ -543,7 +543,7 @@ describe("Create Case", () => {
     });
 
     //apdeshmu
-    describe('[DRDMV-5325]:  Case Agent user able to see all activity records in activity feed for a Case created using template', () => {
+    describe('[5670]:  Case Agent user able to see all activity records in activity feed for a Case created using template', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
@@ -569,7 +569,7 @@ describe("Create Case", () => {
             await apiHelper.createCaseTemplate(CaseTemplateData);
         });
 
-        it('[DRDMV-5325]:  Case Agent user able to see all activity records in activity feed for a Case created using template', async () => {
+        it('[5670]:  Case Agent user able to see all activity records in activity feed for a Case created using template', async () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await navigationPage.gotoCreateCase();
@@ -595,7 +595,7 @@ describe("Create Case", () => {
             expect(await activityTabPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
         });
 
-        it('[DRDMV-5325]:  Case Agent user able to see all activity records in activity feed for a Case created using template', async () => {
+        it('[5670]:  Case Agent user able to see all activity records in activity feed for a Case created using template', async () => {
             await activityTabPo.addActivityNote(activityNoteText);
             await activityTabPo.addAttachment([filePath]);
             await activityTabPo.clickOnPostButton();
@@ -619,12 +619,12 @@ describe("Create Case", () => {
         });
     });
 
-    describe('[DRDMV-11700]: Verify  sort on all attachments grid', () => {
+    describe('[5075]: Verify  sort on all attachments grid', () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseSummary = 'DRDMV-11700' + summary;
+        let caseSummary = '5075' + summary;
 
-        it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
+        it('[5075]: Verify  sort on all attachments grid', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary(caseSummary);
@@ -638,7 +638,7 @@ describe("Create Case", () => {
             await activityTabPo.clickOnPostButton();
         });
 
-        it('[DRDMV-11700]: Verify  sort on all attachments grid', async () => {
+        it('[5075]: Verify  sort on all attachments grid', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
@@ -668,7 +668,7 @@ describe("Create Case", () => {
         });
     });
 
-    describe('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
+    describe('[3429]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let CaseTemplateData = {
             "templateName": "CaseTemplate" + randomStr,
@@ -689,7 +689,7 @@ describe("Create Case", () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(CaseTemplateData);
         });
-        it('[DRDMV-22772]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
+        it('[3429]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -708,7 +708,7 @@ describe("Create Case", () => {
         });
     });
 
-    describe('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+    describe('[3496,3497,3495]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData1, templateData2, newCaseTemplate, autoTaskTemplateData;
         beforeAll(async () => {
@@ -745,7 +745,7 @@ describe("Create Case", () => {
             let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTaskTemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, autoTaskTemplate.displayId);
         });
-        it('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+        it('[3496,3497,3495]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -756,7 +756,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
         });
-        it('[DRDMV-22293,DRDMV-22292,DRDMV-22294]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
+        it('[3496,3497,3495]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary2' + randomStr);
@@ -795,13 +795,13 @@ describe("Create Case", () => {
         });
     });
 
-    describe('[DRDMV-9052]: [Case] Source field on Case details/Case Workspace', async () => {
+    describe('[5375]: [Case] Source field on Case details/Case Workspace', async () => {
         let caseDataForEmail, caseDataForDwp, caseIdForEmail, caseIdForDWP
         beforeAll(async () => {
             caseDataForEmail = {
-                "Description": "DRDMV-9181 Desc",
+                "Description": "5356 Desc",
                 "Requester": "qtao",
-                "Summary": "DRDMV-9181-Summary",
+                "Summary": "5356-Summary",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 1",
@@ -816,7 +816,7 @@ describe("Create Case", () => {
             caseIdForEmail = await apiHelper.createCase(caseDataForEmail);
             caseIdForDWP = await apiHelper.createCaseFromDwp(caseDataForDwp);
         });
-        it('[DRDMV-9052]: [Case] Source field on Case details/Case Workspace', async () => {
+        it('[5375]: [Case] Source field on Case details/Case Workspace', async () => {
             let column: string[] = ["Source"];
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.addColumns(column);
@@ -830,14 +830,14 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-16081]: Verify allow case reopen tag in case template', () => {
+    describe('[4325]: Verify allow case reopen tag in case template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplate2 = 'Case Template 2' + randomStr;
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
         let caseTemplateSummary2 = 'Summary 2' + randomStr;
 
-        it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {
+        it('[4325]: Verify allow case reopen tag in case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             //case template with reopen case
@@ -865,7 +865,7 @@ describe("Create Case", () => {
             await utilCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {
+        it('[4325]: Verify allow case reopen tag in case template', async () => {
             //create case
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -886,7 +886,7 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-16081]: Verify allow case reopen tag in case template', async () => {
+        it('[4325]: Verify allow case reopen tag in case template', async () => {
             await viewCasePage.clickOnReopenCaseLink();
             //add second case template
             await viewCasePage.clickEditCaseButton();
@@ -919,7 +919,7 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', () => {
+    describe('[5010]: [ Task ] - Verify create case with Global task template having assignment', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let globalCategName = 'Applications';
         let categName2 = 'Social';
@@ -927,7 +927,7 @@ describe("Create Case", () => {
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
 
-        it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
+        it('[5010]: [ Task ] - Verify create case with Global task template having assignment', async () => {
             //manual Task template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
@@ -960,12 +960,12 @@ describe("Create Case", () => {
             await manageTask.clickCloseButton();
         });
 
-        it('[DRDMV-12061]: [ Task ] - Verify create case with Global task template having assignment', async () => {
+        it('[5010]: [ Task ] - Verify create case with Global task template having assignment', async () => {
             await apiHelper.apiLogin('tadmin');
             let userData = {
                 "firstName": "Petramco",
                 "lastName": "Psilon",
-                "userId": "DRDMV-12061",
+                "userId": "5010",
                 "company": "Psilon",
                 "userPermission": ["Case Business Analyst", "Human Resource"]
             }
@@ -975,9 +975,9 @@ describe("Create Case", () => {
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             //Create Case
             let caseDataPsilon = {
-                "Description": "DRDMV-16112 Psilon",
+                "Description": "4298 Psilon",
                 "Requester": "gderuno",
-                "Summary": "DRDMV-16112 Psilon",
+                "Summary": "4298 Psilon",
                 "Assigned Company": "Psilon",
                 "Business Unit": "Psilon Support Org2",
                 "Support Group": "Psilon Support Group2",
@@ -1003,12 +1003,12 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', () => {
+    describe('[4393]: Verify the status transition Closed->New is available only when Closed case is Reopened', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate = randomStr + 'CaseTemplate';
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
 
-        it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
+        it('[4393]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -1026,7 +1026,7 @@ describe("Create Case", () => {
             await createCaseTemplate.clickSaveCaseTemplate();
         });
 
-        it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
+        it('[4393]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
             //add first case 
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -1050,7 +1050,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('Case Reopen Link is present');
         });
 
-        it('[DRDMV-15974]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
+        it('[4393]: Verify the status transition Closed->New is available only when Closed case is Reopened', async () => {
             //create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -1088,12 +1088,12 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', () => {
+    describe('[5038]: [Case Creation] create case with Global case template without flowset ', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplateSummary1 = 'Summary' + randomStr;
 
-        it('[DRDMV-11856]: [Case Creation] create case with Global case template without flowset ', async () => {
+        it('[5038]: [Case Creation] create case with Global case template without flowset ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -1124,14 +1124,14 @@ describe("Create Case", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', () => {
+    describe('[4330]: Reopen configurations available on Case Template Create screen ', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplate2 = 'Case Template 2' + randomStr;
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
         let caseTemplateSummary2 = 'Summary 2' + randomStr;
 
-        it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
+        it('[4330]: Reopen configurations available on Case Template Create screen ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -1156,7 +1156,7 @@ describe("Create Case", () => {
             await createCaseTemplate.clickSaveCaseTemplate();
         });
 
-        it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
+        it('[4330]: Reopen configurations available on Case Template Create screen ', async () => {
             //create case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -1176,7 +1176,7 @@ describe("Create Case", () => {
             await expect(viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
         });
 
-        it('[DRDMV-16076]: Reopen configurations available on Case Template Create screen ', async () => {
+        it('[4330]: Reopen configurations available on Case Template Create screen ', async () => {
             //add second case template
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -1202,7 +1202,7 @@ describe("Create Case", () => {
         });
     });
 
-    describe('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+    describe('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -1211,7 +1211,7 @@ describe("Create Case", () => {
             await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], '- Global -');
             await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [true], '- Global -');
         });
-        it('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+        it('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -1242,7 +1242,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.getResolutionCodeValue()).toBe('Report Delivered');
             expect(await viewCasePage.getResolutionDescription()).toBe("CaseResolved" + randomStr);
         });
-        it('[DRDMV-21688,DRDMV-21689]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+        it('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary2' + randomStr);

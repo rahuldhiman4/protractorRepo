@@ -36,7 +36,7 @@ describe("Task Self Approval Tests", () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-21589]:[Task Approval] - Self Approval without Process', () => {
+    describe('[3586]:[Task Approval] - Self Approval without Process', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = '"' + "Automated Approval without process for task" + '"';
         let caseData = undefined;
@@ -81,7 +81,7 @@ describe("Task Self Approval Tests", () => {
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         })
 
-        it('[DRDMV-21589]:Create Self Approval Flow Without Process', async () => {
+        it('[3586]:Create Self Approval Flow Without Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(taskApprovalRecordDefinition);
@@ -106,7 +106,7 @@ describe("Task Self Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-21589]:Create task approval mapping', async () => {
+        it('[3586]:Create task approval mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -131,7 +131,7 @@ describe("Task Self Approval Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
-        it('[DRDMV-21589]:Create case and assign tasks to it', async () => {
+        it('[3586]:Create case and assign tasks to it', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -142,7 +142,7 @@ describe("Task Self Approval Tests", () => {
             await manageTask.clickCloseButton();
         });
 
-        it('[DRDMV-21589]: Verify if task approved is triggered for manual task', async () => {
+        it('[3586]: Verify if task approved is triggered for manual task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -157,7 +157,7 @@ describe("Task Self Approval Tests", () => {
             expect(await activityTabPage.getApprovalActivityText('Task was auto-approved')).toBeTruthy();
         });
 
-        it('[DRDMV-21589]: Verify if task approved is triggered for automated task', async () => {
+        it('[3586]: Verify if task approved is triggered for automated task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId2);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -186,7 +186,7 @@ describe("Task Self Approval Tests", () => {
         });
     });
 
-    describe('[DRDMV-21588]:[Task Approval] - Self Approval with Process', () => {
+    describe('[3587]:[Task Approval] - Self Approval with Process', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = '"' + "Automated Approval with process for task" + '"';
         let caseData = undefined;
@@ -231,7 +231,7 @@ describe("Task Self Approval Tests", () => {
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         })
 
-        it('[DRDMV-21588]:Create Self Approval Flow With Process', async () => {
+        it('[3587]:Create Self Approval Flow With Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(taskApprovalRecordDefinition);
@@ -257,7 +257,7 @@ describe("Task Self Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-21588]:Create task approval mapping', async () => {
+        it('[3587]:Create task approval mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', 'Task Approval Mappings - Business Workflows');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
@@ -282,7 +282,7 @@ describe("Task Self Approval Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
-        it('[DRDMV-21588]:Create case and assign tasks to it', async () => {
+        it('[3587]:Create case and assign tasks to it', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -293,7 +293,7 @@ describe("Task Self Approval Tests", () => {
             await manageTask.clickCloseButton();
         });
 
-        it('[DRDMV-21588]: Verify if task approved is triggered for manual task', async () => {
+        it('[3587]: Verify if task approved is triggered for manual task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -308,7 +308,7 @@ describe("Task Self Approval Tests", () => {
             expect(await activityTabPage.getApprovalActivityText('Task was self-approved')).toBeTruthy();
         });
 
-        it('[DRDMV-21588]: Verify if task approved is triggered for automated task', async () => {
+        it('[3587]: Verify if task approved is triggered for automated task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId2);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
@@ -337,7 +337,7 @@ describe("Task Self Approval Tests", () => {
         });
     });
 
-    describe('[DRDMV-22951]:Different Approval Mapping Configurations for Task and the way it processes', async () => {
+    describe('[3410]:Different Approval Mapping Configurations for Task and the way it processes', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, caseTemplateData1, manualTaskTemplateData1, approvalMappingResponse, approvalMappingData, manualTaskDisplayId;
         let caseTemplateData, manualTaskTemplateData, manualTaskTemplate, manualTaskTemplate1, caseTemplate, caseTemplate1;
@@ -434,7 +434,7 @@ describe("Task Self Approval Tests", () => {
             await apiHelper.associateTemplateWithApprovalMapping(taskModule, manualTaskTemplate.id, approvalMappingResponse.id);
         });
 
-        it('[DRDMV-22951]:Toggle False, task created using template which added in approval mapping, task should go in Approval', async () => {
+        it('[3410]:Toggle False, task created using template which added in approval mapping, task should go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             caseData = {
                 "Requester": "qdu",
@@ -459,7 +459,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-22951]:Toggle False, task created without template, task should NOT go in Approval', async () => {
+        it('[3410]:Toggle False, task created without template, task should NOT go in Approval', async () => {
             await apiHelper.apiLogin('qliu');
             let caseData = {
                 "Requester": "qdu",
@@ -495,7 +495,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-22951]:Toggle False, task created using template which NOT added in approval mapping, task should NOT go in Approval', async () => {
+        it('[3410]:Toggle False, task created using template which NOT added in approval mapping, task should NOT go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             caseData = {
                 "Requester": "qdu",
@@ -519,7 +519,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-22951]:Set toggle in approval mapping as True', async () => {
+        it('[3410]:Set toggle in approval mapping as True', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -529,7 +529,7 @@ describe("Task Self Approval Tests", () => {
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
         });
 
-        it('[DRDMV-22951]:Toggle True, task created using template which added in approval mapping, task should go in Approval', async () => {
+        it('[3410]:Toggle True, task created using template which added in approval mapping, task should go in Approval', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await apiHelper.apiLogin('qtao');
@@ -558,7 +558,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-22951]:Toggle True, task created without template, task should go in Approval', async () => {
+        it('[3410]:Toggle True, task created without template, task should go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             let caseData = {
                 "Requester": "qdu",
@@ -607,7 +607,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
 
-        it('[DRDMV-22951]:Toggle True, task created using template which NOT added in approval mapping, task should NOT go in Approval', async () => {
+        it('[3410]:Toggle True, task created using template which NOT added in approval mapping, task should NOT go in Approval', async () => {
             await apiHelper.apiLogin('qtao');
             caseData = {
                 "Requester": "qdu",
@@ -639,7 +639,7 @@ describe("Task Self Approval Tests", () => {
         });
     });
 
-    describe('[DRDMV-22396,DRDMV-22397]:Tiggered the Approval on Task and check Task View screen by Approver should show Approval component', async () => {
+    describe('[3471,3470]:Tiggered the Approval on Task and check Task View screen by Approver should show Approval component', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, manualTaskDisplayId, approvalMappingResponse, approvalMappingData;
         let caseTemplateData, manualTaskTemplateData, manualTask, caseTemplate;
@@ -712,7 +712,7 @@ describe("Task Self Approval Tests", () => {
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
         });
-        it('[DRDMV-22396,DRDMV-22397]:Create case and assign tasks to it', async () => {
+        it('[3471,3470]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -721,7 +721,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
         });
-        it('[DRDMV-22396,DRDMV-22397]: Verify the task approval details', async () => {
+        it('[3471,3470]: Verify the task approval details', async () => {
             await viewCasePo.openTaskCard(1);
             manualTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
@@ -734,7 +734,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isApprovalButtonsPresent('Approve')).toBeFalsy('Show Approvers Banner is not displayed');
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeFalsy('Show Approvers Banner is not displayed');
         });
-        it('[DRDMV-22396,DRDMV-22397]: Approve the task with approver and check the approver details on task view', async () => {
+        it('[3471,3470]: Approve the task with approver and check the approver details on task view', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
@@ -746,7 +746,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeTruthy('Show Approvers Banner is not displayed');
             await viewTask.clickOnApproveLink();
         });
-        it('[DRDMV-22396,DRDMV-22397]:Create case and assign tasks to it', async () => {
+        it('[3471,3470]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
@@ -776,7 +776,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isApprovalButtonsPresent('Approve')).toBeFalsy('Show Approvers Banner is not displayed');
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeFalsy('Show Approvers Banner is not displayed');
         });
-        it('[DRDMV-22396,DRDMV-22397]: Verify the task approver details on task view for the user who is submitter of task but not belongs to approval configs', async () => {
+        it('[3471,3470]: Verify the task approver details on task view for the user who is submitter of task but not belongs to approval configs', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
@@ -795,7 +795,7 @@ describe("Task Self Approval Tests", () => {
         });
     });
 
-    describe('[DRDMV-22264]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when task enters approval cycle', async () => {
+    describe('[3502]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when task enters approval cycle', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData, globalApprovalMappingData;
         let caseTemplateData, manualTaskTemplateData, automatedTask, caseTemplate;
@@ -886,7 +886,7 @@ describe("Task Self Approval Tests", () => {
 
         });
 
-        it('[DRDMV-22264]:Create case and assign tasks to it', async () => {
+        it('[3502]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -902,7 +902,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
-        it('[DRDMV-22264]: Verify the task approval details ', async () => {
+        it('[3502]: Verify the task approval details ', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
@@ -927,7 +927,7 @@ describe("Task Self Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         })
 
-        it('[DRDMV-22264]: Verify task approval precedence given to company specific mapping', async () => {
+        it('[3502]: Verify task approval precedence given to company specific mapping', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await navigationPage.gotoTaskConsole();
@@ -959,7 +959,7 @@ describe("Task Self Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-22264]:Create case and assign tasks to it and delete company specific mapping', async () => {
+        it('[3502]:Create case and assign tasks to it and delete company specific mapping', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
@@ -985,7 +985,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
-        it('[DRDMV-22264]: Verify task approval precedence given to global company mapping', async () => {
+        it('[3502]: Verify task approval precedence given to global company mapping', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");

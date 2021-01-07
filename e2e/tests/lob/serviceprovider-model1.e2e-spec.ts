@@ -46,7 +46,7 @@ describe('Service Provider Data Model Tests', () => {
     });
 
     //kiran
-    describe('[DRDMV-23676]: [Service Provider Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', () => {
+    describe('[12036]: [Service Provider Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let emailTemplateDataKingston, emailTemplateDataKingstonGlobal, emailTemplateOracle, emailTemplateOracleGlobal;
 
@@ -205,7 +205,7 @@ describe('Service Provider Data Model Tests', () => {
             await apiHelper.createNewMenuItem(resolutionCodeActiveOnUIData2);
         });
 
-        it('[DRDMV-23676]: Create Case and verify email template on select email template blade grid', async () => {
+        it('[12036]: Create Case and verify email template on select email template blade grid', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('David Kramer');
             await createCasePage.setSummary('DRDMV23676CaseSummary');
@@ -229,7 +229,7 @@ describe('Service Provider Data Model Tests', () => {
             await composeMailPo.clickOnSendButton();
         });
 
-        it('[DRDMV-23676]: Verify Task template on manage task blade', async () => {
+        it('[12036]: Verify Task template on manage task blade', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddTaskFromTemplateButton();
 
@@ -243,7 +243,7 @@ describe('Service Provider Data Model Tests', () => {
             await manageTaskBladePo.clickTaskGridSaveButton();
         });
 
-        it('[DRDMV-23676]: Verify Adhoc Task template LOB on manage task blade', async () => {
+        it('[12036]: Verify Adhoc Task template LOB on manage task blade', async () => {
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary("DRDMV23676Test");
             expect(await createAdhocTaskPo.getLineOfBussinessValue()).toBe('Kingston HR');
@@ -251,7 +251,7 @@ describe('Service Provider Data Model Tests', () => {
             await manageTaskBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-23676]: Verify Notes Template', async () => {
+        it('[12036]: Verify Notes Template', async () => {
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatekingStone)).toBeTruthy('notesTemplatekingStone is missing');
@@ -269,7 +269,7 @@ describe('Service Provider Data Model Tests', () => {
             await activityTabPo.isTextPresentInActivityLog('this is notes template description');
         });
 
-        it('[DRDMV-23676]: Verify Resolution Code', async () => {
+        it('[12036]: Verify Resolution Code', async () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePo.updateResolutionCode(resolutionCodeNamekingStone);
             await editCasePo.setResolutionDescription('resolution code testing');
@@ -294,7 +294,7 @@ describe('Service Provider Data Model Tests', () => {
     });
 
     //kiran
-    describe('[DRDMV-23763]: [Service Provider Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', () => {
+    describe('[12017]: [Service Provider Model] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let emailTemplateDataKingston, emailTemplateDataKingstonGlobal, emailTemplateOracle, emailTemplateOracleGlobal;
 
@@ -377,7 +377,7 @@ describe('Service Provider Data Model Tests', () => {
             await apiHelper.createNewMenuItem(resolutionCodeActiveOnUIData);
         });
 
-        it('[DRDMV-23763]: Create Case and verify email template on select email template blade grid', async () => {
+        it('[12017]: Create Case and verify email template on select email template blade grid', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Young Neil');
             await createCasePage.setSummary('DRDMV23763CaseSummary');
@@ -401,7 +401,7 @@ describe('Service Provider Data Model Tests', () => {
             await composeMailPo.clickOnSendButton();
         });
 
-        it('[DRDMV-23763]: Verify Task template on manage task blade', async () => {
+        it('[12017]: Verify Task template on manage task blade', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddTaskFromTemplateButton();
 
@@ -412,7 +412,7 @@ describe('Service Provider Data Model Tests', () => {
             await manageTaskBladePo.clickTaskGridSaveButton();
         });
 
-        it('[DRDMV-23763]: Verify Adhoc Task template LOB on manage task blade', async () => {
+        it('[12017]: Verify Adhoc Task template LOB on manage task blade', async () => {
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary("DRDMV23763Test");
             expect(await createAdhocTaskPo.getLineOfBussinessValue()).toBe('Kingston Legal');
@@ -426,7 +426,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-23763]: Change Task Status', async () => {
+        it('[12017]: Change Task Status', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink('DRDMV23763Test');
             await viewTaskPo.clickOnChangeStatus();
@@ -436,7 +436,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-23763]: Verify Notes Template', async () => {
+        it('[12017]: Verify Notes Template', async () => {
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatekingStone)).toBeTruthy('notesTemplatekingStone is missing');
@@ -451,7 +451,7 @@ describe('Service Provider Data Model Tests', () => {
             await activityTabPo.isTextPresentInActivityLog('this is notes template description');
         });
 
-        it('[DRDMV-23763]: Verify Resolution Code', async () => {
+        it('[12017]: Verify Resolution Code', async () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePo.updateResolutionCode(resolutionCodeNamekingStone);
             await editCasePo.setResolutionDescription('resolution code testing');
@@ -467,7 +467,7 @@ describe('Service Provider Data Model Tests', () => {
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-23763]: Create Case and verify email template on select email template blade grid', async () => {
+        it('[12017]: Create Case and verify email template on select email template blade grid', async () => {
             await navigationPage.signOut();
             await loginPage.login(kingstoneHRUserName, password);
 
@@ -491,7 +491,7 @@ describe('Service Provider Data Model Tests', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[DRDMV-23763]: Verify Task template on manage task blade', async () => {
+        it('[12017]: Verify Task template on manage task blade', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddTaskFromTemplateButton();
 
@@ -501,7 +501,7 @@ describe('Service Provider Data Model Tests', () => {
             await manageTaskBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-23763]: Verify Notes Template', async () => {
+        it('[12017]: Verify Notes Template', async () => {
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatekingStone)).toBeFalsy('notesTemplatekingStone is missing');
@@ -511,7 +511,7 @@ describe('Service Provider Data Model Tests', () => {
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-23763]: Verify Resolution Code', async () => {
+        it('[12017]: Verify Resolution Code', async () => {
             await viewCasePage.clickEditCaseButton();
             await expect(await editCasePo.isValuePresentInResolutionCode(resolutionCodeNamekingStone)).toBeFalsy();
             await editCasePo.setResolutionDescription('resolution code testing');
@@ -535,7 +535,7 @@ describe('Service Provider Data Model Tests', () => {
     });
 
     //kiran
-    describe('[DRDMV-23681]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
+    describe('[12033]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR, caseIdKingstoneHR, caseIdOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalOracleHR, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal;
         let taskTemplateNameSummaryKingstoneHR = "1taskTemplateNameSummaryDRDMV23681" + randomStr;
@@ -691,7 +691,7 @@ describe('Service Provider Data Model Tests', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataKingstoneLegal);
         });
 
-        it('[DRDMV-23681]: Verify Negative Scenrio for Oracle HR and Kingston Leagal data but Finance LOB for category diffrence', async () => {
+        it('[12033]: Verify Negative Scenrio for Oracle HR and Kingston Leagal data but Finance LOB for category diffrence', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Ueshiba Morihei');
@@ -750,7 +750,7 @@ describe('Service Provider Data Model Tests', () => {
             expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeTruthy('General Ledger CategoryTier1 drop down value missing');
         });
 
-        it('[DRDMV-23681]: Create case without case template', async () => {
+        it('[12033]: Create case without case template', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Kingston HR');
             await navigationPage.gotoCreateCase();
@@ -768,7 +768,7 @@ describe('Service Provider Data Model Tests', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23681]: Create case with case template', async () => {
+        it('[12033]: Create case with case template', async () => {
             await createCasePage.selectRequester('Stuart Rexroad');
             expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
             await createCasePage.setSummary('DRDMV23681CaseSummary');
@@ -802,7 +802,7 @@ describe('Service Provider Data Model Tests', () => {
             caseIdKingstoneHR = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23681]: Verify Edit Case Page', async () => {
+        it('[12033]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Total Rewards');
@@ -830,7 +830,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneHR);
         });
 
-        it('[DRDMV-23681]: Create case With Oracle HR User and verify data', async () => {
+        it('[12033]: Create case With Oracle HR User and verify data', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Oracle HR');
             await navigationPage.gotoCreateCase();
@@ -856,7 +856,7 @@ describe('Service Provider Data Model Tests', () => {
             caseIdOracleHR = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23681]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
+        it('[12033]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
@@ -875,7 +875,7 @@ describe('Service Provider Data Model Tests', () => {
     });
 
     //kiran
-    describe('[DRDMV-23760]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when one of the supporting organization supports a Line of Business for its own.', () => {
+    describe('[12020]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when one of the supporting organization supports a Line of Business for its own.', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDataKingstoneHR, caseTemplateDataGlobalKingstonHR, caseIdKingstoneLegal, caseIdFinance, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal, caseTemplateDataGlobalFinanceBackOffice, caseTemplateDataFinanceBackOffice;
         let taskTemplateNameSummaryKingstoneLegal = "1taskTemplateNameSummaryDRDMV23760" + randomStr;
@@ -1028,7 +1028,7 @@ describe('Service Provider Data Model Tests', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataKingstoneHR);
         });
 
-        it('[DRDMV-23760]: Create case without case template', async () => {
+        it('[12020]: Create case without case template', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Young Neil');
@@ -1072,7 +1072,7 @@ describe('Service Provider Data Model Tests', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23760]: Create case with case template', async () => {
+        it('[12020]: Create case with case template', async () => {
             await createCasePage.selectRequester('Young Edward');
             expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston Legal');
             await createCasePage.setSummary('DRDMV23760CaseSummary');
@@ -1116,7 +1116,7 @@ describe('Service Provider Data Model Tests', () => {
             caseIdKingstoneLegal = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23760]: Verify Edit Case Page', async () => {
+        it('[12020]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Total Rewards');
@@ -1159,7 +1159,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneLegal);
         });
 
-        it('[DRDMV-23760]: Login And Create case With Finance Back Office User and verify data', async () => {
+        it('[12020]: Login And Create case With Finance Back Office User and verify data', async () => {
             await navigationPage.signOut();
             await loginPage.login(financeBackOfficeUserName, password);
             await navigationPage.gotoCaseConsole();
@@ -1213,7 +1213,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryFinanceBackOffice);
         });
 
-        it('[DRDMV-23760]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
+        it('[12020]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(caseIdFinance)).toBeTruthy('caseIdFinance Missing on grid');
@@ -1234,7 +1234,7 @@ describe('Service Provider Data Model Tests', () => {
     });
 
     //kiran
-    describe('[DRDMV-23744]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when a single line of business is shared between multiple organizations', () => {
+    describe('[12024]: [Service Provider Model][Create Case]: Verify the behavior when the case agent is able to create a case when a single line of business is shared between multiple organizations', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateDataFinanceBackOffice, caseTemplateDataGlobalFinanceBackOffice, caseIdFinance, caseIdOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalOracleHR, caseTemplateDataGlobalKingstoneLegal, caseTemplateDataKingstoneLegal, knowledgeSetData, KADetails;
 
@@ -1401,7 +1401,7 @@ describe('Service Provider Data Model Tests', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataKingstoneLegal);
         });
 
-        it('[DRDMV-23744]: Verify Negative Scenrio for Finance HR, Oracle HR and Kingston Leagal data but used Finance LOB for category diffrence', async () => {
+        it('[12024]: Verify Negative Scenrio for Finance HR, Oracle HR and Kingston Leagal data but used Finance LOB for category diffrence', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectLineOfBusiness('KingstonOracle Finance');
@@ -1466,7 +1466,7 @@ describe('Service Provider Data Model Tests', () => {
             expect(await createCasePage.isCategoryTier1DropDownValueDisplayed('General Ledger')).toBeFalsy('General Ledger CategoryTier1 drop down value display');
         });
 
-        it('[DRDMV-23744]: Create case without case template', async () => {
+        it('[12024]: Create case without case template', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('KingstonOracle Finance');
             await navigationPage.gotoCreateCase();
@@ -1495,7 +1495,7 @@ describe('Service Provider Data Model Tests', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23744]: Create case with case template', async () => {
+        it('[12024]: Create case with case template', async () => {
             await createCasePage.selectRequester('Yourcenar Marguerite');
             expect(await createCasePage.getLineOfBusinessValue()).toBe('KingstonOracle Finance');
             await createCasePage.setSummary(summary);
@@ -1529,7 +1529,7 @@ describe('Service Provider Data Model Tests', () => {
             caseIdFinance = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23744]: Verify Edit Case Page', async () => {
+        it('[12024]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Accounts Receivable');
@@ -1565,7 +1565,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryFinanceBackOffice);
         });
 
-        it('[DRDMV-23744]: create knowledge article', async () => {
+        it('[12024]: create knowledge article', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -1578,7 +1578,7 @@ describe('Service Provider Data Model Tests', () => {
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
         });
 
-        it('[DRDMV-23744]: Verify with Resources Tab  with case', async () => {
+        it('[12024]: Verify with Resources Tab  with case', async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseIdFinance);
@@ -1590,7 +1590,7 @@ describe('Service Provider Data Model Tests', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(knowledgeTitle)).toEqual(knowledgeTitle);
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(summary);
         });
-        it('[DRDMV-23744]: Create case With Oracle HR User and verify data', async () => {
+        it('[12024]: Create case With Oracle HR User and verify data', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Oracle HR');
             await navigationPage.gotoCreateCase();
@@ -1643,7 +1643,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-23744]: Verify Knowledge Article and case with Resources Tab', async () => {
+        it('[12024]: Verify Knowledge Article and case with Resources Tab', async () => {
             await viewCasePage.clickOnTab('Resources');
             await resourcesTabPo.clickOnAdvancedSearchOptions();
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
@@ -1652,7 +1652,7 @@ describe('Service Provider Data Model Tests', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(undefined);
         });
 
-        it('[DRDMV-23744]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
+        it('[12024]: Verify KingstoneHR case access to Oracle HR LOB', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Oracle HR');
             await utilityGrid.clearFilter();
@@ -1673,7 +1673,7 @@ describe('Service Provider Data Model Tests', () => {
     });
 
     //kiran
-    describe('[DRDMV-23673]: [Service Provide Model][Create Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', () => {
+    describe('[12038]: [Service Provide Model][Create Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeSetData, caseTemplateDataGlobalOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR, caseIdKingstoneHR, caseIdOracleHR;
         let taskTemplateNameSummaryKingstoneHR = "1taskTemplateNameSummaryDRDMV23673" + randomStr;
@@ -1803,7 +1803,7 @@ describe('Service Provider Data Model Tests', () => {
 
         });
 
-        it('[DRDMV-23673]: Create case without case template for Kingston HR', async () => {
+        it('[12038]: Create case without case template for Kingston HR', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('David Kramer');
@@ -1842,7 +1842,7 @@ describe('Service Provider Data Model Tests', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23673]: Create case with case template for Kingston HR', async () => {
+        it('[12038]: Create case with case template for Kingston HR', async () => {
             await createCasePage.selectRequester('Stuart Rexroad');
             expect(await createCasePage.getLineOfBusinessValue()).toBe('Kingston HR');
             await createCasePage.setSummary(summary);
@@ -1874,7 +1874,7 @@ describe('Service Provider Data Model Tests', () => {
             caseIdKingstoneHR = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-23673]: Verify Edit Case Page', async () => {
+        it('[12038]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             await editCasePo.updateCaseCategoryTier1('Total Rewards');
@@ -1925,7 +1925,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewCasePage.clickOnTaskLink(taskTemplateNameSummaryKingstoneHR);
         });
 
-        it('[DRDMV-23673]: create knowledge article', async () => {
+        it('[12038]: create knowledge article', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -1938,7 +1938,7 @@ describe('Service Provider Data Model Tests', () => {
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
         });
 
-        it('[DRDMV-23673]: Verify with Resources Tab', async () => {
+        it('[12038]: Verify with Resources Tab', async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseIdKingstoneHR);
@@ -1951,7 +1951,7 @@ describe('Service Provider Data Model Tests', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(summary)).toEqual(summary);
         });
 
-        it('[DRDMV-23673]: Login And Create case With Oracle HR User and verify data', async () => {
+        it('[12038]: Login And Create case With Oracle HR User and verify data', async () => {
             await navigationPage.signOut();
             await loginPage.login(oracleUserName, password);
             await navigationPage.gotoCaseConsole();
@@ -1999,7 +1999,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-23673]: Verify Knowledge Article and case with Resources Tab', async () => {
+        it('[12038]: Verify Knowledge Article and case with Resources Tab', async () => {
             await viewCasePage.clickOnTab('Resources');
             await resourcesTabPo.clickOnAdvancedSearchOptions();
             await resourcesTabPo.searchTextAndEnter(knowledgeTitle);
@@ -2008,7 +2008,7 @@ describe('Service Provider Data Model Tests', () => {
             await expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection('DRDMV23673CaseSummary123')).toEqual(undefined);
         });
 
-        it('[DRDMV-23673]: Verify KingstoneHR and Oracle HR Case Access in between LOB', async () => {
+        it('[12038]: Verify KingstoneHR and Oracle HR Case Access in between LOB', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(caseIdOracleHR)).toBeTruthy('caseIdOracleHR Missing on grid');
@@ -2030,7 +2030,7 @@ describe('Service Provider Data Model Tests', () => {
     });
 
     //kiran
-    describe('[DRDMV-23682]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
+    describe('[12032]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to multiple LOB', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeSetData2, knowledgeSetData, caseTemplateDataGlobalOracleHR, caseTemplateDataOracleHR, caseTemplateDataGlobalKingstonHR, caseTemplateDataKingstoneHR, caseIdKingstoneHR, caseIdOracleHR;
 
@@ -2138,7 +2138,7 @@ describe('Service Provider Data Model Tests', () => {
             await apiHelper.createCaseTemplate(caseTemplateDataOracleHR);
         });
 
-        it('[DRDMV-23682]: Create Case And Article Data For Kingston HR', async () => {
+        it('[12032]: Create Case And Article Data For Kingston HR', async () => {
             // Create Case For Kingston HR
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Kingston HR');
@@ -2162,7 +2162,7 @@ describe('Service Provider Data Model Tests', () => {
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
         });
 
-        it('[DRDMV-23682]: Create Case And Article Data For Oracle HR', async () => {
+        it('[12032]: Create Case And Article Data For Oracle HR', async () => {
             // // Create Case For Oracle HR
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Oracle HR');
@@ -2186,7 +2186,7 @@ describe('Service Provider Data Model Tests', () => {
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
         });
 
-        it('[DRDMV-23682]: Create Quick Case Negative scenario With Kingston HR', async () => {
+        it('[12032]: Create Quick Case Negative scenario With Kingston HR', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Kingston HR');
             await navigationPage.gotoQuickCase();
@@ -2212,7 +2212,7 @@ describe('Service Provider Data Model Tests', () => {
             await quickCasePo.clickStartOverButton();
         });
 
-        it('[DRDMV-23682]: Create Quick Case without template and verify Kingston HR in recommended data', async () => {
+        it('[12032]: Create Quick Case without template and verify Kingston HR in recommended data', async () => {
             await quickCasePo.selectRequesterName('smoran');
             await quickCasePo.setCaseSummary(caseSummaryKingstoneHR1);
             expect(await resourcesTabPo.isRecommendedCasePresent(caseSummaryKingstoneHR1)).toBeTruthy(`${caseSummaryKingstoneHR1} caseSummaryKingstoneHR1 displayed in Recommended Knowledge`);
@@ -2241,14 +2241,14 @@ describe('Service Provider Data Model Tests', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23682]: Create Quick Case with case template', async () => {
+        it('[12032]: Create Quick Case with case template', async () => {
             await quickCasePo.selectRequesterName('smoran');
             await quickCasePo.selectCaseTemplate(caseTemplateDataKingstoneHR.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-23682]: Verify Edit Case Page', async () => {
+        it('[12032]: Verify Edit Case Page', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             expect(await editCasePo.getLobValue()).toBe('Kingston HR');
@@ -2307,7 +2307,7 @@ describe('Service Provider Data Model Tests', () => {
             await viewCasePage.clickOnTaskLink('adhocTask');
         });
 
-        it('[DRDMV-23682]: Create Quick Case scenario With Oracle HR', async () => {
+        it('[12032]: Create Quick Case scenario With Oracle HR', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.selectLineOfBusiness('Oracle HR');
             await navigationPage.gotoQuickCase();
@@ -2333,7 +2333,7 @@ describe('Service Provider Data Model Tests', () => {
             await quickCasePo.clickStartOverButton();
         });
 
-        it('[DRDMV-23682]: Create Quick Case without template and verify Oracle HR in recommended data ', async () => {
+        it('[12032]: Create Quick Case without template and verify Oracle HR in recommended data ', async () => {
             await quickCasePo.selectRequesterName('rtownsend');
             await quickCasePo.setCaseSummary(caseSummaryOracleHR2);
             expect(await resourcesTabPo.isRecommendedCasePresent(caseSummaryOracleHR2)).toBeTruthy(`${caseSummaryOracleHR2} caseSummaryOracleHR2 displayed in Recommended Knowledge`);
@@ -2362,14 +2362,14 @@ describe('Service Provider Data Model Tests', () => {
             await casePreviewPo.clickOncreateNewCaseButton();
         });
 
-        it('[DRDMV-23682]: Create Quick Case with case template Oracle HR', async () => {
+        it('[12032]: Create Quick Case with case template Oracle HR', async () => {
             await quickCasePo.selectRequesterName('smoran');
             await quickCasePo.selectCaseTemplate(caseTemplateDataOracleHR.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
         });
 
-        it('[DRDMV-23682]: Verify Edit Case Page for Oracle HR', async () => {
+        it('[12032]: Verify Edit Case Page for Oracle HR', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Line of business is not readonly');
             expect(await editCasePo.getLobValue()).toBe('Oracle HR');

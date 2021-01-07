@@ -27,7 +27,7 @@ describe('PIN Validation Quick Case', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-13708,DRDMV-10508,DRDMV-10560,DRDMV-10563,DRDMV-10564]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
+    describe('[4644,5233,5227,5224,5223]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
         let casetemplatePsilon1, newCaseTemplate;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -52,7 +52,7 @@ describe('PIN Validation Quick Case', () => {
             await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Active');
             await browser.sleep(3000); // hardwait to reflect case template validation
         });
-        it('[DRDMV-13708,DRDMV-10508,DRDMV-10560,DRDMV-10563,DRDMV-10564]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
+        it('[4644,5233,5227,5224,5223]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoQuickCase();
@@ -83,7 +83,7 @@ describe('PIN Validation Quick Case', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-13708,DRDMV-10508,DRDMV-10560,DRDMV-10563,DRDMV-10564]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
+        it('[4644,5233,5227,5224,5223]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['NONE'], 'Psilon');
@@ -102,7 +102,7 @@ describe('PIN Validation Quick Case', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-13708,DRDMV-10508,DRDMV-10560,DRDMV-10563,DRDMV-10564]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
+        it('[4644,5233,5227,5224,5223]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
@@ -132,7 +132,7 @@ describe('PIN Validation Quick Case', () => {
         });
     });
 
-    describe('[DRDMV-10506,DRDMV-10507,DRDMV-10558,DRDMV-10559,DRDMV-10562]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
+    describe('[5235,5234,5229,5228,5225]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
         let casetemplatePsilon1, newCaseTemplate;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -156,7 +156,7 @@ describe('PIN Validation Quick Case', () => {
             await apiHelper.updateCaseTemplateIdentitiyValidation(newCaseTemplate.id, 'OPTIONAL');
             await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Active');
         });
-        it('[DRDMV-10506,DRDMV-10507,DRDMV-10558,DRDMV-10559,DRDMV-10562]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
+        it('[5235,5234,5229,5228,5225]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoQuickCase();
@@ -193,7 +193,7 @@ describe('PIN Validation Quick Case', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-10506,DRDMV-10507,DRDMV-10558,DRDMV-10559,DRDMV-10562]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
+        it('[5235,5234,5229,5228,5225]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
@@ -228,7 +228,7 @@ describe('PIN Validation Quick Case', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-10506,DRDMV-10507,DRDMV-10558,DRDMV-10559,DRDMV-10562]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
+        it('[5235,5234,5229,5228,5225]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');
@@ -257,7 +257,7 @@ describe('PIN Validation Quick Case', () => {
         });
     });
 
-    describe('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
+    describe('[5201,5246,5206,5204]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
         let assignmentData, casetemplatePsilon1, newCaseTemplate, knowledgeArticleTemplateData: IKnowledgeArticleTemplate, knowledgeSetData;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -303,7 +303,7 @@ describe('PIN Validation Quick Case', () => {
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             apiHelper.deleteApprovalMapping('Knowledge');
         });
-        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
+        it('[5201,5246,5206,5204]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCreateKnowledge();
@@ -322,7 +322,7 @@ describe('PIN Validation Quick Case', () => {
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
+        it('[5201,5246,5206,5204]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
             await quickCasePo.selectCaseTemplate(casetemplatePsilon1.templateName);
@@ -340,7 +340,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await editCasePo.clickOnCancelCaseButton();
         });
-        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
+        it('[5201,5246,5206,5204]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
             await quickCasePo.selectCaseTemplate(casetemplatePsilon1.templateName);
@@ -359,7 +359,7 @@ describe('PIN Validation Quick Case', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeFalsy();
         });
-        it('[DRDMV-10663,DRDMV-10471,DRDMV-10616,DRDMV-10618]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
+        it('[5201,5246,5206,5204]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
@@ -403,7 +403,7 @@ describe('PIN Validation Quick Case', () => {
         });
     });
 
-    describe('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
+    describe('[5231,5230,5205,5226]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
         let assignmentData, casetemplatePsilon1, newCaseTemplate, knowledgeArticleTemplateData: IKnowledgeArticleTemplate, knowledgeSetData;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -447,7 +447,7 @@ describe('PIN Validation Quick Case', () => {
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             apiHelper.deleteApprovalMapping('Knowledge');
         });
-        it('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
+        it('[5231,5230,5205,5226]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCreateKnowledge();
@@ -466,7 +466,7 @@ describe('PIN Validation Quick Case', () => {
             await editKnowledgePage.setKnowledgeStatus('Publish Approval');
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
+        it('[5231,5230,5205,5226]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
             await quickCasePo.selectCaseTemplate(casetemplatePsilon1.templateName);
@@ -485,7 +485,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
             await editCasePo.clickOnCancelCaseButton();
         });
-        it('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL and NONE', async () => {
+        it('[5231,5230,5205,5226]:Case creation via Quick Case,Template validation is OPTIONAL and NONE', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
             await quickCasePo.selectCaseTemplate(casetemplatePsilon1.templateName);
@@ -510,7 +510,7 @@ describe('PIN Validation Quick Case', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-10554,DRDMV-10557,DRDMV-10617,DRDMV-10561]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
+        it('[5231,5230,5205,5226]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');

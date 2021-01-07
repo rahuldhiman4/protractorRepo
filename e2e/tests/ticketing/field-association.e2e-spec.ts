@@ -21,7 +21,7 @@ describe('Field Association', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-8955]: [Notification Association][UI] Association Mapping UI', async () => {
+    describe('[5424]: [Notification Association][UI] Association Mapping UI', async () => {
         let allColoumn: string[] = ['Field Name', 'Association Name', 'Application Or Bundle Name', 'Record Definition Name', 'Status'];
 
         beforeAll(async () => {
@@ -29,7 +29,7 @@ describe('Field Association', () => {
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Field Associations', 'Field Association Mappings - Console - Business Workflows');
         });
 
-        it('[DRDMV-8955]: Verify Record With Application Or Bundle Name Column', async () => {
+        it('[5424]: Verify Record With Application Or Bundle Name Column', async () => {
             await utilGrid.clearFilter();
             expect(await fieldAssociationMappingsConsolePo.areGridColumnHeaderMatches(allColoumn)).toBeTruthy("All Coloumn is not present");
             await fieldAssociationMappingsConsolePo.addFilter('Application Or Bundle Name', 'com.bmc.dsm.case-lib', 'text');
@@ -50,7 +50,7 @@ describe('Field Association', () => {
             expect(await fieldAssociationMappingsConsolePo.isGridRecordPresent('com.bmc.dsm.knowledge')).toBeTruthy('Field not present on grid');
         });
 
-        it('[DRDMV-8955]: Create Field Associtation Mapping', async () => {
+        it('[5424]: Create Field Associtation Mapping', async () => {
             await fieldAssociationMappingsConsolePo.clickAddFieldAssociationMapping();
             expect(await createFieldAssociationMappingsPo.isSaveButtonEnabled()).toBeTruthy('FailureMsg1: Save button is enabled');
             let BundleNameArr: string[] = ['Approval', 'Assignment', 'Attachment Service', 'BMC Chatbot', 'Business Workflows', 'Case Management Service', 'Catalog Interface Service', 'Chatbot Starter Kit', 'Cognitive Service', 'Data Management Console', 'Email Service', 'Environment Configuration', 'Flowsets Service', 'Foundation', 'Innovation Studio', 'Knowledge Management', 'LOB - Ericsson HR', 'LOB - Ericsson SAM', 'LOB - Facilities', 'LOB - Finance', 'LOB - Human Resource', 'LOB - Kingston HR', 'LOB - Kingston Legal', 'LOB - KingstonOracle Finance', 'LOB - Oracle HR', 'Notification Service', 'Search Service', 'Settings', 'Shared Components', 'Shared Services', 'SLM Service', 'Social Service', 'Standard Library', 'Task Management Service', 'Ticketing Service'];
@@ -70,7 +70,7 @@ describe('Field Association', () => {
             await createFieldAssociationMappingsPo.clickSaveButton();
         });
 
-        it('[DRDMV-8955]: Verify Edit Field Associtation Mapping', async () => {
+        it('[5424]: Verify Edit Field Associtation Mapping', async () => {
             await utilGrid.clearFilter();
             await fieldAssociationMappingsConsolePo.addFilter('Association Name', 'Case Approval Mapping Field - Category Tier 1 > Created By', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Application Or Bundle Name', 'com.bmc.dsm.case-lib', 'text');
@@ -91,7 +91,7 @@ describe('Field Association', () => {
 
         });
 
-        it('[DRDMV-8955]: Verify Field Association On Grid', async () => {
+        it('[5424]: Verify Field Association On Grid', async () => {
             await utilGrid.clearFilter();
             await fieldAssociationMappingsConsolePo.addFilter('Association Name', 'Case Template - Assigned Company > Created Date', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Application Or Bundle Name', 'com.bmc.dsm.case-lib', 'text');
@@ -106,7 +106,7 @@ describe('Field Association', () => {
             expect(await fieldAssociationMappingsConsolePo.getSelectedGridRecordValue('Status')).toContain('Active');
         });
 
-        it('[DRDMV-8955]: Delete record and Add/Remove Column', async () => {
+        it('[5424]: Delete record and Add/Remove Column', async () => {
             await fieldAssociationMappingsConsolePo.selectCheckBox('Assigned Group');
             await fieldAssociationMappingsConsolePo.clickOnDeleteButton();
             await utilCommon.clickOnWarningOk();

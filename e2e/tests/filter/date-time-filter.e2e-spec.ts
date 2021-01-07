@@ -18,8 +18,8 @@ describe('Date and Time Preset Filter', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
-        it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
+    describe('[12071,12068]: Validation for modified date, created date and target date', async () => {
+        it('[12071,12068]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Created Date");
@@ -69,7 +69,7 @@ describe('Date and Time Preset Filter', () => {
             let date1: string[] = [completeEndDate];
             expect(await utilityGrid.isAppliedFilterMatches(date1)).toBeTruthy(" date1");
         });
-        it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
+        it('[12071,12068]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
             // Validate start and End date
             await utilityGrid.clearFilter();
@@ -98,7 +98,7 @@ describe('Date and Time Preset Filter', () => {
             expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy(" Expected Date:" + date2);
 
         });
-        it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
+        it('[12071,12068]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
             // Validate start and end date with Time
             await utilityGrid.clearFilter();
@@ -126,7 +126,7 @@ describe('Date and Time Preset Filter', () => {
             let date3: string[] = ["Target Date: Feb 21, 2022 2:00 AM - Feb 21, 2022 3:00 AM"];
             expect(await utilityGrid.isAppliedFilterMatches(date3)).toBeTruthy();
         });
-        it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
+        it('[12071,12068]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
             // Validate start and End date with Time
             await utilityGrid.clearFilter();
@@ -153,7 +153,7 @@ describe('Date and Time Preset Filter', () => {
             let date4: string[] = ["Created Date: Sep 17, 2015 8:00 AM - Feb 17, 2016 3:00 AM"];
             expect(await utilityGrid.isAppliedFilterMatches(date4)).toBeTruthy();
         });
-        it('[DRDMV-23499,DRDMV-23511]: Validation for modified date, created date and target date', async () => {
+        it('[12071,12068]: Validation for modified date, created date and target date', async () => {
             await navigationPage.gotoCaseConsole();
             // Validate start and End date with Time
             await utilityGrid.clearFilter();
@@ -183,8 +183,8 @@ describe('Date and Time Preset Filter', () => {
         });
     });
     //contains KA
-    describe('[DRDMV-23517,DRDMV-23518]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
-        it('[DRDMV-23517,DRDMV-23518]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
+    describe('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
+        it('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Assignee", "Al Allbrook", 'test');
@@ -215,7 +215,7 @@ describe('Date and Time Preset Filter', () => {
             expect(await utilityGrid.isGridRecordPresent('KA-000000000016')).toBeTruthy('KA-000000000016');
         });
 
-        it('[DRDMV-23517,DRDMV-23518]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
+        it('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Assigned Group", "Employee Relations", 'text');
@@ -242,7 +242,7 @@ describe('Date and Time Preset Filter', () => {
         });
     });
 
-    describe('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
+    describe('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
         let caseData, caseDataDWp, caseIdForDWP, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemName: string;
         beforeAll(async () => {
@@ -281,7 +281,7 @@ describe('Date and Time Preset Filter', () => {
             caseId = await apiHelper.createCase(caseData);
             caseIdForDWP = await apiHelper.createCaseFromDwp(caseDataDWp);
         });
-        it('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
+        it('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Request ID", "121", "test");
@@ -300,7 +300,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.addFilter("Priority", "Low", "checkbox");
             expect(await utilityGrid.isGridRecordPresent(caseId.displayId)).toBeTruthy();
         });
-        it('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
+        it('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Category Tier 1", "Employee Relations", "text");
             await utilityGrid.addFilter("Category Tier 2", "Compensation", "text");
@@ -313,7 +313,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.addFilter("Assignee", "Qadim Katawazi", "text");
 
         });
-        it('[DRDMV-23493]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
+        it('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await utilityGrid.addFilter("Requester", "Qianru Tao", "text");
             await utilityGrid.addFilter("Source", "Agent", "text");
             await utilityGrid.addFilter("Label", menuItemName, "text");
@@ -329,7 +329,7 @@ describe('Date and Time Preset Filter', () => {
         });
     });
     
-    describe('[DRDMV-23496]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
+    describe('[12074]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium;
 
@@ -363,7 +363,7 @@ describe('Date and Time Preset Filter', () => {
             await apiHelper.updateTaskStatus(tempIdMedium.id, 'Pending');
 
         });
-        it('[DRDMV-23496]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
+        it('[12074]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
@@ -387,7 +387,7 @@ describe('Date and Time Preset Filter', () => {
             await $('body').sendKeys(protractor.Key.ESCAPE);
             await utilityGrid.clickRefreshIcon();
         });
-        it('[DRDMV-23496]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
+        it('[12074]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
             await utilityGrid.searchRecordWithoutFilter(tempIdMedium.displayId);
             expect(await utilityGrid.isGridRecordPresent(tempIdMedium.displayId)).toBeTruthy();
             await utilityGrid.addFilter("Priority", 'Medium', "checkbox");
@@ -400,7 +400,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.addFilter("Summary", 'manualTaskTemplate' + randomStr, "test");
             await utilityGrid.addFilter("Assignee", 'Qadim Katawazi', "test");
         });
-        it('[DRDMV-23496]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
+        it('[12074]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
             await utilityGrid.addFilter("Assigned Group", 'US Support 3', "test");
             await utilityGrid.addFilter("SLM Status", 'Service Targets Not Attached', "checkbox");
             await utilityGrid.addFilter("Category Tier 1", "Employee Relations", "test");

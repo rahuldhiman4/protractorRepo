@@ -93,17 +93,17 @@ describe('Copy Case Template', () => {
     }
 
     //ptidke
-    describe('[DRDMV-13551,DRDMV-13529]: Create a Copy of Case template where Company is copied properly', async () => {
+    describe('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
         let casetemplateNew, caseTemplateName: string = caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
-        it('[DRDMV-13551,DRDMV-13529]: Create a Copy of Case template where Company is copied properly', async () => {
+        it('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             caseTemplateAllFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateAllFields);
             casetemplateNew = await editCaseTemplate.getCaseTemplateID();
         });
-        it('[DRDMV-13551,DRDMV-13529]: Create a Copy of Case template where Company is copied properly', async () => {
+        it('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
@@ -138,8 +138,8 @@ describe('Copy Case Template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-13543,DRDMV-13555]: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
-        it('[DRDMV-13543,DRDMV-13555]: Create a Copy of Case template', async () => {
+    describe('[4739,4732]: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
+        it('[4739,4732]: Create a Copy of Case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
@@ -149,7 +149,7 @@ describe('Copy Case Template', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
         });
-        it('[DRDMV-13543,DRDMV-13555]: Create a Copy of Case template', async () => {
+        it('[4739,4732]: Create a Copy of Case template', async () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
@@ -182,8 +182,8 @@ describe('Copy Case Template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-13550]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
-        it('[DRDMV-13550]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
+    describe('[4736]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
+        it('[4736]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
@@ -196,7 +196,7 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
         });
-        it('[DRDMV-13550]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
+        it('[4736]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
             let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             //verify all values copied from template 1 to template 2
@@ -224,7 +224,7 @@ describe('Copy Case Template', () => {
     });
 
     //ptidke
-    it('[DRDMV-13815]: Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {
+    it('[4624]: Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
         let caseTemplateName: string = caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
@@ -244,7 +244,7 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Assignment and ownership for new task templates are copied from new case template.');
     });
 
-    it('[DRDMV-13588]: Create a Copy of Case template where Support Group belongs to Business Unit ', async () => {
+    it('[4703]: Create a Copy of Case template where Support Group belongs to Business Unit ', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1 = 'caseTemplateNameCase3' + randomStr;
         let casetemplatePetramco1 = {
@@ -277,13 +277,13 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getValueOfBuisnessUnit()).toBe('United States Support');
     });
 
-    describe('[DRDMV-13589]: Create a Copy of Case template where Support Group belongs to Department', async () => {
+    describe('[4702]: Create a Copy of Case template where Support Group belongs to Department', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1 = "caseTemplateName" + randomStr;
         beforeAll(async () => {
             await foundationData("Petramco");
         });
-        it('[DRDMV-13589]: Create a Copy of Case template where Support Group belongs to Department', async () => {
+        it('[4702]: Create a Copy of Case template where Support Group belongs to Department', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -312,7 +312,7 @@ describe('Copy Case Template', () => {
         });
     });
 
-    describe('[DRDMV-13571]: Fields copied while creating copy of Case template which has linked task templates', async () => {
+    describe('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateDataSet, casetemplatePetramco, newCaseTemplate1, manualTaskTemplate;
         beforeAll(async () => {
@@ -350,7 +350,7 @@ describe('Copy Case Template', () => {
             manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await browser.sleep(3000); // hardwait to reflect manual task template
         });
-        it('[DRDMV-13571]: Fields copied while creating copy of Case template which has linked task templates', async () => {
+        it('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
@@ -378,12 +378,12 @@ describe('Copy Case Template', () => {
         });
     });
 
-    describe('[DRDMV-13557]: Permission Check to verify who can edit the Case/Task template', async () => {
+    describe('[4730]: Permission Check to verify who can edit the Case/Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let copyCaseTemplateName: string = "copycasetemplate" + randomStr;
         let copytaskTemplateName: string = "copyTasktemplate" + randomStr;
         let caseTemplateName = "caseTemplateName" + randomStr;
-        it('[DRDMV-13557]: Permission Check to verify who can edit the Case Template', async () => {
+        it('[4730]: Permission Check to verify who can edit the Case Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -404,7 +404,7 @@ describe('Copy Case Template', () => {
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-13557]: Permission Check to verify who can edit the Case Template', async () => {
+        it('[4730]: Permission Check to verify who can edit the Case Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -423,7 +423,7 @@ describe('Copy Case Template', () => {
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeFalsy("Copy Case Template is editable");
         });
-        it('[DRDMV-13557]: Permission Check to verify who can edit the Task Template', async () => {
+        it('[4730]: Permission Check to verify who can edit the Task Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -444,7 +444,7 @@ describe('Copy Case Template', () => {
             await copyTasktemplatePo.clickSaveCopytemplate();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-13557]: Permission Check to verify who can edit the Task Template', async () => {
+        it('[4730]: Permission Check to verify who can edit the Task Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -471,7 +471,7 @@ describe('Copy Case Template', () => {
         });
     });
 
-    describe('[DRDMV-13570]: Dynamic Field get copied upon creating copy of Case Template', () => {
+    describe('[4718]: Dynamic Field get copied upon creating copy of Case Template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedCaseTemplate = 'UpdatedCaseDRDMV13570' + randomStr;
         let casetemplatePetramco, caseTemplateName1 = 'caseTemplateName' + randomStr;
@@ -495,7 +495,7 @@ describe('Copy Case Template', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(casetemplatePetramco);
         });
-        it('[DRDMV-13570]: Add Dynamic Field', async () => {
+        it('[4718]: Add Dynamic Field', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
@@ -529,7 +529,7 @@ describe('Copy Case Template', () => {
             await utilCommon.closePopUpMessage();
             await utilCommon.clickOnBackArrow();
         });
-        it('[DRDMV-13570]: Dynamic Field get copied upon creating copy of Case Template', async () => {
+        it('[4718]: Dynamic Field get copied upon creating copy of Case Template', async () => {
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(updatedCaseTemplate);
@@ -543,7 +543,7 @@ describe('Copy Case Template', () => {
         });
     });
 
-    describe('[DRDMV-13807,DRDMV-13798]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
+    describe('[4627,4628]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, newCaseTemplate, templateData, externaltemplateData, automatedtemplateData, copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
@@ -609,7 +609,7 @@ describe('Copy Case Template', () => {
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
         });
-        it('[DRDMV-13807,DRDMV-13798]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
+        it('[4627,4628]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -644,7 +644,7 @@ describe('Copy Case Template', () => {
             expect(await previewTaskTemplateCasesPo.getAssigneeText()).toBe('Glit Deruno');
             await previewTaskTemplateCasesPo.clickOnBackButton();
         });
-        it('[DRDMV-13807,DRDMV-13798]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
+        it('[4627,4628]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchOnGridConsole(casetemplatePetramco.templateName);
@@ -671,7 +671,7 @@ describe('Copy Case Template', () => {
         });
     });
 
-    describe('[DRDMV-13814,DRDMV-13818]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
+    describe('[4625,4623]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, manualTemplateData, automatedTemplateData, externalTemplateData;
         let copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
@@ -737,7 +737,7 @@ describe('Copy Case Template', () => {
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedTemplateData);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
         });
-        it('[DRDMV-13814,DRDMV-13818]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
+        it('[4625,4623]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -767,7 +767,7 @@ describe('Copy Case Template', () => {
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('- Global -');
             await previewTaskTemplateCasesPo.clickOnBackButton();
         });
-        it('[DRDMV-13814,DRDMV-13818]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
+        it('[4625,4623]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.searchOnGridConsole('DRDMV13814' + randomStr);
@@ -783,7 +783,7 @@ describe('Copy Case Template', () => {
         });
     });
 
-    describe('[DRDMV-13808]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
+    describe('[4626]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
@@ -849,7 +849,7 @@ describe('Copy Case Template', () => {
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
         });
-        it('[DRDMV-13808]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
+        it('[4626]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -882,7 +882,7 @@ describe('Copy Case Template', () => {
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('- Global -');
             await previewTaskTemplateCasesPo.clickOnBackButton();
         });
-        it('[DRDMV-13808]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
+        it('[4626]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.searchOnGridConsole('DRDMV13808' + randomStr);
@@ -894,9 +894,9 @@ describe('Copy Case Template', () => {
         });
     });
 
-    describe('[DRDMV-13847]: Execution of Automated task for Copy Case Template when Company is changed while creating Copy of Case Template', async () => {
+    describe('[4619]: Execution of Automated task for Copy Case Template when Company is changed while creating Copy of Case Template', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let copyCaseTemplateName: string = "copycasetemplate_DRDMV-13847" + randomStr;
+        let copyCaseTemplateName: string = "copycasetemplate_4619" + randomStr;
         let casetemplatePetramco, automatedtemplateData;
         beforeAll(async () => {
             casetemplatePetramco = {
@@ -931,7 +931,7 @@ describe('Copy Case Template', () => {
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate.displayId);
         });
-        it('[DRDMV-13847]: Execution of Automated task for Copy Case Template when Company is changed while creating Copy of Case Template', async () => {
+        it('[4619]: Execution of Automated task for Copy Case Template when Company is changed while creating Copy of Case Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -966,7 +966,7 @@ describe('Copy Case Template', () => {
         });
     });
 
-    describe('[DRDMV-15256]: Verify For Copy template, Category Tier 4 and Label Data also get copied', () => {
+    describe('[4425]: Verify For Copy template, Category Tier 4 and Label Data also get copied', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData, taskTemplateData, label: string = undefined;
         beforeAll(async () => {
@@ -1010,7 +1010,7 @@ describe('Copy Case Template', () => {
             }
             await apiHelper.createManualTaskTemplate(taskTemplateData)
         });
-        it('[DRDMV-15256]: Verify For Copy template, Category Tier 4 and Label Data also get copied', async () => {
+        it('[4425]: Verify For Copy template, Category Tier 4 and Label Data also get copied', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateData.templateName);

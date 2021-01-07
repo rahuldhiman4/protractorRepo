@@ -27,7 +27,7 @@ describe('Service Target - Second Level Association Tests', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-19665]:UI Validation to check how associations are displayed on build expression blade', async () => {
+    describe('[3816]:UI Validation to check how associations are displayed on build expression blade', async () => {
 
         let assignedCompanySecondLevelAssociation: string[] = ["Abbreviation", "Type"];
         let caseSiteSecondLevelAssociation: string[] = ["Address", "Country", "State", "Type", "Zip or Postal Code"];
@@ -38,7 +38,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-19665]:Verify second level association of Service Target', async () => {
+        it('[3816]:Verify second level association of Service Target', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -72,7 +72,7 @@ describe('Service Target - Second Level Association Tests', () => {
         })
     });
 
-    describe('[DRDMV-19667]:SVT created with multiple associations and SVT gets attach to a Case', async () => {
+    describe('[3815]:SVT created with multiple associations and SVT gets attach to a Case', async () => {
         let caseId = undefined;
         let expectedSelectedExp = undefined;
         beforeAll(async () => {
@@ -80,7 +80,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-19667]:Create a SVT with second level association', async () => {
+        it('[3815]:Create a SVT with second level association', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'); expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -101,7 +101,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-19667]:Create a Case and observe if SVT is attached to the Case', async () => {
+        it('[3815]:Create a Case and observe if SVT is attached to the Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang');
             await createCasePage.setSummary('Case for SVT creation first');
@@ -116,7 +116,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await browser.sleep(90000);
         });
 
-        it('[DRDMV-19667]:Verify SVT with different SVT statuses', async () => {
+        it('[3815]:Verify SVT with different SVT statuses', async () => {
             await browser.sleep(15000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
@@ -129,7 +129,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
 
-        it('[DRDMV-19667]:Create a Case and check if svt is not attached', async () => {
+        it('[3815]:Create a Case and check if svt is not attached', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('Case for SVT creation first');
@@ -142,7 +142,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(false); //green
         });
 
-        it('[DRDMV-19667]:Create another SVT', async () => {
+        it('[3815]:Create another SVT', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -162,7 +162,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-19667]:Create a Case and check if second svt is attached', async () => {
+        it('[3815]:Create a Case and check if second svt is attached', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('Case for SVT creation second');
@@ -177,7 +177,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await browser.sleep(90000);
         });
 
-        it('[DRDMV-19667]:Create a Case and check if second svt is attached', async () => {
+        it('[3815]:Create a Case and check if second svt is attached', async () => {
             await browser.sleep(15000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
@@ -190,7 +190,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
 
-        it('[DRDMV-19667]:Create a Case and check if svt is not attached', async () => {
+        it('[3815]:Create a Case and check if svt is not attached', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('frieda');
             await createCasePage.setSummary('Case for SVT creation second');
@@ -205,14 +205,14 @@ describe('Service Target - Second Level Association Tests', () => {
 
     });
 
-    describe('[DRDMV-19660]:SVT created for Company associations and SVT get links to a Case', async () => {
+    describe('[3820]:SVT created for Company associations and SVT get links to a Case', async () => {
         let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-19660]:Create a SVT for second level association "Company" ', async () => {
+        it('[3820]:Create a SVT for second level association "Company" ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'); expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -233,7 +233,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-19660]:Create a case and verify if SVT is attached to the case', async () => {
+        it('[3820]:Create a case and verify if SVT is attached to the case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang');
             await createCasePage.setSummary('Case for SVT creation');
@@ -248,7 +248,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await browser.sleep(90000);
         });
 
-        it('[DRDMV-19660]:verify different SVT statuses to the case', async () => {
+        it('[3820]:verify different SVT statuses to the case', async () => {
             await browser.sleep(15000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
@@ -261,14 +261,14 @@ describe('Service Target - Second Level Association Tests', () => {
         });
     });
 
-    describe('[DRDMV-19662]:SVT created for Case Site associations and SVT get links to a Case', async () => {
+    describe('[3819]:SVT created for Case Site associations and SVT get links to a Case', async () => {
         let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-19662]:Create a SVT for second level association "Case Site" ', async () => {
+        it('[3819]:Create a SVT for second level association "Case Site" ', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -288,7 +288,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-19662]:Create a case and verify if SVT attached to the case', async () => {
+        it('[3819]:Create a case and verify if SVT attached to the case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang');
             await createCasePage.setSummary('Case for SVT creation');
@@ -303,7 +303,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await browser.sleep(90000);
         });
 
-        it('[DRDMV-19662]:Verify different SVT statuses attached to the case', async () => {
+        it('[3819]:Verify different SVT statuses attached to the case', async () => {
             await navigationPage.gotoCaseConsole();
             await browser.sleep(35000);
             await caseConsolePage.searchAndOpenCase(caseId);
@@ -315,7 +315,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(248, 50, 0, 1)');
         });
 
-        it('[DRDMV-19662]:Create a case and verify if SVT is not attached to the case', async () => {
+        it('[3819]:Create a case and verify if SVT is not attached to the case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('Case for SVT creation');
@@ -328,7 +328,7 @@ describe('Service Target - Second Level Association Tests', () => {
         });
     });
 
-    describe('[DRDMV-19663]:SVT created for Assigned Company associations and SVT get links to a Case', async () => {
+    describe('[3818]:SVT created for Assigned Company associations and SVT get links to a Case', async () => {
         let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -339,7 +339,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-19663]:Create a SVT for second level association "Assigned Company" ', async () => {
+        it('[3818]:Create a SVT for second level association "Assigned Company" ', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -358,7 +358,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-19663]:Create a case and verify if SVT attached to the case', async () => {
+        it('[3818]:Create a case and verify if SVT attached to the case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang');
             await createCasePage.setSummary('Case for SVT creation');
@@ -373,7 +373,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await browser.sleep(90000);
         });
 
-        it('[DRDMV-19663]:Verify different SVT statuses attached to the case', async () => {
+        it('[3818]:Verify different SVT statuses attached to the case', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
@@ -386,14 +386,14 @@ describe('Service Target - Second Level Association Tests', () => {
         });
     });
 
-    describe('[DRDMV-19664]:SVT created for Requester associations and SVT get links to a Case', async () => {
+    describe('[3817]:SVT created for Requester associations and SVT get links to a Case', async () => {
         let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-19664]:Create a SVT for Second level association "Requester"', async () => {
+        it('[3817]:Create a SVT for Second level association "Requester"', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -412,7 +412,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-19664]:Create a case and verify if SVT is attached to the case', async () => {
+        it('[3817]:Create a case and verify if SVT is attached to the case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang');
             await createCasePage.setSummary('Case for SVT creation');
@@ -427,7 +427,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await browser.sleep(90000);
         });
 
-        it('[DRDMV-19664]:Verify different SVT statuses attached to the case', async () => {
+        it('[3817]:Verify different SVT statuses attached to the case', async () => {
             await browser.sleep(30000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
@@ -441,14 +441,14 @@ describe('Service Target - Second Level Association Tests', () => {
         });
     });
 
-    describe('[DRDMV-19668]:Check SVT is attached to a Case and later Associations are updated', async () => {
+    describe('[3814]:Check SVT is attached to a Case and later Associations are updated', async () => {
         let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-19668]:Create a SVT for Second level association "Requester"', async () => {
+        it('[3814]:Create a SVT for Second level association "Requester"', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -467,7 +467,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-19668]:Create a case and verify if SVT attached to the case', async () => {
+        it('[3814]:Create a case and verify if SVT attached to the case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang');
             await createCasePage.setSummary('Case for SVT creation');
@@ -479,7 +479,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green    
         });
 
-        it('[DRDMV-19668]:SVT Configurations are updated once SVT attached to the case', async () => {
+        it('[3814]:SVT Configurations are updated once SVT attached to the case', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows'))
                 .toEqual('Service Target - Administration - Business Workflows');
@@ -493,7 +493,7 @@ describe('Service Target - Second Level Association Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-19668]:Create a case and verify if SVT attached to the case', async () => {
+        it('[3814]:Create a case and verify if SVT attached to the case', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true); //green

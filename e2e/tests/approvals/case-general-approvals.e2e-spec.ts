@@ -44,7 +44,7 @@ describe("Case General Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10843]:[Approval] - Case Level Up Approval when Requester does not have Manager', async () => {
+    describe('[5143]:[Approval] - Case Level Up Approval when Requester does not have Manager', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseData = undefined;
@@ -92,7 +92,7 @@ describe("Case General Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-10843]:Create Level Up Approval Flow Without Process', async () => {
+        it('[5143]:Create Level Up Approval Flow Without Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -127,7 +127,7 @@ describe("Case General Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-10843]:Case Level Up Approval when Requester does not have Manager', async () => {
+        it('[5143]:Case Level Up Approval when Requester does not have Manager', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -150,7 +150,7 @@ describe("Case General Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-1371,DRDMV-22257]:[Approval] Approval details when case canceled not being approved', async () => {
+    describe('[6216,3504]:[Approval] Approval details when case canceled not being approved', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let approvalMappingData = undefined, caseData = undefined, caseId: string, caseTemplateDataWithMatchingCriteria: ICaseTemplate;
@@ -201,13 +201,13 @@ describe("Case General Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-1371,DRDMV-22257]:Create a case and verify Show Approvers Blade information', async () => {
+        it('[6216,3504]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
-            // Edit case and select case template for DRDMV-22257
+            // Edit case and select case template for 3504
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("New");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggerd');
@@ -222,7 +222,7 @@ describe("Case General Approval Tests", () => {
             expect(await viewCasePo.getShowPendingApproversInfo()).toContain('Pending Approval :1');
         });
 
-        it('[DRDMV-1371,DRDMV-22257]:Cancel the case and verify the case details', async () => {
+        it('[6216,3504]:Cancel the case and verify the case details', async () => {
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus('Canceled');
@@ -243,7 +243,7 @@ describe("Case General Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10832]:[Approval] - Case Re Approval after Rejection', async () => {
+    describe('[5150]:[Approval] - Case Re Approval after Rejection', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated One must Approval Case" + randomStr;
@@ -293,7 +293,7 @@ describe("Case General Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-10832]:Create One must approval configuration', async () => {
+        it('[5150]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -335,7 +335,7 @@ describe("Case General Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-10832]:Create a case and verify Show Approvers Blade information', async () => {
+        it('[5150]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -369,7 +369,7 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10832]:Reject the case and verify the case details', async () => {
+        it('[5150]:Reject the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -384,7 +384,7 @@ describe("Case General Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was rejected');
         });
 
-        it('[DRDMV-10832]:Verify the case rejection details on case activity', async () => {
+        it('[5150]:Verify the case rejection details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -403,7 +403,7 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10832]:Update the case status to retrigger the approval and verify the details', async () => {
+        it('[5150]:Update the case status to retrigger the approval and verify the details', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await updateStatusBladePo.changeCaseStatus('Resolved');
@@ -433,7 +433,7 @@ describe("Case General Approval Tests", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10832]:Approve the case and verify the case details', async () => {
+        it('[5150]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -448,7 +448,7 @@ describe("Case General Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-10832]:Verify the approvals details on case activity', async () => {
+        it('[5150]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -477,7 +477,7 @@ describe("Case General Approval Tests", () => {
 
     });
 
-    describe('[DRDMV-22256]:Case Template inactivated/removed from Approval mapping', async () => {
+    describe('[3505]:Case Template inactivated/removed from Approval mapping', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseInfo1, caseInfo2, caseData1, caseData2, approvalMappingResponse, approvalMappingData;
         let activeToInactiveTemplateData, removeAssociationTemplateData, activeToInactiveTemplate, removeAssociationTemplate;
@@ -565,7 +565,7 @@ describe("Case General Approval Tests", () => {
                 "Case Template ID": removeAssociationTemplate.displayId
             }
         });
-        it('[DRDMV-22256]:Verify Case1 and Case2 enters approval cycle', async () => {
+        it('[3505]:Verify Case1 and Case2 enters approval cycle', async () => {
             await apiHelper.apiLogin('qfeng');
             caseInfo1 = await apiHelper.createCase(caseData1);
             caseInfo2 = await apiHelper.createCase(caseData2);
@@ -583,12 +583,12 @@ describe("Case General Approval Tests", () => {
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewCasePo.getShowPendingApproversInfo()).toContain('Pending Approval :1');
         });
-        it('[DRDMV-22256]:Change case template1 to Inactive and remove case template2 from approval mapping', async () => {
+        it('[3505]:Change case template1 to Inactive and remove case template2 from approval mapping', async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.updateCaseTemplateStatus(activeToInactiveTemplate.id, "Inactive");
             await apiHelper.disassociateCaseTemplateFromApprovalMapping(removeAssociationTemplate.id, approvalMappingResponse.id);
         });
-        it('[DRDMV-22256]:Create cases with association removed case template', async () => {
+        it('[3505]:Create cases with association removed case template', async () => {
             await apiHelper.apiLogin('qfeng');
             caseData2.Summary = "Remove association Case3 " + randomStr;
             let caseInfo3 = await apiHelper.createCase(caseData2);
@@ -599,7 +599,7 @@ describe("Case General Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggered');
         });
-        it('[DRDMV-22256]:Approve Case1, Reject Case2', async () => {
+        it('[3505]:Approve Case1, Reject Case2', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await utilityGrid.searchAndOpenHyperlink(caseInfo1.displayId);

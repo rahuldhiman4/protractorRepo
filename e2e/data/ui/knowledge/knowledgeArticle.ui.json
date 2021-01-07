@@ -1,11 +1,11 @@
 {
-    "DRDMV-19020": {
+    "3905": {
         "TemplateName": "Reference",
         "Company": "Petramco",
         "KnowledgeTitle": "KnowledgeTitle_19020",
         "KnowledgeSet": "HR"
     },
-    "DRDMV-19079": {
+    "3904": {
         "TemplateName": "Reference",
         "Company": "Petramco",
         "KnowledgeTitle": "KnowledgeTitle_19079",
@@ -13,13 +13,13 @@
         "DraftStatus": "Draft",
         "ReviewStatus": "SME Review"
     },
-    "DRDMV-19080": {
+    "3903": {
         "TemplateName": "Reference",
         "Company": "Petramco",
         "KnowledgeTitle": "KnowledgeTitle_19080",
         "KnowledgeSet": "HR"
     },
-    "DRDMV-19081": {
+    "3902": {
         "TemplateName": "Reference",
         "Company": "Petramco",
         "KnowledgeTitle": "KnowledgeTitle_19081",
@@ -30,17 +30,17 @@
         "RetiredStatus": "Retired",
         "ClosedStatus": "Closed"
     },
-    "DRDMV-19508": {
+    "3852": {
         "TemplateName": "Reference",
         "Company": "Petramco"
     },
-    "DRDMV-19501": {
+    "3853": {
         "TemplateName": "Reference",
         "Company": "Petramco",
         "KnowledgeTitle": "KnowledgeTitle_19501",
         "KnowledgeSet": "HR"
     },
-    "DRDMV-19082": {
+    "3901": {
         "TemplateName": "Reference",
         "Company": "Petramco",
         "KnowledgeTitle": "KnowledgeTitle_19082",

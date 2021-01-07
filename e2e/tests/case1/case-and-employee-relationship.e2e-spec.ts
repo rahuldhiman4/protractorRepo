@@ -29,11 +29,11 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    describe('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
-        it('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
+    describe('[4285,4284,4286]: Add person with different relations', async () => {
+        it('[4285,4284,4286]: Add person with different relations', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("Allen");
-            await createCasePage.setSummary("DRDMV-16241");
+            await createCasePage.setSummary("4285");
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -42,7 +42,7 @@ describe('Case And Employee Relationship', () => {
             await addRelatedPopupPage.addPerson('Qianru Tao', 'Inspector');
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qianru Tao', 'Inspector')).toBeTruthy();
         });
-        it('[DRDMV-16241,DRDMV-16242,DRDMV-16240]: Add person with different relations', async () => {
+        it('[4285,4284,4286]: Add person with different relations', async () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Harry Potter', 'Related to');
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Harry Potter', 'Related to')).toBeTruthy();
@@ -59,10 +59,10 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-16896]: Multiple people can be added by same Relationship', async () => {
+    it('[4145]: Multiple people can be added by same Relationship', async () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
-        await createCasePage.setSummary("DRDMV-16896");
+        await createCasePage.setSummary("4145");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -79,10 +79,10 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-16248]: Related Persons tab is available on Person Profile check UI', async () => {
+    it('[4278]: Related Persons tab is available on Person Profile check UI', async () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
-        await createCasePage.setSummary("DRDMV-16248");
+        await createCasePage.setSummary("4278");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -109,10 +109,10 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-17037]: Related Case tab is available on Person Profile', async () => {
+    it('[4119]: Related Case tab is available on Person Profile', async () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
-        await createCasePage.setSummary("DRDMV-17037");
+        await createCasePage.setSummary("4119");
         await createCasePage.clickAssignToMeButton();
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -137,14 +137,14 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    describe('[DRDMV-17035]: Remove Related Case from Case', async () => {
+    describe('[4121]: Remove Related Case from Case', async () => {
         let caseId1, caseId2, caseId3;
         beforeAll(async () => {
             await apiHelper.apiLogin('qtao');
             //create case 1
             let caseData1 = {
                 "Requester": "qkatawazi",
-                "Summary": "DRDMV-17035_1"
+                "Summary": "4121_1"
             }
             let caseResponse1 = await apiHelper.createCase(caseData1);
             caseId1 = await caseResponse1.displayId;
@@ -152,7 +152,7 @@ describe('Case And Employee Relationship', () => {
             //create case 2
             let caseData2 = {
                 "Requester": "qkatawazi",
-                "Summary": "DRDMV-17035_2"
+                "Summary": "4121_2"
             }
             let caseResponse2 = await apiHelper.createCase(caseData2);
             caseId2 = await caseResponse2.displayId;
@@ -160,12 +160,12 @@ describe('Case And Employee Relationship', () => {
             //create case 3
             let caseData3 = {
                 "Requester": "qkatawazi",
-                "Summary": "DRDMV-17035_3"
+                "Summary": "4121_3"
             }
             let caseResponse3 = await apiHelper.createCase(caseData3);
             caseId3 = await caseResponse3.displayId;
         });
-        it('[DRDMV-17035]: Remove Related Case from Case', async () => {
+        it('[4121]: Remove Related Case from Case', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId3);
             //Add case 1 and case 2 in related cases
@@ -180,7 +180,7 @@ describe('Case And Employee Relationship', () => {
             await relatedCasePage.removeRelatedCase(caseId3);
             //await relatedCasePage.waitUntilNewRelatedCaseAdded(0);
         });
-        it('[DRDMV-17035]: Remove Related Case from Case', async () => {
+        it('[4121]: Remove Related Case from Case', async () => {
             //Open case 3 and verify case1 is not present in Related cases
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId3);
@@ -197,7 +197,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-16243]: Check details shown for Employees on Related People tab', async () => {
+    it('[4283]: Check details shown for Employees on Related People tab', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
@@ -215,7 +215,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-17036]: Check details shown for Employees on Related People tab', async () => {
+    it('[4120]: Check details shown for Employees on Related People tab', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response1 = await apiHelper.createCase(caseData['caseData_DRDMV16243']);
@@ -236,7 +236,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    describe('[DRDMV-16245]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
+    describe('[4281]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
         let caseId;
         beforeAll(async () => {
             await apiHelper.apiLogin("qyuan");
@@ -253,7 +253,7 @@ describe('Case And Employee Relationship', () => {
             }
             await apiHelper.updateCaseAccess(caseGuid, caseAccessDataQtao);
         });
-        it('[DRDMV-16245]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
+        it('[4281]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Brain Adams', 'Related to');
@@ -275,7 +275,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-17029]: Check Related Cases Tab on Case Bottom section', async () => {
+    it('[4124]: Check Related Cases Tab on Case Bottom section', async () => {
         await navigationPage.gotoCaseConsole();
         //Create case 1 to pin with quick case
         let randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -309,7 +309,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    it('[DRDMV-17039]: Check if Person is Related to other Case to which he has no access and Cases are not shown on Person Profile', async () => {
+    it('[4117]: Check if Person is Related to other Case to which he has no access and Cases are not shown on Person Profile', async () => {
         let caseData = {
             "Description": "My Bulk Case Assignee",
             "Requester": "apavlik",
@@ -351,7 +351,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    describe('[DRDMV-16247]: Send Email to Related Person from Related Persons tab', async () => {
+    describe('[4279]: Send Email to Related Person from Related Persons tab', async () => {
         let caseInfo, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -363,7 +363,7 @@ describe('Case And Employee Relationship', () => {
             await apiHelper.apiLogin('qtao');
             caseInfo = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-16247]: Send Email to Related Person from Related Persons tab', async () => {
+        it('[4279]: Send Email to Related Person from Related Persons tab', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             let subject = 'Email Subject ' + randomStr;
@@ -373,7 +373,7 @@ describe('Case And Employee Relationship', () => {
             await relatedTabPage.clickRelatedPersonEmail('Qadim Katawazi');
             await composeEmailPage.setSubject(subject);
             // CASE-0000000239:CASE-0000000239:Email Subject w7t05kmfmby2pi0
-            await composeEmailPage.setEmailBody('DRDMV-16247 ' + randomStr);
+            await composeEmailPage.setEmailBody('4279 ' + randomStr);
             await composeEmailPage.clickOnSendButton();
             let subjectInArSys = `${caseInfo.displayId}:${subject}`;
             console.log(`Subject of the email = ${subjectInArSys}`);
@@ -381,12 +381,12 @@ describe('Case And Employee Relationship', () => {
             await apiHelper.apiLogin('tadmin');
             let body = await apiHelper.getHTMLBodyOfEmail(subjectInArSys, 'qkatawazi@petramco.com');
             console.log('body:', body);
-            expect(body.includes('<br>DRDMV-16247')).toBeTruthy('Email does not match');
+            expect(body.includes('<br>4279')).toBeTruthy('Email does not match');
         });
     });
 
     //asahitya
-    describe('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', () => {
+    describe('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
             await apiHelper.apiLogin('qfeng');
@@ -406,7 +406,7 @@ describe('Case And Employee Relationship', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-        it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
+        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
             expect(await relationConfigPage.isRelationshipPresent('Parent')).toBeTruthy('Parent relationship is not present');
@@ -417,7 +417,7 @@ describe('Case And Employee Relationship', () => {
             expect(await relationConfigPage.getReverseRelationShipName('Related to')).toBe('Related to', 'Reverse Relationship name for Related to does not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
-        it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
+        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
             await utilityGrid.searchAndOpenHyperlink(caseId[0]);
             await viewCasePo.clickOnTab('Related Cases');
             await relatedCaseTabPo.addRelatedCases();
@@ -427,7 +427,7 @@ describe('Case And Employee Relationship', () => {
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[0])).toBe('Parent');
         });
-        it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {       
+        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {       
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId[2]);
             await viewCasePo.clickOnTab('Related Cases');
@@ -438,7 +438,7 @@ describe('Case And Employee Relationship', () => {
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[2])).toBe('Duplicates');
         });
-        it('[DRDMV-17030]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
+        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId[4]);
             await viewCasePo.clickOnTab('Related Cases');

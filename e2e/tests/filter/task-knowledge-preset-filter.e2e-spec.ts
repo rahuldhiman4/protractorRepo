@@ -22,7 +22,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
         await navigationPage.gotoTaskConsole();
         await navigationPage.signOut();
     });
-    describe('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', () => {
+    describe('[12076]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', () => {
         let taskId: string[] = [];
         beforeAll(async () => {
 
@@ -52,7 +52,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await apiHelper.updateTaskStatus(response10.id, 'Pending');
         });
 
-        it('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12076]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', 'Kita Williams', 'text');
@@ -75,7 +75,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
         });
-        it('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12076]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
@@ -92,7 +92,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             expect(await utilityGrid.isGridRecordPresent(taskId[4])).toBeFalsy(taskId[4] + ' :Record is available')
 
         });
-        it('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12076]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'US Support 1', 'text');
@@ -126,7 +126,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
         });
-        it('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12076]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'IN Support 1', 'text');
@@ -141,7 +141,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             }
             await utilityGrid.clearFilter();
         });
-        it('[DRDMV-23494]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
+        it('[12076]: Verify records are fetched on task console with Assignee, Assigned Group, Status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.clickRefreshIcon();
@@ -160,7 +160,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await utilityGrid.clearFilter();
         });
     });
-    describe('[DRDMV-23495]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', () => {
+    describe('[12075]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', () => {
         let taskId: string[] = [];
         beforeAll(async () => {
             await navigationPage.gotoSettingsPage();
@@ -199,7 +199,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             taskId.push(response10.displayId);
         });
 
-        it('[DRDMV-23495]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinationss', async () => {
+        it('[12075]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinationss', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
@@ -215,7 +215,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23495]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', async () => {
+        it('[12075]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await browser.sleep(60000); // Time required for SLM Status to change
@@ -234,7 +234,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23495]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', async () => {
+        it('[12075]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', 'Qianru Tao', 'text');
@@ -253,7 +253,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23495]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', async () => {
+        it('[12075]: Verify records are fetched on task console with Assignee, Assigned Group, Category combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'Compensation and Benefits', 'text');
@@ -276,7 +276,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await utilityGrid.clearFilter();
         });
     });
-    describe('[DRDMV-23497]: Verify records are fetched on task console with Task Type, Priority and status combinations', () => {
+    describe('[12073]: Verify records are fetched on task console with Task Type, Priority and status combinations', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskId: string[] = [];
         let label;
@@ -318,7 +318,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await apiHelper.updateTaskStatus(response10.id, 'Canceled');
         });
 
-        it('[DRDMV-23497]: Verify records are fetched on task console with Task Type, Priority and status combinationss', async () => {
+        it('[12073]: Verify records are fetched on task console with Task Type, Priority and status combinationss', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
@@ -334,7 +334,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23497]: Verify records are fetched on task console with Task Type, Priority and status combinations', async () => {
+        it('[12073]: Verify records are fetched on task console with Task Type, Priority and status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
@@ -349,7 +349,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
         });
-        it('[DRDMV-23497]: Verify records are fetched on task console with Task Type, Priority and status combinations', async () => {
+        it('[12073]: Verify records are fetched on task console with Task Type, Priority and status combinations', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'US Support 3', 'text');
@@ -368,7 +368,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
         });
     });
     //Knowledge Preset filter combinations    
-    describe('[DRDMV-23515]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', () => {
+    describe('[12067]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', () => {
         let knowledgeId: string[] = [];
         beforeAll(async () => {
             await apiHelper.apiLogin('elizabeth');
@@ -389,7 +389,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
         });
 
-        it('[DRDMV-23515]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', async () => {
+        it('[12067]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'Published', 'text');
@@ -403,7 +403,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is not available');
             }
         });
-        it('[DRDMV-23515]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', async () => {
+        it('[12067]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assignee', 'Kadeem Hardison', 'text');
@@ -417,7 +417,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is not available');
             }
         });
-        it('[DRDMV-23515]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', async () => {
+        it('[12067]: Verify records are fetched on knowledge console Author, Status, Assignee & Flag combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Flagged', 'Yes', 'checkbox');
@@ -434,7 +434,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await utilityGrid.clearFilter();
         });
     });
-    describe('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', () => {
+    describe('[12066]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', () => {
         let knowledgeId: string[] = [];
         let knowledgeArticleData2;
         beforeAll(async () => {
@@ -456,7 +456,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', 'khardison', 'CA Support 3', 'Petramco');
         });
 
-        it('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
+        it('[12066]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
             await browser.sleep(50000); //Waiting for next review period to be completed
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
@@ -473,7 +473,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await apiHelper.apiLogin('sasadmin');
             await apiHelper.updateReviewDueDateRule();
         });
-        it('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
+        it('[12066]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Flagged', 'Yes', 'checkbox');
@@ -488,7 +488,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             }
             await utilityGrid.clearFilter();
         });
-        it('[DRDMV-23516]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
+        it('[12066]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Reviewer', 'Kadeem Hardison', 'text');

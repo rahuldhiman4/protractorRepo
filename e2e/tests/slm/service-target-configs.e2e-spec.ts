@@ -106,12 +106,12 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2361]: SLM - Service Target - Save and Close buttons', async () => {
+    describe('[6021]: SLM - Service Target - Save and Close buttons', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-2361]: Verify SVT when no data is entered', async () => {
+        it('[6021]: Verify SVT when no data is entered', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.clickCreateSVTButton();
@@ -122,7 +122,7 @@ describe('Service Target Configs', () => {
             await utilCommon.clickOnWarningOk();
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
-        it('[DRDMV-2361]: Verify SVT warning appears when optional fields entered', async () => {
+        it('[6021]: Verify SVT warning appears when optional fields entered', async () => {
             await serviceTargetConfig.clickCreateSVTButton();
             await serviceTargetConfig.selectGoalType('Case Response Time');
             await serviceTargetConfig.enterSVTDescription('Case for SVT Desc');
@@ -135,7 +135,7 @@ describe('Service Target Configs', () => {
             await utilCommon.clickOnWarningOk();
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
-        it('[DRDMV-2361]: Verify SVT warning when optional fields entered', async () => {
+        it('[6021]: Verify SVT warning when optional fields entered', async () => {
             await serviceTargetConfig.clickCreateSVTButton();
             await serviceTargetConfig.selectGoalType('Case Response Time');
             await serviceTargetConfig.enterSVTDescription('Case for SVT Desc');
@@ -149,7 +149,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickCloseButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-2361]: Verify SVT with mandatory fields options', async () => {
+        it('[6021]: Verify SVT with mandatory fields options', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -161,7 +161,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
-        it('[DRDMV-2361]: Verify Edit SVT with no updates', async () => {
+        it('[6021]: Verify Edit SVT with no updates', async () => {
             await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is displayed.');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save SVT button is enabled when no mandatory fields are left empty.');
@@ -169,7 +169,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickCloseButton();
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
-        it('[DRDMV-2361]: Verify Edit SVT warning appears with optionals fields updated', async () => {
+        it('[6021]: Verify Edit SVT warning appears with optionals fields updated', async () => {
             await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
             await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
@@ -181,7 +181,7 @@ describe('Service Target Configs', () => {
             await utilCommon.clickOnWarningOk();
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
-        it('[DRDMV-2361]: Verify Edit SVT warning when fields updated', async () => {
+        it('[6021]: Verify Edit SVT warning when fields updated', async () => {
             await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
             await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
@@ -198,12 +198,12 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2360]: SLM - Service Target - Create/Edit with min/max information', async () => {
+    describe('[6022]: SLM - Service Target - Create/Edit with min/max information', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-2360]: Create SVT with mandatory fields', async () => {
+        it('[6022]: Create SVT with mandatory fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
@@ -217,7 +217,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-2360]: Create SVT with All Fields', async () => {
+        it('[6022]: Create SVT with All Fields', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -232,7 +232,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-2360]:Verify SVT updation', async () => {
+        it('[6022]:Verify SVT updation', async () => {
             await utilGrid.searchAndOpenHyperlink('SVT with mandatory fields');
             // await browser.sleep(1000);
             await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
@@ -247,12 +247,12 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-5038]: "Terms and Condition" qualification is added on Service Target - Create View', async () => {
+    describe('[5712]: "Terms and Condition" qualification is added on Service Target - Create View', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-5038]: Verify "Terms and Condition" qualification on Service Target - Create View', async () => {
+        it('[5712]: Verify "Terms and Condition" qualification on Service Target - Create View', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.clickCreateSVTButton();
@@ -262,7 +262,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectDataSource('Case Management');
             await serviceTargetConfig.selectGoal("2");
         });
-        it('[DRDMV-5038]: Verify "Terms and Condition" qualification on Service Target - Create View', async () => {
+        it('[5712]: Verify "Terms and Condition" qualification on Service Target - Create View', async () => {
             await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
@@ -279,14 +279,14 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-5039,DRDMV-17015]: "Terms and Condition" qualification is added on Service Target - Edit View', async () => {
+    describe('[5711,4132]: "Terms and Condition" qualification is added on Service Target - Edit View', async () => {
         let selectedExp: string = '';
         let expectedSelectedExp = '';
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-5039,DRDMV-17015]: Verify SVT Creation', async () => {
+        it('[5711,4132]: Verify SVT Creation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
@@ -303,7 +303,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
-        it('[DRDMV-5039,DRDMV-17015]: Verify "Terms and Condition" qualification on Service Target - Edit View', async () => {
+        it('[5711,4132]: Verify "Terms and Condition" qualification on Service Target - Edit View', async () => {
             await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Edit Service Target Configuration blade is not displayed.');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty. 1');
@@ -327,12 +327,12 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2363]: SLM - Service Target - Measurement Build Expression', async () => {
+    describe('[6019]: SLM - Service Target - Measurement Build Expression', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-2363]: Create SVT', async () => {
+        it('[6019]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
@@ -349,7 +349,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-2363]: Verify SVT Updation', async () => {
+        it('[6019]: Verify SVT Updation', async () => {
             await utilGrid.searchAndOpenHyperlink('SVT with all fields');
             await browser.sleep(1000);
             await serviceTargetConfig.selectMeasurement();
@@ -362,13 +362,13 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-21723]: SLAs attached even though current user loose access to the current record', async () => {
+    describe('[3562]: SLAs attached even though current user loose access to the current record', async () => {
         let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-21723]:Create a SVT', async () => {
+        it('[3562]:Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
@@ -386,7 +386,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
-        it('[DRDMV-21723]:Create a case', async () => {
+        it('[3562]:Create a case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Mary');
             await createCasePo.setSummary('Case for SVT creation');
@@ -396,7 +396,7 @@ describe('Service Target Configs', () => {
             await previewCasePo.clickGoToCaseButton();
             caseId = await viewCasePage.getCaseID();
         });
-        it('[DRDMV-21723]:Verify SVT attached to a Case', async () => {
+        it('[3562]:Verify SVT attached to a Case', async () => {
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
@@ -418,7 +418,7 @@ describe('Service Target Configs', () => {
             await editCasePo.clickSaveCase();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         });
-        it('[DRDMV-21723]:Verify if SVT is still attached to a case when case assignment is changed', async () => {
+        it('[3562]:Verify if SVT is still attached to a case when case assignment is changed', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -443,12 +443,12 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2357]: SLM - Service Target - Error Messages', async () => {
+    describe('[6025]: SLM - Service Target - Error Messages', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-2357]:Verify Goal Time selection Valiation on Service Target', async () => {
+        it('[6025]:Verify Goal Time selection Valiation on Service Target', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
@@ -475,7 +475,7 @@ describe('Service Target Configs', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-2357]: Verify SVT warning when data source is modified', async () => {
+        it('[6025]: Verify SVT warning when data source is modified', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
             await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
@@ -497,7 +497,7 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2362]: SLM - Service Target - Console', async () => {
+    describe('[6020]: SLM - Service Target - Console', async () => {
         let caseSVTData, taskSVTData, serviceTargetGUID, serviceTargetID;
         let serviceTargetColumns: string[] = ["GUID"];
         let svtName = "Case for SVT creation";
@@ -508,7 +508,7 @@ describe('Service Target Configs', () => {
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-2362]: Verify Service Target for Case Creation', async () => {
+        it('[6020]: Verify Service Target for Case Creation', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig(svtName, 'Petramco', svtDataSource);
@@ -526,7 +526,7 @@ describe('Service Target Configs', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-2362]: Verify Service Target for Task Creation', async () => {
+        it('[6020]: Verify Service Target for Task Creation', async () => {
             await serviceTargetConfig.createServiceTargetConfig('task svt', 'Petramco', 'Task Management');
             await SlmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Automated');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -541,7 +541,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
 
-        it('[DRDMV-2362]: Verify Service Target Console Fields Sort Order', async () => {
+        it('[6020]: Verify Service Target Console Fields Sort Order', async () => {
             await serviceTargetConsole.addColumns(serviceTargetColumns);
             await serviceTargetConsole.searchOnGridConsole(svtName);
             serviceTargetGUID = await serviceTargetConsole.getServiceTargetGUID();
@@ -579,7 +579,7 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConsole.isGridRecordDisplayed(serviceTargetGUID)).toBeTruthy('Service Target ID record is not searched.');
         });
 
-        it('[DRDMV-2362]: Verify Service Target Console Fields Search functionality', async () => {
+        it('[6020]: Verify Service Target Console Fields Search functionality', async () => {
             await utilGrid.clearGridSearchBox();
             await serviceTargetConsole.clickRefreshIcon();
             await utilGrid.addFilter('Service Target Title', svtName, 'text');
@@ -614,7 +614,7 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: SLM - Service Target - Field Dependency (UI validations)', async () => {
+    describe('[6024,6211,6209,6201]: SLM - Service Target - Field Dependency (UI validations)', async () => {
         let dataSourceDisplayName = 'Case Data Source_Test';
 
         beforeAll(async () => {
@@ -622,7 +622,7 @@ describe('Service Target Configs', () => {
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: Create Data Source with All Fields', async () => {
+        it('[6024,6211,6209,6201]: Create Data Source with All Fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
@@ -660,7 +660,7 @@ describe('Service Target Configs', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
-        it('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: Create SVT and check whether goal type and measurement details are disabled', async () => {
+        it('[6024,6211,6209,6201]: Create SVT and check whether goal type and measurement details are disabled', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
@@ -684,7 +684,7 @@ describe('Service Target Configs', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-2358,DRDMV-1376,DRDMV-1378,DRDMV-1387]: Verify the SVT details', async () => {
+        it('[6024,6211,6209,6201]: Verify the SVT details', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', dataSourceDisplayName);
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -731,12 +731,12 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-6168]: UI Validation for Qualification Builder with Single company.', async () => {
+    describe('[5643]: UI Validation for Qualification Builder with Single company.', async () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
         });
-        it('[DRDMV-6168]: Verify SVT UI Fields', async () => {
+        it('[5643]: Verify SVT UI Fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
@@ -776,8 +776,8 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    //failing due to defect DRDMV-24409
-    describe('[DRDMV-6148]: Create SVT for one line of Business with Milestone action', async () => {
+    //failing due to defect 59949
+    describe('[5647]: Create SVT for one line of Business with Milestone action', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedCaseSummary = "Updating Case summary from SVT";
         let svttile = "SVT for Case fields" + randomStr;
@@ -791,7 +791,7 @@ describe('Service Target Configs', () => {
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-6148]: Create Copy of notification templates for SVT', async () => {
+        it('[5647]: Create Copy of notification templates for SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
             await utilGrid.clearFilter();
@@ -810,7 +810,7 @@ describe('Service Target Configs', () => {
             await editNotificationTemplatePo.clickOnCancelButton();
         });
 
-        it('[DRDMV-6148]: Create Copy of notification templates for SVT', async () => {
+        it('[5647]: Create Copy of notification templates for SVT', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -831,7 +831,7 @@ describe('Service Target Configs', () => {
             await editNotificationTemplatePo.clickOnCancelButton();
         });
 
-        it('[DRDMV-6148]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
+        it('[5647]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -862,7 +862,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
         });
 
-        it('[DRDMV-6148]: Add milestone to the service target and verify milestone details', async () => {
+        it('[5647]: Add milestone to the service target and verify milestone details', async () => {
             await serviceTargetConfig.selectMilestone();
             await serviceTargetConfig.clickAddNewMileStoneBtn();
             expect(await milestoneConfig.isSLMMileStonePopUpDisplayed()).toBeTruthy("SLM Milestone Pop up window not displayed");
@@ -891,7 +891,7 @@ describe('Service Target Configs', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-6148]: Milestone notification template validation with respect to LOB', async () => {
+        it('[5647]: Milestone notification template validation with respect to LOB', async () => {
             await utilGrid.searchAndOpenHyperlink(svttile);
             await serviceTargetConfig.selectMilestone();
             await serviceTargetConfig.clickAddNewMileStoneBtn();
@@ -931,7 +931,7 @@ describe('Service Target Configs', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-6148]: Create a case and verify if the case is updated as per the milestone configurations', async () => {
+        it('[5647]: Create a case and verify if the case is updated as per the milestone configurations', async () => {
             let caseData = {
                 "Requester": "qdu",
                 "Summary": "Summary_" + randomStr,
@@ -961,7 +961,7 @@ describe('Service Target Configs', () => {
             expect(await activityTabPo.isTextPresentInActivityLog("Summary")).toBeTruthy('TemplateText is not available');
         });
 
-        it('[DRDMV-6148]: Create a case wit mismatched qualifications and  verify if the case is updated as per the milestone configurations', async () => {
+        it('[5647]: Create a case wit mismatched qualifications and  verify if the case is updated as per the milestone configurations', async () => {
             let caseData = {
                 "Requester": "qtao",
                 "Summary": "Summary_" + randomStr,
@@ -986,7 +986,7 @@ describe('Service Target Configs', () => {
             expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);
         });
 
-        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to same LOB Case Manager', async () => {
+        it('[5647]: Verify if SVT with milestone is accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -994,7 +994,7 @@ describe('Service Target Configs', () => {
             expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is displayed to same LOB with different company Case BA.');
         });
 
-        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to different LOB Case BA', async () => {
+        it('[5647]: Verify if SVT with milestone is accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -1002,7 +1002,7 @@ describe('Service Target Configs', () => {
             expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is dispayed to different LOB case BA');
         });
 
-        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to different LOB Case Manager', async () => {
+        it('[5647]: Verify if SVT with milestone is accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -1010,7 +1010,7 @@ describe('Service Target Configs', () => {
             expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is dispayed to different LOB case manager');
         });
 
-        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[5647]: Verify if SVT with milestone is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -1018,7 +1018,7 @@ describe('Service Target Configs', () => {
             expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is not dispayed to same LOB and different company case BA');
         });
 
-        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[5647]: Verify if SVT with milestone is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -1029,7 +1029,7 @@ describe('Service Target Configs', () => {
             expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
         });
 
-        it('[DRDMV-6148]: Verify if SVT with milestone is accessible to Case BA user having access to multiple LOB', async () => {
+        it('[5647]: Verify if SVT with milestone is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -1040,7 +1040,7 @@ describe('Service Target Configs', () => {
             expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
         });
 
-        it('[DRDMV-6148]: create same name record in same LOB', async () => {
+        it('[5647]: create same name record in same LOB', async () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
@@ -1056,7 +1056,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-6148]: create same name record in different LOB', async () => {
+        it('[5647]: create same name record in different LOB', async () => {
             await utilGrid.selectLineOfBusiness('Facilities');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
@@ -1081,7 +1081,7 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2354]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
+    describe('[6028]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedTaskSummary = "Updating Task summary from SVT";
 
@@ -1096,7 +1096,7 @@ describe('Service Target Configs', () => {
             await apiHelper.deleteServiceTargets();
         });
 
-        it('[DRDMV-2354]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
+        it('[6028]: Verify Processing of Set field Milestone Action for Task SLA', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Task Management');
@@ -1125,7 +1125,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
         });
 
-        it('[DRDMV-2354]: Add milestone to the service target and verify milestone details', async () => {
+        it('[6028]: Add milestone to the service target and verify milestone details', async () => {
             await serviceTargetConfig.selectMilestone();
             await serviceTargetConfig.clickAddNewMileStoneBtn();
             expect(await milestoneConfig.isSLMMileStonePopUpDisplayed()).toBeTruthy("SLM Milestone Pop up window not displayed");
@@ -1154,7 +1154,7 @@ describe('Service Target Configs', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-2354]: Milestone notification template validation with respect to LOB', async () => {
+        it('[6028]: Milestone notification template validation with respect to LOB', async () => {
             await utilGrid.searchAndOpenHyperlink(svttile);
             await serviceTargetConfig.selectMilestone();
             await serviceTargetConfig.clickAddNewMileStoneBtn();
@@ -1200,7 +1200,7 @@ describe('Service Target Configs', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-2354]: Create a task and verify if the case is updated as per the milestone configurations', async () => {
+        it('[6028]: Create a task and verify if the case is updated as per the milestone configurations', async () => {
             let manualTemplateData = {
                 "templateName": "manual_task template" + randomStr,
                 "templateSummary": "Manual_task template summary" + randomStr,
@@ -1237,7 +1237,7 @@ describe('Service Target Configs', () => {
             expect(await activityTabPo.isTextPresentInActivityLog("Summary")).toBeTruthy('TemplateText is not available');
         });
 
-        it('[DRDMV-2354]: Create a task wit mismatched qualifications and verify if the case is updated as per the milestone configurations', async () => {
+        it('[6028]: Create a task wit mismatched qualifications and verify if the case is updated as per the milestone configurations', async () => {
             let automatedtemplateData = {
                 "templateName": 'Automated task19011' + randomStr,
                 "templateSummary": 'Automated task19011' + randomStr,
@@ -1285,7 +1285,7 @@ describe('Service Target Configs', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2600]: Verify Service Target Group Creation and Updation', async () => {
+    describe('[5955]: Verify Service Target Group Creation and Updation', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedCaseSummary = "Updating Case summary from SVT";
         let svttileWithGoalType = "SVT with Goal Type HR" + randomStr;
@@ -1330,7 +1330,7 @@ describe('Service Target Configs', () => {
             await apiHelper.createSVT(svtData);    
         });
 
-        it('[DRDMV-2600]: Create Data Source / Goal Type and SVT for Same LOB', async () => {
+        it('[5955]: Create Data Source / Goal Type and SVT for Same LOB', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', 'Configure Data Source - Administration - Business Workflows');
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
@@ -1396,7 +1396,7 @@ describe('Service Target Configs', () => {
 
         });
 
-        it('[DRDMV-2600]: Create Data Source / Goal Type and SVT for different LOB', async () => {
+        it('[5955]: Create Data Source / Goal Type and SVT for different LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -1449,7 +1449,7 @@ describe('Service Target Configs', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         
-        it('[DRDMV-2600]: Verify data source / goal type reflection based on LOB in Service Target Group', async () => {
+        it('[5955]: Verify data source / goal type reflection based on LOB in Service Target Group', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
             await navigationPage.gotoSettingsPage();
@@ -1482,7 +1482,7 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isGoalTypeOptionPresentInDropDown(goalTypeTitleFacilities)).toBeFalsy();
         });
 
-        it('[DRDMV-2600]: Verify SVT reflection based on company / data source / goal type selection', async () => {
+        it('[5955]: Verify SVT reflection based on company / data source / goal type selection', async () => {
             //Service target filteration based on company
             await createServiceTargetGroupPo.selectCompany('- Global -');
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
@@ -1614,7 +1614,7 @@ describe('Service Target Configs', () => {
            await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-2600]: create Service target group for same LOB', async () => {
+        it('[5955]: create Service target group for same LOB', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
@@ -1635,7 +1635,7 @@ describe('Service Target Configs', () => {
             expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
         });
 
-        it('[DRDMV-2600]: create Service target group for different LOB', async () => {
+        it('[5955]: create Service target group for different LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();

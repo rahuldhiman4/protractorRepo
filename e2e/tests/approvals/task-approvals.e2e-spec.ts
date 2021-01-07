@@ -40,7 +40,7 @@ describe("Task Approval Tests", () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-21584]:[Task Approval] - Case General Approval - All Must Sign', async () => {
+    describe('[3590]:[Task Approval] - Case General Approval - All Must Sign', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData;
         let caseTemplateData, autoTaskTemplateData, automatedTask, caseTemplate;
@@ -116,7 +116,7 @@ describe("Task Approval Tests", () => {
             caseId = newCase.displayId;
         });
 
-        it('[DRDMV-21584]:Create case and assign tasks to it', async () => {
+        it('[3590]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -130,7 +130,7 @@ describe("Task Approval Tests", () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
-        it('[DRDMV-21584]: Verify the task approval details', async () => {
+        it('[3590]: Verify the task approval details', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
@@ -156,7 +156,7 @@ describe("Task Approval Tests", () => {
             await utilityCommon.closeAllBlades();
         })
 
-        it('[DRDMV-21584]: Approve the task with approver and verify the details', async () => {
+        it('[3590]: Approve the task with approver and verify the details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -192,7 +192,7 @@ describe("Task Approval Tests", () => {
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-21584]:Verify the approvals details on task activity', async () => {
+        it('[3590]:Verify the approvals details on task activity', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.switchToApplication('Approval');
@@ -222,7 +222,7 @@ describe("Task Approval Tests", () => {
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-21584]:Verify the approvals details on task activity after case rejection', async () => {
+        it('[3590]:Verify the approvals details on task activity after case rejection', async () => {
             await apiHelper.apiLogin('qtao');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
@@ -274,7 +274,7 @@ describe("Task Approval Tests", () => {
         });
     });
 
-    describe('[DRDMV-21587]:[Task Approval] - Level Up Approval', async () => {
+    describe('[3588]:[Task Approval] - Level Up Approval', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData;
         let caseTemplateData, autoTaskTemplateData, automatedTask, caseTemplate;
@@ -346,7 +346,7 @@ describe("Task Approval Tests", () => {
             caseId = newCase.displayId;
         });
 
-        it('[DRDMV-21587]:Create case and assign tasks to it', async () => {
+        it('[3588]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -360,7 +360,7 @@ describe("Task Approval Tests", () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
-        it('[DRDMV-21587]: Verify the task approval details', async () => {
+        it('[3588]: Verify the task approval details', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
@@ -385,7 +385,7 @@ describe("Task Approval Tests", () => {
             await utilityCommon.closeAllBlades();
         })
 
-        it('[DRDMV-21587]: Approve the task with approver', async () => {
+        it('[3588]: Approve the task with approver', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -414,7 +414,7 @@ describe("Task Approval Tests", () => {
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-21587]:Verify the approvals details on case activity after task rejection', async () => {
+        it('[3588]:Verify the approvals details on case activity after task rejection', async () => {
             await apiHelper.apiLogin('qtao');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
@@ -463,7 +463,7 @@ describe("Task Approval Tests", () => {
         });
     });
 
-    describe('[DRDMV-22391]:Trigger the Approval and Approve the Task from Task View', async () => {
+    describe('[3475]:Trigger the Approval and Approve the Task from Task View', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData;
         let caseTemplateData, manualTaskTemplateData, automatedTask, caseTemplate;
@@ -539,7 +539,7 @@ describe("Task Approval Tests", () => {
             caseId = newCase.displayId;
         });
 
-        it('[DRDMV-22391]:Create case and assign tasks to it', async () => {
+        it('[3475]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -551,7 +551,7 @@ describe("Task Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(caseId);
         });
 
-        it('[DRDMV-22391]: Verify the task approval details', async () => {
+        it('[3475]: Verify the task approval details', async () => {
             await viewCasePo.openTaskCard(1);
             automatedTaskDisplayId = await manageTask.getTaskDisplayId();
             await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
@@ -581,7 +581,7 @@ describe("Task Approval Tests", () => {
             await utilityCommon.closeAllBlades();
         })
 
-        it('[DRDMV-22391]: Verify the task approval details on task view and Approve the task with approver', async () => {
+        it('[3475]: Verify the task approval details on task view and Approve the task with approver', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoTaskConsole();
@@ -615,7 +615,7 @@ describe("Task Approval Tests", () => {
             await utilityCommon.closeAllBlades();
         });
 
-        it('[DRDMV-22391]:Create case and assign tasks to it', async () => {
+        it('[3475]:Create case and assign tasks to it', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await navigationPage.gotoTaskConsole();
@@ -639,7 +639,7 @@ describe("Task Approval Tests", () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
-        it('[DRDMV-22391]: Verify the task approval details on task approval rejection', async () => {
+        it('[3475]: Verify the task approval details on task approval rejection', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
@@ -692,7 +692,7 @@ describe("Task Approval Tests", () => {
         });
     });
 
-    describe('[DRDMV-21827]:[-ve] [Task Approval] - Task Level Up Approval when Requester does not have Manager', async () => {
+    describe('[3548]:[-ve] [Task Approval] - Task Level Up Approval when Requester does not have Manager', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseId1, caseData, caseData1, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData, externaltemplateData;
         let caseTemplateData, caseTemplateData1, externalTaskTemplate, autoTaskTemplateData, automatedTask, caseTemplate, caseTemplate1;
@@ -811,7 +811,7 @@ describe("Task Approval Tests", () => {
             caseId1 = newCase.displayId;
         });
 
-        it('[DRDMV-21827]:Trigger task based approval for automated task and verify error status', async () => {
+        it('[3548]:Trigger task based approval for automated task and verify error status', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -831,7 +831,7 @@ describe("Task Approval Tests", () => {
 
         });
 
-        it('[DRDMV-21827]: trigger task based approval for external / manual task and verify error status', async () => {
+        it('[3548]: trigger task based approval for external / manual task and verify error status', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");

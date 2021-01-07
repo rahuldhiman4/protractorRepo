@@ -62,7 +62,7 @@ describe('Case Console Preset Filter', () => {
         await navigationPage.signOut();
     });
 
-    it('[DRDMV-20843]: Validate the My Open Cases filter after applying and removing the filter', async () => {
+    it('[3687]: Validate the My Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_NONVIP_DRDMV_20843_1);
@@ -133,7 +133,7 @@ describe('Case Console Preset Filter', () => {
 
     });
 
-    it('[DRDMV-20850]: Validate the VIP Open Cases filter after applying and removing the filter', async () => {
+    it('[3683]: Validate the VIP Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");
 
@@ -196,7 +196,7 @@ describe('Case Console Preset Filter', () => {
 
     });
 
-    it('[DRDMV-20874]: Validate the All Open Cases filter after applying and removing the filter', async () => {
+    it('[3680]: Validate the All Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");
 
@@ -257,7 +257,7 @@ describe('Case Console Preset Filter', () => {
         }
     });
 
-    it('[DRDMV-20875]: Validate the High Priority Open Cases filter after applying and removing the filter', async () => {
+    it('[3679]: Validate the High Priority Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");
 
@@ -324,7 +324,7 @@ describe('Case Console Preset Filter', () => {
         }
     });
 
-    it('[DRDMV-20878]: Validate the Critical Priority Open Cases filter after applying and removing the filter', async () => {
+    it('[3677]: Validate the Critical Priority Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");
 
@@ -392,7 +392,7 @@ describe('Case Console Preset Filter', () => {
 
     });
 
-    it('[DRDMV-20879]: Validate the All Unassigned Cases filter after applying and removing the filter', async () => {
+    it('[3676]: Validate the All Unassigned Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");
 
@@ -422,7 +422,7 @@ describe('Case Console Preset Filter', () => {
         }
     });
 
-    describe('[DRDMV-20881]: Validate the All Open Breached Cases filter after applying and removing the filter', () => {
+    describe('[3674]: Validate the All Open Breached Cases filter after applying and removing the filter', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
             await apiHelper.apiLogin(userId1, "Password_1234");
@@ -461,7 +461,7 @@ describe('Case Console Preset Filter', () => {
             await browser.sleep(130000);
         });
 
-        it('[DRDMV-20881]: Validate the All Open Breached Cases filter after applying and removing the filter', async () => {
+        it('[3674]: Validate the All Open Breached Cases filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('All Open Breached Cases');
             let allOpenCase: string[] = ['All Open Breached Cases'];
             expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
@@ -478,7 +478,7 @@ describe('Case Console Preset Filter', () => {
         });
     });
 
-    describe('[DRDMV-22214]: Validate the My Open Breached Cases filter after applying and removing the filter', () => {
+    describe('[3508]: Validate the My Open Breached Cases filter after applying and removing the filter', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
             await apiHelper.apiLogin(userId1, "Password_1234");
@@ -525,7 +525,7 @@ describe('Case Console Preset Filter', () => {
 
         });
 
-        it('[DRDMV-22214]: Validate the My Open Breached Cases filter after applying and removing the filter', async () => {
+        it('[3508]: Validate the My Open Breached Cases filter after applying and removing the filter', async () => {
             //Waiting for SVT to Breached
             await browser.sleep(160000);
             await utilityGrid.applyPresetFilter('My Open Breached Cases');
@@ -545,7 +545,7 @@ describe('Case Console Preset Filter', () => {
         });
     });
 
-    it('[DRDMV-20880]: Validate the All Cases In Last 1 month filter after applying and removing the filter', async () => {
+    it('[3675]: Validate the All Cases In Last 1 month filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");
@@ -603,7 +603,7 @@ describe('Case Console Preset Filter', () => {
         }
     });
 
-    it('[DRDMV-20900]: Validate the All Cases In Last 3 months filter after applying and removing the filter', async () => {
+    it('[3662]: Validate the All Cases In Last 3 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");
@@ -650,7 +650,7 @@ describe('Case Console Preset Filter', () => {
         }
     });
 
-    it('[DRDMV-22035]: Validate the All Cases In Last 6 months filter after applying and removing the filter', async () => {
+    it('[3530]: Validate the All Cases In Last 6 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
         await apiHelper.apiLogin(userId1, "Password_1234");

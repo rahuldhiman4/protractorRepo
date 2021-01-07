@@ -63,7 +63,7 @@ describe('Create Process in Flowset', () => {
 
     //ankagraw
 
-    describe('[DRDMV-6216]: [Flowsets] Create new Register Process', async () => {
+    describe('[5637]: [Flowsets] Create new Register Process', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let drpDownStatus: string[] = ['Draft', 'Active', 'Inactive'];
         let processName = undefined;
@@ -91,7 +91,7 @@ describe('Create Process in Flowset', () => {
             await apiHelper.createProcessLibConfig(processLibConfData);
         });
 
-        it('[DRDMV-6216]: [Flowsets] Create new Register Process', async () => {
+        it('[5637]: [Flowsets] Create new Register Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
 
@@ -137,7 +137,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "name is not present");
         });
 
-        it('[DRDMV-6216]: Verify if flowset register process is accessible to same LOB Case Manager', async () => {
+        it('[5637]: Verify if flowset register process is accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -145,7 +145,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "name is not present");
         });
 
-        it('[DRDMV-6216]: Verify if flowset register process is accessible to different LOB Case BA', async () => {
+        it('[5637]: Verify if flowset register process is accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -153,7 +153,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is displayed for different LOB Case BA");
         });
 
-        it('[DRDMV-6216]: Verify if flowset register process is accessible to different LOB Case Manager', async () => {
+        it('[5637]: Verify if flowset register process is accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -161,7 +161,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is displayed for different LOB Case manager");
         });
 
-        it('[DRDMV-6216]: Verify if flowset register process is accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[5637]: Verify if flowset register process is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -169,7 +169,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for same LOB and different company Case BA");
         });
 
-        it('[DRDMV-6216]: Verify if flowset register process is accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[5637]: Verify if flowset register process is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -180,7 +180,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is not displayed for same LOB Case manager");
         });
 
-        it('[DRDMV-6216]: Verify if flowset register process is accessible to Case BA user having access to multiple LOB', async () => {
+        it('[5637]: Verify if flowset register process is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -199,7 +199,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
         });
 
-        it('[DRDMV-6216]: Validate create new record with same name in same LOB', async () => {
+        it('[5637]: Validate create new record with same name in same LOB', async () => {
             await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
             await createFlowsetProcessLibrary.selectCompany('Petramco');
             await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
@@ -222,7 +222,7 @@ describe('Create Process in Flowset', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-6216]:  Validate create new record with same name in different LOB', async () => {
+        it('[5637]:  Validate create new record with same name in different LOB', async () => {
             await utilGrid.selectLineOfBusiness('Facilities');
             await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
             await createFlowsetProcessLibrary.selectCompany('Petramco');
@@ -244,7 +244,7 @@ describe('Create Process in Flowset', () => {
     });
 
 
-    it('[DRDMV-1269,DRDMV-1295]: [Flowsets] Search Register Process on Console', async () => {
+    it('[6276,6273]: [Flowsets] Search Register Process on Console', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('tadmin');
         let social_Service = SOCIAL_SERVICE_PROCESS;
@@ -280,7 +280,7 @@ describe('Create Process in Flowset', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-7607]: [Permissions] Process Library access', () => {
+    describe('[5542]: [Permissions] Process Library access', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let processLibConfData, alias = undefined;
         beforeAll(async () => {
@@ -302,7 +302,7 @@ describe('Create Process in Flowset', () => {
             await apiHelper.createProcessLibConfig(processLibConfData);
         });
 
-        it('[DRDMV-7607]: [Permissions] Process Library access', async () => {
+        it('[5542]: [Permissions] Process Library access', async () => {
             //login with same company Manager
             await navigationPage.signOut();
             await loginPage.login('frieda');
@@ -325,7 +325,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeTruthy(alias + "Name is not present");
         });
 
-        it('[DRDMV-7607]: [Permissions] Process Library access', async () => {
+        it('[5542]: [Permissions] Process Library access', async () => {
             //login with different company CBA
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -355,7 +355,7 @@ describe('Create Process in Flowset', () => {
         });
     });
 
-    describe('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
+    describe('[6271]: [Flowsets] Flowsets Console verification', async () => {
 
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let allHeaders: string[] = ['Application', 'Company', 'ID', 'Process Alias Name', 'Process Description', 'Process Name', 'Status'];
@@ -365,7 +365,7 @@ describe('Create Process in Flowset', () => {
         social_Service.name = social_Service_Process;
         let processLibConfData1 = undefined;
 
-        it('[DRDMV-1298]: [Flowsets] Flowsets Console verification', async () => {
+        it('[6271]: [Flowsets] Flowsets Console verification', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiCoreUtil.createProcess(social_Service);
             processLibConfData1 = {
@@ -393,7 +393,7 @@ describe('Create Process in Flowset', () => {
             expect(await consoleFlowsetProcessLibrary.getSortedValuesFromColumn("Process Alias Name")).toBeTruthy("Sorted not possible");
         });
 
-        it('[DRDMV-1298]: Verify if flowset process is accessible to same LOB Case Manager', async () => {
+        it('[6271]: Verify if flowset process is accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -401,7 +401,7 @@ describe('Create Process in Flowset', () => {
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process are not displayed to same LOB Case manager.');
         });
 
-        it('[DRDMV-1298]: Verify if flowset process is accessible to different LOB Case BA', async () => {
+        it('[6271]: Verify if flowset process is accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -409,7 +409,7 @@ describe('Create Process in Flowset', () => {
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case BA.');
         });
 
-        it('[DRDMV-1298]: Verify if flowset process is accessible to different LOB Case Manager', async () => {
+        it('[6271]: Verify if flowset process is accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -417,7 +417,7 @@ describe('Create Process in Flowset', () => {
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case manager.');
         });
 
-        it('[DRDMV-1298]: Verify if flowset process is accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[6271]: Verify if flowset process is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -425,7 +425,7 @@ describe('Create Process in Flowset', () => {
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is displayed to same LOB with different company Case BA.');
         });
 
-        it('[DRDMV-1298]: Verify if flowset process is accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[6271]: Verify if flowset process is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -436,7 +436,7 @@ describe('Create Process in Flowset', () => {
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to Case manager havin access to multiple LOB');
         });
 
-        it('[DRDMV-1298]: Verify if flowset process is accessible to Case BA user having access to multiple LOB', async () => {
+        it('[6271]: Verify if flowset process is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -459,7 +459,7 @@ describe('Create Process in Flowset', () => {
     });
 
     //asahitya
-    describe('[DRDMV-11987]: [Case Creation] Verify able to create case with Global case template having flowset', () => {
+    describe('[5023]: [Case Creation] Verify able to create case with Global case template having flowset', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseResponse = undefined;
         beforeAll(async () => {
@@ -481,7 +481,7 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
-            let flowsetName: string = `DRDMV-11987 ${randomStr}`;
+            let flowsetName: string = `5023 ${randomStr}`;
             let flowsetMandatoryFieldsData = cloneDeep(flowsetGlobalFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             flowsetMandatoryFieldsData["lineOfBusiness"] = "Facilities";
@@ -498,8 +498,8 @@ describe('Create Process in Flowset', () => {
 
             //Create Case Template
             let caseTemplateData = {
-                "templateName": 'DRDMV-11987 tname' + randomStr,
-                "templateSummary": 'DRDMV-11987 Summary' + randomStr,
+                "templateName": '5023 tname' + randomStr,
+                "templateSummary": '5023 Summary' + randomStr,
                 "casePriority": "Medium",
                 "templateStatus": "Active",
                 "company": "- Global -",
@@ -516,7 +516,7 @@ describe('Create Process in Flowset', () => {
             //Create Case using above Case Template
             let caseData = {
                 "Requester": "qkatawazi",
-                "Summary": "DRDMV-11987 Create Case",
+                "Summary": "5023 Create Case",
                 "Line of Business": "Facilities",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse.displayId
@@ -524,7 +524,7 @@ describe('Create Process in Flowset', () => {
             caseResponse = await apiHelper.createCase(caseData);
         });
 
-        it('[DRDMV-11987]: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
+        it('[5023]: [Case Creation] Verify able to create case with Global case template having flowset', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
@@ -539,9 +539,9 @@ describe('Create Process in Flowset', () => {
     })
 
     //asahitya
-    describe('[DRDMV-10034]: Initialization process execution for case origin Agent', () => {
+    describe('[5317]: Initialization process execution for case origin Agent', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-10034]: Initialization process execution for case origin Agent', async () => {
+        it('[5317]: Initialization process execution for case origin Agent', async () => {
             //Create a Process
             await apiHelper.apiLogin('tadmin');
             let processName = `Agent Origin ${randomStr}`
@@ -578,12 +578,12 @@ describe('Create Process in Flowset', () => {
             await editFlowsetConfigPo.clickSaveBtnOnProcessMapping();
             await utilCommon.closeBladeOnSettings();
         });
-        it('[DRDMV-10034]: Initialization process execution for case origin Agent', async () => {
+        it('[5317]: Initialization process execution for case origin Agent', async () => {
             //Create a Case Template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
-            await createCaseTemplatePage.setTemplateName('DRDMV-10034 Tname ' + randomStr);
+            await createCaseTemplatePage.setTemplateName('5317 Tname ' + randomStr);
             await createCaseTemplatePage.setCompanyName('Petramco');
             await createCaseTemplatePage.setCaseSummary(`Summary ${randomStr}`);
             await createCaseTemplatePage.setFlowsetValue('Flowset' + randomStr);
@@ -597,7 +597,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate('DRDMV-10034 Tname ' + randomStr);
+            await selectCasetemplateBladePo.selectCaseTemplate('5317 Tname ' + randomStr);
             await createCasePage.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
             expect(await viewCasePage.getPriorityValue()).toBe('Low');
@@ -607,7 +607,7 @@ describe('Create Process in Flowset', () => {
     });
 
     //asahitya
-    describe('[DRDMV-10327]: Initialization process execution for case origin Email', () => {
+    describe('[5295]: Initialization process execution for case origin Email', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseResponse = undefined;
 
@@ -630,7 +630,7 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
-            let flowsetName: string = `DRDMV-10327 ${randomStr}`;
+            let flowsetName: string = `5295 ${randomStr}`;
             let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
@@ -647,8 +647,8 @@ describe('Create Process in Flowset', () => {
 
             //Create Case Template
             let caseTemplateData = {
-                "templateName": 'DRDMV-10327 tname' + randomStr,
-                "templateSummary": 'DRDMV-10327 Summary' + randomStr,
+                "templateName": '5295 tname' + randomStr,
+                "templateSummary": '5295 Summary' + randomStr,
                 "casePriority": "Medium",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -664,14 +664,14 @@ describe('Create Process in Flowset', () => {
             //Create Case using above Case Template
             let caseData = {
                 "Requester": "fritz",
-                "Summary": "DRDMV-10327 Create Case",
+                "Summary": "5295 Create Case",
                 "Origin": "Email",
                 "Case Template ID": caseTemplateResponse.displayId
             }
             caseResponse = await apiHelper.createCase(caseData);
         });
 
-        it('[DRDMV-10327]: Initialization process execution for case origin Agent', async () => {
+        it('[5295]: Initialization process execution for case origin Agent', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             expect(await viewCasePage.getPriorityValue()).toBe('Critical');
@@ -681,13 +681,13 @@ describe('Create Process in Flowset', () => {
     });
 
     //asahitya
-    describe('[DRDMV-1300]: [Flowsets] Filter menu verification on Register Process Console', () => {
+    describe('[6270]: [Flowsets] Filter menu verification on Register Process Console', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let processName, processAliasName, registeredProcessResponse;
         beforeAll(async () => {
             //Create a Process
             await apiHelper.apiLogin('tadmin');
-            processAliasName = `DRDMV-1300 ${randomStr}`
+            processAliasName = `6270 ${randomStr}`
             await apiHelper.createProcess(processAliasName, 'EMAIL_ORIGIN');
 
             //Register the Process
@@ -704,7 +704,7 @@ describe('Create Process in Flowset', () => {
             processName = `com.bmc.dsm.case-lib:${processAliasName}`;
         });
 
-        it('[DRDMV-1300]: [Flowsets] Filter menu verification on Register Process Console', async () => {
+        it('[6270]: [Flowsets] Filter menu verification on Register Process Console', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
             await consoleFlowsetProcessLibrary.addColumn(['Process Name', 'ID']);
@@ -770,7 +770,7 @@ describe('Create Process in Flowset', () => {
         });
     });
 
-    describe('[DRDMV-10328,DRDMV-10023,DRDMV-10028]: User Activity Feeds process execution for post created by email', () => {
+    describe('[5294,5325,5321]: User Activity Feeds process execution for post created by email', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseResponse = undefined;
         let processName = undefined;
@@ -793,7 +793,7 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
-            let flowsetName: string = `DRDMV-10328 ${randomStr}`;
+            let flowsetName: string = `5294 ${randomStr}`;
             let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
@@ -810,8 +810,8 @@ describe('Create Process in Flowset', () => {
 
             //Create Case Template
             let caseTemplateData = {
-                "templateName": 'DRDMV-10328 tname' + randomStr,
-                "templateSummary": 'DRDMV-10328 Summary' + randomStr,
+                "templateName": '5294 tname' + randomStr,
+                "templateSummary": '5294 Summary' + randomStr,
                 "casePriority": "Medium",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -828,7 +828,7 @@ describe('Create Process in Flowset', () => {
             //Create Case using above Case Template
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-10328 Create Case",
+                "Summary": "5294 Create Case",
                 "Origin": "Email",
                 "Case Template ID": caseTemplateResponse.displayId
             }
@@ -839,18 +839,18 @@ describe('Create Process in Flowset', () => {
             await apiHelper.createEmailProfile(response.id);
             await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
         });
-        it('[DRDMV-10328,DRDMV-10023,DRDMV-10028]: User Activity Feeds process execution for post created by email', async () => {
+        it('[5294,5325,5321]: User Activity Feeds process execution for post created by email', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickOnRequestersEmail();
-            await composeEmailPo.setEmailBody('Text added for DRDMV-10328');
+            await composeEmailPo.setEmailBody('Text added for 5294');
             await composeEmailPo.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnShowMore();
             expect(await activityTabPage.getRecipientInTo()).toContain('To: Qianru Tao');
-            expect(await activityTabPage.getEmailSubject()).toContain(caseResponse.displayId + ':DRDMV-10328 Create Case');
-            expect(await activityTabPage.getEmailBody()).toContain('Text added for DRDMV-10328');
+            expect(await activityTabPage.getEmailSubject()).toContain(caseResponse.displayId + ':5294 Create Case');
+            expect(await activityTabPage.getEmailBody()).toContain('Text added for 5294');
             await apiHelper.apiLogin('tadmin');
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(1);
             await activityTabPage.addActivityNote("hello");
@@ -863,18 +863,18 @@ describe('Create Process in Flowset', () => {
         });
     });
 
-    describe('[DRDMV-10024]: Flowset with multiple process mapping with different functions', () => {
+    describe('[5324]: Flowset with multiple process mapping with different functions', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseResponse = undefined;
         let processName1, processName2;
         beforeAll(async () => {
             //Create Process1
             await apiHelper.apiLogin('tadmin');
-            processName1 = `Activity Feed Email DRDMV-10024 ${randomStr}`
+            processName1 = `Activity Feed Email 5324 ${randomStr}`
             await apiHelper.createProcess(processName1, 'SOCIAL_ACTIVITY_FEED');
 
             //Create Process2
-            processName2 = `Email Origin DRDMV-10024 ${randomStr}`
+            processName2 = `Email Origin 5324 ${randomStr}`
             await apiHelper.createProcess(processName2, 'EMAIL_ORIGIN');
 
             //Register the Process1
@@ -901,7 +901,7 @@ describe('Create Process in Flowset', () => {
             let registeredProcessResponse2 = await apiHelper.createProcessLibConfig(registerProcessData2);
 
             //Create new flowset
-            let flowsetName: string = `DRDMV-10024 ${randomStr}`;
+            let flowsetName: string = `5324 ${randomStr}`;
             let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetName
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
@@ -928,8 +928,8 @@ describe('Create Process in Flowset', () => {
 
             //Create Case Template
             let caseTemplateData = {
-                "templateName": 'DRDMV-10024 tname' + randomStr,
-                "templateSummary": 'DRDMV-10024 Summary' + randomStr,
+                "templateName": '5324 tname' + randomStr,
+                "templateSummary": '5324 Summary' + randomStr,
                 "casePriority": "Medium",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -946,23 +946,23 @@ describe('Create Process in Flowset', () => {
             //Create Case using above Case Template
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-10024 Create Case",
+                "Summary": "5324 Create Case",
                 "Origin": "Email",
                 "Case Template ID": caseTemplateResponse.displayId
             }
             caseResponse = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-10024]: Flowset with multiple process mapping with different functions', async () => {
+        it('[5324]: Flowset with multiple process mapping with different functions', async () => {
             await apiHelper.apiLogin('tadmin');
-            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin DRDMV-10024 ${randomStr}`)).toEqual(1);
-            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email DRDMV-10024 ${randomStr}`)).toEqual(0);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin 5324 ${randomStr}`)).toEqual(1);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email 5324 ${randomStr}`)).toEqual(0);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await activityTabPage.addActivityNote("hello");
             await activityTabPage.clickOnPostButton();
             await browser.sleep(1000); //hardwait to complete process execution
-            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin DRDMV-10024 ${randomStr}`)).toEqual(1);
-            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email DRDMV-10024 ${randomStr}`)).toEqual(1);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Email Origin 5324 ${randomStr}`)).toEqual(1);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', `Activity Feed Email 5324 ${randomStr}`)).toEqual(1);
         });
     });
 });

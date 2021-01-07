@@ -28,7 +28,7 @@ describe('Case Activity CKE Styling', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-21617,DRDMV-21618]: Search and UI Validation of document library search view', async () => {
+    describe('[3582,3581]: Search and UI Validation of document library search view', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
         let addNoteBodyText = 'addNoteBodyTextDRDMV21617' + randomStr;
@@ -107,7 +107,7 @@ describe('Case Activity CKE Styling', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('Status Not Set');
         });
-        it('[DRDMV-21617,DRDMV-21618]: Open Case And Add Tasks From Case', async () => {
+        it('[3582,3581]: Open Case And Add Tasks From Case', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             // Adding Task
             await viewCasePo.clickAddTaskButton();
@@ -117,7 +117,7 @@ describe('Case Activity CKE Styling', () => {
             await manageTaskBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-21617,DRDMV-21618]: Verify CkEditor On Case With Activity Tab', async () => {
+        it('[3582,3581]: Verify CkEditor On Case With Activity Tab', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await ckeditorValidationPo.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             await activityTabPage.clearActivityNote();
@@ -190,7 +190,7 @@ describe('Case Activity CKE Styling', () => {
             expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toBe('');
         });
 
-        it('[DRDMV-21617,DRDMV-21618]: Verify CkEditor On Manual Task With Activity Tab', async () => {
+        it('[3582,3581]: Verify CkEditor On Manual Task With Activity Tab', async () => {
             // Goto Manual Task
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -268,7 +268,7 @@ describe('Case Activity CKE Styling', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-21617,DRDMV-21618]: Verify CkEditor On Automated Task With Activity Tab', async () => {
+        it('[3582,3581]: Verify CkEditor On Automated Task With Activity Tab', async () => {
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
@@ -344,7 +344,7 @@ describe('Case Activity CKE Styling', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-21617,DRDMV-21618]: Verify CkEditor On External Task With Activity Tab', async () => {
+        it('[3582,3581]: Verify CkEditor On External Task With Activity Tab', async () => {
             // Goto External Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
@@ -420,7 +420,7 @@ describe('Case Activity CKE Styling', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-21617,DRDMV-21618]: Verify CkEditor On Adhoc Task With Activity Tab', async () => {
+        it('[3582,3581]: Verify CkEditor On Adhoc Task With Activity Tab', async () => {
             // Goto Adhoc Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
@@ -503,7 +503,7 @@ describe('Case Activity CKE Styling', () => {
             expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toBe('');
         });
 
-        it('[DRDMV-21617,DRDMV-21618]: Verify CkEditor On Knowledge Article With Activity Tab', async () => {
+        it('[3582,3581]: Verify CkEditor On Knowledge Article With Activity Tab', async () => {
             // Verify knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
@@ -579,7 +579,7 @@ describe('Case Activity CKE Styling', () => {
             expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toBe('');
         });
 
-        it('[DRDMV-21617,DRDMV-21618]: Verify CkEditor On Person Profile With Activity Tab', async () => {
+        it('[3582,3581]: Verify CkEditor On Person Profile With Activity Tab', async () => {
             // Profile View CK Editor
             await navigationPage.signOut();
             await loginPage.login('qdu');

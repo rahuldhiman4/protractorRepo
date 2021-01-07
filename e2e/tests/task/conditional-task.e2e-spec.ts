@@ -27,8 +27,8 @@ describe('Conditional Task', () => {
         userData = {
             "firstName": "Multiple Company",
             "lastName": "Access",
-            "userId": "DRDMV-14898_User",
-            "emailId": "DRDMV-14898_User@petramco.com",
+            "userId": "4542_User",
+            "emailId": "4542_User@petramco.com",
             "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData);
@@ -43,7 +43,7 @@ describe('Conditional Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-14901]: [Task] - Template preview from Template selection blade', () => {
+    describe('[4540]: [Task] - Template preview from Template selection blade', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let inactiveCaseTemplatePetramcoData, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData;
         beforeAll(async () => {
@@ -122,7 +122,7 @@ describe('Conditional Task', () => {
             await apiHelper.createDynamicDataOnTemplate(automatedTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
         });
 
-        it('[DRDMV-14901]: [Task] - Template preview from Template selection blade', async () => {
+        it('[4540]: [Task] - Template preview from Template selection blade', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(inactiveCaseTemplatePetramcoData.templateName);
@@ -250,7 +250,7 @@ describe('Conditional Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-14902,DRDMV-14903]: [Task] [UI]- Task Flow Process display in Case Template > Task section', () => {
+    describe('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let draftCaseTemplatePetramcoData, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData;
         beforeAll(async () => {
@@ -313,7 +313,7 @@ describe('Conditional Task', () => {
             }
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
         });
-        it('[DRDMV-14902,DRDMV-14903]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
+        it('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
             //Validating task flow creation with all type of task templates
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
@@ -353,7 +353,7 @@ describe('Conditional Task', () => {
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
             await selectCasetemplateBladePo.searchAndOpenCaseTemplate(draftCaseTemplatePetramcoData.templateName);
-            expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(11); //Detailed Read only fields are verified in DRDMV-8868 test
+            expect(await previewCaseTemplatePage.getReadOnlyFieldCount()).toEqual(11); //Detailed Read only fields are verified in 5454 test
             defaultWidth = (await viewCaseTemplatePage.getHeightAndWidth()).width;
             defaultHeight = (await viewCaseTemplatePage.getHeightAndWidth()).height;
             await previewCaseTemplatePage.zoomOutTaskFlowSection(3);
@@ -365,7 +365,7 @@ describe('Conditional Task', () => {
             await previewCaseTemplatePage.clickOnBackButton();
             await utilityCommon.closeAllBlades();
         });
-        it('[DRDMV-14902,DRDMV-14903]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
+        it('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
             //Validate the Case Template Preview from Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePage.selectRequesterName('qfeng');
@@ -406,7 +406,7 @@ describe('Conditional Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', () => {
+    describe('[4542]: [Task] - Task Template availability when adding it into Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let globalDraftTask, globalActiveTask, globalInactiveTask, petramcoDraftTask, petramcoActiveTask, petramcoInactiveTask, psilonDraftTask, psilonActiveTask, psilonInactiveTask;
         let globalActiveAutomatedTask, petramcoActiveAutomatedTask, psilonActiveAutomatedTask, globalActiveExternalTask, petramcoActiveExternalTask, psilonActiveExternalTask;
@@ -654,7 +654,7 @@ describe('Conditional Task', () => {
             await apiHelper.createCaseTemplate(psilonCaseTemplateData);
         });
 
-        it('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', async () => {
+        it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -686,7 +686,7 @@ describe('Conditional Task', () => {
             await viewCaseTemplatePage.clickBackArrowBtn();
         });
 
-        it('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', async () => {
+        it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             //Verify on Petramco Template
             await utilGrid.searchAndOpenHyperlink(`petramcoDraftCaseTemplate${randomStr}`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
@@ -713,7 +713,7 @@ describe('Conditional Task', () => {
             await viewCaseTemplatePage.clickBackArrowBtn();
         });
 
-        it('[DRDMV-14898]: [Task] - Task Template availability when adding it into Case Template', async () => {
+        it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             //Verify on Psilon Template
             await utilGrid.searchAndOpenHyperlink(`psilonDraftCaseTemplate${randomStr}`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
@@ -747,7 +747,7 @@ describe('Conditional Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', () => {
+    describe('[4543]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', () => {
         let globalDraftCaseTemplateData, petramcoDraftCaseTemplateData, petramcoInactiveCaseTemplateData, petramcoActiveCaseTemplateData, psilonDraftCaseTemplateData;
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -819,7 +819,7 @@ describe('Conditional Task', () => {
             await apiHelper.createCaseTemplate(psilonDraftCaseTemplateData);
         });
 
-        it('[DRDMV-14897]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', async () => {
+        it('[4543]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
 
@@ -853,7 +853,7 @@ describe('Conditional Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-15002]: [Task] Copy Case Template', () => {
+    describe('[4497]: [Task] Copy Case Template', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramcoData, newCaseTemplate, manualTaskTemplateData, externalTaskTemplateData;
         beforeAll(async () => {
@@ -904,7 +904,7 @@ describe('Conditional Task', () => {
             await apiHelper.associateCaseTemplateWithTwoTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, "parallel");
         });
 
-        it('[DRDMV-15002]: [Task] Copy Case Template', async () => {
+        it('[4497]: [Task] Copy Case Template', async () => {
             await navigationPage.signOut();
              await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
