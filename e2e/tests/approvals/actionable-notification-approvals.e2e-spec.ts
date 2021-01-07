@@ -93,7 +93,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16856]: Check out of the box notification-"New Signature Template" is actionable for type Alert', async () => {
+    it('[4164]: Check out of the box notification-"New Signature Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -121,7 +121,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16863]: Check out of the box notification-"Approve Template " is actionable for type Alert', async () => {
+    it('[4159]: Check out of the box notification-"Approve Template " is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -153,7 +153,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16869]: Check out of the box notification-"Cancel Template" is actionable for type Alert', async () => {
+    it('[4156]: Check out of the box notification-"Cancel Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -184,7 +184,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16859]: Check out of the box notification-"Reject Template " is actionable for type Alert', async () => {
+    it('[4161]: Check out of the box notification-"Reject Template " is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -215,7 +215,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16864]: Check out of the box notification-"Reassign Template" is actionable for type Alert', async () => {
+    it('[4158]: Check out of the box notification-"Reassign Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -250,7 +250,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16873]: Check out of the box notification-"Hold Template" is actionable for type Alert', async () => {
+    it('[4152]: Check out of the box notification-"Hold Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -282,7 +282,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16875]: Check out of the box notification-"More Info Template" is actionable for type Alert', async () => {
+    it('[4150]: Check out of the box notification-"More Info Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -312,7 +312,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[DRDMV-16872]: Check out of the box notification-"More Info Return Template" is actionable for type Alert', async () => {
+    it('[4153]: Check out of the box notification-"More Info Return Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');

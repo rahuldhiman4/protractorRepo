@@ -31,14 +31,14 @@ describe('Failed Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-10057]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', () => {
+    describe('[5310]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, manualTaskTemplate, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseDisplayId;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
-                "templateName": 'caseTemplateName DRDMV-10057' + randomStr,
-                "templateSummary": 'caseTemplateName DRDMV-10057' + randomStr,
+                "templateName": 'caseTemplateName 5310' + randomStr,
+                "templateSummary": 'caseTemplateName 5310' + randomStr,
                 "templateStatus": "Active",
                 "casePriority": "Low",
                 "caseStatus": "New",
@@ -90,7 +90,7 @@ describe('Failed Task', () => {
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate2.displayId, automatedTaskTemplate1.displayId, manualTaskTemplate.displayId, 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL');
         });
 
-        it('[DRDMV-10057]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', async () => {
+        it('[5310]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary('Summary');
@@ -102,7 +102,7 @@ describe('Failed Task', () => {
             caseDisplayId = await viewCasePage.getCaseID();
         });
 
-        it('[DRDMV-10057]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', async () => {
+        it('[5310]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', async () => {
             await statusUpdateBladePo.changeCaseStatus('In Progress');
             await statusUpdateBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
@@ -135,7 +135,7 @@ describe('Failed Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-10056]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', () => {
+    describe('[5311]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseResponse, caseDisplayId;
         beforeAll(async () => {
@@ -206,7 +206,7 @@ describe('Failed Task', () => {
 
         });
 
-        it('[DRDMV-10056]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', async () => {
+        it('[5311]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', async () => {
             await statusUpdateBladePo.changeCaseStatus('In Progress');
             await statusUpdateBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoTaskConsole();
@@ -222,7 +222,7 @@ describe('Failed Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-10000]: "ReRun"action of failed Automated task', () => {
+    describe('[5329]: "ReRun"action of failed Automated task', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let automatedTaskTemplateData, caseResponse;
         beforeAll(async () => {
@@ -246,9 +246,9 @@ describe('Failed Task', () => {
 
             //Creating the Case and Task with the Automated Template and associating them
             const caseData = {
-                "Description": "DRDMV-10000 Desc",
+                "Description": "5329 Desc",
                 "Requester": "qliu",
-                "Summary": "DRDMV-10000 Summary",
+                "Summary": "5329 Summary",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 1",
@@ -267,7 +267,7 @@ describe('Failed Task', () => {
             //Update the Case to In Progress status
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
         });
-        it('[DRDMV-10000]: "ReRun"action of failed Automated task', async () => {
+        it('[5329]: "ReRun"action of failed Automated task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickOnTaskLink(automatedTaskTemplateData.templateSummary);
@@ -294,7 +294,7 @@ describe('Failed Task', () => {
     });
 
     //asahitya
-    it('[DRDMV-10031]: Verify Manual Tasks can set to Failed Status', async () => {
+    it('[5319]: Verify Manual Tasks can set to Failed Status', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
         let manualTaskTemplateData = {
@@ -312,9 +312,9 @@ describe('Failed Task', () => {
         await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
         const caseData = {
-            "Description": "DRDMV-10031 Desc",
+            "Description": "5319 Desc",
             "Requester": "qliu",
-            "Summary": "DRDMV-10031 Summary",
+            "Summary": "5319 Summary",
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 1",
@@ -340,7 +340,7 @@ describe('Failed Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-10044]: Task behaviour when one manual task is closed and other sequenced automated task is failed', () => {
+    describe('[5315]: Task behaviour when one manual task is closed and other sequenced automated task is failed', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData1, manualTaskTemplateData2, automatedTaskTemplateData, caseResponse, manualTaskGuid1;
         beforeAll(async () => {
@@ -390,9 +390,9 @@ describe('Failed Task', () => {
             await apiHelper.createAutomatedTaskTemplate(automatedTaskTemplateData);
 
             const caseData = {
-                "Description": "DRDMV-10000 Desc",
+                "Description": "5329 Desc",
                 "Requester": "qliu",
-                "Summary": "DRDMV-10000 Summary",
+                "Summary": "5329 Summary",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 1",
@@ -428,7 +428,7 @@ describe('Failed Task', () => {
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
         });
 
-        it('[[DRDMV-10044]: Task behaviour when one manual task is closed and other sequenced automated task is failed', async () => {
+        it('[[5315]: Task behaviour when one manual task is closed and other sequenced automated task is failed', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);
@@ -450,15 +450,15 @@ describe('Failed Task', () => {
         });
     });
 
-    describe('[DRDMV-10045]: Case Status when one automated task got failed and other 2 automated task got passed', () => {
+    describe('[5314]: Case Status when one automated task got failed and other 2 automated task got passed', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData1, automatedTaskTemplateData2, automatedTaskTemplateData3, caseResponse;
         beforeAll(async () => {
             //Create a case template with Proceed with Next task config
             await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
-                "templateName": 'caseTemplateName DRDMV-10045' + randomStr,
-                "templateSummary": 'caseTemplateName DRDMV-10045' + randomStr,
+                "templateName": 'caseTemplateName 5314' + randomStr,
+                "templateSummary": 'caseTemplateName 5314' + randomStr,
                 "templateStatus": "Active",
                 "casePriority": "Low",
                 "caseStatus": "New",
@@ -526,7 +526,7 @@ describe('Failed Task', () => {
             //Create a case using the above Case Template
             let caseData = {
                 "Requester": "qliu",
-                "Summary": `DRDMV-10045 Medium Priority ${randomStr}`,
+                "Summary": `5314 Medium Priority ${randomStr}`,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse.displayId
             }
@@ -559,7 +559,7 @@ describe('Failed Task', () => {
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
         });
 
-        it('[DRDMV-10045]: Case Status when one automated task got failed and other 2 automated task got passed', async () => {
+        it('[5314]: Case Status when one automated task got failed and other 2 automated task got passed', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);
@@ -572,15 +572,15 @@ describe('Failed Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-9997]: Automated task= Failed, Case created with case template check Default Action', () => {
+    describe('[5330]: Automated task= Failed, Case created with case template check Default Action', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData1, automatedTaskTemplateData2, caseResponse;
         beforeAll(async () => {
             //Create a case template with Do Not Proceed task config
             await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
-                "templateName": 'caseTemplateName DRDMV-9997' + randomStr,
-                "templateSummary": 'caseTemplateName DRDMV-9997' + randomStr,
+                "templateName": 'caseTemplateName 5330' + randomStr,
+                "templateSummary": 'caseTemplateName 5330' + randomStr,
                 "templateStatus": "Active",
                 "casePriority": "Low",
                 "caseStatus": "New",
@@ -630,7 +630,7 @@ describe('Failed Task', () => {
             //Create a case using the above Case Template
             let caseData = {
                 "Requester": "qliu",
-                "Summary": `DRDMV-9997 Medium Priority ${randomStr}`,
+                "Summary": `5330 Medium Priority ${randomStr}`,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse.displayId
             }
@@ -653,7 +653,7 @@ describe('Failed Task', () => {
             await apiHelper.addTaskToCase(taskData2, caseResponse.id);
         });
 
-        it('[DRDMV-9997]: Automated task= Failed, Case created with case template check Default Action', async () => {
+        it('[5330]: Automated task= Failed, Case created with case template check Default Action', async () => {
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
@@ -667,14 +667,14 @@ describe('Failed Task', () => {
     });
 
     //asahitya
-    describe('[DRDMV-10413]: [Alerts] Notification alerts on Task Activation to Task Support Group', () => {
+    describe('[5272]: [Alerts] Notification alerts on Task Activation to Task Support Group', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData, caseResponse, taskDisplayId;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
-                "templateName": 'caseTemplateName DRDMV-10413' + randomStr,
-                "templateSummary": 'caseTemplateName DRDMV-10413' + randomStr,
+                "templateName": 'caseTemplateName 5272' + randomStr,
+                "templateSummary": 'caseTemplateName 5272' + randomStr,
                 "templateStatus": "Active",
                 "casePriority": "Low",
                 "caseStatus": "New",
@@ -702,7 +702,7 @@ describe('Failed Task', () => {
 
             let caseData = {
                 "Requester": "qliu",
-                "Summary": `DRDMV-10413 Summary ${randomStr}`,
+                "Summary": `5272 Summary ${randomStr}`,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse.displayId,
                 "Business Unit": "United States Support",
@@ -722,7 +722,7 @@ describe('Failed Task', () => {
             taskDisplayId = (await apiHelper.getCreatedTaskIds(taskResponse)).displayId;
         });
 
-        it('[DRDMV-10413]: [Alerts] Notification alerts on Task Activation to Task Support Group', async () => {
+        it('[5272]: [Alerts] Notification alerts on Task Activation to Task Support Group', async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
             await navigationPage.gotoCaseConsole();

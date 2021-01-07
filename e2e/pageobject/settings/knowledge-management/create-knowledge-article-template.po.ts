@@ -4,18 +4,18 @@ class CreateKATemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        templateName: '[name="templateName"]',
-        knowledgeSet: '[name="knowledgeSet"]',
-        disabledEnabledCheck: 'div.templateAttributes div:nth-of-type(2) .d-checkbox__item',
-        addsection: '.d-icon-left-plus_circle',
-        sectionTitle: '.rx-template-editor-text-fields input',
-        templateDescription: '.d-textfield textarea',
-        saveButton: 'button[type="submit"]',
-        removeSection: '.remove-button',
-        cancelBtn: '.template-editor-action-buttons button.d-button_secondary',
-        upArrowCollapse: '.d-icon-right-angle_up',
-        downArrowExpand: '.d-icon-right-angle_down',
-        expandCollapseAllBtn: '.expand-collapse-buttons button',
+        templateName: 'input[autofocus]',
+        knowledgeSet: 'button[aria-haspopup="listbox"]',
+        disabledEnabledCheck: 'input[type="checkbox"]',
+        addsection: 'button[btn-type="tertiary"] span',
+        sectionTitle: 'div.textfield__wrapper input.ng-valid',
+        templateDescription: '.ng-touched textarea',
+        saveButton: 'button.btn-primary',
+        removeSection: '.d-icon-left-cross_adapt',
+        cancelBtn: 'div.modal-footer .btn-secondary',
+        upArrowCollapse: '.tab-caret',
+        downArrowExpand: '.tab-caret',
+        expandCollapseAllBtn: '.editor-button-toggle button',
         lobValue: '[title="Line of Business"] .pull-left'
     }
 

@@ -55,7 +55,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    describe('[DRDMV-13617]: Verify User not able to delete mandatory status for case', () => {
+    describe('[4687]: Verify User not able to delete mandatory status for case', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         
         beforeAll(async () => {
@@ -67,7 +67,7 @@ describe('Case Status Configuration', () => {
             
         });
 
-        it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
+        it('[4687]: Verify User not able to delete mandatory status for case', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Phylum', 'case');
@@ -101,7 +101,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickOnBackButton();
         });
 
-        it('[DRDMV-13617]: Verify User not able to delete mandatory status for case', async () => {
+        it('[4687]: Verify User not able to delete mandatory status for case', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Phylum', 'case');
@@ -139,7 +139,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    it('[DRDMV-13615]:Verify UI for case status configuration', async () => {
+    it('[4689]:Verify UI for case status configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
         expect(await statusConfigPo.getTitleValue('case')).toBe('Case Status Configuration');
@@ -157,12 +157,12 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    describe('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', () => {
+    describe('[4612]:Verify case created prior to label change will reflect new status label changes', () => {
         let caseId1: string = undefined;
-        it('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', async () => {
+        it('[4612]:Verify case created prior to label change will reflect new status label changes', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('zkhan');
-            await createCasePo.setSummary("DRDMV-13899 before configuration");
+            await createCasePo.setSummary("4612 before configuration");
             await createCasePo.clickChangeAssignmentButton();
             await assignmentBladePO.selectCompany('Phylum');
             await assignmentBladePO.selectBusinessUnit('Phylum Support Org1');
@@ -183,10 +183,10 @@ describe('Case Status Configuration', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
-        it('[DRDMV-13899]:Verify case created prior to label change will reflect new status label changes', async () => {
+        it('[4612]:Verify case created prior to label change will reflect new status label changes', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('zkhan');
-            await createCasePo.setSummary("DRDMV-13899 after configuration");
+            await createCasePo.setSummary("4612 after configuration");
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -207,8 +207,8 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya  
-    describe('[DRDMV-13631]: Verify User not able to delete mandatory status for task', () => {
-        it('[DRDMV-13631]: Verify User not able to delete mandatory status for task', async () => {
+    describe('[4680]: Verify User not able to delete mandatory status for task', () => {
+        it('[4680]: Verify User not able to delete mandatory status for task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Phylum', 'task');
@@ -233,7 +233,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickOnBackButton();
         });
 
-        it('[DRDMV-13631]: Verify User not able to delete mandatory status for task', async () => {
+        it('[4680]: Verify User not able to delete mandatory status for task', async () => {
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Closed");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy('Closed status delete button is enabled');
@@ -260,8 +260,8 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    xdescribe('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', () => {
-        it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
+    xdescribe('[4679]: Verify User not able to delete mandatory status for Knowledge', () => {
+        it('[4679]: Verify User not able to delete mandatory status for Knowledge', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData3.userId+"@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -287,7 +287,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
         });
-        it('[DRDMV-13632]: Verify User not able to delete mandatory status for Knowledge', async () => {
+        it('[4679]: Verify User not able to delete mandatory status for Knowledge', async () => {
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Closed");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
@@ -314,7 +314,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    it('[DRDMV-13635]:Verify UI for Knowledge status configuration', async () => {
+    it('[4678]:Verify UI for Knowledge status configuration', async () => {
         try {
             await navigationPage.signOut()
             await loginPage.login(personData3.userId+"@petramco.com", 'Password_1234');
@@ -340,7 +340,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    it('[DRDMV-13624]:Verify UI for Task status configuration', async () => {
+    it('[4683]:Verify UI for Task status configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
         expect(await statusConfigPo.getTitleValue('task')).toBe('Task Status Configuration');
@@ -356,8 +356,8 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    describe('[DRDMV-13639,DRDMV-13710]:Verify Custom status operations for case', () => {
-        it('[DRDMV-13639,DRDMV-13710]:Verify Custom status operations for case', async () => {
+    describe('[4676,4642]:Verify Custom status operations for case', () => {
+        it('[4676,4642]:Verify Custom status operations for case', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown("Phylum", 'case');
@@ -381,7 +381,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickOnBackButton();
         });
 
-        it('[DRDMV-13639,DRDMV-13710]:Verify Custom status operations for case', async () => {
+        it('[4676,4642]:Verify Custom status operations for case', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown("Phylum", 'case');
@@ -407,7 +407,7 @@ describe('Case Status Configuration', () => {
         });
     });
 
-    it('[DRDMV-13625]:Verify Custom status operations for Task', async () => {
+    it('[4682]:Verify Custom status operations for Task', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
         await statusConfigPo.setCompanyDropdown('Phylum', 'task');
@@ -437,7 +437,7 @@ describe('Case Status Configuration', () => {
     });
 
     //ankagraw
-    xdescribe('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+    xdescribe('[4608]:Delete non mandatory and custom status', async () => {
         let caseId, taskId, caseId1, caseData, articleData1, articleData2, caseDataInProgress, knowledgeSetData, knowldgeId, randomStr = Math.floor(Math.random() * 1000000);
         let personData1;
         beforeAll(async () => {
@@ -504,14 +504,14 @@ describe('Case Status Configuration', () => {
             await loginPage.login(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
@@ -530,7 +530,7 @@ describe('Case Status Configuration', () => {
             taskId = await viewTaskPo.getTaskID();
 
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
@@ -542,7 +542,7 @@ describe('Case Status Configuration', () => {
             expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Tasks with this status are present")).toBeTruthy("ERROR (10000): Tasks with this status are present");
         });
 
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
@@ -550,7 +550,7 @@ describe('Case Status Configuration', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
@@ -561,7 +561,7 @@ describe('Case Status Configuration', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -572,14 +572,14 @@ describe('Case Status Configuration', () => {
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
         });
 
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             caseId = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
@@ -587,7 +587,7 @@ describe('Case Status Configuration', () => {
             expect(await viewCasePo.getCaseStatusValue()).toBe('customStatus');
 
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
@@ -599,14 +599,14 @@ describe('Case Status Configuration', () => {
             expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Cases with this status are present.")).toBeTruthy();
 
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await updateStatusBladePo.changeCaseStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
             expect(await viewCasePo.getCaseStatusValue()).toBe("Assigned");
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
@@ -617,13 +617,13 @@ describe('Case Status Configuration', () => {
             await utilCommon.clickOnWarningOk();
 
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
@@ -631,7 +631,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
         });
 
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
@@ -640,7 +640,7 @@ describe('Case Status Configuration', () => {
             await editKnowledgePo.setKnowledgeStatus('Custom');
         });
 
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
@@ -651,13 +651,13 @@ describe('Case Status Configuration', () => {
             await utilCommon.clickOnWarningOk();
             expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Knowledge articles with this status are present.")).toBeTruthy();
         });
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Draft');
         });
 
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
             await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
@@ -668,7 +668,7 @@ describe('Case Status Configuration', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-13938]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();

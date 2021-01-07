@@ -40,11 +40,11 @@ describe('Dynamic Library Configuration', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-13109]: [-ve] [Dynamic Data] - Create another Field with Same Name (ID) from Field Library', async () => {
+    describe('[4870]: [-ve] [Dynamic Data] - Create another Field with Same Name (ID) from Field Library', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dynamicFieldName = "LibTextField" + randomString;
 
-        it('[DRDMV-13109]: [-ve] [Dynamic Data] - Create another Field with Same Name (ID) from Field Library', async () => {
+        it('[4870]: [-ve] [Dynamic Data] - Create another Field with Same Name (ID) from Field Library', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             await apiHelper.apiLogin('tadmin');
@@ -75,7 +75,7 @@ describe('Dynamic Library Configuration', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-13113]: create same name record in different LOB', async () => {
+        it('[4867]: create same name record in different LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -102,9 +102,9 @@ describe('Dynamic Library Configuration', () => {
 
     });
 
-    describe('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+    describe('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
@@ -128,7 +128,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Confidential")).toBeTruthy("desc");
 
         });
-        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
 
@@ -153,7 +153,7 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName('ABC1237GC234wer324werfer7df');
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
@@ -174,7 +174,7 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.setFieldValueType('DATE');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName('Field 123 Test_12');
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
@@ -196,7 +196,7 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
         });
-        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await utilGrid.clearFilter();
             await utilGrid.addFilter("Field Value Type", "LIST", "checkbox");
             expect(await utilGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
@@ -208,7 +208,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await utilGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
             await utilGrid.clearFilter();
         });
-        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await utilGrid.searchAndOpenHyperlink('ABCDEFGHIJKLMNOPQRSTUVWXYZ' + randomString);
             expect(await editDynamicFieldLibraryConfigPo.isFieldNameAttribute("readOnly")).toBeTruthy();
             expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("disabled")).toBeTruthy();
@@ -227,7 +227,7 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await utilGrid.searchAndOpenHyperlink('ABC1237GC234wer324werfer7df' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue(randomString + "ABC1237GC234wer324werfer7df");
@@ -244,7 +244,7 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-13104,DRDMV-13103,DRDMV-13107]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
+        it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await utilGrid.searchAndOpenHyperlink('Field 123 Test_1' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue(randomString + "Field 123 Test_1");
@@ -263,7 +263,7 @@ describe('Dynamic Library Configuration', () => {
         });
     });
 
-    describe('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+    describe('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
         let caseTemplateData, templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
@@ -289,7 +289,7 @@ describe('Dynamic Library Configuration', () => {
             await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
-        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+        it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -307,7 +307,7 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.selectInfromationSource("Task Assignee");
             await dynamicFieldsPage.clickSaveButton();
         });
-        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+        it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
             await dynamicFieldsPage.setFieldName('Field Date' + randomStr);
@@ -330,7 +330,7 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.clickSaveButton();
         });
 
-        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+        it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
             await dynamicFieldsPage.setFieldName('Field ATTACHMENT' + randomStr);
@@ -351,7 +351,7 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.clickSaveButton();
         });
 
-        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+        it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             expect(await viewTasktemplatePo.isDynamicFieldPresent('ABCDEFGHIJKLMNOPQRSTUVWZYZ' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('1234567890' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('12345ABCDE' + randomStr)).toBeTruthy();
@@ -378,7 +378,7 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.selectInfromationSource("Task Assignee");
             await dynamicFieldsPage.clickSaveButton();
         });
-        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+        it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
             await dynamicFieldsPage.setFieldName('Field Date' + randomStr);
@@ -401,7 +401,7 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.clickSaveButton();
         });
 
-        it('[DRDMV-13105]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
+        it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
             await dynamicFieldsPage.setFieldName('Field ATTACHMENT' + randomStr);
@@ -431,7 +431,7 @@ describe('Dynamic Library Configuration', () => {
         });
     });
 
-    describe('[DRDMV-13150]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
+    describe('[4834]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
         let templateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -449,7 +449,7 @@ describe('Dynamic Library Configuration', () => {
             let newCaseTemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         });
-        it('[DRDMV-13150]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
+        it('[4834]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary' + randomStr);
@@ -460,7 +460,7 @@ describe('Dynamic Library Configuration', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
         });
-        it('[DRDMV-13150]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
+        it('[4834]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setDynamicFieldValue('temp', 'newtemp');
             await editTaskPo.setDynamicFieldValue('temp1', '333');
@@ -473,7 +473,7 @@ describe('Dynamic Library Configuration', () => {
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
         });
-        it('[DRDMV-13150]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
+        it('[4834]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
             expect(await viewTaskPo.getDynamicFieldValue('temp')).toBe('newtemplistvalues');
             expect(await viewTaskPo.getDynamicFieldValue('temp1')).toBe('333');
             expect(await viewTaskPo.getDynamicFieldValue('temp2')).toContain('Jan 20, 2020');
@@ -484,7 +484,7 @@ describe('Dynamic Library Configuration', () => {
         });
     });
 
-    describe('[DRDMV-13110]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+    describe('[4869]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
         let casetemplateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -514,7 +514,7 @@ describe('Dynamic Library Configuration', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'DynamicGroupContainsHiddenFieldDRDMV21416');
         });
-        it('[DRDMV-13110]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+        it('[4869]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDRDMV13128');
@@ -543,7 +543,7 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.clickSaveButton();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
         });
-        it('[DRDMV-13110]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+        it('[4869]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateInactive');
@@ -569,7 +569,7 @@ describe('Dynamic Library Configuration', () => {
         });
     });
 
-    describe('[DRDMV-13117]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+    describe('[4863]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
         let caseTemplate, casetemplateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseResponse;
         beforeAll(async () => {
@@ -591,7 +591,7 @@ describe('Dynamic Library Configuration', () => {
             await apiHelper.createDynamicDataOnTemplate(caseTemplate.id, 'BULK_DYNAMIC_FIELDS_INSIDE_OUTSIDE_GROUP');
 
         });
-        it('[DRDMV-13117]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+        it('[4863]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
@@ -600,88 +600,88 @@ describe('Dynamic Library Configuration', () => {
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             expect(await viewCasetemplatePo.isGroupDisplayed('GroupOne')).toBeTruthy();
         });
-        it('[DRDMV-13117]: Verify Numbers Field InSide Of Group on Case template', async () => {
+        it('[4863]: Verify Numbers Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'WithInGroupNUMBER' + i}`)).toBeTruthy(`${'WithInGroupNUMBER' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify DATE Field InSide Of Group on Case template', async () => {
+        it('[4863]: Verify DATE Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'WithInGroupDATE' + i}`)).toBeTruthy(`${'WithInGroupDATE' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify BOOLEAN Field InSide Of Group on Case template', async () => {
+        it('[4863]: Verify BOOLEAN Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'WithInGroupBOOLEAN' + i}`)).toBeTruthy(`${'WithInGroupBOOLEAN' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify DATE_TIME Field InSide Of Group on Case template', async () => {
+        it('[4863]: Verify DATE_TIME Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'WithInGroupDATETIME' + i}`)).toBeTruthy(`${'WithInGroupDATETIME' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify TIME Field InSide Of Group on Case template', async () => {
+        it('[4863]: Verify TIME Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'WithInGroupTIME' + i}`)).toBeTruthy(`${'WithInGroupTIME' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify LIST Field InSide Of Group on Case template', async () => {
+        it('[4863]: Verify LIST Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'WithInGroupLIST' + i}`)).toBeTruthy(`${'WithInGroupLIST' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify ATTACHMENT Field InSide Of Group on Case template', async () => {
+        it('[4863]: Verify ATTACHMENT Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'WithInGroupATTACHMENT' + i}`)).toBeTruthy(`${'WithInGroupATTACHMENT' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify TEXT Field InSide Of Group on Case template', async () => {
+        it('[4863]: Verify TEXT Field InSide Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'WithInGroupTempTEXT' + i}`)).toBeTruthy(`${'WithInGroupTempTEXT' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify Numbers Field Out Of Group on Case template', async () => {
+        it('[4863]: Verify Numbers Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'OutOfGroupNUMBER' + i}`)).toBeTruthy(`${'OutOfGroupNUMBER' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify DATE Field Out Of Group on Case template', async () => {
+        it('[4863]: Verify DATE Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'OutOfGroupDATE' + i}`)).toBeTruthy(`${'OutOfGroupDATE' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify BOOLEAN Field Out Of Group on Case template', async () => {
+        it('[4863]: Verify BOOLEAN Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'OutOfGroupBOOLEAN' + i}`)).toBeTruthy(`${'OutOfGroupBOOLEAN' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]:Verify DATE_TIME Field Out Of Group on Case template', async () => {
+        it('[4863]:Verify DATE_TIME Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'OutOfGroupDATETIME' + i}`)).toBeTruthy(`${'OutOfGroupDATETIME' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify TIME Field Out Of Group on Case template', async () => {
+        it('[4863]: Verify TIME Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'OutOfGroupTIME' + i}`)).toBeTruthy(`${'OutOfGroupTIME' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify LIST Field Out Of Group on Case template', async () => {
+        it('[4863]: Verify LIST Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'OutOfGroupLIST' + i}`)).toBeTruthy(`${'OutOfGroupLIST' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify ATTACHMENT Field Out Of Group on Case template', async () => {
+        it('[4863]: Verify ATTACHMENT Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'OutOfGroupATTACHMENT' + i}`)).toBeTruthy(`${'OutOfGroupATTACHMENT' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify TEXT Field Out Of Group on Case template', async () => {
+        it('[4863]: Verify TEXT Field Out Of Group on Case template', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(`${'OutOfGroupTempTEXT' + i}`)).toBeTruthy(`${'OutOfGroupTempTEXT' + i} is missing`);
             }
         });
 
-        it('[DRDMV-13117]: Search and open case', async () => {
+        it('[4863]: Search and open case', async () => {
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "caseSummaryForDynamicData13117",
@@ -693,89 +693,89 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseResponse.displayId);
         });
-        it('[DRDMV-13117]: Verify Numbers Field InSide Of Group on Case', async () => {
+        it('[4863]: Verify Numbers Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'WithInGroupNUMBER' + i}`)).toBeTruthy(`${'WithInGroupNUMBER' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify DATE Field InSide Of Group on Case', async () => {
+        it('[4863]: Verify DATE Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'WithInGroupDATE' + i}`)).toBeTruthy(`${'WithInGroupDATE' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify BOOLEAN Field InSide Of Group on Case', async () => {
+        it('[4863]: Verify BOOLEAN Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'WithInGroupBOOLEAN' + i}`)).toBeTruthy(`${'WithInGroupBOOLEAN' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify DATE_TIME Field InSide Of Group on Case', async () => {
+        it('[4863]: Verify DATE_TIME Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'WithInGroupDATETIME' + i}`)).toBeTruthy(`${'WithInGroupDATETIME' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify TIME Field InSide Of Group on Case', async () => {
+        it('[4863]: Verify TIME Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'WithInGroupTIME' + i}`)).toBeTruthy(`${'WithInGroupTIME' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify LIST Field InSide Of Group on Case', async () => {
+        it('[4863]: Verify LIST Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'WithInGroupLIST' + i}`)).toBeTruthy(`${'WithInGroupLIST' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify ATTACHMENT Field InSide Of Group on Case', async () => {
+        it('[4863]: Verify ATTACHMENT Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'WithInGroupATTACHMENT' + i}`)).toBeTruthy(`${'WithInGroupATTACHMENT' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify TEXT Field InSide Of Group on Case', async () => {
+        it('[4863]: Verify TEXT Field InSide Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'WithInGroupTempTEXT' + i}`)).toBeTruthy(`${'WithInGroupTempTEXT' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify Numbers Field Out Of Group on Case', async () => {
+        it('[4863]: Verify Numbers Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'OutOfGroupNUMBER' + i}`)).toBeTruthy(`${'OutOfGroupNUMBER' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify DATE Field Out Of Group on Case', async () => {
+        it('[4863]: Verify DATE Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'OutOfGroupDATE' + i}`)).toBeTruthy(`${'OutOfGroupDATE' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify BOOLEAN Field Out Of Group on Case', async () => {
+        it('[4863]: Verify BOOLEAN Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'OutOfGroupBOOLEAN' + i}`)).toBeTruthy(`${'OutOfGroupBOOLEAN' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]:Verify DATE_TIME Field Out Of Group on Case', async () => {
+        it('[4863]:Verify DATE_TIME Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'OutOfGroupDATETIME' + i}`)).toBeTruthy(`${'OutOfGroupDATETIME' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify TIME Field Out Of Group on Case', async () => {
+        it('[4863]: Verify TIME Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'OutOfGroupTIME' + i}`)).toBeTruthy(`${'OutOfGroupTIME' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify LIST Field Out Of Group on Case', async () => {
+        it('[4863]: Verify LIST Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'OutOfGroupLIST' + i}`)).toBeTruthy(`${'OutOfGroupLIST' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify ATTACHMENT Field Out Of Group on Case', async () => {
+        it('[4863]: Verify ATTACHMENT Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'OutOfGroupATTACHMENT' + i}`)).toBeTruthy(`${'OutOfGroupATTACHMENT' + i} is missing`);
             }
         });
-        it('[DRDMV-13117]: Verify TEXT Field Out Of Group on Case', async () => {
+        it('[4863]: Verify TEXT Field Out Of Group on Case', async () => {
             for (let i = 1; i <= 15; i++) {
                 expect(await viewCasePo.isDynamicFieldDisplayed(`${'OutOfGroupTempTEXT' + i}`)).toBeTruthy(`${'OutOfGroupTempTEXT' + i} is missing`);
             }
         });
     });
 
-    describe('[DRDMV-17912]: [Dynamic Data Group] Add dynamic groups to Dynamic Field Group Library', async () => {
+    describe('[4067]: [Dynamic Data Group] Add dynamic groups to Dynamic Field Group Library', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let dynamicGrpText = "Custom Dynamic Group " + randomString;
         let dynamicGrpDisplayLabel = "Custom Dynamic Group Display Text " + randomString;
@@ -783,7 +783,7 @@ describe('Dynamic Library Configuration', () => {
         let dynamicFieldText = "Custom Dynamic Field " + randomString;
         let dynamicFieldDesc = "Custom Dynamic Field Desc Text " + randomString;
 
-        it('[DRDMV-17912]: [Dynamic Data Group] - Add dynamic group to dynamic field group library', async () => {
+        it('[4067]: [Dynamic Data Group] - Add dynamic group to dynamic field group library', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
             await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
@@ -821,7 +821,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
         });
 
-        it('[DRDMV-17912]: Verify if dynamic fields groups are accessible to same LOB Case Manager', async () => {
+        it('[4067]: Verify if dynamic fields groups are accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -829,7 +829,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
         });
 
-        it('[DRDMV-17912]: Verify if dynamic fields groups are accessible to different LOB Case BA', async () => {
+        it('[4067]: Verify if dynamic fields groups are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -837,7 +837,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case BA.');
         });
 
-        it('[DRDMV-17912]: Verify if dynamic fields groups are accessible to different LOB Case Manager', async () => {
+        it('[4067]: Verify if dynamic fields groups are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -845,7 +845,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case Manager.');
         });
 
-        it('[DRDMV-17912]: Verify if dynamic fields groups are accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[4067]: Verify if dynamic fields groups are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -853,7 +853,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is displayed to different company but same LOB Case BA.');
         });
 
-        it('[DRDMV-17912]: create same name record in same LOB', async () => {
+        it('[4067]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -875,7 +875,7 @@ describe('Dynamic Library Configuration', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-17912]: create same name record in different LOB', async () => {
+        it('[4067]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();

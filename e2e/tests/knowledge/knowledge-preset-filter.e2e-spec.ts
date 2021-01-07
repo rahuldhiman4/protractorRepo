@@ -65,10 +65,10 @@ describe('Knowledge Console Preset Filter', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-20894]: Validate the My Open Articles filter after applying and removing the filter', async () => {
+    describe('[3664]: Validate the My Open Articles filter after applying and removing the filter', async () => {
         let title = 'KnowledgeArticle';
         let knowledgeId: string[] = [];
-        it('[DRDMV-20894]: Article data creation with multiple status 1', async () => {
+        it('[3664]: Article data creation with multiple status 1', async () => {
             await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
 
             let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
@@ -139,7 +139,7 @@ describe('Knowledge Console Preset Filter', () => {
 
             knowledgeId.push(knowledgeArticleData13.displayId);
         });
-        it('[DRDMV-20894]: Article data creation with multiple status 2', async () => {
+        it('[3664]: Article data creation with multiple status 2', async () => {
             let assignToMe = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
             assignToMe.knowledgeSet = knowledgeSetTitle;
 
@@ -167,7 +167,7 @@ describe('Knowledge Console Preset Filter', () => {
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData10.id, 'AfterPublished');
             knowledgeId.push(knowledgeArticleData10.displayId);
         });
-        it('[DRDMV-20894]: Article data creation with multiple status 3', async () => {
+        it('[3664]: Article data creation with multiple status 3', async () => {
             let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
             let assignToAnotherUserVar = cloneDeep(ARTICLE_DATA_ASSIGNTOANOTHERUSER);
             assignToMeVar.knowledgeSet = knowledgeSetTitle;
@@ -201,7 +201,7 @@ describe('Knowledge Console Preset Filter', () => {
             let knowledgeArticleData14 = await apiHelper.createKnowledgeArticle(assignToAnotherUserVar);
             knowledgeId.push(knowledgeArticleData14.displayId);
         });
-        it('[DRDMV-20894]: Validate the My Open Articles filter after applying and removing the filter', async () => {
+        it('[3664]: Validate the My Open Articles filter after applying and removing the filter', async () => {
             await utilityGrid.applyPresetFilter('My Open Articles');
             let openArticle: string[] = ['My Open Articles'];
             expect(await utilityGrid.isAppliedFilterMatches(openArticle)).toBeTruthy();
@@ -221,11 +221,11 @@ describe('Knowledge Console Preset Filter', () => {
         });
     });
 
-    describe('[DRDMV-20890]: Validate the All Published Articles filter after applying and removing the filter', async () => {
+    describe('[3666]: Validate the All Published Articles filter after applying and removing the filter', async () => {
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
 
-        it('[DRDMV-20890]: Article data creation for different status 1', async () => {
+        it('[3666]: Article data creation for different status 1', async () => {
             let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
             let assignToGrpVar = cloneDeep(ARTICLE_DATA_ASSIGNTOGROUP);
             let assignToAnotherUserVar = cloneDeep(ARTICLE_DATA_ASSIGNTOANOTHERUSER);
@@ -297,7 +297,7 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData9.displayId);
         });
 
-        it('[DRDMV-20890]: Article data creation for different status 2', async () => {
+        it('[3666]: Article data creation for different status 2', async () => {
             let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
             assignToMeVar.knowledgeSet = knowledgeSetTitle;
 
@@ -323,7 +323,7 @@ describe('Knowledge Console Preset Filter', () => {
             knowledgeId.push(knowledgeArticleData11.displayId);
         });
 
-        it('[DRDMV-20890]: Article data creation for different status 3', async () => {
+        it('[3666]: Article data creation for different status 3', async () => {
             let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
             assignToMeVar.knowledgeSet = knowledgeSetTitle;
 
@@ -359,7 +359,7 @@ describe('Knowledge Console Preset Filter', () => {
             await apiHelper.updateKnowledgeArticleExternalFlag(knowledgeArticleData13.id, true);
         });
 
-        it('[DRDMV-20890]: Validate the All Published Articles filter after applying and removing the filter', async () => {
+        it('[3666]: Validate the All Published Articles filter after applying and removing the filter', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.applyPresetFilter('All Published Articles');
             let allPublishedArticle: string[] = ['All Published Articles'];
@@ -380,7 +380,7 @@ describe('Knowledge Console Preset Filter', () => {
         });
     });
 
-    it('[DRDMV-20893]: Validate the All Externally Published Articles filter after applying and removing the filter', async () => {
+    it('[3665]: Validate the All Externally Published Articles filter after applying and removing the filter', async () => {
         let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
         await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
@@ -418,7 +418,7 @@ describe('Knowledge Console Preset Filter', () => {
         }
     });
 
-    it('[DRDMV-20895]: Validate the All Articles In Last 1 month filter after applying and removing the filter', async () => {
+    it('[3663]: Validate the All Articles In Last 1 month filter after applying and removing the filter', async () => {
         let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
 
         let dbConnectVar = await dbConnectObj.dbConnect();
@@ -491,7 +491,7 @@ describe('Knowledge Console Preset Filter', () => {
         }
     });
 
-    it('[DRDMV-20902]: Validate the All Articles In Last 3 months filter after applying and removing the filter	', async () => {
+    it('[3660]: Validate the All Articles In Last 3 months filter after applying and removing the filter	', async () => {
         let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
 
         let dbConnectVar = await dbConnectObj.dbConnect();
@@ -551,7 +551,7 @@ describe('Knowledge Console Preset Filter', () => {
         }
     });
 
-    it('[DRDMV-22112]: Validate the All Articles In Last 6 months filter after applying and removing the filter	', async () => {
+    it('[3515]: Validate the All Articles In Last 6 months filter after applying and removing the filter	', async () => {
         let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
 
         let dbConnectVar = await dbConnectObj.dbConnect();

@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class CreateAcknowledgmentTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -25,7 +25,7 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async selectCompanyDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, value);
     }
 
     async islineOfBusinessDisabled(): Promise<string> {
@@ -37,27 +37,27 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async isCompanyRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isTemplateNameRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.templateNameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.templateNameGuid);
     }
 
     async isStatusRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusGuid);
     }
 
     async isSubjectRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.subjectGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.subjectGuid);
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, value);
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, value);
     }
 
     async setDescription(descriptionText: string): Promise<void> {

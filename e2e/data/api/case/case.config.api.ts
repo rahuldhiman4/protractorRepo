@@ -12,7 +12,7 @@ export const CASE_ASSIGNMENT_PAYLOAD = {
       },
       "450000153": {
         "id": 450000153,
-        "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+        "value": "Petramco"
       },
       "450000420": {
         "id": 450000420,
@@ -20,7 +20,7 @@ export const CASE_ASSIGNMENT_PAYLOAD = {
       },
       "1000000001": {
         "id": 1000000001,
-        "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+        "value": "Petramco"
       },
       "1000000217": {
         "id": 1000000217,
@@ -77,7 +77,11 @@ export const CASE_ASSIGNMENT_PAYLOAD = {
       "450000158": {
         "id": 450000158,
         "value": null
-      }
+      },
+      "200000007": {
+        "id": 200000007,
+        "value": "Human Resources",
+      },
     }
 };
 

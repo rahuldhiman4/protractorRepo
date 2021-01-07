@@ -29,11 +29,11 @@ describe('Case Console', () => {
         await navigationPage.signOut();
     });
 
-    it('[DRDMV-9181]: [Case Console] - Sorting based on Source of case', async () => {
+    it('[5356]: [Case Console] - Sorting based on Source of case', async () => {
         let caseData = {
-            "Description": "DRDMV-9181 Desc",
+            "Description": "5356 Desc",
             "Requester": "qtao",
-            "Summary": "DRDMV-9181-Summary",
+            "Summary": "5356-Summary",
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 1",
@@ -54,14 +54,14 @@ describe('Case Console', () => {
         }
 
         await utilityGrid.clearFilter();
-        await utilityGrid.addFilter('Summary', 'DRDMV-9181-Summary', 'text');
+        await utilityGrid.addFilter('Summary', '5356-Summary', 'text');
         await utilityGrid.addGridColumn(['Source']);
         expect(await utilityGrid.isGridColumnSorted('Source', 'asc')).toBeTruthy('Column is not sorted in ascending order');
         expect(await utilityGrid.isGridColumnSorted('Source', 'desc')).toBeTruthy('Column is not sorted in descending order');
         await utilityGrid.removeGridColumn(['Source']);
     });
 
-    describe('[DRDMV-15257]: Verify Category Tier 4 and Label column is visible on console', () => {
+    describe('[4424]: Verify Category Tier 4 and Label column is visible on console', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label;
         let caseCategoryTier4Str = 'Case Category Tier 4';
@@ -142,7 +142,7 @@ describe('Case Console', () => {
             await apiHelper.createReadAccessMapping(readAccessMappingData);
         });
 
-        it('[DRDMV-15257]: Verify Category Tier 4 and Label column is visible on console', async () => {
+        it('[4424]: Verify Category Tier 4 and Label column is visible on console', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -184,7 +184,7 @@ describe('Case Console', () => {
         });
     });
 
-    describe('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+    describe('[5531]:[Case Workspace] Cases search using filters', async () => {
         let id, label, modifiedDateFormate, month, caseData1, newCase1, caseTemplateData1, caseData2, newCase2, caseTemplateData2, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr1: string[] = ["Assignee Login Name", "Company", "Case Site", "Modified By", "Label", "ID"];
         let defaultCaseColumns: string[] = ["Assigned Group", "Assignee", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Modified Date", "Priority", "Request ID", "Requester", "SLM Status", "Status", "Summary"];
@@ -243,7 +243,7 @@ describe('Case Console', () => {
             await apiHelper.createNewMenuItem(menuItemData);
             id = newCase1.id;
         });
-        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
@@ -274,7 +274,7 @@ describe('Case Console', () => {
             await editCasePo.updateSiteChangeReason('UpdatedSite2' + randomStr);
             await editCasePo.clickSaveCase();
         });
-        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.addColumns(defaultCaseColumns);
             await utilityGrid.searchRecord(newCase2.displayId);
@@ -292,7 +292,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy(newCase2.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy(newCase1.displayId);
         });
-        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Category Tier 1',"Employee Relations", 'text');
@@ -307,7 +307,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
         });
-        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters', async () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Case ID', newCase1.displayId, 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
@@ -329,7 +329,7 @@ describe('Case Console', () => {
             await utilityGrid.searchRecordWithoutFilter(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
         });
-        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters', async () => {
             await caseConsolePo.removeColumns(defaultCaseColumns);
             await caseConsolePo.addColumns(arr1);
             await utilityGrid.searchRecord(newCase1.displayId);
@@ -350,7 +350,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
         });
-        it('[DRDMV-8280]:[Case Workspace] Cases search using filters', async () => { 
+        it('[5531]:[Case Workspace] Cases search using filters', async () => { 
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Label', "CaseLabel" + randomStr, 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);

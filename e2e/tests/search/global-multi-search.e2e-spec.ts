@@ -199,7 +199,7 @@ describe('Multi Search Validation', () => {
     }
   
     //kgaikwad
-    describe('[DRDMV-16124]: Global search with only People Category', async () => {
+    describe('[4292]: Global search with only People Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let firstName = 'firstNameDRDMV16124' + randomStr;
         let lastName = 'lastNameDRDMV16124' + randomStr;
@@ -231,7 +231,7 @@ describe('Multi Search Validation', () => {
             await createNewUser(nonAccessFirstName, nonAccessLastName, loginId + 13, emailId, company);
         });
 
-        it('[DRDMV-16124]: Verify First Name', async () => {
+        it('[4292]: Verify First Name', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
@@ -246,7 +246,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${firstName} ${lastName} 5 Person Name is missing`);
         });
 
-        it('[DRDMV-16124]: Verify FirstName LastName', async () => {
+        it('[4292]: Verify FirstName LastName', async () => {
             await searchPo.searchRecord(lastName);
             expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: Person module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, peopleModule, 1)).toBeTruthy(`${updatedDate} updatedDate is missing`);
@@ -260,7 +260,7 @@ describe('Multi Search Validation', () => {
             await searchPo.clickOnLeftPannelRecord(`${firstName} ${lastName}`, peopleModule);
         });
 
-        it('[DRDMV-16124]: Verify People Preview Fields', async () => {
+        it('[4292]: Verify People Preview Fields', async () => {
             expect(await personProfilePo.isFieldLabelDisplayed('Employee')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Job Title')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Corporate ID')).toBeTruthy('FailureMsg22: field label displayed');
@@ -280,13 +280,13 @@ describe('Multi Search Validation', () => {
             await personProfilePo.clickOnTab('Related Cases');
         });
 
-        it('[DRDMV-16124]: Verify People with non matching Name', async () => {
+        it('[4292]: Verify People with non matching Name', async () => {
             await searchPo.searchRecord(firstName);
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${nonMatchingFirstName} ${nonMatchingLastName}`, peopleModule)).toBeFalsy(`FailureMsg9: ${nonMatchingFirstName} ${nonMatchingLastName} 6 person is displayed`);
         });
 
-        it('[DRDMV-16124]: Verify Person With FirstName & LastName At a Same Time ', async () => {
+        it('[4292]: Verify Person With FirstName & LastName At a Same Time ', async () => {
             await searchPo.searchRecord(`${firstName} ${lastName}`);
             expect(await searchPo.isModuleTitleDisplayed(`${firstName} ${lastName}`, 'People (5)', peopleModule)).toBeTruthy('FailureMsg1: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg2: ${firstName} ${lastName} 1 Person Name is missing`);
@@ -300,7 +300,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg6: ${firstName} ${lastName} 5 Person Name is missing`);
         });
 
-        it('[DRDMV-16124]: Clear search and verify record displayed on left pannel ', async () => {
+        it('[4292]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(firstName);
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 People is missing`);
@@ -309,7 +309,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 People is missing`);
         });
 
-        it('[DRDMV-16124]: Verify search functionality with dummy text ', async () => {
+        it('[4292]: Verify search functionality with dummy text ', async () => {
             await searchPo.searchRecord(dummyText);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyText, peopleModule)).toBeFalsy(`FailureMsg62: ${dummyText} dummyText  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(dummyText, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: People module title is missing');
@@ -317,7 +317,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeFalsy(`FailureMsg4: ${firstName} ${lastName} 1 People is missing`);
         });
 
-        it('[DRDMV-16124]: Verify search functionality with Inactive Person ', async () => {
+        it('[4292]: Verify search functionality with Inactive Person ', async () => {
             await searchPo.searchRecord(inactiveFirstName);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(inactiveFirstName, peopleModule)).toBeFalsy(`FailureMsg62: ${inactiveFirstName} dummyText  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(inactiveFirstName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: People module title is missing');
@@ -325,7 +325,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${inactiveFirstName} ${nonMatchingLastName}`, peopleModule)).toBeFalsy(`FailureMsg4: ${firstName} ${lastName} 1 People is Displayed`);
         });
 
-        it('[DRDMV-16124]: Verify search people with other company user', async () => {
+        it('[4292]: Verify search people with other company user', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha')
             await navigationPage.gotoSearch();
@@ -346,7 +346,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg70: No result found validation is missing`);
         });
 
-        it('[DRDMV-16124]: Verify person record is accessible to other Line of business Case BA', async () => {
+        it('[4292]: Verify person record is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSearch();
@@ -358,7 +358,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
 
-        it('[DRDMV-16124]: Verify person record is accessible to other Line of business Case Manager', async () => {
+        it('[4292]: Verify person record is accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSearch();
@@ -370,7 +370,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
 
-        it('[DRDMV-16124]: Verify person record is accessible to other Line of business Case Agent', async () => {
+        it('[4292]: Verify person record is accessible to other Line of business Case Agent', async () => {
             await navigationPage.signOut();
             await loginPage.login('franz');
             await navigationPage.gotoSearch();
@@ -382,7 +382,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
 
-        it('[DRDMV-16124]: Verify person record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4292]: Verify person record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
             await navigationPage.gotoSearch();
@@ -394,7 +394,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
 
-        it('[DRDMV-16124]: Verify person record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4292]: Verify person record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
             await navigationPage.gotoSearch();
@@ -413,7 +413,7 @@ describe('Multi Search Validation', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16133]: Global search based on change in category by keeping the same search pattern', async () => {
+    describe('[4291]: Global search based on change in category by keeping the same search pattern', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch1.pdf';
         let caseSummary = '1caseSummaryDRDMV16133' + randomStr;
@@ -435,52 +435,52 @@ describe('Multi Search Validation', () => {
             await apiHelper.apiLogin('elizabeth');
         });
 
-        it('[DRDMV-16133]: Create Case With API', async () => {
+        it('[4291]: Create Case With API', async () => {
             for (let a = 1; a <= 5; a++) {
                 caseDetails = await createCase(caseSummary, commonSearchAll);
                 caseDisplayId[a] = caseDetails.displayId;
             }
         });
 
-        it('[DRDMV-16133]: Create Task With API', async () => {
+        it('[4291]: Create Task With API', async () => {
             for (let b = 1; b <= 5; b++) {
                 taskDisplayId[b] = await createTask(taskSummary, caseDetails.id, commonSearchAll);
             }
         });
 
-        it('[DRDMV-16133]: Create Knowledge Article With API', async () => {
+        it('[4291]: Create Knowledge Article With API', async () => {
             for (let e = 1; e <= 5; e++) {
                 await browser.sleep(1000); //Need this sleep create record with correct count and avoid skip the record from loop
                 kaDisplayId[e] = await createKnowledgeArticleWithPublish(commonSearchAll);
             }
         });
 
-        it('[DRDMV-16133]: Create Case Template With API', async () => {
+        it('[4291]: Create Case Template With API', async () => {
             for (let c = 1; c <= 5; c++) {
                 caseTemplateDisplayId[c] = await createCaseTemplate(caseTemplateName + c, commonSearchAll, 'Active', 'Petramco');
             }
         });
 
-        it('[DRDMV-16133]: Create Task Template With API', async () => {
+        it('[4291]: Create Task Template With API', async () => {
             for (let d = 1; d <= 5; d++) {
                 taskTemplateDisplayId[d] = await createTaskTemplate(taskTemplateName + d, 'Active', 'Petramco', commonSearchAll);
             }
         });
 
-        it('[DRDMV-16133]: Create Document Library With API', async () => {
+        it('[4291]: Create Document Library With API', async () => {
             for (let f = 1; f <= 5; f++) {
                 await createPublishDocumentLibrary(commonSearchAll, attachmentFilePath);
             }
         });
 
-        it('[DRDMV-16133]: Create Document Library With API', async () => {
+        it('[4291]: Create Document Library With API', async () => {
             await apiHelper.apiLogin('tadmin');
             for (let g = 1; g <= 5; g++) {
                 await createNewUser(commonSearchAll, lastName, loginId + g, 'DRDMV16133@petramco.com', 'Petramco');
             }
         });
 
-        it('[DRDMV-16133]: Verify Case Displayed On Left Pannel', async () => {
+        it('[4291]: Verify Case Displayed On Left Pannel', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.searchRecord(commonSearchAll);
@@ -494,7 +494,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[5], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId[5]} case id  is missing`);
         });
 
-        it('[DRDMV-16133]: Verify Task Displayed On Left Pannel', async () => {
+        it('[4291]: Verify Task Displayed On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg7: ${taskDisplayId[2]} task id  is missing`);
@@ -503,7 +503,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[5], taskModule)).toBeTruthy(`FailureMsg10: ${taskDisplayId[5]} task id  is missing`);
         });
 
-        it('[DRDMV-16133]: Verify Knowledge Article Displayed On Left Pannel', async () => {
+        it('[4291]: Verify Knowledge Article Displayed On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[1], KAModule)).toBeTruthy(`FailureMsg11: ${kaDisplayId[1]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[2], KAModule)).toBeTruthy(`FailureMsg12: ${kaDisplayId[2]} Knowledge Article id  is missing`);
@@ -512,7 +512,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[5], KAModule)).toBeTruthy(`FailureMsg15: ${kaDisplayId[5]} Knowledge Article id  is missing`);
         });
 
-        it('[DRDMV-16133]: Verify Case Template Displayed On Left Pannel', async () => {
+        it('[4291]: Verify Case Template Displayed On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case Template module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId[2]} case id  is missing`);
@@ -521,7 +521,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[5], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId[5]} case id  is missing`);
         });
 
-        it('[DRDMV-16133]: Verify Task Templates Displayed On Left Pannel', async () => {
+        it('[4291]: Verify Task Templates Displayed On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task Template module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[1]} task template id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[2], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[2]} task template id  is missing`);
@@ -530,7 +530,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[5], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[5]} task template id  is missing`);
         });
 
-        it('[DRDMV-16133]: Verify Documents Displayed On Left Pannel', async () => {
+        it('[4291]: Verify Documents Displayed On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 1 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 2)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 2 Document is missing`);
@@ -539,7 +539,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 5)).toBeTruthy(`FailureMsg7: ${commonSearchAll} 5 Document is missing`);
         });
 
-        it('[DRDMV-16133]: Verify People Displayed On Left Pannel', async () => {
+        it('[4291]: Verify People Displayed On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} ${lastName} 1 Person Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${commonSearchAll} ${lastName} 2 Person Name is missing`);
@@ -548,7 +548,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${commonSearchAll} ${lastName} 5 Person Name is missing`);
         });
 
-        it('[DRDMV-16133]: Change Category To Case and verify records are still displayed', async () => {
+        it('[4291]: Change Category To Case and verify records are still displayed', async () => {
             await searchPo.selectCategoryDropDownValue(caseModule);
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg4: ${caseDisplayId[1]} case id  is missing`);
@@ -564,7 +564,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
         });
 
-        it('[DRDMV-16133]: Change Category To Task and verify records are still displayed', async () => {
+        it('[4291]: Change Category To Task and verify records are still displayed', async () => {
             // Verify Task After Change Category To Task Category
             await searchPo.selectCategoryDropDownValue(taskModule);
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
@@ -581,7 +581,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
         });
 
-        it('[DRDMV-16133]: Change Category To Knowledge Article and verify records are still displayed', async () => {
+        it('[4291]: Change Category To Knowledge Article and verify records are still displayed', async () => {
             await searchPo.selectCategoryDropDownValue('Knowledge');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[1], KAModule)).toBeTruthy(`FailureMsg11: ${kaDisplayId[1]} Knowledge Article id  is missing`);
@@ -597,7 +597,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
         });
 
-        it('[DRDMV-16133]: Change Category To Case Template and verify records are still displayed', async () => {
+        it('[4291]: Change Category To Case Template and verify records are still displayed', async () => {
             await searchPo.selectCategoryDropDownValue('Case Template');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Case Templates (5)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId[1]} case id  is missing`);
@@ -613,7 +613,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
         });
 
-        it('[DRDMV-16133]: Change Category to Task Template and verify records are still displayed', async () => {
+        it('[4291]: Change Category to Task Template and verify records are still displayed', async () => {
             await searchPo.selectCategoryDropDownValue('Task Template');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Task Templates (5)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId[1], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId[1]} task template id  is missing`);
@@ -629,7 +629,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
         });
 
-        it('[DRDMV-16133]: Change Category to Documents and verify records are still displayed', async () => {
+        it('[4291]: Change Category to Documents and verify records are still displayed', async () => {
             await searchPo.selectCategoryDropDownValue('Document');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 1 Document is missing`);
@@ -645,7 +645,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeFalsy('FailureMsg2: People module title is displayed');
         });
 
-        it('[DRDMV-16133]: Change Category to People and verify records are still displayed', async () => {
+        it('[4291]: Change Category to People and verify records are still displayed', async () => {
             await searchPo.selectCategoryDropDownValue(peopleModule);
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} ${lastName} 1 Person Name is missing`);
@@ -663,7 +663,7 @@ describe('Multi Search Validation', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16825]: Recent searches stored on Global search', async () => {
+    describe('[4194]: Recent searches stored on Global search', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch1.pdf';
         let caseSummary = '1caseSummaryDRDMV16825' + randomStr;
@@ -719,7 +719,7 @@ describe('Multi Search Validation', () => {
             await createNewUser(firstName, lastName, loginId, 'DRDMV16825@petramco.com', 'Petramco');
         });
 
-        it('[DRDMV-16825]: Verify Recent With Case Summary', async () => {
+        it('[4194]: Verify Recent With Case Summary', async () => {
             await navigationPage.gotoSearch();
             await searchPo.selectCategoryDropDownValue('All');
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
@@ -738,7 +738,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(1, 'Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Recent With Case Descripiton', async () => {
+        it('[4194]: Verify Recent With Case Descripiton', async () => {
             await searchPo.searchRecord(caseDescription);
             expect(await searchPo.isModuleTitleDisplayed(caseDescription, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg2: Cases module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
@@ -752,14 +752,14 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(caseDescription)).toBe(1, 'FailureMsg6: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]:  Check Duplicates Case Summary Are Displayed Only 1 Times', async () => {
+        it('[4194]:  Check Duplicates Case Summary Are Displayed Only 1 Times', async () => {
             await searchPo.searchRecord(caseDescription);
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseDescription)).toBeTruthy('FailureMsg6: case description is missing from recent search')
             expect (await searchPo.getCountOfRecentDropDownValue(caseDescription)).toBe(1, 'FailureMsg6: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Task Summary Stored In Recent Search', async () => {
+        it('[4194]: Verify Task Summary Stored In Recent Search', async () => {
             await searchPo.selectCategoryDropDownValue('All');
             await searchPo.searchRecord(taskSummary);
             expect(await searchPo.isModuleTitleDisplayed(taskSummary, 'Tasks (1)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
@@ -771,7 +771,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(taskSummary)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Task Description Stored In Recent Search', async () => {
+        it('[4194]: Verify Task Description Stored In Recent Search', async () => {
             await searchPo.searchRecord(taskDescription);
             expect(await searchPo.isModuleTitleDisplayed(taskDescription, 'Tasks (1)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId, taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId} task id  is missing`);
@@ -781,7 +781,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(taskDescription)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Case Template Name Stored In Recent Search', async () => {
+        it('[4194]: Verify Case Template Name Stored In Recent Search', async () => {
             await searchPo.searchRecord(caseTemplateName);
             expect(await searchPo.isModuleTitleDisplayed(caseTemplateName, 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId} caseTemplateDisplayId  is missing`);
@@ -791,7 +791,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(caseTemplateName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Case Template Summary Stored In Recent Search', async () => {
+        it('[4194]: Verify Case Template Summary Stored In Recent Search', async () => {
             await searchPo.searchRecord(caseTemplateSummary);
             expect(await searchPo.isModuleTitleDisplayed(caseTemplateSummary, 'Case Templates (1)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId, caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId} caseTemplateDisplayId  is missing`);
@@ -801,7 +801,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(caseTemplateSummary)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Task Template Name Stored In Recent Search', async () => {
+        it('[4194]: Verify Task Template Name Stored In Recent Search', async () => {
             await searchPo.searchRecord(taskTemplateName);
             expect(await searchPo.isModuleTitleDisplayed(taskTemplateName, 'Task Templates (1)', taskTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId, taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId} taskTemplateDisplayId  is missing`);
@@ -811,7 +811,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(taskTemplateName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Knowledge Title Stored In Recent Search', async () => {
+        it('[4194]: Verify Knowledge Title Stored In Recent Search', async () => {
             await searchPo.searchRecord(knowledgeTitle);
             expect(await searchPo.isModuleTitleDisplayed(knowledgeTitle, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId, KAModule)).toBeTruthy(`FailureMsg4: ${kaDisplayId} Knowledge Article id  is missing`);
@@ -821,7 +821,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(knowledgeTitle)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Document Name Stored In Recent Search', async () => {
+        it('[4194]: Verify Document Name Stored In Recent Search', async () => {
             await searchPo.searchRecord(documentName);
             expect(await searchPo.isModuleTitleDisplayed(documentName, 'Documents (1)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(documentName, documentModule, 1)).toBeTruthy(`FailureMsg4: ${documentName} 1 Document is missing`);
@@ -830,7 +830,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(documentName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
             expect (await searchPo.getCountOfRecentDropDownValue(documentName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
 
-        it('[DRDMV-16825]: Verify First Name Stored In Recent Search', async () => {
+        it('[4194]: Verify First Name Stored In Recent Search', async () => {
             await searchPo.searchRecord(firstName);
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
@@ -840,7 +840,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(firstName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Last Name Stored In Recent Search', async () => {
+        it('[4194]: Verify Last Name Stored In Recent Search', async () => {
             await searchPo.searchRecord(lastName);
             expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
@@ -850,14 +850,14 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(lastName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify After aad 11th Record First Record Gets Hide Automatically', async () => {
+        it('[4194]: Verify After aad 11th Record First Record Gets Hide Automatically', async () => {
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseSummary)).toBeFalsy('case summary is missing from recent search')
             expect (await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(0, 'Count of recent search is incorrect');
 
         });
      
-        it('[DRDMV-16825]: Verify Record Non Access Record But Still It Stoed In Recent Search', async () => {
+        it('[4194]: Verify Record Non Access Record But Still It Stoed In Recent Search', async () => {
             await searchPo.searchRecord(nonAccessCaseSummary);
             expect(await searchPo.isModuleTitleDisplayed(nonAccessCaseSummary, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(documentModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
@@ -867,7 +867,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(nonAccessCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Record with Insensitive Record & Duplicate record', async () => {
+        it('[4194]: Verify Record with Insensitive Record & Duplicate record', async () => {
             await searchPo.searchRecord(inSensitiveCaseSummary);
             expect(await searchPo.isModuleTitleDisplayed(inSensitiveCaseSummary, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
@@ -877,7 +877,7 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(inSensitiveCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify Insensitive Duplicate record', async () => {
+        it('[4194]: Verify Insensitive Duplicate record', async () => {
             await searchPo.searchRecord(inSensitiveCaseSummary);
             expect(await searchPo.isModuleTitleDisplayed(inSensitiveCaseSummary, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
@@ -887,20 +887,20 @@ describe('Multi Search Validation', () => {
             expect (await searchPo.getCountOfRecentDropDownValue(inSensitiveCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
         });
 
-        it('[DRDMV-16825]: Verify search functionality with dummy text ', async () => {
+        it('[4194]: Verify search functionality with dummy text ', async () => {
             await searchPo.searchRecord(dummyText);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyText, KAModule)).toBeFalsy(`FailureMsg62: ${dummyText} dummyText  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(dummyText, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg63: KA module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
         });
 
-        it('[DRDMV-16825]: Select Record From Recent Search  ', async () => {
+        it('[4194]: Select Record From Recent Search  ', async () => {
             await searchPo.selectRecentSearchDropDownValue(firstName)
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
 
-        it('[DRDMV-16825]: Verify Recent Search Is Displayed On Top  ', async () => {
+        it('[4194]: Verify Recent Search Is Displayed On Top  ', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord('Record1');
             await searchPo.clickOnRecentSearchDropDownButton();

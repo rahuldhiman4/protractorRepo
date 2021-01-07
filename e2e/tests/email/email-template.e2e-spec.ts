@@ -52,14 +52,14 @@ describe('Email Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
+    describe('[5165,5173,5177,5167,5176]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName1 = 'TemplateName1' + randomStr;
         let templateName2 = 'TemplateName2' + randomStr;
         let description = 'Description' + randomStr;
         let subject = 'Subject' + randomStr;
         let body = 'Body' + randomStr;
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template1', async () => {
+        it('[5165,5173,5177,5167,5176]: Create Duplicate Email Template1', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
@@ -72,7 +72,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setBody(body);
             await createEmailTemplatePo.clickOnSaveButton();
         });
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template2', async () => {
+        it('[5165,5173,5177,5167,5176]: Create Duplicate Email Template2', async () => {
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName2);
             await createEmailTemplatePo.selectCompany('- Global -');
@@ -83,7 +83,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setBody(body);
             await createEmailTemplatePo.clickOnSaveButton();
         });
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template3', async () => {
+        it('[5165,5173,5177,5167,5176]: Create Duplicate Email Template3', async () => {
             await consoleEmailTemplatePo.searchOnGridConsole(templateName1);
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Template1 Name for Petramco company is missing')
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject, 'Subject1 for Petramco compnay is missing')
@@ -95,7 +95,7 @@ describe('Email Template', () => {
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('- Global -', 'Global compnay is missing')
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Active1 for Petramco compnay is missing')
         });
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Create Duplicate Email Template4', async () => {
+        it('[5165,5173,5177,5167,5176]: Create Duplicate Email Template4', async () => {
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
@@ -110,7 +110,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
+        it('[5165,5173,5177,5167,5176]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName1);
             expect(await editEmailTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
             expect(await editEmailTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
@@ -126,7 +126,7 @@ describe('Email Template', () => {
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('subject', 'subject is missing from Grid');
         });
 
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to same LOB Case Manager', async () => {
+        it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -135,7 +135,7 @@ describe('Email Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
         });
 
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to different LOB Case BA', async () => {
+        it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -145,7 +145,7 @@ describe('Email Template', () => {
 
         });
 
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to different LOB Case Manager', async () => {
+        it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -154,7 +154,7 @@ describe('Email Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
         });
 
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -163,7 +163,7 @@ describe('Email Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
         });
 
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -176,7 +176,7 @@ describe('Email Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
         });
 
-        it('[DRDMV-10813,DRDMV-10796,DRDMV-10787,DRDMV-10804,DRDMV-10789]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
+        it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -204,7 +204,7 @@ describe('Email Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Email Template : User Is able to delete Email Template', async () => {
+    describe('[5169,5166,5178,5096,5095,5097,5172]: Email Template : User Is able to delete Email Template', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName1 = 'TemplateName1' + randomStr;
         let templateName2 = 'TemplateName2' + randomStr;
@@ -217,7 +217,7 @@ describe('Email Template', () => {
         let arr1: string[] = ["Label"];
         let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
 
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template1', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: User Is able to delete Email Template1', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
@@ -241,12 +241,12 @@ describe('Email Template', () => {
             await createEmailTemplatePo.clickOnSaveButton();
             await consoleEmailTemplatePo.clearGridFilter();
         });
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template2', async () => {
-            // DRDMV-10786
+        it('[5169,5166,5178,5096,5095,5097,5172]: User Is able to delete Email Template2', async () => {
+            // 5178
             await consoleEmailTemplatePo.addColumnOnGrid(arr1);
             expect(await consoleEmailTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
             expect(await consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order')
-            // DRDMV-11092
+            // 5096
             await consoleEmailTemplatePo.addFilter('Template Name', templateName1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Filter Template Name is missing in column');
             await consoleEmailTemplatePo.clearGridFilter();
@@ -262,7 +262,7 @@ describe('Email Template', () => {
             await consoleEmailTemplatePo.addFilter('Subject', subject1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject1, 'Filter Subject is missing in column');
         });
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template3', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: User Is able to delete Email Template3', async () => {
             await consoleEmailTemplatePo.clearGridFilter();
             await consoleEmailTemplatePo.searchOnGridConsole(templateName1);
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Search Template Name is missing in column');
@@ -271,9 +271,9 @@ describe('Email Template', () => {
             await consoleEmailTemplatePo.searchOnGridConsole('Petramco');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
 
-            // DRDMV-10805
+            // 5166
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName1);
-            // DRDMV-10798
+            // 5172
             expect(await editEmailTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
             expect(await editEmailTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
             expect(await editEmailTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
@@ -283,7 +283,7 @@ describe('Email Template', () => {
             expect(await editEmailTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize Message button is missing');
             await editEmailTemplatePo.selectlocaleDropDown('English (United States)');
         });
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: User Is able to delete Email Template4', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: User Is able to delete Email Template4', async () => {
             await editEmailTemplatePo.clickOnGridSearchIcon();
             await editEmailTemplatePo.searchAndSelectGridRecord('body');
             await editEmailTemplatePo.clickOnGridEditButton();
@@ -299,8 +299,8 @@ describe('Email Template', () => {
             await consoleEmailTemplatePo.searchOnGridConsole('subject');
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
         });
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Email Template : User Is able to delete Email Template', async () => {
-            // DRDMV-11093
+        it('[5169,5166,5178,5096,5095,5097,5172]: Email Template : User Is able to delete Email Template', async () => {
+            // 5095
             await editEmailTemplatePo.clickOnLocalizeMessageButton();
             await editEmailTemplatePo.setSubjectOfNewLocalizedEmailMessage(subject1);
             await editEmailTemplatePo.setBody(body1);
@@ -310,14 +310,14 @@ describe('Email Template', () => {
             await editEmailTemplatePo.clickOnCancelButton();
             await editEmailTemplatePo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
-            // DRDMV-11091
+            // 5097
             await consoleEmailTemplatePo.searchOnGridConsole(templateName1);
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Search Template Name is missing in column');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject2, 'Search Subject is missing in column');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Search Active2 is missing in column');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, 'Label is missing in column');
             await consoleEmailTemplatePo.removeColumnOnGrid(arr1);
-            //DRDMV-10801
+            //5169
             await consoleEmailTemplatePo.searchAndSelectGridRecord(templateName1);
             await consoleEmailTemplatePo.clickOnDeleteButton();
             expect(await consoleEmailTemplatePo.isGridRecordPresent(templateName1)).toBeFalsy('Public template name is preset on grid')
@@ -333,7 +333,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setBody(body1);
             await createEmailTemplatePo.clickOnSaveButton();
         });
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to same LOB Case Manager', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -342,7 +342,7 @@ describe('Email Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
         });
 
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to different LOB Case BA', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -352,7 +352,7 @@ describe('Email Template', () => {
 
         });
 
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to different LOB Case Manager', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -361,7 +361,7 @@ describe('Email Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
         });
 
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -370,7 +370,7 @@ describe('Email Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
         });
 
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -383,7 +383,7 @@ describe('Email Template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
         });
 
-        it('[DRDMV-10801,DRDMV-10805,DRDMV-10786,DRDMV-11092,DRDMV-11093,DRDMV-11091,DRDMV-10798]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
+        it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -406,7 +406,7 @@ describe('Email Template', () => {
     });
 
     //tzope
-    describe('[DRDMV-21497,DRDMV-21498,DRDMV-21507]: Email Template : User Creates Email Template and Add/Delete Attachment and check error message', async () => {
+    describe('[3602,3601,3595]: Email Template : User Creates Email Template and Add/Delete Attachment and check error message', async () => {
         let filePath1 = 'e2e/data/ui/attachment/bwfJpg1.jpg';
         let filePath2 = 'e2e/data/ui/attachment/bwfJpg2.jpg';
         let publishDocData1, publishDocData2, emailTemplateName, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -436,7 +436,7 @@ describe('Email Template', () => {
             emailTemplateName = emailTemplateData['emailTemplateWithAttachment'].TemplateName = await emailTemplateData['emailTemplateWithAttachment'].TemplateName + randomStr;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithAttachment']);
         });
-        it('[DRDMV-21497,DRDMV-21498,DRDMV-21507]: Email Template : User Creates Email Template and Add/Delete Attachment and check error message', async () => {
+        it('[3602,3601,3595]: Email Template : User Creates Email Template and Add/Delete Attachment and check error message', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
@@ -465,9 +465,9 @@ describe('Email Template', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10799,DRDMV-10800]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
+    describe('[5171,5170]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
         let emailTemplateName, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-10799,DRDMV-10800]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
+        it('[5171,5170]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
             await apiHelper.apiLogin('qkatawazi');
             emailTemplateName = emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
@@ -490,7 +490,7 @@ describe('Email Template', () => {
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-10799,DRDMV-10800]: create same name record in same LOB', async () => {
+        it('[5171,5170]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -507,7 +507,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-10799,DRDMV-10800]: create same name record in different LOB', async () => {
+        it('[5171,5170]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
@@ -532,13 +532,13 @@ describe('Email Template', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10385]: Active Email Template list in Grid', async () => {
+    describe('[5291]: Active Email Template list in Grid', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData, newCase, emailTemplateNamePsilon, emailTemplateNameDraft, emailTemplateName;
         beforeAll(async () => {
             caseData = {
                 "Requester": "qtao",
-                "Summary": "Test case for DRDMV-21499RandVal" + randomStr,
+                "Summary": "Test case for 3600RandVal" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -558,14 +558,14 @@ describe('Email Template', () => {
             emailTemplateData['emailTemplatePsilon'].TemplateName = emailTemplateNamePsilon;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplatePsilon']);
         });
-        it('[DRDMV-10385]: Active Email Temlate list in Grid', async () => {
+        it('[5291]: Active Email Temlate list in Grid', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId)
             await viewCasePo.clickOnEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
             expect(await selectEmailTemplateBladePo.getGridRecordValue(emailTemplateName)).toBeTruthy("emailTemplateName");
         });
-        it('[DRDMV-10385]: Active Email Temlate list in Grid', async () => {
+        it('[5291]: Active Email Temlate list in Grid', async () => {
             expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNameDraft)).toBeFalsy();
             expect(await selectEmailTemplateBladePo.isRecordPresent(emailTemplateNamePsilon)).toBeFalsy();
         });

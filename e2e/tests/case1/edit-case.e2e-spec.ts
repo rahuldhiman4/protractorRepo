@@ -26,7 +26,7 @@ describe('Edit Case', () => {
     });
 
     //ankagraw
-    it('[DRDMV-3765]: [Case] [Edit Case] Edit Case view (UI verification)', async () => {
+    it('[5804]: [Case] [Edit Case] Edit Case view (UI verification)', async () => {
         let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
 
         await navigationPage.signOut();
@@ -105,7 +105,7 @@ describe('Edit Case', () => {
     });
 
     //ankagraw
-    it('[DRDMV-7063]: [Case Edit] [Assignment] Changing the Assignment when editing the case by the member of one Support Group', async () => {
+    it('[5577]: [Case Edit] [Assignment] Changing the Assignment when editing the case by the member of one Support Group', async () => {
         let Summary = 'Summary' + Math.floor(Math.random() * 1000000);
 
         await navigationPage.gotoCreateCase();
@@ -159,7 +159,7 @@ describe('Edit Case', () => {
         await utilCommon.closePopUpMessage();
     });
 
-    describe('[DRDMV-24403]: UI fields should be visible for user with login ID contains @ sign', async () => {
+    describe('[59943]: UI fields should be visible for user with login ID contains @ sign', async () => {
         let personData = {
             "firstName": "at Rate",
             "lastName": "test",
@@ -186,7 +186,7 @@ describe('Edit Case', () => {
             await navigationPage.signOut();
             await loginPage.login('j@an@petramco.com', 'Password_1234');
         });
-        it('[DRDMV-24403]: UI fields should be visible for user with login ID contains @ sign', async () => {
+        it('[59943]: UI fields should be visible for user with login ID contains @ sign', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary('Summary of Customer defect');

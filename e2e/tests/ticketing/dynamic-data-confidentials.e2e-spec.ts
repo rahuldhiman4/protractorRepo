@@ -43,7 +43,7 @@ describe('Dynamic Confidentials Data', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-17962]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
+    describe('[4058]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
         let caseTemplateData, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
@@ -66,7 +66,7 @@ describe('Dynamic Confidentials Data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('SupportGroup', 'US Support 3', { confidential: 'true' });
         });
-        it('[DRDMV-17962]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
+        it('[4058]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary' + randomStr);
@@ -82,7 +82,7 @@ describe('Dynamic Confidentials Data', () => {
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
         });
-        it('[DRDMV-17962]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
+        it('[4058]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.clickEditCaseButton();
@@ -96,7 +96,7 @@ describe('Dynamic Confidentials Data', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
         });
-        it('[DRDMV-17962]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
+        it('[4058]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
             expect(await viewCasePo.getValueOfDynamicFields("LocalNonConfidentialDesc")).toBe("Test 1");
             expect(await viewCasePo.getValueOfDynamicFields("LocalConfidentialDesc")).toBe("1234");
             await navigationPage.signOut();
@@ -113,7 +113,7 @@ describe('Dynamic Confidentials Data', () => {
         });
     });
 
-    describe('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
+    describe('[4493,4489,4488]: [DesignTime] Add confidential support group on case template', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
@@ -135,7 +135,7 @@ describe('Dynamic Confidentials Data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('SupportGroup', 'US Support 3', { confidential: 'true' });
         });
-        it('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
+        it('[4493,4489,4488]: [DesignTime] Add confidential support group on case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
@@ -150,7 +150,7 @@ describe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("Sensitive Personal Data (HR)");
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
         });
-        it('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
+        it('[4493,4489,4488]: [DesignTime] Add confidential support group on case template', async () => {
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("US Support 3")).toBeTruthy();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeTruthy();
             await caseAccessTabOldPo.clickDeleteConfidentialSupportGroup();
@@ -163,7 +163,7 @@ describe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeTruthy();
         });
-        it('[DRDMV-15006,DRDMV-15024,DRDMV-15025]: [DesignTime] Add confidential support group on case template', async () => {
+        it('[4493,4489,4488]: [DesignTime] Add confidential support group on case template', async () => {
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
@@ -174,7 +174,7 @@ describe('Dynamic Confidentials Data', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-15065]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
+    describe('[4478]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
         let caseTemplateData, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
@@ -197,7 +197,7 @@ describe('Dynamic Confidentials Data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('SupportGroup', 'US Support 3', { confidential: 'true' });
         });
-        it('[DRDMV-15065]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
+        it('[4478]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
@@ -210,7 +210,7 @@ describe('Dynamic Confidentials Data', () => {
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
         });
-        it('[DRDMV-15065]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
+        it('[4478]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await navigationPage.gotoPersonProfile();
@@ -218,7 +218,7 @@ describe('Dynamic Confidentials Data', () => {
         });
     });
 
-    describe('[DRDMV-15026,DRDMV-15027,DRDMV-15013]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
+    describe('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
@@ -247,7 +247,7 @@ describe('Dynamic Confidentials Data', () => {
             await apiHelper.updateFoundationEntity('SupportGroup', 'CA Support 2', { confidential: 'true' });
             await apiHelper.updateFoundationEntity('SupportGroup', 'CA Support 3', { confidential: 'true' });
         });
-        it('[DRDMV-15026,DRDMV-15027,DRDMV-15013]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
+        it('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateName');
@@ -260,7 +260,7 @@ describe('Dynamic Confidentials Data', () => {
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("Sensitive Personal Data (HR)")).toBeTruthy();
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("Sensitive Personal Data (HR)");
         });
-        it('[DRDMV-15026,DRDMV-15027,DRDMV-15013]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
+        it('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("AU Support 2")).toBeTruthy();
@@ -275,7 +275,7 @@ describe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("AU Support 4");
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
         });
-        it('[DRDMV-15026,DRDMV-15027,DRDMV-15013]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
+        it('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("US Support 3")).toBeTruthy();
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("US Support 3");
@@ -287,7 +287,7 @@ describe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.clickConfidentialWriteSupportGroupAccess();
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
         });
-        it('[DRDMV-15026,DRDMV-15027,DRDMV-15013]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
+        it('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("CA Support 2")).toBeTruthy();
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("CA Support 2");
@@ -304,7 +304,7 @@ describe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.clickConfidentialWriteSupportGroupAccess();
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
         });
-        it('[DRDMV-15026,DRDMV-15027,DRDMV-15013]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
+        it('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("Employee Relations Sensitive Data Access")).toBeTruthy();
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("Employee Relations Sensitive Data Access");
@@ -328,7 +328,7 @@ describe('Dynamic Confidentials Data', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-15041]: [RunTime]Create Case with template which has confidential fields with Requester source of information', async () => {
+    describe('[4479]: [RunTime]Create Case with template which has confidential fields with Requester source of information', async () => {
         let caseId, caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
@@ -351,7 +351,7 @@ describe('Dynamic Confidentials Data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('SupportGroup', 'US Support 3', { confidential: 'true' });
         });
-        it('[DRDMV-15041]: [RunTime]Create Case with template which has confidential fields with Requester source of information', async () => {
+        it('[4479]: [RunTime]Create Case with template which has confidential fields with Requester source of information', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
@@ -371,7 +371,7 @@ describe('Dynamic Confidentials Data', () => {
             await viewCasePo.getValueOfDynamicFields("FieldGroup1");
         });
 
-        it('[DRDMV-15041]: [RunTime]Create Case with template which has confidential fields with Requester source of information', async () => {
+        it('[4479]: [RunTime]Create Case with template which has confidential fields with Requester source of information', async () => {
             await navigationPage.signOut();
             await loginPage.login("qtao");
             await navigationPage.gotoQuickCase();
@@ -390,7 +390,7 @@ describe('Dynamic Confidentials Data', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-15032,DRDMV-13106]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
+    describe('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
         let caseTemplateData, templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let drpValue: string[] = ["TEXT", "NUMBER", "DATE", "BOOLEAN", "LIST", "ATTACHMENT", "DATE_TIME", "TIME"];
         let status: string[] = ["Active", "Inactive"];
@@ -424,7 +424,7 @@ describe('Dynamic Confidentials Data', () => {
             await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
-        it('[DRDMV-15032,DRDMV-13106]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
+        it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
@@ -447,7 +447,7 @@ describe('Dynamic Confidentials Data', () => {
             await createDynamicFieldLibraryConfigPo.clickOnActiveConfidentialsCheckbox();
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
-        it('[DRDMV-15032,DRDMV-13106]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
+        it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink('LibTextField' + randomStr);
@@ -467,7 +467,7 @@ describe('Dynamic Confidentials Data', () => {
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
 
-        it('[DRDMV-15032,DRDMV-13106]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
+        it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -482,7 +482,7 @@ describe('Dynamic Confidentials Data', () => {
             await utilCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-15032,DRDMV-13106]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
+        it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);

@@ -229,7 +229,7 @@ class ViewCasePage {
     }
 
     async openTaskCard(taskCardNumber: number): Promise<void> {
-        await browser.navigate().refresh(); // workaround for DRDMV-23816
+        await browser.navigate().refresh(); // workaround for 60116
         await utilityCommon.scrollToElement($(this.selectors.taskCardArrow));
         await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();
     }

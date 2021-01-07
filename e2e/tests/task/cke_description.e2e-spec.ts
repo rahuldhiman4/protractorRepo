@@ -68,11 +68,11 @@ describe('CKE Description', () => {
     });
 
     //ptidke
-    describe('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101]: Verify case description field after Copy case template', async () => {
+    describe('[3528,3527,3523,3517,3520,3518]: Verify case description field after Copy case template', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName;
         let copyCasetemplate = 'copyCaseTemplate' + randomString;
-        it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Create case template bold , italic and underline with CKE', async () => {
+        it('[3528,3527,3523,3517,3520,3518] Create case template bold , italic and underline with CKE', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             caseTemplateName = caseTemplateAllFields.templateName + randomString;
@@ -104,7 +104,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
         });
-        it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
+        it('[3528,3527,3523,3517,3520,3518] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
             //left Align
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
@@ -137,7 +137,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Upload image with URL and local , Style text, Insert Link and Table', async () => {
+        it('[3528,3527,3523,3517,3520,3518] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -184,7 +184,7 @@ describe('CKE Description', () => {
             await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus);
             await createCaseTemplate.clickSaveCaseTemplate();
         });
-        it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify detail on view case template', async () => {
+        it('[3528,3527,3523,3517,3520,3518] Verify detail on view case template', async () => {
             await viewCaseTemplate.clickShowMoreDescriptionLink();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
             expect(await ckeditorValidationPo.isUnderLineTextDisplayed(underLineText)).toBeTruthy();
@@ -203,7 +203,7 @@ describe('CKE Description', () => {
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
-        it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify detail on COPY case template', async () => {
+        it('[3528,3527,3523,3517,3520,3518] Verify detail on COPY case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.searchAndSelectGridRecord(caseTemplateName);
@@ -235,7 +235,7 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('youtube')).toBeTruthy('Link Text not present');
         });
-        it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify case description on case if we change case template from template1 to template2', async () => {
+        it('[3528,3527,3523,3517,3520,3518] Verify case description on case if we change case template from template1 to template2', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
@@ -273,12 +273,12 @@ describe('CKE Description', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(copyCasetemplate);
             await editCasePo.clickSaveCase();
-            await utilityCommon.refresh(); // workaround for DRDMV-23816
+            await utilityCommon.refresh(); // workaround for 60116
             await viewCasePo.clickDescriptionShowMore();
             expect(await viewCasePo.getCaseTemplateText()).toContain(copyCasetemplate);
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
         });
-        it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify case description field on Case Template Preview', async () => {
+        it('[3528,3527,3523,3517,3520,3518] Verify case description field on Case Template Preview', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
@@ -302,7 +302,7 @@ describe('CKE Description', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await previewCaseTemplateCasesPo.clickOnBackButton();
         });
-        it('[DRDMV-22089,DRDMV-22090,DRDMV-22094,DRDMV-22102,DRDMV-22097,DRDMV-22101] Verify case description with login Case Manger', async () => {
+        it('[3528,3527,3523,3517,3520,3518] Verify case description with login Case Manger', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -332,9 +332,9 @@ describe('CKE Description', () => {
     });
 
     //ptidke
-    describe('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103]: Verify task description field with CK editor functionality on Manual task template', async () => {
+    describe('[3526,3525,3524,3516]: Verify task description field with CK editor functionality on Manual task template', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Create task template bold , italic and underline with CKE', async () => {
+        it('[3526,3525,3524,3516] Create task template bold , italic and underline with CKE', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
@@ -364,7 +364,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnCenterAlignIcon();
         });
-        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
+        it('[3526,3525,3524,3516] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
             //left Align
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
@@ -397,7 +397,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Upload image with URL and local , Style text, Insert Link and Table', async () => {
+        it('[3526,3525,3524,3516] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //upload image with URL
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '200');
@@ -440,7 +440,7 @@ describe('CKE Description', () => {
             await createTasktemplatePo.selectTemplateStatus('Active')
             await createTasktemplatePo.clickOnSaveTaskTemplate();
         });
-        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify detail on view task template', async () => {
+        it('[3526,3525,3524,3516] Verify detail on view task template', async () => {
             await viewTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isBoldTextDisplayed(boldText)).toBeTruthy('text is not bold');
             expect(await viewTasktemplatePo.isUnderLineTextDisplayed(underLineText)).toBeTruthy('text is not underline');
@@ -459,7 +459,7 @@ describe('CKE Description', () => {
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
-        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify detail on COPY task template', async () => {
+        it('[3526,3525,3524,3516] Verify detail on COPY task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
             await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
@@ -488,7 +488,7 @@ describe('CKE Description', () => {
             await copyTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isLinkDisplayedInCKE('http://www.youtube.com')).toBeTruthy('Link Text not present');
         });
-        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103 Verify task description on task template preview', async () => {
+        it('[3526,3525,3524,3516 Verify task description on task template preview', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.setCaseSummary('quick case 22091');
@@ -518,7 +518,7 @@ describe('CKE Description', () => {
             await manageTaskBladePo.clickTaskGridSaveButton();
             await manageTaskBladePo.clickTaskLink('taskTemplateSummaryDRDMV22091' + randomString);
         });
-        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify task description field on Task', async () => {
+        it('[3526,3525,3524,3516] Verify task description field on Task', async () => {
             await viewTaskPo.clickShowMoreTaskDescription();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
@@ -539,7 +539,7 @@ describe('CKE Description', () => {
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
         });
-        it('[DRDMV-22091,DRDMV-22092,DRDMV-22093,DRDMV-22103] Verify case description with login Case Manger', async () => {
+        it('[3526,3525,3524,3516] Verify case description with login Case Manger', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -569,9 +569,9 @@ describe('CKE Description', () => {
         });
     });
 
-    describe('[DRDMV-22095]:Verify case description field with CK editor functionality on Case', async () => {
+    describe('[3522]:Verify case description field with CK editor functionality on Case', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-22095] Create case bold , italic and underline with CKE', async () => {
+        it('[3522] Create case bold , italic and underline with CKE', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qdu');
             await createCasePo.setSummary('new case summary1');
@@ -594,7 +594,7 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
         });
-        it('[DRDMV-22095] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
+        it('[3522] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
             //left Align
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
@@ -633,7 +633,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22095] Upload image with URL and local , Style text, Insert Link and Table', async () => {
+        it('[3522] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //add style
             await createCasePo.updateCaseDescription(formatText);
             await ckeditorOpsPo.selectStyles('Heading 2');
@@ -676,7 +676,7 @@ describe('CKE Description', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-22095] Verify case description field on case', async () => {
+        it('[3522] Verify case description field on case', async () => {
             await viewCasePo.clickDescriptionShowMore();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
@@ -705,9 +705,9 @@ describe('CKE Description', () => {
     });
 
     //ptidke
-    describe('[DRDMV-22096]:Verify Task description fields with CK editor functionality on Adhoc task	', async () => {
+    describe('[3521]:Verify Task description fields with CK editor functionality on Adhoc task	', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-22096] Create task template bold , italic and underline with CKE', async () => {
+        it('[3521] Create task template bold , italic and underline with CKE', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.setCaseSummary('new case summary1');
@@ -734,7 +734,7 @@ describe('CKE Description', () => {
             await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnUnderLineIcon();
         });
-        it('[DRDMV-22096] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
+        it('[3521] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
             //left Align
             await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnLeftAlignIcon();
@@ -774,7 +774,7 @@ describe('CKE Description', () => {
             await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22096] Upload image with URL and local , Style text, Insert Link and Table', async () => {
+        it('[3521] Upload image with URL and local , Style text, Insert Link and Table', async () => {
             //upload image with URL
             await ckeditorOpsPo.clickOnImageIcon();
             await ckeditorOpsPo.imageUploadWithURL(uploadURL, imageUrlFieldIndex, imageWidthFieldIndex, '50');
@@ -817,7 +817,7 @@ describe('CKE Description', () => {
             await createAdhocTaskPo.clickSaveAdhoctask()
             await manageTaskBladePo.clickTaskLink(randomString);
         });
-        it('[DRDMV-22096] Verify task description field on Task', async () => {
+        it('[3521] Verify task description field on Task', async () => {
             await viewTaskPo.clickShowMoreTaskDescription();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();

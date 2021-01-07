@@ -36,7 +36,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    it('[DRDMV-16756]:Validate Show More/Less option in Task Activity Tab', async () => {
+    it('[4228]:Validate Show More/Less option in Task Activity Tab', async () => {
         let randomStr = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let addNoteBodyText1 = `${randomStr}\n${randomStr}\n${randomStr}\n${randomStr}\n${randomStr}`;
         let addNoteBodyText2 = `${randomStr}\n${randomStr}\n${randomStr}\n${randomStr}\n${randomStr}\n${randomStr}`;
@@ -46,7 +46,7 @@ describe('Case Activity Multi Logs', () => {
         // Create Case
         let caseData = {
             "Requester": "Fritz",
-            "Summary": "DRDMV-16730_TC" + randomStr,
+            "Summary": "4240_TC" + randomStr,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
@@ -58,8 +58,8 @@ describe('Case Activity Multi Logs', () => {
 
         // Create manual task template
         let manualTemplateData = {
-            "templateName": "DRDMV-16756 template" + randomStr,
-            "templateSummary": "DRDMV-16756_Manual_task template summary" + randomStr,
+            "templateName": "4228 template" + randomStr,
+            "templateSummary": "4228_Manual_task template summary" + randomStr,
             "templateStatus": "Active",
             "taskCompany": '- Global -',
             "ownerCompany": "Petramco",
@@ -148,7 +148,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16755]: All type of social activities are displayed correctly in Task Activity tab', async () => {
+    describe('[4229]: All type of social activities are displayed correctly in Task Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTemplateSummary, autoTemplateData, externalTemplateSummary, newCase;
 
@@ -199,7 +199,7 @@ describe('Case Activity Multi Logs', () => {
             newCase = await apiHelper.createCase(caseData);
         });
 
-        it('[DRDMV-16755]: Add Automation, Manual, External Task In Case And Change Case Status To In-Progress', async () => {
+        it('[4229]: Add Automation, Manual, External Task In Case And Change Case Status To In-Progress', async () => {
             // Adding Task
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -212,7 +212,7 @@ describe('Case Activity Multi Logs', () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-16755]: Goto Automation Task and verify Create Task Activity', async () => {
+        it('[4229]: Goto Automation Task and verify Create Task Activity', async () => {
             // Goto Automated Task
             await activityTabPage.clickOnRefreshButton();
             await viewCasePo.clickAddTaskButton();
@@ -230,16 +230,16 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
         });
 
-        it('[DRDMV-16755]: Automation Task Validate Add Notes Activity', async () => {
-            await activityTabPage.addActivityNote('DRDMV-16755 Activity Note');
+        it('[4229]: Automation Task Validate Add Notes Activity', async () => {
+            await activityTabPage.addActivityNote('4229 Activity Note');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', 1)).toBeTruthy('FailureMsg13: log title is missing');
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16755 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('4229 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Automation Task Change Priority And Validate It In Activity ', async () => {
+        it('[4229]: Automation Task Change Priority And Validate It In Activity ', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.selectPriorityValue('Low');
             await editTaskPo.clickOnSaveButton();
@@ -249,7 +249,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Automation Task Change Catergory Tier And Validate It In Activity', async () => {
+        it('[4229]: Automation Task Change Catergory Tier And Validate It In Activity', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.selectTaskCategoryTier1('Employee Relations');
             await editTaskPo.selectTaskCategoryTier2('Compensation');
@@ -266,22 +266,22 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Bonus')).toBeTruthy('FailureMsg27: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Automation Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+        it('[4229]: Automation Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.setDescription('DRDMV-16756 Task Description');
+            await editTaskPo.setDescription('4228 Task Description');
             await editTaskPo.selectPriorityValue('Critical');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg28: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg29: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg30: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg31: Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16756 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('4228 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Priority')).toBeTruthy('FailureMsg33: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Critical')).toBeTruthy('FailureMsg34: Text is missing in activity log');
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-16755]: Goto Manual Task and verify Create Task Activity', async () => {
+        it('[4229]: Goto Manual Task and verify Create Task Activity', async () => {
             // Goto Manual Task
             await activityTabPage.clickOnRefreshButton();
             await viewCasePo.clickAddTaskButton();
@@ -297,16 +297,16 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned')).toBeTruthy('FailureMsg10: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Manual Task Validate Add Notes Activity', async () => {
-            await activityTabPage.addActivityNote('DRDMV-16755 Activity Note');
+        it('[4229]: Manual Task Validate Add Notes Activity', async () => {
+            await activityTabPage.addActivityNote('4229 Activity Note');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', 1)).toBeTruthy('FailureMsg13: log title is missing');
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16755 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('4229 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Manual Task Change Priority And Validate It In Activity', async () => {
+        it('[4229]: Manual Task Change Priority And Validate It In Activity', async () => {
             // Priority change activity
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.selectPriorityValue('Low');
@@ -317,7 +317,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Manual Task Change Catergory Tier And Validate It In Activity', async () => {
+        it('[4229]: Manual Task Change Catergory Tier And Validate It In Activity', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.selectTaskCategoryTier1('Employee Relations');
             await editTaskPo.selectTaskCategoryTier2('Compensation');
@@ -334,21 +334,21 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Bonus')).toBeTruthy('FailureMsg27: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Manual Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+        it('[4229]: Manual Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.setDescription('DRDMV-16756 Task Description');
+            await editTaskPo.setDescription('4228 Task Description');
             await editTaskPo.selectPriorityValue('Critical');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg28: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg29: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg30: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg31: Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16756 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('4228 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Priority')).toBeTruthy('FailureMsg33: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Critical')).toBeTruthy('FailureMsg34: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Assign Manual Task Validate Its Activity', async () => {
+        it('[4229]: Assign Manual Task Validate Its Activity', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
@@ -370,7 +370,7 @@ describe('Case Activity Multi Logs', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-16755]: Goto External Task And Verify Create Task Activity', async () => {
+        it('[4229]: Goto External Task And Verify Create Task Activity', async () => {
             await activityTabPage.clickOnRefreshButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateSummary);
@@ -385,16 +385,16 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned')).toBeTruthy('FailureMsg10: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: External Task Validate Add Notes Activity', async () => {
-            await activityTabPage.addActivityNote('DRDMV-16755 Activity Note');
+        it('[4229]: External Task Validate Add Notes Activity', async () => {
+            await activityTabPage.addActivityNote('4229 Activity Note');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', 1)).toBeTruthy('FailureMsg13: log title is missing');
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16755 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('4229 Activity Note')).toBeTruthy('FailureMsg14: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: External Task Change Priority And Validate It In Activity', async () => {
+        it('[4229]: External Task Change Priority And Validate It In Activity', async () => {
             // Priority change activity
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.selectPriorityValue('Low');
@@ -405,7 +405,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg18: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: External Task Change Catergory Tier And Validate It In Activity', async () => {
+        it('[4229]: External Task Change Catergory Tier And Validate It In Activity', async () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.selectTaskCategoryTier1('Employee Relations');
             await editTaskPo.selectTaskCategoryTier2('Compensation');
@@ -422,22 +422,22 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Bonus')).toBeTruthy('FailureMsg27: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: External Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
+        it('[4229]: External Task Update Multiple Fields At a Time And Validate It In Activity', async () => {
             // Task multiple fields activity
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.setDescription('DRDMV-16756 Task Description');
+            await editTaskPo.setDescription('4228 Task Description');
             await editTaskPo.selectPriorityValue('Critical');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg28: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg29: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg30: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg31: Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('DRDMV-16756 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('4228 Task Description')).toBeTruthy('FailureMsg32: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Priority')).toBeTruthy('FailureMsg33: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Critical')).toBeTruthy('FailureMsg34: Text is missing in activity log');
         });
 
-        it('[DRDMV-16755]: Assign External Task Validate Its Activity', async () => {
+        it('[4229]: Assign External Task Validate Its Activity', async () => {
             // Assign Task 
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.clickOnAssignToMe();
@@ -457,13 +457,13 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16737]: [-ve] - Case having large no. of activities eg. more then 100', async () => {
+    describe('[4233]: [-ve] - Case having large no. of activities eg. more then 100', async () => {
         let newCase;
         beforeAll(async () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-16737_TC",
+                "Summary": "4233_TC",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
@@ -476,7 +476,7 @@ describe('Case Activity Multi Logs', () => {
             // Create General Notes 
             for (let a = 0; a < 100; a++) {
                 await browser.sleep(1000);
-                await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16737 Activity Notes ${a}`, 'Case', newCase.id);
+                await apiHelper.postActivityCommentsWithoutAttachments(`4233 Activity Notes ${a}`, 'Case', newCase.id);
             }
 
             // Create Second Activity  
@@ -502,7 +502,7 @@ describe('Case Activity Multi Logs', () => {
             }
         });
 
-        it('[DRDMV-16737]: Verify count for first 20 Activity', async () => {
+        it('[4233]: Verify count for first 20 Activity', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             for (let i = 1; i <= 20; i++) {
@@ -511,14 +511,14 @@ describe('Case Activity Multi Logs', () => {
             }
         });
 
-        it('[DRDMV-16737]: Verify count for second 20 Activity', async () => {
+        it('[4233]: Verify count for second 20 Activity', async () => {
             for (let j = 21; j <= 40; j++) {
                 await activityTabPage.scrollToActivity(j);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following case fields', j)).toBeTruthy(`Changed the following case fields is missing ${j}`);
             }
         });
 
-        it('[DRDMV-16737]: Verify Gerneral Notes 100 Activity', async () => {
+        it('[4233]: Verify Gerneral Notes 100 Activity', async () => {
             await utilityCommon.refresh(); //Need this refresh because Case edit button, filter button gets hide after scroll down.
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.selectFilterCheckBox('General Notes');
@@ -531,14 +531,14 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16763]: [-ve] - Task having large no. of activities eg. more then 100', async () => {
+    describe('[4221]: [-ve] - Task having large no. of activities eg. more then 100', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, adhocTaskTemplateData;
         beforeAll(async () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-16763_TC",
+                "Summary": "4221_TC",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
@@ -548,7 +548,7 @@ describe('Case Activity Multi Logs', () => {
             newCase = await apiHelper.createCase(caseData);
             // Create Manual Task
             adhocTaskTemplateData = {
-                "taskName": "DRDMV-16763_" + randomStr,
+                "taskName": "4221_" + randomStr,
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
@@ -560,7 +560,7 @@ describe('Case Activity Multi Logs', () => {
             // Create General Notes 
             for (let a = 0; a < 100; a++) {
                 await browser.sleep(1000);
-                await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16737 Task Activity Notes ${a}`, 'Task', task.id);
+                await apiHelper.postActivityCommentsWithoutAttachments(`4233 Task Activity Notes ${a}`, 'Task', task.id);
             }
             // Create Second Activity  
             for (let b = 0; b < 20; b++) {
@@ -579,7 +579,7 @@ describe('Case Activity Multi Logs', () => {
             }
         });
 
-        it('[DRDMV-16763]: Verify count for first 20 Activity', async () => {
+        it('[4221]: Verify count for first 20 Activity', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -590,14 +590,14 @@ describe('Case Activity Multi Logs', () => {
             }
         });
 
-        it('[DRDMV-16763]: Verify count for second 20 Activity', async () => {
+        it('[4221]: Verify count for second 20 Activity', async () => {
             for (let j = 21; j <= 40; j++) {
                 await activityTabPage.scrollToActivity(j);
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', j)).toBeTruthy(`Changed the following case fields is missing ${j}`);
             }
         });
 
-        it('[DRDMV-16763]: Verify Gerneral Notes 100 Activity', async () => {
+        it('[4221]: Verify Gerneral Notes 100 Activity', async () => {
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.clickOnFilterApplyButton();
@@ -609,14 +609,14 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16771]: [-ve] - KA having large no. of activities eg. more then 100', async () => {
+    describe('[4213]: [-ve] - KA having large no. of activities eg. more then 100', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeArticleData;
         beforeAll(async () => {
             // Create knowledge Article task template
             let articleData = {
                 "knowledgeSet": "HR",
-                "title": "DRDMV-16771_KA" + randomStr,
+                "title": "4213_KA" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "Canada Support",
@@ -633,7 +633,7 @@ describe('Case Activity Multi Logs', () => {
             // Create General Notes 
             for (let a = 0; a < 100; a++) {
                 await browser.sleep(1000);
-                await apiHelper.postActivityCommentsWithoutAttachments(`DRDMV-16771 KA Activity Notes ${a}`, 'KnowledgeArticleTemplate', knowledgeArticleData.id);
+                await apiHelper.postActivityCommentsWithoutAttachments(`4213 KA Activity Notes ${a}`, 'KnowledgeArticleTemplate', knowledgeArticleData.id);
             }
 
             // Create General Notes 
@@ -647,7 +647,7 @@ describe('Case Activity Multi Logs', () => {
             }
         });
 
-        it('[DRDMV-16771]: Verify count for first & Second 20 Activity', async () => {
+        it('[4213]: Verify count for first & Second 20 Activity', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickOnActivityTab();
@@ -664,7 +664,7 @@ describe('Case Activity Multi Logs', () => {
             }
         });
 
-        it('[DRDMV-16771]: Verify Gerneral Notes 100 Activity', async () => {
+        it('[4213]: Verify Gerneral Notes 100 Activity', async () => {
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.clickOnFilterApplyButton();
@@ -675,7 +675,7 @@ describe('Case Activity Multi Logs', () => {
         });
     });
     //kgaikwad
-    describe('[DRDMV-16729]: All type of social activities are displayed correctly in Case Activity tab', async () => {
+    describe('[4241]: All type of social activities are displayed correctly in Case Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = undefined;
         let caseId: string;
@@ -784,7 +784,7 @@ describe('Case Activity Multi Logs', () => {
             }
         });
 
-        it('[DRDMV-16729]:Create Self Approval Flow Without Process', async () => {
+        it('[4241]:Create Self Approval Flow Without Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -809,7 +809,7 @@ describe('Case Activity Multi Logs', () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-16729]:Create case and verify self approval without process', async () => {
+        it('[4241]:Create case and verify self approval without process', async () => {
             await apiHelper.apiLogin('qfeng');
             caseResponseDetails = await apiHelper.createCase(caseData);
             caseId = caseResponseDetails.displayId;
@@ -823,7 +823,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.removeFilterList();
         });
 
-        it('[DRDMV-16729]:Verify case creation', async () => {
+        it('[4241]:Verify case creation', async () => {
             await activityTabPage.applyActivityFilter('Category Change');
             expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 1)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
@@ -854,7 +854,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg23: US Support 3 Text is missing in activity log');
         });
 
-        it('[DRDMV-16729]:Verify social activity with Task activity', async () => {
+        it('[4241]:Verify social activity with Task activity', async () => {
             // Verify manual task on case activity
             await viewCasePo.clickOnTaskLink(manualTaskTemplateSummary);
             manualTaskId = await viewTaskPo.getTaskID();
@@ -905,7 +905,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('automatedTaskActivityNote')).toBeTruthy('FailureMsg23: automatedTaskActivityNote Text is missing in activity log');
         });
 
-        it('[DRDMV-16729]:Verify social activity with status change and reopen case', async () => {
+        it('[4241]:Verify social activity with status change and reopen case', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus('Resolved');
@@ -927,7 +927,7 @@ describe('Case Activity Multi Logs', () => {
         });
 
         // add defect for error in following it block
-        it('[DRDMV-16729]:Verify social activity with change priority', async () => {
+        it('[4241]:Verify social activity with change priority', async () => {
             let updatePriority = { "casePriority": "Low" };
             await apiHelper.updateCase(caseResponseDetails.id, updatePriority);
             await activityTabPage.clickOnRefreshButton();
@@ -938,7 +938,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Low')).toBeTruthy('FailureMsg21: Low text is missing');
         });
 
-        it('[DRDMV-16729]:Verify social activity with change asssignment', async () => {
+        it('[4241]:Verify social activity with change asssignment', async () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Petramco')
@@ -959,7 +959,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('CA Support 1')).toBeTruthy('FailureMsg23: CA Support 1  Text is missing in activity log');
         });
 
-        it('[DRDMV-16729]:Verify social activity with status change activity', async () => {
+        it('[4241]:Verify social activity with status change activity', async () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateCaseCategoryTier1(categName1);
             await editCasePo.updateCaseCategoryTier2(categName2);
@@ -980,7 +980,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog(categName4)).toBeTruthy('FailureMsg23: categName4  Text is missing in activity log');
         });
 
-        it('[DRDMV-16729]:Verify social activity with multiple activity', async () => {
+        it('[4241]:Verify social activity with multiple activity', async () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateCasePriority('High');
             await editCasePo.setCaseSummary('caseSummary');
@@ -1001,7 +1001,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('High')).toBeTruthy('FailureMsg23: High Text is missing in activity log');
         });
 
-        it('[DRDMV-16729]:Verify social activity with sendimg email to requester', async () => {
+        it('[4241]:Verify social activity with sendimg email to requester', async () => {
             await viewCasePo.clickOnEmailLink();
             await browser.sleep(2000); // Sleep till open conmpose email pop up
             await composeMailPo.setToOrCCInputTextbox('To', 'apavlik@petramco.com');
@@ -1016,7 +1016,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('------ While replying, please do not add information below this line -----')).toBeTruthy('FailureMsg24: ------ While replying, please do not add information below this line ----- Text is missing in activity log');
         });
 
-        it('[DRDMV-16729]:Verify social activity with public private and private comment', async () => {
+        it('[4241]:Verify social activity with public private and private comment', async () => {
             // private activity note
             await activityTabPage.addActivityNote('privateActivityNote');
             await activityTabPage.clickOnPostButton();
@@ -1036,7 +1036,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('publicActivityNote')).toBeTruthy('FailureMsg22: publicActivityNote Text is missing in activity log');
         });
 
-        it('[DRDMV-16729]:Verify social activity with sendimg email to other than requester', async () => {
+        it('[4241]:Verify social activity with sendimg email to other than requester', async () => {
             await viewCasePo.clickOnEmailLink();
             await browser.sleep(2000); // Sleep till open conmpose email pop up
             await composeMailPo.setToOrCCInputTextbox('To', 'qdu');
@@ -1051,7 +1051,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('------ While replying, please do not add information below this line -----')).toBeTruthy('FailureMsg24: ------ While replying, please do not add information below this line ----- Text is missing in activity log');
         });
 
-        it('[DRDMV-16729]:Verify social activity with confendial support group', async () => {
+        it('[4241]:Verify social activity with confendial support group', async () => {
             await viewCasePo.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
             await accessTabPo.selectAccessEntityDropDown(confidentialSupportGroup, 'Select Support Group', true);
@@ -1072,7 +1072,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog(confidentialSupportGroup)).toBeTruthy(`FailureMsg21: ${confidentialSupportGroup} Text is missing in activity log`);
         });
 
-        it('[DRDMV-16729]:Verify social activity with task email activity', async () => {
+        it('[4241]:Verify social activity with task email activity', async () => {
             await viewCasePo.clickOnTab('Tasks');
             await viewCasePo.clickOnTaskLink(manualTaskTemplateSummary);
             await activityTabPage.clickOnRefreshButton();

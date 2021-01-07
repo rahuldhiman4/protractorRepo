@@ -33,7 +33,7 @@ describe('Case Activity CKE', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-21619]: Verify the Comments posted in activity without notes template', async () => {
+    describe('[3580]: Verify the Comments posted in activity without notes template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
         let addNoteBodyText = 'addNoteBodyTextDRDMV21619' + randomStr;
@@ -112,7 +112,7 @@ describe('Case Activity CKE', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
         });
 
-        it('[DRDMV-21619]: Open Case And Add Task Into', async () => {
+        it('[3580]: Open Case And Add Task Into', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             // Adding Task
             await viewCasePo.clickAddTaskButton();
@@ -122,7 +122,7 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.clickCloseButton();
         });
         
-        it('[DRDMV-21619]: Verify Comment Posted In Activity For Case', async () => {
+        it('[3580]: Verify Comment Posted In Activity For Case', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
@@ -201,7 +201,7 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg Image missing in activity tab');
         });
 
-        it('[DRDMV-21619]: Verify Comment Posted In Activity For Manual Task', async () => {
+        it('[3580]: Verify Comment Posted In Activity For Manual Task', async () => {
             // Goto Manual Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
@@ -284,7 +284,7 @@ describe('Case Activity CKE', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-21619]: Verify Comment Posted In Activity For Automated Task', async () => {
+        it('[3580]: Verify Comment Posted In Activity For Automated Task', async () => {
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
@@ -368,7 +368,7 @@ describe('Case Activity CKE', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-21619]: Verify Comment Posted In Activity For External Task', async () => {
+        it('[3580]: Verify Comment Posted In Activity For External Task', async () => {
             // Goto External Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
@@ -451,7 +451,7 @@ describe('Case Activity CKE', () => {
             await viewTaskPo.clickOnViewCase();
         });
 
-        it('[DRDMV-21619]: Verify Comment Posted In Activity For Adhoc Task', async () => {
+        it('[3580]: Verify Comment Posted In Activity For Adhoc Task', async () => {
             // Goto Adhoc Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
@@ -541,7 +541,7 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg Image missing in activity tab');
         });
 
-        it('[DRDMV-21619]: Verify Comment Posted In Activity For knowledge Article', async () => {
+        it('[3580]: Verify Comment Posted In Activity For knowledge Article', async () => {
             // Create knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
@@ -626,7 +626,7 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg Image missing in activity tab');
         });
 
-        it('[DRDMV-21619]: Login in with Assignee User And Navigate to Person Profile', async () => {
+        it('[3580]: Login in with Assignee User And Navigate to Person Profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -636,7 +636,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
         });
         
-        it('[DRDMV-21619]: Verify Comment Posted In Activity For Person Profile', async () => {
+        it('[3580]: Verify Comment Posted In Activity For Person Profile', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
             //bold
@@ -721,7 +721,7 @@ describe('Case Activity CKE', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-21620]: Verify the Comments posted in activity with notes template', async () => {
+    describe('[3579]: Verify the Comments posted in activity with notes template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notesTemplateNameRandStr = 'notesTemplateDRDMV21620' + randomStr;
         let adhocTaskSummary = 'adhocTaskSummaryDRDMV21620' + randomStr;
@@ -821,7 +821,7 @@ describe('Case Activity CKE', () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV-21617_TC",
+                "Summary": "3582_TC",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
@@ -830,7 +830,7 @@ describe('Case Activity CKE', () => {
             newCase = await apiHelper.createCase(caseData);
         });
 
-        it('[DRDMV-21620]: Open Case And Add Task Into', async () => {
+        it('[3579]: Open Case And Add Task Into', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -843,7 +843,7 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
         });
-        it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For Case ', async () => {
+        it('[3579]: Verify the Comments posted in activity with notes template For Case ', async () => {
             // Verify Case Notes Template
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateCaseData.templateName);
             expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateCaseData.body)
@@ -851,7 +851,7 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isTextPresentInNote(notesTemplateCaseData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
 
-        it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For Person Profile ', async () => {
+        it('[3579]: Verify the Comments posted in activity with notes template For Person Profile ', async () => {
             // Profile View CK Editor
             await navigationPage.signOut();
             await loginPage.login('qdu');
@@ -863,7 +863,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplatePeopleData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
-        it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For Manual Task ', async () => {
+        it('[3579]: Verify the Comments posted in activity with notes template For Manual Task ', async () => {
             // Goto Manual Task
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -879,7 +879,7 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
         });
-        it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For Automated Task ', async () => {
+        it('[3579]: Verify the Comments posted in activity with notes template For Automated Task ', async () => {
             // Goto Automated Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
@@ -889,7 +889,7 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
         });
-        it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For External Task ', async () => {
+        it('[3579]: Verify the Comments posted in activity with notes template For External Task ', async () => {
             // Goto External Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
@@ -899,7 +899,7 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
         });
-        it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For Adhoc Task ', async () => {
+        it('[3579]: Verify the Comments posted in activity with notes template For Adhoc Task ', async () => {
             // Goto Adhoc Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
@@ -917,7 +917,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
-        it('[DRDMV-21620]: Verify the Comments posted in activity with notes template For knowledge Article ', async () => {
+        it('[3579]: Verify the Comments posted in activity with notes template For knowledge Article ', async () => {
             // Create knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);

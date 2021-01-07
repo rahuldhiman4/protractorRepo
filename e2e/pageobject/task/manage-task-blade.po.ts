@@ -91,7 +91,7 @@ class ManageTaskBlade {
 
     async clickCloseButton(): Promise<void> {
         await $(this.selectors.closeButton).click();
-        await browser.navigate().refresh(); // workaround for DRDMV-23816
+        await browser.navigate().refresh(); // workaround for 60116
     }
 
     async isTaskLinkPresent(taskSummary: string): Promise<boolean> {

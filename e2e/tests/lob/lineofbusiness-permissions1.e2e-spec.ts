@@ -132,8 +132,8 @@ describe('Line of Business Permission Tests', () => {
         }
 
         let templateData = {
-            "templateName": 'DRDMV-23738' + randomStr,
-            "templateSummary": 'DRDMV-23738' + randomStr,
+            "templateName": '12028' + randomStr,
+            "templateSummary": '12028' + randomStr,
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "company": "Petramco",
@@ -195,7 +195,7 @@ describe('Line of Business Permission Tests', () => {
     }
 
     //asahitya
-    describe('[DRDMV-23619]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', () => {
+    describe('[60219]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', () => {
         let randomString: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let lobName = undefined;
         beforeAll(async () => {
@@ -206,7 +206,7 @@ describe('Line of Business Permission Tests', () => {
             let response1 = await apiHelper.createEmailBox('outgoing');
             await apiHelper.createEmailProfile(response1.id);
         });
-        it('[DRDMV-23619]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', async () => {
+        it('[60219]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', async () => {
             let lobConfigPageList = ['Define Line of Business', 'Manage Line of Business', 'Line of Business'];
             await navigationPage.signOut();
             await loginPage.login('tadmin');
@@ -238,7 +238,7 @@ describe('Line of Business Permission Tests', () => {
             await editLobConfig.clickOnCancelButton();
             expect((await consoleDefineLob.getColumnValueOfRecord('Group ID', lobName)).length).toBeGreaterThan(0);
         });
-        it('[DRDMV-23619]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', async () => {
+        it('[60219]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', async () => {
             await apiHelper.apiLogin('tadmin');
             expect((await coreApi.getDomainTagGuid(lobName)).length).toBeGreaterThan(0);
             expect((await coreApi.getFunctionalRoleGuid(lobName)).length).toBeGreaterThan(0);
@@ -268,8 +268,8 @@ describe('Line of Business Permission Tests', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
-        it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
+    describe('[12027,12026]: Validate that LOB specific Functional Role available for the foundation users', async () => {
+        it('[12027,12026]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await foundationData("Psilon");
             await navigationPage.signOut();
             await loginPage.login(personData1.userId + "@petramco.com", 'Password_1234')
@@ -315,7 +315,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await navigationPage.isSettingMenuPresent('Email')).toBeFalsy();
             expect(await navigationPage.isSettingMenuPresent('Task Management')).toBeFalsy();
         });
-        it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
+        it('[12027,12026]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData2.userId + "@petramco.com", 'Password_1234')
             await navigationPage.gotoCaseConsole();
@@ -378,7 +378,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await createDocumentTemplatePo.isAddTemplateEnabled()).toBeFalsy();
 
         });
-        it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
+        it('[12027,12026]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             expect(await consoleAcknowledgmentTemplatePo.isAddAcknowledgeTemplateButtonEnabled()).toBeFalsy();
 
@@ -420,7 +420,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await selectTaskTemplate.isAutomationTaskTemplateButtonEnabled()).toBeFalsy();
             expect(await selectTaskTemplate.isExtrnalTaskTemplateButtonEnabled()).toBeFalsy();
         });
-        it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
+        it('[12027,12026]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoCaseConsole();
@@ -486,7 +486,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await createDocumentTemplatePo.isAddTemplateEnabled()).toBeTruthy();
 
         });
-        it('[DRDMV-23739,DRDMV-23740]: Validate that LOB specific Functional Role available for the foundation users', async () => {
+        it('[12027,12026]: Validate that LOB specific Functional Role available for the foundation users', async () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             expect(await consoleAcknowledgmentTemplatePo.isAddAcknowledgeTemplateButtonEnabled()).toBeTruthy();
 
@@ -535,7 +535,7 @@ describe('Line of Business Permission Tests', () => {
 
     //ankagraw
     //this test case failed due to defect DRDMV-24208 
-    it('[DRDMV-24248]: Adobe, DocuSign and White configuration should visible to Tadmin only', async () => {
+    it('[12011]: Adobe, DocuSign and White configuration should visible to Tadmin only', async () => {
         let tadminApplicationConfigurationList: string[] = ['Application Configuration', 'Adobe Sign Configuration', 'Common Configurations', 'DocuSign Configuration', 'Dynamic Field Library', 'Dynamic Group Library', 'Field Associations', 'Menu Items', 'Shared Menu Items', 'Whitelist Configuration'];
         let qkatawaziApplicationConfigurationList: string[] = ['Application Configuration', 'Common Configurations', 'Dynamic Field Library', 'Dynamic Group Library', 'Menu Items'];
         await navigationPage.signOut();
@@ -549,7 +549,7 @@ describe('Line of Business Permission Tests', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-23738]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
+    describe('[12028]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
         let LineOfBuisness = {
             "lobName": "HR",
             "description": "Update description",
@@ -560,7 +560,7 @@ describe('Line of Business Permission Tests', () => {
             await apiHelper.updateLineOfBuisness(LineOfBuisness);
         });
 
-        it('[DRDMV-23738]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
+        it('[12028]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData.userId + "@petramco.com", 'Password_1234');
             // closed message
@@ -580,7 +580,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy();
 
         });
-        it('[DRDMV-23738]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
+        it('[12028]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
             await navigationPage.signOut();
             await loginPage.login(personData1.userId + "@petramco.com", 'Password_1234');
             await utilityCommon.closedWarningTextOfLineOfBuisness();
@@ -592,7 +592,7 @@ describe('Line of Business Permission Tests', () => {
             await utilityCommon.closedWarningTextOfLineOfBuisness();
             expect(await utilityGrid.isGridRecordPresent(KnowledgeArticleID)).toBeTruthy();
         });
-        it('[DRDMV-23738]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
+        it('[12028]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             expect(await utilityGrid.isGridRecordPresent(caseID)).toBeFalsy();
@@ -604,7 +604,7 @@ describe('Line of Business Permission Tests', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-9040]: [Email Configuration] Verify Email configuration Grid view', async () => {
+    describe('[5380]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let casetemplatePsilon, incomingEmail, templateData, emailID = "test@gmail.com";
         let randomStr = Math.floor(Math.random() * 100000);
         beforeAll(async () => {
@@ -641,7 +641,7 @@ describe('Line of Business Permission Tests', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
         });
-        it('[DRDMV-9040]: Verify Email configuration header', async () => {
+        it('[5380]: Verify Email configuration header', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -653,7 +653,7 @@ describe('Line of Business Permission Tests', () => {
             await createCasetemplatePo.clickSaveCaseTemplate();
             expect(await viewCasetemplatePo.getCaseTemplateNameValue()).toBe(randomStr + 'templateName');
         });
-        it('[DRDMV-9040]: Verify Email configuration header', async () => {
+        it('[5380]: Verify Email configuration header', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -690,7 +690,7 @@ describe('Line of Business Permission Tests', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-3230]: Create new SVT Group for Line of Business', async () => {
+    describe('[5866]: Create new SVT Group for Line of Business', async () => {
         let userData, svtData, userData1, userData2, randomStr = Math.floor(Math.random() * 100000);
         beforeAll(async () => {
             svtData = {
@@ -703,7 +703,7 @@ describe('Line of Business Permission Tests', () => {
                 "goalTimeMinutes": "4",
                 "dataSource": "Case Management",
                 "company": "Petramco",
-                "svtName": "DRDMV-3230"
+                "svtName": "5866"
             }
             await apiHelper.apiLogin('tadmin');
             userData = {
@@ -736,7 +736,7 @@ describe('Line of Business Permission Tests', () => {
             await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
             await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
         });
-        it('[DRDMV-3230]: Create new SVT Group for Line of Business', async () => {
+        it('[5866]: Create new SVT Group for Line of Business', async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createSVT(svtData);
             await navigationPage.signOut();
@@ -749,18 +749,18 @@ describe('Line of Business Permission Tests', () => {
             expect(await createServiceTargetGroupPo.isLobEnabled('disabled')).toBeTruthy();
             await createServiceTargetGroupPo.selectCompany('Petramco');
             await createServiceTargetGroupPo.selectDataSource('Case Management');
-            await createServiceTargetGroupPo.searchServiceTarget('DRDMV-3230');
-            expect(await createServiceTargetGroupPo.isServiceTargetPresent('DRDMV-3230')).toBeTruthy();
-            await editServiceTargetGroupConfigPo.selectAvailableServiceTarget('DRDMV-3230');
+            await createServiceTargetGroupPo.searchServiceTarget('5866');
+            expect(await createServiceTargetGroupPo.isServiceTargetPresent('5866')).toBeTruthy();
+            await editServiceTargetGroupConfigPo.selectAvailableServiceTarget('5866');
             await createServiceTargetGroupPo.clickSaveButton();
         });
-        it('[DRDMV-3230]: Create new SVT Group for Line of Business', async () => {
+        it('[5866]: Create new SVT Group for Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
-            expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('DRDMV-3230');
+            expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('5866');
             await editServiceTargetGroupConfigPo.clickClose();
 
             await navigationPage.signOut();
@@ -770,7 +770,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await utilGrid.isGridRecordPresent(randomStr + "Group")).toBeTruthy();
 
         });
-        it('[DRDMV-3230]: Create new SVT Group for Line of Business', async () => {
+        it('[5866]: Create new SVT Group for Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -783,13 +783,13 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(randomStr + "Group")).toBeFalsy();
         });
-        it('[DRDMV-3230]: Create new SVT Group for Line of Business', async () => {
+        it('[5866]: Create new SVT Group for Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
-            expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('DRDMV-3230');
+            expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('5866');
             await editServiceTargetGroupConfigPo.clickClose();
         });
         afterAll(async () => {
@@ -799,7 +799,7 @@ describe('Line of Business Permission Tests', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-17649]: Configure Resolution Code on Menu Items using Case BA', async () => {
+    describe('[4086]: Configure Resolution Code on Menu Items using Case BA', async () => {
         let caseId, caseData, randomStr = Math.floor(Math.random() * 100000);
         let label = 'ResolutionCode' + randomStr;
         beforeAll(async () => {
@@ -814,7 +814,7 @@ describe('Line of Business Permission Tests', () => {
             await apiHelper.apiLogin("qdu")
             caseId = await apiHelper.createCase(caseData)
         });
-        it('[DRDMV-17649]: Configure Resolution Code on Menu Items using Case BA', async () => {
+        it('[4086]: Configure Resolution Code on Menu Items using Case BA', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItemsBladePo.clickOnMenuOptionLink();
@@ -838,7 +838,7 @@ describe('Line of Business Permission Tests', () => {
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.getResolutionCodeValue()).toBe(label);
         });
-        it('[DRDMV-17649]: Configure Resolution Code on Menu Items using Case BA', async () => {
+        it('[4086]: Configure Resolution Code on Menu Items using Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -850,7 +850,7 @@ describe('Line of Business Permission Tests', () => {
             expect(await editCasePo.isResolutionCodePresent(label)).toBeTruthy();
 
         });
-        it('[DRDMV-17649]: Configure Resolution Code on Menu Items using Case BA', async () => {
+        it('[4086]: Configure Resolution Code on Menu Items using Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -865,9 +865,9 @@ describe('Line of Business Permission Tests', () => {
     });
 
     //apurva
-    describe('[DRDMV-17555]: Create new automatic case status transition rule for one line of Business', async () => {
+    describe('[4109]: Create new automatic case status transition rule for one line of Business', async () => {
         let tempData, configName1, randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-17555]: Create record', async () => {
+        it('[4109]: Create record', async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteAutomatedCaseStatusTransition();
             await navigationPage.signOut();
@@ -880,7 +880,7 @@ describe('Line of Business Permission Tests', () => {
             await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
         });
-        it('[DRDMV-17555]: Create new automatic case status transition rule for one line of Business', async () => {
+        it('[4109]: Create new automatic case status transition rule for one line of Business', async () => {
             await utilGrid.clearGridSearchBox();
             expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
             await navigationPage.signOut();
@@ -894,7 +894,7 @@ describe('Line of Business Permission Tests', () => {
             await utilGrid.clearGridSearchBox();
             expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeTruthy();
         });
-        it('[DRDMV-17555]: Create new automatic case status transition rule for one line of Business', async () => {
+        it('[4109]: Create new automatic case status transition rule for one line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -902,7 +902,7 @@ describe('Line of Business Permission Tests', () => {
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
         });
-        it('[DRDMV-17555]: Create new automatic case status transition rule for one line of Business', async () => {
+        it('[4109]: Create new automatic case status transition rule for one line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
@@ -914,7 +914,7 @@ describe('Line of Business Permission Tests', () => {
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
         });
-        it('[DRDMV-17555]: create same name record in same LOB', async () => {
+        it('[4109]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             tempData = cloneDeep(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
             tempData.name = 'UpdatedConfigName1' + randomStr;
@@ -929,7 +929,7 @@ describe('Line of Business Permission Tests', () => {
             await automatedStatusTransitionCreatePage.clickCancelBtn();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-17555]: create same name record in different LOB', async () => {
+        it('[4109]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
@@ -956,7 +956,7 @@ describe('Line of Business Permission Tests', () => {
     });
 
     //apurva
-    describe('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', () => {
+    describe('[6230]: [Flowsets] Case Template creation with Flowset', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let flowsetName1: string, flowsetName2: string, flowsetName3: string;
         beforeAll(async () => {
@@ -978,21 +978,21 @@ describe('Line of Business Permission Tests', () => {
             let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
-            flowsetName1 = `DRDMV-1357 ${randomStr} Active`;
+            flowsetName1 = `6230 ${randomStr} Active`;
             let flowsetMandatoryFieldsData1 = cloneDeep(flowsetGlobalFields);
             flowsetMandatoryFieldsData1.flowsetName = flowsetName1;
             flowsetMandatoryFieldsData1["lineOfBusiness"] = "Facilities";
             let flowsetResponse1 = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData1);
 
             //Create new flowset
-            flowsetName2 = `DRDMV-1357 ${randomStr} InActive`;
+            flowsetName2 = `6230 ${randomStr} InActive`;
             let flowsetMandatoryFieldsData2 = cloneDeep(flowsetGlobalInActiveFields);
             flowsetMandatoryFieldsData2.flowsetName = flowsetName2;
             flowsetMandatoryFieldsData2["lineOfBusiness"] = "Facilities";
             await apiHelper.createNewFlowset(flowsetMandatoryFieldsData2);
 
             //Create new flowset
-            flowsetName3 = `DRDMV-1357 ${randomStr} Draft`;
+            flowsetName3 = `6230 ${randomStr} Draft`;
             let flowsetMandatoryFieldsData3 = cloneDeep(flowsetGlobalFields);
             flowsetMandatoryFieldsData3.flowsetName = flowsetName3;
             flowsetMandatoryFieldsData3["lineOfBusiness"] = "Facilities";
@@ -1009,7 +1009,7 @@ describe('Line of Business Permission Tests', () => {
             await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
         });
 
-        it('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', async () => {
+        it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
@@ -1022,7 +1022,7 @@ describe('Line of Business Permission Tests', () => {
             await editFlowsetConfigPo.selectStatus("Draft");
             await editFlowsetConfigPo.clickSaveBtn();
         });
-        it('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', async () => {
+        it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -1042,7 +1042,7 @@ describe('Line of Business Permission Tests', () => {
             await createCasetemplatePo.setFlowsetValue(flowsetName1);
             await createCasetemplatePo.clickSaveCaseTemplate();
         });
-        it('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', async () => {
+        it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
             //Create a case using above casetemplate
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('fritz');
@@ -1052,7 +1052,7 @@ describe('Line of Business Permission Tests', () => {
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getFlowsetValue()).toBe(flowsetName1);
         });
-        it('[DRDMV-1357]: [Flowsets] Case Template creation with Flowset', async () => {
+        it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
@@ -1069,7 +1069,7 @@ describe('Line of Business Permission Tests', () => {
     });
 
     //apurva
-    describe('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+    describe('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName = 'Private' + randomStr;
         let templateName1 = 'TemplateName1' + randomStr;
@@ -1091,7 +1091,7 @@ describe('Line of Business Permission Tests', () => {
             await apiHelper.apiLogin('jbarnes');
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
         });
-        it('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+        it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -1099,7 +1099,7 @@ describe('Line of Business Permission Tests', () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
         });
-        it('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+        it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -1115,7 +1115,7 @@ describe('Line of Business Permission Tests', () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy();
         });
-        it('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+        it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -1131,7 +1131,7 @@ describe('Line of Business Permission Tests', () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy();
         });
-        it('[DRDMV-23519]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
+        it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();

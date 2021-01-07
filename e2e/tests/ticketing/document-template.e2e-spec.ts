@@ -24,7 +24,7 @@ describe('Document Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-14977]: Verify UI for Document template create ,edit, view mode', async () => {
+    describe('[4510]: Verify UI for Document template create ,edit, view mode', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let documentName = "DocumentTemplate" + randomStr;
         let documentDescription = "description" + randomStr;
@@ -32,7 +32,7 @@ describe('Document Template', () => {
         let label1 = "POSH";
         let label2 = "Payroll";
 
-        it('[DRDMV-14977]: Verify Create Document Template UI', async () => {
+        it('[4510]: Verify Create Document Template UI', async () => {
             // Goto document template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
@@ -52,7 +52,7 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.setDocumentBody(documentBody);
             await createDocumentTemplatePo.clickOnSaveButton();
         });
-        it('[DRDMV-14977]: Updated new Label and verify on console', async () => {
+        it('[4510]: Updated new Label and verify on console', async () => {
             await documentTemplateConsolePo.clickOnGridRefreshButton();
             await documentTemplateConsolePo.addColumnOnGrid(['Label']);
             await documentTemplateConsolePo.searchOnGridConsole(documentName);
@@ -67,7 +67,7 @@ describe('Document Template', () => {
             expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Label')).toBe(label2, 'Label is missing on Grid');
             expect(await documentTemplateConsolePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label is not get sorted with descending order');
         });
-        it('[DRDMV-14977]: create same name record in same LOB', async () => {
+        it('[4510]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -84,7 +84,7 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-14977]: create same name record in different LOB', async () => {
+        it('[4510]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await createDocumentTemplatePo.clickOnAddTemplate();
@@ -109,7 +109,7 @@ describe('Document Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Verify Document template creation with Case business analyst', async () => {
+    describe('[4516,4512,4515,4514]: Verify Document template creation with Case business analyst', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateRandVal1 = 'templateRandVal1' + randomStr;
         let templateRandVal2 = 'templateRakndVal2' + randomStr;
@@ -120,7 +120,7 @@ describe('Document Template', () => {
         let label1 = 'POSH';
         let facilitiesLabel1 = 'Pantry';
         let facilitiesLabel2 = 'Cleaning';
-        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Create document template', async () => {
+        it('[4516,4512,4515,4514]: Create document template', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
@@ -146,7 +146,7 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.setDocumentBody(documentBody1);
             await createDocumentTemplatePo.clickOnSaveButton();
         });
-        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Validation of document template', async () => {
+        it('[4516,4512,4515,4514]: Validation of document template', async () => {
             await utilGrid.selectLineOfBusiness("Facilities");
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
@@ -168,7 +168,7 @@ describe('Document Template', () => {
             await editDocumentTemplatePo.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Update document template', async () => {
+        it('[4516,4512,4515,4514]: Update document template', async () => {
             await utilGrid.selectLineOfBusiness("Facilities");
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company Drop down is not disabled');
@@ -187,7 +187,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
             await documentTemplateConsolePo.searchOnGridConsole(templateRandVal1);
         });
-        it('[DRDMV-14970,DRDMV-14974,DRDMV-14971,DRDMV-14972]: Verify Document template creation with Case business analyst only and different validations on the window', async () => {
+        it('[4516,4512,4515,4514]: Verify Document template creation with Case business analyst only and different validations on the window', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -210,7 +210,7 @@ describe('Document Template', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-14973]: Verify document body expression editor will list dynamic fields along with Case fields.', async () => {
+    describe('[4513]: Verify document body expression editor will list dynamic fields along with Case fields.', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData;
         let documentName1 = randomStr + 'Document1';
@@ -256,7 +256,7 @@ describe('Document Template', () => {
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate2.id, 'ALL_DATA_TYPE');
         });
 
-        it('[DRDMV-14973]: Verify Document Template With Case Dynamic Field ', async () => {
+        it('[4513]: Verify Document Template With Case Dynamic Field ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
             await createDocumentTemplatePo.clickOnAddTemplate();
@@ -339,7 +339,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-14973]: Verify Document Template With Add Case Template Dynamic Field  ', async () => {
+        it('[4513]: Verify Document Template With Add Case Template Dynamic Field  ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName2);
             await createDocumentTemplatePo.setCompany("Petramco");
@@ -368,7 +368,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-14973]: Verify Document Template With Confidential, Non Confidential Required and Hidden ', async () => {
+        it('[4513]: Verify Document Template With Confidential, Non Confidential Required and Hidden ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName2);
             await createDocumentTemplatePo.setCompany("Petramco");
@@ -382,7 +382,7 @@ describe('Document Template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-14973]: Verify Document Template With Case Template Without Dynamic Field  ', async () => {
+        it('[4513]: Verify Document Template With Case Template Without Dynamic Field  ', async () => {
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName3);
             await createDocumentTemplatePo.setCompany("Petramco");

@@ -122,7 +122,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
         await apiHelper.associatePersonToSupportGroup(userData3.userId, "Facilities");
     }
 
-    describe('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
+    describe('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
         let caseTemplateData, facilitiesTemplateData, caseTemplateDataPsilon, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
         let commonNameForOtherLoB = randomStr + "FacilitiesDRDMV23488";
@@ -228,7 +228,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval')).toBeTruthy('Status Not Set');
         });
-        it('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
+        it('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoQuickCase();
@@ -239,7 +239,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe('Human Resource');
             await previewCaseTemplateCasesPo.clickOnBackButton();
         });
-        it('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
+        it('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
             await browser.sleep(5000); //Hard wait for KA Indexing
             expect(await resourcesPo.getKnowledgeArticleInfo()).toContain('Human Resource', 'LOB is not correct');
             await resourcesPo.clickOnAdvancedSearchOptions();
@@ -254,7 +254,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await quickCasePo.createCaseButton();
             await previewCasePage.clickGoToCaseButton();
         });
-        it('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
+        it('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Phones')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Field is enabled');
@@ -277,7 +277,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 1");
             expect(await viewCasePage.getAssigneeText()).toBe("RA3 Liu");
         });
-        it('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
+        it('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
             await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
             caseTemplateData.templateName = randomStr + "2Case DRDMV23488";
             await apiHelper.createCaseTemplate(caseTemplateData);
@@ -304,7 +304,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await utilityGrid.clearFilter();
-            expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeFalsy('12063Summary' + randomStr);
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('gderuno');
             expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeFalsy('template is present');
@@ -329,7 +329,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Facilities');
             await quickCasePo.gotoCaseButton();
         });
-        it('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
+        it('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoQuickCase();
@@ -352,12 +352,12 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await utilityGrid.isGridRecordPresent('PetramcoCaseSummary' + randomStr)).toBeFalsy('PetramcoCaseSummary' + randomStr);
             expect(await utilityGrid.isGridRecordPresent('PsilonCaseSummary' + randomStr)).toBeFalsy('PsilonCaseSummary' + randomStr);
         });
-        it('[DRDMV-23624,DRDMV-23614]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has Multiple LOB', async () => {
+        it('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has Multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await utilityGrid.clearFilter();
             await utilGrid.selectLineOfBusiness("Human Resource");
-            expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeTruthy('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent(randomStr + "2Case DRDMV23488")).toBeTruthy('12063Summary' + randomStr);
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeFalsy('Field is enabled');
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Phones')).toBeFalsy('Value is present in  Category Tier 1 drop down');
@@ -382,9 +382,9 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await viewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
             await navigationPage.gotoCaseConsole();
             await utilGrid.selectLineOfBusiness("Facilities");
-            expect(await utilityGrid.isGridRecordPresent(caseTemplateData.templateName)).toBeFalsy('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateData.templateName)).toBeFalsy('12063Summary' + randomStr);
             await utilGrid.selectLineOfBusiness("Human Resource");
-            expect(await utilityGrid.isGridRecordPresent(caseTemplateData.templateName)).toBeTruthy('DRDMV-23519Summary' + randomStr);
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateData.templateName)).toBeTruthy('12063Summary' + randomStr);
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -392,7 +392,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
         });
     });
 
-    describe('[DRDMV-23617]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+    describe('[60217]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response, notesTemplate2, emailTemplateOraclePsilon, templateData2, tempNotesTemplateData1, templateData, externaltemplateData, automatedtemplateData, emailTemplateName, emailTemplateName1, notesTemplateName, notesTemplateBody, notesTemplateName1, notesTemplateBody1;
         let resolutionCode = 'resolutionCode' + randomStr;
@@ -511,7 +511,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             }
             await apiHelper.createEmailTemplate(emailTemplateOraclePsilon);
         });
-        it('[DRDMV-23617]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+        it('[60217]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
@@ -529,7 +529,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await composeMailPo.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
         });
-        it('[DRDMV-23617]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+        it('[60217]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddTaskFromTemplateButton();
             await manageTaskBladePo.searchTaskTemplate(templateData.templateSummary);
@@ -546,7 +546,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externaltemplateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
         });
-        it('[DRDMV-23617]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+        it('[60217]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
             // Verify Case Notes Template
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -561,7 +561,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog(tempNotesTemplateData1.body)).toBeTruthy();
         });
-        it('[DRDMV-23617]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
+        it('[60217]:[Operating Organization] [Cases] : Verify the behavior where Email Templates, Task Templates, Resolution Codes, Notes templates are filtered / displayed based on the Line of Business on Cases.', async () => {
             // Verify Resolution Code
             await viewCasePage.clickEditCaseButton();
             await editCasePo.updateResolutionCode(resolutionCode);
@@ -587,7 +587,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
         });
     });
 
-    describe('[DRDMV-23597]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', () => {
+    describe('[60237]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let knowledgeSetTitle = 'KnowledgeSet_' + randomStr, articleData, articleDetails;
         const knowledgeTemplateStr = 'ArticleTemplate_' + randomStr;
@@ -608,7 +608,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             await coreApi.getKnowledgeTemplateGuid(knowledgeTemplateStr);
         });
-        it('[DRDMV-23597]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[60237]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeTemplateStr);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -637,7 +637,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
         });
-        it('[DRDMV-23597]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[60237]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Human Resource');
             expect(await editKnowledgePo.getCategoryTier1SelectedValue()).toBe('Employee Relations');
@@ -656,7 +656,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editKnowledgePo.clickSaveStatusBtn();
         });
-        it('[DRDMV-23597]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
+        it('[60237]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoKnowledgeConsole();
@@ -665,7 +665,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
         });
     });
 
-    describe('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', () => {
+    describe('[60205]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', () => {
         let twoCompanyUser, knowledgeSetDataHR, knowledgeSetDataFacilities, knowledgeArticleDataDiffLOB, articleId;
         let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -714,7 +714,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await apiHelper.apiLogin("fritz");
             await apiHelper.createKnowledgeArticle(knowledgeArticleDataDiffLOB);
         });
-        it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
+        it('[60205]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login(`${twoCompanyUser.userId}@petramco.com`, 'Password_1234');
             await navigationPage.gotoCreateKnowledge();
@@ -751,7 +751,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
         });
-        it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
+        it('[60205]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getLineOfBusinessValue()).toBe('Human Resource');
             expect(await editKnowledgePo.isLobSectionEnabled()).toBeTruthy();
@@ -805,7 +805,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeFalsy(articleId + ' Record is present');
             await navigationPage.signOut();
         });
-        it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
+        it('[60205]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await loginPage.login('ppeter');
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
@@ -832,7 +832,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(articleId)).toBeTruthy(articleId + ' Record is not present');
         });
-        it('[DRDMV-23625]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
+        it('[60205]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple companies for the single Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('ncage');
             await navigationPage.gotoCreateKnowledge();
@@ -858,7 +858,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
         });
     });
 
-    describe('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', () => {
+    describe('[60218]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', () => {
         let knowledgeSetDataHR, knowledgeSetDataFacilities, articleId, knowledgeArticleTemplateDataHR, knowledgeArticleTemplateDataFacilities, knowledgeArticleDataSameLOB;
         let randomStr = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -904,7 +904,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataHR);
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateDataFacilities);
         });
-        it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+        it('[60218]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
 
@@ -947,7 +947,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             articleId = await viewKnowledgeArticlePo.getKnowledgeArticleId();
         });
-        it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+        it('[60218]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
@@ -981,7 +981,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await accessTabPo.isAgentPresent(userData2.firstName)).toBeFalsy('User is Present');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
         });
-        it('[DRDMV-23618]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
+        it('[60218]: [Operating Organization] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to multiple Line of Business', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Failure: Operational Category 1 is missing');
             expect(await createKnowledgePage.isValuePresentInDropdown('Category Tier 1', 'Facilties')).toBeFalsy('Failure: Operational Category 1 is present');
@@ -1022,7 +1022,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
         });
     });
 
-    describe('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+    describe('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
         let facilitiescaseData, facilitiesGlobalTemplateData, facilitiesarticleData, caseTemplateDataGlobal, caseTemplateData, facilitiesTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV23488";
         let commonNameForOtherLoB = randomStr + "FacilitiesDRDMV23488";
@@ -1128,7 +1128,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'PublishApproval')).toBeTruthy('Status Not Set');
         });
-        it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
@@ -1136,7 +1136,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await previewCaseTemplateCasesPo.getLineOfBusinessValue()).toBe('Human Resource');
             await previewCaseTemplateCasesPo.clickOnBackButton();
         });
-        it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await browser.sleep(7000); //Hard wait for KA Indexing
             expect(await resourcesPo.getKnowledgeArticleInfo()).toContain('Human Resource', 'LOB is not correct');
             await resourcesPo.clickOnAdvancedSearchOptions();
@@ -1157,7 +1157,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
             await previewCasePage.clickBackButton();
         });
-        it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Phones')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Field is enabled');
             await editCasePo.updateCasePriority('High');
@@ -1179,7 +1179,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 1");
             expect(await viewCasePage.getAssigneeText()).toBe("RA3 Liu");
         });
-        it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplateData.templateName = randomStr + "2CaseDRDMV23488";
             await apiHelper.createCaseTemplate(caseTemplateData);
@@ -1201,7 +1201,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await quickCasePo.selectCaseTemplate(caseTemplateDataGlobal.templateName)).toBeFalsy('template is present');
             expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeFalsy('template is present');
         });
-        it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoQuickCase();
@@ -1222,7 +1222,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await changeAssignmentBladePo.businessUnitOptionsPresent('Facilities Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
         });
-        it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectBusinessUnit('Australia Support');
             await changeAssignmentBladePo.selectSupportGroup('AU Support 1');
@@ -1246,7 +1246,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Facilities');
             await quickCasePo.gotoCaseButton();
         });
-        it('[DRDMV-23488]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
+        it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateDataGlobal.templateName);

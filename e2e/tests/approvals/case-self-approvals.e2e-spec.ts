@@ -28,7 +28,7 @@ describe("Case Self Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10822]:[Approval] - Case Self Approval without Process', async () => {
+    describe('[5160]:[Approval] - Case Self Approval without Process', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = '"' + "Automated Self Approval without process" + '"';
         let caseData = undefined;
@@ -85,7 +85,7 @@ describe("Case Self Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-10822]:Create Self Approval Flow Without Process', async () => {
+        it('[5160]:Create Self Approval Flow Without Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -110,7 +110,7 @@ describe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-10822]:Create case and verify self approval without process', async () => {
+        it('[5160]:Create case and verify self approval without process', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -123,7 +123,7 @@ describe("Case Self Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was auto-approved');
         });
 
-        it('[DRDMV-10822]:Create case with non mathching summary and verify self approval without process', async () => {
+        it('[5160]:Create case with non mathching summary and verify self approval without process', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData1);
             caseId = response.displayId;
@@ -146,7 +146,7 @@ describe("Case Self Approval Tests", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10821]:[Approval] - Case Self Approval with Process', async () => {
+    describe('[5161]:[Approval] - Case Self Approval with Process', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = undefined, caseData1 = undefined;
         let caseId: string;
@@ -203,7 +203,7 @@ describe("Case Self Approval Tests", () => {
             }
         });
 
-        it('[DRDMV-10821]:Create Self Approval Flow Without Process', async () => {
+        it('[5161]:Create Self Approval Flow Without Process', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -246,7 +246,7 @@ describe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-10821]:Create case and verify self approval without process', async () => {
+        it('[5161]:Create case and verify self approval without process', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -259,7 +259,7 @@ describe("Case Self Approval Tests", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was self-approved');
         });
 
-        it('[DRDMV-10821]:Create case with non matching summary and verify self approval without process', async () => {
+        it('[5161]:Create case with non matching summary and verify self approval without process', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData1);
             caseId = response.displayId;

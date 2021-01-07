@@ -157,14 +157,14 @@ export const Case_Pending_FILTER_13 = {
 }
 //Task Creation Data
 export const TASK_DATA_Combination_1 = {
-    "taskName": "DRDMV-23494_1",
+    "taskName": "12076_1",
     "company": "Petramco",
     "businessUnit": "Australia Support",
     "supportGroup": "AU Support 1",
     "assignee": "kwilliams",
 };
 export const TASK_DATA_Combination_2 = {
-    "taskName": "DRDMV-23494_2",
+    "taskName": "12076_2",
     "company": "Petramco",
     "businessUnit": "HR Support",
     "supportGroup": "Employee Relations",
@@ -172,14 +172,14 @@ export const TASK_DATA_Combination_2 = {
 
 };
 export const TASK_DATA_Combination_3 = {
-    "taskName": "DRDMV-23494_3",
+    "taskName": "12076_3",
     "company": "Petramco",
     "businessUnit": "United States Support",
     "supportGroup": "US Support 1",
     "assignee": "qfeng",
 };
 export const TASK_DATA_Combination_4 = {
-    "taskName": "DRDMV-23494_4",
+    "taskName": "12076_4",
     "company": "Petramco",
     "businessUnit": "United States Support",
     "supportGroup": "US Support 2",
@@ -187,14 +187,14 @@ export const TASK_DATA_Combination_4 = {
    
 };
 export const TASK_DATA_Combination_5 = {
-    "taskName": "DRDMV-23494_5",
+    "taskName": "12076_5",
     "company": "Petramco",
     "businessUnit": "India Support",
     "supportGroup": "IN Support 1",
     "assignee": "ajoshi",
 };
 export const TASK_DATA_Combination_6 = {
-    "taskName": "DRDMV-23495_6",
+    "taskName": "12075_6",
     "company": "Petramco",
     "businessUnit": "HR Support",
     "supportGroup": "Compensation and Benefits",
@@ -205,7 +205,7 @@ export const TASK_DATA_Combination_6 = {
 
 };
 export const TASK_DATA_Combination_7 = {
-    "taskName": "DRDMV-23495_7",
+    "taskName": "12075_7",
     "company": "Petramco",
     "businessUnit": "HR Support",
     "supportGroup": "Workforce Administration",
@@ -216,7 +216,7 @@ export const TASK_DATA_Combination_7 = {
 
 };
 export const TASK_DATA_Combination_8 = {
-    "taskName": "DRDMV-23495_8",
+    "taskName": "12075_8",
     "company": "Petramco",
     "businessUnit": "United States Support",
     "supportGroup": "US Support 1",
@@ -225,7 +225,7 @@ export const TASK_DATA_Combination_8 = {
 
 };
 export const TASK_DATA_Combination_9 = {
-    "taskName": "DRDMV-23494_9",
+    "taskName": "12076_9",
     "company": "Petramco",
     "businessUnit": "Australia Support",
     "supportGroup": "AU Support 1",
@@ -233,7 +233,7 @@ export const TASK_DATA_Combination_9 = {
     "priority": "Critical"
 };
 export const TASK_DATA_Combination_10 = {
-    "taskName": "DRDMV-23495_10",
+    "taskName": "12075_10",
     "company": "Petramco",
     "businessUnit": "United States Support",
     "supportGroup": "US Support 3",

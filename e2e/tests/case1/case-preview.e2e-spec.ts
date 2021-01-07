@@ -44,7 +44,7 @@ describe("Case Preview", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-13640]: Create a Case via Quick Case and check Case Preview screen', async () => {
+    it('[4675]: Create a Case via Quick Case and check Case Preview screen', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qkatawazi');
@@ -72,7 +72,7 @@ describe("Case Preview", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-14110]: Create a Case without template via Quick Case and check Case Preview screen', async () => {
+    it('[4582]: Create a Case without template via Quick Case and check Case Preview screen', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qkatawazi');
@@ -98,7 +98,7 @@ describe("Case Preview", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-13642,DRDMV-13641]: Create a Case from console with Template and check Case Preview', async () => {
+    it('[4673,4674]: Create a Case from console with Template and check Case Preview', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('qkatawazi');
@@ -127,7 +127,7 @@ describe("Case Preview", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-13666,DRDMV-13672]: Create a Quick Case and Click on Back button on Case Preview blade', async () => {
+    it('[4668,4667]: Create a Quick Case and Click on Back button on Case Preview blade', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoQuickCase();
         await quickCasePo.selectRequesterName('qkatawazi');
@@ -138,7 +138,7 @@ describe("Case Preview", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-13680]: UI Validation for Fields on Case Preview Page', async () => {
+    it('[4664]: UI Validation for Fields on Case Preview Page', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
@@ -182,7 +182,7 @@ describe("Case Preview", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-13644]: Create a Case via Quick Case by pinning articles and cases and check Case Preview on save', async () => {
+    it('[4672]: Create a Case via Quick Case by pinning articles and cases and check Case Preview on save', async () => {
         let RecommendedKnowledgeStr = "Recommended Knowledge";
         let applyBtn = "Apply";
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

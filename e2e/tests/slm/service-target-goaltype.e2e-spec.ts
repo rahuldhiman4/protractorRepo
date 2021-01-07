@@ -52,10 +52,10 @@ describe('Service Level Management - Goal Type Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2247,DRDMV-2248,DRDMV-2246,DRDMV-2245]: SLM - Goal Type - Create new record', async () => {
+    describe('[6039,6038,6040,6041]: SLM - Goal Type - Create new record', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let goalTypeTitle = 'New Goal Type' + randomStr;
-        it('[DRDMV-2247,DRDMV-2248,DRDMV-2246,DRDMV-2245]: Create a Goal Type', async () => {
+        it('[6039,6038,6040,6041]: Create a Goal Type', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
             await createGoalType.clickCreateGoalTypeConfigButton();
@@ -65,7 +65,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-2247,DRDMV-2248,DRDMV-2246,DRDMV-2245]: Update Goal Type and Verify the details', async () => {
+        it('[6039,6038,6040,6041]: Update Goal Type and Verify the details', async () => {
             await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
             expect(await editGoalType.isGoalTypeFieldDisabled()).toBeTruthy('Goal Type field is enabled.');
             expect(await editGoalType.isGoalTypeNameFieldDisabled()).toBeTruthy('Goal Type Name field is enabled.');
@@ -87,7 +87,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('InActive');
         });
 
-        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to same LOB Case Manager', async () => {
+        it('[6039]: Verify if SVT Goal Type is accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -95,7 +95,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is displayed to same LOB with different company Case BA.');
         });
 
-        it('[DRDMV-2247]: Verify if SVT Goal Type  is accessible to different LOB Case BA', async () => {
+        it('[6039]: Verify if SVT Goal Type  is accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -103,7 +103,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is dispayed to different LOB case BA');
         });
 
-        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to different LOB Case Manager', async () => {
+        it('[6039]: Verify if SVT Goal Type is accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -111,7 +111,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is dispayed to different LOB case manager');
         });
 
-        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[6039]: Verify if SVT Goal Type is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -119,7 +119,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is not dispayed to same LOB and different company case BA');
         });
 
-        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[6039]: Verify if SVT Goal Type is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -130,7 +130,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await utilGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is not dispayed to user with multiple LOB case manager');
         });
 
-        it('[DRDMV-2247]: Verify if SVT Goal Type is accessible to Case BA user having access to multiple LOB', async () => {
+        it('[6039]: Verify if SVT Goal Type is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -146,7 +146,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-2247]: create same name record in same LOB', async () => {
+        it('[6039]: create same name record in same LOB', async () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             await createGoalType.selectGoalTypeStatus('Active');
@@ -156,7 +156,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await utilCommon.clickOnWarningOk();
             //on update verification is not possible since goal type name field is disabled on edit.
         });
-        it('[DRDMV-2247]: create same name record in different LOB', async () => {
+        it('[6039]: create same name record in different LOB', async () => {
             await utilGrid.selectLineOfBusiness('Facilities');
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
@@ -173,10 +173,10 @@ describe('Service Level Management - Goal Type Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2282]: SLM - Goal Type - Error and Warning Messages', async () => {
+    describe('[6035]: SLM - Goal Type - Error and Warning Messages', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let goalTypeTitle = 'New Goal Type' + randomStr;
-        it('[DRDMV-2282]: Create Goal Type', async () => {
+        it('[6035]: Create Goal Type', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
             await createGoalType.clickCreateGoalTypeConfigButton();
@@ -187,7 +187,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-2282]: Update Goal Type and Verify warning message appears', async () => {
+        it('[6035]: Update Goal Type and Verify warning message appears', async () => {
             await utilGrid.searchAndOpenHyperlink(goalTypeTitle);
             expect(await editGoalType.isGoalTypeFieldDisabled()).toBeTruthy('Goal Type field is enabled.');
             expect(await editGoalType.isGoalTypeNameFieldDisabled()).toBeTruthy('Goal Type Name field is enabled.');
@@ -202,7 +202,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await utilCommon.clickOnWarningOk();
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
         });
-        it('[DRDMV-2282]: Create Goal Type with Save Title and verify error message', async () => {
+        it('[6035]: Create Goal Type with Save Title and verify error message', async () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
@@ -214,12 +214,12 @@ describe('Service Level Management - Goal Type Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-2249]: SLM - Goal Type - Console', async () => {
+    describe('[6037]: SLM - Goal Type - Console', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let defaultGoalTypeColumns: string[] = ["Goal Type Name", "Goal Type", "Status"];
         let goalTypeColumns: string[] = ["Goal Type Name", "Goal Type", "Status", "GUID"];
         let goalTypeTitle = 'New Goal Type' + randomStr;
-        it('[DRDMV-2249]: Create a Goal Type', async () => {
+        it('[6037]: Create a Goal Type', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
             await createGoalType.clickCreateGoalTypeConfigButton();
@@ -229,7 +229,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        it('[DRDMV-2249]: Update Goal Type and Verify the details', async () => {
+        it('[6037]: Update Goal Type and Verify the details', async () => {
             await goalTypeConsole.addColumns(goalTypeColumns);
             await goalTypeConsole.searchOnGridConsole(goalTypeTitle);
             let goalTypeGUID = await goalTypeConsole.getGoalTypeGUID();

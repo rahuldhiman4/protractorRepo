@@ -28,7 +28,7 @@ describe('Line of Business Permissions Tests Extended', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-8504]: [Email Configuration] Configure email with One Line of Business', async () => {
+    describe('[5480]: [Email Configuration] Configure email with One Line of Business', async () => {
         let emailID = "test@gmail.com";
         let incomingEmail = {
             'mailBoxName': 'testEmail@gmail.com'
@@ -38,7 +38,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await apiHelper.deleteAllEmailConfiguration();
             await apiHelper.createEmailBox('incoming', incomingEmail);
         });
-        it('[DRDMV-8504]: [Email Configuration] Configure email with One Line of Business', async () => {
+        it('[5480]: [Email Configuration] Configure email with One Line of Business', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await consoleEmailConfigurationPo.clickNewEmailConfiguration();
@@ -62,7 +62,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await createEmailConfigPo.clickCancel();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-8504]: [Email Configuration] Configure email with One Line of Business', async () => {
+        it('[5480]: [Email Configuration] Configure email with One Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
@@ -73,7 +73,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await consoleEmailConfigurationPo.searchAndSelectCheckbox(emailID);
             expect(await consoleEmailConfigurationPo.isDeleteConfigurationEmailBtnEnable()).toBeTruthy();
         });
-        it('[DRDMV-8504]: [Email Configuration] Configure email with One Line of Business', async () => {
+        it('[5480]: [Email Configuration] Configure email with One Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -91,7 +91,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await createEmailConfigPo.clickCancel();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-8504]: [Email Configuration] Configure email with One Line of Business', async () => {
+        it('[5480]: [Email Configuration] Configure email with One Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await utilityGrid.selectLineOfBusiness("Human Resource");
@@ -113,7 +113,7 @@ describe('Line of Business Permissions Tests Extended', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-18309]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
+    describe('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
         let incomingEmail = {
             'mailBoxName': 'testEmail@gmail.com'
         }
@@ -136,7 +136,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(emailIDFacility);
         });
-        it('[DRDMV-18309]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
+        it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.selectLineOfBusiness("Human Resource");
@@ -172,7 +172,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid Trusted Email')).toBeTruthy();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-18309]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
+        it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await editEmailConfigPo.setEmailOnEditTrustedEmail("Test@xyz.com");
             await editEmailConfigPo.clickEditTrustedEmailSaveButtonOnTrustedEmail();
             expect(await editEmailConfigPo.isRecordPresentonTrustedEmail("Test@xyz.com")).toBeTruthy();
@@ -194,7 +194,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222323): Mapping for same email address or domain already exists.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-18309]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
+        it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await editEmailConfigPo.setEmailOnBlockedNewEmail("*@*");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid email address')).toBeTruthy();
@@ -210,7 +210,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.setEmailOnBlockedNewEmail("testing@bmc.com");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();
         });
-        it('[DRDMV-18309]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
+        it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.selectLineOfBusiness("Facilities");
@@ -223,8 +223,8 @@ describe('Line of Business Permissions Tests Extended', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-23667]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
-        it('[DRDMV-23667]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
+    describe('[12040]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
+        it('[12040]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
@@ -247,7 +247,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await lobManagmentEditPo.clickOnCancelButton();
         });
 
-        it('[DRDMV-23667]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
+        it('[12040]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
             let lineOfBusinessConfigurationList: string[] = ['Line of Business', 'Define Line of Business', 'Manage Line of Business']
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -274,7 +274,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-23667]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
+        it('[12040]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();

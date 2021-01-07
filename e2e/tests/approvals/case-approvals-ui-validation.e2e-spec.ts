@@ -42,7 +42,7 @@ describe("Case Approval UI Validations", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-1367,DRDMV-10823]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
+    describe('[6220,5159]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseData = undefined;
@@ -90,7 +90,7 @@ describe("Case Approval UI Validations", () => {
             }
         });
 
-        it('[DRDMV-1367,DRDMV-10823]:Create One must approval configuration', async () => {
+        it('[6220,5159]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -132,7 +132,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-1367,DRDMV-10823]:Create a case and verify Show Approvers Blade information', async () => {
+        it('[6220,5159]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -161,7 +161,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-1367,DRDMV-10823]:Approve the case and verify the case details', async () => {
+        it('[6220,5159]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -176,7 +176,7 @@ describe("Case Approval UI Validations", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-1367,DRDMV-10823]:Verify the approvals details on case activity', async () => {
+        it('[6220,5159]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -196,7 +196,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-1367,DRDMV-10823]:Verify the approvals details on case activity after case rejection', async () => {
+        it('[6220,5159]:Verify the approvals details on case activity after case rejection', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -240,7 +240,7 @@ describe("Case Approval UI Validations", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-14049,DRDMV-10824]:[Approval] Approval details in Case details - UI validation (All Must Sign)', async () => {
+    describe('[4591,5158]:[Approval] Approval details in Case details - UI validation (All Must Sign)', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary1 = "Automated All must Approval Case" + randomStr;
@@ -298,7 +298,7 @@ describe("Case Approval UI Validations", () => {
 
         });
 
-        it('[DRDMV-14049,DRDMV-10824]:Create All must approval configuration', async () => {
+        it('[4591,5158]:Create All must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -341,7 +341,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-14049,DRDMV-10824]:Create a case and verify Show Approvers Blade information', async () => {
+        it('[4591,5158]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -370,7 +370,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-14049,DRDMV-10824]:Approve the case and verify the case details', async () => {
+        it('[4591,5158]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
@@ -404,7 +404,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-14049,DRDMV-10824]:Verify the approvals details on case activity', async () => {
+        it('[4591,5158]:Verify the approvals details on case activity', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.switchToApplication('Approval');
@@ -434,7 +434,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-14049,DRDMV-10824]:Verify the approvals details on case activity after case rejection', async () => {
+        it('[4591,5158]:Verify the approvals details on case activity after case rejection', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData1);
             caseId = response.displayId;
@@ -476,7 +476,7 @@ describe("Case Approval UI Validations", () => {
     });
 
     //skhobrag
-    describe('[DRDMV-10828]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
+    describe('[5154]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated One must Approval Case" + randomStr;
@@ -524,7 +524,7 @@ describe("Case Approval UI Validations", () => {
             }
         });
 
-        it('[DRDMV-10828]:Create One must approval configuration', async () => {
+        it('[5154]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -564,7 +564,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
 
-        it('[DRDMV-10828]:Create a case and verify Show Approvers Blade information', async () => {
+        it('[5154]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -594,7 +594,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
-        it('[DRDMV-10828]:Approve the case and verify the case details', async () => {
+        it('[5154]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.switchToApplication('Approval');
@@ -609,7 +609,7 @@ describe("Case Approval UI Validations", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
-        it('[DRDMV-10828]:Verify the approvals details on case activity', async () => {
+        it('[5154]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
             expect(await showApproversBladePo.getShowApproversBladeLabelFromActivity()).toEqual('Approver List');
@@ -638,7 +638,7 @@ describe("Case Approval UI Validations", () => {
 
     });
 
-    describe('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
+    describe('[3472,3469]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseData = undefined;
@@ -681,7 +681,7 @@ describe("Case Approval UI Validations", () => {
                 "Case Template ID": caseTemplateDisplayId
             }
         });
-        it('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
+        it('[3472,3469]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
@@ -721,7 +721,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.clickApprovalFlowSaveButton();
             await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
         });
-        it('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
+        it('[3472,3469]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
             await apiHelper.apiLogin('qstrong');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -744,7 +744,7 @@ describe("Case Approval UI Validations", () => {
             expect(await showApproversBladePo.getApproversCount()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
-        it('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
+        it('[3472,3469]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -774,7 +774,7 @@ describe("Case Approval UI Validations", () => {
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
-        it('[DRDMV-22395,DRDMV-22398]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
+        it('[3472,3469]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
             await apiHelper.apiLogin('qliu');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
@@ -813,7 +813,7 @@ describe("Case Approval UI Validations", () => {
     });
 
     //ankagraw
-    describe('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+    describe('[6395,6393]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
         let caseData, caseId, caseData1, caseData2,caseData3, caseTemplateDataWithMatchingCriteria, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             // Create Case Template through API
@@ -893,7 +893,7 @@ describe("Case Approval UI Validations", () => {
             caseId = await apiHelper.createCase(caseData1);
         });
 
-        it('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+        it('[6395,6393]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned"), 'status should be new of status';
@@ -919,7 +919,7 @@ describe("Case Approval UI Validations", () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+        it('[6395,6393]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseId = await apiHelper.createCase(caseData3);
             await navigationPage.gotoCaseConsole();
@@ -941,7 +941,7 @@ describe("Case Approval UI Validations", () => {
             await updateStatusBladePo.clickSaveStatus();
         });
 
-        it('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+        it('[6395,6393]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseId = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
@@ -952,7 +952,7 @@ describe("Case Approval UI Validations", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
         });
 
-        it('[DRDMV-780,DRDMV-783]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
+        it('[6395,6393]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseId = await apiHelper.createCase(caseData2);
             await navigationPage.gotoCaseConsole();

@@ -45,13 +45,13 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16767]: KA Activity Filter UI validation', async () => {
-        it('[DRDMV-16767]: Create Knowledge Article And Navigate To Activity Tab', async () => {
+    describe('[4217]: KA Activity Filter UI validation', async () => {
+        it('[4217]: Create Knowledge Article And Navigate To Activity Tab', async () => {
             await navigationPage.gotoCreateKnowledge();
             await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
             await createKnowlegePo.clickOnTemplate('Reference');
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16767');
+            await createKnowlegePo.addTextInKnowlegeTitleField('test case for 4217');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
@@ -59,7 +59,7 @@ describe('Case Activity', () => {
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
         });
-        it('[DRDMV-16767]: Verify Filter UI ', async () => {
+        it('[4217]: Verify Filter UI ', async () => {
             await activityTabPage.clickOnFilterButton();
             expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
 
@@ -76,7 +76,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
             expect(await activityTabPage.isFilterPopUpDisplayed()).toEqual('true');
         });
-        it('[DRDMV-16767]: Select Filter Options', async () => {
+        it('[4217]: Select Filter Options', async () => {
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.selectFilterCheckBox('Flag');
             await activityTabPage.selectFilterCheckBox('Unflag');
@@ -86,7 +86,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnFilterApplyButton();
             expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
-        it('[DRDMV-16767]: Verify Applied Filter List', async () => {
+        it('[4217]: Verify Applied Filter List', async () => {
             expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
             await activityTabPage.clickOnNmoreLink();
             expect(await activityTabPage.getTextFromFilterList('Flag')).toBe('Flag'), 'Flag is missing';
@@ -114,7 +114,7 @@ describe('Case Activity', () => {
             await activityTabPage.removeFilterList();
             expect(await activityTabPage.isfilterListDisplayed('Flag')).toBeFalsy('Flag displayed');
         });
-        it('[DRDMV-16767]: Clear Filter From UI And Verify Filter list Is Not Present ', async () => {
+        it('[4217]: Clear Filter From UI And Verify Filter list Is Not Present ', async () => {
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.clickOnFilterClearButton();
             expect(await activityTabPage.isfilterPresent()).toBeFalsy('filter displayed');
@@ -125,12 +125,12 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-18141]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
+    describe('[3973]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
-        it('[DRDMV-18141]: Verify After Click On Person Name It Should Navigate To Person Profile Page ', async () => {
+        it('[3973]: Verify After Click On Person Name It Should Navigate To Person Profile Page ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('test case for DRDMV-18141');
+            await createCase.setSummary('test case for 3973');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await activityTabPage.addActivityNote(caseBodyText);
@@ -143,13 +143,13 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16768]: From KA Activity Filters > Person search behavior in Author field', async () => {
-        it('[DRDMV-16768]: Create Knowledge Article And Navigate To Activity Tab ', async () => {
+    describe('[4216]: From KA Activity Filters > Person search behavior in Author field', async () => {
+        it('[4216]: Create Knowledge Article And Navigate To Activity Tab ', async () => {
             await navigationPage.gotoCreateKnowledge();
             await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
             await createKnowlegePo.clickOnTemplate('Reference');
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16768');
+            await createKnowlegePo.addTextInKnowlegeTitleField('test case for 4216');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
@@ -157,7 +157,7 @@ describe('Case Activity', () => {
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
         });
-        it('[DRDMV-16768]: Add/Remove All Types Of Users ', async () => {
+        it('[4216]: Add/Remove All Types Of Users ', async () => {
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
             await activityTabPage.removeAuthorFromFilter();
@@ -178,7 +178,7 @@ describe('Case Activity', () => {
             await activityTabPage.addAuthorOnFilter('Sapphire Blue');
             await activityTabPage.removeAuthorFromFilter();
         });
-        it('[DRDMV-16768]: Verify Person Able to Search With FirstName/LastName/Email/LoginID/PersonID', async () => {
+        it('[4216]: Verify Person Able to Search With FirstName/LastName/Email/LoginID/PersonID', async () => {
             await activityTabPage.addAuthorOnFilter('Angelina');//FirstName
             await activityTabPage.removeAuthorFromFilter();
             await activityTabPage.addAuthorOnFilter('Steyn');//LastName
@@ -188,7 +188,7 @@ describe('Case Activity', () => {
             await activityTabPage.addAuthorOnFilter('qtao');//Login ID
             await activityTabPage.removeAuthorFromFilter();
         });
-        it('[DRDMV-16768]: Verify Person Details Which Displayed On Person PopUp', async () => {
+        it('[4216]: Verify Person Details Which Displayed On Person PopUp', async () => {
             await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
             await expect(await activityTabPage.isImgPresentOnUserPopUp()).toBeTruthy('Img is Not Present On Author List PopUp');
             await expect(await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie')).toBeTruthy('Name is Not Present On Author List PopUp');
@@ -197,7 +197,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Company is Not Present On Author List PopUp');
             await activityTabPage.clearAuthorSearchBoxOnFilter();
         });
-        it('[DRDMV-16768]: Verify Author Field With Empty Non Empty Field', async () => {
+        it('[4216]: Verify Author Field With Empty Non Empty Field', async () => {
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is empty');
 
@@ -213,7 +213,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16773]: [-ve] - Person details displayed in Activity who have long name', async () => {
+    describe('[4212]: [-ve] - Person details displayed in Activity who have long name', async () => {
         let summary = 'summaryDRDMV16773' + randomStr;
         let caseBodyText = 'caseBodyTextDRDMV16773' + randomStr;
         let taskBodyText = 'taskBodyTextDRDMV16773' + randomStr;
@@ -222,8 +222,8 @@ describe('Case Activity', () => {
 
         beforeAll(async () => {
             manualTemplateData = {
-                "templateName": "DRDMV-16773_task template" + summary,
-                "templateSummary": "DRDMV-16773_Manual_task template summary" + summary,
+                "templateName": "4212_task template" + summary,
+                "templateSummary": "4212_Manual_task template summary" + summary,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -233,10 +233,10 @@ describe('Case Activity', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
         });
-        it('[DRDMV-16773]: Create Case And Add Long Person Name In Activity Note ', async () => {
+        it('[4212]: Create Case And Add Long Person Name In Activity Note ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('test case for DRDMV-16773');
+            await createCase.setSummary('test case for 4212');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
 
@@ -245,7 +245,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
         });
-        it('[DRDMV-16773]: Add Task And Inspect Long Person Name On Activity', async () => {
+        it('[4212]: Add Task And Inspect Long Person Name On Activity', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateName);
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
@@ -254,12 +254,12 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperlinkOfActivityDisplay(taskBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
         });
-        it('[DRDMV-16773]: Add Knowledge Article And Inspect Long Person Name On Activity', async () => {
+        it('[4212]: Add Knowledge Article And Inspect Long Person Name On Activity', async () => {
             await navigationPage.gotoCreateKnowledge();
             await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge page title is missing';
             await createKnowlegePo.clickOnTemplate('Reference');
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16773');
+            await createKnowlegePo.addTextInKnowlegeTitleField('test case for 4212');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
@@ -277,15 +277,15 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16733]: Case Activity Filter UI validation', async () => {
-        it('[DRDMV-16773]: Create Case ', async () => {
+    describe('[4237]: Case Activity Filter UI validation', async () => {
+        it('[4212]: Create Case ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('test case for DRDMV-16733');
+            await createCase.setSummary('test case for 4237');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-        it('[DRDMV-16733]: Verify Case Filter On UI ', async () => {
+        it('[4237]: Verify Case Filter On UI ', async () => {
             await activityTabPage.clickOnFilterButton();
             await expect(await activityTabPage.isApplyFilterButtonEnabled()).toBeFalsy('Filter button is enabled');
             await expect(await activityTabPage.getTextTaskFilterOption('General Notes')).toBe('General Notes'), 'General Notes is missing';
@@ -300,13 +300,13 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextTaskFilterOption('Public')).toBe('Public', 'Public is missing');
             expect(await activityTabPage.isAuthorSearchBoxVisible()).toBeTruthy("authorSearchBoxVisbility is not visible");
         });
-        it('[DRDMV-16733]: Verify Filter Apply Button With Selecting/UnSelect Filter Option ', async () => {
+        it('[4237]: Verify Filter Apply Button With Selecting/UnSelect Filter Option ', async () => {
             await activityTabPage.selectFilterCheckBox('General Notes');
             await expect(await activityTabPage.isApplyFilterButtonEnabled()).toBeTruthy('Filter button is disabled');
             await activityTabPage.selectFilterCheckBox('General Notes');
             await expect(await activityTabPage.isApplyFilterButtonEnabled()).toBeFalsy('Filter button is enabled');
         });
-        it('[DRDMV-16733]: Verify Filters are applied and filter panel is closed ', async () => {
+        it('[4237]: Verify Filters are applied and filter panel is closed ', async () => {
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toEqual('true');
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.selectFilterCheckBox('Status Change');
@@ -316,7 +316,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnFilterApplyButton();
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
-        it('[DRDMV-16733]: Verify Applied Filter List Displayed On Activity Tab ', async () => {
+        it('[4237]: Verify Applied Filter List Displayed On Activity Tab ', async () => {
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
             await activityTabPage.clickOnNmoreLink();
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
@@ -324,7 +324,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change'), 'Category Change is missing';
             expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         });
-        it('[DRDMV-16733]: Verify Applied Filter List With Removed ', async () => {
+        it('[4237]: Verify Applied Filter List With Removed ', async () => {
             // Filter is removed and next filter gets displayed in UI and +n more count reduced by 1
             await activityTabPage.closeNmoreLink();
             await activityTabPage.clickOnNmoreLink();
@@ -353,13 +353,13 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16760]: From Task Activity Filters > Person search behavior in Author field', async () => {
+    describe('[4224]: From Task Activity Filters > Person search behavior in Author field', async () => {
         let summary = 'summaryDRDMV16760' + randomStr;
         let manualTemplateData;
         beforeAll(async () => {
             manualTemplateData = {
-                "templateName": "DRDMV-21617_task template" + summary,
-                "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+                "templateName": "3582_task template" + summary,
+                "templateSummary": "3582_Manual_task template summary" + summary,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -370,17 +370,17 @@ describe('Case Activity', () => {
             await apiHelper.createManualTaskTemplate(manualTemplateData);
         });
 
-        it('[DRDMV-16760]: Create Case Add Task and Navigate To Task ', async () => {
+        it('[4224]: Create Case Add Task and Navigate To Task ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('test case for DRDMV-16760');
+            await createCase.setSummary('test case for 4224');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
         });
-        it('[DRDMV-16760]: Add/Remove All Types Of Users ', async () => {
+        it('[4224]: Add/Remove All Types Of Users ', async () => {
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.addAuthorOnFilter('Elizabeth Peters');
             await activityTabPage.removeAuthorFromFilter();
@@ -401,7 +401,7 @@ describe('Case Activity', () => {
             await activityTabPage.addAuthorOnFilter('Sapphire Blue');
             await activityTabPage.removeAuthorFromFilter();
         });
-        it('[DRDMV-16760]: Verify Person Able to Search With FirstName/LastName/Email/LoginID/PersonID ', async () => {
+        it('[4224]: Verify Person Able to Search With FirstName/LastName/Email/LoginID/PersonID ', async () => {
             await activityTabPage.addAuthorOnFilter('Angelina');//FirstName
             await activityTabPage.removeAuthorFromFilter();
             await activityTabPage.addAuthorOnFilter('Steyn');//LastName
@@ -411,7 +411,7 @@ describe('Case Activity', () => {
             await activityTabPage.addAuthorOnFilter('qtao');//Login ID
             await activityTabPage.removeAuthorFromFilter();
         });
-        it('[DRDMV-16760]: Verify Person Details Which Displayed On Person PopUp', async () => {
+        it('[4224]: Verify Person Details Which Displayed On Person PopUp', async () => {
             await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
             await expect(await activityTabPage.isImgPresentOnUserPopUp()).toBeTruthy('Img is Not Present On Author List PopUp');
             await expect(await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie')).toBeTruthy('Name is Not Present On Author List PopUp');
@@ -419,7 +419,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
             await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
         });
-        it('[DRDMV-16760]: Verify Author Field With Empty Non Empty Field', async () => {
+        it('[4224]: Verify Author Field With Empty Non Empty Field', async () => {
             await activityTabPage.clearAuthorSearchBoxOnFilter();
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is empty');
@@ -434,15 +434,15 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16734]: From Case Activity Filters > Person search behavior in Author field', async () => {
-        it('[DRDMV-16734]: Create Case ', async () => {
+    describe('[4236]: From Case Activity Filters > Person search behavior in Author field', async () => {
+        it('[4236]: Create Case ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('test case for DRDMV-16734');
+            await createCase.setSummary('test case for 4236');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-        it('[DRDMV-16734]: Verify Person Able to Search With FirstName/LastName/Email/LoginID/PersonID ', async () => {
+        it('[4236]: Verify Person Able to Search With FirstName/LastName/Email/LoginID/PersonID ', async () => {
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await activityTabPage.removeAuthorFromFilter();
@@ -456,7 +456,7 @@ describe('Case Activity', () => {
             await activityTabPage.addAuthorOnFilter('qtao');//Login ID
             await activityTabPage.removeAuthorFromFilter();
         });
-        it('[DRDMV-16734]: Verify Person Details Which Displayed On Person PopUp', async () => {
+        it('[4236]: Verify Person Details Which Displayed On Person PopUp', async () => {
             await activityTabPage.searchAuthorOnFilter('Angelina Jolie');
             await expect(await activityTabPage.isImgPresentOnUserPopUp()).toBeTruthy('Img is Not Present On Author List PopUp');
             await expect(await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie')).toBeTruthy('Name is Not Present On Author List PopUp');
@@ -465,7 +465,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
             await activityTabPage.clearAuthorSearchBoxOnFilter();
         });
-        it('[DRDMV-16734]: Verify Person Details Which Displayed On Person PopUp', async () => {
+        it('[4236]: Verify Person Details Which Displayed On Person PopUp', async () => {
             await activityTabPage.addAuthorOnFilter('Angelina Jolie');
             await expect(await activityTabPage.isAuthorBoxEmpty()).toBeFalsy('Author field is empty');
             await activityTabPage.removeAuthorFromFilter();
@@ -475,14 +475,14 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16759]: Task Activity Filter UI validation', async () => {
+    describe('[4225]: Task Activity Filter UI validation', async () => {
         let manualTemplateData;
         let autoTemplateData;
         let externalTemplateData: ITaskTemplate;
         beforeAll(async () => {
             manualTemplateData = {
-                "templateName": "DRDMV-21617_task template" + randomStr,
-                "templateSummary": "DRDMV-21617_Manual_task template summary" + randomStr,
+                "templateName": "3582_task template" + randomStr,
+                "templateSummary": "3582_Manual_task template summary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -527,10 +527,10 @@ describe('Case Activity', () => {
             await apiHelper.createExternalTaskTemplate(externalTemplateData);
         });
 
-        it('[DRDMV-16759]: Create Case And Navigate To Manual Task', async () => {
+        it('[4225]: Create Case And Navigate To Manual Task', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('manual task test case for DRDMV-16759');
+            await createCase.setSummary('manual task test case for 4225');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
 
@@ -539,7 +539,7 @@ describe('Case Activity', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
         });
-        it('[DRDMV-16759]: Verify Manual Task Filter On UI', async () => {
+        it('[4225]: Verify Manual Task Filter On UI', async () => {
             await activityTabPage.clickOnFilterButton();
             await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
 
@@ -556,7 +556,7 @@ describe('Case Activity', () => {
             let manaulFilterPopup1: string = await activityTabPage.isFilterPopUpDisplayed();
             await expect(manaulFilterPopup1).toEqual('true');
         });
-        it('[DRDMV-16759]: Verify Filters are applied and filter panel is closed', async () => {
+        it('[4225]: Verify Filters are applied and filter panel is closed', async () => {
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.selectFilterCheckBox('Status Change');
             await activityTabPage.selectFilterCheckBox('Assignment Change');
@@ -566,7 +566,7 @@ describe('Case Activity', () => {
 
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
-        it('[DRDMV-16759]: Verify Applied Filter List Displayed On Manual Task Activity Tab', async () => {
+        it('[4225]: Verify Applied Filter List Displayed On Manual Task Activity Tab', async () => {
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
             await activityTabPage.clickOnNmoreLink();
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -574,7 +574,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
             expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         });
-        it('[DRDMV-16759]: Verify Applied Filter List With Removed', async () => {
+        it('[4225]: Verify Applied Filter List With Removed', async () => {
             await activityTabPage.closeNmoreLink();
             await activityTabPage.clickOnNmoreLink();
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
@@ -604,10 +604,10 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
         });
 
-        it('[DRDMV-16759]: Create Case And Navigate To Automation Task', async () => {
+        it('[4225]: Create Case And Navigate To Automation Task', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('auto task template test case for DRDMV-16759');
+            await createCase.setSummary('auto task template test case for 4225');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
 
@@ -615,7 +615,7 @@ describe('Case Activity', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
         });
-        it('[DRDMV-16759]: Verify Automation Task Filter On UI', async () => {
+        it('[4225]: Verify Automation Task Filter On UI', async () => {
             await activityTabPage.clickOnFilterButton();
             await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
             await expect(await activityTabPage.getTextTaskFilterOption('General Notes')).toBe('General Notes');
@@ -630,7 +630,7 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('General Notes');
             await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
         });
-        it('[DRDMV-16759]: Verify Filters are applied and filter panel is closed', async () => {
+        it('[4225]: Verify Filters are applied and filter panel is closed', async () => {
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toEqual('true');
 
             await activityTabPage.selectFilterCheckBox('General Notes');
@@ -642,7 +642,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnFilterApplyButton();
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
-        it('[DRDMV-16759]: Verify Applied Filter List Displayed On Automation Task Activity Tab', async () => {
+        it('[4225]: Verify Applied Filter List Displayed On Automation Task Activity Tab', async () => {
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
             await activityTabPage.clickOnNmoreLink();
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -650,7 +650,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
             expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         });
-        it('[DRDMV-16759]: Verify Applied Filter List With Removed', async () => {
+        it('[4225]: Verify Applied Filter List With Removed', async () => {
             await activityTabPage.closeNmoreLink();
             await activityTabPage.clickOnNmoreLink();
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
@@ -679,10 +679,10 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
         });
 
-        it('[DRDMV-16759]: Create Case And Navigate To External Task', async () => {
+        it('[4225]: Create Case And Navigate To External Task', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('external task test case for DRDMV-16759');
+            await createCase.setSummary('external task test case for 4225');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
 
@@ -690,7 +690,7 @@ describe('Case Activity', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
             await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
         });
-        it('[DRDMV-16759]: Verify External Task Filter On UI', async () => {
+        it('[4225]: Verify External Task Filter On UI', async () => {
             await activityTabPage.clickOnFilterButton();
             await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
             let filterOption1: string = await activityTabPage.getTextTaskFilterOption('General Notes');
@@ -709,7 +709,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.checkFilterApplyButtonIsDisabledOrEnabled()).toBeGreaterThan(0);
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toEqual('true');
         });
-        it('[DRDMV-16759]: Verify Filters Are Applied And Filter Panel Is Closed', async () => {
+        it('[4225]: Verify Filters Are Applied And Filter Panel Is Closed', async () => {
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.selectFilterCheckBox('Status Change');
             await activityTabPage.selectFilterCheckBox('Assignment Change');
@@ -719,7 +719,7 @@ describe('Case Activity', () => {
 
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
-        it('[DRDMV-16759]: Verify Applied Filter List Displayed On External Task Activity Tab', async () => {
+        it('[4225]: Verify Applied Filter List Displayed On External Task Activity Tab', async () => {
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
             await activityTabPage.clickOnNmoreLink();
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
@@ -727,7 +727,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextFromFilterList('Category Change')).toBe('Category Change');
             expect(await activityTabPage.getTextFromFilterList('Author')).toBe('Author : Kadeem Hardison');
         });
-        it('[DRDMV-16759]: Verify Applied Filter List With Removed', async () => {
+        it('[4225]: Verify Applied Filter List With Removed', async () => {
             await activityTabPage.closeNmoreLink();
             await activityTabPage.clickOnNmoreLink();
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
@@ -757,16 +757,16 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-18048]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
-        it('[DRDMV-18048]: Create Case ', async () => {
+    describe('[4014]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
+        it('[4014]: Create Case ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
             await createCase.setContactName('Angelina Jolie');
-            await createCase.setSummary('test case for DRDMV-18048');
+            await createCase.setSummary('test case for 4014');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-        it('[DRDMV-18048]: Add More than One Agent And Verify That Person Displayed On Activity ', async () => {
+        it('[4014]: Add More than One Agent And Verify That Person Displayed On Activity ', async () => {
             await expect(await activityTabPage.getPersonCount('Hi hello @Allen')).toBeGreaterThan(3);
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clearActivityNote();
@@ -783,7 +783,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16754]: Drill Down to different screens from Activities', async () => {
+    describe('[4230]: Drill Down to different screens from Activities', async () => {
         let caseBodyText = "This is unique caseActivity text " + randomStr;
         let taskBodyText = "This is unique TaskActivity text " + randomStr;
         let knowledgeBodyText = "This is unique KnowledgeActivity text " + randomStr;
@@ -794,8 +794,8 @@ describe('Case Activity', () => {
         beforeAll(async () => {
             // Create manual task template
             manualTemplateData = {
-                "templateName": "DRDMV-21617_task template" + summary,
-                "templateSummary": "DRDMV-21617_Manual_task template summary" + summary,
+                "templateName": "3582_task template" + summary,
+                "templateSummary": "3582_Manual_task template summary" + summary,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -806,14 +806,14 @@ describe('Case Activity', () => {
             await apiHelper.createManualTaskTemplate(manualTemplateData);
         });
 
-        it('[DRDMV-16754]: Create Case ', async () => {
+        it('[4230]: Create Case ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('test case for DRDMV-16754');
+            await createCase.setSummary('test case for 4230');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-        it('[DRDMV-16754]: Click On Person Names And Inspect Behavior With Case', async () => {
+        it('[4230]: Click On Person Names And Inspect Behavior With Case', async () => {
             await activityTabPage.addActivityNote(caseBodyText);
             await activityTabPage.clickOnPostButton();
             caseIdText = await viewCasePo.getCaseID();
@@ -822,7 +822,7 @@ describe('Case Activity', () => {
             await expect(browser.getTitle()).toBe('Person Profile - Business Workflows');
             await activityTabPage.clickOnHyperlinkFromActivity(1, caseIdText);
         });
-        it('[DRDMV-16754]:Add Task Click On Person Names And Inspect Behavior ', async () => {
+        it('[4230]:Add Task Click On Person Names And Inspect Behavior ', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
@@ -840,18 +840,18 @@ describe('Case Activity', () => {
             // Verification Open Task > Click on Person Name from Activity
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
         });
-        it('[DRDMV-16754]:Create Knowledge Article', async () => {
+        it('[4230]:Create Knowledge Article', async () => {
             await navigationPage.gotoCreateKnowledge();
             await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
             await createKnowlegePo.clickOnTemplate('Reference');
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('Knowledge Article for DRDMV-16754');
+            await createKnowlegePo.addTextInKnowlegeTitleField('Knowledge Article for 4230');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickGoToArticleButton();
         });
-        it('[DRDMV-16754]:Click On Person Names And Inspect Behavior', async () => {
+        it('[4230]:Click On Person Names And Inspect Behavior', async () => {
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('knowoledge Edit link is missing');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
@@ -864,15 +864,15 @@ describe('Case Activity', () => {
     });
 
     // ptidke
-    describe('[DRDMV-7152]:  [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
+    describe('[5557]:  [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
         let autoTemplateData;
         beforeAll(async () => {
             autoTemplateData = {
-                "templateName": "auto task DRDMV-7152 template",
-                "templateSummary": "auto task DRDMV-7152template summary",
+                "templateName": "auto task 5557 template",
+                "templateSummary": "auto task 5557template summary",
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": "Case Process ",
@@ -888,17 +888,17 @@ describe('Case Activity', () => {
             let autoTaskTemplate = await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
             console.log("Automated task Template created===", autoTaskTemplate.id);
         });
-        it('[DRDMV-7152]: Create Case And Navigate On Task Page ', async () => {
+        it('[5557]: Create Case And Navigate On Task Page ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Al Allbrook');
-            await createCase.setSummary('test case for DRDMV-16773');
+            await createCase.setSummary('test case for 4212');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateName);
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
         });
-        it('[DRDMV-7152]: Verify Task Social Actvity With Single Line/One File Comment', async () => {
+        it('[5557]: Verify Task Social Actvity With Single Line/One File Comment', async () => {
             //single line comment
             await activityTabPage.addActivityNote(taskBodyText);
             await activityTabPage.clickOnPostButton();
@@ -912,7 +912,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickAttachedFile('bwfPdf.pdf');
             expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         });
-        it('[DRDMV-7152]: Verify Task Social Actvity With Multiple Line/Html With Text Comment', async () => {
+        it('[5557]: Verify Task Social Actvity With Multiple Line/Html With Text Comment', async () => {
             //multiple line
             let newline: string = "this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things";
             await activityTabPage.addActivityNote(newline);
@@ -941,13 +941,13 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16582]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
+    describe('[4255]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         beforeAll(async () => {
             let caseData = {
                 "Requester": "Fritz",
-                "Summary": "Test case for DRDMV-8377RandVal" + summary,
+                "Summary": "Test case for 5515RandVal" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -958,12 +958,12 @@ describe('Case Activity', () => {
             caseId = newCase.displayId;
         });
 
-        it('[DRDMV-16582]: Login In And Open Case ', async () => {
+        it('[4255]: Login In And Open Case ', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.clickOnRefreshButton();
         });
-        it('[DRDMV-16582]: Login In With Assignee User and Verify View Count ', async () => {
+        it('[4255]: Login In With Assignee User and Verify View Count ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -980,7 +980,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16589]: Check case view count is not increased by opening same case by different places', async () => {
+    describe('[4250]: Check case view count is not increased by opening same case by different places', async () => {
         let summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
@@ -1004,8 +1004,8 @@ describe('Case Activity', () => {
             
             // Create Task Template
             manualTaskTemplateData = {
-                "templateName": "DRDMV-16589_task template" + summary,
-                "templateSummary": "DRDMV-16589_Manual_task template summary" + summary,
+                "templateName": "4250_task template" + summary,
+                "templateSummary": "4250_Manual_task template summary" + summary,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -1015,7 +1015,7 @@ describe('Case Activity', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         });
-        it('[DRDMV-16589]: Verify View Case Count Thorght Task ', async () => {
+        it('[4250]: Verify View Case Count Thorght Task ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -1029,7 +1029,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
         });
-        it('[DRDMV-16589]: Verify View Case Count Thorght Quick Case ', async () => {
+        it('[4250]: Verify View Case Count Thorght Quick Case ', async () => {
             // Goto Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
@@ -1048,14 +1048,14 @@ describe('Case Activity', () => {
             await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
             await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
         });
-        it('[DRDMV-16589]: Add Related Person', async () => {
+        it('[4250]: Add Related Person', async () => {
             await viewCasePo.clickOnTab('Related Persons');
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Qadim Katawazi', 'Related to');
             await relatedTabPage.waitUntilNewRelatedPersonAdded(1);
             await expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qadim Katawazi', 'Related to')).toBeTruthy();
         });
-        it('[DRDMV-16589]: Verify View Case Count Thorght Person Profile Related Case Tab', async () => {
+        it('[4250]: Verify View Case Count Thorght Person Profile Related Case Tab', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoPersonProfile();
@@ -1074,7 +1074,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16591]: Check case count is changed with different permission of user read/write/no access to the case', async () => {
+    describe('[4249]: Check case count is changed with different permission of user read/write/no access to the case', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let getUrl;
         let passwd = 'Password_1234';
@@ -1085,7 +1085,7 @@ describe('Case Activity', () => {
             // Create Case
             let caseData = {
                 "Requester": "elizabeth",
-                "Summary": "DRDMV-16591_TC" + summary,
+                "Summary": "4249_TC" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -1097,7 +1097,7 @@ describe('Case Activity', () => {
             caseId = newCase.displayId;
         });
 
-        it('[DRDMV-16591]: Give Read Access To User', async () => {
+        it('[4249]: Give Read Access To User', async () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickOnTab('Case Access');
             //Read Access Agent
@@ -1111,14 +1111,14 @@ describe('Case Activity', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qstrong User');
         });
-        it('[DRDMV-16591]: Login with Write User and check read user count', async () => {
+        it('[4249]: Login with Write User and check read user count', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
             await expect(await activityTabPage.getCaseViewCount('Quin Strong  viewed the case. ')).toEqual(1);
         });
-        it('[DRDMV-16591]: Login with Read user and check user count', async () => {
+        it('[4249]: Login with Read user and check user count', async () => {
             //Login with Read user and check write user count
             await navigationPage.signOut();
             await loginPage.login('qstrong');
@@ -1126,7 +1126,7 @@ describe('Case Activity', () => {
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
             await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
         });
-        it('[DRDMV-16591]: Login With No Access User And Verify Error Message', async () => {
+        it('[4249]: Login With No Access User And Verify Error Message', async () => {
             let url: string = await browser.getCurrentUrl();
             // Login with No Access user
             await navigationPage.signOut();
@@ -1143,14 +1143,14 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-18052]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
+    describe('[4010]: Alert Notification should be send to tagged persons other than Assignee and Requester', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         beforeAll(async () => {
             // Create Case
             let caseData = {
                 "Requester": "apavlik",
-                "Summary": "DRDMV-18052_TC" + summary,
+                "Summary": "4010_TC" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -1161,15 +1161,15 @@ describe('Case Activity', () => {
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
         });
-        it('[DRDMV-18052]: Open Case And Social Comment ', async () => {
+        it('[4010]: Open Case And Social Comment ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
-            await activityTabPage.addActivityNote('From DRDMV-18052 ');
+            await activityTabPage.addActivityNote('From 4010 ');
             await activityTabPage.addPersonInActivityNote('qkatawazi');
             await activityTabPage.clickOnPostButton();
         });
-        it('[DRDMV-18052]: Click Alert Icon And Verify Alet Notification Of Social Comment', async () => {
+        it('[4010]: Click Alert Icon And Verify Alet Notification Of Social Comment', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await notificationPo.clickOnNotificationIcon();
@@ -1182,7 +1182,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16730]: Show More/Less option in Case Activity Tab with Attachments', async () => {
+    describe('[4240]: Show More/Less option in Case Activity Tab with Attachments', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1207,7 +1207,7 @@ describe('Case Activity', () => {
             // Create Case
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "DRDMV-16730_TC" + summary,
+                "Summary": "4240_TC" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -1220,14 +1220,14 @@ describe('Case Activity', () => {
 
         });
 
-        it('[DRDMV-16730]: Verify Logs With 5 Lines Or Less Than 5 Lines ', async () => {
+        it('[4240]: Verify Logs With 5 Lines Or Less Than 5 Lines ', async () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.addActivityNote(addNoteBodyText1);
             await activityTabPage.clickOnPostButton();
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
         });
-        it('[DRDMV-16730]: Verify Logs With More Than 5 Lines ', async () => {
+        it('[4240]: Verify Logs With More Than 5 Lines ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.clickOnPostButton();
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
@@ -1237,7 +1237,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg7: Show more link is displayed');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         });
-        it('[DRDMV-16730]: Verify Logs With 5 Lines With 3 Attachment ', async () => {
+        it('[4240]: Verify Logs With 5 Lines With 3 Attachment ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText1);
             await activityTabPage.addAttachment([filePath1, filePath2]);
             await activityTabPage.clickOnPostButton();
@@ -1247,7 +1247,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg13: BodyText is missing');
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
         });
-        it('[DRDMV-16730]: Verify Logs With More Than 5 Lines  With 3 Attachment ', async () => {
+        it('[4240]: Verify Logs With More Than 5 Lines  With 3 Attachment ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath4, filePath5]);
             await activityTabPage.clickOnPostButton();
@@ -1258,7 +1258,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg20: BodyText is missing');
             await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
         });
-        it('[DRDMV-16730]: Verify Logs With More Than 5 Lines With More Than 4 Attachment ', async () => {
+        it('[4240]: Verify Logs With More Than 5 Lines With More Than 4 Attachment ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
 
@@ -1276,7 +1276,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson4.json')).toBeTruthy(`FailureMsg30: ${filePath10} is missing`);
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson5.json')).toBeTruthy(`FailureMsg31: ${filePath11} is missing`);
         });
-        it('[DRDMV-16730]: Download Attachments Files ', async () => {
+        it('[4240]: Download Attachments Files ', async () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson1.json')).toBeTruthy('FailureMsg32: bwfJson1.json File is delete sucessfully');
             await activityTabPage.clickAndDownloadAttachmentFile('bwfJson1.json')
             await expect(await utilityCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('FailureMsg33.json File is not downloaded.');
@@ -1303,7 +1303,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16765]: Validate Show More/Less option in KA Activity Tab', async () => {
+    describe('[4219]: Validate Show More/Less option in KA Activity Tab', async () => {
         let randomValues1 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues2 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues3 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1323,12 +1323,12 @@ describe('Case Activity', () => {
         let filePath10 = '../../data/ui/attachment/bwfJson4.json';
         let filePath11 = '../../data/ui/attachment/bwfJson5.json';
 
-        it('[DRDMV-16765]: Create Knowledge Article And Navigate To Activity Tab ', async () => {
+        it('[4219]: Create Knowledge Article And Navigate To Activity Tab ', async () => {
             await navigationPage.gotoCreateKnowledge();
             await expect(browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows'), 'Knowledge Article title is missing';
             await createKnowlegePo.clickOnTemplate('Reference');
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
-            await createKnowlegePo.addTextInKnowlegeTitleField('test_KA_for_DRDMV-16765');
+            await createKnowlegePo.addTextInKnowlegeTitleField('test_KA_for_4219');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
@@ -1336,13 +1336,13 @@ describe('Case Activity', () => {
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
         });
-        it('[DRDMV-16765]: Verify Logs With 5 Lines Or Less Than 5 Lines ', async () => {
+        it('[4219]: Verify Logs With 5 Lines Or Less Than 5 Lines ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText1);
             await activityTabPage.clickOnPostButton();
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg1: BodyText is missing');
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg2: Show more link is displayed');
         });
-        it('[DRDMV-16765]: Verify Logs With More Than 5 Lines', async () => {
+        it('[4219]: Verify Logs With More Than 5 Lines', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.clickOnPostButton();
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
@@ -1352,7 +1352,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg7: Show more link is displayed');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg8: BodyText is missing');
         });
-        it('[DRDMV-16765]: Verify Logs With 5 Lines  With 3 Attachment', async () => {
+        it('[4219]: Verify Logs With 5 Lines  With 3 Attachment', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText1);
             await activityTabPage.addAttachment([filePath1, filePath2]);
             await activityTabPage.clickOnPostButton();
@@ -1362,7 +1362,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText1, 1)).toBeTruthy('FailureMsg13: BodyText is missing');
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeFalsy('FailureMsg14: Show more link is displayed');
         });
-        it('[DRDMV-16765]: Verify Logs With More Than 5 Lines  With 3 Attachment', async () => {
+        it('[4219]: Verify Logs With More Than 5 Lines  With 3 Attachment', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath4, filePath5]);
             await activityTabPage.clickOnPostButton();
@@ -1373,7 +1373,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg20: BodyText is missing');
             await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg21: Show less missing for body text');
         });
-        it('[DRDMV-16765]: Verify Logs With More Than 5 Lines With More Than 4 Attachment', async () => {
+        it('[4219]: Verify Logs With More Than 5 Lines With More Than 4 Attachment', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
             await activityTabPage.clickOnPostButton();
@@ -1390,7 +1390,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson4.json')).toBeTruthy(`FailureMsg30: ${filePath10} is missing`);
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson5.json')).toBeTruthy(`FailureMsg31: ${filePath11} is missing`);
         });
-        it('[DRDMV-16765]: Verify Download Attachments Files', async () => {
+        it('[4219]: Verify Download Attachments Files', async () => {
             await expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJson1.json')).toBeTruthy('FailureMsg32: bwfJson1.json File is delete sucessfully');
             await activityTabPage.clickAndDownloadAttachmentFile('bwfJson1.json')
             await expect(await utilityCommon.isFileDownloaded('bwfJson1.json')).toBeTruthy('FailureMsg33.json File is not downloaded.');
@@ -1420,7 +1420,7 @@ describe('Case Activity', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16764]: Validate all type of social activities are displayed correctly in KA Activity tab', async () => {
+    describe('[4220]: Validate all type of social activities are displayed correctly in KA Activity tab', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let flag = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let unFlag = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1449,7 +1449,7 @@ describe('Case Activity', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
     });
-    it('[DRDMV-16764]: Create Flag/UnFlag Activity Log', async () => {
+    it('[4220]: Create Flag/UnFlag Activity Log', async () => {
         await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
         await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
         await viewKnowledgeArticlePo.clickOnFlagButton();
@@ -1462,12 +1462,12 @@ describe('Case Activity', () => {
         await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
         await utilityCommon.closePopUpMessage();
     });
-    it('[DRDMV-16764]: Create Feedback Activity Log', async () => {
+    it('[4220]: Create Feedback Activity Log', async () => {
         await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
         await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(feedback);
         await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
     });
-    it('[DRDMV-16764]: Create Review Activity Log', async () => {
+    it('[4220]: Create Review Activity Log', async () => {
         await utilityCommon.closePopUpMessage();
         await viewKnowledgeArticlePo.clickReviewPendingLink();
         await reviewCommentsPo.setTextInTellUsMore(reviewPending);
@@ -1475,12 +1475,12 @@ describe('Case Activity', () => {
         await utilityCommon.closePopUpMessage();
         await utilityCommon.closePopUpMessage();
     });
-    it('[DRDMV-16764]: Create Commnet Activity Log', async () => {
+    it('[4220]: Create Commnet Activity Log', async () => {
         await viewKnowledgeArticlePo.clickOnTab('Activity');
         await activityTabPage.addActivityNote(addNoteBodyText);
         await activityTabPage.clickOnPostButton();
     });
-    it('[DRDMV-16764]: Verify Flag/Unflag In Activity', async () => {
+    it('[4220]: Verify Flag/Unflag In Activity', async () => {
         // verify flag in activity
         await expect(await activityTabPage.isLogIconDisplayedInActivity('flag', 5)).toBeTruthy('FailureMsg: Note pencil icon is missing')
         await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills flagged the article', 5));
@@ -1493,21 +1493,21 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isBodyDisplayedInActivity(unFlag, 4)).toBeTruthy('FailureMsg: Kyle Mills unflagged the article is missing');
         await expect(await activityTabPage.isLockIconDisplayedInActivity(4)).toBeTruthy('FailureMsg1: LockIcon is missing');
     });
-    it('[DRDMV-16764]: Verify Feedback In Activity', async () => {
+    it('[4220]: Verify Feedback In Activity', async () => {
         // verify feedback in activity
         await expect(await activityTabPage.isLogIconDisplayedInActivity('comments', 3)).toBeTruthy('FailureMsg: Note pencil icon is missing')
         await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills has provided the feedback for the article', 3));
         await expect(await activityTabPage.isBodyDisplayedInActivity(feedback, 3)).toBeTruthy('FailureMsg: Kyle Mills has provided the feedback for the article is missing');
         await expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg1: LockIcon is missing');
     });
-    it('[DRDMV-16764]: Verify Feedback In Activity', async () => {
+    it('[4220]: Verify Feedback In Activity', async () => {
         // verify Review in activity
         await expect(await activityTabPage.isLogIconDisplayedInActivity('pencil', 2)).toBeTruthy('FailureMsg: Note pencil icon is missing')
         await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills reviewed this article and provided this comment', 2));
         await expect(await activityTabPage.isBodyDisplayedInActivity(reviewPending, 2)).toBeTruthy('FailureMsg: Kyle Mills reviewed this article and provided this comment is missing');
         await expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg1: LockIcon is missing');
     });
-    it('[DRDMV-16764]: Verify Add Note Actvity In Activity Log', async () => {
+    it('[4220]: Verify Add Note Actvity In Activity Log', async () => {
         // Verify KA comment
         await expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg: Note pencil icon is missing')
         await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills added a note', 1));

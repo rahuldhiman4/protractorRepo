@@ -232,8 +232,8 @@ class NavigationPage {
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
         let menuItemStr = '.a-tree__label.is-flip adapt-highlight';
-        let ismenuItemSelected =  await $(menuItemStr).isPresent().then(async (result) => {
-            if(result) return await $(menuItemStr).isDisplayed();
+        let ismenuItemSelected = await $(menuItemStr).isPresent().then(async (result) => {
+            if (result) return await $(menuItemStr).isDisplayed();
             else return false;
         });
         if (ismenuItemSelected) {
@@ -243,8 +243,8 @@ class NavigationPage {
             for (let i = 0; i < menuItems.length; i++) {
                 let submenuItemLocator = await $$('.a-tree__content');
                 if (i < menuItems.length - 1) {
-                    for(let j =0; j<submenuItemLocator.length; j++) {
-                        if(await submenuItemLocator[j].$('adapt-highlight').getText() == menuItems[i])
+                    for (let j = 0; j < submenuItemLocator.length; j++) {
+                        if (await submenuItemLocator[j].$('adapt-highlight').getText() == menuItems[i])
                             await submenuItemLocator[j].$('span.a-tree__toggle').click();
                     }
                 } else {

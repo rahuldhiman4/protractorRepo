@@ -5,10 +5,10 @@ class ConsoleProcessLibrary {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        addRegisterProcessButton: '[rx-view-component-id="07cee854-7e4b-4760-8dcf-71a9fa1c211b"] button',
+        addRegisterProcessButton: '[rx-view-component-id="07cee854-7e4b-4760-8dcf-71a9fa1c211b"] button',//same
         registerProcessGuid: '1aed89be-c517-4afb-a5bc-ad1e82652a6c',
-        summaryField1: 'input[role="search"]',
-        searchButton1: 'button[rx-id="submit-search-button"]',
+        summaryField1: 'input[id="adapt-search-unique-5"]',//done
+        searchButton1: '.adapt-search-button',//done
     }
 
     async isProcessPresentOnGrid(process: string): Promise<boolean> {

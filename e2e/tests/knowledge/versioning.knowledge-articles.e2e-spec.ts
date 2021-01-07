@@ -37,7 +37,7 @@ let knowledgeManagementApp = "Knowledge Management";
 let knowledgeArticlesTitleStr = "Knowledge Articles";
 let applyBtn = "Apply";
 let emptyStr = '';
-let articleInDraftStatus = 'DRDMV-19004 KnowledgeArticle_Draft';
+let articleInDraftStatus = '3914 KnowledgeArticle_Draft';
 let minorEditOption = 'Minor Edit';
 let majorEditOption = 'Major Edit';
 let versionField = "Version";
@@ -86,7 +86,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    it('[DRDMV-20656]: Verify that the newly created article shows the article version', async () => {
+    it('[3715]: Verify that the newly created article shows the article version', async () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let knowledgeRefStr = 'KnowledgeReference' + randomStr;
         await navigationPage.signOut();
@@ -110,7 +110,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', () => {
+    describe('[3708]: Verify the functionality of Edit article with Minor Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
         let articleAttachments = ['articleStatus.png'];
@@ -150,7 +150,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', async () => {
+        it('[3708]: Verify the functionality of Edit article with Minor Edit button', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -177,7 +177,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
         });
 
-        it('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', async () => {
+        it('[3708]: Verify the functionality of Edit article with Minor Edit button', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -221,7 +221,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleReviewerGroup()).toBe('AU Support 3');
         });
 
-        it('[DRDMV-20742]: Verify the functionality of Edit article with Minor Edit button', async () => {
+        it('[3708]: Verify the functionality of Edit article with Minor Edit button', async () => {
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -264,7 +264,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20746]: Verify the search based on version on knowledge article console', () => {
+    describe('[3705]: Verify the search based on version on knowledge article console', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let versionFieldColumn: string[] = ["Version"];
         let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Version"];
@@ -292,7 +292,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+        it('[3705]: Verify the search based on version on knowledge article console', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
@@ -325,7 +325,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.signOut();
         });
 
-        it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+        it('[3705]: Verify the search based on version on knowledge article console', async () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
@@ -358,7 +358,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
         });
 
-        it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+        it('[3705]: Verify the search based on version on knowledge article console', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -392,7 +392,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await utilityGrid.isGridRecordPresent(knowledgeTitleStr)).toBeTruthy();
         });
 
-        it('[DRDMV-20746]: Verify the search based on version on knowledge article console', async () => {
+        it('[3705]: Verify the search based on version on knowledge article console', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -418,7 +418,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', () => {
+    describe('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', () => {
         beforeAll(async () => {
             let articleData1 = {
                 "knowledgeSet": "HR",
@@ -442,7 +442,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         });
 
-        it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
+        it('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
@@ -474,7 +474,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
 
 
-        it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
+        it('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
             //Login with Case Manager
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -509,7 +509,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await expect(await resources.getAdvancedSearchResultForParticularSection(articleInDraftStatus)).toEqual(articleInDraftStatus);
         });
 
-        it('[DRDMV-20754]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
+        it('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', async () => {
             //Login as Case Agent
             await navigationPage.signOut();
             await loginPage.login(caseAgentUser);
@@ -551,7 +551,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', () => {
+    describe('[3707,3712]: Verify the functionality of Edit article with Major Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
         let articleAttachments = ['articleStatus.png'];
@@ -595,7 +595,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             articleKeywordsVal = ['MyKeyword', `${articleDetails.displayId}`];
         });
 
-        it('[DRDMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', async () => {
+        it('[3707,3712]: Verify the functionality of Edit article with Major Edit button', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -622,7 +622,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
         });
 
-        it('[DRDMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', async () => {
+        it('[3707,3712]: Verify the functionality of Edit article with Major Edit button', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -679,7 +679,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.isUnFlagArticleOptionDisplayed()).toBeTruthy('UnFlag Article option is displayed.');
         });
 
-        it('[DRDMV-20743,DRDMV-20735]: Verify the functionality of Edit article with Major Edit button', async () => {
+        it('[3707,3712]: Verify the functionality of Edit article with Major Edit button', async () => {
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeTruthy('Minor Edit Option is displayed for Published Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeTruthy('Major Edit Option is displayed for Published Knowledge Article.');
@@ -752,7 +752,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', () => {
+    describe('[3706]: Verify the article status of previous version articles when the new versioned article is moved to Published status', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let articleData = undefined;
@@ -787,7 +787,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
+        it('[3706]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -820,7 +820,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
 
-        it('[DRDMV-20744]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
+        it('[3706]: Verify the article status of previous version articles when the new versioned article is moved to Published status', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
             await utilityCommon.refresh(); // Refresh needed to reflect API changes.
@@ -870,7 +870,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', () => {
+    describe('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let articleData = undefined;
@@ -907,7 +907,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
+        it('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -928,7 +928,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilCommon.clickOnWarningOk();
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
         });
-        it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
+        it('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -954,7 +954,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
             expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
         });
-        it('[DRDMV-20752]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
+        it('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
@@ -1006,7 +1006,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20718]: Verify that the newly created article with version displays on knowledge grid console', () => {
+    describe('[3714]: Verify that the newly created article with version displays on knowledge grid console', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
         let versionFieldColumns: string[] = ["Version"];
@@ -1045,7 +1045,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20718]: Verify that the newly created article with version displays on knowledge grid console', async () => {
+        it('[3714]: Verify that the newly created article with version displays on knowledge grid console', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1078,7 +1078,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
 
-        it('[DRDMV-20718]: Verify that the newly created article with version displays on knowledge grid console', async () => {
+        it('[3714]: Verify that the newly created article with version displays on knowledge grid console', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
             await utilityCommon.refresh(); // Refresh needed to reflect API changes.
@@ -1132,7 +1132,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', () => {
+    describe('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
         let updatedArticleAccessPermission: string[] = ['GB Support 2', 'Employee Relations', 'Petramco', 'Kane Williamson'];
@@ -1177,7 +1177,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         });
 
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1202,7 +1202,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
@@ -1222,7 +1222,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
 
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
             await utilityCommon.refresh(); // Refresh needed to reflect API changes.
@@ -1269,7 +1269,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.updateKnowledgeArticleDescription(updatedArticleDesc);
             await editKnowledgePage.clickArticleMajorEditSaveButton();
         });
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             //await utilityCommon.refresh(); // Refresh needed to reflect version update.
             await browser.sleep(2000);
 
@@ -1316,7 +1316,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await activityTabPo.getFirstPostContent()).toContain('Kane Williamson created a new version.', 'content not displaying on Activity');
         });
 
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
@@ -1334,7 +1334,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.clickArticleMajorEditSaveButton();
             await browser.sleep(2000);
         });
-        it('[DRDMV-20753]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
+        it('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', async () => {
             updatedVersion = "Version " + "3" + " - " + actualDate;
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Published status.');
@@ -1375,7 +1375,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     });
 
     //skhobrag
-    describe('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', () => {
+    describe('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleData = undefined;
         let articleHelpFulCounterData = {
@@ -1408,7 +1408,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
-        it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
+        it('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1428,7 +1428,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
         });
-        it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
+        it('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
@@ -1437,7 +1437,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
         });
-        it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
+        it('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
@@ -1467,7 +1467,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await statusBladeKnowledgeArticlePo.setKnowledgeStatusWithReviewerDetails('SME Review', 'Petramco', 'Australia Support', 'AU Support 3', 'Kane Williamson');
         });
 
-        it('[DRDMV-20748]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
+        it('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1518,7 +1518,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
     });
 
-    describe('[DRDMV-20758]:  Verify the article versioning with respect to custom status configuration', () => {
+    describe('[3697]:  Verify the article versioning with respect to custom status configuration', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             const personDataFile = require('../../data/ui/foundation/person.ui.json');
@@ -1539,7 +1539,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin("idphylumkuser@petramco.com", "Password_1234");
             await apiHelper.createKnowledgeSet(knowledgeSetDataPhylum);
         });
-        it('[DRDMV-20758]:  Verify the article versioning with respect to custom status configuration', async () => {
+        it('[3697]:  Verify the article versioning with respect to custom status configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
             await statusConfigPO.setCompanyDropdown('Phylum', 'knowledge');
@@ -1554,12 +1554,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
         });
 
-        it('[DRDMV-20758]:  Verify the article versioning with respect to custom status configuration', async () => {
+        it('[3697]:  Verify the article versioning with respect to custom status configuration', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField('DRDMV-20758 Title');
-            await createKnowledgePage.setReferenceValue('DRDMV-20758 Reference data')
+            await createKnowledgePage.addTextInKnowlegeTitleField('3697 Title');
+            await createKnowledgePage.setReferenceValue('3697 Reference data')
             await createKnowledgePage.selectKnowledgeSet(`${knowledgeSetTitleStrPhylum}`);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();

@@ -106,7 +106,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('[DRDMV-16026]: [Design Time] Verify case Business analyst is able create, edit and delete Knowledge Notes template', async () => {
+    it('[4363]: [Design Time] Verify case Business analyst is able create, edit and delete Knowledge Notes template', async () => {
         let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
@@ -138,11 +138,11 @@ describe('Notes template', () => {
 
     //ptidke
 
-    describe('[DRDMV-16010]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
+    describe('[4372]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
 
         let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
 
-        it('[DRDMV-16010]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
+        it('[4372]: [Design Time] Verify that case Business analyst is able create ,edit and delete case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -159,7 +159,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickOnSaveButton();
         });
 
-        it('[DRDMV-16010]: Verify case notes template is accessible to other Line of business Case BA', async () => {
+        it('[4372]: Verify case notes template is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -167,7 +167,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('case notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16010]: Verify case notes template is accessible to different company user with same Line of business Case BA', async () => {
+        it('[4372]: Verify case notes template is accessible to different company user with same Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -175,7 +175,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('case notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16010]: Verify case notes template is accessible to other Line of business Case Manager', async () => {
+        it('[4372]: Verify case notes template is accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -183,7 +183,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('case notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16010]: Verify case notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4372]: Verify case notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -195,7 +195,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('case notes template for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16010]: Verify case notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4372]: Verify case notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -228,10 +228,10 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
+    describe('[4361]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
         let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
 
-        it('[DRDMV-16028]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
+        it('[4361]: [Design Time] Verify case Business analyst is able create ,edit and delete People Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -248,7 +248,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickOnSaveButton();
         });
 
-        it('[DRDMV-16028]: Verify people notes template is accessible to other Line of business Case BA', async () => {
+        it('[4361]: Verify people notes template is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
@@ -257,7 +257,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16028]: Verify people notes template is accessible to different company user with same Line of business Case BA', async () => {
+        it('[4361]: Verify people notes template is accessible to different company user with same Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -265,7 +265,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16028]: Verify people notes template is accessible to other Line of business Case Manager', async () => {
+        it('[4361]: Verify people notes template is accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -273,7 +273,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16028]: Verify people notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4361]: Verify people notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -285,7 +285,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('people notes template for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16028]: Verify people notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4361]: Verify people notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -319,10 +319,10 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create, edit and delete Task Notes template', async () => {
+    describe('[4362]: [Design Time] Verify case Business analyst is able create, edit and delete Task Notes template', async () => {
         let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
 
-        it('[DRDMV-16027]: [Design Time] Verify case Business analyst is able create, edit and delete Task Notes template', async () => {
+        it('[4362]: [Design Time] Verify case Business analyst is able create, edit and delete Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -339,7 +339,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickOnSaveButton();
         });
 
-        it('[DRDMV-16027]: Verify task notes template is accessible to other Line of business Case BA', async () => {
+        it('[4362]: Verify task notes template is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -348,7 +348,7 @@ describe('Notes template', () => {
 
         });
 
-        it('[DRDMV-16028]: Verify task notes template is accessible to different company user with same Line of business Case BA', async () => {
+        it('[4361]: Verify task notes template is accessible to different company user with same Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -356,7 +356,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16027]: Verify task notes template is accessible to other Line of business Case Manager', async () => {
+        it('[4362]: Verify task notes template is accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -364,7 +364,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16027]: Verify task notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4362]: Verify task notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -376,7 +376,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('task notes template for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-16027]: Verify task notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4362]: Verify task notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -410,11 +410,11 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-16181]: [Design Time] Knowledge user is able to create, edit and Delete Knowledge Notes Template', async () => {
+    describe('[4287]: [Design Time] Knowledge user is able to create, edit and Delete Knowledge Notes Template', async () => {
         let templateName: string = "activityNotesTemplate" + Math.floor(Math.random() * 100000);
         let globalNotesTemplateName: string = "GlobalActivityNotesTemplate" + Math.floor(Math.random() * 100000);
 
-        it('[DRDMV-16181]: [Design Time] Knowledge user is able to create, edit and Delete Knowledge Notes Template', async () => {
+        it('[4287]: [Design Time] Knowledge user is able to create, edit and Delete Knowledge Notes Template', async () => {
             await navigationPage.signOut();
             await loginPage.login("khardison");
             await navigationPage.gotoSettingsPage();
@@ -445,7 +445,7 @@ describe('Notes template', () => {
 
         });
 
-        it('[DRDMV-16181]: Verify Knowledge Article Notes Template is accessible to other Line of business Case BA', async () => {
+        it('[4287]: Verify Knowledge Article Notes Template is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -455,7 +455,7 @@ describe('Notes template', () => {
 
         });
 
-        it('[DRDMV-16181]: Verify Knowledge Article Notes Template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4287]: Verify Knowledge Article Notes Template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -469,7 +469,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(globalNotesTemplateName)).toBeTruthy('Knowledge Article Notes Template for Human Resource LOB are not displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-16181]: Verify Knowledge Article Notes Template are accessible to Case BA from different company with same LOB', async () => {
+        it('[4287]: Verify Knowledge Article Notes Template are accessible to Case BA from different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -478,7 +478,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(globalNotesTemplateName)).toBeTruthy('Global Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-16181]: Verify Knowledge Article Notes Template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[4287]: Verify Knowledge Article Notes Template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -516,7 +516,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('[DRDMV-15999]: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
+    it('[4377]: [DesignTime] Verify Notes templates UI should be displayed as per prototype(mockups)', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
         expect(await consoleNotesTemplatePo.isNotesTemplateUIConsolePresent()).toBeTruthy();
@@ -544,9 +544,9 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-16111]: [Design Time] Verify warning Message for locale values', async () => {
+    describe('[4299]: [Design Time] Verify warning Message for locale values', async () => {
         let caseNotesTemplate, peopleNotesTemplate, taskNotesTemplate, knowledgeNotesTemplate;
-        it('[DRDMV-16111]: Case and People Notes template', async () => {
+        it('[4299]: Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             caseNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -556,7 +556,7 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16111]: Case and People Notes template', async () => {
+        it('[4299]: Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             peopleNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -566,7 +566,7 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
+        it('[4299]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
             taskNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -576,7 +576,7 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16111]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
+        it('[4299]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
             knowledgeNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
@@ -586,7 +586,7 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16111]: Case Notes template create same name record in same LOB', async () => {
+        it('[4299]: Case Notes template create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -602,7 +602,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16111]: People Notes template create same name record in same LOB', async () => {
+        it('[4299]: People Notes template create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
@@ -615,7 +615,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16111]: Task Notes template create same name record in same LOB', async () => {
+        it('[4299]: Task Notes template create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
@@ -628,7 +628,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16111]: Knowledge Notes template create same name record in same LOB', async () => {
+        it('[4299]: Knowledge Notes template create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
@@ -641,7 +641,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16111]: Case Notes template create same name record in different LOB', async () => {
+        it('[4299]: Case Notes template create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
@@ -657,7 +657,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLobValue()).toBe("Facilities");
             await editNotetemplate.clickOnCancelButton();
         });
-        it('[DRDMV-16111]: People Notes template create same name record in different LOB', async () => {
+        it('[4299]: People Notes template create same name record in different LOB', async () => {
             //create same name record in different LOB
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
@@ -674,7 +674,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLobValue()).toBe("Facilities");
             await editNotetemplate.clickOnCancelButton();
         });
-        it('[DRDMV-16111]: Task Notes template create same name record in different LOB', async () => {
+        it('[4299]: Task Notes template create same name record in different LOB', async () => {
             //create same name record in different LOB
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
@@ -691,7 +691,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getLobValue()).toBe("Facilities");
             await editNotetemplate.clickOnCancelButton();
         });
-        it('[DRDMV-16111]: Knowledge Notes template create same name record in different LOB', async () => {
+        it('[4299]: Knowledge Notes template create same name record in different LOB', async () => {
             //create same name record in different LOB
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
@@ -716,7 +716,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-16040]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
+    describe('[4351]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
         let newCase, notesTemplateName, notesTemplateName1, notesTemplateBody, notesTemplateBody1, notesTemplateName2, notesTemplateBody2, notesTemplateName3, notesTemplateBody3;
         beforeAll(async () => {
             //task template 1
@@ -754,7 +754,7 @@ describe('Notes template', () => {
             await apiHelper.createNotesTemplate("Case", tempNotesTemplateData4);
             let caseData = {
                 "Requester": "qkatawazi",
-                "Summary": "DRDMV-16040 Summary",
+                "Summary": "4351 Summary",
                 "Assigned Company": "Petramco",
                 "Business Unit": "HR Support",
                 "Support Group": "Compensation and Benefits"
@@ -763,7 +763,7 @@ describe('Notes template', () => {
             newCase = await apiHelper.createCase(caseData);
         });
 
-        it('[DRDMV-16045]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
+        it('[4346]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
 
@@ -775,7 +775,7 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInNote(notesTemplateBody1)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
+        it('[4346]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName2);
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInNote(notesTemplateBody2)).toBeTruthy();
@@ -787,7 +787,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-16578]: Consume People Notes Template in People profile', async () => {
+    describe('[4256]: Consume People Notes Template in People profile', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, newCase2;
         let tempNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
@@ -811,7 +811,7 @@ describe('Notes template', () => {
             await apiHelper.apiLogin('qdu');
             newCase2 = await apiHelper.createCase(caseData2);
         });
-        it('[DRDMV-16578]: Case Agent consume People Notes Template in People profile', async () => {
+        it('[4256]: Case Agent consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
@@ -821,7 +821,7 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog(tempNotesTemplateData.body)).toBeTruthy();
         });
-        it('[DRDMV-16578]: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
+        it('[4256]: Case Agent/Case Manger Should be able to consume People Notes Template in People profile', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await utilityGrid.searchAndOpenHyperlink(newCase2.displayId);
@@ -838,7 +838,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    describe('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+    describe('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
         let randomStr: string = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let tempNotesTemplateData, templateManualData, templateManualData1, templateAutomatedData, templateAutomatedData1, templateExternalData, caseResponse1, caseResponse2, caseData, adhocTaskData, notesTemplateGlobalData, notesTemplatePsilonlData, templateExternalData1, caseData1;
         beforeAll(async () => {
@@ -1016,7 +1016,7 @@ describe('Notes template', () => {
             await apiHelper.updateCaseStatus(caseResponse1.id, 'InProgress');
         });
 
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateManualData1.templateSummary);
@@ -1025,12 +1025,12 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateExternalData1.templateSummary);
@@ -1039,12 +1039,12 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
@@ -1053,12 +1053,12 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await apiHelper.updateCaseStatus(caseResponse2.id, 'InProgress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
@@ -1069,12 +1069,12 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
@@ -1083,13 +1083,13 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
         });
 
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateExternalData1.templateSummary);
@@ -1098,13 +1098,13 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy(); // Notes Template of Petramco not visible
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
         });
 
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
             await viewCasePage.clickAddTaskButton();
@@ -1114,7 +1114,7 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(tempNotesTemplateData.templateName)).toBeTruthy();
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplateGlobalData.templateName)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -1123,7 +1123,7 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(templateAutomatedData.templateSummary);
@@ -1140,7 +1140,7 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
@@ -1157,12 +1157,12 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await navigationPage.gotoPersonProfile();
             expect(await activityTabPo.isTextPresentInActivityLog('AdhocTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog('AutomatedTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
-        it('[DRDMV-16045]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
+        it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
             expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
@@ -1173,7 +1173,7 @@ describe('Notes template', () => {
     });
 
     //ptidke
-    it('[DRDMV-16047]: [Run Time] Validate that case BA is able to select and utilize Active Knowledge notes templates in Knowledge Article ', async () => {
+    it('[4345]: [Run Time] Validate that case BA is able to select and utilize Active Knowledge notes templates in Knowledge Article ', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let tempNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
         tempNotesTemplateData.templateName = tempNotesTemplateData.templateName + randomStr;
@@ -1185,7 +1185,7 @@ describe('Notes template', () => {
         expect(await browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');
         await createKnowlegePo.clickOnUseSelectedTemplateButton();
-        await createKnowlegePo.addTextInKnowlegeTitleField('test case for DRDMV-16754');
+        await createKnowlegePo.addTextInKnowlegeTitleField('test case for 4230');
         await createKnowlegePo.selectKnowledgeSet('HR');
         await createKnowlegePo.clickOnSaveKnowledgeButton();
         await previewKnowledgePo.clickGoToArticleButton();
@@ -1198,7 +1198,7 @@ describe('Notes template', () => {
         expect(await activityTabPo.isTextPresentInActivityLog(tempNotesTemplateData.body)).toBeTruthy();
     });
     //asahitya
-    describe('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+    describe('[4373]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notesTemplateInactiveData;
         let notesTemplatePetramcoData;
@@ -1246,7 +1246,7 @@ describe('Notes template', () => {
             await apiHelper.createNotesTemplate("Case", notesTemplateWithLabelData);
         });
 
-        it('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+        it('[4373]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await utilGrid.clearFilter();
@@ -1265,7 +1265,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Global Company Filter is not applied');
             expect(await utilGrid.isGridRecordPresent(notesTemplateGlobalData.templateName)).toBeTruthy('Global Company Filter is not applied');
         });
-        it('[DRDMV-16008]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+        it('[4373]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
             await utilGrid.clearFilter();
             await utilGrid.addFilter('Status', 'Inactive', 'checkbox');
             expect(await utilGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeFalsy('Status Filter is not applied');
@@ -1293,7 +1293,7 @@ describe('Notes template', () => {
     });
 
     //asahitya
-    describe('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', () => {
+    describe('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', () => {
         let response1 = undefined;
         let response2 = undefined;
         let response3 = undefined;
@@ -1361,7 +1361,7 @@ describe('Notes template', () => {
             let caseData = require('../../data/ui/case/case.ui.json');
             response1 = await apiHelper.createCase(caseData['simpleCase']);
             let taskData = {
-                "taskName": "DRDMV-16051",
+                "taskName": "4342",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
@@ -1370,7 +1370,7 @@ describe('Notes template', () => {
             response2 = await apiHelper.createAdhocTask(response1.id, taskData);
             let articleData = {
                 "knowledgeSet": "HR",
-                "title": 'DRDMV-16051',
+                "title": '4342',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United States Support",
@@ -1380,40 +1380,40 @@ describe('Notes template', () => {
             response3 = await apiHelper.createKnowledgeArticle(articleData);
         });
 
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Case Notes
             await utilityGrid.searchAndOpenHyperlink(response1.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
         });
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(taskActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeActiveTemplateName)).toBeFalsy();
         });
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(peopleActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(caseInactiveTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
         });
 
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Task Notes
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(response2.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
         });
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(caseActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeActiveTemplateName)).toBeFalsy();
         });
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(peopleActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(taskInactiveTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
         });
 
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the People Notes
             await navigationPage.gotoQuickCase();
             await navigationPage.gotoPersonProfile();
@@ -1424,17 +1424,17 @@ describe('Notes template', () => {
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
         });
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(caseActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(taskActiveTemplateName)).toBeFalsy();
         });
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(peopleInactiveTemplateName)).toBeFalsy();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             //Validating the Knowledge Notes
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(response3.displayId);
@@ -1442,11 +1442,11 @@ describe('Notes template', () => {
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
         });
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(caseActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(taskActiveTemplateName)).toBeFalsy();
         });
-        it('[DRDMV-16051,DRDMV-16013]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
+        it('[4342,4370]: Verify People notes template / Task Note template should not be displayed on case in activity template and vice versa for all other', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(peopleActiveTemplateName)).toBeFalsy();
             expect(await notesTemplateUsage.isTemplatePresent(knowledgeInactiveTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
@@ -1459,7 +1459,7 @@ describe('Notes template', () => {
     });
 
     //asahitya
-    describe('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', () => {
+    describe('[4298]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', () => {
         let petramcoTemplateName = undefined;
         let psilonTemplateName = undefined;
         let globalTemplateName = undefined;
@@ -1471,8 +1471,8 @@ describe('Notes template', () => {
             userData1 = {
                 "firstName": "Multiple Companies",
                 "lastName": "Access",
-                "userId": "DRDMV-16112_User",
-                "emailId": "DRDMV-16112_User@petramco.com",
+                "userId": "4298_User",
+                "emailId": "4298_User@petramco.com",
                 "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
             }
             await apiHelper.createNewUser(userData1);
@@ -1498,9 +1498,9 @@ describe('Notes template', () => {
             await apiHelper.createNotesTemplate('Case', globalNotesTemplateData);
 
             let caseDataPetramco = {
-                "Description": "DRDMV-16112 Petramco",
+                "Description": "4298 Petramco",
                 "Requester": "qkatawazi",
-                "Summary": "DRDMV-16112 Petramco",
+                "Summary": "4298 Petramco",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -1509,9 +1509,9 @@ describe('Notes template', () => {
             petramcoCaseResponse = await apiHelper.createCase(caseDataPetramco);
 
             let caseDataPsilon = {
-                "Description": "DRDMV-16112 Psilon",
+                "Description": "4298 Psilon",
                 "Requester": "gderuno",
-                "Summary": "DRDMV-16112 Psilon",
+                "Summary": "4298 Psilon",
                 "Assigned Company": "Psilon",
                 "Business Unit": "Psilon Support Org2",
                 "Support Group": "Psilon Support Group2",
@@ -1520,14 +1520,14 @@ describe('Notes template', () => {
             psilonCaseResponse = await apiHelper.createCase(caseDataPsilon);
         });
 
-        it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
+        it('[4298]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await utilityGrid.searchAndOpenHyperlink(petramcoCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
         });
-        it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
+        it('[4298]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(psilonTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -1536,13 +1536,13 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(globalTemplateName);
             await activityTabPo.clickOnPostButton();
         });
-        it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
+        it('[4298]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(psilonCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
         });
-        it('[DRDMV-16112]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
+        it('[4298]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             expect(await notesTemplateUsage.isTemplatePresent(petramcoTemplateName)).toBeFalsy();
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
@@ -1557,7 +1557,7 @@ describe('Notes template', () => {
         });
     });
 
-    describe('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+    describe('[3445,3441,3437]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
         let templateName: string, newCase, readAccessMappingData, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             let caseData = {
@@ -1582,7 +1582,7 @@ describe('Notes template', () => {
             await apiHelper.createReadAccessMapping(readAccessMappingData);
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+        it('[3445,3441,3437]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
@@ -1614,7 +1614,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+        it('[3445,3441,3437]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
@@ -1658,7 +1658,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+        it('[3445,3441,3437]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -1708,7 +1708,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+        it('[3445,3441,3437]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
@@ -1747,7 +1747,7 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.refresh(); // workaround for DRDMV-23816
+            await utilityCommon.refresh(); // workaround for 60116
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -1767,7 +1767,7 @@ describe('Notes template', () => {
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
         });
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+        it('[3445,3441,3437]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
@@ -1784,7 +1784,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('FailureMsg9: Text is not Left Align In Ck Editor');
 
         });
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
+        it('[3445,3441,3437]: Verify CKE functionality on Create and Edit Case Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
@@ -1801,7 +1801,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('FailureMsg17: Text is not Left Align In Ck Editor');
         });
 
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to same LOB Case Manager', async () => {
+        it('[3445,3441,3437]: Verify if case notes templates are accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -1809,7 +1809,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB case notes template is not visible to same LOB case manager');
         });
 
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to different LOB Case BA', async () => {
+        it('[3445,3441,3437]: Verify if case notes templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -1817,7 +1817,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB case notes template is not visible to different LOB case BA');
         });
 
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to different LOB Case Manager', async () => {
+        it('[3445,3441,3437]: Verify if case notes templates are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -1825,7 +1825,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB case notes template is not visible to different LOB case manager');
         });
 
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[3445,3441,3437]: Verify if case notes templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -1833,7 +1833,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB case notes template is not visible to same LOB with different case BA');
         });
 
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[3445,3441,3437]: Verify if case notes templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -1845,7 +1845,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB case notes template is visible to case manager with multiple LOB access');
         });
 
-        it('[DRDMV-22642,DRDMV-22646,DRDMV-22657]: Verify if case notes templates are accessible to Case BA user having access to multiple LOB', async () => {
+        it('[3445,3441,3437]: Verify if case notes templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -1866,9 +1866,9 @@ describe('Notes template', () => {
         });
     });
 
-    describe('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+    describe('[3447,3443,3439]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
         let templateName: string, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+        it('[3447,3443,3439]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
@@ -1929,7 +1929,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
-        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+        it('[3447,3443,3439]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -1949,7 +1949,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+        it('[3447,3443,3439]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -1998,7 +1998,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+        it('[3447,3443,3439]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowlegePo.clickOnTemplate("Reference");
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
@@ -2046,7 +2046,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
-        it('[DRDMV-22638,DRDMV-22644,DRDMV-22654]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
+        it('[3447,3443,3439]: Verify CKE functionality on Create and Edit Knowledge Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.switchToApplication("Knowledge Management");
@@ -2085,7 +2085,7 @@ describe('Notes template', () => {
         });
     });
 
-    describe('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+    describe('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
         let templateName: string, caseData, newCase, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -2099,7 +2099,7 @@ describe('Notes template', () => {
             };
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+        it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
 
             await viewCasePage.clickOnTab('Case Access');
@@ -2173,7 +2173,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
-        it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+        it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -2193,7 +2193,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+        it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -2257,7 +2257,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+        it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoCaseConsole();
@@ -2288,7 +2288,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isCKImageDisplayedInActivity(imageSource2)).toBeTruthy('Image is not displayed');
             expect(await activityTabPo.isCKImageDisplayedInActivity(uploadURL)).toBeTruthy('Image is not displayed');
         });
-        it('[DRDMV-22637,DRDMV-22643,DRDMV-22653]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+        it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('22653User@petramco.com', 'Password_1234');
             await navigationPage.gotoCaseConsole();
@@ -2314,10 +2314,10 @@ describe('Notes template', () => {
         });
     });
 
-    describe('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+    describe('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
         let updateBody: string, caseTemplateName: string, knowledgeTemplateName: string, peopleTemplateName: string, taskTemplateName: string, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         //Case
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
@@ -2349,7 +2349,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
@@ -2393,7 +2393,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -2444,7 +2444,7 @@ describe('Notes template', () => {
             await utilCommon.closePopUpMessage();
         });
         //Knowledge
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
@@ -2477,7 +2477,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
@@ -2521,7 +2521,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -2571,7 +2571,7 @@ describe('Notes template', () => {
             await utilCommon.closePopUpMessage();
         });
         //Pepole
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
@@ -2604,7 +2604,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             //left Align
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await ckeditorOpsPo.updateDescription(lefAlignText);
@@ -2648,7 +2648,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -2703,7 +2703,7 @@ describe('Notes template', () => {
             await utilCommon.closePopUpMessage();
         });
         //Task
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
@@ -2728,7 +2728,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.updateDescription(underLineText);
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
             //left Align
@@ -2768,7 +2768,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
+        it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -2813,7 +2813,7 @@ describe('Notes template', () => {
             await utilCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-22659]: Verify access of notes template to Case BA With Task', async () => {
+        it('[3436]: Verify access of notes template to Case BA With Task', async () => {
             await navigationPage.signOut();
             await loginPage.login('22653User@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -2828,7 +2828,7 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA With People', async () => {
+        it('[3436]: Verify access of notes template to Case BA With People', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(peopleTemplateName);
@@ -2841,7 +2841,7 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA With Knowledge', async () => {
+        it('[3436]: Verify access of notes template to Case BA With Knowledge', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(knowledgeTemplateName);
@@ -2854,7 +2854,7 @@ describe('Notes template', () => {
             await editNotetemplate.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-22659]: Verify access of notes template to Case BA With Case', async () => {
+        it('[3436]: Verify access of notes template to Case BA With Case', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(caseTemplateName);
@@ -2868,7 +2868,7 @@ describe('Notes template', () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-22659]: Verify Case / Task Notes Templates are accessible to other Line of business Case BA', async () => {
+        it('[3436]: Verify Case / Task Notes Templates are accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -2880,7 +2880,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Person / Knowledge Notes Templates are accessible to other Line of business Case BA', async () => {
+        it('[3436]: Verify Person / Knowledge Notes Templates are accessible to other Line of business Case BA', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
@@ -2890,7 +2890,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to other Line of business Case Manager user', async () => {
+        it('[3436]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to other Line of business Case Manager user', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -2902,7 +2902,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Knowledge / Person Notes Templates are accessible to other Line of business Case Manager user', async () => {
+        it('[3436]: Verify Knowledge / Person Notes Templates are accessible to other Line of business Case Manager user', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
@@ -2912,7 +2912,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Case / Task Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
+        it('[3436]: Verify Case / Task Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -2925,7 +2925,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Person / Knowledge Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
+        it('[3436]: Verify Person / Knowledge Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
@@ -2935,7 +2935,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
+        it('[3436]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
@@ -2954,7 +2954,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeTruthy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
+        it('[3436]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -2967,7 +2967,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
+        it('[3436]: Verify Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
@@ -2977,7 +2977,7 @@ describe('Notes template', () => {
             expect(await utilGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
-        it('[DRDMV-22659]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
+        it('[3436]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
             await utilGrid.selectLineOfBusiness('Human Resource');
@@ -3002,7 +3002,7 @@ describe('Notes template', () => {
         });
     });
 
-    describe('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+    describe('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
         let templateName: string, manualTaskTemplateData, casetemplatePetramco, externaltemplateData, newCaseTemplate, automatedtemplateData, readAccessMappingData, caseId, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -3076,7 +3076,7 @@ describe('Notes template', () => {
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
         });
-        it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+        it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
@@ -3125,7 +3125,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnUnderLineIcon();
         });
-        it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+        it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -3145,7 +3145,7 @@ describe('Notes template', () => {
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
         });
-        it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+        it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             //add style
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.updateDescription(formatText);
@@ -3189,7 +3189,7 @@ describe('Notes template', () => {
             await createNotesTemplate.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+        it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(casetemplatePetramco.templateName);
@@ -3223,7 +3223,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
         });
-        it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+        it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePage.openTaskCard(2);
@@ -3248,7 +3248,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
         });
-        it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+        it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePage.openTaskCard(3);
@@ -3273,7 +3273,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
         });
-        it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+        it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -3315,7 +3315,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
         });
-        it('[DRDMV-22641,DRDMV-22645,DRDMV-22656]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
+        it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await utilityGrid.searchAndOpenHyperlink(caseId);

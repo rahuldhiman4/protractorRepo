@@ -24,7 +24,7 @@ describe('PIN Validation Create Case', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-13709,DRDMV-10603,DRDMV-10611,DRDMV-10608,DRDMV-10612]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
+    describe('[4643,5219,5211,5214,5210]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
         let casetemplatePsilon1, newCaseTemplate;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -49,7 +49,7 @@ describe('PIN Validation Create Case', () => {
             await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Active');
             await browser.sleep(3000); // hardwait to reflect case template validation
         });
-        it('[DRDMV-13709,DRDMV-10603,DRDMV-10611,DRDMV-10608,DRDMV-10612]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
+        it('[4643,5219,5211,5214,5210]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCreateCase();
@@ -74,7 +74,7 @@ describe('PIN Validation Create Case', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-13709,DRDMV-10603,DRDMV-10611,DRDMV-10608,DRDMV-10612]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
+        it('[4643,5219,5211,5214,5210]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['NONE'], 'Psilon');
@@ -93,7 +93,7 @@ describe('PIN Validation Create Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-13709,DRDMV-10603,DRDMV-10611,DRDMV-10608,DRDMV-10612]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
+        it('[4643,5219,5211,5214,5210]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
@@ -119,7 +119,7 @@ describe('PIN Validation Create Case', () => {
         });
     });
    
-    describe('[DRDMV-10601,DRDMV-10602,DRDMV-10606,DRDMV-10607,DRDMV-10610]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
+    describe('[5221,5220,5216,5215,5212]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
         let casetemplatePsilon1, newCaseTemplate;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -143,7 +143,7 @@ describe('PIN Validation Create Case', () => {
             await apiHelper.updateCaseTemplateIdentitiyValidation(newCaseTemplate.id, 'OPTIONAL');
             await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Active');
         });
-        it('[DRDMV-10601,DRDMV-10602,DRDMV-10606,DRDMV-10607,DRDMV-10610]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
+        it('[5221,5220,5216,5215,5212]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCreateCase();
@@ -177,7 +177,7 @@ describe('PIN Validation Create Case', () => {
             await activityTabPo.clickOnRefreshButton();            
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-10601,DRDMV-10602,DRDMV-10606,DRDMV-10607,DRDMV-10610]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
+        it('[5221,5220,5216,5215,5212]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
@@ -209,7 +209,7 @@ describe('PIN Validation Create Case', () => {
             await activityTabPo.clickOnRefreshButton();      
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-10601,DRDMV-10602,DRDMV-10606,DRDMV-10607,DRDMV-10610]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
+        it('[5221,5220,5216,5215,5212]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');
@@ -235,7 +235,7 @@ describe('PIN Validation Create Case', () => {
         });
     });
 
-    describe('[DRDMV-10604,DRDMV-10609,DRDMV-10605,DRDMV-10600]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
+    describe('[5218,5213,5217,5222]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
         let casetemplatePsilon1, newCaseTemplate;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -260,7 +260,7 @@ describe('PIN Validation Create Case', () => {
             await apiHelper.updateCaseTemplateIdentitiyValidation(newCaseTemplate.id, 'NONE');
             await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Active');            
         });
-        it('[DRDMV-10604,DRDMV-10609,DRDMV-10605,DRDMV-10600]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
+        it('[5218,5213,5217,5222]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCreateCase();
@@ -293,7 +293,7 @@ describe('PIN Validation Create Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await editCasePo.clickOnCancelCaseButton();
         });
-        it('[DRDMV-10604,DRDMV-10609,DRDMV-10605,DRDMV-10600]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
+        it('[5218,5213,5217,5222]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
@@ -337,7 +337,7 @@ describe('PIN Validation Create Case', () => {
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
-        it('[DRDMV-10604,DRDMV-10609,DRDMV-10605,DRDMV-10600]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
+        it('[5218,5213,5217,5222]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');
@@ -375,13 +375,13 @@ describe('PIN Validation Create Case', () => {
         });
     });
 
-    describe('[DRDMV-10664,DRDMV-10615,DRDMV-10614,DRDMV-10613]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
+    describe('[5200,5207,5208,5209]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['NONE'], 'Psilon');
         });
-        it('[DRDMV-10664,DRDMV-10615,DRDMV-10614,DRDMV-10613]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
+        it('[5200,5207,5208,5209]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
             await navigationPage.signOut();
             await loginPage.login('werusha');
             await navigationPage.gotoCreateCase();
@@ -399,7 +399,7 @@ describe('PIN Validation Create Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await editCasePo.clickOnCancelCaseButton();
         });
-        it('[DRDMV-10664,DRDMV-10615,DRDMV-10614,DRDMV-10613]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
+        it('[5200,5207,5208,5209]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
@@ -430,7 +430,7 @@ describe('PIN Validation Create Case', () => {
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
             await editCasePo.clickOnCancelCaseButton();
         });
-        it('[DRDMV-10664,DRDMV-10615,DRDMV-10614,DRDMV-10613]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
+        it('[5200,5207,5208,5209]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
             await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');

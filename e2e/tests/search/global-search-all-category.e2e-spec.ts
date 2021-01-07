@@ -210,7 +210,7 @@ describe('Global Search All Category', () => {
     }
 
     //kgaikwad
-    describe('[DRDMV-16066]: Global search with All Category', async () => {
+    describe('[4333]: Global search with All Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch4.pdf';
         let attachmentFileName = 'globalsearch4.pdf';
@@ -239,7 +239,7 @@ describe('Global Search All Category', () => {
             await apiHelper.apiLogin('elizabeth');
         });
 
-        it('[DRDMV-16066]: Create Case', async () => {
+        it('[4333]: Create Case', async () => {
             for (let a = 0; a < 5; a++) {
                 let caseDetails = await createCase(commonSearchForAll);
                 caseDisplayId1[a] = caseDetails.displayId;
@@ -247,13 +247,13 @@ describe('Global Search All Category', () => {
             }
         });
 
-        it('[DRDMV-16066]: Create Task', async () => {
+        it('[4333]: Create Task', async () => {
             for (let a = 0; a < 5; a++) {
                 taskDisplayId[a] = await createTask(commonSearchForAll, caseGuid1);
             }
         });
 
-        it('[DRDMV-16066]: Create Knowledge Article', async () => {
+        it('[4333]: Create Knowledge Article', async () => {
             await apiHelper.apiLogin('elizabeth');
             for (let a = 0; a < 5; a++) {
                 await browser.sleep(1000); //Need this sleep create record with correct count and avoid skip the record from loop
@@ -261,33 +261,33 @@ describe('Global Search All Category', () => {
             }
         });
 
-        it('[DRDMV-16066]: Create Case template', async () => {
+        it('[4333]: Create Case template', async () => {
             for (let a = 1; a < 4; a++) {
                 caseTemplateDisplayId1[a] = await createCaseTemplate(templateName + a, commonSearchForAll, activeStatus, 'Petramco');
             }
         });
 
-        it('[DRDMV-16066]: Create Task template', async () => {
+        it('[4333]: Create Task template', async () => {
             await apiHelper.apiLogin('elizabeth');
             for (let b = 4; b < 7; b++) {
                 taskTemplateDisplayId2[b] = await createTaskTemplate(templateName + b, activeStatus, 'Petramco', commonSearchForAll);
             }
         });
 
-        it('[DRDMV-16066]: Create Document', async () => {
+        it('[4333]: Create Document', async () => {
             for (let a = 1; a < 6; a++) {
                 await createPublishDocumentLibrary(commonSearchForAll, attachmentFilePath);
             }
         });
 
-        it('[DRDMV-16066]: Create New User', async () => {
+        it('[4333]: Create New User', async () => {
             await apiHelper.apiLogin('tadmin');
             for (let g = 1; g <= 5; g++) {
                 await createNewUser(commonSearchForAll, lastName, loginId + g, emailId, 'Petramco');
             }
         });
 
-        it('[DRDMV-16066]: Verify Case On Left Pannel', async () => {
+        it('[4333]: Verify Case On Left Pannel', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(commonSearchForAll);
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
@@ -303,7 +303,7 @@ describe('Global Search All Category', () => {
             await searchPo.clickOnLeftPannelRecord(caseDisplayId1[0], caseModule);
         });
 
-        it('[DRDMV-16066]: Verify Case Preview Fields', async () => {
+        it('[4333]: Verify Case Preview Fields', async () => {
             expect(await casePreviewPo.isFieldLabelDisplayed('Requester')).toBeTruthy('FailureMsg20: Requester label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg21: Site label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Source')).toBeTruthy('FailureMsg22: Source label is missing');
@@ -333,7 +333,7 @@ describe('Global Search All Category', () => {
             expect(await casePreviewPo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg45: Assigned Company Value is missing');
         });
 
-        it('[DRDMV-16066]: Verify Task On Left Pannel', async () => {
+        it('[4333]: Verify Task On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchForAll, taskModule)).toBeTruthy(`FailureMsg5: ${commonSearchForAll} Task summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
@@ -346,7 +346,7 @@ describe('Global Search All Category', () => {
             await searchPo.clickOnLeftPannelRecord(taskDisplayId[0], taskModule);
         });
 
-        it('[DRDMV-16066]: Verify Task Preview Field Label', async () => {
+        it('[4333]: Verify Task Preview Field Label', async () => {
             expect(await taskPreviewPo.isFieldLabelDisplayed('Requester')).toBeTruthy('FailureMsg20: Requester label is missing');
             expect(await taskPreviewPo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg21: Site label is missing');
             expect(await taskPreviewPo.isFieldLabelDisplayed('Task Summary')).toBeTruthy('FailureMsg22: Task Summary is missing');
@@ -371,7 +371,7 @@ describe('Global Search All Category', () => {
             expect(await taskPreviewPo.isAassignedGroupValueDisplayed('LA Support 2')).toBeTruthy('FailureMsg40: Assigned Support Group Value is missing');
         });
 
-        it('[DRDMV-16066]: Verify Knowledge Article On Left Pannel', async () => {
+        it('[4333]: Verify Knowledge Article On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchForAll, KAModule)).toBeTruthy(`FailureMsg5: ${commonSearchForAll} Knowledge Article summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, KAModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
@@ -384,7 +384,7 @@ describe('Global Search All Category', () => {
             await searchPo.clickOnLeftPannelRecord(kaDisplayId1[0], KAModule);
         });
 
-        it('[DRDMV-16066]: Verify Knowledge Article Preview Fields', async () => {
+        it('[4333]: Verify Knowledge Article Preview Fields', async () => {
             expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Question')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Answer')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await knowledgeArticlePreview.isFieldLabelDisplayed('Technical Notes')).toBeTruthy('FailureMsg22: field label displayed');
@@ -396,7 +396,7 @@ describe('Global Search All Category', () => {
             expect(await knowledgeArticlePreview.getKnowledgeArticleSection()).toBe('article versioning test description', 'FailureMsg23: description is missing');
         });
 
-        it('[DRDMV-16066]: Verify Case Template On Left Pannel', async () => {
+        it('[4333]: Verify Case Template On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + '1', caseTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + '1'} case title summary is missing`);
@@ -407,7 +407,7 @@ describe('Global Search All Category', () => {
             await searchPo.clickOnLeftPannelRecord(caseTemplateDisplayId1[1], caseTemplateModule);
         });
 
-        it('[DRDMV-16066]: Verify Case Template Preview Fields', async () => {
+        it('[4333]: Verify Case Template Preview Fields', async () => {
             expect(await caseTemplatePreviewPo.isCaseSummaryHeaderDisplayed('Case Summary')).toBeTruthy('FailureMsg20: Case Summary label is missing');
             expect(await caseTemplatePreviewPo.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy('FailureMsg21: Case Status label is missing');
             expect(await caseTemplatePreviewPo.isCasePriorityTitleDisplayed('Case Priority')).toBeTruthy('FailureMsg22: Case Priority label is missing');
@@ -434,7 +434,7 @@ describe('Global Search All Category', () => {
             expect(await caseTemplatePreviewPo.isSupportCompanyNameDisplayed('Petramco')).toBeTruthy('FailureMsg41: Source Value is missing');
         });
 
-        it('[DRDMV-16066]: Verify Task Template On Left Pannel', async () => {
+        it('[4333]: Verify Task Template On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Task Templates (3)', taskTemplateModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[4], taskTemplateModule)).toBeTruthy(`FailureMsg4: ${taskTemplateDisplayId2[4]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 4, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 4} task Template2 summary is missing`);
@@ -447,7 +447,7 @@ describe('Global Search All Category', () => {
             await searchPo.clickOnLeftPannelRecord(taskTemplateDisplayId2[4], taskTemplateModule);
         });
 
-        it('[DRDMV-16066]: Verify Task Template Preview Fields', async () => {
+        it('[4333]: Verify Task Template Preview Fields', async () => {
             expect(await previewTaskTemplatePo.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('FailureMsg20: Task Summary label is missing');
             expect(await previewTaskTemplatePo.isTaskTypeTitleDisplayed('Task Type')).toBeTruthy('FailureMsg21: Task Type label is missing');
             expect(await previewTaskTemplatePo.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('FailureMsg22: Task Priority label is missing');
@@ -471,7 +471,7 @@ describe('Global Search All Category', () => {
             expect(await previewTaskTemplatePo.getSupportCompany()).toBe('Petramco', 'FailureMsg41: Company Value is missing');
         });
 
-        it('[DRDMV-16066]: Verify Document On Left Pannel ', async () => {
+        it('[4333]: Verify Document On Left Pannel ', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(attachmentFileName, documentModule)).toBeTruthy(`${attachmentFileName} attachment File Name is missing`);
@@ -484,7 +484,7 @@ describe('Global Search All Category', () => {
             await searchPo.clickOnLeftPannelRecord(commonSearchForAll, documentModule);
         });
 
-        it('[DRDMV-16066]: Verify Document Preview', async () => {
+        it('[4333]: Verify Document Preview', async () => {
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Company')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Business Unit')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Department')).toBeTruthy('FailureMsg22: field label displayed');
@@ -509,7 +509,7 @@ describe('Global Search All Category', () => {
             expect(await previewDocumentLibraryPo.isDataDisplayed('OwnerGroup', 'CA Support 1')).toBeTruthy('FailureMsg29: Status KA Displayed');
         });
 
-        it('[DRDMV-16066]: Verify People On Left Pannel', async () => {
+        it('[4333]: Verify People On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, peopleModule, 1)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
@@ -522,7 +522,7 @@ describe('Global Search All Category', () => {
             await searchPo.clickOnLeftPannelRecord(`${commonSearchForAll} ${lastName}`, peopleModule);
         });
 
-        it('[DRDMV-16066]: Verify People Preview Fields', async () => {
+        it('[4333]: Verify People Preview Fields', async () => {
             expect(await personProfilePo.isFieldLabelDisplayed('Employee')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Job Title')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Corporate ID')).toBeTruthy('FailureMsg22: field label displayed');
@@ -550,7 +550,7 @@ describe('Global Search All Category', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16881]: Search filters on Global search', async () => {
+    describe('[4147]: Search filters on Global search', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch1.pdf';
         let caseSummary = '1caseSummaryDRDMV16881' + randomStr;
@@ -616,7 +616,7 @@ describe('Global Search All Category', () => {
             await createNewUser(firstName, lastName, loginId, 'DRDMV16881@petramco.com', 'Petramco');
         });
 
-        it('[DRDMV-16881]: Verify Recent With Case Summary And Descripiton And Check Is Duplicates Case Summary', async () => {
+        it('[4147]: Verify Recent With Case Summary And Descripiton And Check Is Duplicates Case Summary', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await utilityGrid.clickFilterField("Created Date");
@@ -635,7 +635,7 @@ describe('Global Search All Category', () => {
             expect(await searchPo.getDate()).toBe(createdDate, 'Created Date is missing');
         });
 
-        it('[DRDMV-16881]: Verify Modules With Created Date', async () => {
+        it('[4147]: Verify Modules With Created Date', async () => {
             // Verify Case
             await searchPo.searchRecord(caseSummary);
             expect(await searchPo.isModuleTitleDisplayed(caseSummary, 'Cases (1)', caseModule)).toBeTruthy('FailureMsg2: Cases module title is missing');
@@ -673,7 +673,7 @@ describe('Global Search All Category', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
 
-        it('[DRDMV-16881]: Verify Modules With Change to Modified Date', async () => {
+        it('[4147]: Verify Modules With Change to Modified Date', async () => {
             await searchPo.closeFilterDateLabel();
             await utilityGrid.clickFilterField("Modified Date");
             await dateTimeSelectorPo.selectTimeToggle();

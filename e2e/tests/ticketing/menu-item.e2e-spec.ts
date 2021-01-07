@@ -52,7 +52,7 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    it('[DRDMV-17650]: The Menu Items View would be re-arranged so that fields are in Proper sequence.', async () => {
+    it('[4085]: The Menu Items View would be re-arranged so that fields are in Proper sequence.', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await createMenuItems.clickOnMenuOptionLink();
@@ -68,7 +68,7 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    it('[DRDMV-17637]: [UI] "Resolution Code" new option available in Menu Items', async () => {
+    it('[4090]: [UI] "Resolution Code" new option available in Menu Items', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
         await createMenuItems.clickOnMenuOptionLink();
@@ -76,12 +76,12 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16173]: Verify Multiple records with same name', async () => {
+    describe('[4290]: Verify Multiple records with same name', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = 'Legal' + randomStr;
         let label1 = 'legal' + randomStr;
         let label2 = 'leGAL' + randomStr;
-        it('[DRDMV-16173]: Create Menu Item label and Source', async () => {
+        it('[4290]: Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
@@ -94,7 +94,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-16173]: Create Duplicate Menu Item Source and Label', async () => {
+        it('[4290]: Create Duplicate Menu Item Source and Label', async () => {
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
@@ -119,7 +119,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnSaveButton();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
         });
-        it('[DRDMV-16173]: create same name record in same LOB', async () => {
+        it('[4290]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -136,7 +136,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnCancelButton();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-16173]: create same name record in different LOB', async () => {
+        it('[4290]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Facilities');
             await createMenuItems.clickOnMenuOptionLink();
@@ -161,12 +161,12 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16105,DRDMV-16106]: Verify Multiple records with same name', async () => {
+    describe('[4305,4304]: Verify Multiple records with same name', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = 'label' + randomStr;
         let sourcesActive = 'Email';
         let resolutionCode = 'resolutionCode' + randomStr;
-        it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Create Menu Item', async () => {
+        it('[4305,4304]: [Menu Items] - Create Menu Item', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
@@ -189,7 +189,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update Menu Item', async () => {
+        it('[4305,4304]: [Menu Items] - Update Menu Item', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(sourcesActive);
             expect(await editMenuItemsConfigPo.isSaveButtonDisabled()).toBeTruthy();
             expect(await editMenuItemsConfigPo.isMenuItemsStatusDisabled()).toBeTruthy();
@@ -212,7 +212,7 @@ describe('Menu Item', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-16105,DRDMV-16106]: [Menu Items] - Update records AND grid Validation', async () => {
+        it('[4305,4304]: [Menu Items] - Update records AND grid Validation', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(resolutionCode);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
@@ -254,12 +254,12 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16104]: [Menu Items] Create new records in Menu Items', async () => {
+    describe('[4306]: [Menu Items] Create new records in Menu Items', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let lableRandVal = 'labelVal' + randomStr;
         let resolutionCodeRandVal = 'resolutionCodeVal' + randomStr;
 
-        it('[DRDMV-16104]: Verify Create Menu Item UI', async () => {
+        it('[4306]: Verify Create Menu Item UI', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
@@ -274,7 +274,7 @@ describe('Menu Item', () => {
             expect(await createMenuItems.isCancelButtonDisplayed()).toBeTruthy('FailureMsg: Cancel button is missing');
             expect(await createMenuItems.isToggleButtonDisplayed()).toBeTruthy('FailureMsg: Available On UI toogle button is missing ')
         });
-        it('[DRDMV-16104]: Create Label Menu and verify in in Grid', async () => {
+        it('[4306]: Create Label Menu and verify in in Grid', async () => {
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.setLocalizeValue(lableRandVal);
@@ -286,7 +286,7 @@ describe('Menu Item', () => {
             await menuItemsConfigConsolePo.searchOnGridConsole(lableRandVal);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal);
         });
-        it('[DRDMV-16104]: Create Resolution Code Menu and verify in in Grid', async () => {
+        it('[4306]: Create Resolution Code Menu and verify in in Grid', async () => {
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Resolution Code');
             await createMenuItems.clickOnLocalizeLink();
@@ -302,7 +302,7 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-17654]: Check Resolution Code and Resolution Description fields added on Case Template', async () => {
+    describe('[4081]: Check Resolution Code and Resolution Description fields added on Case Template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1, caseTemplateName2, caseTemplateName3, caseTemplateName4, resolutionCode;
         beforeAll(async () => {
@@ -349,17 +349,17 @@ describe('Menu Item', () => {
             caseTemplateData.resolutionDescription = "0"
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
-        it('[DRDMV-17654]: Create case with selecting case template 1', async () => {
+        it('[4081]: Create case with selecting case template 1', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
-            await createCasePage.setSummary('DRDMV-17654_Summary_1');
+            await createCasePage.setSummary('4081_Summary_1');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName1);
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-17654]: Validate case with resolution code required true condition ', async () => {
+        it('[4081]: Validate case with resolution code required true condition ', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
@@ -372,17 +372,17 @@ describe('Menu Item', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
-        it('[DRDMV-17654]: Create case with selecting case template 2', async () => {
+        it('[4081]: Create case with selecting case template 2', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
-            await createCasePage.setSummary('DRDMV-17654_Summary_2');
+            await createCasePage.setSummary('4081_Summary_2');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName2);
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-17654]: Validate case with resolution description required true condition', async () => {
+        it('[4081]: Validate case with resolution description required true condition', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Description is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
@@ -395,17 +395,17 @@ describe('Menu Item', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
-        it('[DRDMV-17654]: Create case with selecting case template 3', async () => {
+        it('[4081]: Create case with selecting case template 3', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
-            await createCasePage.setSummary('DRDMV-17654_Summary_3');
+            await createCasePage.setSummary('4081_Summary_3');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName3);
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-17654]: Validate case with Resolution code and Resolution description required true condition', async () => {
+        it('[4081]: Validate case with Resolution code and Resolution description required true condition', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tag for Resolution Code is displayed ');
             expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Description is missing');
@@ -421,17 +421,17 @@ describe('Menu Item', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
-        it('[DRDMV-17654]: Create case with selecting case template 4', async () => {
+        it('[4081]: Create case with selecting case template 4', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
-            await createCasePage.setSummary('DRDMV-17654_Summary_4');
+            await createCasePage.setSummary('4081_Summary_4');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName4);
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
         });
-        it('[DRDMV-17654]: Validate case with Resolution code and Resolution description required false condition', async () => {
+        it('[4081]: Validate case with Resolution code and Resolution description required false condition', async () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
             await updateStatusBladePo.setStatusReason('Auto Resolved');
@@ -448,7 +448,7 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-16276]: [Menu Items] - Only Active Label and Sources are available for consumption', async () => {
+    describe('[4277]: [Menu Items] - Only Active Label and Sources are available for consumption', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         let title = 'titleDRDMV16276' + randomStr;
@@ -485,7 +485,7 @@ describe('Menu Item', () => {
             await apiHelper.createNewMenuItem(sampleMeniItemData4);
         });
 
-        it('[DRDMV-16276]: Verify Label & Source With Create Case', async () => {
+        it('[4277]: Verify Label & Source With Create Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             expect(await createCasePage.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
@@ -499,7 +499,7 @@ describe('Menu Item', () => {
             caseId = await viewCasePo.getCaseID();
         });
 
-        it('[DRDMV-16276]: Verify Label With Create Task', async () => {
+        it('[4277]: Verify Label With Create Task', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setDescription("Description");
@@ -513,7 +513,7 @@ describe('Menu Item', () => {
             await manageTask.clickCloseButton();
         });
 
-        it('[DRDMV-16276]: Verify Label With Create Case Template', async () => {
+        it('[4277]: Verify Label With Create Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -527,7 +527,7 @@ describe('Menu Item', () => {
             await createCasetemplatePo.clickSaveCaseTemplate();
         });
 
-        it('[DRDMV-16276]: Verify Label With Create Task Template', async () => {
+        it('[4277]: Verify Label With Create Task Template', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
             await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
@@ -541,7 +541,7 @@ describe('Menu Item', () => {
             await createTasktemplatePo.clickOnSaveTaskTemplate();
         });
 
-        it('[DRDMV-16276]: Verify Label With Create Assignment Mapping', async () => {
+        it('[4277]: Verify Label With Create Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
@@ -556,7 +556,7 @@ describe('Menu Item', () => {
             await createAssignmentsConfigPo.clickonSaveButton();
         });
 
-        it('[DRDMV-16276]: Verify Label With Case Read Access', async () => {
+        it('[4277]: Verify Label With Case Read Access', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await consoleReadAcess.clickOnReadAccessConfiguration();
@@ -571,7 +571,7 @@ describe('Menu Item', () => {
             await addReadAccess.clickOnSave();
         });
 
-        it('[DRDMV-16276]: Verify Label With Create SVT', async () => {
+        it('[4277]: Verify Label With Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management');
@@ -579,7 +579,7 @@ describe('Menu Item', () => {
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
         });
 
-        it('[DRDMV-16276]: Change Status Active Label Status to InActive', async () => {
+        it('[4277]: Change Status Active Label Status to InActive', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             await menuItemsConfigConsolePo.searchAndEditMenuOption(labelActive1);
@@ -587,7 +587,7 @@ describe('Menu Item', () => {
             await editMenuItemsConfigPo.clickOnSaveButton();
         });
 
-        it('[DRDMV-16276]: Verify Label With Edit Case', async () => {
+        it('[4277]: Verify Label With Edit Case', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
@@ -608,7 +608,7 @@ describe('Menu Item', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[DRDMV-16276]: Verify Label With Edit Task', async () => {
+        it('[4277]: Verify Label With Edit Task', async () => {
             await viewCasePo.clickOnTaskLink(summary);
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setLabel(labelInactive);
@@ -627,7 +627,7 @@ describe('Menu Item', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[DRDMV-16276]: Verify Label With Edit Case Template', async () => {
+        it('[4277]: Verify Label With Edit Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(title);
@@ -646,7 +646,7 @@ describe('Menu Item', () => {
           //  expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
-        it('[DRDMV-16276]: Verify Inactive, deprecated label With Edit Task Template', async () => {
+        it('[4277]: Verify Inactive, deprecated label With Edit Task Template', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
             await consoleTasktemplatePo.searchAndOpenTaskTemplate(title);
@@ -660,7 +660,7 @@ describe('Menu Item', () => {
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
-        it('[DRDMV-16276]: Verify Label With Edit Task Template', async () => {
+        it('[4277]: Verify Label With Edit Task Template', async () => {
             await editTasktemplatePo.selectLabel(labelActive2);
             await editTasktemplatePo.clickOnSaveButton();
             await viewTasktemplatePo.clickOnEditLink();
@@ -669,7 +669,7 @@ describe('Menu Item', () => {
             //expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
-        it('[DRDMV-16276]: Verify Label With Edit Assignment Mapping', async () => {
+        it('[4277]: Verify Label With Edit Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
@@ -691,7 +691,7 @@ describe('Menu Item', () => {
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
-        it('[DRDMV-16276]: Verify Label With Edit Case Read Access', async () => {
+        it('[4277]: Verify Label With Edit Case Read Access', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await consoleReadAcess.searchAndOpenReadAccess(title);

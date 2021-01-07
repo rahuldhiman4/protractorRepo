@@ -105,8 +105,8 @@ describe('Email Configuration', () => {
     };
 
     //ankagraw
-    describe('[DRDMV-8528,DRDMV-8527]: [Email Configuration] Verify Email configuration Grid view', async () => {
-        it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
+    describe('[5463,5464]: [Email Configuration] Verify Email configuration Grid view', async () => {
+        it('[5463,5464]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             let emailHeaders: string[] = ["Email IDs", "Company", "Status"];
@@ -118,7 +118,7 @@ describe('Email Configuration', () => {
             await consoleEmailConfig.removeHeader(add);
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
         });
-        it('[DRDMV-8528,DRDMV-8527]: Verify Email configuration header', async () => {
+        it('[5463,5464]: Verify Email configuration header', async () => {
             await consoleEmailConfig.searchAndSelectCheckbox(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilCommon.clickOnWarningOk();
@@ -131,21 +131,21 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.clickSave();
             expect(await utilCommon.isPopUpMessagePresent("Saved successfully.")).toBeTruthy();
         });
-        it('[DRDMV-8528,DRDMV-8527]: Verify email configuration is accessible to Line of business Case Manager', async () => {
+        it('[5463,5464]: Verify email configuration is accessible to Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB are not displayed to the Case Manager of same LOB');
         });
-        it('[DRDMV-8528,DRDMV-8527]: Verify email configuration is accessible to other Line of business Case BA', async () => {
+        it('[5463,5464]: Verify email configuration is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy('Email Configuration for Human resource LOB are not displayed to the Case Manager of Facilities LOB');
         });
-        it('[DRDMV-8528,DRDMV-8527]: Verify email configuration is accessible to other Line of business Case Manager', async () => {
+        it('[5463,5464]: Verify email configuration is accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -153,7 +153,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy('Email Configuration for Human resource LOB are not displayed to the Case Manager of Facilities LOB');
 
         });
-        it('[DRDMV-8528,DRDMV-8527]: Verify email configuration are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[5463,5464]: Verify email configuration are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -165,7 +165,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB is not displayed to the Case Manager havign access to multiple LOBs (Human Resource, Facilities)');
 
         });
-        it('[DRDMV-8528,DRDMV-8527]: Verify email configuration are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[5463,5464]: Verify email configuration are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -176,7 +176,7 @@ describe('Email Configuration', () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy('Email Configuration for Human resource LOB is not displayed to the Case Manager havign access to multiple LOBs (Human Resource, Facilities)');
         });
-        it('[DRDMV-8528,DRDMV-8527]: create same name record in same LOB', async () => {
+        it('[5463,5464]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -193,7 +193,7 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.clickCancel();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-8528,DRDMV-8527]: create same name record in different LOB', async () => {
+        it('[5463,5464]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             let facilitiesEmail = "facilitymail@gmail.com"
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -220,9 +220,9 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: [Email Configuration] Verify Email configuration Grid view', async () => {
+    describe('[5474,5473,5472,5471,5470,5469]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Email configuration Grid view', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify Email configuration Grid view', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -233,7 +233,7 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.selectGlobal("True");
             await newExclusiveSubjectPo.clickSaveButton();
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Email configuration Grid view and add new exclusive', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify Email configuration Grid view and add new exclusive', async () => {
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Delete" + randomStr);
             await newExclusiveSubjectPo.setSortOrder('20');
@@ -242,7 +242,7 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.setSubject("update" + randomStr);
             await newExclusiveSubjectPo.clickSaveButton();
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Set the exclusion details ', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Set the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('update' + randomStr)).toBeTruthy();
             await utilGrid.clickCheckBoxOfValueInGrid('update' + randomStr);
@@ -250,14 +250,14 @@ describe('Email Configuration', () => {
             await editExclusiveSubjectPo.setSubject('updated123' + randomStr);
             await editExclusiveSubjectPo.clickSaveButton();
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify the exclusion details ', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeTruthy();
             await utilGrid.clickCheckBoxOfValueInGrid('Delete' + randomStr);
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeFalsy();
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Delete the Email configuration', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Delete the Email configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.clickCheckBoxOfValueInGrid(emailID);
@@ -272,7 +272,7 @@ describe('Email Configuration', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(differntEmailConfigFacilities);
         });
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify Global Exclusion should be displayed', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify Global Exclusion should be displayed', async () => {
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
@@ -280,7 +280,7 @@ describe('Email Configuration', () => {
         });
 
 
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify if exclusion subjects on email config are accessible to same LOB Case Manager', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -290,7 +290,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy('Exclusion subject is not displayed on Human Resource email configuration to Case manager user');
         });
 
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify if exclusion subjects on email config are accessible to different LOB Case BA', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -303,7 +303,7 @@ describe('Email Configuration', () => {
 
         });
 
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify if exclusion subjects on email config are accessible to different LOB Case Manager', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -315,7 +315,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
         });
 
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify if exclusion subjects on email config are accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -327,7 +327,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent(facilitiesEmailID)).toBeFalsy();
         });
 
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify if exclusion subjects on email config are accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -344,7 +344,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
         });
 
-        it('[DRDMV-8514,DRDMV-8515,DRDMV-8516,DRDMV-8517,DRDMV-8518,DRDMV-8519]: Verify if exclusion subjects on email config are accessible to Case BA user having access to multiple LOB', async () => {
+        it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -369,9 +369,9 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: [Email Configuration] Verify Email configuration Grid view', async () => {
+    describe('[5257,5258,5259,5232]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let acknowledgementTemplateHeaders: string[] = ["Type", "Operation Type", "Ticket Status", "Template Name"];
-        it('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: Verify all templates', async () => {
+        it('[5257,5258,5259,5232]: Verify all templates', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -382,7 +382,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
         });
-        it('[DRDMV-10438,DRDMV-10437,DRDMV-10436,DRDMV-10552]: update the delete template', async () => {
+        it('[5257,5258,5259,5232]: update the delete template', async () => {
             expect(await editEmailConfigPo.isTicketTypeAcknowledgementTemplateDisabled()).toBeTruthy("Ticket Type is enable");
             expect(await editEmailConfigPo.isOperationTypeAcknowledgementTemplateDisabled()).toBeTruthy("Operation Type is enable");
             expect(await editEmailConfigPo.isTicketStatusAcknowledgementTemplateDisabled()).toBeTruthy("Ticket status is enable");
@@ -396,9 +396,9 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10461,DRDMV-10763,DRDMV-10458]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+    describe('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
-        it('[DRDMV-10461,DRDMV-10763,DRDMV-10458]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+        it('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -415,7 +415,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy();
         });
-        it('[DRDMV-10461,DRDMV-10763,DRDMV-10458]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
+        it('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
             expect(await editEmailConfigPo.isNewAvailableGlobalSubjectsDisplayed()).toBeTruthy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Private" + randomStr);
@@ -437,7 +437,7 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+    describe('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -449,7 +449,7 @@ describe('Email Configuration', () => {
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
             await apiHelper.createEmailConfiguration(differntEmailConfigFacilities);
         });
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+        it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -467,7 +467,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
         });
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+        it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
@@ -481,7 +481,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
         });
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+        it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
@@ -497,7 +497,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
         });
-        it('[DRDMV-10764]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+        it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await utilGrid.searchRecord("Private" + randomStr);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy("Private comment is present");
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
@@ -516,7 +516,7 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10762]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
+    describe('[5183]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -525,7 +525,7 @@ describe('Email Configuration', () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailConfiguration(emailConfig);
         });
-        it('[DRDMV-10762]: Add exclusive subject', async () => {
+        it('[5183]: Add exclusive subject', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -538,7 +538,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
         });
-        it('[DRDMV-10762]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
+        it('[5183]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.clickNewExclusiveSubjectsButton();
             await newExclusiveSubjectPo.setSubject("Private" + randomStr);
@@ -554,7 +554,7 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
+    describe('[5180,5179]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -565,7 +565,7 @@ describe('Email Configuration', () => {
             await apiHelper.apiLogin('fritz');
             await apiHelper.createEmailConfiguration(emailConfigFacilities);
         });
-        it('[DRDMV-10765,DRDMV-10766]: Add exclusive subject', async () => {
+        it('[5180,5179]: Add exclusive subject', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -578,7 +578,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
         });
-        it('[DRDMV-10765,DRDMV-10766]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
+        it('[5180,5179]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -608,7 +608,7 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,DRDMV-9037]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+    describe('[5114,5251,5168,5104,5382]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
@@ -632,7 +632,7 @@ describe('Email Configuration', () => {
             caseTemplateData.templateName = randomStr + 'caseTemplateNameInactive'
             await apiHelper.createCaseTemplate(caseTemplateData);
         });
-        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,DRDMV-9037]: Exclusion Subject : Default associated public exclusion subject list', async () => {
+        it('[5114,5251,5168,5104,5382]: Exclusion Subject : Default associated public exclusion subject list', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -649,7 +649,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Closed Ack Template')).toBeTruthy("'Case Closed Ack Template' record not present");
         });
-        it('[DRDMV-10930,DRDMV-10457,DRDMV-10802,DRDMV-10997,DRDMV-9037]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
+        it('[5114,5251,5168,5104,5382]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');
@@ -666,9 +666,9 @@ describe('Email Configuration', () => {
         });
     });
 
-    describe('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+    describe('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
         let templateData, randomStr = Math.floor(Math.random() * 1000000);
-        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+        it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
 
             templateData = {
                 "templateName": 'GlobalCaseTemplateName' + randomStr,
@@ -697,7 +697,7 @@ describe('Email Configuration', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+        it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -709,7 +709,7 @@ describe('Email Configuration', () => {
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilCommon.closePopUpMessage();
         });
-        it('[DRDMV-9403,DRDMV-9402]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
+        it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -724,7 +724,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
         });
 
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template is accessible to Line of business Case Manager', async () => {
+        it('[5336,5337]: Verify acknowledgment template is accessible to Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -733,7 +733,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case Manager of same LOB');
         });
 
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template is accessible to other Line of business Case BA', async () => {
+        it('[5336,5337]: Verify acknowledgment template is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -759,7 +759,7 @@ describe('Email Configuration', () => {
             await utilCommon.closePopUpMessage();
         });
 
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template is accessible to other Line of business Case Manager', async () => {
+        it('[5336,5337]: Verify acknowledgment template is accessible to other Line of business Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -770,7 +770,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case manager of same LOB');
         });
 
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -781,7 +781,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeTruthy('Global Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
         });
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
@@ -789,7 +789,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeFalsy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human resource LOB');
 
         });
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -800,7 +800,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
         });
 
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -811,7 +811,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesAckTemplate'+ randomStr)).toBeFalsy();
         });
 
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -823,7 +823,7 @@ describe('Email Configuration', () => {
             expect(await utilGrid.isGridRecordPresent('FacilitiesAckTemplate' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Facilities LOB are displayed to the Case BA of Human Resource LOB');
 
         });
-        it('[DRDMV-9403,DRDMV-9402]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[5336,5337]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy('Global Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
             expect(await utilGrid.isGridRecordPresent('companytemplateName' + randomStr)).toBeTruthy('Company specific Email Acknowledgement template for Human resource LOB are not displayed to the Case BA of Facilities LOB');
@@ -839,9 +839,9 @@ describe('Email Configuration', () => {
     });
 
     //ankagraw
-    describe('[DRDMV-13584]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+    describe('[4707]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
         let trustedMail: string = "test@abc.com"
-        it('[DRDMV-13584]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+        it('[4707]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
             await utilGrid.searchAndOpenHyperlink(emailID);
@@ -859,7 +859,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-13584]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
+        it('[4707]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
             await editEmailConfigPo.clickAddTrustedEmailBtn();
             await editEmailConfigPo.setNewTrustedEmail(trustedMail);
             await editEmailConfigPo.selectMappedRequesterDropDown("Adam Pavlik");

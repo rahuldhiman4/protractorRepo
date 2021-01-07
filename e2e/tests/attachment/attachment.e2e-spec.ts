@@ -75,7 +75,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-11697]: All attachments grid verification', async () => {
+    it('[5077]: All attachments grid verification', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
@@ -94,12 +94,12 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-11713, DRDMV-9028]: Upload attachment via compose email & verify all attachments grid', async () => {
+    describe('[5063, 5389]: Upload attachment via compose email & verify all attachments grid', async () => {
         let caseData, newCase;
         beforeAll(async () => {
             caseData = {
                 "Requester": "araisin",
-                "Summary": "Test case for DRDMV-11713",
+                "Summary": "Test case for 5063",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 1",
@@ -108,7 +108,7 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qkatawazi');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-11713, DRDMV-9028]: Upload attachment via compose email & verify all attachments grid', async () => {
+        it('[5063, 5389]: Upload attachment via compose email & verify all attachments grid', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
@@ -141,12 +141,12 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-11710,DRDMV-11698]: Upload attachment from Social & verify all attachments grid', async () => {
+    it('[5066,5076]: Upload attachment from Social & verify all attachments grid', async () => {
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = {
             "Requester": "araisin",
-            "Summary": "Test case for DRDMV-8377RandVal" + randomStr,
+            "Summary": "Test case for 5515RandVal" + randomStr,
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 1",
@@ -164,7 +164,7 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfPdf')).toBeTruthy('Attachment file name is missing');
         expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is deleted sucessfully');
-        // DRDMV-11698
+        // 5076
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeFalsy('Download button is enabled');
         await attachmentBladePo.searchAndSelectCheckBox('bwfPdf');
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
@@ -179,7 +179,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
+    describe('[5067]: Upload attachment from task activity & verify all attachments grid', async () => {
         let xlsxFilePath = '../../data/ui/attachment/bwfXlsx.xlsx';
         let wordFilePath = '../../data/ui/attachment/bwfWord1.rtf';
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -208,7 +208,7 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
         });
-        it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
+        it('[5067]: Upload attachment from task activity & verify all attachments grid', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -226,7 +226,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.clickCloseButton();
         });
-        it('[DRDMV-11708]: Upload attachment from task activity & verify all attachments grid', async () => {
+        it('[5067]: Upload attachment from task activity & verify all attachments grid', async () => {
             //Add Manual task and Automation Task in Case
             await viewCasePo.clickAddTaskButton();
             await manageTaskPo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
@@ -254,9 +254,9 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {
+    describe('[5059,5057]: Large number of attachments verification', async () => {
         let fileName: string[];
-        it('[DRDMV-11718,DRDMV-11720]: Create case with Large number of attachments', async () => {
+        it('[5059,5057]: Create case with Large number of attachments', async () => {
             let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Elizabeth Peters');
@@ -269,7 +269,7 @@ describe("Attachment", () => {
             await viewCasePo.clickAttachmentsLink();
             await utilityGrid.sortGridColumn("Attachments", "asc");
         });
-        it('[DRDMV-11718,DRDMV-11720]: Large number of attachments verification', async () => {
+        it('[5059,5057]: Large number of attachments verification', async () => {
             for (let j: number = 0; j < fileName.length; j++) {
                 let file: string = fileName[j].substring(0, fileName[j].indexOf("."));
                 await utilCommon.deleteAlreadyDownloadedFile(file);
@@ -286,7 +286,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments verification with task id', async () => {
+    describe('[5056,5051]: Multiple tasks on same case with attachments verification with task id', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, fileName: string[] = [], taskId: string[] = [];
         beforeAll(async () => {
@@ -302,7 +302,7 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments', async () => {
+        it('[5056,5051]: Multiple tasks on same case with attachments', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             //Create Task API
@@ -332,7 +332,7 @@ describe("Attachment", () => {
                 await viewTaskPo.clickOnViewCase();
             }
         });
-        it('[DRDMV-11721,DRDMV-11746]: Multiple tasks on same case with attachments verification with task id', async () => {
+        it('[5056,5051]: Multiple tasks on same case with attachments verification with task id', async () => {
             await viewCasePo.clickAttachmentsLink();
             for (let j: number = 0; j < fileName.length; j++) {
                 let file: string = fileName[j].substring(0, fileName[j].indexOf("."));
@@ -353,9 +353,9 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-11714,DRDMV-11705]: Remove attachment which is added via case console & verify all attachments grid', async () => {
+    describe('[5062,5070]: Remove attachment which is added via case console & verify all attachments grid', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[DRDMV-11714,DRDMV-11705]: Create case with attachment', async () => {
+        it('[5062,5070]: Create case with attachment', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Elizabeth Peters');
             await createCasePo.setSummary(caseSummary);
@@ -368,7 +368,7 @@ describe("Attachment", () => {
             await attachmentBladePo.searchAttachment('articleStatus');
             expect(await attachmentBladePo.isAttachmentPresent('articleStatus')).toBeTruthy('articleStatus.png Attachment is missing on grid');
         });
-        it('[DRDMV-11714,DRDMV-11705]: Remove attachment which is added via case console & verify all attachments grid', async () => {
+        it('[5062,5070]: Remove attachment which is added via case console & verify all attachments grid', async () => {
             await attachmentBladePo.clickCloseButton();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.removeAttachment();
@@ -385,7 +385,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-11702]: Multiple attachments download', async () => {
+    it('[5073]: Multiple attachments download', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
         await createCasePo.selectRequester('Elizabeth Peters');
@@ -408,8 +408,8 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-11701,DRDMV-11706,DRDMV-11722]: Multiple attachments selection from different pages', async () => {
-        it('[DRDMV-11701,DRDMV-11706,DRDMV-11722]: Uplaod 50 attachments', async () => {
+    describe('[5074,5069,5055]: Multiple attachments selection from different pages', async () => {
+        it('[5074,5069,5055]: Uplaod 50 attachments', async () => {
             let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('Elizabeth Peters');
@@ -432,7 +432,7 @@ describe("Attachment", () => {
             await activityTabPo.addAttachment(filesToUpload1);
             await activityTabPo.clickOnPostButton();
         });
-        it('[DRDMV-11701,DRDMV-11706,DRDMV-11722]: Multiple attachments selection from different pages', async () => {
+        it('[5074,5069,5055]: Multiple attachments selection from different pages', async () => {
             let fileName2: string[] = ['articleStatus.png', 'bwfJpg.jpg'];
             let filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
             await activityTabPo.addActivityNote("Total 52 Files");
@@ -460,13 +460,13 @@ describe("Attachment", () => {
         });
     });
 
-    describe('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
+    describe('[5385]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
         let newCase;
         beforeAll(async () => {
             let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "Test case for DRDMV-9028 RandVal" + randomString,
+                "Summary": "Test case for 5389 RandVal" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -475,7 +475,7 @@ describe("Attachment", () => {
             await apiHelper.apiLogin('qtao');
             newCase = await apiHelper.createCase(caseData);
         });
-        it('[DRDMV-9032]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
+        it('[5385]: Negative -Verify large number of attachments. Click on Send button in Compose Email', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickOnEmailLink();
@@ -498,7 +498,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    it('[DRDMV-11707,DRDMV-11703,DRDMV-11704]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
+    it('[5068,5072,5071]: Upload attachment while creating case via BWF & verify all attachments Grid	', async () => {
         let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfJpg.jpg';
         await navigationPage.gotoCreateCase();
@@ -555,7 +555,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-15252]: Verify Category tier 4 and Label field is added on views', async () => {
+    describe('[4428]: Verify Category tier 4 and Label field is added on views', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let categName1 = 'Employee Relations';
         let categName2 = 'Compensation';
@@ -570,7 +570,7 @@ describe("Attachment", () => {
             await loginPage.login('qkatawazi');
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Case ', async () => {
+        it('[4428]: Verify Category Tier 4 With Case ', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(summary);
@@ -590,7 +590,7 @@ describe("Attachment", () => {
             await editCasePo.clickOnCancelCaseButton();
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Task ', async () => {
+        it('[4428]: Verify Category Tier 4 With Task ', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskPo.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(summary);
@@ -611,7 +611,7 @@ describe("Attachment", () => {
             await editTaskPo.clickOnCancelButton();
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Case Template ', async () => {
+        it('[4428]: Verify Category Tier 4 With Case Template ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -636,7 +636,7 @@ describe("Attachment", () => {
             await utilCommon.clickOnWarningOk();
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Assignment Mapping ', async () => {
+        it('[4428]: Verify Category Tier 4 With Assignment Mapping ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
             await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
@@ -659,7 +659,7 @@ describe("Attachment", () => {
             await editAssignmentsConfigPo.clickOnCancelButton();
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Case Read Access ', async () => {
+        it('[4428]: Verify Category Tier 4 With Case Read Access ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
             await consoleReadAcess.clickOnReadAccessConfiguration();
@@ -680,7 +680,7 @@ describe("Attachment", () => {
             await editReadAccess.clickOnCancel();
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Document Library ', async () => {
+        it('[4428]: Verify Category Tier 4 With Document Library ', async () => {
             let filePath = '../../../data/ui/attachment/demo.txt';
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
@@ -700,7 +700,7 @@ describe("Attachment", () => {
             expect(await editDocumentLibraryPo.getCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Knowledge Article ', async () => {
+        it('[4428]: Verify Category Tier 4 With Knowledge Article ', async () => {
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -716,7 +716,7 @@ describe("Attachment", () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier4Value()).toBe(categName4, 'FailureMsg1: CategoryTier4 is displayed');
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With SLM Build Expression ', async () => {
+        it('[4428]: Verify Category Tier 4 With SLM Build Expression ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
@@ -725,7 +725,7 @@ describe("Attachment", () => {
             await slmExpressionBuilder.selectFields('Label');
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Approval Configuration ', async () => {
+        it('[4428]: Verify Category Tier 4 With Approval Configuration ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', 'Approval Configuration - Administration - Business Workflows');
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration('com.bmc.dsm.case-lib:Case');
@@ -758,7 +758,7 @@ describe("Attachment", () => {
             await browser.sleep(2000); // sleep added for expression builder loading time
         });
 
-        it('[DRDMV-15252]: Verify Category Tier 4 With Task Template ', async () => {
+        it('[4428]: Verify Category Tier 4 With Task Template ', async () => {
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
@@ -788,7 +788,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[DRDMV-23413]: Verify Thai Character On Multiple Screens', async () => {
+    describe('[12090]: Verify Thai Character On Multiple Screens', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTempateName = 'caseTemplateNameDRDMV23413' + randomStr;
         let newCase1;
@@ -888,7 +888,7 @@ describe("Attachment", () => {
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
         });
 
-        it('[DRDMV-23413]: Verify Attachment With Case Description Attach Button ', async () => {
+        it('[12090]: Verify Attachment With Case Description Attach Button ', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase1.displayId);
             await viewCasePo.clickEditCaseButton();
@@ -939,7 +939,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-23413]: Verify Locally Attachment On Case Activity Tab', async () => {
+        it('[12090]: Verify Locally Attachment On Case Activity Tab', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`, `../../data/ui/attachment/${fileName6}`, `../../data/ui/attachment/${fileName7}`, `../../data/ui/attachment/${fileName8}`]);
             await activityTabPo.clickOnPostButton();
@@ -993,7 +993,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-23413]: Verify Document Libaray Attachment On Case Activity Tab ', async () => {
+        it('[12090]: Verify Document Libaray Attachment On Case Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 1);
@@ -1057,7 +1057,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-23413]: Verify Attachment With Task Description Attach Button ', async () => {
+        it('[12090]: Verify Attachment With Task Description Attach Button ', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase2.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -1092,7 +1092,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
         });
 
-        it('[DRDMV-23413]: Verify Locally Attachment On Task Activity Tab', async () => {
+        it('[12090]: Verify Locally Attachment On Task Activity Tab', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`, `../../data/ui/attachment/${fileName6}`, `../../data/ui/attachment/${fileName7}`, `../../data/ui/attachment/${fileName8}`]);
             await activityTabPo.clickOnPostButton();
@@ -1120,7 +1120,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
         });
 
-        it('[DRDMV-23413]: Verify Document Libaray Attachment On Task Activity Tab ', async () => {
+        it('[12090]: Verify Document Libaray Attachment On Task Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 1);
@@ -1155,7 +1155,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
         });
 
-        it('[DRDMV-23413]: Verify Files On Attachment Blade ', async () => {
+        it('[12090]: Verify Files On Attachment Blade ', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAttachmentsLink();
 
@@ -1235,7 +1235,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-23413]: Verify Files On Edit Knowledge MetaData', async () => {
+        it('[12090]: Verify Files On Edit Knowledge MetaData', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
@@ -1267,7 +1267,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
         });
 
-        it('[DRDMV-23413]: Verify Locally Attachment On Case Activity Tab ', async () => {
+        it('[12090]: Verify Locally Attachment On Case Activity Tab ', async () => {
             await viewKnowledgeArticlePo.clickOnActivityTab();
 
             await activityTabPo.addActivityNote(addNoteRandomText);
@@ -1297,7 +1297,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
         });
 
-        it('[DRDMV-23413]: Verify Document Libaray Attachment On Knowledge Activity Tab ', async () => {
+        it('[12090]: Verify Document Libaray Attachment On Knowledge Activity Tab ', async () => {
             await activityTabPo.addActivityNote(addNoteRandomText);
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 1);
@@ -1332,7 +1332,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
         });
 
-        it('[DRDMV-23413]: Attach Files From UI Dynamic Field And Create Case', async () => {
+        it('[12090]: Attach Files From UI Dynamic Field And Create Case', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -1363,7 +1363,7 @@ describe("Attachment", () => {
             await viewCasePo.clickEditCaseButton();
         });
 
-        it('[DRDMV-23413]: Verify Dynamic Fields On Case', async () => {
+        it('[12090]: Verify Dynamic Fields On Case', async () => {
             await browser.sleep(15000);//Wait untile download icon displayed.
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
             await editCasePo.clickDownloadDynamicFile(1);
@@ -1388,7 +1388,7 @@ describe("Attachment", () => {
             await editCasePo.clickSaveCase();
         });
 
-        it('[DRDMV-23413]: Verify Dynamic Fields On View Case & Activity', async () => {
+        it('[12090]: Verify Dynamic Fields On View Case & Activity', async () => {
             await activityTabPo.clickShowMoreLinkInActivity(1);
             await activityTabPo.isTextPresentInActivityLog('1Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx(+)')
             await activityTabPo.isTextPresentInActivityLog('1ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx(+)');
@@ -1413,7 +1413,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
         });
 
-        it('[DRDMV-23413]: Verify Dynamic Fields On Attachment', async () => {
+        it('[12090]: Verify Dynamic Fields On Attachment', async () => {
             await viewCasePo.clickAttachmentsLink();
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
             await attachmentBladePo.selectCheckBox(1);
@@ -1441,7 +1441,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[DRDMV-23413]: Verify thai character on social', async () => {
+        it('[12090]: Verify thai character on social', async () => {
             await viewCasePo.clickOnEmailLink();
             await composeMail.setToOrCCInputTextbox('To', 'qtao@petramco.com');
             await composeMail.setEmailBody("With thai attachmnents");

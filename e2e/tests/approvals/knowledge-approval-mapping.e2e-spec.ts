@@ -47,14 +47,14 @@ describe("Knowledge Approval Mapping Tests", () => {
         await navigationPage.signOut();
     });
 
-    describe('[DRDMV-20791]:Define Approval Mapping and check all fields details on UI', async () => {
+    describe('[3693]:Define Approval Mapping and check all fields details on UI', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
-        it('[DRDMV-20791]:Define Approval Mapping and check all fields details on UI', async () => {
+        it('[3693]:Define Approval Mapping and check all fields details on UI', async () => {
             await navigationPage.signOut();
             await loginPage.login("fritz");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Approvals - Settings - Business Workflows');
             await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
             expect(await createApprovalMappingKnowledgePo.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
             expect(await createApprovalMappingKnowledgePo.isApprovalMappingNameFieldMandatory()).toBeTruthy();
@@ -68,7 +68,7 @@ describe("Knowledge Approval Mapping Tests", () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-20791]: Verify Knowledge Approval Mapping is accessible to other Line of business Case BA', async () => {
+        it('[3693]: Verify Knowledge Approval Mapping is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -76,7 +76,7 @@ describe("Knowledge Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-20791]: Verify Knowledge Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[3693]: Verify Knowledge Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -93,7 +93,7 @@ describe("Knowledge Approval Mapping Tests", () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
-        it('[DRDMV-20791]: Verify Knowledge Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
+        it('[3693]: Verify Knowledge Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -104,7 +104,7 @@ describe("Knowledge Approval Mapping Tests", () => {
             expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Knowledge Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
-        it('[DRDMV-20791]: create same name record in same LOB', async () => {
+        it('[3693]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -120,7 +120,7 @@ describe("Knowledge Approval Mapping Tests", () => {
             await createApprovalMappingKnowledgePo.clickCancelApprovalMappingBtn();
             await utilCommon.clickOnWarningOk();
         });
-        it('[DRDMV-20791]: create same name record in different LOB', async () => {
+        it('[3693]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Human Resource');
             await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
