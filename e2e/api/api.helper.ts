@@ -395,12 +395,15 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.company ? data.company : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[450000401].value = data.ownerBU ? data.ownerBU : templateData.fieldInstances[450000401].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
+        //templateData.fieldInstances[1000000063].value = data.categoryTier1 ? await apiCoreUtil.getCategoryGuid(data.categoryTier1) : templateData.fieldInstances[1000000063].value;
         templateData.fieldInstances[1000000063].value = data.categoryTier1 ? data.categoryTier1 : templateData.fieldInstances[1000000063].value;
+        //templateData.fieldInstances[1000000064].value = data.categoryTier2 ? await apiCoreUtil.getCategoryGuid(data.categoryTier2) : templateData.fieldInstances[1000000064].value;
         templateData.fieldInstances[1000000064].value = data.categoryTier2 ? data.categoryTier2 : templateData.fieldInstances[1000000064].value;
+        //templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[1000000065].value = data.categoryTier3 ? data.categoryTier3 : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
         //#LOB Comments
-        // templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
             let caseTemplateStatus = {
@@ -490,20 +493,20 @@ class ApiHelper {
         if (data.supportGroup) {
             let taskTemplateDataassignedCompany = {
                 "id": 450000154,
-                "value": `${data.company}`
+                "value": data.company
             }
             templateData.fieldInstances["450000154"] = taskTemplateDataassignedCompany;
 
             let caseTemplateDataSupportAssignee = {
                 "id": 1000000217,
-                "value": `${data.supportGroup}`
+                "value": data.supportGroup
             }
             templateData.fieldInstances["1000000217"] = caseTemplateDataSupportAssignee;
         }
         if (data.businessUnit) {
             let caseTemplateDataBusinessUnit = {
                 "id": 450000381,
-                "value": `${data.businessUnit}`
+                "value": data.businessUnit
             }
             templateData.fieldInstances["450000381"] = caseTemplateDataBusinessUnit;
         }
@@ -516,7 +519,8 @@ class ApiHelper {
             templateData.fieldInstances["450000371"] = caseTemplateDataDepartment;
         }
         if (data.categoryTier4) {
-            // let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.categoryTier4);
+            //let categoryTier4 = await apiCoreUtil.getCategoryGuid(data.categoryTier4);
+            let categoryTier4 = data.categoryTier4;
             let caseTemplateDataCategoryTier4 = {
                 "id": 450000158,
                 "value": `${data.categoryTier4}`
@@ -540,7 +544,8 @@ class ApiHelper {
             }
             templateData.fieldInstances["450000291"] = caseTaskStatusConfiguration;
         }
-
+        console.log('aa', templateData);
+        
         let newCaseTemplate: AxiosResponse = await apiCoreUtil.createRecordInstance(templateData);
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
         const caseTemplateDetails = await axios.get(
@@ -1314,12 +1319,13 @@ class ApiHelper {
 
     async createNotesTemplate(module: string, data: INotesTemplate): Promise<boolean> {
         let templateData = NOTES_TEMPLATE;
-        templateData.processInputValues["Company"] = await apiCoreUtil.getOrganizationGuid(data.company);
+        templateData.processInputValues["Company"] = data.company;
         templateData.processInputValues["Template Name"] = data.templateName;
         templateData.processInputValues["Status"] = data.templateStatus;
         templateData.processInputValues["MessageBody"] = data.body;
         templateData.processInputValues["Label"] = data.label ? await apiCoreUtil.getLabelGuid(data.label) : templateData.processInputValues["Label"];
-        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
+        //#LOB Comments
+        //templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         switch (module) {
             case "Case": {
                 templateData.processInputValues["Module"] = "Cases";
@@ -1618,12 +1624,12 @@ class ApiHelper {
 
     async createNewFlowset(data: IFlowset): Promise<IIDs> {
         let flowsetData = cloneDeep(FLOWSET_TEMPLATE);
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(data.company);
-        flowsetData.fieldInstances[1000000001].value = companyGuid;
+        flowsetData.fieldInstances[1000000001].value = data.company;
         flowsetData.fieldInstances[450000002].value = data.flowsetName;
         flowsetData.fieldInstances[8].value = data.description;
         flowsetData.fieldInstances[7].value = data.flowsetStatus;
-        flowsetData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : flowsetData.fieldInstances[450000420].value;
+        //#LOB Comments
+        //flowsetData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : flowsetData.fieldInstances[450000420].value;
         const flowset = await apiCoreUtil.createRecordInstance(flowsetData);
         const flowsetDetails = await axios.get(
             flowset.headers.location
@@ -2187,8 +2193,9 @@ class ApiHelper {
         serviceTargetPayload.fieldInstances[300398100].value = svtData.goalTimeMinutes;
         serviceTargetPayload.fieldInstances[490000400].value = svtData.svtName;
         serviceTargetPayload.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtData.dataSource);
-        serviceTargetPayload.fieldInstances[304412961].value = await apiCoreUtil.getOrganizationGuid(svtData.company);
-        serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
+        serviceTargetPayload.fieldInstances[304412961].value = svtData.company;
+        //#LOB Comments
+        //serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
         let slmResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(serviceTargetPayload);
         console.log('Create Service Target API Status =============>', slmResponse.status);
         const slmDetails = await axios.get(
@@ -2760,8 +2767,9 @@ class ApiHelper {
         let svtGroup = cloneDeep(SERVICE_TARGET_GROUP);
         svtGroup.fieldInstances[8].value = svtGroupData.svtGroupName;
         svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtGroupData.dataSource);
-        svtGroup.fieldInstances[1000000001].value = svtGroupData.company ? await apiCoreUtil.getOrganizationGuid(svtGroupData.company) : svtGroup.fieldInstances[1000000001].value;
-        svtGroup.fieldInstances[450000420].value = svtGroupData.lineOfBusiness ? await constants.LOB[svtGroupData.lineOfBusiness] : svtGroup.fieldInstances[450000420].value;
+        svtGroup.fieldInstances[1000000001].value = svtGroupData.company ? svtGroupData.company : svtGroup.fieldInstances[1000000001].value;
+        //#LOB Comments
+        //svtGroup.fieldInstances[450000420].value = svtGroupData.lineOfBusiness ? await constants.LOB[svtGroupData.lineOfBusiness] : svtGroup.fieldInstances[450000420].value;
         let svtGroupCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(svtGroup);
         console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
         return svtGroupCreateResponse.status == 201;
@@ -3296,7 +3304,7 @@ class ApiHelper {
         mappingPayload.fieldInstances[8].value = mappingData.registeredProcessId;
         mappingPayload.fieldInstances[450000002].value = mappingData.flowsetId;
         mappingPayload.fieldInstances[450000003].value = constants.FlowsetFunctions[mappingData.function];
-        mappingPayload.fieldInstances[1000000001].value = mappingData.company ? await apiCoreUtil.getOrganizationGuid(mappingData.company) : mappingPayload.fieldInstances[1000000001].value;
+        mappingPayload.fieldInstances[1000000001].value = mappingData.company ? mappingData.company : mappingPayload.fieldInstances[1000000001].value;
 
         let mappingResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mappingPayload);
         console.log('Process Flowset Mapping status =============> ', mappingResponse.status);
@@ -3329,7 +3337,8 @@ class ApiHelper {
         let serviceTargetPayload = cloneDeep(SERVICE_TARGET_GOALTYPE_PAYLOAD);
         serviceTargetPayload.fieldInstances[301263100].value = svtData.svtGoalTypeName;
         serviceTargetPayload.fieldInstances[300473700].value = svtData.status;
-        serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
+        //#LOB Comments
+        //serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
         let slmResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(serviceTargetPayload);
         console.log('Create Service Target Goal Type API Status =============>', slmResponse.status);
 
