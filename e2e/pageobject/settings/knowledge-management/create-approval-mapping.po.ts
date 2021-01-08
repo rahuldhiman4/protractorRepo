@@ -1,3 +1,4 @@
+import utilityCommon from '../../../utils/utility.common';
 import { $, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilCommon from "../../../utils/util.common";
 
@@ -38,19 +39,19 @@ class CreateApprovalMapping {
 
 
     async isApprovalMappingNameFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.approvalMappingNameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.approvalMappingNameGuid);
     }
 
     async isCompanyFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isStatusTriggerFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusTriggerDropDownGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusTriggerDropDownGuid);
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async clickStatusTriggerDropDown(): Promise<void> {
