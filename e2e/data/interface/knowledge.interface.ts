@@ -9,8 +9,9 @@ export interface IKnowledgeArticleTemplate {
     templateName: string,
     sectionTitle: string,
     templateDescription?: string,
-    lineOfBusiness?: string,
-    global?: string
+    // lineOfBusiness?: string,
+    status?:string,
+    knowledgeSetTitle: string,
 };
 
 export interface IKnowledgeArticles {
@@ -31,7 +32,8 @@ export interface IKnowledgeArticles {
     assigneeSupportGroup?: string,
     assignee?: string,
     articleDesc?: string,
-    lineOfBusiness?: string
+    lineOfBusiness?: string,
+    siteGroup?: string;
 };
 
 export interface IknowledgeSetPermissions {

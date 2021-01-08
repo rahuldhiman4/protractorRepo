@@ -153,3 +153,7 @@ export enum LOB {
     "Ericsson SAM" = "AGGADGG8ECDC0AQ72Q2ZQ644T58OZX",
     "KingstonOracle Finance" = "AGGADGG8ECDC0AQ88BAWQ79OADDSFJ"
 }
+
+export enum ArticleTemplateStuses {
+    Disable = 10,
+};

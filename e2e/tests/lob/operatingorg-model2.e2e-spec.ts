@@ -603,7 +603,8 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             // Knowledge Template under LOB HR
             let knowledgeArticleTemplateData = {
                 templateName: knowledgeTemplateStr,
-                sectionTitle: "articleSection"
+                sectionTitle: "articleSection",
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             await coreApi.getKnowledgeTemplateGuid(knowledgeTemplateStr);

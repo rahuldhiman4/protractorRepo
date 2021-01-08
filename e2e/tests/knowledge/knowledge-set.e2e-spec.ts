@@ -204,7 +204,8 @@ describe('Knowledge Article Set', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             let knowledgeArticleTemplateData = {
                 templateName: knowledgeTemplateStr,
-                sectionTitle: "articleSection"
+                sectionTitle: "articleSection",
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
