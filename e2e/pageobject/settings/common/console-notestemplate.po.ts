@@ -1,19 +1,15 @@
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from "../../../utils/util.grid";
+import utilityGrid from "../../../utils/utility.grid";
 class ConsoleNotesTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         notesTemplate: '.d-icon-left-plus',
-        gridGuid: '485ea5d0-3bf5-4393-b2f4-40917f524f88',
-        status: 'a6f36df8-bb54-405f-ab71-7ac3b4b3e71d',
-        templateNameFromGrid: '.ui-grid__link',
+        gridGuid: '34edf229-ec94-4ae3-9083-6ab5b6441e5d',
         deleteButton: '.d-icon-left-cross',
-        selectCheckBox: '.ui-grid-icon-ok',
-        body: '.cke_wysiwyg_div',
-        fiter: '.d-icon-left-filter',
-        searchTextBox: 'input[rx-id="search-text-input"]',
-        searchButton: '[rx-id="submit-search-button"]',
+        searchTextBox: '.adapt-search-triggerable input',
+        searchButton: '.adapt-search-triggerable .input-group-append',
         refreshButton: '.d-icon-refresh',
     }
 
@@ -28,22 +24,16 @@ class ConsoleNotesTemplate {
     }
 
     async clickOnTemplateName(temmplateName: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(temmplateName, this.selectors.gridGuid);
-    }
-
-    async isTemplatePresentInGrid(templateNameValue: string): Promise<string> {
-        await utilGrid.searchAndSelectGridRecord(templateNameValue, this.selectors.gridGuid);
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.templateNameFromGrid)));
-        return await $(this.selectors.templateNameFromGrid).getText();
+        await utilityGrid.searchAndOpenHyperlink(temmplateName, this.selectors.gridGuid);
     }
 
     async searchAndClickNotesTemplateCheckBox(temmplateNameValue: string): Promise<void> {
         //        await browser.wait(this.EC.invisibilityOf($(this.selectors.body)));
-        await utilGrid.searchAndSelectGridRecord(temmplateNameValue);
+        await utilityGrid.searchAndSelectGridRecord(temmplateNameValue);
     }
 
     async searchAndClickOnNotesTemplate(templateName: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(templateName);
+        await utilityGrid.searchAndOpenHyperlink(templateName);
     }
 
     async clickOnDeleteButton(): Promise<void> {
@@ -52,8 +42,7 @@ class ConsoleNotesTemplate {
     }
 
     async isTemplatePresentOnGrid(templateNameValue): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf(element(by.cssContainingText((this.selectors.templateNameFromGrid), templateNameValue))));
-        return await element(by.cssContainingText(this.selectors.templateNameFromGrid, templateNameValue)).isDisplayed();
+        return await utilityGrid.isGridRecordPresent(templateNameValue, this.selectors.gridGuid)
     }
 
     async isNotesTemplateUIConsolePresent(): Promise<boolean> {
@@ -79,23 +68,23 @@ class ConsoleNotesTemplate {
     }
     
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.gridGuid, columnHeader);
     }
 
     async isGridColumnSorted(columnName: string ): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnName, 'ascending', this.selectors.gridGuid);
+        return await utilityGrid.isGridColumnSorted(columnName, 'ascending', this.selectors.gridGuid);
     }
 
     async getGuidValue(): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, 'ID');
+        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.gridGuid, 'ID');
     }
 
     async addColumns(columnNames: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGuid, columnNames);
+        await utilityGrid.addGridColumn(columnNames,this.selectors.gridGuid);
     } 
 
     async removeColumns(columnNames: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnNames);
+        await utilityGrid.removeGridColumn(columnNames,this.selectors.gridGuid);
     } 
 
 }

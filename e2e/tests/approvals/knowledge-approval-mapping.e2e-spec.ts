@@ -9,6 +9,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 let userData, userData1, userData2 = undefined;
 
 describe("Knowledge Approval Mapping Tests", () => {
@@ -65,43 +66,43 @@ describe("Knowledge Approval Mapping Tests", () => {
             await createApprovalMappingKnowledgePo.selectCompany('Petramco');
             await createApprovalMappingKnowledgePo.selectStatusTrigger('Publish Approval');
             await createApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3693]: Verify Knowledge Approval Mapping is accessible to other Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Approvals - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
         it('[3693]: Verify Knowledge Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Approvals - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
 
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Knowledge Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
-            await utilGrid.searchAndOpenHyperlink(approvalMappingName);
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Knowledge Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await utilityGrid.searchAndOpenHyperlink(approvalMappingName);
             await editApprovalMappingKnowledgePo.setApprovalMappingName(approvalMappingName+'_update');
             await editApprovalMappingKnowledgePo.selectStatusTrigger('Request Cancelation');
             await editApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3693]: Verify Knowledge Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Knowledge Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Approvals - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Knowledge Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
         it('[3693]: create same name record in same LOB', async () => {
@@ -109,20 +110,20 @@ describe("Knowledge Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Approvals - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
             await createApprovalMappingKnowledgePo.setApprovalMappingName(approvalMappingName+'_update');
             await createApprovalMappingKnowledgePo.selectCompany('Petramco');
             await createApprovalMappingKnowledgePo.selectStatusTrigger('Retire Approval');
             await createApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222099): The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await createApprovalMappingKnowledgePo.clickCancelApprovalMappingBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[3693]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
             await createApprovalMappingKnowledgePo.setApprovalMappingName(approvalMappingName+'_update');
             await createApprovalMappingKnowledgePo.selectCompany('Petramco');
@@ -130,9 +131,9 @@ describe("Knowledge Approval Mapping Tests", () => {
             // verify LOB is there
             expect(await createApprovalMappingKnowledgePo.getLobValue()).toBe("Human Resource");
             await createApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
-            await utilGrid.searchAndOpenHyperlink(approvalMappingName+'_update');
+            await utilityGrid.searchAndOpenHyperlink(approvalMappingName+'_update');
             expect(await editApprovalMappingKnowledgePo.getLobValue()).toBe("Human Resource");
             await editApprovalMappingKnowledgePo.clickCancelApprovalMappingBtn();
         });

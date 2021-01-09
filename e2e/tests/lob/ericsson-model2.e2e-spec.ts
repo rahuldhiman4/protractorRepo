@@ -1264,7 +1264,7 @@ describe('Ericsson Model Test Extended', () => {
                 knowledgeSetTitle: `60196 ER HR ${randomStr}`,
                 knowledgeSetDesc: `${randomStr}_Desc_ER_HR`,
                 company: 'Ericsson HR',
-                lineOfBusiness: 'Ericsson HR'
+                lineOfBusiness: 'Ericsson HR',
             }
 
             knowledgeSetDataEricssonSAM = {
