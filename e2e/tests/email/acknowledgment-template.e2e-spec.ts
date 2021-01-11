@@ -6,9 +6,8 @@ import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/con
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 let userData, userData1, userData2 = undefined;
 
 
@@ -51,7 +50,7 @@ describe('Email Acknowledgment Template', () => {
     //ankagraw
     it('[5123]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Acknowledgment Templates - Settings - Business Workflows');
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         expect(await createAcknowledgmentTemplatesPo.isTemplateNameRequired()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
@@ -60,7 +59,7 @@ describe('Email Acknowledgment Template', () => {
         expect(await createAcknowledgmentTemplatesPo.islineOfBusinessDisabled()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isLocaleDisabled()).toBeTruthy();
         await createAcknowledgmentTemplatesPo.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 
     //kgaikwad
@@ -75,7 +74,7 @@ describe('Email Acknowledgment Template', () => {
 
         it('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Acknowledgment Templates - Settings - Business Workflows');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -85,7 +84,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr);
@@ -106,7 +105,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {
@@ -136,7 +135,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
 
             // Global ack template
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -148,7 +147,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to same LOB Case Manager', async () => {
@@ -156,8 +155,8 @@ describe('Email Acknowledgment Template', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
         });
 
         it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to different LOB Case BA', async () => {
@@ -165,8 +164,8 @@ describe('Email Acknowledgment Template', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case BA');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case BA');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case BA');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case BA');
 
         });
 
@@ -175,8 +174,8 @@ describe('Email Acknowledgment Template', () => {
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
         });
 
         it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to Case BA belonging to different company with same LOB', async () => {
@@ -184,8 +183,8 @@ describe('Email Acknowledgment Template', () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
         });
 
         it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to Case Manager user having access to multiple LOB', async () => {
@@ -193,12 +192,12 @@ describe('Email Acknowledgment Template', () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to case manager with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to case manager with multiple LOB access');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is visible to case manager with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is visible to case manager with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to case manager with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to case manager with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is visible to case manager with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is visible to case manager with multiple LOB access');
         });
 
         it('[5124,5120,5117]: Verify if acknowledgment templates are accessible to Case BA user having access to multiple LOB', async () => {
@@ -206,17 +205,17 @@ describe('Email Acknowledgment Template', () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is visible to case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is visible to case BA with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is visible to case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is visible to case BA with multiple LOB access');
 
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to case BA with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to case BA with multiple LOB access');
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName2);
             await editAcknowledgmentTemplatePo.selectStatusDropDown('Inactive');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         afterAll(async () => {
@@ -250,7 +249,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -262,11 +261,11 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             // 5121
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
             expect(await editAcknowledgmentTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
             expect(await editAcknowledgmentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
@@ -282,18 +281,18 @@ describe('Email Acknowledgment Template', () => {
             await editAcknowledgmentTemplatePo.clickOnGridEditButton();
             await editAcknowledgmentTemplatePo.updateEditMessageTextBladeBody(body2);
             await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             await editAcknowledgmentTemplatePo.searchAndSelectGridRecord('subject');
             await editAcknowledgmentTemplatePo.clickOnGridEditButton();
             await editAcknowledgmentTemplatePo.updateEditMessageTextBladeSubject(subject2);
             await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await consoleAcknowledgmentTemplatePo.searchOnGridConsole('body');
-            expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
-            await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
-            expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
+             expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
+             await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
+             expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
         });
         it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
@@ -303,7 +302,7 @@ describe('Email Acknowledgment Template', () => {
             await consoleAcknowledgmentTemplatePo.addColumnOnGrid(arr2);
             await consoleAcknowledgmentTemplatePo.addFilter('Template Name', templateName2, 'text');
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName2, 'Filter Template Name is missing in column');
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await consoleAcknowledgmentTemplatePo.addFilter('Label', label, 'text');
             expect(await consoleAcknowledgmentTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, ' Filter Label is missing in column');
             await consoleAcknowledgmentTemplatePo.addFilter('Status', 'Active', 'checkbox');
@@ -357,10 +356,10 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
 
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName4)).toBeTruthy('Duplicate private template name error message is missing');
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName4)).toBeTruthy('Duplicate private template name error message is missing');
+            await utilityCommon.closePopUpMessage();
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5119]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
@@ -384,10 +383,10 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
 
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName5)).toBeTruthy('Duplicate private template name error message is missing');
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName5)).toBeTruthy('Duplicate private template name error message is missing');
+            await utilityCommon.closePopUpMessage();
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5119]: create same name record in same LOB', async () => {
@@ -402,13 +401,13 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setDescription(description);
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222108): Template Already exist with given name:${templateName4}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222108): Template Already exist with given name:${templateName4}`)).toBeTruthy("Error message absent");
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5119]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -417,12 +416,12 @@ describe('Email Acknowledgment Template', () => {
             // verify LOB is there
             expect(await createAcknowledgmentTemplatesPo.getLobValue()).toBe("Facilities");
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent"); NO SUCCESS MESSAGE ON UI
+            //expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent"); NO SUCCESS MESSAGE ON UI
             // open the record and verify LOB is on edit screen
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName4);
             expect(await editAcknowledgmentTemplatePo.getLobValue()).toBe("Facilities");
             await editAcknowledgmentTemplatePo.clickOnCancelButton();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPage.signOut();
