@@ -1,5 +1,4 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
 import utilityCommon from '../../../utils/utility.common';
 import utilityGrid from '../../../utils/utility.grid';
 
@@ -11,7 +10,7 @@ class EditAcknowledgementTemplate {
         moduleName: '[rx-view-component-id="8107085d-334f-4d50-beb9-ad10d8911144"] button',
         company: '[rx-view-component-id="af048482-fdf7-4650-ab4b-75e262e00445"] button',
         status: '[rx-view-component-id="a1e0042f-41e7-4c80-9cd8-014786f346e6"]  button',
-        searchButton: '.rx-toggle-search-button',
+        searchButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] input[type="search"]',
         searchGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
         statusGuid: 'a1e0042f-41e7-4c80-9cd8-014786f346e6',
         labelGuid: '38ba050c-eb47-44a7-9efc-c724302560bf',
@@ -60,11 +59,11 @@ class EditAcknowledgementTemplate {
     async getSubjectMessageValue(): Promise<string> {
        await  $(this.selectors.searchButton).click();
         await utilityGrid.searchAndSelectGridRecord('subject', '8b59641c-2fca-4d96-8395-03e232cf05de');
-        return await utilGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
+        return await utilityGrid.getFirstGridRecordColumnValue('Message','8b59641c-2fca-4d96-8395-03e232cf05de');
     }
 
     async getBodyMessageValue(): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue('8b59641c-2fca-4d96-8395-03e232cf05de', 'Message');
+        return await utilityGrid.getFirstGridRecordColumnValue('Message','8b59641c-2fca-4d96-8395-03e232cf05de');
     }
 
     async searchAndSelectEmailTemplate(value: string): Promise<void> {
@@ -97,7 +96,7 @@ class EditAcknowledgementTemplate {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader,this.selectors.gridGuid);
     }
 
     async clickOnGridSearchIcon(): Promise<void> {

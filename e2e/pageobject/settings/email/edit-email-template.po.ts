@@ -14,7 +14,7 @@ class CreateEmailTemplateBlade {
         description: '[rx-view-component-id="f7437c9e-1ed7-4aac-974a-e4d4a643ee35"] input',
         localeGuid: '71db023a-4979-4f58-a026-6aeda2edd96b',
         localizeMessage: '[rx-view-component-id="88ea24dd-ddad-489f-904a-89e43f80f5e6"] button',
-        searchButtonClick: '.rx-toggle-search-button',
+        searchButtonClick: '.d-icon-search',
         editButton: '.d-icon-left-pencil',
         body: '.cke_wysiwyg_div',
         editMessageTextBladeSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
@@ -64,7 +64,7 @@ class CreateEmailTemplateBlade {
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
-        await utilityGrid.searchRecord(value);
+        await utilityGrid.searchRecord(value,this.selectors.gridGuid);
     }
 
     async searchAndSelectGridRecord(value: string): Promise<void> {
