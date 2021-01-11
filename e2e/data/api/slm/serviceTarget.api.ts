@@ -4,7 +4,7 @@ export const SERVICE_TARGET_PAYLOAD = {
   "fieldInstances": {
     "300271400": {
       "id": 300271400,
-      "value": "'1000000001'=\"04be8c4405fe327b812c4ebd1d7de81ab87166e59c9e50c29be65706115d2e4575aa17d92fa2d53c7abc1a85c62d514b62a70125ce13a2bcea17eab7b05e8158\""
+      "value": "'1000000001'=\"Phylum\""
     },
     "304412691": {
       "id": 304412691,
@@ -40,12 +40,13 @@ export const SERVICE_TARGET_PAYLOAD = {
     },
     "304412961": {
       "id": 304412961,
-      "value": "04be8c4405fe327b812c4ebd1d7de81ab87166e59c9e50c29be65706115d2e4575aa17d92fa2d53c7abc1a85c62d514b62a70125ce13a2bcea17eab7b05e8158"
+      "value": "Phylum"
     },
-    "450000420": {
-      "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
-    },
+    //#LOB Comments
+    // "450000420": {
+    //   "id": 450000420,
+    //   "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+    // },
     "490000400": {
       "id": 490000400,
       "value": "SVT In Progress to Resolved"
@@ -145,13 +146,14 @@ export const SERVICE_TARGET_GROUP = {
       "id": 300523400,
       "value": "AGGAA5V0GFCOUAOO0SG2ON4TGYA8N5"
     },
-    "450000420": {​​​​
-      "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
-    }​​​​,
+    //#LOB Comments
+    // "450000420": {​​​​
+    //   "id": 450000420,
+    //   "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+    // }​​​​,
     "1000000001": {
       "id": 1000000001,
-      "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+      "value": "Petramco"
     }
   }
 };
@@ -238,9 +240,10 @@ export const SERVICE_TARGET_GOALTYPE_PAYLOAD = {
       "id": 301263100,
       "value": "testgoal",
     },
-    "450000420": {
-      "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
-    }
+    //#LOB Comments
+    // "450000420": {
+    //   "id": 450000420,
+    //   "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    // }
   }
 };

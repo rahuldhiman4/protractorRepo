@@ -40,12 +40,18 @@ describe('Knowledge Article Template', () => {
 
     it('[6360]: [Create Mode] Unable to create the duplicate template', async () => {
         let templateName = 'Template Name DRDMV_1088';
-
+        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let knowledgeSetData = {
+            knowledgeSetTitle: 'KASetPetramco' + randomStr,
+            knowledgeSetDesc: 'KAPetramco_Desc' + randomStr,
+            company: 'Petramco'
+        }
         //Creating an Article Template from API
         let knowledgeArticleTemplateData = {
             templateName: templateName,
             sectionTitle: "articleSection",
-            lineOfBusiness: "Human Resource"
+            // lineOfBusiness: "Human Resource",
+            knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
         }
         await apiHelper.apiLogin('jbarnes');
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
@@ -100,7 +106,8 @@ describe('Knowledge Article Template', () => {
 
             let knowledgeArticleTemplateData = {
                 templateName: 'Article Template Name Petramco',
-                sectionTitle: "articleSection"
+                sectionTitle: "articleSection",
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
         });

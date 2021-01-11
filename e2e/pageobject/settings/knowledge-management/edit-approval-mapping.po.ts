@@ -1,3 +1,4 @@
+import utilityCommon from '../../../utils/utility.common';
 import { $, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilCommon from "../../../utils/util.common";
 
@@ -12,8 +13,8 @@ class CreateApprovalMapping {
         companyGuid: '3977b1a0-245f-44a8-9c25-c2dc55f50daf',
         statusTriggerDropDownGuid: '5641bfb3-d68b-40dd-a0e0-3f1f6521aa8a',
         statusTriggerDropDown: '[rx-view-component-id="5641bfb3-d68b-40dd-a0e0-3f1f6521aa8a"]',
-        statusTriggerDropDownField: 'span.dropdown-toggle-title',
-        statusTriggerInputBox: 'input.ng-touched',
+        statusTriggerDropDownField: '[rx-view-component-id="5641bfb3-d68b-40dd-a0e0-3f1f6521aa8a"] button',
+        statusTriggerInputBox: '[placeholder="Filter options"]',
         statusTriggerCheckBox: 'span.checkbox__item',
         statusMappingHelptext: '[rx-view-component-id="8cb76e4f-cbe1-4eb8-8f42-2e5e94cd70e5"] p',
         statusMappingLabel: '[rx-view-component-id="b782b185-a19a-45ad-b5b3-13bf50c89e3c"] span',
@@ -37,19 +38,19 @@ class CreateApprovalMapping {
 
 
     async isApprovalMappingNameFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.approvalMappingNameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.approvalMappingNameGuid);
     }
 
     async isCompanyFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isStatusTriggerFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusTriggerDropDownGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusTriggerDropDownGuid);
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async clickStatusTriggerDropDown(): Promise<void> {

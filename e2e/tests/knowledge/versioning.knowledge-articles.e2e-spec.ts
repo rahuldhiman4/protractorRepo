@@ -75,7 +75,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
         await apiHelper.createKnowledgeSet(knowledgeSetData);
         let knowledgeArticleTemplateData = {
             templateName: knowledgeTemplateStr,
-            sectionTitle: "articleSection"
+            sectionTitle: "articleSection",
+            knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
         }
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
     });

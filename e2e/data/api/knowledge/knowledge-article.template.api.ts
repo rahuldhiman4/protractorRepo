@@ -7,9 +7,14 @@ export const KNOWLEDGEARTICLE_TEMPLATE = {
   ],
   "templateName": "TemplateName",
   "templateDescription": "TemplateDescription",
-  "lobId": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
-  "global": false
-};
+  "knowledgeSet": "HR",
+  "status": 0,
+  "company": "Petramco",
+  "knowledgeSetId": "AGGAA5V0GENSZAOO2WVBON6X9XU16V"
+  //#LOB Comments
+  // "lobId": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+  // "global": false
+}
 
 export const KNOWLEDGEARTICLE_HELPFULCOUNTER = {
   "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",

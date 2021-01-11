@@ -99,8 +99,8 @@ describe('Service Provider Model Tests Extended', () => {
             knowledgeArticleTemplateData = {
                 templateName: "KnowledgetemplateName" + randomStr,
                 sectionTitle: "articleSection",
-                lineOfBusiness: "Kingston Legal"
-
+                lineOfBusiness: "Kingston Legal",
+                knowledgeSetTitle: knowledgeSetDataKingstanLegal.knowledgeSetTitle,
             }
 
             await apiHelper.apiLogin(kingstoneUserName, password);

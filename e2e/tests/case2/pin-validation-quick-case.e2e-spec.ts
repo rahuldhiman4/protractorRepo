@@ -298,7 +298,8 @@ describe('PIN Validation Quick Case', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowledgeArticleTemplateData = {
                 templateName: 'KATemplatePsilon' + randomStr,
-                sectionTitle: "articleSection"
+                sectionTitle: "articleSection",
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             apiHelper.deleteApprovalMapping('Knowledge');
@@ -442,7 +443,8 @@ describe('PIN Validation Quick Case', () => {
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowledgeArticleTemplateData = {
                 templateName: 'KATemplatePsilon' + randomStr,
-                sectionTitle: "articleSection"
+                sectionTitle: "articleSection",
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
             }
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
             apiHelper.deleteApprovalMapping('Knowledge');
