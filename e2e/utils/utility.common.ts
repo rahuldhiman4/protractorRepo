@@ -8,7 +8,7 @@ export class Utility {
         dropdownBox: '.dropdown-toggle',
         dropDownInput: 'input.form-control',
         dropDownNoneOpt: '.dropdown-item span',
-        dropDownOption: '.dropdown_select__menu-content button',
+        dropDownOption: '.dropdown-item',
         dialogMessageTitle: '.modal-content .modal-title, .modal-content .d-modal__title',
         dialogMessageText: '.modal-content .modal-body, .modal-content .d-modal__content-item',
         popUpMsgLocator: '.a-toast__details div',
@@ -199,7 +199,7 @@ export class Utility {
 
     //unable to identify values on task template screen    
     async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
-        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span,[rx-view-component-id='${guid}'] bwf-read-only-field label, [rx-view-component-id='${guid}'] adapt-select .form-control-label span`;
+        let fieldLabel = `[rx-view-component-id='${guid}'] rx-read-only-field label, [rx-view-component-id='${guid}'] label.d-textfield__label span,[rx-view-component-id='${guid}'] bwf-read-only-field label, [rx-view-component-id='${guid}'] .form-control-label span`;
         return await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;

@@ -51,7 +51,7 @@ class AcknowledgmentTemplateConsolePage {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader,this.selectors.gridGuid );
     }
 
     async areGridColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {

@@ -2,10 +2,6 @@ export const DOC_LIB_DRAFT = {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "com.bmc.dsm.knowledge:Knowledge Article",
     "fieldInstances": {
-        "399": {
-            "id": 399,
-            "value": null
-        },
         "200000007": {
             "id": 200000007,
             "value": null
@@ -24,7 +20,7 @@ export const DOC_LIB_DRAFT = {
         },
         "302300512": {
             "id": 302300512,
-            "value": "a0cb543323842bf1613ed4e9e3ae902295f8efafc8f07458e4f1821a2a50b5646295f64264d27fcd60bdaf36edbe2131af3c0f8a99c6a743a1e0dd36a3efec75"
+            "value": null
         },
         "302301262": {
             "id": 302301262,
@@ -52,7 +48,7 @@ export const DOC_LIB_DRAFT = {
         },
         "1000000001": {
             "id": 1000000001,
-            "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+            "value": null
         },
         "1000000063": {
             "id": 1000000063,
@@ -69,11 +65,35 @@ export const DOC_LIB_DRAFT = {
         "450000167": {
             "id": 450000167,
             "value": null
+        },//#LOB
+        // "450000411":{
+        //    "id":450000411,
+        //    "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        // }
+        "302299491": {
+            "id": 302299491,
+            "value": "0",
         },
-        "450000411":{
-           "id":450000411,
-           "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
-        }
+        "302299521": {
+          "id": 302299521,
+          "value": "0",
+        },
+        "302300505": {
+          "id": 302300505,
+          "value": "1",
+        },
+        "302309761": {
+          "id": 302309761,
+          "value": "0",
+        },
+        "302311190": {
+          "id": 302311190,
+          "value": "0",
+        },
+        "302311191": {
+          "id": 302311191,
+          "value": "0",
+        },
     }
 };
 

@@ -4,10 +4,10 @@ import utilCommon from '../../../utils/util.common';
 class NotificationEventCreatePage {
 
     selectors = {
-        eventNameInput: '[rx-view-component-id="f03dfbfc-f14f-4a82-89a2-12333c11bcc6"] input',
-        companyGuid: 'ddcc4de1-4507-4b2f-92c1-7dbdde873a65',
-        descriptionInput: '[rx-view-component-id="e93a2f93-ba5c-433d-b1a0-7dd79c000ab7"] textarea',
-        saveButton: '[rx-view-component-id="2ed4dab4-ff30-4cb2-a836-042847927b08"] button'
+        eventNameInput: '[rx-view-component-id="3dca5cb2-8539-4713-a3bb-25299b838936"] input',
+        companyGuid: '0d3363e1-ee59-4efb-b482-8cb7dbfadf92',
+        descriptionInput: '[rx-view-component-id="e1ac5aae-3afe-4852-865a-1bcbb8bb3601"] input',
+        saveButton: '[rx-view-component-id="3509072f-cada-45c0-8a8e-82452e90ab98"] .btn-primary'
     }
 
     async setEventName(eventName: string): Promise<void> {

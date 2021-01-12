@@ -586,9 +586,10 @@ describe("Task Approval Mapping Tests", () => {
 
         it('[3592,3514]: create same name record in same LOB', async () => {
             //create same name record in same LOB
-            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_update");
             await createApprovalMappingPage.selectCompany('Petramco');
-            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectStatusTrigger('In Progress');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
@@ -600,9 +601,10 @@ describe("Task Approval Mapping Tests", () => {
             await utilCommon.clickOnWarningOk();
 
             //create new record and verify it on update
-            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_updated");
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_changed");
             await createApprovalMappingPage.selectCompany('Petramco');
-            await createApprovalMappingPage.selectStatusTrigger('Assigned');
+            await createApprovalMappingPage.selectStatusTrigger('In Progress');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Assigned');
@@ -610,28 +612,24 @@ describe("Task Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
 
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr + "_updated")).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
-            await utilGrid.searchAndOpenHyperlink(taskApprovalMappingStr + "_updated");
-            await editApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr + "_changed")).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await utilGrid.searchAndOpenHyperlink(taskApprovalMappingStr + "_changed");
+            await editApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_update");
             await editApprovalMappingPage.selectStatusMappingApproved('Completed');
-            await editApprovalMappingPage.searchAssociatedTaskTemplate(manualTaskGlobalTemplateData.templateName);
-            await editApprovalMappingPage.selectAssociatedTaskTemplateCheckbox();
-            expect(await editApprovalMappingPage.isSelectTaskTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Right Arrow button to select task template is disabled');
-            await editApprovalMappingPage.clickTaskTemplateforApprovalLeftArrawBtn();
-            await editApprovalMappingPage.searchTaskTemplate(manualTaskGlobalTemplateData.templateName);
-            expect(await editApprovalMappingPage.isSearchedTaskTemplateDisplayed()).toBeTruthy('Searched task template is not displayed.');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await createApprovalMappingPage.clickCancelApprovalMappingBtn();
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilCommon.clickOnWarningOk();
         });
 
         it('[3592,3514]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
-            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr + "_update")).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_update");
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
@@ -641,7 +639,8 @@ describe("Task Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
+            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr + "_update")).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
         afterAll(async () => {

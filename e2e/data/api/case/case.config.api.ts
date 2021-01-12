@@ -24,7 +24,7 @@ export const CASE_ASSIGNMENT_PAYLOAD = {
       },
       "1000000217": {
         "id": 1000000217,
-        "value": "cf1d1b1fdfd540f0a30f753031781241e73195127ed88a8770e902e9d973e80a590eb57eb0f00e50fe9a32f55f6a4eccd97be2bb94c1baa90fcabef696dbf3fd"
+        "value": null
       },
       "450000001": {
         "id": 450000001,

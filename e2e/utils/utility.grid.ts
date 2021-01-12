@@ -17,7 +17,7 @@ export class GridOperations {
         clearSaveFilterBtn: '.advanced-filter__actions-buttons button',
         addVisibleColumnsIcon: 'button.d-icon-left-lines_vertical',
         gridColumnSelect: '.dropdown-item .checkbox__input',
-        gridHeaders: '.c-header-container .c-header-name',
+        gridHeaders: '.c-header-container .c-header__separator',
         gridCellData: '.at-data-row .at-data-cell',
         filterItems: '.advanced-filter__container .advanced-filter__accordion-tab .text-direction span',
         filterCheckboxOptions: '.a-select-inline__list .a-select-inline__item .checkbox__label',
@@ -199,8 +199,8 @@ export class GridOperations {
 
     async areColumnHeaderMatches(expetcedHeaders: string[], guid?: string): Promise<boolean> {
         let csslocator: string = undefined;
-        if (guid) csslocator = `[rx-view-component-id='${guid}'] .c-header-container .c-header-name`;
-        else csslocator = ".c-header-container .c-header-name";
+        if (guid) csslocator = `[rx-view-component-id='${guid}'] .c-header-container .c-header__separator`;
+        else csslocator = ".c-header-container .c-header__separator";
         let actualHeaders = await element.all(by.css(csslocator))
             .map(async function (header) {
                 return await header.getAttribute('innerText');
@@ -220,7 +220,7 @@ export class GridOperations {
 
     async getFirstGridRecordColumnValue(columnName: string, guid?: string): Promise<string> {
         let count: number = 0;
-        let gridHeaders = '.c-header-container .c-header-name';
+        let gridHeaders = '.c-header-container .c-header__separator';
         let gridCellData = '.at-data-row .at-data-cell'
         if (guid) {
             gridHeaders = `[rx-view-component-id='${guid}'] ` + gridHeaders;
@@ -273,7 +273,7 @@ export class GridOperations {
 
     //Accepts sortType as 'asc' or 'desc'
     async isGridColumnSorted(columnName: string, sortType: string, guid?: string): Promise<boolean> {
-        let columnHeaderLocator = '.c-header-container .c-header-name';
+        let columnHeaderLocator = '.c-header-container .c-header__separator';
         let columnContainerLocator = '.c-header-container';
         if (guid) {
             columnHeaderLocator = `[rx-view-component-id='${guid}'] ` + columnHeaderLocator;
@@ -307,7 +307,7 @@ export class GridOperations {
 
     //Accepts sortType as 'asc' or 'desc'
     async sortGridColumn(columnName: string, sortType: string, guid?: string): Promise<void> {
-        let columnHeaderLocator = '.c-header-container .c-header-name';
+        let columnHeaderLocator = '.c-header-container .c-header__separator';
         let columnContainerLocator = '.c-header-container';
         if (guid) {
             columnHeaderLocator = `[rx-view-component-id='${guid}'] ` + columnHeaderLocator;
