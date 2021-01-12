@@ -120,7 +120,7 @@ describe('Knowledge Article Template', () => {
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV1065');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
-            expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Section Title')).toBe('Section Title');
+            expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Section Title')).toBeTruthy('Section Title');
             await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title1');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title2', 2);
@@ -145,8 +145,8 @@ describe('Knowledge Article Template', () => {
             expect(await createKnowledgeArticleTemplatePo.isSectionVisible(3)).toBeTruthy('Third section is not visible');
             expect(await createKnowledgeArticleTemplatePo.isSectionVisible(4)).toBeTruthy('Fourth section is not visible');
 
-            expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Template Name')).toBe('Template Name');
-            expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Template Description')).toBe('Template Description');
+            expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Template Name')).toBeTruthy('Template Name');
+            expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Template Description')).toBeTruthy('Template Description');
 
             expect(await utilCommon.isButtonVisible('Add Section')).toBeTruthy('Add Section button is not visible');
             expect(await utilCommon.isButtonVisible('Expand All')).toBeTruthy('Expand All button is not visible');

@@ -5,7 +5,6 @@ class CreateKATemplate {
 
     selectors = {
         templateName: 'input[autofocus]',
-        knowledgeSet: 'button[aria-haspopup="listbox"]',
         disabledEnabledCheck: 'input[type="checkbox"]',
         addsection: 'button[btn-type="tertiary"] span',
         sectionTitle: 'div.card-block input',
@@ -16,7 +15,8 @@ class CreateKATemplate {
         upArrowCollapse: '.tab-caret',
         downArrowExpand: '.tab-caret',
         expandCollapseAllBtn: '.editor-button-toggle button',
-        lobValue: '[title="Line of Business"] .pull-left'
+        lobValue: '[title="Line of Business"] .pull-left',
+        field: 'label.form-control-label span'
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -25,12 +25,6 @@ class CreateKATemplate {
 
     async setDescription(value: string): Promise<void> {
         await $(this.selectors.templateDescription).sendKeys(value);
-    }
-
-    async setKnowledgeSetValue(value: string): Promise<void> {
-        await $(this.selectors.knowledgeSet).click();
-        let customXpath = `[title='${value}']`;
-        await $(customXpath).click();
     }
 
     async clickOnDisableEnableCheckBox(): Promise<void> {
@@ -42,8 +36,14 @@ class CreateKATemplate {
     }
 
     async setSectionTitle(value: string, position?: number): Promise<void> {
-        if (position) await $$(this.selectors.sectionTitle).get(position - 1).sendKeys(value);
-        else await $(this.selectors.sectionTitle).sendKeys(value);
+        if (position) {
+            await $$(this.selectors.sectionTitle).get(position - 1).clear();
+            await $$(this.selectors.sectionTitle).get(position - 1).sendKeys(value);
+        }
+        else {
+            await $(this.selectors.sectionTitle).clear();
+            await $(this.selectors.sectionTitle).sendKeys(value);
+            }
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -79,9 +79,12 @@ class CreateKATemplate {
         await $$(this.selectors.expandCollapseAllBtn).get(0).click();
     }
 
-    async getfieldLabel(fieldName: string): Promise<string> {
-        let fieldLocator = `[aria-label="${fieldName}"] .d-textfield__item`;
-        return await $(fieldLocator).getText();
+    async getfieldLabel(fieldName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.field, fieldName)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText(this.selectors.field, fieldName)).isDisplayed();
+            } else return false;
+        });
     }
 
     async getLobValue(): Promise<string> {

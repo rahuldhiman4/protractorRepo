@@ -388,13 +388,13 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
             expect(await consoleEmailTemplatePo.isAddEmailTemplateButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Approvals - Settings - Business Workflows');
             expect(await approvalMappingConsoleKnowledgePo.isCreateApprovalMappingBtnEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
             expect(await consoleKnowledgeTemplatePo.isCreateNewKATemplateEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
             expect(await consoleKnowledgeSetPo.isAddKnowledgeSetBtnEnabled()).toBeFalsy();
 
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
