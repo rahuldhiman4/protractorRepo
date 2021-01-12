@@ -1,4 +1,3 @@
-import utilityGrid from "e2e/utils/utility.grid";
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from "../../../utils/util.common";
 
@@ -32,10 +31,10 @@ class CopyCaseTemplate {
         ownerGroupValueOnCopy: '[rx-view-component-id="a6e62e56-9bda-40af-8bce-29ad062b76f5"] button',
         ownerGroupDropdown: 'a6e62e56-9bda-40af-8bce-29ad062b76f5',
         departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .dropdown-toggle',
-        supportCompanyValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .dropdown-toggle',
-        supportOrganizationValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .dropdown-toggle',
-        supportGroupValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .dropdown-toggle',
-        assigneeValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .dropdown-toggle',
+        supportCompanyValueOnCopy: '.flex-wrap button[aria-label="Support Company"]',
+        supportOrganizationValueOnCopy: '.flex-wrap button .dropdown-toggle',
+        supportGroupValueOnCopy: '.flex-wrap button .dropdown-toggle',
+        assigneeValueOnCopy: '.flex-wrap button .dropdown-toggle',
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -78,7 +77,7 @@ class CopyCaseTemplate {
 
     async getValueOfSupportCompany(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportCompanyValueOnCopy)));
-        return await $$(this.selectors.supportCompanyValueOnCopy).get(0).getText();
+        return await $(this.selectors.supportCompanyValueOnCopy).getText();
     }
 
     async getValueOfSupportGroup(): Promise<string> {
