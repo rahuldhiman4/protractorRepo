@@ -252,7 +252,7 @@ class ApiHelper {
     }
 
     async deleteAllEmailConfiguration(): Promise<boolean> {
-        let emailConfigDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=7,1,recordContext._associations.IDGADG1AANVNMAPHAJWGPGDM6B8LR5.nodeA%5B0%5D.1000000010,1000000001,450000156,450000153,379&recorddefinition=com.bmc.dsm.email-lib:Email+Box+Registration&shouldIncludeTotalSize=false&sortBy=450000156&startIndex=0";
+        let emailConfigDataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.record.datapage.RecordInstanceDataPageQuery&pageSize=50&propertySelection=450000153,379,450000156,7,1000000001,1&recorddefinition=com.bmc.dsm.email-lib:Email+Box+Registration&shouldIncludeTotalSize=false&sortBy=450000156&startIndex=0";
         let allEmailConfig = await axios.get(
             emailConfigDataPageUri
         );
@@ -303,14 +303,6 @@ class ApiHelper {
 
     async getHTMLBodyOfEmail(emailSubject: string, sentTo: string): Promise<string> {
         return await apiCoreUtil.getEmailHTMLBody(emailSubject, sentTo);
-    }
-
-    async deleteIncomingOrOutgoingEmailConfiguration(emailGUID: string): Promise<boolean> {
-        return await apiCoreUtil.deleteRecordInstance('AR System Email Mailbox Configuration', emailGUID);
-    }
-
-    async deleteEmailConfiguration(emailConfigGUID: string) {
-        return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.email-lib:Email Box Registration', emailConfigGUID);
     }
 
     async updateTask(taskGuid: string, data: ITaskUpdate): Promise<number> {
