@@ -20,7 +20,7 @@ describe('Knowledge Article Template', () => {
         await apiHelper.deleteArticleTemplate('Template Name DRDMV_1088');
         await loginPage.login('kWilliamson');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
     });
 
     afterAll(async () => {
@@ -35,7 +35,7 @@ describe('Knowledge Article Template', () => {
         await createKnowledgeArticleTemplatePo.clickCancelBtn();
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
         await utilCommon.clickOnWarningOk();
-        expect(await utilGrid.isGridRecordPresent('template1062' + randomStr)).toBeFalsy('Record should not be created');
+        expect(await utilityGrid.isGridRecordPresent('template1062' + randomStr)).toBeFalsy('Record should not be created');
     });
 
     it('[6360]: [Create Mode] Unable to create the duplicate template', async () => {
@@ -91,7 +91,7 @@ describe('Knowledge Article Template', () => {
 
     describe('[6435,6372,6342]: [Create Mode] Create a template for Knowledge article', () => {
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
+           await apiHelper.apiLogin('tadmin');
             let knowledgeSetData = {
                 knowledgeSetTitle: 'Knowledge Set Petramco Title',
                 knowledgeSetDesc: 'Knowledge Set Petramco_Desc',
@@ -116,7 +116,7 @@ describe('Knowledge Article Template', () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV1065');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
