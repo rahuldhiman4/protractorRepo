@@ -10,10 +10,9 @@ import consoleEmailTemplatePo from '../../pageobject/settings/email/console-emai
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import utilGrid from '../../utils/util.grid';
+
 let userData, userData1, userData2 = undefined;
 
 describe('Email Template', () => {
@@ -61,7 +60,7 @@ describe('Email Template', () => {
         let body = 'Body' + randomStr;
         it('[5165,5173,5177,5167,5176]: Create Duplicate Email Template1', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
@@ -105,20 +104,20 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setSubject(subject);
             await createEmailTemplatePo.setBody(body);
             await createEmailTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName1)).toBeTruthy('Duplicate Template Error messsage missing.');
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName1)).toBeTruthy('Duplicate Template Error messsage missing.');
+            await utilityCommon.closePopUpMessage();
             await createEmailTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5165,5173,5177,5167,5176]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
-            await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName1);
+            await consoleEmailTemplatePo.searchAndOpenEmailTemplate('TemplateName1v7aipho5cr');
             expect(await editEmailTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
             expect(await editEmailTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
             await editEmailTemplatePo.updateDescription(description);
             await editEmailTemplatePo.selectStatusDropDown('Active');
             await editEmailTemplatePo.selectLabelDropDown(label);
             await editEmailTemplatePo.selectlocaleDropDown('English (United States)');
-            await editEmailTemplatePo.clickOnGridSearchIcon();
+            // await editEmailTemplatePo.clickOnGridSearchIcon();
             await editEmailTemplatePo.searchOnGridConsole('body');
             expect(await editEmailTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize Message button is missing');
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('body', 'Body is missing from Grid');
@@ -130,18 +129,18 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
         });
 
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
 
         });
 
@@ -149,50 +148,50 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
         });
 
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
         });
 
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
         });
 
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
 
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName1);
             await editEmailTemplatePo.updateDescription(description);
             await editEmailTemplatePo.selectStatusDropDown('Active');
             await editEmailTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         afterAll(async () => {
@@ -219,7 +218,7 @@ describe('Email Template', () => {
 
         it('[5169,5166,5178,5096,5095,5097,5172]: User Is able to delete Email Template1', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
@@ -289,7 +288,7 @@ describe('Email Template', () => {
             await editEmailTemplatePo.clickOnGridEditButton();
             await editEmailTemplatePo.updateEditMessageTextBladeBody(body2);
             await editEmailTemplatePo.clickEditBodySaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await editEmailTemplatePo.searchAndSelectGridRecord('subject');
             await editEmailTemplatePo.clickOnGridEditButton();
             await editEmailTemplatePo.updateEditMessageTextBladeSubject(subject2);
@@ -305,11 +304,11 @@ describe('Email Template', () => {
             await editEmailTemplatePo.setSubjectOfNewLocalizedEmailMessage(subject1);
             await editEmailTemplatePo.setBody(body1);
             await editEmailTemplatePo.clickLocalizeMessageSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Message already exists with given locale.')).toBeTruthy('Localize already exist error message missing');
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Message already exists with given locale.')).toBeTruthy('Localize already exist error message missing');
+            await utilityCommon.closePopUpMessage();
             await editEmailTemplatePo.clickOnCancelButton();
             await editEmailTemplatePo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             // 5097
             await consoleEmailTemplatePo.searchOnGridConsole(templateName1);
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Search Template Name is missing in column');
@@ -337,18 +336,18 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
         });
 
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
 
         });
 
@@ -356,45 +355,45 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
         });
 
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
         });
 
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
         });
 
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
 
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
         });
 
         afterAll(async () => {
@@ -438,29 +437,29 @@ describe('Email Template', () => {
         });
         it('[3602,3601,3595]: Email Template : User Creates Email Template and Add/Delete Attachment and check error message', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             await editEmailTemplatePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocData1.docLibTitle);
             expect(await editEmailTemplatePo.isAttachedFileNameDisplayed('bwfJpg1.jpg')).toBeTruthy('Failed as bwfJpg1.jpg is not attached to Email Template');
             await editEmailTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
             //Add another Document lib to the Email Template with same name
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             await editEmailTemplatePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocData1.docLibTitle);
-            expect(await utilCommon.isPopUpMessagePresent('The document is already attached.')).toBeTruthy('No Error message seen for duplicate attachment');
+            expect(await utilityCommon.isPopUpMessagePresent('The document is already attached.')).toBeTruthy('No Error message seen for duplicate attachment');
             await editEmailTemplatePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocData2.docLibTitle);
             expect(await editEmailTemplatePo.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy('Failed as bwfJpg2.jpg is not attached to Email Template');
             await editEmailTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
             //Delete doc lib from Email Template
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             await editEmailTemplatePo.removeAttachedDocument(1);
             expect(await editEmailTemplatePo.isAttachedFileNameDisplayed('bwfJpg1.jpg')).toBeFalsy('Failed as bwfJpg1.jpg is not removed from Email Template');
             await editEmailTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not deleted from Email Template');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not deleted from Email Template');
         });
     });
 
@@ -472,7 +471,7 @@ describe('Email Template', () => {
             emailTemplateName = emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy();
             expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy();
@@ -482,34 +481,34 @@ describe('Email Template', () => {
             expect(await createEmailTemplatePo.isSubjectRequiredTextPresent()).toBeTruthy();
             await createEmailTemplatePo.setTemplateName("templateName1");
             await createEmailTemplatePo.clickOnCancelButton();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.getDialoguePopupMessage()).toBe('You have unsaved data. Do you want to continue without saving?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');;
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             await editEmailTemplatePo.updateDescription("test");
             await editEmailTemplatePo.clickOnCancelButton();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.getDialoguePopupMessage()).toBe('You have unsaved data. Do you want to continue without saving?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5171,5170]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(emailTemplateName);
             await createEmailTemplatePo.selectCompany("Petramco");
             await createEmailTemplatePo.setDescription("emailTemplateName");
             await createEmailTemplatePo.setSubject("emailTemplateName");
             await createEmailTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222108): Template Already exist with given name:${emailTemplateName}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222108): Template Already exist with given name:${emailTemplateName}`)).toBeTruthy("Error message absent");
             await createEmailTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5171,5170]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(emailTemplateName);
             await createEmailTemplatePo.selectCompany("Petramco");
@@ -518,12 +517,12 @@ describe('Email Template', () => {
             // verify LOB is there
             expect(await createEmailTemplatePo.getLobValue()).toBe("Facilities");
             await createEmailTemplatePo.clickOnSaveButton();
-        //    expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            //    expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             expect(await editEmailTemplatePo.getLobValue()).toBe("Facilities");
             await editEmailTemplatePo.clickOnCancelButton();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPage.signOut();

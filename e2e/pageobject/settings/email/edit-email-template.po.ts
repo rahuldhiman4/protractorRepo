@@ -1,7 +1,6 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 import utilityGrid from '../../../utils/utility.grid';
-import utilGrid from '../../../utils/util.grid';
 
 class CreateEmailTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -14,7 +13,7 @@ class CreateEmailTemplateBlade {
         description: '[rx-view-component-id="f7437c9e-1ed7-4aac-974a-e4d4a643ee35"] input',
         localeGuid: '71db023a-4979-4f58-a026-6aeda2edd96b',
         localizeMessage: '[rx-view-component-id="88ea24dd-ddad-489f-904a-89e43f80f5e6"] button',
-        searchButtonClick: '.d-icon-search',
+        searchButtonClick: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-search',
         editButton: '.d-icon-left-pencil',
         body: '.cke_wysiwyg_div',
         editMessageTextBladeSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
@@ -56,7 +55,7 @@ class CreateEmailTemplateBlade {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader,this.selectors.gridGuid);
     }
 
     async clickOnGridSearchIcon(): Promise<void> {
@@ -72,11 +71,11 @@ class CreateEmailTemplateBlade {
     }
 
     async isModuleNameDisabled(): Promise<boolean> {
-        return await $(this.selectors.moduleName).getAttribute("disabled") == "true";
+        return await $('[rx-view-component-id="8107085d-334f-4d50-beb9-ad10d8911144"] adapt-select').getAttribute('aria-readonly')=="true";
     }
 
     async isCompanyDropDownDisabled(): Promise<boolean> {
-        return await $(this.selectors.company).getAttribute("disabled") == "true";
+        return await $('[rx-view-component-id="af048482-fdf7-4650-ab4b-75e262e00445"] adapt-select').getAttribute('aria-readonly')=="true";
     }
 
     async isLocalizedMessageButtonDisplayed(): Promise<boolean> {

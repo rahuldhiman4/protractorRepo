@@ -37,7 +37,7 @@ describe('Knowledge Article Set', () => {
 
         it('[6357]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
             expect(await createKnowledgeSetPo.isFieldRequired('Knowledge Set')).toBeTruthy('Knowledge Set field is not tagged as required');
             expect(await createKnowledgeSetPo.isFieldRequired('Description')).toBeTruthy('Description field is not tagged as required');
@@ -63,13 +63,13 @@ describe('Knowledge Article Set', () => {
             await createKnowledgeSetPo.checkApplicationCheckboxes(['com.bmc.arsys.rx.approval', 'com.bmc.arsys.rx.assignment', 'com.bmc.dsm.case-lib']);
             await createKnowledgeSetPo.clickSelectBtn();
             await createKnowledgeSetPo.clickSaveBtn();
-            await utilCommon.closeBladeOnSettings();
-            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Record is not Present');
-            await utilGrid.searchAndOpenHyperlink('6375' + randomStr);
+            await utilityCommon.closeAllBlades();
+            expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Record is not Present');
+            await utilityGrid.searchAndOpenHyperlink('6375' + randomStr);
             expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.arsys.rx.approval')).toBeTruthy('Approval Application is not present');
             expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.arsys.rx.assignment')).toBeTruthy('Assignment Application is not present');
             expect(await editKnowledgeSet.isApplicationNameListed('com.bmc.dsm.case-lib')).toBeTruthy('Case Management Application is not present');
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
             await createKnowledgeSetPo.setKnowledgeSetName('6375_1' + randomStr);
             await createKnowledgeSetPo.setCompanyValue('Petramco');
@@ -78,17 +78,17 @@ describe('Knowledge Article Set', () => {
             await createKnowledgeSetPo.checkApplicationCheckboxes(['com.bmc.dsm.bwfa']);
             await createKnowledgeSetPo.clickSelectBtn();
             await createKnowledgeSetPo.clickSaveBtn();
-            await utilCommon.closeBladeOnSettings();
-            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Record is not Present');
+            await utilityCommon.closeAllBlades();
+            expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Record is not Present');
         });
 
         it('[6357]: Verify if case assignment mapping is accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
             await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
             await createKnowledgeSetPo.setCompanyValue('Petramco');
@@ -97,77 +97,77 @@ describe('Knowledge Article Set', () => {
             await createKnowledgeSetPo.checkApplicationCheckboxes(['com.bmc.dsm.bwfa']);
             await createKnowledgeSetPo.clickSelectBtn();
             await createKnowledgeSetPo.clickSaveBtn();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await utilCommon.closeBladeOnSettings();            
-            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Record is not Present');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closeAllBlades();            
+            expect(await utilityGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Record is not Present');
         });
 
         it('[6357]: Verify if case assignment mapping is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company.');
-            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company');
-            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to same LOB Case BA.');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company.');
+            expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company');
+            expect(await utilityGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to same LOB Case BA.');
         });
 
         it('[6357]: Verify if case assignment mapping is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
         });
 
         it('[6357]: Verify if case assignment mapping is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
-            expect(await utilGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(knowledgesetFacilities)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
+            expect(await utilityGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
 
-            await utilGrid.searchAndOpenHyperlink('6375' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink('6375' + randomStr);
             await editKnowledgeSet.setKnowledgeSetName('6375_updated' + randomStr);
             await editKnowledgeSet.removeApplicationAssociation('com.bmc.arsys.rx.approval');
             await editKnowledgeSet.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await utilCommon.closePopUpMessage();
-            await utilCommon.closeBladeOnSettings();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
         });
         it('[6357]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
             await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
             await createKnowledgeSetPo.setCompanyValue('Petramco');
             await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
             await createKnowledgeSetPo.clickSaveBtn();
-            expect(await utilCommon.isPopUpMessagePresent(`ERROR (222161): Knowledge Set with name ${knowledgesetFacilities} already exists for selected company.`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222161): Knowledge Set with name ${knowledgesetFacilities} already exists for selected company.`)).toBeTruthy("Error message absent");
             await createKnowledgeSetPo.clickCancelBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[6357]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
             await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
             await createKnowledgeSetPo.setCompanyValue('Petramco');
@@ -176,9 +176,9 @@ describe('Knowledge Article Set', () => {
             // verify LOB is there
             expect(await createKnowledgeSetPo.getLobValue()).toBe("Human Resource");
             await createKnowledgeSetPo.clickSaveBtn();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('success message absent');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('success message absent');
             // open the record and verify LOB is on edit screen
-            await utilGrid.searchAndOpenHyperlink(knowledgesetFacilities);
+            await utilityGrid.searchAndOpenHyperlink(knowledgesetFacilities);
             expect(await editKnowledgeSet.getLobValue()).toBe("Human Resource");
             await editKnowledgeSet.clickCancelButton();
         });
@@ -253,11 +253,11 @@ describe('Knowledge Article Set', () => {
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            await utilGrid.searchAndOpenHyperlink(knowledgeSetTitle);
+            await utilityGrid.searchAndOpenHyperlink(knowledgeSetTitle);
             await editKnowledgeSet.removeApplicationAssociation('com.bmc.dsm.bwfa');
             await editKnowledgeSet.clickSaveButton();
-            await utilCommon.closePopUpMessage();
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -269,11 +269,11 @@ describe('Knowledge Article Set', () => {
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
-            await utilGrid.searchAndOpenHyperlink(knowledgeSetTitle);
+            await utilityGrid.searchAndOpenHyperlink(knowledgeSetTitle);
             await editKnowledgeSet.removeApplicationAssociation('com.bmc.dsm.knowledge');
             await editKnowledgeSet.clickSaveButton();
-            await utilCommon.closePopUpMessage();
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('fritz'); // Knowledge set created under LOB: HR should not visible to user belonging to LOB: Finance
             await navigationPage.switchToApplication(knowledgeManagementApp);

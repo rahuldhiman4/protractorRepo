@@ -121,18 +121,31 @@ class ApiHelper {
         };
     }
 
-    async updateNotificationEventStatus(eventName: string, lob: string, status: string, company?: string): Promise<boolean> {
+    async updateNotificationEventStatus(eventName: string, status: string, company?: string): Promise<boolean> {
         let notificationEventGuid;
-        let lobGuid: string = constants.LOB[lob];
         if (company)
-            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid, company);
-        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid);
+            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, company);
+        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName);
         let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
         updateStatusPayload.id = notificationEventGuid;
         updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
         let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
         return updateEventStatus.status == 204;
     }
+
+    //#LOB Comments
+    // async updateNotificationEventStatus(eventName: string, lob: string, status: string, company?: string): Promise<boolean> {
+    //     let notificationEventGuid;
+    //     let lobGuid: string = constants.LOB[lob];
+    //     if (company)
+    //         notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid, company);
+    //     else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid);
+    //     let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
+    //     updateStatusPayload.id = notificationEventGuid;
+    //     updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
+    //     let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
+    //     return updateEventStatus.status == 204;
+    // }
 
     async createDomainTag(data: IDomainTag): Promise<string> {
         let domainTagGuid = await apiCoreUtil.getDomainTagGuid(data.domainTagName);
@@ -221,8 +234,9 @@ class ApiHelper {
         let mailBoxConfig = cloneDeep(MAILBOX_CONFIG);
         if (emailConfigData) {
             mailBoxConfig.fieldInstances[450000155].value = emailConfigData.email;
-            mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
-            mailBoxConfig.fieldInstances[1000000001].value = emailConfigData.company ? await apiCoreUtil.getOrganizationGuid(emailConfigData.company) : mailBoxConfig.fieldInstances[1000000001].value;
+            //#LOB Comments
+            //mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
+            mailBoxConfig.fieldInstances[1000000001].value = emailConfigData.company ? emailConfigData.company : mailBoxConfig.fieldInstances[1000000001].value;
             mailBoxConfig.fieldInstances[8].value = emailConfigData.description ? emailConfigData.description : mailBoxConfig.fieldInstances[8].value;
             mailBoxConfig.fieldInstances[450000152].value = emailConfigData.incomingMailBoxName ? emailConfigData.incomingMailBoxName : mailBoxConfig.fieldInstances[450000152].value;
         }
@@ -291,24 +305,12 @@ class ApiHelper {
         return await apiCoreUtil.getEmailHTMLBody(emailSubject, sentTo);
     }
 
-    async getSenderMailId(emailSubject: string): Promise<string> {
-        return await apiCoreUtil.getSenderMailId(emailSubject);
-    }
-
     async deleteIncomingOrOutgoingEmailConfiguration(emailGUID: string): Promise<boolean> {
         return await apiCoreUtil.deleteRecordInstance('AR System Email Mailbox Configuration', emailGUID);
     }
 
     async deleteEmailConfiguration(emailConfigGUID: string) {
         return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.email-lib:Email Box Registration', emailConfigGUID);
-    }
-
-    async updateEmailWhiteList(emailTag: string, domainName: string): Promise<boolean> {
-        let emailwhiteListData = EMAIL_WHITELIST;
-        emailwhiteListData.fieldInstances[18301].value = emailTag;
-        emailwhiteListData.fieldInstances[18303].value = domainName;
-        let updateEmail = await apiCoreUtil.updateRecordInstance('com.bmc.arsys.rx.environment-configuration:EmailWhiteListConfiguration', 'AGGADG1AANVNMAPKRHEJP9UCTR5FHR', emailwhiteListData);
-        return updateEmail.status == 204;
     }
 
     async updateTask(taskGuid: string, data: ITaskUpdate): Promise<number> {
@@ -544,7 +546,6 @@ class ApiHelper {
             }
             templateData.fieldInstances["450000291"] = caseTaskStatusConfiguration;
         }
-        console.log('aa', templateData);
         
         let newCaseTemplate: AxiosResponse = await apiCoreUtil.createRecordInstance(templateData);
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
@@ -820,7 +821,7 @@ class ApiHelper {
         templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? data.ownerBusinessUnit : templateData.fieldInstances[450000401].value;
         //#LOB Comments
-        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
             let taskTemplateDataPriority = {
@@ -1276,10 +1277,10 @@ class ApiHelper {
     async createEmailTemplate(data: IEmailTemplate): Promise<boolean> {
         let emailTemplateFile = await require('../data/api/email/email.template.api.json');
         let templateData = await emailTemplateFile.EmailTemplateData;
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(data.Company);
-        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["Company"] = data.Company;
         templateData.processInputValues["TemplateName"] = data.TemplateName;
-        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
+        //#LOB Comments
+        //templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         templateData.processInputValues["Status"] = data.Status;
         templateData.processInputValues["Description"] = data.Description;
         templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
@@ -1298,8 +1299,7 @@ class ApiHelper {
     async createEmailAcknowledgementTemplate(data: IEmailTemplate): Promise<boolean> {
         let emailTemplateFile = await require('../data/api/email/email.template.api.json');
         let templateData = await emailTemplateFile.EmailAcknowledgementTemplateData;
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(data.Company);
-        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["Company"] = data.Company;
         templateData.processInputValues["TemplateName"] = data.TemplateName;
         templateData.processInputValues["Status"] = data.Status;
         templateData.processInputValues["Description"] = data.Description;
@@ -1307,7 +1307,8 @@ class ApiHelper {
         templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
         templateData.processInputValues["Module"] = "Cases";
         templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
-        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
+        //#LOB Comments
+        //templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         const emailTemplateResponse = await axios.post(
             commandUri,
             templateData
@@ -1624,18 +1625,6 @@ class ApiHelper {
         };
     }
 
-    async enableDomainTag(category: string): Promise<boolean> {
-        let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
-        let domainTagData = await domainTagFile.enableDomainTag;
-        let categoryGuid = await apiCoreUtil.getCategoryGuid(category);
-        domainTagData.id = categoryGuid;
-        domainTagData.fieldInstances[8].value = 'BWF Domain';
-        domainTagData.fieldInstances[450000152].value = categoryGuid;
-        let domainTagResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.shared-services-lib:Domain Configuration', categoryGuid, domainTagData);
-        console.log('Enable Domain Tag API Status =============>', domainTagResponse.status);
-        return domainTagResponse.status == 201;
-    }
-
     async disableDomainTag(domainTagGuid: string): Promise<boolean> {
         let domainTagFile = await require('../data/api/foundation/domain.tag.api.json');
         let domainTagData = await domainTagFile.disableDomainTag;
@@ -1646,7 +1635,7 @@ class ApiHelper {
         console.log('Disable Domain Tag API Status =============>', domainTagResponse.status);
         return domainTagResponse.status == 204;
     }
-
+    
     async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         let randomStr = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemData = cloneDeep(MENU_ITEM);
@@ -1802,9 +1791,10 @@ class ApiHelper {
         newProcessConfig.fieldInstances[450000003]["value"] = data.processAliasName;
         newProcessConfig.fieldInstances[7]["value"] = data.status ? constants.ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
         newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
-        newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : newProcessConfig.fieldInstances[1000000001].value;
-        newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
-
+        newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? data.company : newProcessConfig.fieldInstances[1000000001].value;
+        //#LOB Comments
+        //newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
+        
         let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
 
         console.log('Create New Process Lib Config API Status =============>', newProcessLibConfRecord.status);
@@ -1930,20 +1920,20 @@ class ApiHelper {
     async createDocumentLibrary(docLibDetails: IDocumentLib, filePath: string): Promise<IIDs> {
         let documentLibRecordInstanceJson = cloneDeep(DOC_LIB_DRAFT);
         documentLibRecordInstanceJson.fieldInstances[302300502].value = docLibDetails.docLibTitle;
-        documentLibRecordInstanceJson.fieldInstances[1000000001].value = await apiCoreUtil.getOrganizationGuid(docLibDetails.company);
-        documentLibRecordInstanceJson.fieldInstances[302300512].value = await apiCoreUtil.getSupportGroupGuid(docLibDetails.ownerGroup);
+        documentLibRecordInstanceJson.fieldInstances[1000000001].value = docLibDetails.company;
+        documentLibRecordInstanceJson.fieldInstances[302300512].value = docLibDetails.ownerGroup;
         documentLibRecordInstanceJson.fieldInstances[450000441].value = docLibDetails.shareExternally ? '1' : '0';
-        documentLibRecordInstanceJson.fieldInstances[200000007].value = docLibDetails.region ? await apiCoreUtil.getRegionGuid(docLibDetails.region) : documentLibRecordInstanceJson.fieldInstances[200000007].value;
-        documentLibRecordInstanceJson.fieldInstances[260000001].value = docLibDetails.site ? await apiCoreUtil.getSiteGuid(docLibDetails.site) : documentLibRecordInstanceJson.fieldInstances[260000001].value;
+        documentLibRecordInstanceJson.fieldInstances[200000007].value = docLibDetails.region ? docLibDetails.region : documentLibRecordInstanceJson.fieldInstances[200000007].value;
+        documentLibRecordInstanceJson.fieldInstances[260000001].value = docLibDetails.site ? docLibDetails.site : documentLibRecordInstanceJson.fieldInstances[260000001].value;
         documentLibRecordInstanceJson.fieldInstances[302301262].value = docLibDetails.keywordTag ? docLibDetails.keywordTag : documentLibRecordInstanceJson.fieldInstances[302301262].value;
         documentLibRecordInstanceJson.fieldInstances[450000153].value = docLibDetails.description ? docLibDetails.description : documentLibRecordInstanceJson.fieldInstances[450000153].value;
-        documentLibRecordInstanceJson.fieldInstances[450000371].value = docLibDetails.department ? await apiCoreUtil.getDepartmentGuid(docLibDetails.department) : documentLibRecordInstanceJson.fieldInstances[450000371].value;
-        documentLibRecordInstanceJson.fieldInstances[450000381].value = docLibDetails.businessUnit ? await apiCoreUtil.getBusinessUnitGuid(docLibDetails.businessUnit) : documentLibRecordInstanceJson.fieldInstances[450000381].value;
-        documentLibRecordInstanceJson.fieldInstances[1000000063].value = docLibDetails.category1 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category1) : documentLibRecordInstanceJson.fieldInstances[1000000063].value;
-        documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category2) : documentLibRecordInstanceJson.fieldInstances[1000000064].value;
-        documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category3) : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
-        documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? await apiCoreUtil.getCategoryGuid(docLibDetails.category4) : documentLibRecordInstanceJson.fieldInstances[450000167].value;
-        documentLibRecordInstanceJson.fieldInstances[450000411].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000411].value;
+        documentLibRecordInstanceJson.fieldInstances[450000381].value = docLibDetails.businessUnit ? docLibDetails.businessUnit: documentLibRecordInstanceJson.fieldInstances[450000381].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000063].value = docLibDetails.category1 ? docLibDetails.category1: documentLibRecordInstanceJson.fieldInstances[1000000063].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? docLibDetails.category2: documentLibRecordInstanceJson.fieldInstances[1000000064].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? docLibDetails.category3: documentLibRecordInstanceJson.fieldInstances[1000000065].value;
+        documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? docLibDetails.category4: documentLibRecordInstanceJson.fieldInstances[450000167].value;
+        //#LOBChanges
+        // documentLibRecordInstanceJson.fieldInstances[450000411].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000411].value;
         let data = {
             recordInstance: documentLibRecordInstanceJson,
             1000000351: filePath
@@ -1975,10 +1965,9 @@ class ApiHelper {
     async giveReadAccessToDocLib(docLibInfo: IIDs, orgName: string): Promise<boolean> {
         let readAccessDocLibPayload = cloneDeep(DOC_LIB_READ_ACCESS);
         readAccessDocLibPayload['processInputValues']['Record Instance ID'] = docLibInfo.id;
-        let orgId = await apiCoreUtil.getOrganizationGuid(orgName);
-        if (orgId == null) { orgId = await apiCoreUtil.getBusinessUnitGuid(orgName); }
-        if (orgId == null) { orgId = await apiCoreUtil.getDepartmentGuid(orgName); }
-        if (orgId == null) { orgId = await apiCoreUtil.getSupportGroupGuid(orgName); }
+        let orgId = orgName;
+        if (orgId == null) { orgId = orgName; }
+        if (orgId == null) { orgId = orgName; }
         readAccessDocLibPayload['processInputValues']['Value'] = orgId;
         const readAccessDocLibResponse = await axios.post(commandUri, readAccessDocLibPayload);
         console.log('Read Access Doc Lib API Status =============>', readAccessDocLibResponse.status);
@@ -2743,11 +2732,12 @@ class ApiHelper {
     }
 
     async createDocumentTemplate(data: IDocumentTemplate): Promise<boolean> {
-        DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : DOCUMENT_TEMPLATE.processInputValues.Company;
+        DOCUMENT_TEMPLATE.processInputValues.Company = data.company ? data.company : DOCUMENT_TEMPLATE.processInputValues.Company;
         DOCUMENT_TEMPLATE.processInputValues["Template Name"] = data.templateName;
         DOCUMENT_TEMPLATE.processInputValues.Description = data.description;
         DOCUMENT_TEMPLATE.processInputValues["Document Message Body"] = data.messageBody;
-        DOCUMENT_TEMPLATE.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : DOCUMENT_TEMPLATE.processInputValues["Line of Business"];
+        //#LOBChanges
+        // DOCUMENT_TEMPLATE.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : DOCUMENT_TEMPLATE.processInputValues["Line of Business"];
         let response = await axios.post(
             commandUri,
             DOCUMENT_TEMPLATE
@@ -2786,7 +2776,7 @@ class ApiHelper {
 
     async addCommonConfig(configName: string, params: any[], company: string): Promise<boolean> {
         let commonConfigPayload, commonConfigGuid;
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
+        let companyGuid = company;
 
         let headerConfig = {
             headers: {

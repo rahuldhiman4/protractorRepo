@@ -3,7 +3,7 @@ import {$, element, by } from "protractor";
 class EditKnowledgeSet {
 
     selectors = {
-        listedApplicationNames: 'rx-card-field-value px-1',
+        listedApplicationNames: 'div.list-group span.rx-card-field-value',
         saveButton: '[rx-view-component-id="9845bc7c-ac13-4989-aba2-4751bbba8c6c"] button',
         cancelButton: '[rx-view-component-id="0720cb03-bcfd-405f-810f-85c5191b8de6"] button',
         knowledgeSetInput: '[rx-view-component-id="19901ec7-e019-4c63-a5c5-c02074086645"] input',

@@ -4,7 +4,7 @@ export const ONE_TASKFLOW = {
     "description": "",
     "scope": "PUBLIC",
     "tags": [
-        "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+        "Petramco"
     ],
     "flowElements": [
         {
@@ -204,7 +204,7 @@ export const TWO_TASKFLOW_SEQUENTIAL = {
     "description": "",
     "scope": "PUBLIC",
     "tags": [
-        "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+        "Petramco"
     ],
     "flowElements": [
         {
@@ -460,7 +460,7 @@ export const TWO_TASKFLOW_PARALLEL = {
     "description": "",
     "scope": "PUBLIC",
     "tags": [
-        "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+        "Petramco"
     ],
     "flowElements": [
         {
@@ -753,7 +753,7 @@ export const THREE_TASKFLOW_SEQUENTIAL = {
     "description": "",
     "scope": "PUBLIC",
     "tags": [
-        "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+        "Petramco"
     ],
     "flowElements": [
         {
@@ -1037,7 +1037,7 @@ export const PROCESS_DOCUMENT = {
 export const DRDMV_15000 = {
     "name": "com.bmc.dsm.bwfa:ConditionalTemplate",
     "tags": [
-      "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+      "Petramco"
     ],
     "description": "",
     "scope": "PUBLIC",
@@ -1466,7 +1466,7 @@ export const DRDMV_15000 = {
 export const THREE_TASKFLOW_SEQUENTIAL_PARALLEL = {
     "name": "com.bmc.dsm.bwfa:SequentialParallel",
     "tags": [
-      "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+      "Petramco"
     ],
     "description": "Case - TaskFlow Sample Process",
     "scope": "PUBLIC",

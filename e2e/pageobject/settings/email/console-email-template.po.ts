@@ -1,6 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../../utils/utility.grid';
-import utilGrid from '../../../utils/util.grid';
 
 class ConsoleEmailTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -59,7 +58,7 @@ class ConsoleEmailTemplate {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue( columnHeader,this.selectors.gridGuid);
     }
 
     async areGridColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
