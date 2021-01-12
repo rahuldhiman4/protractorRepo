@@ -1,3 +1,4 @@
+import utilityGrid from "e2e/utils/utility.grid";
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from "../../../utils/util.common";
 
@@ -16,25 +17,25 @@ class CopyCaseTemplate {
         caseCompanyValueOnCopy: '[rx-view-component-id="127214a1-bfc0-4a8c-acb7-cd2be137fa3c"] .dropdown-toggle',
         FlowsetValueOnCopy: '[rx-view-component-id="2e16954b-fa7e-45d6-ae31-fb285c270090"] .dropdown-toggle',
         templateStatusValueOnCopy: '[rx-view-component-id="3bebf8c9-1396-487a-b9ea-bf1e39d4d475"] .dropdown-toggle',
-        OwnerCompanyValueOnCopy: '[rx-view-component-id="5c445c06-0bdc-4995-a226-05da344dcf30"] .read-only-content',
-        ownerGroupValueOnCopy: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .read-only-content',
-        supportCompanyValueOnCopy: '[rx-view-component-id="e916c10e-a726-425c-9d7f-a39e1f43f1e4"] .read-only-content',
-        assigneeValueOnCopy: '[rx-view-component-id="e916c10e-a726-425c-9d7f-a39e1f43f1e4"] .person-link',
-        supportGroupValueOnCopy: '[rx-view-component-id="e916c10e-a726-425c-9d7f-a39e1f43f1e4"] .read-only-content',
-        identityValidationValueOnCopy: '[rx-view-component-id="dead2a5c-4753-40c6-9709-4b8ea9c454fd"] .read-only-content',
-        assignmentMethodValueOnCopy: '[rx-view-component-id="9183824b-61c4-4a00-bcfa-7f4e7461e10c"] .read-only-content',
-        taskFailureConfigurationValueOnCopy: '[rx-view-component-id="61e9aaa2-654c-4f6e-817c-64f5f86cf9fa"] .read-only-content',
+        identityValidationValueOnCopy: '[rx-view-component-id="768c4f0a-309f-4e7f-ba88-a0ef9a169d6f"] .rx-select__search-button-title',
+        assignmentMethodValueOnCopy: '[rx-view-component-id="1930b678-6f96-41a3-a127-a483fc8ffd26"] .rx-select__search-button-title',
+        taskFailureConfigurationValueOnCopy: '[rx-view-component-id="317fe9a4-3ca7-4a55-a647-18163fd4a572"] .rx-select__search-button-title',
         allowCaseReopenValueOnCopy: '[rx-view-component-id="cd24485f-5719-48e3-8d76-4320f5d13c4c"] .dropdown-toggle',
         caseStatusValueOnCopy: '[rx-view-component-id="6b1d1112-129e-4c27-82b2-2248f12dc09a"] .dropdown-toggle',
-        resolutionCodeValueOnCopy: '[rx-view-component-id="c3d9b91a-0198-4b61-b13a-59d46d3b0103"] .read-only-content',
-        resoltuionDescriptionValueOnCopy: '[rx-view-component-id="b5b2d17e-e6b1-44e9-bbd5-23d74b3f1a2a"] .read-only-content',
-        caseDescriptionValueOnCopy: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] [ux-bind-html]',
-        ownerGroupDropdown: 'b3ebc604-b7dc-4090-90a5-9515d1ea7f3e',
+        resolutionCodeValueOnCopy: '[rx-view-component-id="f5b64175-c39b-4b6b-a6c4-956038a232b3"] input',
+        resoltuionDescriptionValueOnCopy: '[rx-view-component-id="8f8159e2-d647-4c46-ae71-ff56f1a81a0b"] input',
+        caseDescriptionValueOnCopy: '[rx-view-component-id="9023c12e-819f-4964-8079-b11cd6c0b860"] .cke_wysiwyg_div p',
         copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span',
-        businessUnitValueOnCopy: '[rx-view-component-id="0bfe6a89-2484-44d1-bae8-9353753f78fa"] .ui-select-match-text',
-        departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .dropdown-toggle',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
         cancelButton: '[rx-view-component-id="be371341-8b3f-4433-93fa-33d242984010"] button',
+        OwnerCompanyValueOnCopy: '[rx-view-component-id="a611e56c-cf79-482b-81dc-4c591d2a8843"] .dropdown-toggle',
+        ownerGroupValueOnCopy: '[rx-view-component-id="a6e62e56-9bda-40af-8bce-29ad062b76f5"] button',
+        ownerGroupDropdown: 'a6e62e56-9bda-40af-8bce-29ad062b76f5',
+        departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .dropdown-toggle',
+        supportCompanyValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .dropdown-toggle',
+        supportOrganizationValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .dropdown-toggle',
+        supportGroupValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .dropdown-toggle',
+        assigneeValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .dropdown-toggle',
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -67,7 +68,7 @@ class CopyCaseTemplate {
 
     async getValueOfCaseSummary(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummaryValueOnCopy)));
-        return await $(this.selectors.caseSummaryValueOnCopy).getText();
+        return await $(this.selectors.caseSummaryValueOnCopy).getAttribute('value');
     }
 
     async getValueOfCaseCompany(): Promise<string> {
@@ -77,16 +78,16 @@ class CopyCaseTemplate {
 
     async getValueOfSupportCompany(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportCompanyValueOnCopy)));
-        return await $(this.selectors.supportCompanyValueOnCopy).getText();
+        return await $$(this.selectors.supportCompanyValueOnCopy).get(0).getText();
     }
 
     async getValueOfSupportGroup(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupValueOnCopy)));
-        return await $(this.selectors.supportGroupValueOnCopy).getText();
+        return await $$(this.selectors.supportGroupValueOnCopy).get(2).getText();
     }
 
     async getValueOfBuisnessUnit(): Promise<string> {
-        return await $(this.selectors.businessUnitValueOnCopy).getText();
+        return await $$(this.selectors.supportOrganizationValueOnCopy).get(1).getText();
     }
 
     async getValueOfDepartement(): Promise<string> {
@@ -95,7 +96,7 @@ class CopyCaseTemplate {
 
     async getValueOfAssignee(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeValueOnCopy)));
-        return await $(this.selectors.assigneeValueOnCopy).getText();
+        return await $$(this.selectors.assigneeValueOnCopy).get(3).getText();
     }
 
     async getValueOfFlowset(): Promise<string> {
@@ -161,12 +162,12 @@ class CopyCaseTemplate {
 
     async getValueOfResolutionCode(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.resolutionCodeValueOnCopy)));
-        return await $(this.selectors.resolutionCodeValueOnCopy).getText() == "Yes" ? true : false;
+        return await $(this.selectors.resolutionCodeValueOnCopy).getAttribute('aria-checked') == 'true' ? true : false;
     }
 
     async getValueOfResolutionDescription(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.resoltuionDescriptionValueOnCopy)));
-        return await $(this.selectors.resoltuionDescriptionValueOnCopy).getText() == "Yes" ? true : false;
+        return await $(this.selectors.resoltuionDescriptionValueOnCopy).getAttribute('aria-checked') == 'true' ? true : false;
     }
 
     async getValueOfcaseStatus(): Promise<string> {

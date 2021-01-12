@@ -1,6 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilCommon from "../../../utils/util.common";
 import utilGrid from "../../../utils/util.grid";
+import utilityGrid from "../../../utils/utility.grid";
 
 class CaseTemplateConsole {
 
@@ -32,11 +33,11 @@ class CaseTemplateConsole {
     }
 
     async searchAndClickOnCaseTemplate(caseTemplateValue: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(caseTemplateValue, this.selectors.gridGUID);
+        await utilityGrid.searchAndOpenHyperlink(caseTemplateValue, this.selectors.gridGUID);
     }
 
     async searchAndselectCaseTemplate(caseTemplateValue: string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.gridGUID);
+        await utilityGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.gridGUID);
     }
 
     async getCaseTemplateNamePresentOnGrid(templateName: string): Promise<string> {
@@ -45,19 +46,19 @@ class CaseTemplateConsole {
     }
 
     async addColumnOnGrid(columnName: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGUID, columnName);
+        await utilityGrid.addGridColumn(columnName, this.selectors.gridGUID);
     }
 
     async removeColumnFromGrid(columnName: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGUID, columnName)
+        await utilityGrid.removeGridColumn(columnName, this.selectors.gridGUID)
     }
 
     async getFirstRecordValue(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGUID, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName, this.selectors.gridGUID);
     }
 
     async clickOnClearSearchIcon(): Promise<void> {
-        await utilGrid.clearGridSearchBox();
+        await utilityGrid.clearSearchBox();
     }
 
     async moreRecordsArePresentAfterClear(): Promise<number> {
