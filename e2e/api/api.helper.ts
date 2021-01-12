@@ -121,18 +121,31 @@ class ApiHelper {
         };
     }
 
-    async updateNotificationEventStatus(eventName: string, lob: string, status: string, company?: string): Promise<boolean> {
+    async updateNotificationEventStatus(eventName: string, status: string, company?: string): Promise<boolean> {
         let notificationEventGuid;
-        let lobGuid: string = constants.LOB[lob];
         if (company)
-            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid, company);
-        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid);
+            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, company);
+        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName);
         let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
         updateStatusPayload.id = notificationEventGuid;
         updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
         let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
         return updateEventStatus.status == 204;
     }
+
+    //#LOB Comments
+    // async updateNotificationEventStatus(eventName: string, lob: string, status: string, company?: string): Promise<boolean> {
+    //     let notificationEventGuid;
+    //     let lobGuid: string = constants.LOB[lob];
+    //     if (company)
+    //         notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid, company);
+    //     else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid);
+    //     let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
+    //     updateStatusPayload.id = notificationEventGuid;
+    //     updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
+    //     let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
+    //     return updateEventStatus.status == 204;
+    // }
 
     async createDomainTag(data: IDomainTag): Promise<string> {
         let domainTagGuid = await apiCoreUtil.getDomainTagGuid(data.domainTagName);
@@ -221,8 +234,9 @@ class ApiHelper {
         let mailBoxConfig = cloneDeep(MAILBOX_CONFIG);
         if (emailConfigData) {
             mailBoxConfig.fieldInstances[450000155].value = emailConfigData.email;
-            mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
-            mailBoxConfig.fieldInstances[1000000001].value = emailConfigData.company ? await apiCoreUtil.getOrganizationGuid(emailConfigData.company) : mailBoxConfig.fieldInstances[1000000001].value;
+            //#LOB Comments
+            //mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
+            mailBoxConfig.fieldInstances[1000000001].value = emailConfigData.company ? emailConfigData.company : mailBoxConfig.fieldInstances[1000000001].value;
             mailBoxConfig.fieldInstances[8].value = emailConfigData.description ? emailConfigData.description : mailBoxConfig.fieldInstances[8].value;
             mailBoxConfig.fieldInstances[450000152].value = emailConfigData.incomingMailBoxName ? emailConfigData.incomingMailBoxName : mailBoxConfig.fieldInstances[450000152].value;
         }
@@ -291,24 +305,12 @@ class ApiHelper {
         return await apiCoreUtil.getEmailHTMLBody(emailSubject, sentTo);
     }
 
-    async getSenderMailId(emailSubject: string): Promise<string> {
-        return await apiCoreUtil.getSenderMailId(emailSubject);
-    }
-
     async deleteIncomingOrOutgoingEmailConfiguration(emailGUID: string): Promise<boolean> {
         return await apiCoreUtil.deleteRecordInstance('AR System Email Mailbox Configuration', emailGUID);
     }
 
     async deleteEmailConfiguration(emailConfigGUID: string) {
         return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.email-lib:Email Box Registration', emailConfigGUID);
-    }
-
-    async updateEmailWhiteList(emailTag: string, domainName: string): Promise<boolean> {
-        let emailwhiteListData = EMAIL_WHITELIST;
-        emailwhiteListData.fieldInstances[18301].value = emailTag;
-        emailwhiteListData.fieldInstances[18303].value = domainName;
-        let updateEmail = await apiCoreUtil.updateRecordInstance('com.bmc.arsys.rx.environment-configuration:EmailWhiteListConfiguration', 'AGGADG1AANVNMAPKRHEJP9UCTR5FHR', emailwhiteListData);
-        return updateEmail.status == 204;
     }
 
     async updateTask(taskGuid: string, data: ITaskUpdate): Promise<number> {
@@ -544,7 +546,6 @@ class ApiHelper {
             }
             templateData.fieldInstances["450000291"] = caseTaskStatusConfiguration;
         }
-        console.log('aa', templateData);
         
         let newCaseTemplate: AxiosResponse = await apiCoreUtil.createRecordInstance(templateData);
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
@@ -820,7 +821,7 @@ class ApiHelper {
         templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? data.ownerBusinessUnit : templateData.fieldInstances[450000401].value;
         //#LOB Comments
-        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
             let taskTemplateDataPriority = {
@@ -1276,10 +1277,10 @@ class ApiHelper {
     async createEmailTemplate(data: IEmailTemplate): Promise<boolean> {
         let emailTemplateFile = await require('../data/api/email/email.template.api.json');
         let templateData = await emailTemplateFile.EmailTemplateData;
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(data.Company);
-        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["Company"] = data.Company;
         templateData.processInputValues["TemplateName"] = data.TemplateName;
-        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
+        //#LOB Comments
+        //templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         templateData.processInputValues["Status"] = data.Status;
         templateData.processInputValues["Description"] = data.Description;
         templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
@@ -1298,8 +1299,7 @@ class ApiHelper {
     async createEmailAcknowledgementTemplate(data: IEmailTemplate): Promise<boolean> {
         let emailTemplateFile = await require('../data/api/email/email.template.api.json');
         let templateData = await emailTemplateFile.EmailAcknowledgementTemplateData;
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(data.Company);
-        templateData.processInputValues["Company"] = companyGuid;
+        templateData.processInputValues["Company"] = data.Company;
         templateData.processInputValues["TemplateName"] = data.TemplateName;
         templateData.processInputValues["Status"] = data.Status;
         templateData.processInputValues["Description"] = data.Description;
@@ -1307,7 +1307,8 @@ class ApiHelper {
         templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
         templateData.processInputValues["Module"] = "Cases";
         templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
-        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
+        //#LOB Comments
+        //templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         const emailTemplateResponse = await axios.post(
             commandUri,
             templateData
@@ -1790,9 +1791,10 @@ class ApiHelper {
         newProcessConfig.fieldInstances[450000003]["value"] = data.processAliasName;
         newProcessConfig.fieldInstances[7]["value"] = data.status ? constants.ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
         newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
-        newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : newProcessConfig.fieldInstances[1000000001].value;
-        newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
-
+        newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? data.company : newProcessConfig.fieldInstances[1000000001].value;
+        //#LOB Comments
+        //newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
+        
         let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
 
         console.log('Create New Process Lib Config API Status =============>', newProcessLibConfRecord.status);
