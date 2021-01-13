@@ -4,6 +4,7 @@ import utilityCommon from '../utils/utility.common';
 export class GridOperations {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        selectAllCheckBox: '.adapt-selection-cell .checkbox__input',
         noFilterAppliedError: '.has-danger .form-control-feedback',
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
@@ -32,6 +33,10 @@ export class GridOperations {
         savePresetInput: '.advanced-filter-name-editor__input',
         saveOrCancelPresetFilterButton: 'button.custom-action-btn__right',
         lineOfBusinessDropDown: 'button[btn-type="tertiary"]'
+    }
+
+    async selectAllCheckBox() {
+        await $(this.selectors.selectAllCheckBox).click();
     }
 
     async searchRecord(searchValue: string, guid?: string): Promise<void> {

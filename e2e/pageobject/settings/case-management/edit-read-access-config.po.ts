@@ -1,5 +1,5 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class ReadAccessConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -8,7 +8,7 @@ class ReadAccessConfigEditPage {
         editName: '[rx-view-component-id="5aa348b9-f853-4b0f-bbff-a23d2e153f6a"] input',
         defaultToggle: '[rx-view-component-id="fa6bad05-195e-4df6-a7f1-daf55b2e0571"] button',
         saveButton: '[rx-view-component-id="5ea49da6-8472-4848-a29e-917a0932ea24"] button',
-        companyField: '[rx-view-component-id="2d60a97e-67aa-41fe-94f9-72e83556789b"] span.form-control',
+        companyField: '[rx-view-component-id="2d60a97e-67aa-41fe-94f9-72e83556789b"] .disabled',
         companyGuid: '2d60a97e-67aa-41fe-94f9-72e83556789b',
         cancelButton: '[rx-view-component-id="4161aa6c-2565-4f6e-85af-088df3db222e"] button',
         defaultToggleGuid: 'fa6bad05-195e-4df6-a7f1-daf55b2e0571',
@@ -37,11 +37,11 @@ class ReadAccessConfigEditPage {
     }
 
     async isCompanyFieldDisabled(): Promise<boolean> {
-        return await $(this.selectors.companyField).getAttribute("disabled") == "true";
+        return await $(this.selectors.companyField).isPresent();
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async clickOnSave(): Promise<void> {
@@ -53,20 +53,20 @@ class ReadAccessConfigEditPage {
     }
 
     async setDefaultToggleButton(value: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.defaultToggleGuid, value);
+        await utilityCommon.selectToggleButton(this.selectors.defaultToggleGuid, value);
     }
 
     async selectFlowset(flowsetName: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowsetName);
+        await utilityCommon.selectDropDown(this.selectors.flowsetGuid, flowsetName);
     }
 
     async setLabel(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, value);
     }
 
 
     async selectPriority(priority: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.priorityGuid, priority);
+        await utilityCommon.selectDropDown(this.selectors.priorityGuid, priority);
     }
 
     async clearAccessMappingName(): Promise<void> {
@@ -78,11 +78,11 @@ class ReadAccessConfigEditPage {
     }
 
     async selectSupportGroup(supportGroup: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.supportGroupGuid, supportGroup);
+        await utilityCommon.selectDropDown(this.selectors.supportGroupGuid, supportGroup);
     }
 
     async selectBusinessUnit(businessUnit: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.businessUnitGuid, businessUnit);
+        await utilityCommon.selectDropDown(this.selectors.businessUnitGuid, businessUnit);
     }
 
     async getCategoryTier4(): Promise<string> {
