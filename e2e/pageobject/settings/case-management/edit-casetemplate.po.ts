@@ -1,12 +1,13 @@
 import { ICaseTemplateUI } from '../../../data/interface/template.interface';
 import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
 import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class EditCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         editCaseCompany: '[rx-view-component-id="39db6cc5-79ae-4934-a4bc-74765278fcda"] .dropdown-toggle',
-        editcaseTemplate: '[rx-view-component-id="672c4706-9ce0-46be-9a3a-a639ded79b23"] .edit-link',
+        editcaseTemplate: '[rx-view-component-id="672c4706-9ce0-46be-9a3a-a639ded79b23"] .justify-content-end button',
         editTemplateMetaData: '[rx-view-component-id="c9f48c1b-75e2-411c-929c-76bdce069a3d"] .btn-link',
         caseSummary: '[rx-view-component-id="e3cb1a92-1e94-477d-93fa-b63b29c1c129"] input',
         caseDescriptionGuid: '3b3506af-b9a2-47bd-88f7-032092bc1264',
@@ -32,9 +33,8 @@ class EditCaseTemplate {
         ownerCompany: '80c13021-4b91-4298-bbdc-8b0cfe006a91',
         resolutionCode: 'c3d9b91a-0198-4b61-b13a-59d46d3b0103',
         resolutionDescription: 'b5b2d17e-e6b1-44e9-bbd5-23d74b3f1a2a',
-        businessUnitDropdown: 'e916c10e-a726-425c-9d7f-a39e1f43f1e4',
-        departmentDropdown: 'ec169352-7979-4527-b8d0-4deec9caf822',
-        ownerGroupDropdown: 'b1022495-e1e9-441e-834f-89a9ce9e7f93',
+        businessUnitDropdown: 'd65df3ea-bb07-4d6a-90ac-a5453f4419c8',
+        ownerGroupDropdown: '9bd8d31f-93c2-48cd-bf82-9e06cd584f22',
         changeAssignmentButton: '[rx-view-component-id="d6915b45-3cc0-40de-b80c-1212d050b40f"] button',
         clearButton: '[rx-view-component-id="26645a3a-2ce9-4d60-b167-7c4642cc00f2"] button',
         saveTemplateMetaData: '[rx-view-component-id="c9db0571-b703-4d5d-830c-d3a98f243c94"] button',
@@ -57,7 +57,7 @@ class EditCaseTemplate {
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
         caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown',
-        labelValue: '[rx-view-component-id="a18b9936-ef9a-48cd-b79b-9a4da61a679a"] .dropdown-toggle',
+        labelValue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .dropdown-toggle',
         dropdownBox: '.dropdown-toggle',
 
     }
@@ -143,31 +143,31 @@ class EditCaseTemplate {
     }
 
     async changeCategoryTier1(tier1Value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.caseCategoryTier1, tier1Value);
+        await utilityCommon.selectDropDown(this.selectors.caseCategoryTier1, tier1Value);
     }
 
     async changeCategoryTier2(tier2Value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.caseCategoryTier2, tier2Value);
+        await utilityCommon.selectDropDown(this.selectors.caseCategoryTier2, tier2Value);
     }
 
     async changeCategoryTier3(tier3Value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.caseCategoryTier3, tier3Value);
+        await utilityCommon.selectDropDown(this.selectors.caseCategoryTier3, tier3Value);
     }
 
     async changeCategoryTier4(tier4Value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.caseCategoryTier4, tier4Value);
+        await utilityCommon.selectDropDown(this.selectors.caseCategoryTier4, tier4Value);
     }
 
     async changeLabelValue(labelValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.label, labelValue);
+        await utilityCommon.selectDropDown(this.selectors.label, labelValue);
     }
 
     async changeFlowsetValue(flowsetValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.flowset, flowsetValue);
+        await utilityCommon.selectDropDown(this.selectors.flowset, flowsetValue);
     }
 
     async changeIdentityValidationValue(identityValidationValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.identityValidation, identityValidationValue);
+        await utilityCommon.selectDropDown(this.selectors.identityValidation, identityValidationValue);
     }
 
     async changeReopenTimelineDays(reopenDaysValues: string) {
@@ -176,43 +176,39 @@ class EditCaseTemplate {
     }
 
     async changePriorityValue(priorityValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.casePriority, priorityValue);
+        await utilityCommon.selectDropDown(this.selectors.casePriority, priorityValue);
     }
 
     async changeCaseStatusValue(caseStatusValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.caseStatusGuid, caseStatusValue);
+        await utilityCommon.selectDropDown(this.selectors.caseStatusGuid, caseStatusValue);
     }
 
     async changeAllowCaseReopenValue(allowCaseReopenValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.allowCaseReopen, allowCaseReopenValue);
-    }
-
-    async changeDepartmentDropdownValue(departmentDropdownValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.departmentDropdown, departmentDropdownValue);
+        await utilityCommon.selectDropDown(this.selectors.allowCaseReopen, allowCaseReopenValue);
     }
 
     async changeOwnerCompanyValue(ownerCompanyValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerCompany, ownerCompanyValue);
+        await utilityCommon.selectDropDown(this.selectors.ownerCompany, ownerCompanyValue);
     }
 
     async changeTaskFailureConfigurationValue(taskFailureConfigurationValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerCompany, taskFailureConfigurationValue);
+        await utilityCommon.selectDropDown(this.selectors.ownerCompany, taskFailureConfigurationValue);
     }
 
     async changeBusinessUnitDropdownValue(businessUnitDropdownValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.businessUnitDropdown, businessUnitDropdownValue);
+        await utilityCommon.selectDropDown(this.selectors.businessUnitDropdown, businessUnitDropdownValue);
     }
 
     async changeAssignmentMethodValue(assignmentMethodValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.assignmentMethod, assignmentMethodValue);
+        await utilityCommon.selectDropDown(this.selectors.assignmentMethod, assignmentMethodValue);
     }
 
     async changeOwnerGroupDropdownValue(ownerGroupValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerGroupDropdown, ownerGroupValue);
+        await utilityCommon.selectDropDown(this.selectors.ownerGroupDropdown, ownerGroupValue);
     }
 
     async changeTemplateStatusDropdownValue(templateStatusValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.templateStatusDropdown, templateStatusValue);
+        await utilityCommon.selectDropDown(this.selectors.templateStatusDropdown, templateStatusValue);
     }
 
     async clickOnChangeAssignmentButton(): Promise<void> {
@@ -221,11 +217,11 @@ class EditCaseTemplate {
     }
 
     async setResolutionCodeRequired(value: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.resolutionCode, value)
+        await utilityCommon.selectToggleButton(this.selectors.resolutionCode, value)
     }
 
     async setResolutionDescriptionRequired(value: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.resolutionDescription, value)
+        await utilityCommon.selectToggleButton(this.selectors.resolutionDescription, value)
     }
 
     async clearCaseSummary(): Promise<void> {
@@ -240,7 +236,7 @@ class EditCaseTemplate {
     }
 
     async changeCaseDescription(caseDescription: string): Promise<void> {
-        await utilCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);
+        await utilityCommon.setCKEditor(caseDescription, this.selectors.caseDescriptionGuid);
     }
 
     async getValueOfAssignmentMethod(): Promise<string> {
@@ -264,45 +260,45 @@ class EditCaseTemplate {
     }
 
     async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
+        await utilityCommon.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
     }
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.priorityRequiredText)));
-        return await utilCommon.isRequiredTagToField(this.selectors.priorityGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.priorityGuid);
     }
 
     async isSummaryRequiredTextPresent(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.summary)));
-        return await utilCommon.isRequiredTagToField(this.selectors.summaryGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.summaryGuid);
     }
 
     async isCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isTemplateStatusRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.templateStatusDropdown);
+        return await utilityCommon.isRequiredTagToField(this.selectors.templateStatusDropdown);
     }
 
     async isOwnerGroupRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.ownerGroupDropdown);
+        return await utilityCommon.isRequiredTagToField(this.selectors.ownerGroupDropdown);
     }
 
     async isOwnerCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.ownerCompany);
+        return await utilityCommon.isRequiredTagToField(this.selectors.ownerCompany);
     }
 
     async allStatusOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.caseStatusGuid, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.caseStatusGuid, list);
     }
 
     async allTemplateStatusOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.templateStatusDropdown, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.templateStatusDropdown, list);
     }
 
     async allPriorityOptionsPresent(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.priorityGuid, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.priorityGuid, list);
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
@@ -352,7 +348,7 @@ class EditCaseTemplate {
     }
 
     async isFlowsetPresentInDropDown(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowset, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.flowset, list);
     }
 
     async isCaseTemplateLabelValueDisplayed(labelName: string): Promise<boolean> {
