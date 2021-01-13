@@ -1,5 +1,6 @@
 import { chain, countBy, find, forEach, remove, uniqBy } from 'lodash';
 
+const minimist = require("minimist");
 const fs = require("fs");
 const csv = require('csv-parser');
 const { Parser } = require('json2csv');
@@ -24,6 +25,7 @@ export interface TestDetails {
 }
 
 export class CreateTestReport {
+    inputFile: string;
     annotation = [];
     passTest: InputType[] = [];
     failTest: InputType[] = [];
@@ -34,6 +36,7 @@ export class CreateTestReport {
     result: any;
 
     async run() {
+        this.loadConfig();
         this.filterInputFile();
         await this.readAnnotationFile().then((resolve) => {
             if (resolve) {
@@ -80,6 +83,11 @@ export class CreateTestReport {
         this.generateOutputFile(exeSummary);
     }
 
+    loadConfig() {
+        let configParam = minimist(process.argv.slice(2));
+        this.inputFile = configParam.inputfile || INPUT_FILE;
+    }
+
     async readAnnotationFile() {
         return new Promise((resolve) => {
             fs.createReadStream(ANNOTATION_FILE)
@@ -95,7 +103,7 @@ export class CreateTestReport {
     }
 
     filterInputFile() {
-        let executionReportJson = require(INPUT_FILE);
+        let executionReportJson = require(this.inputFile);
         executionReportJson.forEach((testResult: InputType) => {
 
             let testIdRegx = /^(\d+,?)/g;
