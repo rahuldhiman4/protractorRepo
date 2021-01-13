@@ -1,6 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid'
-import utilCommon from '../../../utils/util.common';
+import utilityGrid from '../../../utils/utility.grid'
+import utilityCommon from '../../../utils/utility.common';
 
 class AssignmentsConfigConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -22,23 +22,23 @@ class AssignmentsConfigConsolePage {
     }
 
     async searchAndClickOnAssignmentConfig(assignmentMappingName: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(assignmentMappingName, this.selectors.guid);
+        await utilityGrid.searchAndOpenHyperlink(assignmentMappingName, this.selectors.guid);
     }
 
     async searchAndselectAssignmentConfig(caseTemplateValue: string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.guid);
+        await utilityGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.guid);
     }
 
     async selectAllRecordsAssignmentConfig(): Promise<void> {
-        await utilGrid.selectAllCheckBox();
+        await utilityGrid.selectAllCheckBox();
     }
 
     async searchAssignmentConfig(assignmentMappingName: string): Promise<void> {
-        await utilGrid.searchOnGridConsole(assignmentMappingName);
+        await utilityGrid.searchRecord(assignmentMappingName);
     }
 
     async getValueOnAssignmentConfigGrid(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName, this.selectors.guid);
     }
 
     async clickOnCreateAssignmentConfiguration(): Promise<void> {
@@ -50,15 +50,15 @@ class AssignmentsConfigConsolePage {
     }
 
     async areCaseAssignmentGridColumnMatches(columnNames: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.guid, columnNames);
+        return await utilityGrid.areColumnHeaderMatches(columnNames, this.selectors.guid);
     }
 
     async addColumns(columnNames: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.guid, columnNames);
+        await utilityGrid.addGridColumn(columnNames, this.selectors.guid);
     }
 
     async removeColumns(columnNames: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.guid, columnNames);
+        await utilityGrid.removeGridColumn(columnNames, this.selectors.guid);
     }
 
     async clickDeleteButton(): Promise<void> {
@@ -66,11 +66,11 @@ class AssignmentsConfigConsolePage {
     }
 
     async clickDeleteButtonOnlyIfRecordsPresent(): Promise<void> {
-        let recordsCount = await utilGrid.getNumberOfRecordsInGrid(this.selectors.guid);
+        let recordsCount = await utilityGrid.getNumberOfRecordsInGrid(this.selectors.guid);
         if (recordsCount > 0) {
-            await utilGrid.selectAllCheckBox();
+            await utilityGrid.selectAllCheckBox();
             await $(this.selectors.deleteButton).click();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         }
         else {
             console.log("No records to delete")
@@ -78,47 +78,47 @@ class AssignmentsConfigConsolePage {
     }
 
     async addFilter(fieldName: string, textValue: string, type: string): Promise<void> {
-        await utilGrid.addFilter(fieldName, textValue, type);
-        //        await utilCommon.waitUntilSpinnerToHide();
+        await utilityGrid.addFilter(fieldName, textValue, type);
+        //        await utilityCommon.waitUntilSpinnerToHide();
     }
 
     async clearFilter(): Promise<void> {
-        await utilGrid.clearFilter();
-        //        await utilCommon.waitUntilSpinnerToHide();
+        await utilityGrid.clearFilter();
+        //        await utilityCommon.waitUntilSpinnerToHide();
     }
 
     async deleteDefaultAssignmentConfig(): Promise<void> {
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await this.addFilter('Default Mapping', 'True', 'checkbox');
-        await $('div.ui-grid-row').isPresent().then(async (result) => {
+        await $('.at-selection-checkbox .ui-chkbox-box').isPresent().then(async (result) => {
             if (result) {
-                await utilGrid.selectAllCheckBox();
+                await utilityGrid.selectAllCheckBox();
                 await this.clickDeleteButton();
-                await utilCommon.clickOnWarningOk();
-                await utilCommon.closePopUpMessage();
-                await utilGrid.clearFilter();
+                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+                await utilityCommon.closePopUpMessage();
+                await utilityGrid.clearFilter();
             } else {
-                await utilGrid.clearFilter();
+                await utilityGrid.clearFilter();
             }
         });
     }
 
     async deleteFilteredAssignmentConfig(): Promise<void> {
-        await $('div.ui-grid-row').isPresent().then(async (result) => {
+        await $('.at-selection-checkbox .ui-chkbox-box').isPresent().then(async (result) => {
             if (result) {
-                await utilGrid.selectAllCheckBox();
+                await utilityGrid.selectAllCheckBox();
                 await this.clickDeleteButton();
-                await utilCommon.clickOnWarningOk();
-                await utilCommon.closePopUpMessage();
-                await utilGrid.clearFilter();
+                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+                await utilityCommon.closePopUpMessage();
+                await utilityGrid.clearFilter();
             } else {
-                await utilGrid.clearFilter();
+                await utilityGrid.clearFilter();
             }
         });
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.guid, columnHeader);
     }
 
 }

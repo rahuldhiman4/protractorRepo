@@ -1,5 +1,5 @@
 import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class AssignmentConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -40,7 +40,7 @@ class AssignmentConfigEditPage {
     }
 
     async setCompany(company: string) {
-        await utilCommon.selectDropDown(this.selectors.companyDrpDwn, company);
+        await utilityCommon.selectDropDown(this.selectors.companyDrpDwn, company);
     }
 
     async clickonSaveButton(): Promise<void> {
@@ -68,11 +68,11 @@ class AssignmentConfigEditPage {
     }
 
     async setAssignee(assignee: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.assigneeGuid, assignee);
+        await utilityCommon.selectDropDown(this.selectors.assigneeGuid, assignee);
     }
 
     async setDefaultToggleButton(value: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.defaultToggleGuid, value);
+        await utilityCommon.selectToggleButton(this.selectors.defaultToggleGuid, value);
     }
 
     async clickOnCancelButton(): Promise<void> {
@@ -80,15 +80,15 @@ class AssignmentConfigEditPage {
     }
 
     async setCategoryTier2(categoryTier2: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2Guid, categoryTier2);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier2Guid, categoryTier2);
     }
 
     async setCategoryTier3(categoryTier3: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3Guid, categoryTier3);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier3Guid, categoryTier3);
     }
 
     async setLabel(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, value);
     }
 
     async getCategoryTier4(): Promise<string> {

@@ -1,6 +1,6 @@
 import { $, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import utilGrid from '../../../utils/util.grid';
-import utilCommon from '../../../utils/util.common';
+import utilityGrid from '../../../utils/utility.grid';
+import utilityCommon from '../../../utils/utility.common';
 
 class ReadAccessConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -30,15 +30,15 @@ class ReadAccessConsolePage {
     }
 
     async addColumns(columnNames: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.consoleReadAccessGuid, columnNames);
+        await utilityGrid.addGridColumn(columnNames, this.selectors.consoleReadAccessGuid);
     }
 
     async removeColumns(columnNames: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.consoleReadAccessGuid, columnNames);
+        await utilityGrid.removeGridColumn(columnNames, this.selectors.consoleReadAccessGuid);
     }
 
     async getValueOnReadAccessConfigGrid(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.consoleReadAccessGuid, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName, this.selectors.consoleReadAccessGuid);
     }
 
     async clickDeleteButton(): Promise<void> {
@@ -46,34 +46,34 @@ class ReadAccessConsolePage {
     }
 
     async addFilter(fieldName: string, textValue: string, type: string): Promise<void> {
-        await utilGrid.addFilter(fieldName, textValue, type);
+        await utilityGrid.addFilter(fieldName, textValue, type);
     }
 
     async searchAndOpenReadAccess(ReadAccessName: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(ReadAccessName);
+        await utilityGrid.searchAndOpenHyperlink(ReadAccessName);
     }
 
 
     async deleteDefaultReadAccess(): Promise<void> {
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await this.addFilter('Default Mapping', 'True', 'checkbox');
         await $('div.ui-grid-row').isPresent().then(async (result) => {
             if (result) {
-                await utilGrid.selectAllCheckBox();
+                await utilityGrid.selectAllCheckBox();
                 await this.clickDeleteButton();
-                await utilCommon.clickOnWarningOk();
-                await utilCommon.closePopUpMessage();
-                await utilGrid.clearFilter();
+                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+                await utilityCommon.closePopUpMessage();
+                await utilityGrid.clearFilter();
                 console.log("Record is Deleted");
             } else {
-                await utilGrid.clearFilter();
+                await utilityGrid.clearFilter();
                 console.log("Record is Not Present");
             }
         });
     }
 
     async searchReadAccessMappingName(processMappingName: string): Promise<boolean> {
-        await utilGrid.searchRecord(processMappingName, this.selectors.consoleReadAccessGuid);
+        await utilityGrid.searchRecord(processMappingName, this.selectors.consoleReadAccessGuid);
         return await element(by.cssContainingText('[rx-view-component-id="e2eae398-8732-41ea-b245-9d09cfee1dc3"] .ui-grid__link', processMappingName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText('[rx-view-component-id="e2eae398-8732-41ea-b245-9d09cfee1dc3"] .ui-grid__link', processMappingName)).getText() == processMappingName ? true : false;

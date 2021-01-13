@@ -1,5 +1,5 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class AssignmentConfigCreatePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -20,10 +20,10 @@ class AssignmentConfigCreatePage {
         siteDrpDwn: 'ee0a257d-5577-494b-a286-d553fbf18e44',
         defaultToggle: '[rx-view-component-id="d52b16e7-3cd4-4ef1-a31b-922eac1007c1"] .d-icon-circle_slash_o',
         supportCompanyDrpDwn: 'e20294a1-3a95-4fbd-9640-15a325db82ab',
-        businessUnitDrpDwn: '4906783f-e70a-4471-811b-eeb8e73d46e1',
+        businessUnitDrpDwn: '110ab90c-0907-413d-8b13-a6aa2ee2c566',
         departmentDrpDwn: 'e85a3405-af4d-494a-843b-24c797e7aa52',
-        supportGrpDrpDwn: '7a1dfae3-366a-41de-94ca-f38852675c2f',
-        assigneeGrpDrpDwn: 'c855a4ae-1283-4369-bbae-8daf38371c16',
+        supportGrpDrpDwn: '28b8045f-6347-4277-b252-5cb5cf12eff7',
+        assigneeGrpDrpDwn: 'a335c72f-964d-4c55-86c3-44b48ca79433',
         saveButton: '[rx-view-component-id="d7f16b2d-fe68-481b-a0f6-2144bb6403f1"] button',
         cancelButton: '[rx-view-component-id="8956a9fb-4fbd-4e11-96e8-13dc7bb81abe"] button',
         lobValue: '[rx-view-component-id="ccb87a1e-2ebe-400b-92ff-2d26f4e8a1bb"] .pull-left'
@@ -35,47 +35,47 @@ class AssignmentConfigCreatePage {
     }
 
     async setCompany(company: string) {
-        await utilCommon.selectDropDown(this.selectors.companyDrpDwn, company);
+        await utilityCommon.selectDropDown(this.selectors.companyDrpDwn, company);
     }
 
     async setBusinessUnit(bu: string) {
-        await utilCommon.selectDropDown(this.selectors.businessUnitDrpDwn, bu);
+        await utilityCommon.selectDropDown(this.selectors.businessUnitDrpDwn, bu);
     }
 
     async setDepartement(department: string) {
-        await utilCommon.selectDropDown(this.selectors.departmentDrpDwn, department);
+        await utilityCommon.selectDropDown(this.selectors.departmentDrpDwn, department);
     }
 
     async setFlowset(flowset: string) {
-        await utilCommon.selectDropDown(this.selectors.flowsetDrpDwn, flowset);
+        await utilityCommon.selectDropDown(this.selectors.flowsetDrpDwn, flowset);
     }
 
     async setCategoryTier1(category1: string) {
-        await utilCommon.selectDropDown(this.selectors.catTier1DrpDwn, category1);
+        await utilityCommon.selectDropDown(this.selectors.catTier1DrpDwn, category1);
     }
 
     async setCategoryTier2(category2: string) {
-        await utilCommon.selectDropDown(this.selectors.catTier2DrpDwn, category2);
+        await utilityCommon.selectDropDown(this.selectors.catTier2DrpDwn, category2);
     }
 
     async setCategoryTier3(category3: string) {
-        await utilCommon.selectDropDown(this.selectors.catTier3DrpDwn, category3);
+        await utilityCommon.selectDropDown(this.selectors.catTier3DrpDwn, category3);
     }
 
     async setCategoryTier4(category4: string) {
-        await utilCommon.selectDropDown(this.selectors.catTier4DrpDwn, category4);
+        await utilityCommon.selectDropDown(this.selectors.catTier4DrpDwn, category4);
     }
 
     async setPriority(company: string) {
-        await utilCommon.selectDropDown(this.selectors.priorityDrpDwn, company);
+        await utilityCommon.selectDropDown(this.selectors.priorityDrpDwn, company);
     }
 
     async setSupportCompany(suppCompany: string) {
-        await utilCommon.selectDropDown(this.selectors.supportCompanyDrpDwn, suppCompany);
+        await utilityCommon.selectDropDown(this.selectors.supportCompanyDrpDwn, suppCompany);
     }
 
     async setSupportGroup(supportGrp: string) {
-        await utilCommon.selectDropDown(this.selectors.supportGrpDrpDwn, supportGrp);
+        await utilityCommon.selectDropDown(this.selectors.supportGrpDrpDwn, supportGrp);
     }
 
     async clickonSaveButton(): Promise<void> {
@@ -102,31 +102,31 @@ class AssignmentConfigCreatePage {
     }
 
     async isCompanyDropdownValueMatches(values: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed('471bbeb3-3965-46b6-b74d-4f2a10fe3cce', values);
+        return await utilityCommon.isAllDropDownValuesMatches('471bbeb3-3965-46b6-b74d-4f2a10fe3cce', values);
     }
 
     async setAssignee(assigneeName: string) {
-        await utilCommon.selectDropDown(this.selectors.assigneeGrpDrpDwn, assigneeName);
+        await utilityCommon.selectDropDown(this.selectors.assigneeGrpDrpDwn, assigneeName);
     }
 
     async setRegion(Region: string) {
-        await utilCommon.selectDropDown(this.selectors.regionDrpDwn, Region);
+        await utilityCommon.selectDropDown(this.selectors.regionDrpDwn, Region);
     }
 
     async setSite(Site: string) {
-        await utilCommon.selectDropDown(this.selectors.siteDrpDwn, Site);
+        await utilityCommon.selectDropDown(this.selectors.siteDrpDwn, Site);
     }
 
     async isRegionAllDropDownValuesMatches(data: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.regionDrpDwn, data);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.regionDrpDwn, data);
     }
 
     async isSiteAllDropDownValuesMatches(data: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.siteDrpDwn, data);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.siteDrpDwn, data);
     }
 
     async setLabel(label: string) {
-        await utilCommon.selectDropDown(this.selectors.labelDrpDwn, label);
+        await utilityCommon.selectDropDown(this.selectors.labelDrpDwn, label);
     }
 
     async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
@@ -161,7 +161,7 @@ class AssignmentConfigCreatePage {
                 break;
             }
         }
-        return await utilCommon.isValuePresentInDropDown(guid, value);
+        return await utilityCommon.isValuePresentInDropDown(guid, value);
     }
 
     async getLobValue(): Promise<string> {
