@@ -1,6 +1,4 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilCommon from "../../../utils/util.common";
-import utilGrid from "../../../utils/util.grid";
 import utilityGrid from "../../../utils/utility.grid";
 
 class CaseTemplateConsole {

@@ -260,7 +260,8 @@ class CreateCaseTemplate {
         await changeAssignemetOldBlade.selectSupportGroup(caseTemplate.supportGroup);
         await changeAssignemetOldBlade.selectAssignee(caseTemplate.assignee);
         await changeAssignemetOldBlade.clickOnAssignButton();
-                //        await browser.wait(this.EC.invisibilityOf($(changeAssignemetOldBlade.selectors.assignToMeCheckBox)));
+        //        await browser.wait(this.EC.invisibilityOf($(changeAssignemetOldBlade.selectors.assignToMeCheckBox)));
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await this.clickSaveCaseTemplate();
     }
 
