@@ -1,5 +1,5 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class MenuItemsConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -41,15 +41,15 @@ class MenuItemsConfigEditPage {
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
     }
 
     async isStatusDropDownValuesMatch(value: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, value);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusDropDownGuid, value);
     }
 
     async selectAvailableOnUIToggleButton(booleanVal: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.toggleButtonGuid, booleanVal);
+        await utilityCommon.selectToggleButton(this.selectors.toggleButtonGuid, booleanVal);
     }
 
     async isMenuItemsStatusDisabled(): Promise<boolean> {

@@ -27,8 +27,8 @@ class createNotificationTemplate {
         generateClickableLinkIconEmail: '[rx-view-component-id="ac6ba449-9c5a-46f9-85fb-8384bf57fc92"] .cke_button__clickablelink_icon',
         emailBodyGuid: '7ecf7b01-9de9-45a6-a448-2806fe51cece',
         eventDropDownInput: '[rx-view-component-id="38aba7a1-c142-41f7-9017-d261971c2429"] input',
-        eventDropDown: '[rx-view-component-id="38aba7a1-c142-41f7-9017-d261971c2429"] .ui-select-match',
-        dropDownOption: '.ui-select-choices-row',
+        eventDropDown: '[rx-view-component-id="a0554358-c226-4dae-9bef-0792a0e32c5f"] button',
+        dropDownOption: '.dropdown-item',
     }
     
     async selectModuleName(value: string): Promise<void> {
