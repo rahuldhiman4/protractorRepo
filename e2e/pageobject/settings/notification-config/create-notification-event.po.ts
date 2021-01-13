@@ -1,5 +1,5 @@
 import { $ } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class NotificationEventCreatePage {
 
@@ -16,7 +16,7 @@ class NotificationEventCreatePage {
     }
 
     async setCompanyValue(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async setDescription(description: string): Promise<void> {

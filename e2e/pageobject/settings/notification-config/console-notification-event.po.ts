@@ -1,5 +1,5 @@
 import { $ } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 class NotificationEventConsolePage {
 
@@ -17,7 +17,7 @@ class NotificationEventConsolePage {
     }
 
     async getDescriptionValue(): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, 'Description');
+        return await utilityGrid.getFirstGridRecordColumnValue('Description', this.selectors.guid);
     }
 
 }

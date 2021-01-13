@@ -1,4 +1,5 @@
 import { $,$$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 import utilCommon from '../../../utils/util.common';
 
 class createNotificationTemplate {
@@ -13,12 +14,12 @@ class createNotificationTemplate {
         emailInsertField: 'id="cke_103"',
         fieldValueInAlertBody: '.cke_wysiwyg_div',
         fieldValueInEmailBody: '[id="cke_116_contents"] .cke_wysiwyg_div',
-        emailTab: '[data-testid="adapt-tabs-dropdown-3_tab_1"]',
+        emailTab: '[rx-view-component-id="e55bb281-692b-4daa-bb8b-ada70bd0581c"] button[aria-posinset="2"]',
         subject: '[rx-view-component-id="dbfcd07f-0191-4282-9184-8044e4ae28bb"] input',
         saveButton: '[rx-view-component-id="a07cb7fc-3b1a-41ca-8eee-e99e2058e161"] button',
         cancelButton: '[rx-view-component-id="86d6f515-fcd3-484a-a18f-1ff30c137a1d"] button',
         recipientsList: 'div[ng-repeat*="recipient"] .text-wrapper span',
-        alertMessage: '[rx-view-component-id="34d2b4a6-5403-4e22-809d-5d26fe2f4ad8"] .cke_wysiwyg_div',
+        alertMessage: '[rx-view-component-id="560e4bbc-9f76-4a7b-9029-e561bdaa5526"] .cke_wysiwyg_div',
         emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] .d-textfield',
         emailBasedApprovalToggleGuid: '4437da1b-4da6-4e84-bf9c-f7366cca0f1a',
         notificationMethodGuid: '0f634bc9-63ce-4515-99d1-525fdb4e44a9',
@@ -31,11 +32,11 @@ class createNotificationTemplate {
     }
     
     async selectModuleName(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.moduleName, value);
+        await utilityCommon.selectDropDown(this.selectors.moduleName, value);
     }
 
     async selectEvent(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.eventDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.eventDropDownGuid, value);
     }
 
     async selectNthEvent(value: string, n: number): Promise<void> {
@@ -51,7 +52,7 @@ class createNotificationTemplate {
     }
 
     async setEmailBody(value: string): Promise<void> {
-        await utilCommon.setCKEditor(value, this.selectors.emailBodyGuid);
+        await utilityCommon.setCKEditor(value, this.selectors.emailBodyGuid);
     }
 
     async setDescription(value: string): Promise<void> {
@@ -114,11 +115,11 @@ class createNotificationTemplate {
     }
 
     async selectEmailBasedApprovalToggle(value: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.emailBasedApprovalToggleGuid, value);
+        await utilityCommon.selectToggleButton(this.selectors.emailBasedApprovalToggleGuid, value);
     }
 
     async selectDefaultNotificationMethod(methodName: string) {
-        await utilCommon.selectDropDown(this.selectors.notificationMethodGuid, methodName);
+        await utilityCommon.selectDropDown(this.selectors.notificationMethodGuid, methodName);
     }
 
     async clickOnGenerateClickableLinkIconOnAlert(): Promise<void> {

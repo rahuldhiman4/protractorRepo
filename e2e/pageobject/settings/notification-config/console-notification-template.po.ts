@@ -1,6 +1,6 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
-import utilCommon from '../../../utils/util.common';
+import utilityGrid from '../../../utils/utility.grid';
+import utilityCommon from '../../../utils/utility.common';
 
 class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -75,24 +75,24 @@ class NotificationTemplateGridPage {
     }
 
     async addGridColumns(columns: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.guid, columns);
+        await utilityGrid.addGridColumn(columns,this.selectors.guid);
     }
 
     async removeGridColumns(columns: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.guid, columns);
+        await utilityGrid.removeGridColumn( columns,this.selectors.guid);
     }
 
     async areColumnHeaderMatches(columns: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.guid, columns);
+        return await utilityGrid.areColumnHeaderMatches(columns,this.selectors.guid);
     }
 
     async deleteTemplate(): Promise<void> {
         await $(this.selectors.deleteButton).click();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
 
     async isGridColumnSorted(columnName: string ): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnName, 'ascending', this.selectors.guid);
+        return await utilityGrid.isGridColumnSorted(columnName, 'ascending', this.selectors.guid);
     }
 
     async clickCopyTmplate() {
@@ -100,7 +100,7 @@ class NotificationTemplateGridPage {
     }
 
     async getValueOnAssignmentConfigGrid(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.guid, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName,this.selectors.guid);
     }
     
     async isAddNotificationTemplateBtnDisplayed(): Promise<boolean> {
