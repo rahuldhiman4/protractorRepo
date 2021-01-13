@@ -614,7 +614,7 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
@@ -623,14 +623,14 @@ describe('Knowledge Article', () => {
             expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
             expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setDescription('DescriptionOFKA');
             await createKnowledgeArticleTemplatePo.setSectionTitle('Second' + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-            await utilGrid.searchAndOpenHyperlink('template1064' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink('template1064' + randomStr);
             expect(await editKnowledgeArticleTemplatePo.getSectionTitleValue('First' + randomStr)).toBeFalsy('removed section is Present');
         }
         catch (e) {
