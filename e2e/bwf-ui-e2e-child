@@ -13,23 +13,23 @@ node("${NODE}"){
 		bat "npm run webdriver-update"
 	}
 
-	try {
-		stage('Test Execution ' + suiteName) {
+	stage('Test Execution ' + suiteName) {
+		try {
 			bat """npm run e2e-protractor -- --baseUrl=${environment} --suite=${suiteName}"""
+		} catch (Exception e) {
+			echo "Test Execution Failed ${suiteName} ==> " + e;
 		}
-	} catch (Exception e) {
-		echo "Test Execution Failed ${suiteName} ==> " + e;
 	}
 
-	try {
-		stage('Reporting ' + suiteName) {
+	stage('Reporting ' + suiteName) {
+		try {
             zip archive: false, dir: 'e2e/reports', zipFile: "e2e/reports/${suiteName}_reports.zip"
 			//copy report zip to parent report folder
 			bat """xcopy /Y /F /I /Z /Q "e2e/reports/${suiteName}_reports.zip" "${reportDir}/*" """
 			//copy json file to parent report folder
 			bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-json-report/spec-json-report.json" "${reportDir}/${suiteName}_spec-json-report.json*" """
-        }
-	} catch (Exception e) {
-		echo "Reporting Failed ${suiteName} ==> " + e;
+		} catch (Exception e) {
+			echo "Reporting Failed ${suiteName} ==> " + e;
+		}
 	}
 }
