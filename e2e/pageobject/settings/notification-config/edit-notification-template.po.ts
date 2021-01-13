@@ -214,15 +214,15 @@ class EditNotificationTemplate {
         }
         switch (recipientOption) {
             case "TO": {
-                checkboxCount = count * 3;
+                checkboxCount = count + 1 ;
                 break;
             }
             case "CC": {
-                checkboxCount = (count * 3) + 1;
+                checkboxCount = count+ 2;
                 break;
             }
             case "BCC": {
-                checkboxCount = (count * 3) + 2;
+                checkboxCount = count + 3 ;
                 break;
             }
             default: {
@@ -230,7 +230,7 @@ class EditNotificationTemplate {
                 break;
             }
         }
-        await $$(this.selectors.recipientsCheckbox).get(checkboxCount).click();
+        await $$(this.selectors.recipientList).get(checkboxCount).click();
     }
 
     async isRecipientsCheckboxChecked(recipientName: string, recipientOption: string): Promise<boolean> {

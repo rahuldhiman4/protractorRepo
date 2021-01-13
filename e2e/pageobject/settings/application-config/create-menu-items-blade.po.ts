@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class CreateNewMenuOptionPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -9,7 +9,7 @@ class CreateNewMenuOptionPage {
         menuNameDropDown: '[rx-view-component-id="da9b9818-7b4c-43ec-9c4b-41e0cda49b8d"] button',
         menuNameDropDownGuid: "da9b9818-7b4c-43ec-9c4b-41e0cda49b8d",
         menuOptionId: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"]',
-        menuOption: 'input[id="rx-textfield-43"]',
+        menuOption: 'input',
         statusDropDown: '[rx-view-component-id="a548d907-8c6b-46ab-bc83-88a5310e04b7"] button',
         statusDropDownGuid: "a548d907-8c6b-46ab-bc83-88a5310e04b7",
         toggleButtonId: '[rx-view-component-id="39a7280b-4078-4f9a-8058-2b0ff972c151"]',
@@ -42,11 +42,11 @@ class CreateNewMenuOptionPage {
     }
 
     async selectMenuNameDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.menuNameDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.menuNameDropDownGuid, value);
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
     }
 
     async isToggleButtonDisplayed(): Promise<boolean> {
@@ -57,7 +57,7 @@ class CreateNewMenuOptionPage {
     }
 
     async selectAvailableOnUiToggleButton(booleanVal: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.toggleButtonGuid, booleanVal);
+        await utilityCommon.selectToggleButton(this.selectors.toggleButtonGuid, booleanVal);
     }
 
     async isStatusDropDownPresent(): Promise<boolean> {
@@ -104,24 +104,23 @@ class CreateNewMenuOptionPage {
     }
 
     async isMenuNameDropDownValuesMatches(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.menuNameDropDownGuid, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.menuNameDropDownGuid, list);
     }
 
     async isStatusDropDownValuesMatches(list: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusDropDownGuid, list);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusDropDownGuid, list);
     }
 
     async isMenuNameFieldRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.menuNameDropDownGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.menuNameDropDownGuid);
     }
 
     async isMenuOptionFieldRequired(): Promise<boolean> {
-        let menuOptionElementRequiredTag = await $('[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"] span.d-textfield__item');
-        return await utilCommon.isRequiredTagToFieldElement(menuOptionElementRequiredTag);
+        return await utilityCommon.isRequiredTagToField(this.selectors.menuOptionGuid);
     }
 
     async isStatusFieldRequired(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusDropDownGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusDropDownGuid);
     }
 
     async getLobValue(): Promise<string> {

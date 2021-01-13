@@ -232,13 +232,13 @@ describe("Notification Template", () => {
 
         it('[4589]: Verify notification event validation wrt same LOB ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Events - Settings - Business Workflows');
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName(notificationEventHRGlobal);
             await createNotificationEventPage.setCompanyValue('Petramco');
             await createNotificationEventPage.setDescription('4589 Desc');
             await createNotificationEventPage.saveEventConfig();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222104): An Event with same name already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Given combination of Event and Company already exists.')).toBeTruthy("Error message absent");
             await createNotificationEventPage.setEventName('Case Priority Change' + randomStr);
             await createNotificationEventPage.saveEventConfig();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Error message absent");
@@ -246,10 +246,10 @@ describe("Notification Template", () => {
             await utilityGrid.searchAndOpenHyperlink('Case Priority Change' + randomStr);
             await editNotificationEventPage.setEventName(notificationEventHRGlobal);
             await editNotificationEventPage.saveEventConfig();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Event Name is not allowed to change.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Event Name is not allowed to change.')).toBeTruthy("Error message absent");
             await editNotificationEventPage.setEventName(notificationEventHRGlobal + "_updated");
             await editNotificationEventPage.saveEventConfig();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Event Name is not allowed to change.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Event Name is not allowed to change.')).toBeTruthy("Error message absent");
             await editNotificationEventPage.cancelEventConfig();
         });
 
@@ -326,7 +326,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Events - Settings - Business Workflows');
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName(notificationEventHRGlobal);
             await createNotificationEventPage.setCompanyValue('Petramco');
@@ -531,7 +531,7 @@ describe("Notification Template", () => {
 
     it('[4356]: Verify OOB Notification Event and Template for Email based Approval', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Events - Settings - Business Workflows');
         await utilityGrid.clearFilter();
         await utilityGrid.addFilter('Company', '- Global -', 'text');
         await utilityGrid.searchRecord('Email Based Approval');
