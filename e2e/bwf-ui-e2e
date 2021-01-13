@@ -1,15 +1,6 @@
-def user = 'dsm-bot'
+import groovy.json.JsonSlurperClassic;
 
-node("node2"){
-    stage('Checkout') { git branch: 'master', credentialsId: user, url: 'https://github.bmc.com/DSM-Apps/bwf-qa-deployment' }
-    stage('Build BWF Deployment Docker') {
-    	echo "Stack: ${STACK}"
-    	echo "APP_IMAGE_TAG: ${APP_IMAGE_TAG}"
-    	//sh "./create-inventory.sh ${STACK}"
-      //sh "ansible-playbook -i ${STACK} bwfondemand.yml -e APP_IMAGE_TAG=${APP_IMAGE_TAG} -e reboot=true"
-    	//sleep(240)
-    }
-}
+def user = 'dsm-bot'
 
 node("${NODE}"){
     def suiteNameList = [];
@@ -24,12 +15,12 @@ node("${NODE}"){
 		bat "npm run webdriver-update"
     }
 
-    try{
-        stage('Test Execution'){
+    stage('Test Execution') {
+        try {
             def builds = [:];
             def br = [:];
             def i = 0;
-            SUITELIST.split('\n').each{
+            SUITELIST.split('\n').each {
                 def suiteAndEnv = "${it}".split('=');
                 suiteNameList[i] = suiteAndEnv[0];
                 i++;
@@ -41,148 +32,147 @@ node("${NODE}"){
                     ]
                 }
             }
-            parallel (builds)
+            parallel (builds);
+        } catch (Exception e) {
+            echo "Test Execution Failed ==> " + e;
         }
-    } catch (Exception e) {
-        echo "Test Execution Failed ==> " + e;
     }
 
-    try{
-        stage('Jira Cycle'){
-            def now = new Date();
-            def dateNow = now.format("yyyy-MM-dd HH:mm", TimeZone.getTimeZone('UTC'));
-            bat """if not exist "./e2e/reports/spec-jira-report" mkdir "./e2e/reports/spec-jira-report" """
-            suiteNameList.each{
+    stage('Reporting') {
+        def percent = 0;
+        def total = 0;
+        def failed = 0;
+        def passed = 0;
+        def skipped = 0;
+
+        try {
+            bat """if not exist "./e2e/reports/spec-test-report" mkdir "./e2e/reports/spec-test-report" """
+            suiteNameList.each {
                 def suiteName = "${it}";
-                // Create Jira Cycle
-                bat """npm run jira-cycle -- --cycle=%CYCLENAME% --inputfile="${WORKSPACE}/artefact/${suiteName}_spec-json-report.json" --folder="%FOLDERNAME% ${dateNow}" --stats=%STATS%"""
-                //copy jira report files to artefact folder
-                bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-jira-report/jira-report.csv" "artefact/jira-report/${suiteName}_jira-report.csv*" """
-                bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-jira-report/summary-report.json" "artefact/jira-report/${suiteName}_summary-report.json*" """
+                // run test report
+                bat """npm run test-report -- --inputfile="${WORKSPACE}/artefact/${suiteName}_spec-json-report.json""""
+                // copy test report files to artefact folder
+                bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-test-report/test-report.csv" "artefact/test-report/${suiteName}_test-report.csv*" """
+                bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-test-report/summary-report.json" "artefact/test-report/${suiteName}_summary-report.json*" """
             }
-            // merge all Jira output csv files
-            def fileContent = readFile("artefact/jira-report/${suiteNameList[0]}_jira-report.csv");
-            for (int j=1; j < suiteNameList.size(); j++){
-                def fileLines = readFile("artefact/jira-report/${suiteNameList[j]}_jira-report.csv").readLines();
+            // merge all test-report csv files
+            def fileContent = readFile("artefact/test-report/${suiteNameList[0]}_test-report.csv");
+            for (int j=1; j < suiteNameList.size(); j++) {
+                def fileLines = readFile("artefact/test-report/${suiteNameList[j]}_test-report.csv").readLines();
                 fileContent = fileContent + "\n" + fileLines.tail().join('\n');
             }
-            writeFile(file: "artefact/jira-report/jira-report.csv", text: fileContent);
+            writeFile(file: "artefact/test-report/test-report.csv", text: fileContent);
 
             // merge all summary-report output files
             def finalMap = [:];
-            for (int k=0; k < suiteNameList.size(); k++){
-                def componentObj = readJSON file: "artefact/jira-report/${suiteNameList[k]}_summary-report.json";
+            for (int k=0; k < suiteNameList.size(); k++) {
+                def componentObj = readJSON file: "artefact/test-report/${suiteNameList[k]}_summary-report.json";
                 def components = componentObj.keySet();
                 components.each {
                     def passAll = (componentObj.get(it).get("passed"));
                     def failAll = (componentObj.get(it).get("failed"));
                     def skipAll = (componentObj.get(it).get("skipped"));
-                    def totalAll = passAll + failAll + skipAll;
+                    def totalAll = (componentObj.get(it).get("total"));
                     if(finalMap.containsKey(it) == true && it != "Total") {
-                        passAll += finalMap.get(it).get('pass');
-                        failAll += finalMap.get(it).get('fail');
-                        skipAll += finalMap.get(it).get('skip');
+                        passAll += finalMap.get(it).get('passed');
+                        failAll += finalMap.get(it).get('failed');
+                        skipAll += finalMap.get(it).get('skipped');
                         totalAll += finalMap.get(it).get('total');
                     }
                     finalMap.put(it, [pass: passAll, fail: failAll, skip: skipAll, total: totalAll]);
                 }
             }
-            writeJSON file: "artefact/jira-report/summary-report.json", json: finalMap, pretty: 1;
+            writeJSON file: "artefact/test-report/summary-report.json", json: finalMap, pretty: 1;
 
-            //create zip of jira-report folder
-            zip archive: false, dir: 'artefact/jira-report', zipFile: 'artefact/jira-report.zip'
-        }
-    } catch (Exception e) {
-        echo "Jira Cycle Failed ==> " + e;
-    }
+            // create zip of test-report folder
+            zip archive: false, dir: 'artefact/test-report', zipFile: 'artefact/test-report.zip'
 
-    try{
-        stage('Reporting'){
-            def suiteDetails = "${SUITELIST}".split('\n').join("<br>");
-            emailext (
-                subject: "BWF UI - Protractor Automation Parallel Run Report Build # ${env.BUILD_NUMBER}",
-                body:
-                """
-                <style type="text/css">
-                body {
-                    margin: 0px;
-                    padding: 15px;
-                    font-family: "Lucida Sans Unicode";
-                    font-size: 10pt;
+            // PMO-Dashboard
+            def jsonReport = "${WORKSPACE}/artefact/test-report/summary-report.json";
+            def jsonFileContent = readFile(file: jsonReport);
+            def componentObj = new JsonSlurperClassic().parseText(jsonFileContent);
+            def components = componentObj.keySet();
+            //----------------
+            components.each {
+            //----------------
+                if(it == "Total") {
+                    passed = (componentObj.get(it).get("pass"));
+                    failed = (componentObj.get(it).get("fail"));
+                    skipped = (componentObj.get(it).get("skip"));
+                    total = (componentObj.get(it).get("total"));
+                    percent = ((passed * 100) / total).toInteger();
                 }
-                h3 {
-                    background: #F2B66B;
-                    padding: 10px;
-                    border: 1px solid #333;
-                }
-                table {
-                    width: 70%;
-                }
-                td.bold {
-                    width: 30%;
-                    font-weight:bold;
-                }
-                table, tr, td {
-                    border: 1px solid black;
-                    border-collapse: collapse;
-                    padding: 5px;
-                }
-                </style>
-                <h3>BWF UI - Protractor Automation Parallel Run Report</h3>
-                <table>
-                <tr><td class=bold>Environment Name: </td><td>${suiteDetails}</td></tr>
-                <tr><td class=bold>Build URL:</td><td><a href="${env.BUILD_URL}">View Jenkins</a></td></tr>
-                <tr><td class=bold>DSOM Dashboard:</td><td><a href="http://vl-aus-rem-bl08.bmc.com:8080/view/Helix%20BWF/">Dashboard</a></td></tr>
-                <tr><td class=bold>Build Artefact:</td><td><a href="ftp://vl-pun-rem-qa4n/punebuild/automation-results/protractor-result/UIAutoParallel_Build${env.BUILD_NUMBER}">FTP Link</a></td></tr>
-                """
-                +
-                '${FILE, path="e2e/reports/spec-jira-report/CycleReport.html"}'
-                +
-                "</table>",
-                to: "prasad_vidhate@bmc.com;sunil_patil@bmc.com;pravin_ajagunde@bmc.com;tushar_garud@bmc.com;anant_sahitya@bmc.com;swapnil_khobragade_tp@bmc.com;ankush_agrawal_tp@bmc.com;kiran_gaikwad_tp@bmc.com;naziya_mujawar@bmc.com;rahul_dhiman_tp@bmc.com;apurva_deshmukh_tp@bmc.com;nikhil_bokade_tp@bmc.com;ashish_gabhane@bmc.com;swapnil_yelkar@bmc.com;sushrut_sawarkar@bmc.com;shalakha_hemrajani_tp@bmc.com",
-                //to: "tushar_garud@bmc.com",
-                attachmentsPattern: 'artefact/jira-report/jira-report.csv'
-            )
-
-            ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
-                [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
-                    [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAutoParallel_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'artefact/*.zip']
-                ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
-            ]
-
-            def total = 0
-            def failed = 0
-            def passed = 0
-            def skipped = 0
-            def percent = 0
-
-            def logContent = Jenkins.getInstance().getItemByFullName(env.JOB_NAME).getBuildByNumber(Integer.parseInt(env.BUILD_NUMBER)).logFile.text
-
-            def matcher = logContent =~ /^(?ms).*Test Cycle Pass % ==> (\d*).*$/
-            if (matcher.matches()) percent = matcher.group(1).toInteger()
-            matcher = logContent =~ /^(?ms).*Passed tests ==> (\d*).*$/
-            if (matcher.matches()) passed = matcher.group(1).toInteger()
-            matcher = logContent =~ /^(?ms).*Failed tests ==> (\d*).*$/
-            if (matcher.matches()) failed = matcher.group(1).toInteger()
-            matcher = logContent =~ /^(?ms).*Skipped tests ==> (\d*).*$/
-            if (matcher.matches()) skipped = matcher.group(1).toInteger()
-            matcher = logContent =~ /^(?ms).*Total Executed tests ==> (\d*).*$/
-            if (matcher.matches()) total = matcher.group(1).toInteger()
-
-            currentBuild.description = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped
-            if (percent < 100) currentBuild.result = 'FAILURE';
+            }
+            currentBuild.description = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped;
+            if (percent < 95) currentBuild.result = 'FAILURE';
 
             // PMO Dashboard per component
             if("${PMO}" == "true") {
             build job: 'bwf-pmo-dashboard', 
                 parameters: [
 		            string(name: 'NODE', value: "${NODE}"),
-                    string(name: 'JSON', value: "${WORKSPACE}/artefact/jira-report/summary-report.json"),
+                    string(name: 'JSON', value: "${WORKSPACE}/artefact/test-report/summary-report.json"),
                     string(name: 'EXTN', value: "UI")
                 ]
             }
+
+        } catch (Exception e) {
+            echo "Reporting Failed ==> " + e;
         }
-    } catch (Exception e) {
-        echo "Reporting Failed ==> " + e;
+
+        try {
+            def suiteDetails = "${SUITELIST}".split('\n').join("<br>");
+            emailext (
+                subject: "${SUBJECT} Build # ${env.BUILD_NUMBER}",
+                body:
+                """
+                <style type="text/css">
+                    body {
+                        margin: 0px;
+                        padding: 15px;
+                        font-family: "Lucida Sans Unicode";
+                        font-size: 10pt;
+                    }
+                    h3 {
+                        background: #F2B66B;
+                        padding: 10px;
+                        border: 1px solid #333;
+                    }
+                    table {
+                        width: 70%;
+                    }
+                    td.bold {
+                        width: 30%;
+                        font-weight:bold;
+                    }
+                    table, tr, td {
+                        border: 1px solid black;
+                        border-collapse: collapse;
+                        padding: 5px;
+                    }
+                </style>
+                <h3>BWF UI - Automation Run Report</h3>
+                <table>
+                    <tr><td class=bold>Environment Name: </td><td>${suiteDetails}</td></tr>
+                    <tr><td class=bold>Build URL:</td><td><a href="${env.BUILD_URL}">View Jenkins</a></td></tr>
+                    <tr><td class=bold>DSOM Dashboard:</td><td><a href="http://vl-aus-rem-bl08.bmc.com:8080/view/Helix%20BWF/">Dashboard</a></td></tr>
+                    <tr><td class=bold>Build Artefact:</td><td><a href="ftp://vl-pun-rem-qa4n/punebuild/automation-results/protractor-result/UIAuto_Build${env.BUILD_NUMBER}">FTP Link</a></td></tr>
+                    """
+                    +
+                    '${FILE, path="e2e/reports/spec-test-report/TestReport.html"}'
+                    +
+                "</table>",
+                to: EMAILID,
+                attachmentsPattern: 'artefact/test-report/test-report.csv'
+            )
+
+            ftpPublisher alwaysPublishFromMaster: true, continueOnError: true, failOnError: false, publishers: [
+                [configName: 'vl-pun-rem-qa4n-protractor', transfers: [
+                    [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAuto_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'artefact/*.zip']
+                ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
+            ]
+        } catch (Exception e) {
+            echo "Reporting Failed ==> " + e;
+        }
     }
 }

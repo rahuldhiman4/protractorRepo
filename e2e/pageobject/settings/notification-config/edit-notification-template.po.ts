@@ -1,39 +1,39 @@
 import { $, protractor, ProtractorExpectedConditions, $$, element, by, browser, ElementFinder } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 class EditNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
         cancelButton: '[rx-view-component-id="d2dd0f98-69d0-462f-9002-5da452b67f63"] button,[rx-view-component-id="2a50e7b7-b260-4749-ad9d-1d7cb65b5d95"] button',
-        header: '.modal-title',
-        saveButton: '[rx-view-component-id="8b5f78b0-0aa8-40da-8d52-66d5afe1356b"] button',
-        emailTab: 'li.rx-tab a',
-        editButtonOnEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] button',
-        checkBoxEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] .ui-grid-selection-row-header-buttons',
-        alertSubjectCheckbox: '[rx-view-component-id="54e4673e-6717-4f72-98e2-4251ee72d702"] .ui-grid-selection-row-header-buttons',
-        editCheckbox: 'button.d-icon-left-pencil',
+        header: '.dp-title',
+        saveButton: '[rx-view-component-id="50e25982-5452-4f20-ac79-5682de7cb467"] button',
+        emailTab: 'li.nav-item button',
+        editButtonOnEmailTab: '[rx-view-component-id="a0c7d2a0-326b-4c8c-88ab-1b626b865769"] button',
+        checkBoxEmailTab: '[rx-view-component-id="a0c7d2a0-326b-4c8c-88ab-1b626b865769"] .ui-chkbox',
+        alertSubjectCheckbox: '[rx-view-component-id="5a882133-425e-4ca6-af62-cb9cb0b133b7"] label.radio__label',
+        editCheckbox: '[rx-view-component-id="5a882133-425e-4ca6-af62-cb9cb0b133b7"] [rx-id="refresh-button"]',
         clickableField: 'div.cke_contents.cke_reset span[contenteditable]',
         cancelAlertMessageTextButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
-        defaultNotificationMethodGuid: "c80f9de5-1a84-46fa-949d-fc073d65ebd8",
-        description: '[rx-view-component-id="73750a2f-4d74-4919-b0e4-fbc8e1b4167a"] textarea',
-        event: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] .ui-select-toggle',
-        addRecipientsBtn: '[rx-view-component-id="73a718fa-c683-48b0-b211-97b3744d7c3f"] button',
-        addLocalizedMessageBtn: '[rx-view-component-id="92468fc7-a2b9-46b4-8ad9-c2cfe12c9d8b"] button',
-        alertMessageBox: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .d-textfield div',
-        emailSubjectBox: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
-        emailBodyMessageBox: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .d-textfield div',
+        defaultNotificationMethodGuid: "911e28fd-89bb-4ee0-bea9-1d22e48f1134",
+        description: '[rx-view-component-id="48a3c0ad-103c-4b1b-a8a0-3e0648ff6ab6"] input',
+        event: '[rx-view-component-id="15aad4c8-1522-4586-b9d3-6be376cfcaa8"] button',
+        addRecipientsBtn: '[rx-view-component-id="9c294d12-1577-44fd-950d-fe7021853558"] button',
+        addLocalizedMessageBtn: '[rx-view-component-id="76a40f80-9cad-41f1-8ac1-5df3e939d9f0"] button',
+        alertMessageBox: '[rx-view-component-id="a0a91ca7-9acd-467b-a4fc-d22217199f01"] div[id="cke_242_contents"]',
+        emailSubjectBox: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
+        emailBodyMessageBox: 'div[id="cke_292_contents"]',
         cancelEmailSubjectBlade: '[rx-view-component-id="8335618d-2a88-49d1-9002-e5b7601b7674"] button',
         cancelEmailBodyBlade: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
-        moduleNameText: '[rx-view-component-id="bdd94b56-3700-4876-8455-62f1e1b05ff6"] .ui-select-match-text',
-        eventNameText: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] .ui-select-match-text',
-        searchRecipient: 'input[ng-model="searchInput"]',
-        applyButton: '[ng-click="onFilterApply()"]',
-        fieldLabels: '.rx-recipients-assignment-select-label, .modal-footer button',
-        recipientTypeSelect: '.rx-recipients-assignment-select select',
+        moduleNameText: '[rx-view-component-id="4fd471a8-c2c4-44f3-8c33-57501411df07"] button',
+        eventNameText: '[rx-view-component-id="15aad4c8-1522-4586-b9d3-6be376cfcaa8"] button',
+        searchRecipient: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .adapt-search',
+        applyButton: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .filter-list [btn-type="primary"]',
+        fieldLabels: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .adapt-select-label-wrapper',
+        recipientTypeSelect: '[id="adapt-select-37"] .dropdown-toggle',
         selectRecipient: '.rx-recipients-assignment-person-fullName, .rx-recipients-assignment-person-structure',
-        recipientList: 'div[ng-repeat*="recipient"] .text-wrapper span',
-        recipientsCheckbox: 'div[ng-repeat*="recipient"] .d-checkbox__item',
-        recipientsCheckboxInput: 'div[ng-repeat*="recipient"] input',
+        recipientList: '.body tr td',
+        recipientsCheckbox: '.body tr td label span input',
+        recipientsCheckboxInput: '.body tr td label span input',
         notificationMethod: '[rx-view-component-id="c80f9de5-1a84-46fa-949d-fc073d65ebd8"] .dropdown',
         emailBasedApprovalFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button',
         emailSubject: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
@@ -47,7 +47,7 @@ class EditNotificationTemplate {
     }
 
     async selectDefaultNotificationMethod(notification: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.defaultNotificationMethodGuid, notification);
+        await utilityCommon.selectDropDown(this.selectors.defaultNotificationMethodGuid, notification);
     }
 
     async clickOnCancelButton(): Promise<void> {
@@ -137,7 +137,7 @@ class EditNotificationTemplate {
 
     async cancelEmailBodyBlade(): Promise<void> {
         await $(this.selectors.cancelEmailBodyBlade).click();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
 
     async getModuleName(): Promise<string> {
@@ -168,6 +168,7 @@ class EditNotificationTemplate {
         await element(by.cssContainingText(`${this.selectors.recipientTypeSelect} option`, option)).click();
     }
 
+    
     async selectDropdownWithName(dropDownName: string, option: string): Promise<void> {
         await browser.wait(this.EC.or(async () => {
             let count = await $$('.rx-recipients-assignment-select').count();
@@ -283,7 +284,7 @@ class EditNotificationTemplate {
     }
 
     async updateAlertEmailMsgs(content: string): Promise<void> {
-        await utilCommon.updateCKEditor(content);
+        await utilityCommon.updateCKEditor(content);
     }
 
     async updateEmailSubject(subject: string): Promise<void> {

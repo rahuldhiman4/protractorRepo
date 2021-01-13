@@ -5,7 +5,7 @@
     "e2e": "ng e2e",
     "webdriver-update": "webdriver-manager update --versions.chrome 86.0.4240.111",
     "e2e-protractor": "protractor ./e2e/protractor.conf.js",
-    "jira-cycle": "tsc ./e2e/reporters/spec-jira-reporter/index.ts && node ./e2e/reporters/spec-jira-reporter/index.js"
+    "test-report": "tsc ./e2e/reporters/spec-test-reporter/index.ts && node ./e2e/reporters/spec-test-reporter/index.js"
   },
   "private": true,
   "devDependencies": {
@@ -19,6 +19,7 @@
     "@types/node": "^8.10.59",
     "axios": "^0.20.0",
     "codelyzer": "^5.0.0",
+    "csv-parser": "^3.0.0",
     "form-data": "^3.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
