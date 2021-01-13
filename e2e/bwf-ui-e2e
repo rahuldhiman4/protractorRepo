@@ -50,7 +50,7 @@ node("${NODE}"){
             suiteNameList.each {
                 def suiteName = "${it}";
                 // run test report
-                bat """npm run test-report -- --inputfile="${WORKSPACE}/artefact/${suiteName}_spec-json-report.json""""
+                bat """npm run test-report -- --inputfile="${WORKSPACE}/artefact/${suiteName}_spec-json-report.json" """
                 // copy test report files to artefact folder
                 bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-test-report/test-report.csv" "artefact/test-report/${suiteName}_test-report.csv*" """
                 bat """xcopy /Y /F /I /Z /Q "e2e/reports/spec-test-report/summary-report.json" "artefact/test-report/${suiteName}_summary-report.json*" """
@@ -65,6 +65,7 @@ node("${NODE}"){
 
             // merge all summary-report output files
             def finalMap = [:];
+            def jsonSummaryReport = "artefact/test-report/summary-report.json"
             for (int k=0; k < suiteNameList.size(); k++) {
                 def componentObj = readJSON file: "artefact/test-report/${suiteNameList[k]}_summary-report.json";
                 def components = componentObj.keySet();
@@ -73,23 +74,22 @@ node("${NODE}"){
                     def failAll = (componentObj.get(it).get("failed"));
                     def skipAll = (componentObj.get(it).get("skipped"));
                     def totalAll = (componentObj.get(it).get("total"));
-                    if(finalMap.containsKey(it) == true && it != "Total") {
-                        passAll += finalMap.get(it).get('passed');
-                        failAll += finalMap.get(it).get('failed');
-                        skipAll += finalMap.get(it).get('skipped');
+                    if(finalMap.containsKey(it) == true) {
+                        passAll += finalMap.get(it).get('pass');
+                        failAll += finalMap.get(it).get('fail');
+                        skipAll += finalMap.get(it).get('skip');
                         totalAll += finalMap.get(it).get('total');
                     }
                     finalMap.put(it, [pass: passAll, fail: failAll, skip: skipAll, total: totalAll]);
                 }
             }
-            writeJSON file: "artefact/test-report/summary-report.json", json: finalMap, pretty: 1;
+            writeJSON file: jsonSummaryReport, json: finalMap, pretty: 1;
 
             // create zip of test-report folder
             zip archive: false, dir: 'artefact/test-report', zipFile: 'artefact/test-report.zip'
 
             // PMO-Dashboard
-            def jsonReport = "${WORKSPACE}/artefact/test-report/summary-report.json";
-            def jsonFileContent = readFile(file: jsonReport);
+            def jsonFileContent = readFile(file: jsonSummaryReport);
             def componentObj = new JsonSlurperClassic().parseText(jsonFileContent);
             def components = componentObj.keySet();
             //----------------
@@ -108,14 +108,13 @@ node("${NODE}"){
 
             // PMO Dashboard per component
             if("${PMO}" == "true") {
-            build job: 'bwf-pmo-dashboard', 
+            build job: 'bwf-pmo-dashboard',
                 parameters: [
-		            string(name: 'NODE', value: "${NODE}"),
-                    string(name: 'JSON', value: "${WORKSPACE}/artefact/test-report/summary-report.json"),
+		            string(name: 'NODE', value: "AutoUI"),
+                    string(name: 'JSON', value: "${WORKSPACE}/artefact/jira-report/summary-report.json"),
                     string(name: 'EXTN', value: "UI")
                 ]
             }
-
         } catch (Exception e) {
             echo "Reporting Failed ==> " + e;
         }
