@@ -1,3 +1,5 @@
+import groovy.json.JsonSlurperClassic;
+
 def user = 'dsm-bot'
 
 node("${NODE}"){
@@ -37,10 +39,11 @@ node("${NODE}"){
     }
 
     stage('Reporting') {
-        def passAll = 0;
-        def failAll = 0;
-        def skipAll = 0;
-        def totalAll = 0;
+        def percent = 0;
+        def total = 0;
+        def failed = 0;
+        def passed = 0;
+        def skipped = 0;
 
         try {
             bat """if not exist "./e2e/reports/spec-test-report" mkdir "./e2e/reports/spec-test-report" """
@@ -66,10 +69,10 @@ node("${NODE}"){
                 def componentObj = readJSON file: "artefact/test-report/${suiteNameList[k]}_summary-report.json";
                 def components = componentObj.keySet();
                 components.each {
-                    passAll = (componentObj.get(it).get("passed"));
-                    failAll = (componentObj.get(it).get("failed"));
-                    skipAll = (componentObj.get(it).get("skipped"));
-                    totalAll = (componentObj.get(it).get("total"));
+                    def passAll = (componentObj.get(it).get("passed"));
+                    def failAll = (componentObj.get(it).get("failed"));
+                    def skipAll = (componentObj.get(it).get("skipped"));
+                    def totalAll = (componentObj.get(it).get("total"));
                     if(finalMap.containsKey(it) == true && it != "Total") {
                         passAll += finalMap.get(it).get('passed');
                         failAll += finalMap.get(it).get('failed');
@@ -81,8 +84,38 @@ node("${NODE}"){
             }
             writeJSON file: "artefact/test-report/summary-report.json", json: finalMap, pretty: 1;
 
-            //create zip of test-report folder
+            // create zip of test-report folder
             zip archive: false, dir: 'artefact/test-report', zipFile: 'artefact/test-report.zip'
+
+            // PMO-Dashboard
+            def jsonReport = "${WORKSPACE}/artefact/test-report/summary-report.json";
+            def jsonFileContent = readFile(file: jsonReport);
+            def componentObj = new JsonSlurperClassic().parseText(jsonFileContent);
+            def components = componentObj.keySet();
+            //----------------
+            components.each {
+            //----------------
+                if(it == "Total") {
+                    passed = (componentObj.get(it).get("pass"));
+                    failed = (componentObj.get(it).get("fail"));
+                    skipped = (componentObj.get(it).get("skip"));
+                    total = (componentObj.get(it).get("total"));
+                    percent = ((passed * 100) / total).toInteger();
+                }
+            }
+            currentBuild.description = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped;
+            if (percent < 95) currentBuild.result = 'FAILURE';
+
+            // PMO Dashboard per component
+            if("${PMO}" == "true") {
+            build job: 'bwf-pmo-dashboard', 
+                parameters: [
+		            string(name: 'NODE', value: "${NODE}"),
+                    string(name: 'JSON', value: "${WORKSPACE}/artefact/test-report/summary-report.json"),
+                    string(name: 'EXTN', value: "UI")
+                ]
+            }
+
         } catch (Exception e) {
             echo "Reporting Failed ==> " + e;
         }
@@ -138,21 +171,6 @@ node("${NODE}"){
                     [asciiMode: false, cleanRemote: false, excludes: '', flatten: false, makeEmptyDirs: false, noDefaultExcludes: false, patternSeparator: '[, ]+', remoteDirectory: "UIAuto_Build${env.BUILD_NUMBER}", remoteDirectorySDF: false, removePrefix: '', sourceFiles: 'artefact/*.zip']
                 ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
             ]
-
-            percent = (passAll * 100) / totalAll;
-
-            currentBuild.description = "Tests:" + totalAll + " Passed:" + passAll + " Failed:" + failAll + " Skipped:" + skipAll
-            if (percent < 95) currentBuild.result = 'FAILURE';
-
-            // PMO Dashboard per component
-            if("${PMO}" == "true") {
-            build job: 'bwf-pmo-dashboard', 
-                parameters: [
-		            string(name: 'NODE', value: "${NODE}"),
-                    string(name: 'JSON', value: "${WORKSPACE}/artefact/test-report/summary-report.json"),
-                    string(name: 'EXTN', value: "UI")
-                ]
-            }
         } catch (Exception e) {
             echo "Reporting Failed ==> " + e;
         }
