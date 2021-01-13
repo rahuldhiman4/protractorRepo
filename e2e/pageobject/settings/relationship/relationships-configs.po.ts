@@ -1,16 +1,15 @@
-import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 class RelationshipConfigsPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
         addRelationshipButton: '.d-icon-left-plus',
-        relations: '[ng-repeat="relation in relations"]',
-        header: '.column-name',
+        relations: '.adapt-accordion .card',
+        header: '.ellipsis span',
         relationshipFields: 'input',
-        saveButton: '.relationships-footer button[ng-click="submit()"]',
-        relationshipName: '.ac-relationship-name',
-        reverseRelationshipName: '.ac-reverse-relationship-name'
+        saveButton: '.bwf-footer button.btn-primary',
+        relationshipNameOrReverseRelationshipName: '.textfield__wrapper input',
     }
 
     async isAddRelationButtonEnabled(): Promise<boolean> {
@@ -60,7 +59,7 @@ class RelationshipConfigsPage {
             let relation = await $$(this.selectors.relations).get(i);
             let nm: string = await relation.$(this.selectors.header).getText();
             if (nm == relationName) {
-                let reverseRelationValue = await relation.$('.ac-reverse-relationship-name').getAttribute('value');
+                let reverseRelationValue = await relation.$$(this.selectors.relationshipNameOrReverseRelationshipName).last().getAttribute('value');
                 await (await relation.$(this.selectors.header)).click();
                 return reverseRelationValue;
             }
@@ -75,7 +74,8 @@ class RelationshipConfigsPage {
             let nm: string = await relation.$(this.selectors.header).getText();
             if (nm == relationName) {
                 await (await relation.$(this.selectors.header)).click();
-                status = await relation.$('.ac-relationship-name').getAttribute('value') == relationName;
+
+                status = await relation.$$(this.selectors.relationshipNameOrReverseRelationshipName).first().getAttribute('value') == relationName;
                 break;
             }
         }
@@ -87,16 +87,16 @@ class RelationshipConfigsPage {
     }
 
     async setNewRelationshipName(relationshipName: string): Promise<void>{
-        await $$(this.selectors.relationshipName).last().sendKeys(relationshipName);
+        await $$(this.selectors.relations).last().$$(this.selectors.relationshipNameOrReverseRelationshipName).first().sendKeys(relationshipName);
     }
 
     async setNewReverseRelationshipName(reverseRelationshipName: string): Promise<void>{
-        await $$(this.selectors.reverseRelationshipName).last().sendKeys(reverseRelationshipName);
+        await $$(this.selectors.relations).last().$$(this.selectors.relationshipNameOrReverseRelationshipName).last().sendKeys(reverseRelationshipName);
     }
 
     async setNewRelationshipStatus(status: string): Promise<void> {
-        await $$('.caret.pull-right').last().click();
-        await $$(`.ui-select-choices-row-inner div[title="${status}"]`).last().click();
+        await $$(this.selectors.relations).last().$$('.dropdown-toggle').last().click();
+        await element(by.cssContainingText('.adapt-accordion .card .dropdown-item', status)).click();
     }
 }
 
