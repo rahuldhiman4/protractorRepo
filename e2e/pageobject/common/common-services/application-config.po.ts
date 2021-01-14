@@ -9,7 +9,7 @@ class ApplicationConfiguration {
         addConfigurationValueButton: '[class="col-md-8"] span[class="d-icon-left-plus_circle"]',
         configurationValueText: '.form-group input',
         companyDropDown: '.btn-secondary',
-        companyDropdownList: '.dropdown_select__menu--mobile button',
+        companyDropdownList: 'button.dropdown-item',
         saveButton: 'div[class="float-right"] button[btn-type="primary"]',
         cancelButton: 'div[class="float-right"] button[btn-type="secondary"]',
         removeButton: '.d-icon-left-cross',

@@ -45,7 +45,7 @@ describe('Application Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId+'@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Settings - Business Workflows');
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             await applicationConfigPo.clickAddConfigurationValue();
