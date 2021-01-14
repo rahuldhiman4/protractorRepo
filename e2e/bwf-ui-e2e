@@ -125,42 +125,44 @@ node("${NODE}"){
                 subject: "${SUBJECT} Build # ${env.BUILD_NUMBER}",
                 body:
                 """
-                <style type="text/css">
-                    body {
-                        margin: 0px;
-                        padding: 15px;
-                        font-family: "Lucida Sans Unicode";
-                        font-size: 10pt;
-                    }
-                    h3 {
-                        background: #F2B66B;
-                        padding: 10px;
-                        border: 1px solid #333;
-                    }
-                    table {
-                        width: 70%;
-                    }
-                    td.bold {
-                        width: 30%;
-                        font-weight:bold;
-                    }
-                    table, tr, td {
-                        border: 1px solid black;
-                        border-collapse: collapse;
-                        padding: 5px;
-                    }
-                </style>
-                <h3>BWF UI - Automation Run Report</h3>
-                <table>
-                    <tr><td class=bold>Environment Name: </td><td>${suiteDetails}</td></tr>
-                    <tr><td class=bold>Build URL:</td><td><a href="${env.BUILD_URL}">View Jenkins</a></td></tr>
-                    <tr><td class=bold>DSOM Dashboard:</td><td><a href="http://vl-aus-rem-bl08.bmc.com:8080/view/Helix%20BWF/">Dashboard</a></td></tr>
-                    <tr><td class=bold>Build Artefact:</td><td><a href="ftp://vl-pun-rem-qa4n/punebuild/automation-results/protractor-result/UIAuto_Build${env.BUILD_NUMBER}">FTP Link</a></td></tr>
-                    """
-                    +
-                    '${FILE, path="e2e/reports/spec-test-report/TestReport.html"}'
-                    +
-                "</table>",
+                    <style type="text/css">
+                        body {
+                            margin: 0px;
+                            padding: 15px;
+                            font-family: "Lucida Sans Unicode";
+                            font-size: 10pt;
+                        }
+                        h3 {
+                            background: #F2B66B;
+                            padding: 10px;
+                            border: 1px solid #333;
+                        }
+                        table {
+                            width: 70%;
+                        }
+                        td.bold {
+                            width: 30%;
+                            font-weight:bold;
+                        }
+                        table, tr, td {
+                            border: 1px solid black;
+                            border-collapse: collapse;
+                            padding: 5px;
+                        }
+                    </style>
+                    <h3>BWF UI - Automation Run Report</h3>
+                    <table>
+                        <tr><td class=bold>Environment Name: </td><td>${suiteDetails}</td></tr>
+                        <tr><td class=bold>Build URL:</td><td><a href="${env.BUILD_URL}">View Jenkins</a></td></tr>
+                        <tr><td class=bold>DSOM Dashboard:</td><td><a href="http://vl-aus-rem-bl08.bmc.com:8080/view/Helix%20BWF/">Dashboard</a></td></tr>
+                        <tr><td class=bold>Build Artefact:</td><td><a href="ftp://vl-pun-rem-qa4n/punebuild/automation-results/protractor-result/UIAuto_Build${env.BUILD_NUMBER}">FTP Link</a></td></tr>
+                        <tr><td class=bold>Pass Percent: </td><td>${percent} %</td></tr>
+                        <tr><td class=bold>Passed: </td><td>${passed}</td></tr>
+                        <tr><td class=bold>Failed: </td><td>${failed}</td></tr>
+                        <tr><td class=bold>Skipped: </td><td>${skipped}</td></tr>
+                        <tr><td class=bold>Total: </td><td>${total}</td></tr>
+                    </table>
+                """,
                 to: EMAILID,
                 attachmentsPattern: 'artefact/test-report/test-report.csv'
             )
