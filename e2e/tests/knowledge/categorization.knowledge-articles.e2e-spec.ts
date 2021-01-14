@@ -757,7 +757,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows');
             title = "3913Case " + title;
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);

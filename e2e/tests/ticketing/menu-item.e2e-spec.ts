@@ -36,9 +36,8 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
-import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -54,7 +53,7 @@ describe('Menu Item', () => {
     //kgaikwad
     it('[4085]: The Menu Items View would be re-arranged so that fields are in Proper sequence.', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Label');
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
@@ -70,7 +69,7 @@ describe('Menu Item', () => {
     //kgaikwad
     it('[4090]: [UI] "Resolution Code" new option available in Menu Items', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
     });
@@ -83,7 +82,7 @@ describe('Menu Item', () => {
         let label2 = 'leGAL' + randomStr;
         it('[4290]: Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
@@ -92,7 +91,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4290]: Create Duplicate Menu Item Source and Label', async () => {
             await createMenuItems.clickOnMenuOptionLink();
@@ -103,42 +102,42 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label1);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label2);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
         });
         it('[4290]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.setLocalizeValue(label);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await createMenuItems.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4290]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
@@ -147,12 +146,12 @@ describe('Menu Item', () => {
             // verify LOB is there
             expect(await createMenuItems.getLobValue()).toBe("Facilities");
             await createMenuItems.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await menuItemsConfigConsolePo.searchAndEditMenuOption(label);
             expect(await editMenuItemsConfigPo.getLobValue()).toBe("Facilities");
             await editMenuItemsConfigPo.clickOnCancelButton();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -168,7 +167,7 @@ describe('Menu Item', () => {
         let resolutionCode = 'resolutionCode' + randomStr;
         it('[4305,4304]: [Menu Items] - Create Menu Item', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
@@ -177,7 +176,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
 
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Resolution Code');
@@ -187,7 +186,7 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4305,4304]: [Menu Items] - Update Menu Item', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(sourcesActive);
@@ -204,13 +203,13 @@ describe('Menu Item', () => {
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             let statusDropDown2: string[] = ["Deprecated", "Inactive", "Active"];
             expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown2)).toBeTruthy('wrong column headers');
             await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);
             await editMenuItemsConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4305,4304]: [Menu Items] - Update records AND grid Validation', async () => {
             await menuItemsConfigConsolePo.searchAndEditMenuOption(resolutionCode);
@@ -219,13 +218,13 @@ describe('Menu Item', () => {
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(resolutionCode);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             let statusDropDown3: string[] = ["Deprecated", "Inactive", "Active"];
             expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown3)).toBeTruthy('wrong column headers');
             await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);
             await editMenuItemsConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
 
             let column1: string[] = ["ID", "Created Date", "Modified Date", "Menu Name", "Menu Options", "Status"];
             await menuItemsConfigConsolePo.addColumnOnGrid(column1);
@@ -261,7 +260,7 @@ describe('Menu Item', () => {
 
         it('[4306]: Verify Create Menu Item UI', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
             await createMenuItems.clickOnMenuOptionLink();
             expect(await createMenuItems.isMenuNameFieldRequired()).toBeTruthy('FailureMsg: Menu Name required label is missing');
             expect(await createMenuItems.isMenuOptionFieldRequired()).toBeTruthy('FailureMsg: Menu Option required label is missing');
@@ -279,7 +278,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.setLocalizeValue(lableRandVal);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilityCommon.waitUntilPopUpDisappear();
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.clickOnSaveButton();
             await menuItemsConfigConsolePo.clearGridSearchBox();
@@ -292,7 +291,7 @@ describe('Menu Item', () => {
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.setLocalizeValue(resolutionCodeRandVal);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilCommon.waitUntilPopUpDisappear();
+            await utilityCommon.waitUntilPopUpDisappear();
             await createMenuItems.selectStatusDropDown('Inactive');
             await createMenuItems.clickOnSaveButton();
             await menuItemsConfigConsolePo.clearGridSearchBox();
@@ -581,7 +580,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Change Status Active Label Status to InActive', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
             await menuItemsConfigConsolePo.searchAndEditMenuOption(labelActive1);
             await editMenuItemsConfigPo.selectStatusDropDown('Inactive');
             await editMenuItemsConfigPo.clickOnSaveButton();
@@ -634,16 +633,16 @@ describe('Menu Item', () => {
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeLabelValue(labelInactive);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasetemplatePo.changeLabelValue(labelDeprecated);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasetemplatePo.changeLabelValue(labelActive2);
             await editCasetemplatePo.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeLabelValue(labelActive1);
             await editCasetemplatePo.clickSaveCaseTemplate();
-          //  expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+          //  expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Inactive, deprecated label With Edit Task Template', async () => {
@@ -653,11 +652,11 @@ describe('Menu Item', () => {
             await viewTasktemplatePo.clickOnEditLink();
             await editTasktemplatePo.selectLabel(labelInactive);
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editTasktemplatePo.selectLabel(labelDeprecated);
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Label With Edit Task Template', async () => {
@@ -666,7 +665,7 @@ describe('Menu Item', () => {
             await viewTasktemplatePo.clickOnEditLink();
             await editTasktemplatePo.selectLabel(labelActive1);
             await editTasktemplatePo.clickOnSaveButton();
-            //expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            //expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Label With Edit Assignment Mapping', async () => {
@@ -676,11 +675,11 @@ describe('Menu Item', () => {
 
             await editAssignmentsConfigPo.setLabel(labelInactive);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editAssignmentsConfigPo.setLabel(labelDeprecated);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editAssignmentsConfigPo.setLabel(labelActive2);
             await editAssignmentsConfigPo.clickonSaveButton();
@@ -688,7 +687,7 @@ describe('Menu Item', () => {
             await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
             await editAssignmentsConfigPo.setLabel(labelActive1);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Label With Edit Case Read Access', async () => {
@@ -698,18 +697,18 @@ describe('Menu Item', () => {
 
             await editReadAccessConfigPo.setLabel(labelInactive);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editReadAccessConfigPo.setLabel(labelDeprecated);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editReadAccessConfigPo.setLabel(labelActive2);
             await editReadAccessConfigPo.clickOnSave();
             await consoleReadAcess.searchAndOpenReadAccess(title);
             await editReadAccessConfigPo.setLabel(labelActive1);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
     });
 });

@@ -10,8 +10,9 @@ class NotificationTemplateGridPage {
         searchButton: '[btn-type="secondary"] .d-icon-search',
         selectTemplateCheckBox: 'input[type="radio"]',
         copyTemplateWindow: '.modal-title',
+        companyGuid:"34d9572a-6eb0-41e0-8a1b-e51ea397dfc3",
         companyDropDownCopyTempWindow: '[rx-view-component-id="34d9572a-6eb0-41e0-8a1b-e51ea397dfc3"] button',
-        companyDropDownValueCopyTempWindow: ".dropdown-item",
+        companyDropDownValueCopyTempWindow: '[rx-view-component-id="34d9572a-6eb0-41e0-8a1b-e51ea397dfc3"] .dropdown-item',
         clearCompanyDropDownCopyTempWindow: '[role="listbox"] .d-icon-search',
         tempNameCopyTempWindow: '[rx-view-component-id="d56917a7-af1d-4eb2-94b7-3a2d6604bc3e"] input',
         createNotificationTemplate: "[rx-view-component-id='48d1ab7c-3e17-458c-9d57-4acb72f49595'] button",
@@ -45,12 +46,13 @@ class NotificationTemplateGridPage {
 
     async setCompanyDropDownValPresentInCopyTempWindow(company: string) {
         await $(this.selectors.companyDropDownCopyTempWindow).click();
-        await $(this.selectors.companyDropDownCopyTempWindow).$('input').sendKeys(company);
-        await $$(this.selectors.companyDropDownValueCopyTempWindow).first().click();
+        await $('.d-icon-search .form-control').sendKeys(company);
+        await $$(this.selectors.companyDropDownValueCopyTempWindow).get(1).click();
     }
 
     async clearCompanyDropDownValPresentInCopyTempWindow() {
-        await $(this.selectors.clearCompanyDropDownCopyTempWindow).click();
+        await $(this.selectors.companyDropDownCopyTempWindow).click();
+        await $$(this.selectors.companyDropDownValueCopyTempWindow).get(1).click();
     }
 
     async clickOnCreateNotificationTemplate(): Promise<void> {
@@ -64,6 +66,10 @@ class NotificationTemplateGridPage {
     async setTemplateNamePresentInCopyTempWindow(tempName: string) {
         await $(this.selectors.tempNameCopyTempWindow).clear();
         await $(this.selectors.tempNameCopyTempWindow).sendKeys(tempName);
+    }
+
+    async clearTemplateNamePresentInCopyTempWindow() {
+        await $(this.selectors.tempNameCopyTempWindow).clear();
     }
 
     async isCopyTemplateButtonDisabledInCopyTempWindow(): Promise<Boolean> {

@@ -1,3 +1,4 @@
+import utilityGrid from '../../../utils/utility.grid';
 import { $, protractor, ProtractorExpectedConditions, promise } from "protractor";
 import utilGrid from '../../../utils/util.grid';
 
@@ -11,15 +12,15 @@ class DynamicFieldLibraryConsole {
 
     
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.addGridColumn(columnHeader, this.selectors.gridGuid);
     }
 
     async isValueDisplayed(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName, this.selectors.gridGuid);
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.removeGridColumn(columnHeader,this.selectors.gridGuid,);
     }
 
     async clickAddDynamicFieldButton(): Promise<void> {
@@ -31,23 +32,23 @@ class DynamicFieldLibraryConsole {
     }
 
     async areRequestedColumnMatches(columnNames: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches( this.selectors.gridGuid,columnNames);
+        return await utilityGrid.areColumnHeaderMatches(columnNames, this.selectors.gridGuid);
     }
 
     async addRequestedGridColumn(columnNames:string[]):Promise<void>{
-        await utilGrid.addGridColumn(this.selectors.gridGuid,columnNames);
+        await utilityGrid.addGridColumn(columnNames, this.selectors.gridGuid);
     }
 
     async removeRequestedGridColumn(columnNames:string[]):Promise<void>{
-        await utilGrid.removeGridColumn(this.selectors.gridGuid,columnNames);
+        await utilityGrid.removeGridColumn(columnNames, this.selectors.gridGuid);
     }
 
     async isRequestedColumnSortedAscending(columnName: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnName, "asc", this.selectors.gridGuid);
+        return await utilityGrid.isGridColumnSorted(columnName, "asc", this.selectors.gridGuid);
     }
 
     async isRequestedColumnSortedDescending(columnName: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnName, "desc", this.selectors.gridGuid);
+        return await utilityGrid.isGridColumnSorted(columnName, "desc", this.selectors.gridGuid);
     }
 
 

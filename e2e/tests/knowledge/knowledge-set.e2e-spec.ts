@@ -252,7 +252,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
             await utilityGrid.searchAndOpenHyperlink(knowledgeSetTitle);
             await editKnowledgeSet.removeApplicationAssociation('com.bmc.dsm.bwfa');
             await editKnowledgeSet.clickSaveButton();
@@ -268,7 +268,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
             await utilityGrid.searchAndOpenHyperlink(knowledgeSetTitle);
             await editKnowledgeSet.removeApplicationAssociation('com.bmc.dsm.knowledge');
             await editKnowledgeSet.clickSaveButton();

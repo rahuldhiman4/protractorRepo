@@ -1,12 +1,11 @@
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
 
 class AddLocalizeValue {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        valueTextBox: '.d-textfield__input[aria-label="Value for default locale"]',
-        saveButton: '.d-button_primary[rx-id="save-button"]',
+        valueTextBox: 'input[aria-label="Value for default locale"]',
+        saveButton: 'button[rx-id="save-button"]',
     }
 
     async clickOnSaveButton(): Promise<void> {

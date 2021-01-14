@@ -2144,7 +2144,7 @@ describe('Knowledge Article', () => {
             expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Review Status')).toBe("Pending Review", 'Filter Review Status is missing in column');
         });
         it('[5532]: [KM][Knowledge Article Console] Knowledge article search using filters', async () => {
-            let finalDate: string = await utilCommon.getCurrentDate();
+            let finalDate: string = await utilityCommon.getCurrentDate();
             let createdDate = new Date();
             let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             let dateFormateValue: string = month[createdDate.getMonth()];

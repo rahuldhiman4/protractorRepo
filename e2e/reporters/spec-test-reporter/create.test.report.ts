@@ -4,8 +4,6 @@ const minimist = require("minimist");
 const fs = require("fs");
 const csv = require('csv-parser');
 const { Parser } = require('json2csv');
-const pug = require('pug');
-const juice = require('juice');
 const INPUT_FILE = '../../reports/spec-json-report/spec-json-report.json';
 const ANNOTATION_FILE = 'e2e/reporters/spec-test-reporter/TestTrackAnnotations.csv';
 const OUTPUT_PATH = 'e2e/reports/spec-test-report/';
@@ -73,14 +71,7 @@ export class CreateTestReport {
         console.log("Skipped tests ====> " + skipCount);
         console.log("Total Executed tests ====> " + totalCount);
 
-        let exeSummary = {
-            passPercent,
-            pass: passCount,
-            fail: failCount,
-            skip: skipCount,
-            total: totalCount,
-        }
-        this.generateOutputFile(exeSummary);
+        this.generateOutputFile();
     }
 
     loadConfig() {
@@ -150,17 +141,19 @@ export class CreateTestReport {
 
     addAnnotations(testArray: InputType[]) {
         // Add annotations and populate componentArray
+        let replaceExp = /[^a-zA-Z0-9]/gi; // replace spaces, special chars
         testArray.forEach(eachTest => {
             let testAnnotation = find(this.annotation, ['Number', eachTest.testId]);
             if (testAnnotation) {
                 let components: string[] = (testAnnotation['Folders']).split(',');
-                this.componentArray.push({ component: components[0], status: eachTest.status });
+                let componentName = components[0].replace(replaceExp, "");
+                this.componentArray.push({ component: componentName, status: eachTest.status });
                 this.validTests.push({
                     TestID: eachTest.testId,
                     Description: eachTest.description,
                     ExecutionStatus: eachTest.status,
                     Priority: testAnnotation['Type'],
-                    Component: components[0]//.replace("[^a-zA-Z0-9]", "")
+                    Component: componentName
                 });
             } else {
                 this.validTests.push({
@@ -172,10 +165,9 @@ export class CreateTestReport {
                 });
             }
         });
-
     }
 
-    generateOutputFile(summary: { passPercent: number; pass: number; fail: number; skip: number; total: number; }) {
+    generateOutputFile() {
 
         console.log("************OUTPUT FILES**************");
 
@@ -191,12 +183,7 @@ export class CreateTestReport {
 
         // write component JSON file
         fs.writeFileSync(OUTPUT_PATH + 'summary-report.json', JSON.stringify(this.result));
-
-        // write HTML summary report
-        let html = pug.renderFile('e2e/reporters/spec-test-reporter/email-report.pug', summary);
-        fs.writeFileSync(OUTPUT_PATH + 'TestReport.html', juice(html));
     }
-
 }
 
 export default new CreateTestReport();

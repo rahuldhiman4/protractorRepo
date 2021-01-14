@@ -50,7 +50,7 @@ describe('Knowledge Console Preset Filter', () => {
         await navigationPage.gotoKnowledgeConsole();
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Configure Knowledge Status Transition - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Status Configuration - Settings - Business Workflows');
             await statusConfigPO.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPO.clickEditLifeCycleLink();
             await statusConfigPO.addCustomStatus('SME Review', 'Publish Approval', 'BeforePublished');

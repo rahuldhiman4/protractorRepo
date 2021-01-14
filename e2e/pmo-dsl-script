@@ -1,11 +1,11 @@
-import groovy.json.JsonSlurper;
+import groovy.json.JsonSlurperClassic;
 
 def viewName = "Helix BWF";
 def type = "${EXTN}";
 def extn = "_UI";
 if(type == "API") extn = "_API";
 def jsonFileContent = readFileFromWorkspace("${JSON}");
-def componentObj = new JsonSlurper().parseText(jsonFileContent);
+def componentObj = new JsonSlurperClassic().parseText(jsonFileContent);
 def components = componentObj.keySet();
 //----------------
 components.each {
@@ -15,9 +15,8 @@ def passed = (componentObj.get(it).get("pass"));
 def failed = (componentObj.get(it).get("fail"));
 def skipped = (componentObj.get(it).get("skip"));
 def total = (componentObj.get(it).get("total"));
-def percent = (passed * 100) / total;
-boolean isPar = true;
-if (percent < 95) isPar = false;
+boolean isPar = false;
+if (total == passed) isPar = true;
 
 def descTxt = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped;
 pipelineJob(it + extn) {
