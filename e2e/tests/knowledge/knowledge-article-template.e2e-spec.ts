@@ -34,7 +34,7 @@ describe('Knowledge Article Template', () => {
         await createKnowledgeArticleTemplatePo.setTemplateName('template1062' + randomStr);
         await createKnowledgeArticleTemplatePo.clickCancelBtn();
         expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         expect(await utilityGrid.isGridRecordPresent('template1062' + randomStr)).toBeFalsy('Record should not be created');
     });
 
@@ -59,21 +59,21 @@ describe('Knowledge Article Template', () => {
         await navigationPage.signOut();
         await loginPage.login('jbarnes');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
         //Creating the Article Template with same name and set from UI
-        await utilGrid.selectLineOfBusiness('Human Resource');
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
         await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (222061): Template already exists.')).toBeTruthy();
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.isPopUpMessagePresent('ERROR (222061): Template already exists.')).toBeTruthy();
+        await utilityCommon.closePopUpMessage();
         await createKnowledgeArticleTemplatePo.clickCancelBtn();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
         //Creating the Article Template with same name but different LOB
-        await utilGrid.selectLineOfBusiness('Facilities');
+        await utilityGrid.selectLineOfBusiness('Facilities');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
         await createKnowledgeArticleTemplatePo.clickOnAddSection();
@@ -81,12 +81,12 @@ describe('Knowledge Article Template', () => {
         // verify LOB is on create screen
         expect(await createKnowledgeArticleTemplatePo.getLobValue()).toBe("Facilities");
         await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent(`Knowledge Template : ${templateName} has been successfully created`)).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent(`Knowledge Template : ${templateName} has been successfully created`)).toBeTruthy();
         // verify LOB is on edit screen
-        await utilGrid.searchAndOpenHyperlink(templateName);
+        await utilityGrid.searchAndOpenHyperlink(templateName);
         expect(await editKnowledgeTemplatePo.getLobValue()).toBe("Facilities");
         await editKnowledgeTemplatePo.clickOnCancelButton();
-        await utilGrid.selectLineOfBusiness('Human Resource');
+        await utilityGrid.selectLineOfBusiness('Human Resource');
     });
 
     describe('[6435,6372,6342]: [Create Mode] Create a template for Knowledge article', () => {
@@ -155,15 +155,15 @@ describe('Knowledge Article Template', () => {
             expect(await utilCommon.isButtonVisible('Cancel')).toBeTruthy('Cancel button is not visible');
 
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Knowledge Template : DRDMV1065 has been successfully created')).toBeTruthy('Success message does not match');
+            expect(await utilityCommon.isPopUpMessagePresent('Knowledge Template : DRDMV1065 has been successfully created')).toBeTruthy('Success message does not match');
 
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV619');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title_1');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-            expect(await utilGrid.isGridRecordPresent('DRDMV1065')).toBeTruthy('Record does not exist');
-            expect(await utilGrid.isGridRecordPresent('DRDMV619')).toBeTruthy('Record does not exist');
+            expect(await utilityGrid.isGridRecordPresent('DRDMV1065')).toBeTruthy('Record does not exist');
+            expect(await utilityGrid.isGridRecordPresent('DRDMV619')).toBeTruthy('Record does not exist');
             await utilCommon.switchToNewWidnow(1);
             await navigationPage.switchToApplication("Knowledge Management");
             await navigationPage.gotoCreateKnowledge();

@@ -1112,7 +1112,7 @@ describe('Dynamic Hidden Data', () => {
     describe('[3486]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
         it('[3486]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Settings - Business Workflows');
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             await applicationConfigPo.clickConfigurationDropDownArrow();
@@ -1173,7 +1173,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Settings - Business Workflows');
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.isConfigValuesDisplayed('dd MMM yyyy hh:mm:ss a')).toBeTruthy();
@@ -1196,16 +1196,16 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Settings - Business Workflows');
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.isConfigValuesDisplayed('dd MMM yyyy hh:mm:ss a')).toBeTruthy();
             expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy-mm-dd hh:mm:ss.s')).toBeTruthy();
             expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy-mm-dd hh:mm')).toBeTruthy();
             await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await applicationConfigPo.clickApplicationConfiguration('DATE_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_FORMAT');
@@ -1213,9 +1213,9 @@ describe('Dynamic Hidden Data', () => {
             expect(await applicationConfigPo.isConfigValuesDisplayed('yyyy/mm/dd')).toBeTruthy();
             expect(await applicationConfigPo.isConfigValuesDisplayed('yy/mm/dd')).toBeTruthy();
             await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await applicationConfigPo.clickApplicationConfiguration('ZONE_ID');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('ZONE_ID');
@@ -1223,9 +1223,9 @@ describe('Dynamic Hidden Data', () => {
             expect(await applicationConfigPo.isConfigValuesDisplayed('IST')).toBeTruthy();
             expect(await applicationConfigPo.isConfigValuesDisplayed('GMT')).toBeTruthy();
             await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await applicationConfigPo.clickRemoveButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
     });

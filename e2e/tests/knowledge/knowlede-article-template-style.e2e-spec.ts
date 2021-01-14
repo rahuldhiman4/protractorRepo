@@ -25,7 +25,7 @@ describe('Knowledge article template style', () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Article Template Styles - Settings - Business Workflows');
         await articleTemplateStylePo.navigateToTemplateName('Global', 'Reference');
         expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 1');
         expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 2');
@@ -39,7 +39,7 @@ describe('Knowledge article template style', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName("5719" + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
@@ -49,7 +49,7 @@ describe('Knowledge article template style', () => {
             await utilityCommon.closePopUpMessage();
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Article Template Styles - Settings - Business Workflows');
             await articleTemplateStylePo.navigateToTemplateName('Global', 'Reference');
             expect(await articleTemplateStylePo.isDefaultTemplateDisplayed('KCS')).toBeTruthy();
             expect(await articleTemplateStylePo.isDefaultTemplateDisplayed('How To')).toBeTruthy();
@@ -57,26 +57,26 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(randomStr);
             await articleTemplateStylePo.clickSaveButton()
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await articleTemplateStylePo.clickDeleteButton();
             await articleTemplateStylePo.clickSaveButton()
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy();
             await browser.navigate().back();
         });
 
         it('[5719]: [Template Styles] Deletion of template styles - OOB/Custom Templates', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Article Template Styles - Settings - Business Workflows');
             await articleTemplateStylePo.navigateToTemplateName('Human Resource', "5719" + randomStr); // Custom Template is getting created under LOB , cc: @tus
             expect(await articleTemplateStylePo.isDeleteStyleButtonPresent()).toBeFalsy('Delete Button should not be Present');
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(randomStr);
             await articleTemplateStylePo.clickSaveButton()
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await articleTemplateStylePo.clickDeleteButton();
             await articleTemplateStylePo.clickSaveButton()
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy('');
         });
 
@@ -90,7 +90,7 @@ describe('Knowledge article template style', () => {
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Article Template Styles - Settings - Business Workflows');
         await articleTemplateStylePo.navigateToTemplateName('Global', 'KCS');
         expect(await articleTemplateStylePo.isDefaultTemplateDisplayed('KCS')).toBeTruthy();
         expect(await articleTemplateStylePo.isDefaultTemplateDisplayed('How To')).toBeTruthy();
@@ -101,12 +101,12 @@ describe('Knowledge article template style', () => {
         await articleTemplateStylePo.setStyleName(randomStr);
         await articleTemplateStylePo.clickCancelButton();
         expect(await utilCommon.getWarningMessageTextKnowledgeStyle()).toContain('You have unsaved data. Do you want to continue?');
-        utilCommon.clickOnWarningCancel();
+        utilityCommon.clickOnApplicationWarningYesNoButton('No');
         await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         await articleTemplateStylePo.clickDeleteButton();
         await articleTemplateStylePo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
     });
 
     describe('[5722,5717]: [Template Styles] Availability of default styles on custom templates', () => {
@@ -115,7 +115,7 @@ describe('Knowledge article template style', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName(styleName);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
@@ -127,7 +127,7 @@ describe('Knowledge article template style', () => {
 
         it('[5722,5717]: [Template Styles] Availability of default styles on custom templates', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Article Template Styles - Settings - Business Workflows');
             await articleTemplateStylePo.navigateToTemplateName('Human Resource', styleName);
             expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 1');
             expect(await articleTemplateStylePo.getStyleOfAllTemplate()).toContain('Header 2');
@@ -138,11 +138,11 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(styleName);
             await articleTemplateStylePo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy("Save Message is not present");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy("Save Message is not present");
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.setStyleName(styleName);
             await articleTemplateStylePo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent(`The style name ${styleName} is already taken by another style. Please select a different name.`)).toBeTruthy("Duplicate style Message is not present");
+            expect(await utilityCommon.isPopUpMessagePresent(`The style name ${styleName} is already taken by another style. Please select a different name.`)).toBeTruthy("Duplicate style Message is not present");
         });
     });
 
@@ -151,7 +151,7 @@ describe('Knowledge article template style', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Article Template Styles - Settings - Business Workflows');
             await articleTemplateStylePo.navigateToTemplateName('Global', 'Reference');
             expect(await articleTemplateStylePo.isDefaultTemplateDisplayed('KCS')).toBeTruthy();
             expect(await articleTemplateStylePo.isDefaultTemplateDisplayed('How To')).toBeTruthy();
@@ -186,23 +186,23 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.selectFont("Times");
             expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family", "times")).toBeTruthy('Text Displayed in Font Family');
             await articleTemplateStylePo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectTextColor("#ef8282");
             expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Text Color", "rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Text Color');
             await articleTemplateStylePo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectBackgroundColor("#ef8282");
             expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Background Color", "rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Background Color');
             await articleTemplateStylePo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5716,5720,5721]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName("5716" + randomStr);
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
@@ -211,7 +211,7 @@ describe('Knowledge article template style', () => {
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Template Styles Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Template Styles', 'Article Template Styles - Settings - Business Workflows');
             await articleTemplateStylePo.navigateToTemplateName('Human Resource', "5716" + randomStr);
             expect(await articleTemplateStylePo.isDeleteStyleButtonPresent()).toBeFalsy('Delete Button should not be Present');
             await articleTemplateStylePo.clickAddNewStyle();
@@ -243,19 +243,19 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.selectFont("Times");
             expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family", "times")).toBeTruthy('Text Displayed in Font Family');
             await articleTemplateStylePo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectTextColor("#ef8282");
             expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Text Color", "rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Text Color');
             await articleTemplateStylePo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectBackgroundColor("#ef8282");
             expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Background Color", "rgb(239, 130, 130)")).toBeTruthy('Text Displayed in Background Color');
             await articleTemplateStylePo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await navigationPage.signOut();
