@@ -150,17 +150,19 @@ export class CreateTestReport {
 
     addAnnotations(testArray: InputType[]) {
         // Add annotations and populate componentArray
+        let replaceExp = /[^a-zA-Z0-9]/gi; // replace spaces, special chars
         testArray.forEach(eachTest => {
             let testAnnotation = find(this.annotation, ['Number', eachTest.testId]);
             if (testAnnotation) {
                 let components: string[] = (testAnnotation['Folders']).split(',');
-                this.componentArray.push({ component: components[0], status: eachTest.status });
+                let componentName = components[0].replace(replaceExp, "");
+                this.componentArray.push({ component: componentName, status: eachTest.status });
                 this.validTests.push({
                     TestID: eachTest.testId,
                     Description: eachTest.description,
                     ExecutionStatus: eachTest.status,
                     Priority: testAnnotation['Type'],
-                    Component: components[0]//.replace("[^a-zA-Z0-9]", "")
+                    Component: componentName
                 });
             } else {
                 this.validTests.push({
@@ -172,7 +174,6 @@ export class CreateTestReport {
                 });
             }
         });
-
     }
 
     generateOutputFile(summary: { passPercent: number; pass: number; fail: number; skip: number; total: number; }) {
