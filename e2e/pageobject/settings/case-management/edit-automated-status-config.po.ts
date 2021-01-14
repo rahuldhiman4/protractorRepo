@@ -1,6 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
-import utilCommon from '../../../utils/util.common';
-
+import utilityCommon from '../../../utils/utility.common';
 class AutomatedStatusTransitionConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -21,7 +20,7 @@ class AutomatedStatusTransitionConfigEditPage {
         enableToggleGuid: '2309d963-493b-41b2-8ace-89a9d64281ca',
         lineofbusinessValue: '[rx-view-component-id="f49ae3e3-d357-4f09-9123-58bcaf46b808"] input.d-textfield__input',
         lobValue: '[rx-view-component-id="f49ae3e3-d357-4f09-9123-58bcaf46b808"] .pull-left'
-    }
+    } 
 
     async isAutomatedStatusTransitionNameEnabled(): Promise<boolean> {
         let nameElement: ElementFinder = await $(this.selectors.editName);
@@ -85,7 +84,7 @@ class AutomatedStatusTransitionConfigEditPage {
     }
 
     async selectEnableToggle(enableStatus: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.enableToggleGuid, enableStatus);
+        await utilityCommon.selectToggleButton(this.selectors.enableToggleGuid, enableStatus);
     }
 
     async updateConfigurationName(configName:string): Promise<void> {

@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 import { IAutomatedStatusTransitionConfigUI } from '../../../data/interface/template.interface';
 
 class AutomatedStatusTransitionConfigCreatePage {
@@ -34,54 +34,54 @@ class AutomatedStatusTransitionConfigCreatePage {
     }
 
     async setCategoryTier1Value(value: string): Promise<void> {
-        await utilCommon.selectDropDown('d84b98ad-9983-41e2-b6f2-6c5b9d404b7c', value).catch(async (error) => {
-            if (error) await utilCommon.selectDropDown(this.selectors.categoryTier1, value);
+        await utilityCommon.selectDropDown('d84b98ad-9983-41e2-b6f2-6c5b9d404b7c', value).catch(async (error) => {
+            if (error) await utilityCommon.selectDropDown(this.selectors.categoryTier1, value);
         });
     }
 
     async setCategoryTier2Value(categoryTier2: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier2, categoryTier2);
     }
 
     async setCategoryTier3Value(categoryTier3: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier3, categoryTier3);
     }
 
     async setCategoryTier4Value(categoryTier4: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier4, categoryTier4);
     }
 
     async setLabelValue(label: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelGuid, label);
+        await utilityCommon.selectDropDown(this.selectors.labelGuid, label);
     }
 
     async isNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.nameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.nameGuid);
     }
 
     async setCompany(companyName: string): Promise<void> {
-        return await utilCommon.selectDropDown(this.selectors.companyGuid, companyName);
+        return await utilityCommon.selectDropDown(this.selectors.companyGuid, companyName);
     }
 
     async isCompanyRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isFromStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fromStatusGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.fromStatusGuid);
     }
 
     async isToStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.toStatusGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.toStatusGuid);
     }
 
     async isChangeStatusAferRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.changeStatusAfterGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.changeStatusAfterGuid);
     }
 
     async setFromStatus(status: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
-        await utilCommon.selectDropDown(this.selectors.fromStatusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.fromStatusGuid, status);
     }
 
     async isFromStatusEnabled(): Promise<boolean> {
@@ -91,7 +91,7 @@ class AutomatedStatusTransitionConfigCreatePage {
 
     async setToStatus(status: string): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.label)));
-        await utilCommon.selectDropDown(this.selectors.toStatusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.toStatusGuid, status);
     }
 
     async setChangeStatusAfter(days: string): Promise<void> {
@@ -102,8 +102,6 @@ class AutomatedStatusTransitionConfigCreatePage {
     async saveConfig(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
-        //        await utilCommon.closePopUpMessage();
-        //        await utilCommon.waitUntilSpinnerToHide();
     }
 
     async createAutomatedStatusTransition(data: IAutomatedStatusTransitionConfigUI): Promise<void> {
@@ -113,22 +111,22 @@ class AutomatedStatusTransitionConfigCreatePage {
         await this.setToStatus(data.toStatus);
         await this.setChangeStatusAfter(data.changeStatusAfter.toString());
         await this.saveConfig();
-    }
+    } 
 
     async setFromStatusReason(reason: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.fromStatusReasonGuid, reason);
+        await utilityCommon.selectDropDown(this.selectors.fromStatusReasonGuid, reason);
     }
 
     async setToStatusReason(reason: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.toStatusReasonGuid, reason);
+        await utilityCommon.selectDropDown(this.selectors.toStatusReasonGuid, reason);
     }
 
     async setFlowset(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.flowsetGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.flowsetGuid, value);
     }
 
     async isFlowsetDrpdownValueDisplayed(value: string[]): Promise<void> {
-        await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowsetGuid, value);
+        await utilityCommon.isAllDropDownValuesMatches(this.selectors.flowsetGuid, value);
     }
 
     async clickCancelBtn(): Promise<void> {

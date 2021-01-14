@@ -26,7 +26,7 @@ class CreateTaskTemplatePage {
         ownerGroup: 'e5794ca0-c022-475f-95e3-132221b19e3b',
         saveButton: '[rx-view-component-id="5001f6ea-4438-4485-bdd2-c952a12a1a34"] button',
         cancelButton: '[rx-view-component-id="3f760e5f-70e9-4fbf-8b05-cd7d460f8818"] button',
-        processBundleIdDrpDownForExistingProcess: '[rx-view-component-id="5f30b3d4-caa2-4c28-8af6-cebf094bc2e8"] .dropdown-toggle',
+        processBundleIdDrpDownForExistingProcessGuid: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
         toggleBox: '0ef8534e-a8bf-40c3-bdc1-a91edde177c4',
         toggleBoxRequiredText: '[rx-view-component-id="0ef8534e-a8bf-40c3-bdc1-a91edde177c4"] label',
         newProcessName: '[rx-view-component-id="eefdf45b-47af-48cb-8c8b-a82c73f7d5a4"] input',
@@ -129,11 +129,7 @@ class CreateTaskTemplatePage {
 
     async setExistingProcessName(processName: string): Promise<void> {
         await utilityCommon.selectToggleButton(this.selectors.toggleBox, false);
-        await $(this.selectors.processBundleIdDrpDownForExistingProcess).click();
-        await $(this.selectors.searchProcess).click();
-        await $(this.selectors.setInputdataInProcess).sendKeys(processName);
-        let option = await element(by.cssContainingText(this.selectors.selectNameInProcess, processName));
-        await option.click();
+        await utilityCommon.selectDropDown(this.selectors.processBundleIdDrpDownForExistingProcessGuid,processName)
     }
 
     async setcreateNewProcess(processName: boolean): Promise<void> {
@@ -164,8 +160,7 @@ class CreateTaskTemplatePage {
     }
 
     async isCreateNewProcessRequiredText(): Promise<boolean> {
-        let value: string = await utilCommon.getTextFromAfterTagElement($(this.selectors.toggleBoxRequiredText));
-        return value.trim().substring(3, value.length - 2) === 'required';
+        return await utilityCommon.isRequiredTagToField(this.selectors.toggleBox);
     }
 
     async isProcessBundleIdRequiredText(): Promise<boolean> {
