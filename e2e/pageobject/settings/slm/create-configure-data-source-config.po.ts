@@ -5,18 +5,18 @@ class CreateDataSourceConfigurationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        dataSourceHeading: '.modal-header h3',
-        fieldNameLabel: 'span.d-textfield__item',
-        displayNameInputField: '.record-registration-form .d-textfield__input',
-        showAdvancedSettingsLink: '.record-registration-form button.btn-link',
-        saveButton: '.slm-modal-footer button.d-button_primary',
-        closeButton: '.slm-modal-footer button.d-button_secondary',
-        fieldValues: '.record-registration-form .d-textfield__label input',
-        useEndTimeCheckbox: '.d-checkbox__input + .d-checkbox__item',
-        regularExpSaveButton: '.controls button.d-button_primary',
-        dropdownBox: '.ui-select-toggle',
-        dropDownInput: 'input[type="search"]',
-        dropDownOption: '.ui-select-choices-row-inner *',
+        dataSourceHeading: 'fieldset[role="document"] .dp-header span',
+        fieldNameLabel: '[rx-view-definition-guid="f957c4e9-b20b-4a04-a69c-7f7b2efa9d95"] .form-control-label span',
+        displayNameInputField: '[rx-view-component-id="80a8ade0-5e29-4d4f-b0e2-7d301b1b5c30"] input[placeholder="Enter Display Name"]',
+        showAdvancedSettingsLink: '[rx-view-component-id="80a8ade0-5e29-4d4f-b0e2-7d301b1b5c30"] button[aria-label="Show Advanced Settings"]',
+        saveButton: '[rx-view-component-id="fde65b3a-a200-4ca8-921e-12959a970c3e"] button',
+        closeButton: '[rx-view-component-id="640ba779-7dfb-4843-b0f0-4b05c89d166b"] button',
+        fieldValues: `//*[contains(@class,'form-control-label')]//span[1]`,
+        useEndTimeCheckbox: `//span[contains(@class,'form-control-label')]//span[1]//ancestor::div[contains(@class,"row")]//input[@type="checkbox"]`,
+        regularExpSaveButton: '.modal-footer .btn-primary',
+        dropdownBox: 'div.form-group div.dropdown button',
+        dropDownInput: 'input.adapt-rx-search__input',
+        dropDownOption: 'button div.rx-select__option-content',
     }
 
     async getAddDataSourceConfigurationHeading(): Promise<string> {
@@ -55,17 +55,21 @@ class CreateDataSourceConfigurationPage {
     }
 
     async isDatSourceAdvancedFieldsDisabled(fieldName: string): Promise<boolean> {
-        let fieldRecords = await $(`.record-registration-form .ui-select-container[title='${fieldName}']`);
-        let fieldRecordEntity = await fieldRecords.$('.ui-select-toggle');
-        return await fieldRecordEntity.getAttribute("aria-disabled") == "true" ? true : false;
+        let fldsCount = await element(by.xpath(this.selectors.fieldValues)).count();
+        for (let i = 0; i < fldsCount; i++) {
+            let elem = await $$(this.selectors.fieldValues).get(i);
+            if (await elem.getAttribute("disabled") == fieldName) {
+                return await elem.getAttribute("disabled") ? true : false;
+            }
+        }
     }
 
     async isDatSourceFieldDisabled(fieldName: string): Promise<boolean> {
-        let fldsCount = await $$(this.selectors.fieldValues).count();
+        let fldsCount = await element(by.xpath(this.selectors.fieldValues)).count();
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.fieldValues).get(i);
-            if (await elem.getAttribute("aria-label") == fieldName) {
-                return await elem.getAttribute("aria-readonly") == "true" ? true : false;
+            if (await elem.getAttribute("disabled") == fieldName) {
+                return await elem.getAttribute("disabled") ? true : false;
             }
         }
     }
