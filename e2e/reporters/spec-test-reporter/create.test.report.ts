@@ -4,8 +4,6 @@ const minimist = require("minimist");
 const fs = require("fs");
 const csv = require('csv-parser');
 const { Parser } = require('json2csv');
-const pug = require('pug');
-const juice = require('juice');
 const INPUT_FILE = '../../reports/spec-json-report/spec-json-report.json';
 const ANNOTATION_FILE = 'e2e/reporters/spec-test-reporter/TestTrackAnnotations.csv';
 const OUTPUT_PATH = 'e2e/reports/spec-test-report/';
@@ -73,14 +71,7 @@ export class CreateTestReport {
         console.log("Skipped tests ====> " + skipCount);
         console.log("Total Executed tests ====> " + totalCount);
 
-        let exeSummary = {
-            passPercent,
-            pass: passCount,
-            fail: failCount,
-            skip: skipCount,
-            total: totalCount,
-        }
-        this.generateOutputFile(exeSummary);
+        this.generateOutputFile();
     }
 
     loadConfig() {
@@ -176,7 +167,7 @@ export class CreateTestReport {
         });
     }
 
-    generateOutputFile(summary: { passPercent: number; pass: number; fail: number; skip: number; total: number; }) {
+    generateOutputFile() {
 
         console.log("************OUTPUT FILES**************");
 
@@ -192,12 +183,7 @@ export class CreateTestReport {
 
         // write component JSON file
         fs.writeFileSync(OUTPUT_PATH + 'summary-report.json', JSON.stringify(this.result));
-
-        // write HTML summary report
-        let html = pug.renderFile('e2e/reporters/spec-test-reporter/email-report.pug', summary);
-        fs.writeFileSync(OUTPUT_PATH + 'TestReport.html', juice(html));
     }
-
 }
 
 export default new CreateTestReport();

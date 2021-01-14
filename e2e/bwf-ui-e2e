@@ -104,14 +104,14 @@ node("${NODE}"){
                 }
             }
             currentBuild.description = "Tests:" + total + " Passed:" + passed + " Failed:" + failed + " Skipped:" + skipped;
-            if (percent < 95) currentBuild.result = 'FAILURE';
+            // if (percent < 95) currentBuild.result = 'FAILURE';
 
             // PMO Dashboard per component
             if("${PMO}" == "true") {
             build job: 'bwf-pmo-dashboard',
                 parameters: [
-		            string(name: 'NODE', value: "AutoUI"),
-                    string(name: 'JSON', value: "${WORKSPACE}/artefact/jira-report/summary-report.json"),
+                    [$class: 'NodeParameterValue', name: 'NODE', labels: ["$NODE"], nodeEligibility: [$class: 'AllNodeEligibility']],
+                    string(name: 'JSON', value: "${WORKSPACE}/${jsonSummaryReport}"),
                     string(name: 'EXTN', value: "UI")
                 ]
             }
@@ -173,7 +173,7 @@ node("${NODE}"){
                 ], usePromotionTimestamp: false, useWorkspaceInPromotion: false, verbose: true]
             ]
         } catch (Exception e) {
-            echo "Reporting Failed ==> " + e;
+            echo "Email Failed ==> " + e;
         }
     }
 }
