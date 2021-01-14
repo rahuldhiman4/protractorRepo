@@ -5,16 +5,16 @@ class ConfigureDataSourceConfigConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        dataSourceConsoleHeading: '.datasource__heading p.slm_heading',
-        addConfigDataSource: '.slm-record-registration button',
+        dataSourceConsoleHeading: '[rx-view-component-id="33c2bfd0-9ab2-423e-a6a1-98c1068632ae"] h1',
+        addConfigDataSource: '[rx-view-component-id="14789fc2-1c75-4659-9159-930a2f4241c3"] button',
         dataSourceConfigurationConsoleDesc: '.datasource__heading p.bwf-page-details-description',
-        refreshIcon : '.d-icon-refresh',
-        clearSearchIcon : 'button.d-icon-cross',
+        refreshIcon : '[rx-view-component-id="39686460-fa7b-4e61-9562-302ca8c88378"] button.d-icon-refresh',
+        clearSearchIcon : '[rx-view-component-id="39686460-fa7b-4e61-9562-302ca8c88378"] button.d-icon-cross_adapt',
     }
 
     async isConfigDataSourceBtnDisabled(): Promise<boolean> {
         let addBtnLocator = await $$(this.selectors.addConfigDataSource).get(0);
-        return await addBtnLocator.getAttribute("disabled") == "true";
+        return await addBtnLocator.getAttribute("aria-disabled") == "true";
     }
 
     async getDataSourceConfigurationConsoleHeading(): Promise<string> {

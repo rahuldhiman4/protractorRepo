@@ -6,11 +6,11 @@ class GoalTypeConfigConsolePage {
 
     selectors = {
         addGoalType: '[rx-view-component-id="4d8a4ec5-1b1c-4679-b3cf-0ad793c56bc5"] button',
-        goalTypeConsoleGUID: '72a09a55-57b4-440a-9e8d-e8ed1d30edc6',
+        goalTypeConsoleGUID: '781a6488-ff08-481b-86c7-7c78c577357b',
         refreshIcon: 'button.d-icon-refresh',
-        filterIcon: '.rx-search-filter button',
-        filterItems: '.search-filter-dropdown .d-accordion__item',
-        applyButton: '.rx-search-filter-heading__apply',
+        filterIcon: 'button.d-icon-left-filter',
+        filterItems: '.advanced-filter__tab-content .form-control-feedback',
+        applyButton: 'button.custom-action-btn__right',
     }
 
     async isAddGoalTypeBtnDisplayed(): Promise<boolean> {
@@ -38,18 +38,18 @@ class GoalTypeConfigConsolePage {
     }
 
     async getGoalTypeGUID(): Promise<string> {
-        return await $$('[rx-view-component-id="72a09a55-57b4-440a-9e8d-e8ed1d30edc6"] div.ui-grid-row .ui-grid-cell-contents').last().getText();
+        return await (await $$('[rx-view-component-id="781a6488-ff08-481b-86c7-7c78c577357b"] tbody.ui-table-tbody tr td').last().getText()).trim();
     }
 
     async isFilteredRecordDisplayed(): Promise<boolean> {
-        return await $('[rx-view-component-id="72a09a55-57b4-440a-9e8d-e8ed1d30edc6"]  div.ui-grid-row').isPresent();
+        return await $('[rx-view-component-id="781a6488-ff08-481b-86c7-7c78c577357b"] tbody.ui-table-tbody tr').isPresent();
     }
 
     async clickRefreshIcon(): Promise<void> {
         await $(this.selectors.refreshIcon).click();
     }
 
-    async addGoalTypeFilter(fieldName: string, textValue: string,type:string, guid?: string): Promise<void> {
+    async addGoalTypeFilter(fieldName: string, textValue: string, type: string, guid?: string): Promise<void> {
         let guidId: string = "";
         if (guid) {
             guidId = `[rx-view-component-id="${guid}"] `
@@ -59,11 +59,18 @@ class GoalTypeConfigConsolePage {
 
         switch (type) {
             case "checkbox": {
-                await $(`.rx-search-filter-option[title='${textValue}']`).click();
-                break;
+                let fieldCount: number = await $$('.advanced-filter__select-inline input[type="checkbox"] + span.checkbox__item').count();
+
+                for (let i = 0; i < fieldCount; i++) {
+                    let field = await (await $$('.advanced-filter__select-inline input[type="checkbox"] + span.checkbox__item').get(i).getText()).trim();
+                    if (field == textValue) {
+                        await $('.advanced-filter__select-inline input[type="checkbox"] + span.checkbox__item').click();
+                        break;
+                    }
+                }
             }
             default: {
-               await element.all(by.cssContainingText(guidId + this.selectors.filterItems, fieldName)).last().$('label.d-textfield__label').sendKeys(textValue + Key.ENTER);
+                await $('input.adapt-mt-input').sendKeys(textValue + Key.ENTER);
                 break;
             }
         }
