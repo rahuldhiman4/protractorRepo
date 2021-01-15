@@ -129,7 +129,7 @@ class CreateTaskTemplatePage {
 
     async setExistingProcessName(processName: string): Promise<void> {
         await utilityCommon.selectToggleButton(this.selectors.toggleBox, false);
-        await utilityCommon.selectDropDown(this.selectors.processBundleIdDrpDownForExistingProcessGuid,processName)
+        await utilityCommon.selectDropDown(this.selectors.processBundleIdDrpDownForExistingProcessGuid,processName);
     }
 
     async setcreateNewProcess(processName: boolean): Promise<void> {
