@@ -3,25 +3,24 @@ import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$, 
 class SlmExpressionBuilder {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     expressionBuilderSelectors = {
-        qualificationBuilder: 'ux-qualification-builder',
-        searchField: 'searchText',
-        selectField: '.record_field',
-        selectOperator: '.operator ux-expression-editor-button-',
-        selectFieldOption: '.ui-select-choices-row-inner',
-        selectCategoryTierOptionDropDown: 'optionLoader.selectedOption',
-        selectCategoryTierOption: '.ui-select-choices-row-inner',
+        qualificationBuilder: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .content-outlet',
+        searchField: '[rx-view-component-id="b7b2f1b7-c03c-4bcb-b5bf-fddfc34e563b"] input',
+        selectField: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-field-selector_field',
+        selectOperator: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-expression-operators button',
+        selectFieldOption: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .rx-select__option-content',
+        selectCategoryTierOptionDropDown: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"]  button.dropdown-toggle',
+        selectCategoryTierOption: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .rx-select__option-content',
         getExpressionFieldName: 'span[type="FIELD"]',
         getExpressionOperator: 'span[type="OPERATOR"]',
         getExpressionFieldValue: 'span[type="VALUE"]',
-        saveSVTExpressionButton: '[rx-view-component-id="46c33f50-2695-45c7-8a11-db8d7fccd581"] button',
+        saveSVTExpressionButton: '[rx-view-component-id="1dd13374-edae-4f26-ad13-a0b5e7ba4346"] button',
         saveTaskSVTExpressionButton: '[rx-view-component-id="377c4912-0248-4099-bb96-30a94b3abf1b"] button',
-        popUpMsgLocator: '.rx-growl-item__message',
-        isPartialExpression: 'div[class*="invalid_expression"]',
+        isPartialExpression: 'div[class*="bwf-invalid-expression"]',
         expandExpressionField: '.d-icon-triangle_right',
-        selectFirstLevelExpressionField: '.expanded_field',
-        selectSecondLevelExpressionField: '.expanded_field .child_field',
-        clearExpression: '.ux-qualification-editor',
-        fieldSearch: '.d-textfield__input'
+        selectFirstLevelExpressionField: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-field-selector_field',
+        selectSecondLevelExpressionField: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-field-selector_child-container .bwf-field-selector_field',
+        clearExpression: 'div.cke_enable_context_menu',
+        fieldSearch: '[rx-view-component-id="b7b2f1b7-c03c-4bcb-b5bf-fddfc34e563b"] input'
     }
 
     async getExpressionFieldAvailable(expressionField: string): Promise<string> {
@@ -31,10 +30,9 @@ class SlmExpressionBuilder {
 
     async getExpressionFieldAvailableAll(data: string[]): Promise<boolean> {
         let arr: string[] = [];
-        let expressionFields: string = `div.record_field`;
-        let drpDwnvalue: number = await $$(expressionFields).count();
+        let drpDwnvalue: number = await $$(this.expressionBuilderSelectors.selectFirstLevelExpressionField).count();
         for (let i = 0; i < drpDwnvalue; i++) {
-            let ab: string = await $$(expressionFields).get(i).getText();
+            let ab: string = await $$(this.expressionBuilderSelectors.selectFirstLevelExpressionField).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
@@ -45,11 +43,10 @@ class SlmExpressionBuilder {
     }
 
     async getFirstLevelExpressionField(firstLevelExpression: string): Promise<string> {
-        let expressionFields: string = `div.expanded_field`;
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
         await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
-        return await $(expressionFields).getText();
+        return await $(this.expressionBuilderSelectors.selectFirstLevelExpressionField).getText();
     }
     async clearSearchField(): Promise<void> {
         await $$(this.expressionBuilderSelectors.fieldSearch).get(0).clear();
@@ -57,10 +54,9 @@ class SlmExpressionBuilder {
 
     async getFirstLevelExpressionFieldAll(data: string[]): Promise<boolean> {
         let arr: string[] = [];
-        let expressionFields: string = `div.expanded_field`;
-        let drpDwnvalue: number = await $$(expressionFields).count();
+        let drpDwnvalue: number = await $$(this.expressionBuilderSelectors.selectFirstLevelExpressionField).count();
         for (let i = 0; i < drpDwnvalue; i++) {
-            let ab: string = await $$(expressionFields).get(i).getText();
+            let ab: string = await $$(this.expressionBuilderSelectors.selectFirstLevelExpressionField).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();

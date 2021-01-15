@@ -5,25 +5,25 @@ class GoalTypeConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        status: '[rx-view-component-id="57b81b04-b4ff-4624-a04f-fceaa4a7eb08"] .ui-select-toggle',
-        saveButton: '[rx-view-component-id="c8de82b4-12c7-4ba2-b9f1-e4884b86c471"] button',
-        closeButton: '[rx-view-component-id="b733c9ab-7fff-4038-8ba2-cb1ce47f59e9"] button',
-        goalTypeName: '[rx-view-component-id="b77cea55-9244-4d58-9d07-06773ff05c60"] input',
-        goalType: '[rx-view-component-id="f766b2ae-1205-4c7b-bf5b-b6ac1190fd7c"] .ui-select-container',
-        statusDropDown: '[rx-view-component-id="57b81b04-b4ff-4624-a04f-fceaa4a7eb08"] .ui-select-match',
-        goalTypeStatusDropDown: '[rx-view-component-id="57b81b04-b4ff-4624-a04f-fceaa4a7eb08"] .ui-select-container',
+        status: '[rx-view-component-id="16be0d06-4165-49f0-ba10-5478ae4ad12e"] button',
+        saveButton: '[rx-view-component-id="4b12ddce-1f8a-45fa-904c-e1a472254492"] button',
+        closeButton: '[rx-view-component-id="496593b2-24b6-4a4d-bcc1-5a4899992582"] button',
+        goalTypeName: '[rx-view-component-id="3a87092d-7c2f-4c3d-b3db-285af38753db"] input',
+        goalType: '[rx-view-component-id="ffc11039-6ae1-48b9-9fe4-39b547217e71"] button',
+        statusDropDown: '[rx-view-component-id="16be0d06-4165-49f0-ba10-5478ae4ad12e"] .dropdown-menu .rx-select__options',
+        goalTypeStatusDropDown: '[rx-view-component-id="16be0d06-4165-49f0-ba10-5478ae4ad12e"] button',
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {
-        return await $(this.selectors.status).getAttribute("disabled") == "true";
+        return await $(this.selectors.status).getAttribute("aria-disabled") == "true";
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-        return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
+        return await $(this.selectors.saveButton).getAttribute("aria-disabled") == "true";
     }
 
     async isGoalTypeFieldDisabled(): Promise<boolean> {
-        return await $(this.selectors.goalType).getAttribute("disabled") == "true";
+        return await $(this.selectors.goalType).getAttribute("aria-disabled") == "true";
     }
 
     async isGoalTypeNameFieldDisabled(): Promise<boolean> {
@@ -57,7 +57,7 @@ class GoalTypeConfigEditPage {
     }
 
     async isGoalTypeFieldRequired(): Promise<boolean> {
-        return await $(this.selectors.goalType).getAttribute("required") == "true";
+        return await $(this.selectors.goalType).getAttribute("aria-required") == "true";
     }
 
     async isGoalTypeNameFieldRequired(): Promise<boolean> {
@@ -65,7 +65,7 @@ class GoalTypeConfigEditPage {
     }
 
     async isStatusFieldRequired(): Promise<boolean> {
-        return await $(this.selectors.goalTypeStatusDropDown).getAttribute("required") == "true";
+        return await $(this.selectors.goalTypeStatusDropDown).getAttribute("aria-required") == "true";
     }
 
 

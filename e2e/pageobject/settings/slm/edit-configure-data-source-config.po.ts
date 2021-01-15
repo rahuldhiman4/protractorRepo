@@ -5,18 +5,17 @@ class EditDataSourceConfigurationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        dataSourceHeading: '.modal-header h3',
-        fieldNameLabel: 'span.d-textfield__item',
-        showAdvancedSettingsLink: '.record-registration-form button.btn-link',
-        buildExpressionBtn: '.modal-body .d-textfield__label button',
-        associationName: 'associationModel',
-        saveButton: '.slm-modal-footer button.d-button_primary',
-        closeButton: '.slm-modal-footer button.d-button_secondary',
-        fieldValues: '.record-registration-form .d-textfield__label input',
-        advancedFieldValues: '.record-registration-form .d-textfield__label span',
-        companyfieldValue: '.record-registration-form .d-textfield__label .ui-select-match-text',
-        companyfield: '.record-registration-form .d-textfield__label .ui-select-toggle',
-        useEndTimeCheckbox: '.d-checkbox__input + .d-checkbox__item',
+        dataSourceHeading: 'div.dp-header .dp-title',
+        fieldNameLabel: '[rx-view-definition-guid="a223e02e-83fb-42d9-8ea4-a11488eab4a5"] .form-control-label span',
+        showAdvancedSettingsLink: 'button[aria-label="Show Advanced Settings"]',
+        buildExpressionBtn: 'button[aria-label="Build Expression"]',
+        associationName: `//*[contains(@class,'form-control-label')]//span[1]`,
+        saveButton: '[rx-view-component-id="9f9e345e-b1d9-41d5-b4da-3a0a437ed179"] button',
+        closeButton: '[rx-view-component-id="f4e0420d-d6c6-4ebd-b68e-7eaf897bb3aa"] button',
+        fieldValues: `//*[contains(@class,'form-control-label')]//span[1]`,
+        companyfieldValue: `//*[contains(@class,'form-control-label')]//span[1]/ancestor::adapt-rx-control-label/following-sibling::div//button//*[contains(@class,'rx-select__search-button-title')]`,
+        companyfield: `//*[contains(@class,'form-control-label')]//span[1]`,
+        useEndTimeCheckbox: `//span[contains(@class,'form-control-label')]//span[1]//ancestor::div[contains(@class,"row")]//input[@type="checkbox"]`,
     }
 
     async getDataSourceConfigurationHeading(): Promise<string> {
@@ -73,14 +72,13 @@ class EditDataSourceConfigurationPage {
     }
 
     async isDatSourceAdvancedFieldsDisabled(fieldName: string): Promise<boolean> {
-        let fieldRecords = await $(`.record-registration-form .ui-select-container[title='${fieldName}']`);
-        let fieldRecordEntity = await fieldRecords.$('.ui-select-toggle');
-        return await fieldRecordEntity.getAttribute("aria-disabled") == "true" ? true : false;
+        let fieldRecords = await element(by.xpath(`//*[contains(@class,'form-control-label')]//span[text()=${fieldName}]/ancestor::adapt-rx-control-label/following-sibling::div//button`));
+        return await fieldRecords.getAttribute("aria-disabled") == "true" ? true : false;
     }
 
     async getDatSourceAdvancedFieldValue(fieldName: string): Promise<string> {
-        let fieldRecords = await $(`.record-registration-form .d-textfield__label [title='${fieldName}']`);
-        return await fieldRecords.$('span.ui-select-match-text').getText();
+        let fieldRecords = await element(by.xpath(`//*[contains(@class,'form-control-label')]//span[text()=${fieldName}]/ancestor::adapt-rx-control-label/following-sibling::div//button//*[contains(@class,'rx-select__search-button-title')]`));
+        return await fieldRecords.getText();
     }
 
     async clearDatSourceAdvancedFieldSelection(fieldName: string): Promise<string> {

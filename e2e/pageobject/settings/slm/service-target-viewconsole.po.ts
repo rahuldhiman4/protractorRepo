@@ -5,16 +5,14 @@ import utilGrid from '../../../utils/util.grid';
 class ServiceTargetViewConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        serviceTargetHeader: '.datasource__heading .padleft13',
-        serviceTargetSearchInput: 'searchText',
-        createServiceTargetButton: 'button.d-icon-left-plus',
-        goalTypeConsoleGUID: '781a6488-ff08-481b-86c7-7c78c577357b',
-        refreshIcon: 'button.d-icon-refresh',
-        filterIcon: '.rx-search-filter button',
-        filterItems: '.search-filter-dropdown .d-accordion__item',
-        applyButton: '.rx-search-filter-heading__apply',
-        addColumnIcon: 'rx-record-grid-menu.rx-record-grid-toolbar__item_visible-columns .d-icon-ellipsis',
-        filterClose: '.d-tag-remove-button',
+        serviceTargetSearchInput: '[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] input[type="search"]',
+        createServiceTargetButton: '[rx-view-component-id="8985f5e9-f984-43d1-b6cd-ce780f64a71b"] button',
+        refreshIcon: '[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] .d-icon-refresh',
+        filterIcon: '[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] .d-icon-left-filter',
+        filterItems: '.advanced-filter__tab-content .form-control-feedback',
+        applyButton: 'button[data-testid="adapt-af-1_Save"]',
+        addColumnIcon: '[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] .d-icon-eye_closed',
+        filterClose: '.close-inverse',
 
     }
 
@@ -29,11 +27,16 @@ class ServiceTargetViewConsole {
     async removeColumns(columnNames: string[]): Promise<void> {
         await ($(this.selectors.addColumnIcon)).click();
         for (let i: number = 0; i < columnNames.length; i++) {
-            let customxpath = `(//*[@rx-configuration="recordGridConfiguration"]//li[contains(@class,"d-dropdown__menu-options-item")]//a[text()="${columnNames[i]}"])[1]`;
-            let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
-            if (attrbuteVal == 'true') {
-                await element(by.xpath(customxpath)).click();
-            } else { console.log('Column already selected'); }
+            let customxpath = `(//div[@class='a-dropdown-window--menu']//span[2])["${i}"]`;
+            let customxpath1 = `(//div[@class='a-dropdown-window--menu']//span[2])["${i}"]/../preceding-sibling::input`;
+            let columnVal = await element(by.xpath(customxpath)).getText();
+
+            if (columnVal == columnNames[i]) {
+                let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
+                if (attrbuteVal == 'true') {
+                    await element(by.xpath(customxpath1)).click();
+                } else { console.log('Column already selected'); }
+            }
         }
         await ($(this.selectors.addColumnIcon)).click();
     }
@@ -41,12 +44,16 @@ class ServiceTargetViewConsole {
     async addColumns(columnNames: string[]): Promise<void> {
         await ($(this.selectors.addColumnIcon)).click();
         for (let i: number = 0; i < columnNames.length; i++) {
-            let customxpath = `(//*[@rx-configuration="recordGridConfiguration"]//li[contains(@class,"d-dropdown__menu-options-item")]//a[text()="${columnNames[i]}"])[1]`;
-            //            await browser.wait(this.EC.elementToBeClickable(element(by.xpath(customxpath))));
-            let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
-            if (attrbuteVal == 'false') {
-                await element(by.xpath(customxpath)).click();
-            } else { console.log('Column: ', columnNames[i], ' already selected'); }
+            let customxpath = `(//div[@class='a-dropdown-window--menu']//span[2])["${i}"]`;
+            let customxpath1 = `(//div[@class='a-dropdown-window--menu']//span[2])["${i}"]/../preceding-sibling::input`;
+            let columnVal = await element(by.xpath(customxpath)).getText();
+
+            if (columnVal == columnNames[i]) {
+                let attrbuteVal = await element(by.xpath(customxpath)).getAttribute('aria-checked');
+                if (attrbuteVal == 'false') {
+                    await element(by.xpath(customxpath1)).click();
+                } else { console.log('Column already selected'); }
+            }
         }
         await ($(this.selectors.addColumnIcon)).click();
     }
@@ -61,11 +68,11 @@ class ServiceTargetViewConsole {
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
         let arr: string[] = [];
-        columnHeader = "'" + columnHeader + "'";
-
         //Clicking on columns based on sort type
-        let columnHeaderLocator = await element(by.xpath(`//*[@rx-configuration="recordGridConfiguration"]//div[@role="columnheader"]//*[text()=${columnHeader}]`));
-        let ariaSort = `//*[@rx-configuration="recordGridConfiguration"]//div[@role="columnheader"]//*[text()=${columnHeader}]//ancestor::div[@aria-sort]`;
+        let columnHeaderLocator = await element(by.xpath(`//*[@rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"]//thead//th//span[text()='${columnHeader}']`));
+        let columnHeaderSortLocator = await element(by.xpath(`//*[@rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"]//thead//th//span[text()='${columnHeader}']//following-sibling::span`));
+
+        let ariaSort = `//*[@rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"]//thead//th//span[text()='${columnHeader}']//following-sibling::span[@aria-sort]`;
         for (let i: number = 0; i < 3; i++) {
             let sortValue = await element(by.xpath(ariaSort)).getAttribute("aria-sort");
             if (sortValue == sortType) {
@@ -73,20 +80,20 @@ class ServiceTargetViewConsole {
                 break;
             }
             else {
-                await columnHeaderLocator.click();
+                await columnHeaderSortLocator.click();
             }
         }
 
         //Verifying if columns are sorted
-        let gridColumnHeaderPosition = `//*[@rx-configuration="recordGridConfiguration"]//span[@class="ui-grid-header-cell-label"][text()=${columnHeader}]/parent::div/parent::div[@role='columnheader']/parent::div/preceding-sibling::*`;
-        let gridRecords = '//div[@class="ui-grid-canvas"]/div';
+        let gridColumnHeaderPosition = `//*[@rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"]//thead//th//span[text()='${columnHeader}']//ancestor::th//preceding-sibling::th`;
+        let gridRecords = '//*[@rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"]//tbody//tr';
         let columnPosition: number = await element.all(by.xpath(gridColumnHeaderPosition)).count();
         columnPosition = columnPosition + 1;
         let gridRows: number = await element.all(by.xpath(gridRecords)).count();
         let gridRecordCellValue;
         for (let i: number = 1; i <= gridRows; i++) {
             try {
-                gridRecordCellValue = `(//*[@rx-configuration="recordGridConfiguration"]//div[@class="ui-grid-cell-contents"]/parent::div/parent::div)[${i}]/div[${columnPosition}]/div`;
+                gridRecordCellValue = `(//*[@rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"]//tbody//tr)[${i}]//td[${columnPosition}]`;
                 arr[i] = await element(by.xpath(gridRecordCellValue)).getText();
             }
             catch (e) {
@@ -107,15 +114,15 @@ class ServiceTargetViewConsole {
     }
 
     async getServiceTargetGUID(): Promise<string> {
-        return await $$('[rx-configuration="recordGridConfiguration"] div.ui-grid-row .ui-grid-cell-contents').last().getText();
+        return await $$('[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] div.ui-table-scrollable-body tr td').last().getText();
     }
 
     async getServiceTargetID(): Promise<string> {
-        return await $$('[rx-configuration="recordGridConfiguration"] div.ui-grid-row .ui-grid-cell-contents').get(1).getText();
+        return await $$('[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] div.ui-table-scrollable-body tr td').get(1).getText();
     }
 
     async isFilteredRecordDisplayed(): Promise<boolean> {
-        return await $('[rx-configuration="recordGridConfiguration"] div.ui-grid-row').isPresent();
+        return await $('[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] div.ui-table-scrollable-body tr').isPresent();
     }
 
     async clickRefreshIcon(): Promise<void> {
@@ -123,7 +130,7 @@ class ServiceTargetViewConsole {
     }
 
     async clearFilter(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterClose)),2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.filterClose)), 2000);
         await $(this.selectors.filterClose).click();
     }
 

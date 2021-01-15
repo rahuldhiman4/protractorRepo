@@ -5,21 +5,21 @@ class CreateServiceTargetGroup {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        groupName: 'input[placeholder="Enter Group Name"]',
-        company: 'span[aria-label="Company activate"]',
-        dataSource: 'span[aria-label="Data Source activate"]',
-        goalType: 'span[aria-label="Goal Type activate"]',
-        saveButton: '[class="d-button d-button_primary d-button_large"]',
+        groupName: '[rx-view-component-id="23caca62-4511-4a51-a0c6-88ea5be3a6b2"] input',
+        company: '[rx-view-component-id="80b2493a-9ce6-4747-94ed-c7c5cb6b647b"] button',
+        dataSource: '[rx-view-component-id="49c7ca46-d55b-4e21-b5ae-4c5be52b5f7f"] button',
+        goalType: '[rx-view-component-id="4f165e40-fb17-40f6-ba89-f3734c707d3a"] button',
+        saveButton: '[rx-view-component-id="ff2837ae-4867-472a-b1a9-374ff7d2ac1a"] button',
         lob: '[class="bwf-lob-selection d-textfield"] [class="btn btn-default form-control ui-select-toggle"]',
-        serviceTarget: 'input[aria-label="Search for available Service Targets"]',
-        serviceTargetdrpdwn: '.slm-group-list-item__description',
-        selectServiceTarget: '.d-icon-circle_o',
-        cancelButton: '[class="d-button d-button_secondary d-button_large"]',
-        goalTypeDropDownInput: 'input[aria-label="Goal Type"]',
-        dropDownOption: '.ui-select-choices-row',
-        goalTypeDropDown: '.ui-select-match[placeholder="Select Goal Type"]',
-        dataSourceDropDownInput: 'input[aria-label="Data Source"]',
-        dataSourceDropDown: '.ui-select-match[placeholder="Select Data Source"]'
+        serviceTarget: '[rx-view-component-id="b9684beb-e1d2-4f96-8ed0-b23f196a698c"] input',
+        serviceTargetdrpdwn: '[rx-view-component-id="b9684beb-e1d2-4f96-8ed0-b23f196a698c"] button',
+        selectServiceTarget: '[rx-view-component-id="b9684beb-e1d2-4f96-8ed0-b23f196a698c"] .checkbox__item',
+        cancelButton: '[rx-view-component-id="755703fa-57ef-46e6-884d-811677098b76"] button',
+        goalTypeDropDownInput: '[rx-view-component-id="4f165e40-fb17-40f6-ba89-f3734c707d3a"] input',
+        dropDownOption: 'button.dropdown-item',
+        goalTypeDropDown: '[rx-view-component-id="4f165e40-fb17-40f6-ba89-f3734c707d3a"] button',
+        dataSourceDropDownInput: '[rx-view-component-id="49c7ca46-d55b-4e21-b5ae-4c5be52b5f7f"] input',
+        dataSourceDropDown: '[rx-view-component-id="49c7ca46-d55b-4e21-b5ae-4c5be52b5f7f"] button'
 
     }
 
