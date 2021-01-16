@@ -1,5 +1,5 @@
 import { $,element,by, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 class ConsoleProcessLibrary {
 
@@ -36,11 +36,11 @@ class ConsoleProcessLibrary {
 
 
     async searchAndSelectFlowset(flowset: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(flowset);
+        await utilityGrid.searchAndOpenHyperlink(flowset);
     }
 
     async isAliasNamePresentOnGrid(alias: string): Promise<boolean> {
-        await utilGrid.searchOnGridConsole(alias);
+        await utilityGrid.isGridRecordPresent(alias);
         return await element(by.cssContainingText('.ui-grid__link', alias)).isPresent().then(async (result) => {
             if(result){
                 return await element(by.cssContainingText('.ui-grid__link', alias)).getText() == alias ? true : false;
@@ -53,23 +53,23 @@ class ConsoleProcessLibrary {
 
 
     async clickOnRefreshButton(): Promise<void> {
-        await utilGrid.clickOnGridRefreshButton();
+        await utilityGrid.clickRefreshIcon();
     }
 
     async isAllVisibleColumnPresent(availableValues: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.registerProcessGuid, availableValues);
+        return await utilityGrid.areColumnHeaderMatches( availableValues,this.selectors.registerProcessGuid);
     }
 
     async addColumn(column: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.registerProcessGuid, column);
+        await utilityGrid.addGridColumn(column,this.selectors.registerProcessGuid);
     }
 
     async removeColumn(column: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.registerProcessGuid, column);
+        await utilityGrid.removeGridColumn(column,this.selectors.registerProcessGuid);
     }
 
     async getSortedValuesFromColumn(columnHeader: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnHeader, 'ascending', this.selectors.registerProcessGuid);
+        return await utilityGrid.isGridColumnSorted(columnHeader, 'ascending', this.selectors.registerProcessGuid);
     }
 
     async clearSearchBox(): Promise<void> {
@@ -77,11 +77,11 @@ class ConsoleProcessLibrary {
     }
 
     async isColumnContainsSameValue(columnName: string, value: string): Promise<boolean> {
-        return await utilGrid.isEntireColumnContainsSameValue(columnName, value, this.selectors.registerProcessGuid);
+        return await utilityGrid.isEntireColumnContainsSameValue(columnName, value, this.selectors.registerProcessGuid);
     }
 
     async getFirstValueOfColumn(columnName: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.registerProcessGuid, columnName);
+        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.registerProcessGuid, columnName);
     }
 }
 
