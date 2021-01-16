@@ -450,11 +450,8 @@ describe("Create Case", () => {
             await changeAssignmentPage.clickOnAssignToMeCheckBox();
             expect(await changeAssignmentPage.getAssigneeName()).toBe('Qiao Feng');
             await changeAssignmentPage.clickOnCancelButton();
-            await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.selectBusinessUnit('United States Support')
             await changeAssignmentPage.selectSupportGroup('US Support 3');
-            await changeAssignmentPage.selectAssignToSupportGroup();
-            await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();

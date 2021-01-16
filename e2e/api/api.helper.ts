@@ -16,7 +16,6 @@ import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
 import { MAILBOX_CONFIG, INCOMINGMAIL_DEFAULT, EMAIL_PROFILE, EMAIL_OUTGOING, UPDATE_EMAIL_PROFILE_ON_LOB } from '../data/api/email/email.configuration.data.api';
-import { EMAIL_WHITELIST } from '../data/api/email/email.whitelist.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
 import { UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP, DELETE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
@@ -1722,22 +1721,6 @@ class ApiHelper {
                 return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.flowsets-lib:Process Library', obj[179]);
             }
         });
-    }
-
-    async updateCompanyDetails(organizationName: string, abbreviation: string, operationalType: string): Promise<boolean> {
-        let orgGuid: string = await apiCoreUtil.getOrganizationGuid(organizationName);
-        let organizationDetailsFile = await require('../data/api/foundation/organization.api.json');
-        let OrgData = await organizationDetailsFile.updateOrganizationDetails;
-        OrgData.id = orgGuid;
-        OrgData.fieldInstances[304417291].value = operationalType;
-        OrgData.fieldInstances[1000000071].value = abbreviation;
-        let uri: string = "api/rx/application/record/recordinstance/com.bmc.arsys.rx.foundation%3APrimary%20Organization/" + orgGuid;
-        const updatedOrgData = await axios.put(
-            uri,
-            OrgData
-        );
-        console.log("Updated Organization status =============>", updatedOrgData.status);
-        return updatedOrgData.status == 204;
     }
 
     async updateCaseAccess(caseGuid: string, data: IUpdateCaseAccess): Promise<number> {

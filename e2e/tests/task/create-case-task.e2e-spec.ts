@@ -1456,9 +1456,7 @@ describe('Create Case Task', () => {
         });
         it('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewCasePage.clickEditCaseButton();
-            await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectAssignToSupportGroup();
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 1');
@@ -1471,9 +1469,7 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
             await adhoctaskTemplate.selectCategoryTier2('Compensation');
             await adhoctaskTemplate.selectCategoryTier3('Bonus');
-            await adhoctaskTemplate.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectAssignToSupportGroup();
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTask.clickTaskLink("Summary2" + randomStr);
@@ -1706,9 +1702,7 @@ describe('Create Case Task', () => {
             await expect(personProfilePo.getPersonName()).toBe('Elizabeth Peters');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectAssignToSupportGroup();
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe(templateData.supportGroup);

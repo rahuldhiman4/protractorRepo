@@ -1,12 +1,12 @@
+import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
 import utilityCommon from '../../utils/utility.common';
-import { $, $$, by, element,ElementFinder, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 
 class ChangeAssignmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
         assignButton: '.modal-footer .btn-primary',
-        assignmentDropDownList: '.flex-wrap bwf-select-with-pagination',
+        assignmentDropDownList: '.flex-wrap bwf-select-with-pagination, .change-assignment-component-wrapper adapt-rx-select',
         selectOptions: '.dropdown-item span',
         cancelButton: '.modal-footer .btn-secondary',
         multipleSuppGrpMsg: '.manual-select-sg-msg',
@@ -18,61 +18,75 @@ class ChangeAssignmentBlade {
         supportGroupName: '.person__info',
         department: 'selectedDepartmentId',
         supportGroup: 'selectedSupportGroupId',
-        agentName: 'div[aria-label*="name"]'
+        agentName: 'div[aria-label*="name"]',
+        assignToMeBtn: 'bwf-assign-to-me button'
     }
 
+    //May not required. Test steps need to change
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {
         return await $(this.selectors.assignToMeCheckBox).isSelected();
     }
 
+    //Will remain same
     async getCompanyDefaultValue(): Promise<string> {
         return await $$(this.selectors.filterDropdowns).get(0).getText();
     }
 
+    ////Will remain same
     async getSupportGroupDefaultValue(): Promise<string> {
         return await $$(this.selectors.filterDropdowns).get(3).getText();
     }
 
+    //May not required now
     async isSearchInputBoxPresent(): Promise<boolean> {
         return await $(this.selectors.searchAsignee).isDisplayed();
     }
 
+    //Will remain same
     async isCompanyDrpDwnDisplayed(): Promise<boolean> {
         return await $$(this.selectors.filterDropdowns).get(0).isDisplayed();
     }
 
-    async isBusinessUnitDrpDwnDisplayed(): Promise<boolean> {
+    //Will remain same
+    async isBuisnessUnitDrpDwnDisplayed(): Promise<boolean> {
         return await $$(this.selectors.filterDropdowns).get(1).isDisplayed();
     }
 
+    //Will remain same
     async isDepartmentDrpDwnDisplayed(): Promise<boolean> {
         return await $$(this.selectors.filterDropdowns).get(2).isDisplayed();
     }
 
+    //Will remain same
     async isSupportGroupDrpDwnDisplayed(): Promise<boolean> {
         return await $$(this.selectors.filterDropdowns).get(3).isDisplayed();
     }
 
     async isAssigneeListPresent(): Promise<boolean> {
-        return await $(this.selectors.assignee).isDisplayed();
+        return await $$(this.selectors.filterDropdowns).get(3).isDisplayed();
     }
 
+    //Updated
     async getAssigneeName(): Promise<string> {
-        return await $(this.selectors.assignee).getText();
+        return await $$(this.selectors.filterDropdowns).get(3).getText();
     }
 
+    //deprecated now
     async clickOnAssignButton(): Promise<void> {
         await $(this.selectors.assignButton).click();
     }
 
+    //deprecated now
     async getCountOfSupportGroup(): Promise<number> {
         return await $$(this.selectors.supportGroupName).count();
     }
 
+    //deprecated now
     async clickOnSupportGroup(name: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.supportGroupName, name)).click();
     }
 
+    //deprecated now
     async getTextOfSupportGroup(name: string): Promise<string> {
         return await element(by.cssContainingText(this.selectors.supportGroupName, name)).getText();
     }
@@ -81,10 +95,12 @@ class ChangeAssignmentBlade {
         return await $(this.selectors.assignButton).getAttribute("disabled") == "true";
     }
 
+    //deprecated now
     async clickOnAssignToMeCheckBox(): Promise<void> {
         await $(this.selectors.assignToMeCheckBox).click();
     }
 
+    //deprecated now
     async clickOnCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
@@ -113,7 +129,7 @@ class ChangeAssignmentBlade {
     }
 
     async selectSupportGroup(supportGroup: string): Promise<void> {
-        const supportGroupDropDown = await $$(this.selectors.assignmentDropDownList).get(3);
+        const supportGroupDropDown = await $$(this.selectors.assignmentDropDownList).get(2);
         await supportGroupDropDown.$('button').click();
         await supportGroupDropDown.$('input').sendKeys(supportGroup);
         let option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
@@ -121,20 +137,11 @@ class ChangeAssignmentBlade {
     }
 
     async selectAssignee(name: string): Promise<void> {
-        await $(this.selectors.searchAsignee).click();
-        await $(this.selectors.searchAsignee).clear();
-        await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
-        await element(by.cssContainingText(this.selectors.assignee, name)).click();
-    }
-
-    async isAssigneeDisplayed(name: string): Promise<boolean> {
-        await $(this.selectors.searchAsignee).click();
-        await $(this.selectors.searchAsignee).clear();
-        await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
-        return await element(by.cssContainingText(this.selectors.assignee, name)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.assignee, name)).isDisplayed();
-            else return false;
-        });
+        const supportGroupDropDown = await $$(this.selectors.assignmentDropDownList).get(3);
+        await supportGroupDropDown.$('button').click();
+        await supportGroupDropDown.$('input').sendKeys(name);
+        let option = await element(by.cssContainingText(this.selectors.selectOptions, name));
+        await option.click();
     }
 
     async setAssignee(company: string, bu: string, group: string, assignee: string): Promise<void> {
@@ -142,13 +149,6 @@ class ChangeAssignmentBlade {
         await this.selectBusinessUnit(bu);
         await this.selectSupportGroup(group);
         await this.selectAssignee(assignee);
-        await this.clickOnAssignButton();
-    }
-
-    async selectAssignToSupportGroup(): Promise<void> {
-        await $('.d-icon-users_circle').isPresent().then(async (result) => {
-            if (result) await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
-        });
     }
 
     async isAgentListSorted(): Promise<boolean> {
@@ -166,6 +166,42 @@ class ChangeAssignmentBlade {
         );
     }
 
+    async setAssigneeOnBlade(company: string, bu: string, group: string, assignee: string): Promise<void> {
+        await this.selectCompany(company);
+        await this.selectBusinessUnit(bu);
+        await this.selectSupportGroup(group);
+        await this.selectAssigneeOnBlade(assignee);
+        await this.clickOnAssignButton();
+    }
+
+    async selectAssigneeOnBlade(name: string): Promise<void> {
+        await $(this.selectors.searchAsignee).click();
+        await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
+        await element(by.cssContainingText(this.selectors.assignee, name)).click();
+    }
+
+    async selectAssignToSupportGroupOnBlade(): Promise<void> {
+        await $('.d-icon-users_circle').isPresent().then(async (result) => {
+            if (result) await element(by.cssContainingText(this.selectors.assignee, 'Assign to Support Group')).click();
+        });
+    }
+
+    async isAssignmentFieldsDisabled(): Promise<boolean> {
+        let stat = false;
+        for (let i = 0; i < (await $$(this.selectors.assignmentDropDownList)).length; i++) {
+            if (!(await ($$(this.selectors.assignmentDropDownList).get(i).$('button').isEnabled()))) stat = true;
+            else {
+                stat = false;
+                break;
+            }
+        }
+        return stat;
+    }
+
+    async clickAssignToMeBtn(): Promise<void> {
+        await $(this.selectors.assignToMeBtn).click();
+    }
+
     async businessUnitOptionsPresent(businessUnit: string): Promise<boolean> {
         const businessUnitDropDown = await $$(this.selectors.assignmentDropDownList).get(1);
         await businessUnitDropDown.$('button').click();
@@ -173,7 +209,7 @@ class ChangeAssignmentBlade {
         let count =await $$(this.selectors.selectOptions).count();
         if (count >= 1) { return true; } else { return false; }
     }
-     
+
     async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
         let elementDropdown:ElementFinder = await element(by.cssContainingText('.assignment-component-wrapper bwf-select-with-pagination button', `Select ${dropDownLabel}`));
         return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
@@ -194,6 +230,16 @@ class ChangeAssignmentBlade {
         await companyDropDown.$('button').click();
         let option = await element(by.cssContainingText(this.selectors.selectOptions, 'None'));
         await option.click();
+    }
+
+    async isAssigneeDisplayed(name: string): Promise<boolean> {
+        await $(this.selectors.searchAsignee).click();
+        await $(this.selectors.searchAsignee).clear();
+        await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
+        return await element(by.cssContainingText(this.selectors.assignee, name)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText(this.selectors.assignee, name)).isDisplayed();
+            else return false;
+        });
     }
 }
 
