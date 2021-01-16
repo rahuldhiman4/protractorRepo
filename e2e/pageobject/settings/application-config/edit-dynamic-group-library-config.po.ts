@@ -1,4 +1,5 @@
-import { $, By, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
+import {$$ , $, By, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
 class CreateDynamicGroupLibrary {
@@ -18,7 +19,7 @@ class CreateDynamicGroupLibrary {
         localizedValueCancelBtn: 'button[rx-id="cancel-button"]',
         dynamicGroupWarningMsg: 'div.alert-warning div',
         status: '76eaa168-a4fb-4687-a838-280983d01700',
-        dynamicFieldNameInput: '.d-textfield_required input[id="adapt-textfield-0_input"]',
+        dynamicFieldNameInput: '.d-textfield_required input',
         dynamicFieldDescriptionInput: '.d-textfield_required input[id="adapt-textfield-2_input"]',
         dynamicGroupSaveBtn: '[rx-view-component-id="1dd1a2a9-28fb-47b5-9941-f73063e860d7"] button',
         dynamicGroupCancelBtn: '[rx-view-component-id="c0d7ec27-1a72-4943-b487-87f7559fff95"] button',
@@ -36,23 +37,12 @@ class CreateDynamicGroupLibrary {
     }
 
     async setStatusValue(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.status, value)
+        await utilityCommon.selectDropDown(this.selectors.status, value)
     }
 
-    async isStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.status);
-    }
-
-    async isDynamicGroupNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.dynamicGroupName);
-    }
-
-    async isDisplayLabelRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.displayLabel);
-    }
 
     async isLineofBusinessRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.lineOfBusiness);
+        return await utilityCommon.isRequiredTagToField(this.selectors.lineOfBusiness);
     }
 
     async setDynamicGroupName(dynamicGrpName: string): Promise<void> {
@@ -60,14 +50,16 @@ class CreateDynamicGroupLibrary {
         await $(this.selectors.dynamicGroupNameInput).sendKeys(dynamicGrpName);
     }
 
-    async setDynamicFieldName(dynamicFieldName: string): Promise<void> {
-        await $(this.selectors.dynamicFieldNameInput).clear();
-        await $(this.selectors.dynamicFieldNameInput).sendKeys(dynamicFieldName);
+    async setDynamicFieldName(dynamicFieldName: string, position?: number): Promise<void> {
+        let count = 0;
+        if(position) count=(position*2)-2;
+        await $$(this.selectors.dynamicFieldNameInput).get(count).sendKeys(dynamicFieldName);
     }
 
-    async setDynamicFieldDesc(dynamicFieldDesc: string): Promise<void> {
-        await $(this.selectors.dynamicFieldDescriptionInput).clear();
-        await $(this.selectors.dynamicFieldDescriptionInput).sendKeys(dynamicFieldDesc);
+    async setDynamicFieldDesc(dynamicFieldDesc: string, position?: number): Promise<void> {
+        let count = 1;
+        if(position) count=(position*2)-1;
+        await $$(this.selectors.dynamicFieldNameInput).get(count).sendKeys(dynamicFieldDesc);
     }
 
     async clickOnDisplayLabelocalizedLink(): Promise<void> {

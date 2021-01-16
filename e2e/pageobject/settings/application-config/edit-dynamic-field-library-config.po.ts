@@ -1,3 +1,4 @@
+import utilityCommon from '../../../utils/utility.common';
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
@@ -45,24 +46,23 @@ class EditDynamicFieldLibrary {
        }
 
     async isFieldNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fieldNameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.fieldNameGuid);
     }
 
     async isFieldDescriptionRequiredText(): Promise<boolean> {
-        let fieldDescriptionRequired = await $('[rx-view-component-id="f502e31f-69c2-4b63-aeb7-e6ee0be7dfd0"] .d-textfield__item');
-        return await utilCommon.isRequiredTagToFieldElement(fieldDescriptionRequired);
+        return await utilityCommon.isRequiredTagToField(this.selectors.fieldDescriptionGuid);
     }
 
     async isStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.status);
+        return await utilityCommon.isRequiredTagToField(this.selectors.status);
     }
 
     async isFieldValueTypeRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fieldValueTypeGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.fieldValueTypeGuid);
     }
 
     async isInformationSoucreRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.informationSource);
+        return await utilityCommon.isRequiredTagToField(this.selectors.informationSource);
     }
 
     async clickOnLocalizeButton(): Promise<void> {
@@ -73,24 +73,12 @@ class EditDynamicFieldLibrary {
         await $(this.selectors.enabledRequiredRadioButton).click();
     }
 
-    async isFieldValueTypeDropDownPresent(value: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.fieldValueTypeGuid, value)
-    }
-
-    async isStatusDropDownPresent(value: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.status, value)
-    }
-
-    async isInformationSourceDropDownPresent(value: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.informationSource, value)
-    }
-
     async setInformationSourceValueType(value: string) {
-        await utilCommon.selectDropDown(this.selectors.informationSource, value);
+        await utilityCommon.selectDropDown(this.selectors.informationSource, value);
     }
 
     async setStatusValue(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.status, value)
+        await utilityCommon.selectDropDown(this.selectors.status, value)
     }
 
     async clickCancelButton(): Promise<void> {

@@ -1,3 +1,4 @@
+import utilityGrid from '../../../utils/utility.grid';
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilGrid from '../../../utils/util.grid';
 
@@ -10,10 +11,10 @@ class DynamicGroupLibraryConsole {
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.addGridColumn(columnHeader, this.selectors.gridGuid);
     }
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.removeGridColumn(columnHeader, this.selectors.gridGuid);
     }
 
     async clickAddDynamicGroupButton(): Promise<void> {

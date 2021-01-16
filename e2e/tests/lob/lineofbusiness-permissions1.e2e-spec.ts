@@ -339,16 +339,16 @@ describe('Line of Business Permission Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
             expect(await createMenuItemsBladePo.isMenuOptionLinkPresent()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
             expect(await dynamicFieldLibraryConfigConsolePo.isAddDynamicFieldButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
             expect(await dynamicGroupLibraryConfigConsolePo.isAddDynamicGroupButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Templates - Settings - Business Workflows');
             expect(await consoleCasetemplatePo.isCreateCaseTemplateEnabled()).toBeFalsy();
             expect(await utilityGrid.isGridRecordPresent(caseID)).toBeFalsy();
 
@@ -450,10 +450,10 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
             expect(await createMenuItemsBladePo.isMenuOptionLinkEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
             expect(await dynamicFieldLibraryConfigConsolePo.isAddDynamicFieldButtonEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
             expect(await dynamicGroupLibraryConfigConsolePo.isAddDynamicGroupButtonEnabled()).toBeFalsy();
 
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
