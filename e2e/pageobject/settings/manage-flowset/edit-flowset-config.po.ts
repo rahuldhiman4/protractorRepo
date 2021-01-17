@@ -1,7 +1,7 @@
 import utilityCommon from '../../../utils/utility.common';
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilCommon from '../../../utils/util.common';
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
+
 
 class EditFlowsetPage {
 
@@ -9,37 +9,22 @@ class EditFlowsetPage {
     selectors = {
         processExecutionTypeGuid: '275b58b7-85e0-4d56-9d39-215f3551d471',
         functionGuid: '37ec6a5a-d6ba-4825-ab89-6fa4175c0751',
-        processnameGuid: '8ed57f59-49e6-4ef5-bc10-30fc55bc5556',
+        processnameGuid: 'e2da86d2-692a-4f0a-8278-8989b27aa9e5',
         processMappingSaveBtn: '[rx-view-component-id="106495e9-95f6-4d94-b9c8-f71c5a76f09d"] button',//same
         editProcessMappingSaveBtn: '[rx-view-component-id="0d0e544e-e9e4-4854-ae72-6599a7ae38cd"] button',//not found
         flowsetName: '[rx-view-component-id="4304c07c-602a-4a07-b05b-0406aa6747be"] input',//same
         descriptionField: '[rx-view-component-id="a825a900-6197-430c-ae9e-197291a6ff01"] textarea',//same
         statusGuid: '046e725c-0b9a-440d-9c96-77a730cf23f3',
         processStatusGuid: 'b48823c7-8eb0-4b30-bd9a-b44e53fcc195',
-      //  status: '[rx-view-component-id="046e725c-0b9a-440d-9c96-77a730cf23f3"] .ui-select-toggle',
-        status: '[rx-view-component-id="046e725c-0b9a-440d-9c96-77a730cf23f3"] adapt-rx-select',//done
+        status: '[rx-view-component-id="046e725c-0b9a-440d-9c96-77a730cf23f3"] button div',//done
         addAssociateCategoryBtn: '[rx-view-component-id="88810c80-2be6-4052-bd3c-40dbc782f046"] button',//not found
-       // saveButton: '[rx-view-component-id="32a85bf4-f0e6-45ef-bb06-9564f9898416"] button',
          saveButton:'[rx-view-component-id="ec655846-3db8-4072-beef-2dab6438e0e3"] button',//done
-        tab: '.nav-tabs a',//not found
         addNewMapping: '[rx-view-component-id="1d59b685-ac65-4ac6-a39b-268596c8ae9c"] button',//same
-        selectCompanyField: '[rx-view-component-id="1a170338-889d-47ef-a878-4d174bd88783"] .ac-company-field button',//NOT FOUND
-        selectAgentField: '[rx-view-component-id="1a170338-889d-47ef-a878-4d174bd88783"] .d-textfield__label input',
-        associateResolutionCode: '[rx-view-component-id="3d0801f0-7f99-4967-a71a-6347f25c8427"] button',
-        addResolutionCode: '[rx-view-component-id="80823193-b62b-425d-aae6-3a6191dea8bc"] button',
-        companyValue: '[rx-view-component-id="2303bffc-b2c5-4cd2-a55a-bac22b61d516"] .ui-select-toggle',
+        companyValue: '[rx-view-component-id="2303bffc-b2c5-4cd2-a55a-bac22b61d516"] button',
         processMappingConsoleGuid: '0e25a330-f284-4892-9777-84ae2a5583ff',
-        confidentialSupportGroupAccess: '.ac-label-manage-support',
-        supportGroupDropDown: '.flex-item .ac-confidential-group-field button',
-        dropdownElement: '.ac-confidential-group-field .options li:last-of-type',
-        confidentialFieldSearchBox: '.field input[placeholder="Search for Support Groups"]',
-        addConfidentialSupportGroup: '[ng-if="enableAddSupportGroup"]',
-        confidentialSupportGroupAssignToMe: '[class="d-checkbox__item ac-label-assign-confidential-write"]',
-        supportGroupWarningText: '[class="rx-case-access-remove ac-group-not-unique"] .rx-case-access-remove-text',
         selectProcessNameDropDown: '[rx-view-component-id="8ed57f59-49e6-4ef5-bc10-30fc55bc5556"] .ui-select-toggle',
-        selectProcessNameDropDownInput: '[rx-view-component-id="8ed57f59-49e6-4ef5-bc10-30fc55bc5556"] input',
-        dropDownOption: '[rx-view-component-id="8ed57f59-49e6-4ef5-bc10-30fc55bc5556"] .ui-select-choices-row',
-        //cancelFlowsetBtn: '[rx-view-component-id="af475a83-2370-4fea-a805-b749a315ae99"] button'
+        selectProcessNameDropDownInput: '[rx-view-component-id="e2da86d2-692a-4f0a-8278-8989b27aa9e5"] input',
+        dropDownOption: '[rx-view-component-id="e2da86d2-692a-4f0a-8278-8989b27aa9e5"] [ class="dropdown-item ng-tns-c137-73 ng-star-inserted"]',
         cancelFlowsetBtn:'[rx-view-component-id="3043c5ce-f4bc-48bc-bc15-d64cc5c32144"] button'//done
     }
 
@@ -48,39 +33,10 @@ class EditFlowsetPage {
     }
 
     async selectProcessName(process: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.processnameGuid, process);
+        await utilityCommon.selectDropDown(this.selectors.processnameGuid, process);
     }
 
-    async selectConfidentialSupportGroup(supportGroup: string): Promise<void> {
-        await $$(this.selectors.supportGroupDropDown).get(1).click();
-        await $$(this.selectors.confidentialFieldSearchBox).get(3).sendKeys(supportGroup);
-        await browser.sleep(1000); // Wait Until Searched Confidential Support Group Loaded.
-        await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).isPresent().then(async (result) => {
-            if (result) {
-                await browser.sleep(1000); // Wait Until Confidential Support Group Ready To Click.
-                await element(by.cssContainingText(this.selectors.dropdownElement, supportGroup)).click()
-            } else {
-                console.log(supportGroup," this confidential support group not present");
-            }
 
-        });
-}
-
-    async clickConfidentialWriteSupportGroupAccess(): Promise<void> {
-        await $$(this.selectors.confidentialSupportGroupAssignToMe).get(3).click();
-    }
-
-    async clickAddConfidentialSupportGroup(): Promise<void> {
-        await $$(this.selectors.addConfidentialSupportGroup).get(3).click();
-    }
-
-    async clickConfidentialSupportGroupAccess(): Promise<void> {
-        await $$(this.selectors.confidentialSupportGroupAccess).get(1).click();
-    }
-
-    async getSupportGroupWarningMessage(): Promise<string> {
-        return await $(this.selectors.supportGroupWarningText).getText();
-    }
 
     async setFlowset(flowset: string): Promise<void> {
         await $(this.selectors.flowsetName).clear();
@@ -93,24 +49,25 @@ class EditFlowsetPage {
     }
 
     async selectStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, status).catch(async () => {
-            await utilCommon.selectDropDown('b48823c7-8eb0-4b30-bd9a-b44e53fcc195', status)
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, status).catch(async () => {
+            await utilityCommon.selectDropDown('b48823c7-8eb0-4b30-bd9a-b44e53fcc195', status)
         });
     }
 
     async selectProcessStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.processStatusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.processStatusGuid, status);
     }
 
     async selectProcessExecutionType(process: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.processExecutionTypeGuid, process);
+        await utilityCommon.selectDropDown(this.selectors.processExecutionTypeGuid, process);
     }
 
     async selectFunction(functionName: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.functionGuid, functionName);
+        await utilityCommon.selectDropDown(this.selectors.functionGuid, functionName);
     }
 
     async getStatusvalue(): Promise<string> {
+        console.log($(this.selectors.status).getText());
         return await $(this.selectors.status).getText();
     }
 
@@ -139,7 +96,7 @@ class EditFlowsetPage {
     }
 
     async searchProcessMappingName(processMappingName: string): Promise<boolean> {
-        await utilGrid.isGridRecordPresent(processMappingName, this.selectors.processMappingConsoleGuid);
+        await utilityGrid.isGridRecordPresent(processMappingName, this.selectors.processMappingConsoleGuid);
         return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).isPresent().then(async (result) => {
             if (result) {
                 return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).getText() == processMappingName ? true : false;
@@ -151,7 +108,7 @@ class EditFlowsetPage {
     }
 
     async searchAndOpenProcessMapping(processMappingName: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(processMappingName, this.selectors.processMappingConsoleGuid);
+        await utilityGrid.searchAndOpenHyperlink(processMappingName, this.selectors.processMappingConsoleGuid);
     }
 
     async isAddNewMappingBtnDisabled(): Promise<boolean> {
@@ -173,21 +130,7 @@ class EditFlowsetPage {
         await $(this.selectors.addNewMapping).click();
     }
 
-    async isSelectCompanyFldDisabled(): Promise<boolean> {
-        return await $(this.selectors.selectCompanyField).getAttribute("disabled") == "true";
-    }
-
-    async isSelectAgentFldDisabled(): Promise<boolean> {
-        return await $(this.selectors.selectAgentField).getAttribute("disabled") == "true";
-    }
-
-    async isAssociateResolutionCodeBtnDisabled(): Promise<boolean> {
-        return await $(this.selectors.associateResolutionCode).getAttribute("disabled") == "true";
-    }
-
-    async isAddResolutionCodeBtnDisabled(): Promise<boolean> {
-        return await $(this.selectors.addResolutionCode).getAttribute("disabled") == "true";
-    }
+  
 
     async getComapanyValue(): Promise<string> {
         return await $(this.selectors.companyValue).getText();

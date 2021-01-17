@@ -243,12 +243,13 @@ describe('Dynamic Hidden Data', () => {
     //ankagraw
     it('[3621,3620]: Verify hidden radio button should not present in dynamic field library', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
         await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
         expect(await createDynamicFieldLibraryConfigPo.isHiddenFieldPresent("Hidden")).toBeFalsy();
         await createDynamicFieldLibraryConfigPo.clickCancelButton();
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
         await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
         await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
         expect(await createDynamicGroupLibraryConfigPo.verifyTitle("Hidden")).toBeFalsy();

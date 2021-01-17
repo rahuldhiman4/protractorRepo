@@ -825,18 +825,18 @@ describe('Case Data Store', () => {
         let casetemplateddetails = await apiHelper.createCaseTemplate(casetemplateData);
         await apiHelper.createDynamicDataOnTemplate(casetemplateddetails.id, 'CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-        await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Templates - Settings - Business Workflows');
+        await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);
         let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'dynamicList'];
         for (let i = 0; i < arr.length; i++) {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('field not presnet ' + arr[i]);
         }
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
         for (let i = 0; i < arr.length; i++) {
-            await utilGrid.searchRecord(arr[i]);
+            await utilityGrid.searchRecord(arr[i]);
             expect(await dynamicFieldLibraryConfigConsolePo.isValueDisplayed('Field Description')).toContain(arr[i], 'field not peresent ' + arr[i]);
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.clearSearchBox();
         }
     });
 
@@ -1122,14 +1122,14 @@ describe('Case Data Store', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4878]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField' + randomStr);
             await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
             await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
             await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
             await createDynamicFieldLibraryConfigPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName('LibTextField' + randomStr);
             await createDynamicFieldLibraryConfigPo.setStatusValue('Active');
@@ -1137,7 +1137,7 @@ describe('Case Data Store', () => {
             await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
             await createDynamicFieldLibraryConfigPo.clickOnActiveConfidentialsCheckbox();
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent("Resolve the field validation errors"));
+            expect(await utilityCommon.isPopUpMessagePresent("Resolve the field validation errors"));
             expect(await createDynamicFieldLibraryConfigPo.getRequiredWarningMessage()).toBe("Value is required.")
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue('LibTextField' + randomStr);
@@ -1145,28 +1145,28 @@ describe('Case Data Store', () => {
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
         it('[4878]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
-            await utilGrid.searchAndOpenHyperlink('LibTextField' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink('LibTextField' + randomStr);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.clearLocalizeValue();
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent("Resolve the field validation errors"));
+            expect(await utilityCommon.isPopUpMessagePresent("Resolve the field validation errors"));
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue('NewLibTextField' + randomStr);
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
         it('[4878]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
-            await utilGrid.searchAndOpenHyperlink('NewLibTextField' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink('NewLibTextField' + randomStr);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue('NewLibTextField' + randomStr);
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
-            expect(await utilCommon.getWarningDialogMsg()).toBe("You have unsaved data. Do you want to continue without saving?");
-            await utilCommon.clickOnWarningOk();
+            //expect(await utilCommon.getWarningDialogMsg()).toBe("You have unsaved data. Do you want to continue without saving?");
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink('NewLibTextField' + randomStr);
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
+            await utilityGrid.searchAndOpenHyperlink('NewLibTextField' + randomStr);
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
         });
     });

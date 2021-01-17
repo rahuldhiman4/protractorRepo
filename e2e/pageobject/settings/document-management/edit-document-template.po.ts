@@ -1,7 +1,7 @@
 
 
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class EditDocumentTemplatePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -39,7 +39,7 @@ class EditDocumentTemplatePage {
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelDropDownGuid, value);
     }
 
     async isHeaderDisplayed(headerName: string): Promise<boolean> {

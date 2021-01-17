@@ -1,7 +1,8 @@
 import { resolve } from "path";
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
-import utilGrid from '../../../utils/util.grid';
+import utilityCommon from '../../../utils/utility.common';
+import utilityGrid from '../../../utils/utility.grid';
+
 
 
 class DocumentLibraryPage {
@@ -33,16 +34,16 @@ class DocumentLibraryPage {
         category2: '19bc0740-6a6c-4b56-8ff2-cfa0b49c9cd2',
         category3: 'dc6992ff-4013-442b-93fe-6f8aedaa55f5',
         category4: 'e99dc284-de1a-4908-b2d1-40e0b557a1d0',
-        region: 'cec69daa-b696-415b-b2ab-ebec81251d10',
+        region: '0ec41c10-47f1-494e-ac46-43b1b63aa253',
         site: '49033c1d-f1f7-48f5-94c4-a5a6a16c8c31',
         status: '0a8b7179-dd0a-47f9-8515-7c7aceda3118',
         editSaveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
         documentHamburgerGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',
         attachButton: '[rx-view-component-id="d9a66a3a-d637-45d7-bb1c-bd60a50c5914"] button',
-        attachmentMaxLimitMsgText: '.ux-attachment-maxlimit-warning',
+        attachmentMaxLimitMsgText: '[class="bwf-attachment-limit-warning my-1 p-1 ng-star-inserted"]',
         descriptionGuid: 'd66ee2b3-fb51-4b16-be2a-80e83d9e6e75',
         departmentGuid: '16c03e64-8767-490e-b32e-d712b8ec4fbe',
-        buisnessUnit: '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
+        buisnessUnit: '732fbb60-8861-484e-a233-817231bf510d',
         keyWordGuid: 'afdfcbdf-13c4-45ec-8870-f53a0bf32bac',
         cancelGuid: '00107b90-bb31-4776-a855-44fea128a0de',
         cancelButton: '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button',
@@ -60,59 +61,59 @@ class DocumentLibraryPage {
     }
 
     async attachmentTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.attachmentGuid, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.attachmentGuid, textValue);
     }
 
     async titleTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.titleGuid, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.titleGuid, textValue);
     }
 
     async descriptionTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.descriptionGuid, textValue);
     }
 
     async companyTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.companyFieldGuid, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.companyFieldGuid, textValue);
     }
 
     async departmentTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.departmentGuid, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.departmentGuid, textValue);
     }
 
     async buisnessUnitTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.buisnessUnit, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.buisnessUnit, textValue);
     }
 
     async OwnerGroupTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.ownerGroupFieldGuid, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.ownerGroupFieldGuid, textValue);
     }
 
     async keyWordTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.keyWordGuid, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.keyWordGuid, textValue);
     }
 
     async categoryTier1TextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.category1, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.category1, textValue);
     }
 
     async categoryTier2TextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.category2, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.category2, textValue);
     }
 
     async categoryTier3TextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.category3, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.category3, textValue);
     }
 
     async categoryTier4TextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.category4, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.category4, textValue);
     }
 
     async regionTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.region, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.region, textValue);
     }
 
     async siteTextPresent(textValue: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.site, textValue);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.site, textValue);
     }
 
     async saveTextPresent(textValue: string): Promise<boolean> {
@@ -139,19 +140,19 @@ class DocumentLibraryPage {
 
 
     async attachmentRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.attachmentGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.attachmentGuid);
     }
 
     async titleRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.titleGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.titleGuid);
     }
 
     async companyRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyFieldGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyFieldGuid);
     }
 
     async ownerGroupRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.ownerGroupFieldGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.ownerGroupFieldGuid);
     }
 
     async openAddNewDocumentBlade(): Promise<void> {
@@ -171,14 +172,14 @@ class DocumentLibraryPage {
     }
 
     async selectCompany(companyName: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyFieldGuid, companyName);
+        await utilityCommon.selectDropDown(this.selectors.companyFieldGuid, companyName);
     }
 
     async selectBusinessUnit(buisnessUnit: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.buisnessUnit, buisnessUnit);
+        await utilityCommon.selectDropDown(this.selectors.buisnessUnit, buisnessUnit);
     }
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerGroupFieldGuid, ownerGroupName);
+        await utilityCommon.selectDropDown(this.selectors.ownerGroupFieldGuid, ownerGroupName);
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -214,31 +215,31 @@ class DocumentLibraryPage {
     }
 
     async selectCategoryTier1(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.category1, categValue);
+        await utilityCommon.selectDropDown(this.selectors.category1, categValue);
     }
 
     async selectCategoryTier2(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.category2, categValue);
+        await utilityCommon.selectDropDown(this.selectors.category2, categValue);
     }
 
     async selectCategoryTier3(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.category3, categValue);
+        await utilityCommon.selectDropDown(this.selectors.category3, categValue);
     }
 
     async selectCategoryTier4(categValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.category4, categValue);
+        await utilityCommon.selectDropDown(this.selectors.category4, categValue);
     }
 
     async selectRegion(regionValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.region, regionValue);
+        await utilityCommon.selectDropDown(this.selectors.region, regionValue);
     }
 
     async selectSite(siteValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.site, siteValue);
+        await utilityCommon.selectDropDown(this.selectors.site, siteValue);
     }
 
     async selectStatus(statusValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.status, statusValue);
+        await utilityCommon.selectDropDown(this.selectors.status, statusValue);
     }
 
     async saveNewDocument(): Promise<void> {
@@ -252,7 +253,7 @@ class DocumentLibraryPage {
     }
 
     async clickOnSelectedGridRecord(documentLibraryColumnHeader: string): Promise<void> {
-        await utilGrid.clickOnSelectedGridRecord(this.selectors.documentHamburgerGuid, documentLibraryColumnHeader);
+        await utilityGrid.searchAndOpenHyperlink(this.selectors.documentHamburgerGuid, documentLibraryColumnHeader);
     }
 
     async isAttachmentButtonEnabled(): Promise<boolean> {

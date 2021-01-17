@@ -1,3 +1,4 @@
+import { compact } from "lodash";
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 
 import utilityGrid from  '../../../utils/utility.grid';
@@ -51,15 +52,17 @@ class ConsoleFlowset {
     }
 
     async isFlowsetPresentOnGrid(flowset: string): Promise<boolean> {
-        await utilityGrid.searchRecord(flowset);
-        return await element(by.cssContainingText('.ui-grid__link', flowset)).isPresent().then(async (result) => {
-            if(result){
-                return await element(by.cssContainingText('.ui-grid__link', flowset)).getText() == flowset ? true : false;
-            } else {
-                console.log("Flowset not present");
-                return false;
-            }
-        });
+         console.log(flowset);
+      return  await utilityGrid.isGridRecordPresent(flowset);
+        // console.log(flowset);
+        // return await element(by.cssContainingText('.ui-grid__link', flowset)).isPresent().then(async (result) => {
+        //     if(result){
+        //         return await element(by.cssContainingText('.ui-grid__link', flowset)).getText() == flowset ? true : false;
+        //     } else {
+        //         console.log("Flowset not present");
+        //         return false;
+        //     }
+        // });
     }
 
     async clearSearcBox(): Promise<void> {
@@ -67,8 +70,8 @@ class ConsoleFlowset {
     }
 
     async isDecriptionPresentOnGrid(description: string): Promise<boolean> {
-        await utilityGrid.searchRecord(description);
-        return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText() == description ? true : false;
+        return  await utilityGrid.isGridRecordPresent(description);
+        //return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText() == description ? true : false;
     }
 }
 

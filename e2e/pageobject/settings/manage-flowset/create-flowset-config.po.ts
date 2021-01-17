@@ -9,7 +9,7 @@ class CreateFlowset {
         flowsetNameGuid: '14b20169-66a4-476a-aa28-edbbbb4d7f31',
         flowset: '[rx-view-component-id="14b20169-66a4-476a-aa28-edbbbb4d7f31"] .form-control',//done
         descriptionGuid: '8dde5faf-fa57-4e4a-b6f7-59ae242e1022',
-        description: '[rx-view-component-id="8dde5faf-fa57-4e4a-b6f7-59ae242e1022"] .form-control',//done
+        description: '[rx-view-component-id="8dde5faf-fa57-4e4a-b6f7-59ae242e1022"] textarea',//done
         statusGuid: '49fb02c5-5dae-4b47-86e3-17739e6cff7d',
         savebutton: '[rx-view-component-id="ccdcd13c-0191-4e0c-a7b7-27d7d67f74cf"] button',
         cancelButton: '[rx-view-component-id="59a7093f-3289-4e3d-90ce-a7908a840de4"] button',

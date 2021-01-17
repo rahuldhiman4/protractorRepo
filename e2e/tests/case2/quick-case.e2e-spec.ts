@@ -644,7 +644,6 @@ describe("Quick Case", () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV796";
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
             let manualTaskTemplateData = {
                 "templateName": `manualTaskTemplateDraft ${randomStr}`,
                 "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
