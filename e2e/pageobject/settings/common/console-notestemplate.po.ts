@@ -1,5 +1,4 @@
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from "../../../utils/util.grid";
 import utilityGrid from "../../../utils/utility.grid";
 class ConsoleNotesTemplate {
 
