@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilCommon from "../../../utils/util.common";
-import utilGrid from "../../../utils/util.grid";
+import utilityGrid from "../../../utils/utility.grid";
 
 class CognitiveConsole {
 
@@ -17,37 +16,36 @@ class CognitiveConsole {
     }
 
     async isColumnSortedOnCategorization(value: string, sortType: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(value, sortType, this.selectors.categorizationConsoleGuid)
+        return await utilityGrid.isGridColumnSorted(value, sortType, this.selectors.categorizationConsoleGuid)
     }
 
     async addFilterOnCategorization(header: string, value: string, type: string): Promise<void> {
-        await utilGrid.addFilter(header, value, type, this.selectors.categorizationConsoleGuid)
+        await utilityGrid.addFilter(header, value, type, this.selectors.categorizationConsoleGuid)
     }
 
     async isRecordPresentOnCategorization(value: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(value, this.selectors.categorizationConsoleGuid)
+        return await utilityGrid.isGridRecordPresent(value, this.selectors.categorizationConsoleGuid)
     }
 
     async addColumnOnCategorization(value: string[]): Promise<void> {
-        await utilGrid.addGridColumn( this.selectors.categorizationConsoleGuid,value);
+        await utilityGrid.addGridColumn( value, this.selectors.categorizationConsoleGuid);
    }
 
     async isColumnSortedOnTemplate(value: string, sortType: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(value, sortType, this.selectors.templateConsoleGuid)
+        return await utilityGrid.isGridColumnSorted(value, sortType, this.selectors.templateConsoleGuid)
     }
 
     async addFilterOnTemplate(header: string, value: string, type: string): Promise<void> {
-        await utilGrid.addFilter(header, value, type, this.selectors.templateConsoleGuid)
+        await utilityGrid.addFilter(header, value, type, this.selectors.templateConsoleGuid)
     }
 
     async isRecordPresentOnTemplate(value: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(value, this.selectors.templateConsoleGuid)
+        return await utilityGrid.isGridRecordPresent(value, this.selectors.templateConsoleGuid)
     }
 
     async addColumnOnTemplate(value: string[]): Promise<void> {
-         await utilGrid.addGridColumn( this.selectors.templateConsoleGuid,value);
+         await utilityGrid.addGridColumn(value, this.selectors.templateConsoleGuid);
     }
-
 }
 
 export default new CognitiveConsole();

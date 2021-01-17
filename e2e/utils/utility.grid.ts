@@ -356,6 +356,12 @@ export class GridOperations {
                 await element(by.cssContainingText(this.selectors.filterCheckboxOptions, textValue)).click();
                 break;
             }
+
+            case "radioButton": {
+                await element(by.cssContainingText('.advanced-filter__radiobutton .radio__item span', textValue)).click();
+                break;
+            }
+
             case "date": {
                 await utilityCommon.setDateField(guid, textValue);
                 break;

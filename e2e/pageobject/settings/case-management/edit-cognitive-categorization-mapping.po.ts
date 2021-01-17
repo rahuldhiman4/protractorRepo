@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilCommon from "../../../utils/util.common";
-import utilGrid from "../../../utils/util.grid";
+import utilityCommon from "../../../utils/utility.common";
 
 class EditCategorizationMapping {
 
@@ -33,7 +32,7 @@ class EditCategorizationMapping {
     }
 
     async updateDataSet(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.datasetGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.datasetGuid, company);
     }
 
     async clickEnabledMapping(booleanValue: boolean): Promise<void> {
@@ -59,27 +58,27 @@ class EditCategorizationMapping {
     }
 
     async isMappingRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.mappingNameGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.mappingNameGuid)
     }
 
     async isCompanyTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid)
     }
 
     async isDatasetTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.datasetGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.datasetGuid)
     }
 
-    async isEnableMappingRequiredTextPresent(): Promise<string> {
-        return await $(this.selectors.enabledmappingRequiredText).getAttribute("required");
+    async isEnableMappingRequiredTextPresent(): Promise<boolean> {
+        return await utilityCommon.isRequiredTagToField(this.selectors.enabledmappingGuid)
     }
 
     async isConfidentialsLevelOfCategorizationTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.caseCreatedAutomaticallyGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.caseCreatedAutomaticallyGuid)
     }
 
     async isConfidentialsLevelByAgentRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.caseCreatedByAgentGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.caseCreatedByAgentGuid)
     }
 
     async getMaximumValueErrorMessage(): Promise<string> {
