@@ -70,7 +70,8 @@ class CaseEditPage {
         dynamciFieldDownLoadIcon: '.bwf-text-color-active',
         lobValue: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] button',
         lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .adapt-select',
-        assigneeValue: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] button'
+        assigneeValue: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] button',
+        dynamicFields: '.simple-field .form-control-label',
     }
 
     async removeAttachment(): Promise<void> {
@@ -90,8 +91,7 @@ class CaseEditPage {
     }
 
     async clickSaveCase(): Promise<void> {
-        let saveButton = this.selectors.saveCaseButton + '[disabled="disabled"]';
-        await browser.wait(this.EC.invisibilityOf($(saveButton)), 3000);
+        await utilityCommon.scrollToElement($(this.selectors.saveCaseButton));
         await $(this.selectors.saveCaseButton).click();
     }
 
@@ -137,12 +137,12 @@ class CaseEditPage {
     async updateLabel(label: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.labelGuid, label);
     }
-    
+
     async isCaseLabelValueDisplayed(labelName: string): Promise<boolean> {
-    return await element(by.cssContainingText(this.selectors.caseLabel, labelName)).isPresent().then(async (result) => {
-        if (result) return await element(by.cssContainingText(this.selectors.caseLabel, labelName)).isDisplayed();
-        else return false;
-    });
+        return await element(by.cssContainingText(this.selectors.caseLabel, labelName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.caseLabel, labelName)).isDisplayed();
+            else return false;
+        });
     }
 
     async updateCaseSite(caseSite: string): Promise<void> {
@@ -179,7 +179,7 @@ class CaseEditPage {
     }
 
     async isResolutionCodePresent(resolutionCode: string): Promise<boolean> {
-     return await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.resolutionCodeGuid, resolutionCode);
     }
 
     async isValuePresentInResolutionCode(resolutionCode: string): Promise<void> {
@@ -345,17 +345,20 @@ class CaseEditPage {
     }
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
-        let dynamicFieldLocator = `.simple-field .form-control-label`;
+        let dynamicFieldLocator = `[rx-view-component-id="465ce519-19f3-4d8f-8725-888255768aa7"] .simple-field .form-control-label`;
         let dynamicFields: number = await $$(dynamicFieldLocator).count();
-        for (let i = 0; i < dynamicFields; i++) {
+        await utilityCommon.scrollToElement($(dynamicFieldLocator));
+        let status: boolean = false;
+        for (let i: number = 0; i < dynamicFields; i++) {
             let field = await (await $$(dynamicFieldLocator).get(i).getText()).trim();
             if (fieldName == field) {
-                return true;
+                status = true;
+                break;
             }
         }
-        return false;
+        return status;
     }
-
+    
     async addAttachment(attachmentField: string, fileToUpload: string[]): Promise<void> {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
         let dynamicFieldLabel: number = await $$(this.selectors.dynamicFieldsName).count();
@@ -367,7 +370,7 @@ class CaseEditPage {
         }
     }
 
-     async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
+    async addDescriptionAttachment(fileToUpload: string[]): Promise<void> {
         const absPathArray = fileToUpload.map((curStr) => { return resolve(__dirname, curStr) });
         await $(this.selectors.attachmentField).sendKeys(absPathArray.join('\n'));
     }
@@ -427,9 +430,9 @@ class CaseEditPage {
     async getAssigneeValue(): Promise<string> {
         return await $(this.selectors.assigneeValue).getText();
     }
-	
-	async clickDownloadDynamicFile(downloadButtonNumber:number): Promise<void> {
-        await $$(this.selectors.dynamciFieldDownLoadIcon).get(downloadButtonNumber -1).click();
+
+    async clickDownloadDynamicFile(downloadButtonNumber: number): Promise<void> {
+        await $$(this.selectors.dynamciFieldDownLoadIcon).get(downloadButtonNumber - 1).click();
     }
 
     async getLobValue(): Promise<string> {
