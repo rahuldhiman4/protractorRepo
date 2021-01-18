@@ -6,8 +6,7 @@ import assignmentConfigConsolePo from '../../pageobject/settings/case-management
 import caseTemplateConsolePO from '../../pageobject/settings/case-management/console-casetemplate.po';
 import readAccessConsolePo from '../../pageobject/settings/case-management/read-access-console.po';
 import taskTemplateConsolePO from '../../pageobject/settings/task-management/console-tasktemplate.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilGrid from '../../utils/util.grid';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 import viewCasePo from '../../pageobject/case/view-case.po';
@@ -21,7 +20,6 @@ describe('Case Console', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qfeng');
-        await apiHelper.apiLogin('tadmin');
     });
 
     afterAll(async () => {
@@ -56,8 +54,8 @@ describe('Case Console', () => {
         await utilityGrid.clearFilter();
         await utilityGrid.addFilter('Summary', '5356-Summary', 'text');
         await utilityGrid.addGridColumn(['Source']);
-        expect(await utilityGrid.isGridColumnSorted('Source', 'asc')).toBeTruthy('Column is not sorted in ascending order');
-        expect(await utilityGrid.isGridColumnSorted('Source', 'desc')).toBeTruthy('Column is not sorted in descending order');
+        expect(await utilityGrid.isGridColumnSorted('Source', 'ascending')).toBeTruthy('Column is not sorted in ascending order');
+        expect(await utilityGrid.isGridColumnSorted('Source', 'descending')).toBeTruthy('Column is not sorted in descending order');
         await utilityGrid.removeGridColumn(['Source']);
     });
 
@@ -146,33 +144,36 @@ describe('Case Console', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await caseTemplateConsolePO.addColumnOnGrid([labelStr, caseCategoryTier4Str]);
-            await utilGrid.searchOnGridConsole(caseTemplateData.templateName);
+            await utilityGrid.searchRecordWithoutFilter(caseTemplateData.templateName);
             expect(await caseTemplateConsolePO.getFirstRecordValue(caseCategoryTier4Str)).toContain(caseTemplateData.categoryTier4);
             expect(await caseTemplateConsolePO.getFirstRecordValue(labelStr)).toContain(label);
             await caseTemplateConsolePO.removeColumnFromGrid([labelStr, caseCategoryTier4Str]);
 
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await taskTemplateConsolePO.addColumn([labelStr, taskCategoryTier4Str]);
-            await utilGrid.searchOnGridConsole('task template name ' + randomStr);
+            await utilityGrid.searchRecordWithoutFilter('task template name ' + randomStr);
             expect(await taskTemplateConsolePO.getFirstRecordValue(taskCategoryTier4Str)).toContain(taskTemplateData.category4);
             expect(await taskTemplateConsolePO.getFirstRecordValue(labelStr)).toContain(label);
             await taskTemplateConsolePO.removeColumn([labelStr, taskCategoryTier4Str]);
 
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePo.addColumns([labelStr, categoryTier4Str]);
-            await utilGrid.searchOnGridConsole('Assignment mapping name' + randomStr);
+            await utilityGrid.searchRecordWithoutFilter('Assignment mapping name' + randomStr);
             expect(await assignmentConfigConsolePo.getValueOnAssignmentConfigGrid(categoryTier4Str)).toContain(assignmentMappingData.categoryTier4);
             expect(await assignmentConfigConsolePo.getValueOnAssignmentConfigGrid(labelStr)).toContain(label);
             await assignmentConfigConsolePo.removeColumns([labelStr, categoryTier4Str]);
 
+            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await readAccessConsolePo.addColumns([labelStr, categoryTier4Str]);
-            await utilGrid.searchOnGridConsole('Read Access Mapping Name' + randomStr);
+            await utilityGrid.searchRecordWithoutFilter('Read Access Mapping Name' + randomStr);
             expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(categoryTier4Str)).toContain(readAccessMappingData.category4);
             expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(labelStr)).toContain(label);
             await readAccessConsolePo.removeColumns([labelStr, categoryTier4Str]);

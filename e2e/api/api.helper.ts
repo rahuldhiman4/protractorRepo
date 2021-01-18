@@ -1634,7 +1634,8 @@ class ApiHelper {
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
-        menuItemData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : menuItemData.fieldInstances[450000420].value;
+        //#LOB Comments
+        //menuItemData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : menuItemData.fieldInstances[450000420].value;
         if (data.uiVisible) {
             let valueOfVisiable = data.uiVisible;
             let uiVisiablePayload = {
@@ -2579,7 +2580,8 @@ class ApiHelper {
         caseReadAccess.fieldInstances[450000153].value = data.assignedCompany;
         caseReadAccess.fieldInstances[1000001437].value = data.configName;
         caseReadAccess.fieldInstances[1000000001].value = data.company;
-        caseReadAccess.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : caseReadAccess.fieldInstances[450000420].value;
+        //#LOB Comments
+        //caseReadAccess.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : caseReadAccess.fieldInstances[450000420].value;
         if (data.category1) {
             // let categoryTier1 = await apiCoreUtil.getCategoryGuid(data.category1);
             let category1Data = {

@@ -381,7 +381,7 @@ export class GridOperations {
                 break;
             }
         }
-        await $(refreshIcon).click();
+        await $(this.selectors.filterPresetBtn).click(); //Need to update once defect DRDMV-24648 is resolved
 
         if (hiddentFilter == true) {
             await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
