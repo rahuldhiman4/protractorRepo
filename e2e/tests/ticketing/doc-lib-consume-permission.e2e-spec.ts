@@ -386,6 +386,7 @@ describe('Document Library Consume Permission', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
+            await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await utilityCommon.closePopUpMessage();
             await previewCasePo.clickGoToCaseButton();
@@ -405,10 +406,15 @@ describe('Document Library Consume Permission', () => {
             expect(await attachDocumentBladePo.isDocumentInfoDisplayed(documentDate)).toBeTruthy('Failure: Date is missing');
             expect(await attachDocumentBladePo.isDocumentInfoDisplayed('bwfJpg.jpg')).toBeTruthy('Failure: File name is missing');
         });
+        
         it('[4747]: Search and UI Validation of document library search view', async () => {
             await attachDocumentBladePo.searchRecord('%');
             expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 1')).toBeTruthy('Failure: Operational Category 1 is missing2');
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 2')).toBeFalsy('Failure: Operational Category 2 is missing');
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 3')).toBeFalsy('Failure: Operational Category 3 is missing');
+            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 4')).toBeFalsy('Failure: Operational Category 4 is missing');
 
             expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Employee Relations')).toBeTruthy('Failure: Operational Category 1 is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
@@ -422,15 +428,10 @@ describe('Document Library Consume Permission', () => {
             expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Retention Bonus')).toBeFalsy('Failure: Operational Category 4 is displayed');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            // Verify Category Tier 1/2/3/4  on UI
-            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 1')).toBeTruthy('Failure: Operational Category 1 is missing2');
-            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 2')).toBeFalsy('Failure: Operational Category 2 is missing');
-            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 3')).toBeFalsy('Failure: Operational Category 3 is missing');
-            expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 4')).toBeFalsy('Failure: Operational Category 4 is missing');
 
+            await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');
             await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
             await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
-            await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');
             await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
@@ -446,6 +447,7 @@ describe('Document Library Consume Permission', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
             expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
         });
+        
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });

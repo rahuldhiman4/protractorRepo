@@ -25,7 +25,7 @@ class EditTaskTemplate {
         priority: '0cf493f2-9e6b-4f23-bf3e-ba210c2baef8',
         saveMetadata: '[rx-view-component-id="39f08c8c-48ad-450e-b5f2-f379a4432666"] button',
         cancelMetadata: '[rx-view-component-id="209049eb-ef6d-4ddd-8ee4-257ff7a878e5"] button',
-        label: '11b0e7ec-10f6-4ecf-a69f-b513d68fa45d',
+        label: 'c91563b8-e6c0-466e-83f5-68d76a4715f2',
         templateStatusAttribute: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] button',
         mangeDynamicField: '[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] .d-icon-left-pencil',
         dynamicField: '[rx-view-component-id="60aedaf2-92a3-433f-8024-34e26e71350c"] .d-textfield__item',
