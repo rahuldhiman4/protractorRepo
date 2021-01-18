@@ -9,7 +9,7 @@ class createNotesTemplate {
         status: 'a6f36df8-bb54-405f-ab71-7ac3b4b3e71d',
         company: '8072a3c4-6972-4760-86be-d5526dac8c8d',
         language: '951065ca-a003-4465-aed5-9623a689fd4f',
-        insertField: '[rx-view-component-id="96169de5-0dff-4627-8834-ffc528787e4e"] .cke_button__expressioneditor',
+        insertField: '.cke_button__rtfexpressioneditor_icon',
         body: '.cke_wysiwyg_div',
         saveButton: '[rx-view-component-id="d735ac20-de9c-4b76-a226-2d9c577d4bd0"] button',
         cancelButton: '[rx-view-component-id="85dcb9ba-5367-4f65-8613-920291ce4786"] button',

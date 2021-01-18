@@ -1,5 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class EditDocumentLibraryPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -16,7 +16,7 @@ class EditDocumentLibraryPage {
         deleteDocWarningMsg: '[rx-view-component-id="c652354a-1524-4235-b1db-6b397fc9699a"] span',
         deleteDocWarningMsgYesButton: '[rx-view-component-id="e40ad54c-ad9a-480a-aa63-a8b399caf20e"] button',
         attachmentField: '[rx-view-component-id="8cfc0c35-081a-40cb-ae85-527045bede0c"] button',
-        bussinessUnit: '[rx-view-component-id="43f01d2a-f8cc-450d-9209-5ac53426f3bb"] .btn-default',
+        bussinessUnit: '[rx-view-component-id="86e2e239-6f18-416b-b3e4-3a1a60155443"] .btn',
         department: '[rx-view-component-id="04c57da2-5942-407c-9f87-5670a08ab18e"] .btn-default',
         shareExternallyToggleButton: '[rx-view-component-id="422e33d2-be19-42f7-985b-af73daf4d87f"] button',
         shareExternallyToggleButtonGuid: '422e33d2-be19-42f7-985b-af73daf4d87f',
@@ -31,7 +31,7 @@ class EditDocumentLibraryPage {
         regionGuid: '14f9b86f-8225-44a1-aa29-b6b463244f01',
         site: '[rx-view-component-id="b22d4dc1-83b5-4b06-a2c0-10e3865fb46e"] button',
         siteGuid: '6b73d5aa-fdeb-4d10-aa35-14e842e35a95',
-        businessUnitGuid: '43f01d2a-f8cc-450d-9209-5ac53426f3bb',
+        businessUnitGuid: '86e2e239-6f18-416b-b3e4-3a1a60155443',
         tabs: 'ul[role="tablist"] li',
         supportGroupAccessButton: '.rx-case-access-block .ac-manage-support',
         addCompany: 'button[id="rx-select-31"]',
@@ -57,25 +57,25 @@ class EditDocumentLibraryPage {
         lobValue: '[rx-view-component-id="274abed1-8498-4e92-b83b-bce68788f333"] .pull-left'
     }
     async setCategoryTier1(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.categoryTier1Guid, value);
+        await utilityCommon.selectDropDown(this.selectors.categoryTier1Guid, value);
     }
 
     async setRegion(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.regionGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.regionGuid, value);
     }
 
     async setSite(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.siteGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.siteGuid, value);
     }
 
     async setShareExternallyToggleButton(value: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.shareExternallyToggleButtonGuid, value);
+        await utilityCommon.selectToggleButton(this.selectors.shareExternallyToggleButtonGuid, value);
     }
     async selectBusinessUnit(bussinessUnit: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.businessUnitGuid, bussinessUnit)
+        await utilityCommon.selectDropDown(this.selectors.businessUnitGuid, bussinessUnit)
     }
     async selectOwnerGroup(ownerGroup: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerGroupGuid, ownerGroup);
+        await utilityCommon.selectDropDown(this.selectors.ownerGroupGuid, ownerGroup);
     }
 
     async selectAddCompanyDropDownOfReadAccess(value: string): Promise<void> {
@@ -153,27 +153,27 @@ class EditDocumentLibraryPage {
         if (dropdownName == 'Add Company') {
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addCompanyAddButton)));
             await $$(this.selectors.addCompanyAddButton).get(0).click();
-            //            await utilCommon.waitUntilSpinnerToHide();
+            //            await utilityCommon.waitUntilSpinnerToHide();
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
         }
         else if (dropdownName == 'Add Business Unit') {
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addBussinessUnitAddButton)));
             await $(this.selectors.addBussinessUnitAddButton).click();
-            //            await utilCommon.waitUntilSpinnerToHide();
+            //            await utilityCommon.waitUntilSpinnerToHide();
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
         }
 
         else if (dropdownName == 'Add Support Department') {
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportDepartmentAddButton)));
             await $(this.selectors.addSupportDepartmentAddButton).click();
-            //            await utilCommon.waitUntilSpinnerToHide();
+            //            await utilityCommon.waitUntilSpinnerToHide();
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
         }
 
         else if (dropdownName == 'Add Support Group') {
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.addSupportGroupAddButton)));
             await $$(this.selectors.addSupportGroupAddButton).get(1).click();
-            //            await utilCommon.waitUntilSpinnerToHide();
+            //            await utilityCommon.waitUntilSpinnerToHide();
             //            await browser.wait(this.EC.elementToBeClickable($(this.selectors.readAcessCrossButton)));
         }
         else {
@@ -183,7 +183,7 @@ class EditDocumentLibraryPage {
 
     async selectSupportGroupDropDownValue(value: string): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportGroup)));
-        await utilCommon.selectDropDown(this.selectors.addSupportGroup, value);
+        await utilityCommon.selectDropDown(this.selectors.addSupportGroup, value);
     }
 
     async clickOnSupportGroupAddButton(): Promise<void> {
@@ -194,7 +194,7 @@ class EditDocumentLibraryPage {
 
     async isStatusDropDownvalueMatches(dropDownValues: string[]): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.cancelButton)));
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusGuid, dropDownValues)
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusGuid, dropDownValues)
     }
 
     async getDeleteWarningMsgText(message: string): Promise<string> {
@@ -208,7 +208,7 @@ class EditDocumentLibraryPage {
     }
 
     async selectStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -504,11 +504,11 @@ class EditDocumentLibraryPage {
     }
 
     async getRegionSelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+        return await utilityCommon.getSelectedFieldValue(fieldName);
     }
 
     async getSiteSelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+        return await utilityCommon.getSelectedFieldValue(fieldName);
     }
 
     async getCategoryTier4(): Promise<string> {

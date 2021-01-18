@@ -27,6 +27,7 @@ import utilityCommon from '../../utils/utility.common';
 import createDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-group-library-config.po';
 import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-group-library-config-console.po';
 import editDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-group-library-config.po';
+import utilityGrid from '../../utils/utility.grid';
 
 
 describe('Dynamic Library Configuration', () => {
@@ -106,7 +107,7 @@ describe('Dynamic Library Configuration', () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
             let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential"];
             let header: string[] = ["InformationSource", "Confidential"]
@@ -114,18 +115,18 @@ describe('Dynamic Library Configuration', () => {
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();
             await dynamicFieldLibraryConfigConsolePo.addColumnOnGrid(header);
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(updatedHeaders)).toBeTruthy();
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Description")).toBeTruthy("asc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Description")).toBeTruthy("desc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Name")).toBeTruthy("asc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Name")).toBeTruthy("desc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Value Type")).toBeTruthy("asc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Value Type")).toBeTruthy("desc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Status")).toBeTruthy("asc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Status")).toBeTruthy("desc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("InformationSource")).toBeTruthy("asc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("InformationSource")).toBeTruthy("desc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Confidential")).toBeTruthy("asc");
-            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Confidential")).toBeTruthy("desc");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Description")).toBeTruthy("ascending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Description")).toBeTruthy("descending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Name")).toBeTruthy("ascending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Name")).toBeTruthy("descending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Value Type")).toBeTruthy("ascending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Value Type")).toBeTruthy("descending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Status")).toBeTruthy("ascending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Status")).toBeTruthy("descending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("InformationSource")).toBeTruthy("ascending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("InformationSource")).toBeTruthy("descending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Confidential")).toBeTruthy("ascending");
+            expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Confidential")).toBeTruthy("descending");
 
         });
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
@@ -197,21 +198,21 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
         });
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Field Value Type", "LIST", "checkbox");
-            expect(await utilGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("InformationSource", "Requester", "checkbox");
-            expect(await utilGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Confidential", "False", "checkbox");
-            expect(await utilGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Field Value Type", "LIST", "checkbox");
+            expect(await utilityGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("InformationSource", "Requester", "checkbox");
+            expect(await utilityGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Confidential", "False", "checkbox");
+            expect(await utilityGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
+            await utilityGrid.clearFilter();
         });
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
-            await utilGrid.searchAndOpenHyperlink('ABCDEFGHIJKLMNOPQRSTUVWXYZ' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('ABCDEFGHIJKLMNOPQRSTUVWXYZ' + randomString );
             expect(await editDynamicFieldLibraryConfigPo.isFieldNameAttribute("readOnly")).toBeTruthy();
-            expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("disabled")).toBeTruthy();
+            expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("aria-disabled")).toBeTruthy();
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue(randomString + "ABCDEFGHIJKLMNOPQRSTUVWXYZ");
             await localizeValuePopPo.clickOnSaveButton();
@@ -219,7 +220,7 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
 
-            await utilGrid.searchAndOpenHyperlink('123456789' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('123456789' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue("123456789" + randomString);
             await localizeValuePopPo.clickOnSaveButton();
@@ -228,7 +229,7 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
-            await utilGrid.searchAndOpenHyperlink('ABC1237GC234wer324werfer7df' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('ABC1237GC234wer324werfer7df' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue(randomString + "ABC1237GC234wer324werfer7df");
             await localizeValuePopPo.clickOnSaveButton();
@@ -236,7 +237,7 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
 
-            await utilGrid.searchAndOpenHyperlink('@#$%^&*()_-++{[}' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('@#$%^&*()_-++{[}' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue(randomString + '@#$%^&*()_-++{[}');
             await localizeValuePopPo.clickOnSaveButton();
@@ -245,7 +246,7 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
-            await utilGrid.searchAndOpenHyperlink('Field 123 Test_1' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('Field 123 Test_1' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue(randomString + "Field 123 Test_1");
             await localizeValuePopPo.clickOnSaveButton();
@@ -253,7 +254,7 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
 
-            await utilGrid.searchAndOpenHyperlink('List' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('List' + randomString);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue(randomString + 'List');
             await localizeValuePopPo.clickOnSaveButton();
@@ -785,7 +786,7 @@ describe('Dynamic Library Configuration', () => {
 
         it('[4067]: [Dynamic Data Group] - Add dynamic group to dynamic field group library', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
             await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
             expect(await createDynamicGroupLibraryConfigPo.verifyTitle('Create Group')).toBeTruthy("Dynamic Group Library Screen title did not matched");
             expect(await createDynamicGroupLibraryConfigPo.isDynamicGroupNameRequiredText()).toBeTruthy();
@@ -799,13 +800,14 @@ describe('Dynamic Library Configuration', () => {
             expect(await createDynamicGroupLibraryConfigPo.getDynamicGroupWarningMessage()).toBe(dynamicGroupWarningText);
 
             await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
+            await createDynamicGroupLibraryConfigPo.expandDynamicField();
             await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
             await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
 
-            await utilGrid.searchAndOpenHyperlink(dynamicGrpText);
+            await utilityGrid.searchAndOpenHyperlink(dynamicGrpText);
             expect(await editDynamicGroupLibraryConfigPo.getDynamicGroupName()).toBe(dynamicGrpText);
             expect(await editDynamicGroupLibraryConfigPo.getDynamicGroupDisplayLabel()).toBe(dynamicGrpDisplayLabel);
             expect(await editDynamicGroupLibraryConfigPo.getDynamicGroupLineOfBusiness()).toBe('Human Resource');
@@ -814,52 +816,53 @@ describe('Dynamic Library Configuration', () => {
 
             await editDynamicGroupLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
-            await editDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText+"updated");
-            await editDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
+            await createDynamicGroupLibraryConfigPo.expandDynamicField(2);
+            await editDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText+"updated",2);
+            await editDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc,2);
             await editDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
         });
 
         it('[4067]: Verify if dynamic fields groups are accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
         });
 
         it('[4067]: Verify if dynamic fields groups are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case BA.');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case BA.');
         });
 
         it('[4067]: Verify if dynamic fields groups are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case Manager.');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case Manager.');
         });
 
         it('[4067]: Verify if dynamic fields groups are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is displayed to different company but same LOB Case BA.');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is displayed to different company but same LOB Case BA.');
         });
 
         it('[4067]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
-            await loginPage.login('jbarnes');
+            await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Group Management Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
             await createDynamicGroupLibraryConfigPo.setDynamicGroupName(dynamicGrpText);
             await createDynamicGroupLibraryConfigPo.clickOnDisplayLabelocalizedLink();
@@ -867,17 +870,18 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
 
             await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
+            await createDynamicGroupLibraryConfigPo.expandDynamicField();
             await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
             await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic group with same name and line of business already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12423): Dynamic group with same name and line of business already exists.')).toBeTruthy("Error message absent");
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[4067]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
             await createDynamicGroupLibraryConfigPo.setDynamicGroupName(dynamicGrpText);
             await createDynamicGroupLibraryConfigPo.clickOnDisplayLabelocalizedLink();
@@ -885,13 +889,14 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
 
             await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
+            await createDynamicGroupLibraryConfigPo.expandDynamicField();
             await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
             await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            expect(await utilGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
 
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
 
         afterAll(async () => {

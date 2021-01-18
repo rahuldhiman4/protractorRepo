@@ -88,12 +88,9 @@ describe('Dynamic Confidentials Data', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.setDynamicFieldValue("LocalNonConfidentialDesc", "Test 1");
             await editCasePo.setDynamicFieldValue("LocalConfidentialDesc", "1234");
-            await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Petramco');
             await changeAssignmentBladePo.selectBusinessUnit("United Kingdom Support");
             await changeAssignmentBladePo.selectSupportGroup('GB Support 2');
-            await changeAssignmentBladePo.selectAssignToSupportGroup();
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
         });
         it('[4058]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {
@@ -426,7 +423,7 @@ describe('Dynamic Confidentials Data', () => {
         });
         it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             expect(await createDynamicFieldLibraryConfigPo.isConfidentialsRadioButtonDisplayed()).toBeTruthy("isConfidentialsRadioButtonDisplayed");
             expect(await createDynamicFieldLibraryConfigPo.isFieldNameRequiredText()).toBeTruthy("isFieldNameRequiredText");
@@ -448,16 +445,14 @@ describe('Dynamic Confidentials Data', () => {
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
         it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink('LibTextField' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink('LibTextField' + randomStr);
             expect(await editDynamicFieldLibraryConfigPo.isFieldNameRequiredText()).toBeTruthy("isFieldNameRequiredText");
             expect(await editDynamicFieldLibraryConfigPo.isFieldDescriptionRequiredText()).toBeTruthy("isFieldDescriptionRequiredText");
             expect(await editDynamicFieldLibraryConfigPo.isStatusRequiredText()).toBeTruthy("isStatusRequiredText");
             expect(await editDynamicFieldLibraryConfigPo.isInformationSoucreRequiredText()).toBeTruthy("isInformationSoucreRequiredText");
             expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeRequiredText()).toBeTruthy("isFieldValueTypeRequiredText");
             expect(await editDynamicFieldLibraryConfigPo.isFieldNameAttribute("readonly")).toBe("true");
-            expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("disabled")).toBe("true");
+            expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("aria-disabled")).toBe("true");
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue('LibTextField' + randomStr);
             await localizeValuePopPo.clickOnSaveButton();
@@ -469,7 +464,7 @@ describe('Dynamic Confidentials Data', () => {
 
         it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Templates - Settings - Business Workflows');
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
@@ -479,13 +474,13 @@ describe('Dynamic Confidentials Data', () => {
             await dynamicField.setDescriptionName("test 123" + randomStr);
             await dynamicField.clickEnabledConfidentialsRadioButton();
             await dynamicField.clickSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Templates - Settings - Business Workflows');
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
             expect(await dynamicField.isConfidentialsRadioButtonDisplayed()).toBeTruthy();
@@ -493,7 +488,7 @@ describe('Dynamic Confidentials Data', () => {
             await dynamicField.setDescriptionName("test 123" + randomStr);
             await dynamicField.clickEnabledConfidentialsRadioButton();
             await dynamicField.clickSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
     });
 });

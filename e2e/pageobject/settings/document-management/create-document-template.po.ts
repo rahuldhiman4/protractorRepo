@@ -1,5 +1,5 @@
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class CreateDocumentTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,7 +12,7 @@ class CreateDocumentTemplate {
         documentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] div.cke_wysiwyg_div',
         saveButton: '[rx-view-component-id="01906a54-d879-427b-a057-a5c5d4834487"] button',
         cancelButton: '[rx-view-component-id="cfab43d9-cdba-4bec-99f3-6aefdf9fae9d"] button',
-        pageHeader: '.modal-title',
+        pageHeader: '.dp-title',
         insertFieldLinkOnDocumentBody: 'a[id="cke_47"]',
         clickImageButton: '[class="cke_button_icon cke_button__image_icon"]',
         dynamicField: '[class="cke_contents cke_reset"] span',
@@ -52,11 +52,11 @@ class CreateDocumentTemplate {
     }
 
     async selectLabelDropDown(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.labelDropDownGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.labelDropDownGuid, value);
     }
 
     async setCompany(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.company, value);
+        await utilityCommon.selectDropDown(this.selectors.company, value);
     }
 
     async setDescription(value: string): Promise<void> {
@@ -96,7 +96,7 @@ class CreateDocumentTemplate {
                 break;
             }
             case "Description": {
-                guid = 'e976be62-48e8-4b2a-8db5-713843068652';
+                guid = '933dd491-7d55-4735-b30a-f2826afe1461';
                 break;
             }
             case "Document Body": {
@@ -112,7 +112,7 @@ class CreateDocumentTemplate {
                 break;
             }
         }
-        return await utilCommon.isRequiredTagToField(guid);
+        return await utilityCommon.isRequiredTagToField(guid);
     }
 
     async getLobValue(): Promise<string> {

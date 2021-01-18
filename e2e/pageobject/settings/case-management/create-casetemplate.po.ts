@@ -79,7 +79,7 @@ class CreateCaseTemplate {
     }
 
     async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
-        await utilityCommon.selectToggleButton(this.selectors.resolveCaseOnLastTaskCompletion, value);
+        await utilityCommon.switchSlider(this.selectors.resolveCaseOnLastTaskCompletion, value);
     }
 
     async setCategoryTier2(tier2Value: string): Promise<void> {

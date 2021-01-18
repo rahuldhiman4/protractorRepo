@@ -78,7 +78,7 @@ describe('Edit Case', () => {
         await editCasePage.clickChangeAssignmentButton();
         await expect(changeAssignmentPage.isCompanyDrpDwnDisplayed()).toBeTruthy();
         await expect(changeAssignmentPage.isDepartmentDrpDwnDisplayed()).toBeTruthy();
-        await expect(changeAssignmentPage.isBusinessUnitDrpDwnDisplayed()).toBeTruthy();
+        await expect(changeAssignmentPage.isBuisnessUnitDrpDwnDisplayed()).toBeTruthy();
         await expect(changeAssignmentPage.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
         await expect(changeAssignmentPage.isAssigneeListPresent()).toBeTruthy();
         await changeAssignmentPage.clickOnCancelButton();
@@ -127,11 +127,8 @@ describe('Edit Case', () => {
         expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
 
         await viewCasePage.clickEditCaseButton();
-        await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectBusinessUnit('Australia Support');
         await changeAssignmentPage.selectSupportGroup('AU Support 1');
-        await changeAssignmentPage.selectAssignToSupportGroup();
-        await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         expect(await viewCasePage.getAssignedGroupText()).toBe('AU Support 1');
         await activityTabPo.clickShowMoreLinkInActivity(1);
@@ -150,11 +147,8 @@ describe('Edit Case', () => {
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.isTextPresentInActivityLog('US Support 3')).toBeTruthy();
         await viewCasePage.clickEditCaseButton();
-        await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.selectBusinessUnit('HR Support');
         await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
-        await changeAssignmentPage.selectAssignToSupportGroup();
-        await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         await utilCommon.closePopUpMessage();
     });

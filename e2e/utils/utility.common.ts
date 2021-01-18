@@ -32,8 +32,10 @@ export class Utility {
         closedWarningTab: '.btn-cross',
         warningText: '.modal-content p',
         warningWindowCloseBtn: '.modal-content button',
-
-
+        buttonText: 'button[adapt-button] span, button[adapt-button]',
+        warningDialog: '.modal-content',
+        warningMsgText: '.modal-title',
+        warningDialogMsg: '.modal-content .modal-body span'
     }
 
     async selectDropDown(guid: string | ElementFinder, value: string): Promise<void> {
@@ -225,6 +227,31 @@ export class Utility {
                     return value.trim().substring(3, value.length - 2) === 'required';
                 } else return false;
             });
+        }
+        return isRequired;
+    }
+
+    /*
+      identifier should be guid or locator of element
+      if required tag is present as text in dom, pass guid
+      and if required tag is present is hidden from dom, pass Locator
+    */
+    async isRequiredTagPresent(identifier: string | ElementFinder): Promise<boolean> {
+        let isRequired: boolean = false;
+        if (typeof identifier === 'string') {
+            isRequired = await $(`[rx-view-component-id="${identifier}"] .form-control-required`).isPresent();
+            let nameElement = `[rx-view-component-id="${identifier}"] adapt-rx-control-label .form-control-required`;
+            isRequired = await $(nameElement).isPresent().then(async (result) => {
+                if (result) {
+                    let value = await $(nameElement).getText();
+                    return value.includes('required');
+                } else return false;
+            });
+        }
+        else {
+            let nameElement = identifier;
+            let value: string = await this.getTextFromAfterTag(nameElement);
+            isRequired = value.includes('required');
         }
         return isRequired;
     }
@@ -510,6 +537,36 @@ export class Utility {
         let textAfterTag: string = await browser.executeScript('return window.getComputedStyle(arguments[0], ":after").content;', nameElement.getWebElement());
         return textAfterTag;
     }
+
+    async isButtonVisible(buttonName: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.buttonText, buttonName)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.buttonText, buttonName)).isDisplayed();
+        })
+    }
+
+    async switchSlider(guid: string, value: boolean): Promise<void> {
+        let slider = `[rx-view-component-id="${guid}"] adapt-switcher input`
+        let isSliderSelected = await $(slider).getAttribute('aria-checked') == 'true';
+        if (value && isSliderSelected) console.log('Field is already selected as true');
+        else if ((value && !isSliderSelected) || (!value && isSliderSelected)) await $(slider).click();
+        if (!value && !isSliderSelected) console.log('Field is already selected as false');
+    }
+
+    async isWarningDialogBoxDisplayed(): Promise<boolean> {
+        return await $(this.selectors.warningDialog).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.warningDialog).isDisplayed();
+            else return false;
+        });
+    }
+
+    async getWarningDialogTitle(): Promise<string> {
+        return await $(this.selectors.warningMsgText).getText();
+    }
+
+    async getWarningDialogMsg(): Promise<string> {
+        return await $(this.selectors.warningDialogMsg).getText();
+    }
+
 }
 
 export default new Utility();

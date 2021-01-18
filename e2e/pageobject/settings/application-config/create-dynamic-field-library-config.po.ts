@@ -1,3 +1,4 @@
+import utilityCommon from '../../../utils/utility.common';
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
 
@@ -16,8 +17,8 @@ class CreateDynamicFieldLibrary {
         informationSource: 'b9b14785-4b48-4fde-83ac-dc012eb36858',
         saveButton: '[rx-view-component-id="2f8db2c3-2352-4732-81b9-fdaf46ccbde7"] button',
         activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[aria-label="True"]',
-        requiredWarningmessage: '.localized-character-field-design div',
-        lobValue: '[rx-view-component-id="a9446eac-d1a5-4bff-8915-51aac36918e6"] .pull-left'
+        requiredWarningmessage: 'div.field-validation-error',
+        lobValue: '[rx-view-component-id="a9446eac-d1a5-4bff-8915-51aac36918e6"] .pull-left',
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -44,24 +45,23 @@ class CreateDynamicFieldLibrary {
     }
 
     async isFieldNameRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fieldNameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.fieldNameGuid);
     }
 
     async isFieldDescriptionRequiredText(): Promise<boolean> {
-        let fieldDescriptionRequired = await $('[rx-view-component-id="827cea0b-82d6-4741-8051-1cc52b83b770"] .d-textfield__item');
-        return await utilCommon.isRequiredTagToFieldElement(fieldDescriptionRequired);
+        return await utilityCommon.isRequiredTagToField(this.selectors.fieldDescriptionGuid);
     }
 
     async isStatusRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.status);
+        return await utilityCommon.isRequiredTagToField(this.selectors.status);
     }
 
     async isFieldValueTypeRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.fieldValueType);
+        return await utilityCommon.isRequiredTagToField(this.selectors.fieldValueType);
     }
 
     async isInformationSoucreRequiredText(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.informationSource);
+        return await utilityCommon.isRequiredTagToField(this.selectors.informationSource);
     }
 
     async clickOnLocalizeButton(): Promise<void> {
@@ -69,27 +69,27 @@ class CreateDynamicFieldLibrary {
     }
 
     async setFieldValueType(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.fieldValueType, value)
+        await utilityCommon.selectDropDown(this.selectors.fieldValueType, value)
     }
 
     async isFieldValueTypeDropDownPresent(value: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.fieldValueType, value)
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.fieldValueType, value)
     }
 
     async isStatusDropDownPresent(value: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.status, value)
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.status, value)
     }
 
     async isInformationSourceDropDownPresent(value: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.informationSource, value)
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.informationSource, value)
     }
 
     async setInformationSourceValueType(value: string) {
-        await utilCommon.selectDropDown(this.selectors.informationSource, value);
+        await utilityCommon.selectDropDown(this.selectors.informationSource, value);
     }
 
     async setStatusValue(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.status, value)
+        await utilityCommon.selectDropDown(this.selectors.status, value)
     }
 
     async isHiddenFieldPresent(value: string): Promise<boolean> {

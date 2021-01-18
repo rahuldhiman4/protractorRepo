@@ -10,7 +10,6 @@ class DynamicFieldLibraryConsole {
         gridGuid: '0e836043-77c3-4c3f-bc86-64ecda4e1e42',
     }
 
-    
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
         await utilityGrid.addGridColumn(columnHeader, this.selectors.gridGuid);
     }
@@ -44,11 +43,11 @@ class DynamicFieldLibraryConsole {
     }
 
     async isRequestedColumnSortedAscending(columnName: string): Promise<boolean> {
-        return await utilityGrid.isGridColumnSorted(columnName, "asc", this.selectors.gridGuid);
+        return await utilityGrid.isGridColumnSorted(columnName, "ascending", this.selectors.gridGuid);
     }
 
     async isRequestedColumnSortedDescending(columnName: string): Promise<boolean> {
-        return await utilityGrid.isGridColumnSorted(columnName, "desc", this.selectors.gridGuid);
+        return await utilityGrid.isGridColumnSorted(columnName, "descending", this.selectors.gridGuid);
     }
 
 

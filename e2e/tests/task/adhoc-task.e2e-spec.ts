@@ -408,11 +408,8 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Assignee validation3', async () => {
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
             await changeAssignmentBladePo.selectSupportGroup('US Support 1');
-            await changeAssignmentBladePo.selectAssignToSupportGroup();
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
@@ -436,11 +433,8 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
             await changeAssignmentBladePo.selectSupportGroup('US Support 1');
-            await changeAssignmentBladePo.selectAssignToSupportGroup();
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
@@ -477,11 +471,8 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Second Task validation2', async () => {
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
             await changeAssignmentBladePo.selectSupportGroup('US Support 1');
-            await changeAssignmentBladePo.selectAssignToSupportGroup();
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
@@ -505,11 +496,8 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
             await changeAssignmentBladePo.selectSupportGroup('US Support 1');
-            await changeAssignmentBladePo.selectAssignToSupportGroup();
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');

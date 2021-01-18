@@ -4,18 +4,18 @@ class ServiceTargetEditConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        statusFields: 'span[aria-label="Status activate"]',
-        description: 'input[aria-label="Description"]',
-        buildExpressionButton: 'button[ng-click*="createNewExpression"]',
-        goalDays: 'input[ng-model*="recordData[field.days.id]"]',
-        goalHours: 'input[ng-model*="recordData[field.hours.id]"]',
-        goallMinutes: 'input[ng-model*="recordData[field.minutes.id]"]',
-        expandSection: 'a.accordion-toggle span',
-        setWarningStatus: 'input[ng-model*="warningLevelPercentatge"]',
-        addMiletoneButton: 'button[aria-label="Add a milestone"]',
-        deleteMilestoneButton: 'button[aria-label="Delete the selected milestone"]',
-        editMilestoneButton: 'button[aria-label="Edit the selected milestone"]',
-        saveButton: 'button[ng-click*="submitForm"]'
+        statusFields: '[rx-view-component-id="88b4a2e0-8646-4cff-b337-e99eb00c9745"] button div',
+        description: '[rx-view-component-id="361c10e5-f7b8-4ce9-bb96-7ebd1420ca67"] input',
+        buildExpressionButton: '[rx-view-component-id="5f99b4c8-0fd5-446e-aa32-9643fbf083cb"] button',
+        goalDays: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[2]//*[contains(@class,'adapt-counter__content')]//input`,
+        goalHours: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[4]//*[contains(@class,'adapt-counter__content')]//input`,
+        goallMinutes: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[6]//*[contains(@class,'adapt-counter__content')]//input`,
+        expandSection: '.adapt-accordion .card .text-direction span',
+        setWarningStatus: 'input#warning-status',
+        addMiletoneButton: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-plus_circle',
+        deleteMilestoneButton: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-trash_adapt',
+        editMilestoneButton: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-pencil',
+        saveButton: '[rx-view-component-id="8f246ecd-acab-4693-a9be-597edc901291"] button'
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {

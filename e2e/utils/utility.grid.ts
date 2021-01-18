@@ -276,7 +276,7 @@ export class GridOperations {
         else { return await (await $$(this.selectors.gridRows)).length; }
     }
 
-    //Accepts sortType as 'asc' or 'desc'
+    //Accepts sortType as 'ascending' or 'descending'
     async isGridColumnSorted(columnName: string, sortType: string, guid?: string): Promise<boolean> {
         let columnHeaderLocator = '.c-header-container .c-header__separator';
         let columnContainerLocator = '.c-header-container';
@@ -288,9 +288,9 @@ export class GridOperations {
         for (let i = 0; i < await columnHeaderContainer.length; i++) {
             if (await $$(columnHeaderLocator).get(i).getText() == columnName) {
                 for (let j = 0; j < 3; j++) {
-                    let b: string = await $$(columnContainerLocator).get(i).$$('.c-header-sort svg path').getAttribute('class') + '';
-                    if (b.includes('ng-star-inserted') && b.includes(sortType)) break;
-                    else await $$(columnContainerLocator).get(i).$$('.c-header-sort').click();
+                    let b: string = await $$(columnContainerLocator).get(i).$$('.c-header__sort-icon').getAttribute('aria-sort') + '';
+                    if (b.includes(sortType)) break;
+                    else await $$(columnContainerLocator).get(i).$$('.c-header__sort-icon').click();
                 }
             }
         }
@@ -302,7 +302,7 @@ export class GridOperations {
         await columnData.sort(function (a, b) {
             return a.localeCompare(b);
         })
-        if (sortType == "desc") {
+        if (sortType == "descending") {
             columnData.reverse();
         }
         return columnData.length === copy.length && columnData.every(
@@ -356,6 +356,12 @@ export class GridOperations {
                 await element(by.cssContainingText(this.selectors.filterCheckboxOptions, textValue)).click();
                 break;
             }
+
+            case "radioButton": {
+                await element(by.cssContainingText('.advanced-filter__radiobutton .radio__item span', textValue)).click();
+                break;
+            }
+
             case "date": {
                 await utilityCommon.setDateField(guid, textValue);
                 break;
