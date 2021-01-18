@@ -7,8 +7,8 @@ class UpdateStatus {
     selectors = {
         caseStatusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',
         taskStatusDropDownGuid: '8b4cef48-0a4c-4ec1-bc4c-cce47179c964',
-        caseStatusReasonDropDownGuid: '049c43a1-4cbd-482d-980d-5db4ed78f295',
-        caseStatusReasonRequired: '[rx-view-component-id="049c43a1-4cbd-482d-980d-5db4ed78f295"] .form-control-label',
+        caseStatusReasonDropDownGuid: 'e43fa7f2-66fc-4ac5-bf75-6b94da5e5318',
+        caseStatusReasonRequired: '[rx-view-component-id="e43fa7f2-66fc-4ac5-bf75-6b94da5e5318"] .form-control-label',
         taskStatusReasonDropDownGuid: 'baf69b56-c37b-4a0b-9e68-f18558738ebb',
         caseStatusReasonDropDown: '[rx-view-component-id="7128b36c-5d4f-4333-8ee4-2a5163258a45"] button',
         resolutionCodeDropDownGuid: 'b3daf229-5921-4863-ba22-8f5240f006a5',

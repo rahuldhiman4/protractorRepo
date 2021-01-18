@@ -244,9 +244,9 @@ class EditCaseTemplate {
         return await $(this.selectors.assignmentMethodValue).getText();
     }
 
-    async isCaseCompanyDisabled(): Promise<string> {
+    async isCaseCompanyDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.editCaseCompany)));
-        return await $(this.selectors.editCaseCompany).getAttribute('disabled');
+        return (await $(this.selectors.editCaseCompany).getAttribute('class')).includes('disabled');
     }
 
     async isCaseSummaryReadOnly(): Promise<boolean> {
