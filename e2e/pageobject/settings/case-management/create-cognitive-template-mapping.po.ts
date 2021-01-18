@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilCommon from "../../../utils/util.common";
-import utilGrid from "../../../utils/util.grid";
+import utilityCommon from "../../../utils/utility.common";
 
 class CreateTemplateMapping {
 
@@ -12,7 +11,7 @@ class CreateTemplateMapping {
         companyGuid: '6c096a04-0a92-4e53-90e5-73fc6537ad2a',
         datasetGuid: '12798ede-7608-4923-8807-38c5f3f3c554',
         enabledmappingGuid: '644ed7fa-2185-473b-9a2e-225e3b46a54c',
-        enabledmappingRequired: '[rx-view-component-id="644ed7fa-2185-473b-9a2e-225e3b46a54c"] button',
+        enabledmappingRequired: '644ed7fa-2185-473b-9a2e-225e3b46a54c',
         caseCreatedAutomatically: '[rx-view-component-id="e42ebfc1-af21-46fd-9872-d47325c25ec4"] input',
         caseCreatedAutomaticallyGuid: 'e42ebfc1-af21-46fd-9872-d47325c25ec4',
         caseCreatedByAgent: '[rx-view-component-id="18f85849-68bb-4084-91bb-b81c458720d8"] input',
@@ -27,11 +26,11 @@ class CreateTemplateMapping {
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async selectDataSet(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.datasetGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.datasetGuid, company);
     }
 
     async clickEnabledMapping(booleanValue: boolean): Promise<void> {
@@ -57,27 +56,27 @@ class CreateTemplateMapping {
     }
 
     async isMappingRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.mappingNameGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.mappingNameGuid)
     }
 
     async isCompanyTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid)
     }
 
     async isDatasetTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.datasetGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.datasetGuid)
     }
 
-    async isEnableMappingRequiredTextPresent(): Promise<string> {
-        return await $(this.selectors.enabledmappingRequired).getAttribute("required")
+    async isEnableMappingRequiredTextPresent(): Promise<boolean> {
+        return await utilityCommon.isRequiredTagToField('644ed7fa-2185-473b-9a2e-225e3b46a54c');
     }
 
     async isConfidentialsLevelOfCategorizationTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.caseCreatedAutomaticallyGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.caseCreatedAutomaticallyGuid)
     }
 
     async isConfidentialsLevelByAgentRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.caseCreatedByAgentGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.caseCreatedByAgentGuid)
     }
 
     async isSaveButtonDisabled(): Promise<string> {
