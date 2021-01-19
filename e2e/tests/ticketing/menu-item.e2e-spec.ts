@@ -35,7 +35,7 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -53,7 +53,7 @@ describe('Menu Item', () => {
     //kgaikwad
     it('[4085]: The Menu Items View would be re-arranged so that fields are in Proper sequence.', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Label');
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
@@ -69,7 +69,7 @@ describe('Menu Item', () => {
     //kgaikwad
     it('[4090]: [UI] "Resolution Code" new option available in Menu Items', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
     });
@@ -82,7 +82,7 @@ describe('Menu Item', () => {
         let label2 = 'leGAL' + randomStr;
         it('[4290]: Create Menu Item label and Source', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
@@ -123,7 +123,7 @@ describe('Menu Item', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
@@ -167,7 +167,7 @@ describe('Menu Item', () => {
         let resolutionCode = 'resolutionCode' + randomStr;
         it('[4305,4304]: [Menu Items] - Create Menu Item', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             await createMenuItems.clickOnMenuOptionLink();
             await createMenuItems.selectMenuNameDropDown('Label');
             await createMenuItems.clickOnLocalizeLink();
@@ -260,7 +260,7 @@ describe('Menu Item', () => {
 
         it('[4306]: Verify Create Menu Item UI', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             await createMenuItems.clickOnMenuOptionLink();
             expect(await createMenuItems.isMenuNameFieldRequired()).toBeTruthy('FailureMsg: Menu Name required label is missing');
             expect(await createMenuItems.isMenuOptionFieldRequired()).toBeTruthy('FailureMsg: Menu Option required label is missing');
@@ -281,7 +281,6 @@ describe('Menu Item', () => {
             await utilityCommon.waitUntilPopUpDisappear();
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.clickOnSaveButton();
-            await menuItemsConfigConsolePo.clearGridSearchBox();
             await menuItemsConfigConsolePo.searchOnGridConsole(lableRandVal);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(lableRandVal);
         });
@@ -294,7 +293,6 @@ describe('Menu Item', () => {
             await utilityCommon.waitUntilPopUpDisappear();
             await createMenuItems.selectStatusDropDown('Inactive');
             await createMenuItems.clickOnSaveButton();
-            await menuItemsConfigConsolePo.clearGridSearchBox();
             await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCodeRandVal);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(resolutionCodeRandVal);
         });
@@ -514,7 +512,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Create Case Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Templates - Settings - Business Workflows');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName(title);
             expect(await createCasetemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
@@ -528,7 +526,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Create Task Template', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Templates - Settings - Business Workflows');
             await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
             await createTasktemplatePo.setTemplateName(title);
             await createTasktemplatePo.setTaskSummary(summary);
@@ -542,7 +540,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Create Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Assignments - Settings - Business Workflows');
             await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
             await createAssignmentsConfigPo.setAssignmentMapName(title);
             expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
@@ -557,7 +555,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Case Read Access', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Read Access - Settings - Business Workflows');
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName(title);
             await addReadAccess.selectCompany('Petramco');
@@ -572,7 +570,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Settings - Business Workflows');
             await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Label', '=', 'LABEL', labelActive1);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
@@ -580,7 +578,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Change Status Active Label Status to InActive', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             await menuItemsConfigConsolePo.searchAndEditMenuOption(labelActive1);
             await editMenuItemsConfigPo.selectStatusDropDown('Inactive');
             await editMenuItemsConfigPo.clickOnSaveButton();
