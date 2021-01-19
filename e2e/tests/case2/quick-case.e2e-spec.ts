@@ -720,7 +720,7 @@ describe("Quick Case", () => {
             await quickCasePo.createCaseButton();
             expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
             expect(await previewCasePo.isCaseSummaryDisplayed(caseTemplateData.templateSummary)).toBeTruthy();
-            expect(await previewCasePo.isAssignedCompanyDisplayed('Petramco')).toBeTruthy();
+            expect(await previewCasePo.getAssigneeDetails()).toContain('Petramco');
             expect(await previewCasePo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
             expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik ' + `${caseTemplateData.templateName}`)).toBeTruthy();
             await previewCasePo.clickGoToCaseButton();

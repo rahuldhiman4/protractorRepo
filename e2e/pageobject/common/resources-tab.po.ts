@@ -5,7 +5,7 @@ export class Resources {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         dropDownOption: '.dropdown_select__menu-content .dropdown-item *',
-        advancedSearchInput: 'input.adapt-search-field[placeholder="Search"]',
+        advancedSearchInput: 'input.adapt-search-field[type="Search"]',
         advancedSearchSettingsBtn: 'span.d-icon-adjust_settings',
         advancedSearchSettingsBtnClose: 'button.opened-advance-search-option',
         advancedSearchResult: 'div.sr-search-result-components .bwf-search-fields__title-text',

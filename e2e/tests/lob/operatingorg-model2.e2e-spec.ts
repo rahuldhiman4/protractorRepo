@@ -41,7 +41,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await createNewUsers();
         await createFoundationDataForAssigneeValidations();
     });
 
@@ -49,26 +48,6 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
-
-    async function createNewUsers() {
-        await apiHelper.apiLogin('tadmin');
-        userData1 = {
-            "firstName": "Petramco",
-            "lastName": "SGUser1",
-            "userId": "13550User1",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(userData1.userId, "- Global -");
-        await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "Psilon Support Group1");
-        await browser.sleep(3000); // timeout requried to reflect data on UI
-        let personData1 = personDataFile['PhylumCaseAgent1'];
-        await apiHelper.createNewUser(personData1);
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
-    }
 
     async function createFoundationDataForAssigneeValidations() {
         await apiHelper.apiLogin('tadmin');

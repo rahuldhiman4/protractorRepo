@@ -68,7 +68,7 @@ describe('PIN Validation Create Case', () => {
             await createCasePo.clickSaveCaseButton();
             expect(await previewCasePo.isRequesterNameDisplayed('Gleeu Wixillian')).toBeTruthy();
             expect(await previewCasePo.isCaseTemplateDisplayed(casetemplatePsilon1.templateName)).toBeTruthy();
-            expect(await previewCasePo.isAssignedCompanyDisplayed('Psilon')).toBeTruthy();
+            expect(await previewCasePo.getAssigneeDetails()).toContain('Psilon');
             expect(await previewCasePo.isRequesterEmailIdDisplayed('gwixillian@psilon.com')).toBeTruthy();
             await previewCasePo.clickGoToCaseButton();
             await activityTabPo.clickOnRefreshButton();
