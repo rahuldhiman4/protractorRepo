@@ -9,7 +9,7 @@ import selectEmailTemplateBladePo from '../../pageobject/email/select-email-temp
 import consoleEmailTemplatePo from '../../pageobject/settings/email/console-email-template.po';
 import createEmailTemplatePo from '../../pageobject/settings/email/create-email-template.po';
 import editEmailTemplatePo from '../../pageobject/settings/email/edit-email-template.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -60,7 +60,7 @@ describe('Email Template', () => {
         let body = 'Body' + randomStr;
         it('[5165,5173,5177,5167,5176]: Create Duplicate Email Template1', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
@@ -110,7 +110,7 @@ describe('Email Template', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5165,5173,5177,5167,5176]: Email Template : User Is Not able to Create Duplicate Email Template', async () => {
-            await consoleEmailTemplatePo.searchAndOpenEmailTemplate('TemplateName1v7aipho5cr');
+            await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName1);
             expect(await editEmailTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
             expect(await editEmailTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
             await editEmailTemplatePo.updateDescription(description);
@@ -129,7 +129,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
         });
@@ -138,7 +138,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
 
@@ -148,7 +148,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
         });
@@ -157,7 +157,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
         });
@@ -166,7 +166,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
@@ -179,7 +179,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
@@ -218,7 +218,7 @@ describe('Email Template', () => {
 
         it('[5169,5166,5178,5096,5095,5097,5172]: User Is able to delete Email Template1', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
@@ -336,7 +336,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
         });
@@ -345,7 +345,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
 
@@ -355,7 +355,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
         });
@@ -364,7 +364,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
         });
@@ -373,7 +373,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case manager with multiple LOB access');
@@ -386,7 +386,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
@@ -437,7 +437,7 @@ describe('Email Template', () => {
         });
         it('[3602,3601,3595]: Email Template : User Creates Email Template and Add/Delete Attachment and check error message', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             await editEmailTemplatePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocData1.docLibTitle);
@@ -471,7 +471,7 @@ describe('Email Template', () => {
             emailTemplateName = emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy();
             expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy();
@@ -494,7 +494,7 @@ describe('Email Template', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(emailTemplateName);

@@ -5,7 +5,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
 import createAcknowledgmentTemplatesPo from '../../pageobject/settings/email/create-acknowledgment-template.po';
 import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 let userData, userData1, userData2 = undefined;
@@ -50,7 +50,7 @@ describe('Email Acknowledgment Template', () => {
     //ankagraw
     it('[5123]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Acknowledgment Templates - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
         await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
         expect(await createAcknowledgmentTemplatesPo.isTemplateNameRequired()).toBeTruthy();
         expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
@@ -74,7 +74,7 @@ describe('Email Acknowledgment Template', () => {
 
         it('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Acknowledgment Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -154,7 +154,7 @@ describe('Email Acknowledgment Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB case manager');
         });
@@ -163,7 +163,7 @@ describe('Email Acknowledgment Template', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case BA');
 
@@ -173,7 +173,7 @@ describe('Email Acknowledgment Template', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is not visible to different LOB case manager');
         });
@@ -182,7 +182,7 @@ describe('Email Acknowledgment Template', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to same LOB with different case BA');
         });
@@ -191,7 +191,7 @@ describe('Email Acknowledgment Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeTruthy('Human Resources LOB email ack template is not visible to case manager with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email ack template is not visible to case manager with multiple LOB access');
@@ -204,7 +204,7 @@ describe('Email Acknowledgment Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('Human Resources LOB email ack template is visible to case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email ack template is visible to case BA with multiple LOB access');
@@ -239,7 +239,7 @@ describe('Email Acknowledgment Template', () => {
         let arr2: string[] = ["Label"];
         it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -334,7 +334,7 @@ describe('Email Acknowledgment Template', () => {
         let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[5119]: Acknowledgment Template: Acknowledgment Template creation with same name', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -394,7 +394,7 @@ describe('Email Acknowledgment Template', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName4);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');

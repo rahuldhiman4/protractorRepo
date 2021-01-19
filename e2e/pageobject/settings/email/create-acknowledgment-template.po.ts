@@ -33,7 +33,7 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async isLocaleDisabled(): Promise<string> {
-        return await $('[rx-view-component-id="0d297e32-1ea0-4b91-8d3c-7195cc7e0cc7"] adapt-select').getAttribute("aria-readonly");
+        return await $('[rx-view-component-id="0d297e32-1ea0-4b91-8d3c-7195cc7e0cc7"] button').getAttribute("aria-disabled");
     }
 
     async isCompanyRequired(): Promise<boolean> {

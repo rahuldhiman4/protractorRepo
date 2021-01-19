@@ -22,7 +22,7 @@ export const BWF_PAGE_TITLES = {
         COMMON_CONFIGURATION: 'Common Configurations - Settings - Business Workflows',
         DOCU_SIGN_CONFIGURATION: 'Docu Sign Configurations - Settings - Business Workflows',
         DOMAIN_CONFIGURATION: 'Domain Configurations - Settings - Business Workflows',
-        DYNAMIC_FILED_LIBRARY: 'Dynamic Feld Library - Settings - Business Workflows',
+        DYNAMIC_FILED_LIBRARY: 'Dynamic Field Library - Settings - Business Workflows',
         DYNAMIC_GROUP_LIBRARY: 'Dynamic Group Library - Settings - Business Workflows',
         FIELD_ASSOCIATIONS: 'Field Associations - Settings - Business Workflows',
         MENU_ITEMS: 'Menu Items - Settings - Business Workflows',

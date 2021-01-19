@@ -20,7 +20,7 @@ import viewTasktemplatePo from '../../pageobject/settings/task-management/view-t
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -47,7 +47,7 @@ describe('Dynamic Library Configuration', () => {
 
         it('[4870]: [-ve] [Dynamic Data] - Create another Field with Same Name (ID) from Field Library', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
             //field Text type    
@@ -81,7 +81,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Field Management Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             await utilGrid.selectLineOfBusiness('Facilities');
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName(dynamicFieldName);
@@ -107,7 +107,7 @@ describe('Dynamic Library Configuration', () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
             let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential"];
             let header: string[] = ["InformationSource", "Confidential"]
@@ -292,7 +292,7 @@ describe('Dynamic Library Configuration', () => {
         });
         it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
@@ -363,7 +363,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await viewTasktemplatePo.isDynamicFieldPresent('Field TIME' + randomStr)).toBeTruthy();
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateData.templateName);
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
@@ -517,11 +517,11 @@ describe('Dynamic Library Configuration', () => {
         });
         it('[4869]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDRDMV13128');
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDraft');
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeTruthy();
@@ -546,7 +546,7 @@ describe('Dynamic Library Configuration', () => {
         });
         it('[4869]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateInactive');
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy();
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
@@ -594,7 +594,7 @@ describe('Dynamic Library Configuration', () => {
         });
         it('[4863]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
@@ -786,7 +786,7 @@ describe('Dynamic Library Configuration', () => {
 
         it('[4067]: [Dynamic Data Group] - Add dynamic group to dynamic field group library', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
             await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
             expect(await createDynamicGroupLibraryConfigPo.verifyTitle('Create Group')).toBeTruthy("Dynamic Group Library Screen title did not matched");
             expect(await createDynamicGroupLibraryConfigPo.isDynamicGroupNameRequiredText()).toBeTruthy();
@@ -828,7 +828,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
             expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
         });
 
@@ -836,7 +836,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
             expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case BA.');
         });
 
@@ -844,7 +844,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
             expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeFalsy('Dynamic Group is displayed to different LOB Case Manager.');
         });
 
@@ -852,7 +852,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
             expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is displayed to different company but same LOB Case BA.');
         });
 
@@ -861,7 +861,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
             await createDynamicGroupLibraryConfigPo.setDynamicGroupName(dynamicGrpText);
