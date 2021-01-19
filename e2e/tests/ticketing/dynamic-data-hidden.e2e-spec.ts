@@ -713,7 +713,7 @@ describe('Dynamic Hidden Data', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
-        it('3594]: Validate the fields', async () => {
+        it('[3594]: Validate the fields', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Number Field')).toBeFalsy();
             expect(await viewCasePo.isDynamicFieldDisplayed('Date Field')).toBeFalsy();
             expect(await viewCasePo.isDynamicFieldDisplayed('Boolean Field')).toBeFalsy();

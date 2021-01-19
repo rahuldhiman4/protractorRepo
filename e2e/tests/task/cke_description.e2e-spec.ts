@@ -488,7 +488,7 @@ describe('CKE Description', () => {
             await copyTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isLinkDisplayedInCKE('http://www.youtube.com')).toBeTruthy('Link Text not present');
         });
-        it('[3526,3525,3524,3516 Verify task description on task template preview', async () => {
+        it('[3526,3525,3524,3516] Verify task description on task template preview', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.setCaseSummary('quick case 22091');
