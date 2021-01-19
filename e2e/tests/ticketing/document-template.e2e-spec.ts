@@ -7,7 +7,7 @@ import imagePropertiesPo from '../../pageobject/settings/common/image-properties
 import createDocumentTemplatePo from '../../pageobject/settings/document-management/create-document-template.po';
 import documentTemplateConsolePo from '../../pageobject/settings/document-management/document-template-console.po';
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -35,7 +35,7 @@ describe('Document Template', () => {
         it('[4510]: Verify Create Document Template UI', async () => {
             // Goto document template
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
 
             await createDocumentTemplatePo.clickOnAddTemplate();
             expect(await createDocumentTemplatePo.isHeaderDisplayed('Create Document Template')).toBeTruthy('Create document template header is missing');
@@ -72,7 +72,7 @@ describe('Document Template', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Human Resource');
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName);
@@ -124,7 +124,7 @@ describe('Document Template', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness("Facilities");
             await createDocumentTemplatePo.clickOnAddTemplate();
             expect(await createDocumentTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
@@ -191,7 +191,7 @@ describe('Document Template', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal1)).toBeFalsy('Record is visible with "gwixillian" login');
             await documentTemplateConsolePo.searchOnGridConsole(templateRandVal2);
             expect(await documentTemplateConsolePo.getSelectedGridRecordValue('Template Name')).toBe(templateRandVal2, 'Template name is missing on Grid');
@@ -258,7 +258,7 @@ describe('Document Template', () => {
 
         it('[4513]: Verify Document Template With Case Dynamic Field ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName1);
             await createDocumentTemplatePo.setCompany("Petramco");

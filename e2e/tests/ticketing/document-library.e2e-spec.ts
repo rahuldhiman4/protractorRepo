@@ -13,9 +13,7 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
-import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -81,7 +79,7 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -89,24 +87,24 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('United States Support');
         await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
         await editDocumentLibraryPo.selectStatus('Draft');
         await editDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
-        await utilGrid.clearFilter();
+        await utilityCommon.closePopUpMessage();
+        await utilityGrid.clearFilter();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
         await editDocumentLibraryPo.clickOnDeleteButton();
         expect(await editDocumentLibraryPo.getDeleteWarningMsgText('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
         await editDocumentLibraryPo.clickOnYesButtonOfDeleteWarningMsg();
-        expect(await utilCommon.isPopUpMessagePresent('Document deleted successfully.')).toBeTruthy('Document deleted message not valid');
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.isPopUpMessagePresent('Document deleted successfully.')).toBeTruthy('Document deleted message not valid');
+        await utilityCommon.closePopUpMessage();
         expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
     });
 
@@ -117,7 +115,7 @@ describe('Document Library', () => {
 
         it('[4911,4925,4924]: Verify Delete button on document', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -125,14 +123,14 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectBusinessUnit('United States Support');
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
@@ -145,16 +143,16 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to same LOB case manager');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
+            expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to same LOB case manager');
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB case document library is not visible to different LOB case BA');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
+            expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB case document library is not visible to different LOB case BA');
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to different LOB Case Manager', async () => {
@@ -163,16 +161,16 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is not visible to different LOB case manager');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
+            expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is not visible to different LOB case manager');
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to same LOB with different case BA');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
+            expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to same LOB with different case BA');
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to Case Manager user having access to multiple LOB', async () => {
@@ -181,11 +179,11 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to case manager with multiple LOB access');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is visible to case manager with multiple LOB access');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to case manager with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is visible to case manager with multiple LOB access');
 
         });
 
@@ -193,16 +191,16 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is visible to case BA with multiple LOB access');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is visible to case BA with multiple LOB access');
 
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document libraryssssss is not visible to case BA with multiple LOB access');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document libraryssssss is not visible to case BA with multiple LOB access');
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
            
         });
     });
@@ -211,7 +209,7 @@ describe('Document Library', () => {
     //kgaikwad
     it('[4893]: Verify Document Managment Grid Console', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match 1');
         let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
@@ -228,7 +226,7 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4892,4918]: Verify document can be publish And Verify Search on Document Managment Console ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -236,7 +234,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectBusinessUnit('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'Draft Status is missing';
@@ -245,7 +243,7 @@ describe('Document Library', () => {
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4892,4918]: Verify document can be publish And Verify Search on Document Managment Console ', async () => {
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -287,7 +285,7 @@ describe('Document Library', () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -295,7 +293,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonDisplayed()).toBeTruthy('Delete button is not displayed');
         expect(await editDocumentLibraryPo.isSaveButtonDisplayed()).toBeTruthy('Save button is not displayed');
@@ -333,7 +331,7 @@ describe('Document Library', () => {
         let dropDownValues: string[] = ["Published", "Draft"];
         expect(await editDocumentLibraryPo.isStatusDropDownvalueMatches(dropDownValues)).toBeTruthy('Values of status drop down is not matches');
         await editDocumentLibraryPo.clickOnCancelButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -347,7 +345,7 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4884]: Verify document created will not listed in Knowledge articles grid', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -364,8 +362,8 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -373,36 +371,36 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectBusinessUnit('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");// there will not be error message
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");// there will not be error message
         });
         it('[4884]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
-            await utilCommon.isDrpDownvalueDisplayed(createDocumentLibraryPo.selectors.category1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await utilityCommon.isAllDropDownValuesMatches(createDocumentLibraryPo.selectors.category1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await utilCommon.isDrpDownvalueDisplayed(createDocumentLibraryPo.selectors.businessUnitFieldGuid, ['Facilities', 'Facilities Support']);
+            await utilityCommon.isAllDropDownValuesMatches(createDocumentLibraryPo.selectors.businessUnitFieldGuid, ['Facilities', 'Facilities Support']);
             await createDocumentLibraryPo.selectCompany('Petramco');
             await createDocumentLibraryPo.selectBusinessUnit('Facilities Support');
-            await utilCommon.isDrpDownvalueDisplayed(createDocumentLibraryPo.selectors.ownerGroupFieldGuid, ['Facilities', 'Pantry Service']);
+            await utilityCommon.isAllDropDownValuesMatches(createDocumentLibraryPo.selectors.ownerGroupFieldGuid, ['Facilities', 'Pantry Service']);
             await createDocumentLibraryPo.selectBusinessUnit('Facilities Support');
             await createDocumentLibraryPo.selectOwnerGroup('Facilities');
             // verify LOB on create page
             expect(await createDocumentLibraryPo.getLobValue()).toBe("Facilities");
             await createDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // verify LOB on edit page
-            await utilGrid.searchAndOpenHyperlink(titleRandVal);
+            await utilityGrid.searchAndOpenHyperlink(titleRandVal);
             expect(await editDocumentLibraryPo.getLobValue()).toBe("Facilities");
             await editDocumentLibraryPo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await browser.sleep(2000); // required to see LOB dropdown, else it fails
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -414,7 +412,7 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4915]: Verify Support Group Level Read access of Document	', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -422,7 +420,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectBusinessUnit('United States Support');
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4915]: Verify Support Group Level Read access of Document	', async () => {
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
@@ -440,7 +438,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'Published Status is missing';
@@ -469,29 +467,29 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.closeGroupAccessTag('AU Support 3');
             expect(await editDocumentLibraryPo.isRemoveGroupAccessWarningMessageDisplayed('Are you sure you want to remove access to "AU Support 3"?')).toBeTruthy('Remove Group List Warning Message Missing');
             await editDocumentLibraryPo.clickOnRemoveGroupWarningMsgYesButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Google');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('Australia Support');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Business Unit');
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
         });
         it('[4915]: Verify Support Group Level Read access of Document	', async () => {
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('UI-BusinessUnit');
             await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('HR Support');
             await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Employee Relations');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await editDocumentLibraryPo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal)
         });
         afterAll(async () => {
@@ -505,7 +503,7 @@ describe('Document Library', () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -530,7 +528,7 @@ describe('Document Library', () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         expect(await createDocumentLibraryPo.attachmentRequiredText()).toBeTruthy();
         expect(await createDocumentLibraryPo.titleRequiredText()).toBeTruthy();
@@ -543,7 +541,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectBusinessUnit('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         expect(await documentLibraryConsolePo.isGridColumnSorted('Title', 'descending')).toBeTruthy('Title column not sorted');
         await documentLibraryConsolePo.isGridColumnSorted('Status', 'descending');
         await documentLibraryConsolePo.isGridColumnSorted('Owner Group', 'descending');
@@ -564,7 +562,7 @@ describe('Document Library', () => {
 
         it('[4916,4889]: Verify document can be Edited in draft status', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -572,7 +570,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectBusinessUnit('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
         });
         it('[4916,4889]: Verify document can be Edited in draft status', async () => {
@@ -613,7 +611,7 @@ describe('Document Library', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createDocumentLibrary(draftDocLibData, filePath);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(draftDocLibData.docLibTitle);
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
@@ -622,7 +620,7 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
         await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('UI-SupportGroup');
         await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });
 
     //apdeshmu
@@ -634,7 +632,7 @@ describe('Document Library', () => {
         it('[4923]: Verify document creation with Nonsupported and Supported attachment types', async () => {
             //Supported attachment type verification
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             for (let i: number = 0; i < fileName1.length; i++) {
                 await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -644,7 +642,7 @@ describe('Document Library', () => {
                 await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
                 await createDocumentLibraryPo.clickOnSaveButton();
                 //This validation is alredy covered at 4882 hence commented
-                //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+                //expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
                 await createDocumentLibraryPo.openAddNewDocumentBlade();
             }
         });
@@ -655,7 +653,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (525): The file type is not supported. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
+            expect(await utilityCommon.isPopUpMessagePresent("ERROR (525): The file type is not supported. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
         });
     });
 
@@ -664,7 +662,7 @@ describe('Document Library', () => {
         let filePath = '../../../data/ui/attachment/articleStatus.png';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
@@ -680,7 +678,7 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4912]: Verify that Document access on multiple change in assignments of support group.', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -693,13 +691,13 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
             await editDocumentLibraryPo.clickOnSaveButton();
             //This validation is alredy covered at 4882 hence commented
-            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            //expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });
         it('[4912]: Verify that Document access on multiple change in assignments of support group.', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await editDocumentLibraryPo.selectBusinessUnit('Australia Support');
             //await editDocumentLibraryPo.selectStatus('Published');
@@ -709,17 +707,17 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });
         it('[4912]: Verify that Document access on multiple change in assignments of support group.', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document is listed");
         });
         it('[4912]: Verify that Document access on multiple change in assignments of support group.', async () => {
@@ -727,7 +725,7 @@ describe('Document Library', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             expect(await documentLibraryConsolePo.searchAndCheckDocumentLibraryListed(titleRandVal)).toBeTruthy("Document not visible");
         });
         afterAll(async () => {
@@ -738,7 +736,7 @@ describe('Document Library', () => {
 
     it('[4927]: Verify Create view of Document library', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         expect(await createDocumentLibraryPo.attachmentTextPresent('Attachment')).toBeTruthy("Attachment text not present");
         expect(await createDocumentLibraryPo.titleTextPresent('Title')).toBeTruthy("Title text not present");
@@ -776,7 +774,7 @@ describe('Document Library', () => {
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4888]: Verify document will not appear in knowledge article searches', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
@@ -784,7 +782,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectBusinessUnit('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4888]: Verify document will not appear in knowledge article searches', async () => {
             await navigationPage.gotoQuickCase();
@@ -809,7 +807,7 @@ describe('Document Library', () => {
     it('[4885]: Verify Knowledge Users will not be able to view document Managment link', async () => {
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await navigationPage.signOut();
             await loginPage.login('kayo');
             await navigationPage.gotoSettingsPage();
