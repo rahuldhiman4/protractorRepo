@@ -459,6 +459,7 @@ describe('Dynamic data', () => {
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         });
+
         it('[4721]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
@@ -478,17 +479,20 @@ describe('Dynamic data', () => {
             expect(await editCasePo.isDynamicFieldDisplayed('attachment2')).toBeTruthy('field is not present');
             expect(await editCasePo.isDynamicFieldDisplayed('attachment3')).toBeTruthy('field is not present');
         });
+
         it('[4721]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
             // attach files in field 1
-            let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json'];
+            let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json','bwfWord1.rtf'];
             let filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
             await editCasePo.addAttachment('attachment1', filesToUpload1);
-            //attachment3 add 1 file 
-            let fileName2: string[] = ['bwfWord1.rtf', 'bwfPdf.pdf', 'bwfPdf1.pdf', 'bwfPdf2.pdf', 'bwfPdf3.pdf', 'bwfPdf4.pdf', 'bwfWord2.rtf'];
-            let filesToUpload2 = fileName2.map((file1) => { return `../../data/ui/attachment/${file1}` });
-            await editCasePo.addAttachment('attachment1', filesToUpload2);
+            await browser.sleep(7000); // sleep added to wait until files gets uploaded
             await editCasePo.addAttachment('attachment2', ['../../data/ui/attachment/demo.txt']);
+            await browser.sleep(3000); // sleep added to wait until files gets uploaded
             await editCasePo.clickSaveCase();
+            //verify show more and show less button
+        });
+
+        it('[4721]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
             //verify show more and show less button
             expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('more');
             await viewCasePo.clickShowMoreShowLessLink('attachment1');
@@ -500,6 +504,7 @@ describe('Dynamic data', () => {
             expect(await viewCasePo.isFileDisplayed('articleStatus.png')).toBeTruthy('File is not present');
             expect(await viewCasePo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('Show less');
         });
+
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });

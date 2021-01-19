@@ -164,7 +164,7 @@ export class GridOperations {
             if (result) {
                 await $(filterPresetBtn).click();
                 await $$(clearBtn).first().click();
-                await $(refreshIcon).click();
+                await $(filterPresetBtn).click(); //Need to update once defect DRDMV-24648 is resolved
                 let hiddentFilter2 = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
                 if (hiddentFilter2 == true) {
                     await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
@@ -381,7 +381,7 @@ export class GridOperations {
                 break;
             }
         }
-        await $(refreshIcon).click();
+        await $(this.selectors.filterPresetBtn).click(); //Need to update once defect DRDMV-24648 is resolved
 
         if (hiddentFilter == true) {
             await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();

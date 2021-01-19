@@ -253,6 +253,9 @@ class NavigationPage {
                 }
             }
         }
+        //Temporary workaround for Task Template LOB popup
+        if(await $('.modal-content').isPresent())
+            await $('.modal-content .close').click();
         await browser.wait(this.EC.titleContains(expectedTitle), 10000);
         return await browser.getTitle();
     }

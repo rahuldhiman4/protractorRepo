@@ -22,7 +22,7 @@ import consoleReadAcess from '../../pageobject/settings/case-management/read-acc
 import viewCaseTemplate from '../../pageobject/settings/case-management/view-casetemplate.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -145,7 +145,7 @@ describe("Case Read Access", () => {
     it('[5011]:[Read Access] Editing Read Access Mappings Company to Global', async () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPo.gotoSettingsPage();
-        await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+        await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
         await consoleReadAcess.clickOnReadAccessConfiguration();
         await addReadAccess.setReadAccessConfigurationName("ReadAccess" + randVal);
         await addReadAccess.selectCompany('Petramco');
@@ -153,17 +153,17 @@ describe("Case Read Access", () => {
         await addReadAccess.selectBusinessUnit('Australia Support');
         await addReadAccess.selectSupportGroup('AU Support 2');
         await addReadAccess.clickOnSave();
-        await utilGrid.searchAndOpenHyperlink("ReadAccess" + randVal);
+        await utilityGrid.searchAndOpenHyperlink("ReadAccess" + randVal);
         await editReadAccess.selectCompany('Global');
         await editReadAccess.clickOnSave();
-        await utilGrid.searchAndOpenHyperlink("ReadAccess" + randVal);
+        await utilityGrid.searchAndOpenHyperlink("ReadAccess" + randVal);
         expect(await editReadAccess.isCompanyFieldDisabled()).toBeTruthy('Company is not disabled');
         await editReadAccess.clickOnCancel();
-        await utilCommon.clickOnWarningOk();
-        await utilGrid.searchAndSelectGridRecord("ReadAccess" + randVal);
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await utilityGrid.searchAndSelectGridRecord("ReadAccess" + randVal);
         await consoleReadAcess.clickDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy('Successfull message is not appeared');
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        expect(await utilityCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy('Successfull message is not appeared');
     });
 
     describe('[5025]:[Read Access] Verify Global read acess configuration applied to case if read acess configuration qualification matches', async () => {
@@ -171,7 +171,7 @@ describe("Case Read Access", () => {
         let readAccessName = "ReadAccess" + randVal;
         it('[5025]:[Read Access] Verify Global read acess configuration applied to case if read acess configuration qualification matches', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName(readAccessName);
             await addReadAccess.selectCompany('Global');
@@ -260,7 +260,7 @@ describe("Case Read Access", () => {
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
         it('[5050,5049]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplate1);
             await createCaseTemplate.setCompanyName('- Global -');
@@ -268,15 +268,19 @@ describe("Case Read Access", () => {
             await createCaseTemplate.setFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
             expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetGlobalFieldsData.flowsetName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy();
+            await editCasetemplatePo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewCaseTemplate.clickBackArrowBtn();
+            await navigationPo.gotoCaseConsole();
         });
         it('[5050,5049]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName("test");
             await addReadAccess.selectCompany('Global');
@@ -288,7 +292,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('gwixillian');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1);
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
@@ -467,22 +471,22 @@ describe("Case Read Access", () => {
         });
         it('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.deleteDefaultReadAccess();
-            await utilGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
             await editReadAccess.selectCompany('Global');
             await editReadAccess.setDefaultToggleButton(true);
             await editReadAccess.clickOnSave();
-            await utilCommon.closePopUpMessage();
-            await utilGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
+            await utilityCommon.closePopUpMessage();
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
             await editReadAccess.selectCompany('Global');
             await editReadAccess.clickOnSave();
-            await utilGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
             await editReadAccess.setDefaultToggleButton(true);
             await editReadAccess.clickOnSave();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Only one default record is allowed for a Line of Business. Please change the default flag and save the record.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Only one default record is allowed for a company. Please change the default flag and save the record.')).toBeTruthy();
             await editReadAccess.clickOnCancel();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes')
         });
         it('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.signOut();
@@ -516,14 +520,14 @@ describe("Case Read Access", () => {
             await loginPage.login('gderuno');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-            await utilGrid.searchOnGridConsole(readAccessMappingData1.configName);
+            await utilityGrid.searchRecordWithoutFilter(readAccessMappingData1.configName);
             expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData1.configName);
-            await utilGrid.searchOnGridConsole(readAccessMappingData2.configName);
+            await utilityGrid.searchRecordWithoutFilter(readAccessMappingData2.configName);
             expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData2.configName);
-            await utilGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
             expect(await editReadAccess.isCompanyFieldDisabled()).toBeTruthy('Company is not disabled');
             await editReadAccess.clickOnCancel();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -603,37 +607,37 @@ describe("Case Read Access", () => {
         });
         it('[6060]: [Read Access] Applying mapping with flowset in case of best match', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
             await editReadAccess.selectFlowset(flowsetGlobalFieldsData.flowsetName);
             await editReadAccess.selectPriority('Low');
             await editReadAccess.clickOnSave();
-            await utilCommon.closePopUpMessage();
-            await utilGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
+            await utilityCommon.closePopUpMessage();
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
             await editReadAccess.selectFlowset(flowsetGlobalFieldsData.flowsetName);
             await editReadAccess.clickOnSave();
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData1.templateName);
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData1.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData2.templateName);
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData2.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[6060]: [Read Access] Applying mapping with flowset in case of best match', async () => {
             await navigationPo.signOut();
@@ -762,7 +766,7 @@ describe("Case Read Access", () => {
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-            await utilGrid.searchOnGridConsole(readAccessMappingData.configName);
+            await utilityGrid.searchRecordWithoutFilter(readAccessMappingData.configName);
             expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData.configName);
             await navigationPo.signOut();
             await loginPage.login('qdu');
@@ -856,12 +860,12 @@ describe("Case Read Access", () => {
         });
         it('[5605]: [Read Access] Editing/Deleting the Read Access Mapping', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.deleteDefaultReadAccess();
-            await utilGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
             await editReadAccess.setDefaultToggleButton(true);
             await editReadAccess.clickOnSave();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPo.signOut();
             await loginPage.login('qtao');
             await navigationPo.gotoQuickCase();
@@ -876,21 +880,21 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-            await utilGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
             await editReadAccess.clearAccessMappingName();
             await editReadAccess.clickOnSave();
-            expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await editReadAccess.setAccessMappingName(randomStr + 'UpdatedAccessMappingName');
             await editReadAccess.clickOnSave();
-            await utilCommon.closePopUpMessage();
-            await utilGrid.searchAndOpenHyperlink(randomStr + 'UpdatedAccessMappingName');
+            await utilityCommon.closePopUpMessage();
+            await utilityGrid.searchAndOpenHyperlink(randomStr + 'UpdatedAccessMappingName');
             await editReadAccess.selectPriority('Low');
             await editReadAccess.selectBusinessUnit('United States Support');
             await editReadAccess.selectSupportGroup('US Support 3');
             await editReadAccess.clickOnSave();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateData2.templateName);
@@ -901,11 +905,11 @@ describe("Case Read Access", () => {
         });
         it('[5605]: [Read Access] Editing/Deleting the Read Access Mapping', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
-            await utilGrid.searchAndSelectGridRecord(randomStr + 'UpdatedAccessMappingName');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
+            await utilityGrid.searchAndSelectGridRecord(randomStr + 'UpdatedAccessMappingName');
             await consoleReadAcess.clickDeleteButton();
-            await utilCommon.clickOnWarningOk();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.closePopUpMessage();
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateData2.templateName);
