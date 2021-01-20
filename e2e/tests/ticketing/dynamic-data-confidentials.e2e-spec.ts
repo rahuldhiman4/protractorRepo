@@ -464,7 +464,7 @@ describe('Dynamic Confidentials Data', () => {
 
         it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
