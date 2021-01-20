@@ -42,7 +42,7 @@ export class Utility {
         if (typeof guid === 'string') {
             const dropDown = await $(`[rx-view-component-id="${guid}"]`);
             const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
-            await this.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus
+            //await this.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus
             await dropDown.$(this.selectors.dropdownBox).click();
             console.log(`Selecting dropdown value: ${value}`);
             let isSearchPresent: boolean = await dropDownInputElement.isPresent();
