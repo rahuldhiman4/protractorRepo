@@ -19,13 +19,13 @@ describe('Application Configuration', () => {
         await navigationPage.signOut();
     });
 
-    describe('[DMDRV-22773] : [Common Config] - Only Operating, Service Provider, Customer type of Primary organizations and global company should be returned in company field', () => {
+    describe('[3428] : [Common Config] - Only Operating, Service Provider, Customer type of Primary organizations and global company should be returned in company field', () => {
         let userData;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
 
             userData = {
-                "firstName": "Case BA User - 22773",
+                "firstName": "Case BA User - 3428",
                 "lastName": "3428",
                 "userId": "22773User",
                 "emailId": "3428_User@petramco.com",

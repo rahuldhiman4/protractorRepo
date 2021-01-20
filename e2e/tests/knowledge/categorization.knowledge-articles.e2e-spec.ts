@@ -19,7 +19,7 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 
@@ -178,7 +178,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             //* Login with Case BA
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -190,7 +190,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
             await knowledgeConsole.removeColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(false);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(false);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -207,7 +207,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseManagerUser);
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -218,7 +218,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
             await knowledgeConsole.removeColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(false);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(false);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -236,7 +236,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             let categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -247,7 +247,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
             await knowledgeConsole.removeColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(false);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(false);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -265,7 +265,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -276,7 +276,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
             await knowledgeConsole.removeColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(false);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(false);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -290,12 +290,13 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
         it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge contributor 
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             let categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -306,7 +307,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
             await knowledgeConsole.removeColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(false);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(false);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -319,12 +320,13 @@ describe('Knowledge Articles - Categorization Tests', () => {
         });
         it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge Publisher
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -335,7 +337,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
             await knowledgeConsole.removeColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(false);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(false);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -349,12 +351,13 @@ describe('Knowledge Articles - Categorization Tests', () => {
 
         it('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', async () => {
             //Login with knowledge coach 
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeConsole.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await knowledgeConsole.addColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(true);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             let categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -365,7 +368,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier2Val).toEqual(categoryTier2FieldVal);
             expect(categoryTier3Val).toEqual(categoryTier3FieldVal);
             await knowledgeConsole.removeColumnOnGrid(categoryTierFieldColumns);
-            expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(false);
+            expect(await knowledgeConsole.areGridColumnHeaderMatches(knowledgeGridColumnFields)).toBe(false);
             await knowledgeConsole.searchOnGridConsole(categoryTier1FieldVal);
             categoryTier1Val = await knowledgeConsole.getSelectedGridRecordValue(categoryTier1);
             await knowledgeConsole.searchOnGridConsole(categoryTier2FieldVal);
@@ -377,6 +380,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(categoryTier3Val).toEqual(emptyStr);
         });
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });
@@ -757,7 +761,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             title = "3913Case " + title;
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);

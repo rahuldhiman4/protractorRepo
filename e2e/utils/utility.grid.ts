@@ -310,7 +310,7 @@ export class GridOperations {
         );
     }
 
-    //Accepts sortType as 'asc' or 'desc'
+    //Accepts sortType as 'ascending' or 'descending'
     async sortGridColumn(columnName: string, sortType: string, guid?: string): Promise<void> {
         let columnHeaderLocator = '.c-header-container .c-header__separator';
         let columnContainerLocator = '.c-header-container';
@@ -322,9 +322,9 @@ export class GridOperations {
         for (let i = 0; i < await columnHeaderContainer.length; i++) {
             if (await $$(columnHeaderLocator).get(i).getText() == columnName) {
                 for (let j = 0; j < 3; j++) {
-                    let b: string = await $$(columnContainerLocator).get(i).$$('.c-header-sort svg path').getAttribute('class') + '';
-                    if (b.includes('ng-star-inserted') && b.includes(sortType)) break;
-                    else await $$(columnContainerLocator).get(i).$$('.c-header-sort').click();
+                    let b: string = await $$(columnContainerLocator).get(i).$$('.c-header__sort-icon').getAttribute('aria-sort') + '';
+                    if (b.includes(sortType)) break;
+                    else await $$(columnContainerLocator).get(i).$$('.c-header__sort-icon').click();
                 }
             }
         }
