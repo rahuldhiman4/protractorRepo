@@ -1,3 +1,4 @@
+import changeAssignmentBladePo from "../../pageobject/common/change-assignment-blade.po";
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from '../../data/interface/template.interface';
@@ -24,7 +25,6 @@ import activityTabPage from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -35,8 +35,6 @@ describe('Case Activity', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
     });
 
     afterAll(async () => {
@@ -119,17 +117,14 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnFilterClearButton();
             expect(await activityTabPage.isfilterPresent()).toBeFalsy('filter displayed');
         });
-        afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        });
     });
 
-    //kgaikwad
-    describe('[3973]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
+    //kgaikwad (await activityTabPage.clickOnHyperlinkFromActivity)
+    xdescribe('[3973]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
         it('[3973]: Verify After Click On Person Name It Should Navigate To Person Profile Page ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('Elizabeth Jeffries');
             await createCase.setSummary('test case for 3973');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -193,7 +188,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isImgPresentOnUserPopUp()).toBeTruthy('Img is Not Present On Author List PopUp');
             await expect(await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie')).toBeTruthy('Name is Not Present On Author List PopUp');
             await expect(await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com')).toBeTruthy('Email is Not Present On Author List PopUp');
-            await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
+            await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('1 212 402-1501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
             await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Company is Not Present On Author List PopUp');
             await activityTabPage.clearAuthorSearchBoxOnFilter();
         });
@@ -206,9 +201,6 @@ describe('Case Activity', () => {
 
             await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
             await activityTabPage.clickOnFilterApplyButton();
-        });
-        afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
 
@@ -235,7 +227,7 @@ describe('Case Activity', () => {
         });
         it('[4212]: Create Case And Add Long Person Name In Activity Note ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('Elizabeth Jeffries');
             await createCase.setSummary('test case for 4212');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -271,16 +263,13 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
         });
-        afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        });
     });
 
     //kgaikwad
     describe('[4237]: Case Activity Filter UI validation', async () => {
         it('[4212]: Create Case ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('Elizabeth Jeffries');
             await createCase.setSummary('test case for 4237');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -372,7 +361,7 @@ describe('Case Activity', () => {
 
         it('[4224]: Create Case Add Task and Navigate To Task ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('Elizabeth Peters');
             await createCase.setSummary('test case for 4224');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -416,7 +405,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isImgPresentOnUserPopUp()).toBeTruthy('Img is Not Present On Author List PopUp');
             await expect(await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie')).toBeTruthy('Name is Not Present On Author List PopUp');
             await expect(await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com')).toBeTruthy('Email is Not Present On Author List PopUp');
-            await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
+            await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('1 212 402-1501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
             await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
         });
         it('[4224]: Verify Author Field With Empty Non Empty Field', async () => {
@@ -429,7 +418,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnFilterApplyButton();
         });
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
 
@@ -437,7 +426,7 @@ describe('Case Activity', () => {
     describe('[4236]: From Case Activity Filters > Person search behavior in Author field', async () => {
         it('[4236]: Create Case ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('qtao');
             await createCase.setSummary('test case for 4236');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -461,7 +450,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isImgPresentOnUserPopUp()).toBeTruthy('Img is Not Present On Author List PopUp');
             await expect(await activityTabPage.isPersonNamePresentOnUserPopUp('Angelina Jolie')).toBeTruthy('Name is Not Present On Author List PopUp');
             await expect(await activityTabPage.isEmailPresentOnUserPopUp('ajolie@petramco.com')).toBeTruthy('Email is Not Present On Author List PopUp');
-            await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('+12124021501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
+            await expect(await activityTabPage.isPhoneNumberPresentOnUserPopUp('1 212 402-1501')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
             await expect(await activityTabPage.isCompanyPresentOnUserPopUp('Petramco')).toBeTruthy('Phone Number is Not Present On Author List PopUp');
             await activityTabPage.clearAuthorSearchBoxOnFilter();
         });
@@ -529,7 +518,7 @@ describe('Case Activity', () => {
 
         it('[4225]: Create Case And Navigate To Manual Task', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('qdu');
             await createCase.setSummary('manual task test case for 4225');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -606,7 +595,7 @@ describe('Case Activity', () => {
 
         it('[4225]: Create Case And Navigate To Automation Task', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('qdu');
             await createCase.setSummary('auto task template test case for 4225');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -681,7 +670,7 @@ describe('Case Activity', () => {
 
         it('[4225]: Create Case And Navigate To External Task', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('qdu');
             await createCase.setSummary('external task test case for 4225');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -760,7 +749,7 @@ describe('Case Activity', () => {
     describe('[4014]: While adding a note on Case one or more agent can be tagged in Comment', async () => {
         it('[4014]: Create Case ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('Qiao Feng');
             await createCase.setContactName('Angelina Jolie');
             await createCase.setSummary('test case for 4014');
             await createCase.clickSaveCaseButton();
@@ -808,7 +797,7 @@ describe('Case Activity', () => {
 
         it('[4230]: Create Case ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('qtao');
             await createCase.setSummary('test case for 4230');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -834,7 +823,7 @@ describe('Case Activity', () => {
             // View Case Page
             await viewTaskPo.clickOnViewCase();
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
-            await activityTabPage.clickOnHyperlinkFromActivity(3, caseIdText);
+            await activityTabPage.clickOnHyperlinkFromActivity(2, caseIdText);
             // From Case > Activity > Click on Task ID from Task comment
             await activityTabPage.clickOnHyperlinkFromActivity(1, taskId);
             // Verification Open Task > Click on Person Name from Activity
@@ -859,7 +848,7 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
         });
         afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
 
@@ -890,7 +879,7 @@ describe('Case Activity', () => {
         });
         it('[5557]: Create Case And Navigate On Task Page ', async () => {
             await navigationPage.gotoCreateCase();
-            await createCase.selectRequester('Al Allbrook');
+            await createCase.selectRequester('Qiao Feng');
             await createCase.setSummary('test case for 4212');
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -910,11 +899,11 @@ describe('Case Activity', () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('step 2nd added ' + taskBodyText);
             expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('file is not present');
             await activityTabPage.clickAttachedFile('bwfPdf.pdf');
-            expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         });
         it('[5557]: Verify Task Social Actvity With Multiple Line/Html With Text Comment', async () => {
             //multiple line
-            let newline: string = "this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things";
+            let newline: string = `this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things this is text for new line and add new things`;
             await activityTabPage.addActivityNote(newline);
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnShowMore();
@@ -935,9 +924,6 @@ describe('Case Activity', () => {
             await activityTabPage.clickShowMoreLinkInAttachmentActivity(1);
             expect(await activityTabPage.getCountAttachedFiles('demo.txt')).toBe(6);
         });
-        afterAll(async () => {
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
-        });
     });
 
     //kgaikwad
@@ -946,12 +932,12 @@ describe('Case Activity', () => {
         let caseId;
         beforeAll(async () => {
             let caseData = {
-                "Requester": "Fritz",
+                "Requester": "qdu",
                 "Summary": "Test case for 5515RandVal" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "qfeng"
+                "Assignee": "Elizabeth Peters"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
@@ -965,13 +951,13 @@ describe('Case Activity', () => {
         });
         it('[4255]: Login In With Assignee User and Verify View Count ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('elizabeth');
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters viewed the case.')).toEqual(1);
             await navigationPage.gotoPersonProfile();
-            await expect(await personProfilePo.getCaseViewCount(' Viewed the  ' + caseId)).toEqual(1);
+            await expect(await personProfilePo.getCaseViewCount('Viewed the ' + caseId)).toEqual(1);
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -995,8 +981,8 @@ describe('Case Activity', () => {
                 "Summary": "DRDMV16589TC"+randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
-                "Assignee": "qtao"
+                "Support Group": "US Support 2",
+                "Assignee": "qgeorge"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
@@ -1017,7 +1003,7 @@ describe('Case Activity', () => {
         });
         it('[4250]: Verify View Case Count Thorght Task ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qgeorge');
             await caseConsolePo.searchAndOpenCase(caseId);
             // // Open Task
             expect(await viewCasePo.getCaseID()).toBe(caseId, 'CaseId is missing in qtao user');
@@ -1027,7 +1013,7 @@ describe('Case Activity', () => {
             await viewTaskPo.clickOnViewCase();
             // Goto case   
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
         });
         it('[4250]: Verify View Case Count Thorght Quick Case ', async () => {
             // Goto Quick Case
@@ -1037,7 +1023,7 @@ describe('Case Activity', () => {
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.setCaseSummary(caseData.Summary);
@@ -1046,7 +1032,7 @@ describe('Case Activity', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
         });
         it('[4250]: Add Related Person', async () => {
             await viewCasePo.clickOnTab('Related Persons');
@@ -1063,8 +1049,8 @@ describe('Case Activity', () => {
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
             await activityTabPage.clickOnRefreshButton();
-            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi  viewed the case. ')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Qianru Tao  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1088,8 +1074,8 @@ describe('Case Activity', () => {
                 "Summary": "4249_TC" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qfeng"
+                "Support Group": "US Support 2",
+                "Assignee": "qgeorge"
             }
             //Create a case with qfeng as Write Permission, qtao has no permission and qstrong as Read Permission
             await apiHelper.apiLogin('qkatawazi');
@@ -1113,10 +1099,10 @@ describe('Case Activity', () => {
         });
         it('[4249]: Login with Write User and check read user count', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('qgeorge');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
-            await expect(await activityTabPage.getCaseViewCount('Quin Strong  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Quin Strong viewed the case.')).toEqual(1);
         });
         it('[4249]: Login with Read user and check user count', async () => {
             //Login with Read user and check write user count
@@ -1124,13 +1110,13 @@ describe('Case Activity', () => {
             await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing with qyuan User');
-            await expect(await activityTabPage.getCaseViewCount('Qiao Feng  viewed the case. ')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
         });
         it('[4249]: Login With No Access User And Verify Error Message', async () => {
             let url: string = await browser.getCurrentUrl();
             // Login with No Access user
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qdu');
             await browser.get(url);
             await expect(await utilityCommon.getAllPopupMsg()).toContain(`Record Instance does not exist in the database. com.bmc.dsm.case-lib:Case:${newCase.id}`);
         });
@@ -1147,7 +1133,7 @@ describe('Case Activity', () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         beforeAll(async () => {
-            // Create Case
+        // Create Case
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "4010_TC" + summary,
@@ -1157,13 +1143,16 @@ describe('Case Activity', () => {
                 "Assignee": "qkatawazi"
             }
 
-            await apiHelper.apiLogin('qfeng');
+            await apiHelper.apiLogin('qstrong');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
+
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         });
         it('[4010]: Open Case And Social Comment ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.addActivityNote('From 4010 ');
             await activityTabPage.addPersonInActivityNote('qkatawazi');
@@ -1230,8 +1219,9 @@ describe('Case Activity', () => {
         it('[4240]: Verify Logs With More Than 5 Lines ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.clickOnPostButton();
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
             await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg7: Show more link is displayed');
@@ -1261,14 +1251,15 @@ describe('Case Activity', () => {
         it('[4240]: Verify Logs With More Than 5 Lines With More Than 4 Attachment ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
-
             await activityTabPage.clickOnPostButton();
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
+
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
+
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
-            await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg26: BodyText is missing');
+            await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg26: BodyText is missing');
 
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath8} is missing`);
@@ -1298,7 +1289,6 @@ describe('Case Activity', () => {
             await expect(await utilityCommon.isFileDownloaded('bwfJson5.json')).toBeTruthy('FailureMsg41: bwfJson5.json File is not downloaded.');
 
             await expect(activityTabPage.clickShowLessLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg42: Show less link for attachment is missing');
-
         });
     });
 
@@ -1345,8 +1335,9 @@ describe('Case Activity', () => {
         it('[4219]: Verify Logs With More Than 5 Lines', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.clickOnPostButton();
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
             await expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg7: Show more link is displayed');
@@ -1377,12 +1368,14 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
             await activityTabPage.clickOnPostButton();
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
+
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
             await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg26: BodyText is missing');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg26: BodyText is missing');
 
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath8} is missing`);
@@ -1416,7 +1409,6 @@ describe('Case Activity', () => {
         afterAll(async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
-
     });
 
     //kgaikwad
@@ -1518,7 +1510,6 @@ describe('Case Activity', () => {
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
     });
-
 });
 });
 
