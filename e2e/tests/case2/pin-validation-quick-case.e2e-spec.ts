@@ -75,7 +75,7 @@ describe('PIN Validation Quick Case', () => {
             await quickCasePo.createCaseButton();
             expect(await previewCasePo.isRequesterNameDisplayed('Gleeu Wixillian')).toBeTruthy();
             expect(await previewCasePo.isCaseSummaryDisplayed(casetemplatePsilon1.templateSummary)).toBeTruthy();
-            expect(await previewCasePo.isAssignedCompanyDisplayed('Psilon')).toBeTruthy();
+            expect(await previewCasePo.getAssigneeDetails()).toContain('Psilon');
             expect(await previewCasePo.isRequesterEmailIdDisplayed('gwixillian@psilon.com')).toBeTruthy();
             expect(await previewCasePo.isDescriptionDisplayed('Gleeu Wixillian ' + `${casetemplatePsilon1.templateName}`)).toBeTruthy();
             await quickCasePo.gotoCaseButton();

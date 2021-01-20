@@ -26,7 +26,7 @@ import editNotificationTemplatePo from '../../pageobject/settings/notification-c
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -34,7 +34,6 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe('Dynamic data', () => {
     const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
-    const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
     const petramcoEventName = 'Petramco Event';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -113,7 +112,7 @@ describe('Dynamic data', () => {
         });
         it('[3861]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await consoleNotificationTemplatePo.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePo.selectEvent('Agent Assignment');
             await createNotificationTemplatePo.selectModuleName('Cases');
@@ -163,7 +162,7 @@ describe('Dynamic data', () => {
             await utilCommon.clickOnWarningOk();
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             await consoleDocumentTemplatePo.clickCreateDocumentTemplate();
             await createDocumentTemplatePo.setCompany('- Global -');
             await createDocumentTemplatePo.setTemplateName(randomStr);
@@ -232,7 +231,7 @@ describe('Dynamic data', () => {
         });
         it('[3875]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await consoleNotificationTemplatePo.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePo.selectEvent('Approve');
             await createNotificationTemplatePo.selectModuleName('Cases');
@@ -348,7 +347,7 @@ describe('Dynamic data', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteEmailOrNotificationTemplate("NotificationNew" + randomStr);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.selectCompany('Petramco');
             await createEmailTemplatePo.setTemplateName('emailTemp' + randomStr);
@@ -380,7 +379,7 @@ describe('Dynamic data', () => {
         });
         it('[3875]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', 'Activity Notes Template Console - Task - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotestemplatePo.clickOnCreateNotesTemplate();
             await createNotestemplatePo.setCompanyValue('Petramco');
             await createNotestemplatePo.setTemplateName('NotesTemplate' + randomStr);
@@ -1087,7 +1086,7 @@ describe('Dynamic data', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         await utilGrid.searchAndOpenHyperlink(templateData.templateName);
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         await dynamicFieldsPo.clickOnDynamicField();

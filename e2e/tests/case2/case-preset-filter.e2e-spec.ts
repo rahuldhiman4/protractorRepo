@@ -4,7 +4,7 @@ import * as caseData from "../../data/ui/case/presetFilter.data.ui";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import dbConnectObj from '../../utils/utility.db-connect';
 import utilityGrid from "../../utils/utility.grid";
@@ -44,7 +44,7 @@ describe('Case Console Preset Filter', () => {
         // Hard wait to reflect the Phylum Company in Case status config's Company Dropdown
         await browser.sleep(6000);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
         await statusConfig.setCompanyDropdown('Phylum', 'case');
         await statusConfig.clickEditLifeCycleLink();
         await statusConfig.addCustomStatus('Resolved', 'Closed', 'AfterResolved');

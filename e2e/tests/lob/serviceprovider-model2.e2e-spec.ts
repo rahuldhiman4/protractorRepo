@@ -22,7 +22,7 @@ import editCasetemplatePo from '../../pageobject/settings/case-management/edit-c
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
@@ -533,7 +533,7 @@ describe('Service Provider Model Tests Extended', () => {
         });
         it('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown("Petramco", 'case');
             await statusConfigPo.selectFlowset(flowsetHumanResourceData.flowsetName);
             await statusConfigPo.clickEditLifeCycleLink();
@@ -542,7 +542,7 @@ describe('Service Provider Model Tests Extended', () => {
         });
         it('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName("CaseTemplate" + randomStr);
             await createCasetemplatePo.setCompanyName("- Global -");
@@ -577,7 +577,7 @@ describe('Service Provider Model Tests Extended', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Facilities');
         });
         it('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {

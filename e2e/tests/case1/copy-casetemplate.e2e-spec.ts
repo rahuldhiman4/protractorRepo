@@ -17,7 +17,7 @@ import taskTemplate from "../../pageobject/settings/task-management/create-taskt
 import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
 import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template.po';
 import { default as viewTaskTemplate, default as viewTasktemplatePo } from "../../pageobject/settings/task-management/view-tasktemplate.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -98,14 +98,14 @@ describe('Copy Case Template', () => {
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         it('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             caseTemplateAllFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateAllFields);
             casetemplateNew = await editCaseTemplate.getCaseTemplateID();
         });
         it('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
@@ -141,12 +141,12 @@ describe('Copy Case Template', () => {
     describe('[4739,4732]: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
         it('[4739,4732]: Create a Copy of Case template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
             caseTemplateRequiredFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateRequiredFields);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
         });
         it('[4739,4732]: Create a Copy of Case template', async () => {
@@ -175,7 +175,7 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueOfCaseDescription()).toContain(caseTemplateRequiredFields.templateDescription);
             expect(await copyCaseTemplate.getValueOfCaseSummary()).toBe(caseTemplateRequiredFields.templateSummary);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(copyCaseTemplateName);
             expect(await consoleCasetemplatePo.getCaseTemplateNamePresentOnGrid(copyCaseTemplateName)).toBe(copyCaseTemplateName);
         });
@@ -185,14 +185,14 @@ describe('Copy Case Template', () => {
     describe('[4736]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
         it('[4736]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
             caseTemplateRequiredFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateRequiredFields);
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
         });
@@ -226,12 +226,12 @@ describe('Copy Case Template', () => {
     //ptidke
     it('[4624]: Instruction come Warning Message is displayed on Create Copy Case Template Page', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         let caseTemplateName: string = caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
         caseTemplateAllFields.templateName = caseTemplateName;
         await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateAllFields);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
 
         await consoleCasetemplatePo.clickOnCopyCaseTemplate();
@@ -266,7 +266,7 @@ describe('Copy Case Template', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(casetemplatePetramco1);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName1);
         await consoleCasetemplatePo.clickOnCopyCaseTemplate();
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
@@ -285,7 +285,7 @@ describe('Copy Case Template', () => {
         });
         it('[4702]: Create a Copy of Case template where Support Group belongs to Department', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateName1);
             await createCaseTemplate.setCompanyName("Petramco");
@@ -299,7 +299,7 @@ describe('Copy Case Template', () => {
             await changeAssignmentOldPage.clickOnAssignButton();
             await createCaseTemplate.clickSaveCaseTemplate();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName1);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
@@ -352,7 +352,7 @@ describe('Copy Case Template', () => {
         });
         it('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
             await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
@@ -364,7 +364,7 @@ describe('Copy Case Template', () => {
             await editCaseTemplate.setResolutionDescriptionRequired(true);
             await editCaseTemplate.clickSaveCaseTemplate();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
@@ -387,7 +387,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateName);
             await createCaseTemplate.setCompanyName("Psilon");
@@ -408,7 +408,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(copyCaseTemplateName);
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
@@ -418,7 +418,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(copyCaseTemplateName);
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeFalsy("Copy Case Template is editable");
@@ -427,7 +427,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
             await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
@@ -448,7 +448,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(copytaskTemplateName);
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
             expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
@@ -458,7 +458,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(copytaskTemplateName);
             await viewTaskTemplate.clickOnEditLink();
             await editTasktemplatePo.setSummary("UpdatedTaskSummary");
@@ -497,7 +497,7 @@ describe('Copy Case Template', () => {
         });
         it('[4718]: Add Dynamic Field', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
@@ -613,7 +613,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
@@ -646,7 +646,7 @@ describe('Copy Case Template', () => {
         });
         it('[4627,4628]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchOnGridConsole(casetemplatePetramco.templateName);
             expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(2);
             let column1: string[] = ["Display ID"];
@@ -741,7 +741,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
@@ -769,7 +769,7 @@ describe('Copy Case Template', () => {
         });
         it('[4625,4623]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.searchOnGridConsole('DRDMV13814' + randomStr);
             expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(4);
             await utilGrid.searchOnGridConsole(manualTemplateData.templateName);
@@ -853,7 +853,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
@@ -884,7 +884,7 @@ describe('Copy Case Template', () => {
         });
         it('[4626]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.searchOnGridConsole('DRDMV13808' + randomStr);
             expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(3);
         });
@@ -935,7 +935,7 @@ describe('Copy Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
@@ -956,7 +956,7 @@ describe('Copy Case Template', () => {
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
             await previewTaskTemplateCasesPo.clickOnBackButton();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.searchOnGridConsole('DRDMV13847' + randomStr);
             expect(await consoleCasetemplatePo.getTemplateCountFromGrid()).toBe(2);
         });
@@ -1012,7 +1012,7 @@ describe('Copy Case Template', () => {
         });
         it('[4425]: Verify For Copy template, Category Tier 4 and Label Data also get copied', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateData.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await createCaseTemplate.setTemplateName('caseTemplateName1' + randomStr);
@@ -1024,7 +1024,7 @@ describe('Copy Case Template', () => {
             expect(await viewCasetemplatePo.getLabelValue()).toBe(label);
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndSelectTaskTemplate(taskTemplateData.templateName);
             await selectTaskTemplate.clickOnCopyTaskTemplateButton();
             await taskTemplate.setTemplateName('Copied Task Template' + randomStr);

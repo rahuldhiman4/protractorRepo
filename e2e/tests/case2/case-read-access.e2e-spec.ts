@@ -208,7 +208,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('jbarnes');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilGrid.selectLineOfBusiness('Human Resource');
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName(readAccessName);
@@ -330,7 +330,7 @@ describe("Case Read Access", () => {
         });
         it('[5578,5606]: [Read Access] Configuring non-default Read Access', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName("ReadAccess" + randomStr);
             await addReadAccess.selectCompany('Petramco');
@@ -367,7 +367,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('qdu');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is displayed to same LOB with different company Case BA.');
         });
 
@@ -375,7 +375,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('fritz');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is dispayed to different LOB case BA');
         });
 
@@ -383,7 +383,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('frieda');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is dispayed to different LOB case manager');
         });
 
@@ -391,7 +391,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('gwixillian');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is not dispayed to same LOB and different company case BA');
         });
 
@@ -399,7 +399,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is dispayed to user with multiple LOB case manager');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -410,7 +410,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is dispayed to user with multiple LOB case manager');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -519,7 +519,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('gderuno');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilityGrid.searchRecordWithoutFilter(readAccessMappingData1.configName);
             expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData1.configName);
             await utilityGrid.searchRecordWithoutFilter(readAccessMappingData2.configName);
@@ -765,13 +765,13 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilityGrid.searchRecordWithoutFilter(readAccessMappingData.configName);
             expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData.configName);
             await navigationPo.signOut();
             await loginPage.login('qdu');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
             expect(await consoleReadAcess.isDeleteButtonDisplayed()).toBeFalsy();
         });
@@ -779,7 +779,7 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
             await consoleReadAcess.clickDeleteButton();
             await utilCommon.clickOnWarningOk();
@@ -788,14 +788,14 @@ describe("Case Read Access", () => {
             await navigationPo.signOut();
             await loginPage.login('gderuno');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilGrid.searchAndSelectGridRecord(readAccessMappingDataWithDiffrentCompany.configName);
             await consoleReadAcess.clickDeleteButton();
             await utilCommon.clickOnWarningOk();
             await utilCommon.closePopUpMessage();
             expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingDataWithDiffrentCompany.configName)).toBeFalsy("Record is not Present");
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingData.configName)).toBeFalsy("Record is not Present");
         });
         afterAll(async () => {
@@ -1077,7 +1077,7 @@ describe("Case Read Access", () => {
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '1ReadAccessMappingName');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '2ReadAccessMappingName');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.deleteDefaultReadAccess();
             await utilGrid.searchAndOpenHyperlink(randomStr + '7ReadAccessMappingName');
             await editReadAccess.setDefaultToggleButton(true);

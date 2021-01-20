@@ -6,7 +6,7 @@ import createKnowledgePage from '../../pageobject/knowledge/create-knowlege.po';
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
 import editKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/edit-knowledge-article-template.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -20,7 +20,7 @@ describe('Knowledge Article Template', () => {
         await apiHelper.deleteArticleTemplate('Template Name DRDMV_1088');
         await loginPage.login('kWilliamson');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.ARTICLE_TEMPLATES);
     });
 
     afterAll(async () => {
@@ -59,7 +59,7 @@ describe('Knowledge Article Template', () => {
         await navigationPage.signOut();
         await loginPage.login('jbarnes');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.ARTICLE_TEMPLATES);
         //Creating the Article Template with same name and set from UI
         await utilityGrid.selectLineOfBusiness('Human Resource');
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
@@ -116,7 +116,7 @@ describe('Knowledge Article Template', () => {
             await navigationPage.signOut();
             await loginPage.login('kWilliamson');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.ARTICLE_TEMPLATES);
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('DRDMV1065');
             await createKnowledgeArticleTemplatePo.clickOnAddSection();

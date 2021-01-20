@@ -22,7 +22,7 @@ export const BWF_PAGE_TITLES = {
         COMMON_CONFIGURATION: 'Common Configurations - Settings - Business Workflows',
         DOCU_SIGN_CONFIGURATION: 'Docu Sign Configurations - Settings - Business Workflows',
         DOMAIN_CONFIGURATION: 'Domain Configurations - Settings - Business Workflows',
-        DYNAMIC_FILED_LIBRARY: 'Dynamic Feld Library - Settings - Business Workflows',
+        DYNAMIC_FILED_LIBRARY: 'Dynamic Field Library - Settings - Business Workflows',
         DYNAMIC_GROUP_LIBRARY: 'Dynamic Group Library - Settings - Business Workflows',
         FIELD_ASSOCIATIONS: 'Field Associations - Settings - Business Workflows',
         MENU_ITEMS: 'Menu Items - Settings - Business Workflows',
@@ -42,7 +42,7 @@ export const BWF_PAGE_TITLES = {
             CATEGORIZATION: 'Categorization - Settings - Business Workflows',
             TEMPLATE: 'Template - Settings - Business Workflows',
         },
-        NOTE_TEMPLATE: 'Note Template - Settings - Business Workflows',
+        NOTES_TEMPLATES: 'Note Template - Settings - Business Workflows',
         READ_ACCESS: 'Read Access - Settings - Business Workflows',
         STATUS_CONFIGURATION: 'Status Configuration - Settings - Business Workflows',
         TEMPLATES: 'Templates - Settings - Business Workflows'
@@ -85,6 +85,8 @@ export const BWF_PAGE_TITLES = {
         PERSON_TO_PERSON: 'Person to Person - Settings - Business Workflows' 
     },
     SERVICE_LEVEL_MANAGEMENT: {
+        BUSINESS_TIME_SEGMENT: 'Business Time Segment - Settings - Business Workflows',
+        BUSINESS_TIME_SHARED_ENTITY: 'Business Time Shared Entity - Settings - Business Workflows',
         CONFIGURE_DATA_SOURCE: 'Configure Data Source - Settings - Business Workflows',
         GOAL_TYPE: 'Goal Type - Settings - Business Workflows',
         SERVICE_TARGET: 'Service Target - Settings - Business Workflows',

@@ -18,7 +18,7 @@ import consoleFlowsetConfigPo from '../../pageobject/settings/manage-flowset/con
 import createFlowsetConfigPo from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
 import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import utilityCommon from '../../utils/utility.common';
@@ -134,7 +134,7 @@ describe('Dynamic Confidentials Data', () => {
         });
         it('[4493,4489,4488]: [DesignTime] Add confidential support group on case template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCasetemplatePo.selectTab('Case Access');
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
@@ -246,7 +246,7 @@ describe('Dynamic Confidentials Data', () => {
         });
         it('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateName');
             await viewCasetemplatePo.selectTab('Case Access');
             await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
@@ -423,7 +423,7 @@ describe('Dynamic Confidentials Data', () => {
         });
         it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             expect(await createDynamicFieldLibraryConfigPo.isConfidentialsRadioButtonDisplayed()).toBeTruthy("isConfidentialsRadioButtonDisplayed");
             expect(await createDynamicFieldLibraryConfigPo.isFieldNameRequiredText()).toBeTruthy("isFieldNameRequiredText");
@@ -464,7 +464,7 @@ describe('Dynamic Confidentials Data', () => {
 
         it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
@@ -479,7 +479,7 @@ describe('Dynamic Confidentials Data', () => {
 
         it('[4482,4873]: [DesignTime] Availability of Confidential checkbox on all types of dynamic fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicField.clickOnDynamicField();

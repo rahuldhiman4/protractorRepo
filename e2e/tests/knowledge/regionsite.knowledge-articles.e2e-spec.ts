@@ -17,7 +17,7 @@ import createDocumentLibraryPage from '../../pageobject/settings/document-manage
 import documentLibraryPage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from "../../utils/util.grid";
 import utilityGrid from "../../utils/utility.grid";
@@ -452,8 +452,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Create a document library
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title);
@@ -478,8 +477,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
             //Create a document library
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title1);
@@ -504,8 +502,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
             //Create a document library
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
             let title2 = `Document2_${new Date().valueOf()}`;
@@ -561,8 +558,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         it('[3831]:Verify the search functionality of Document library console for Region', async () => {
             //*Create a document library
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
             let title = `Document-${new Date().valueOf()}`;
@@ -575,8 +571,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.saveNewDocument();
 
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
             await utilGrid.searchOnGridConsole(regionFieldVal);
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
@@ -590,8 +585,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Case Manager
             await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
             await utilGrid.searchOnGridConsole(regionFieldVal);
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
@@ -603,8 +597,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             //Login with Case Agent
             await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
             await utilGrid.searchOnGridConsole(regionFieldVal);
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
@@ -632,8 +625,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         it('[3833]:Verify the document search based on Region and Site from attachments', async () => {
             //Create a document library
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Library - Settings - Business Workflows'))
-                .toEqual('Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title);

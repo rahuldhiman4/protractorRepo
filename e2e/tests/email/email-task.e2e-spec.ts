@@ -11,7 +11,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from "../../pageobject/task/view-task.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
@@ -670,7 +670,7 @@ describe('Email Task', () => {
 
     it('[3845]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
         await navigationPage.gotoSettingsPage();
-        expect(await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows')).toEqual('Email Ack Template Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Task Update Ack Template');
         expect(await editAcknowledgmentTemplatePo.getCompanyName()).toContain('- Global -');
         expect(await editAcknowledgmentTemplatePo.getModuleName()).toContain('Tasks');

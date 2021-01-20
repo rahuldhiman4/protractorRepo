@@ -42,7 +42,7 @@ class CreateCasePage {
         contactGuid: 'e1f5a770-e416-4ed1-bfea-eefeed86544b',
         assigneGuid: '43c3e9ee-dde2-4e10-94e9-c6ee68217cda',
         assignedGroupGuid: '79750d81-d8e5-447e-b923-94c54f2d3310',
-        labelGuid: 'fad63b83-2f1e-4597-93d8-dc2934e01559',
+        labelGuid: '47f29467-cdd3-4e04-a7f2-ceb795e8b6e5',
         attachmentField: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] input[type="file"]',
         clearRequesterButton: '[rx-view-component-id="be946309-c359-40fe-a579-1a0e0d04bb01"] .d-icon-cross',
         templateValue: 'td .no-href-link',

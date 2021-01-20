@@ -20,7 +20,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import adhoctaskTemplate from '../../pageobject/task/create-adhoc-task.po';
 import manageTask from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
@@ -365,7 +365,7 @@ describe('Document Library Consume Permission', () => {
         });
         it('[4747]: Search and UI Validation of document library search view', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();

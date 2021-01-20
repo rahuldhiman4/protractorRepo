@@ -2,7 +2,7 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import viewCaseTemplatePage from '../../pageobject/settings/case-management/view-casetemplate.po';
 import utilGrid from '../../utils/util.grid';
 import processEditorPage from '../../pageobject/ticketing/process-editor.po';
@@ -124,7 +124,7 @@ describe('Conditional Task', () => {
 
         it('[4540]: [Task] - Template preview from Template selection blade', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(inactiveCaseTemplatePetramcoData.templateName);
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
@@ -316,7 +316,7 @@ describe('Conditional Task', () => {
         it('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
             //Validating task flow creation with all type of task templates
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
             expect(await viewCaseTemplatePage.isTaskFlowPresentInTaskSection()).toBeFalsy('Task Flow is present');
             await viewCaseTemplatePage.clickTaskFlowBtn();
@@ -385,7 +385,7 @@ describe('Conditional Task', () => {
 
             //Making the Case Template Inactive again
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
             await editCaseTemplatePage.clickOnEditCaseTemplateMetadata();
             await editCaseTemplatePage.changeTemplateStatusDropdownValue('Inactive');
@@ -395,7 +395,7 @@ describe('Conditional Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeFalsy('Task Flow button is enabled for Case Manager'); //Defect
         });
@@ -658,7 +658,7 @@ describe('Conditional Task', () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
 
             //Verify on Global Template
             await utilGrid.searchAndOpenHyperlink(`globalDraftCaseTemplate${randomStr}`);
@@ -824,7 +824,7 @@ describe('Conditional Task', () => {
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(globalDraftCaseTemplateData.templateSummary);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeTruthy();
             await viewCaseTemplatePage.clickBackArrowBtn();
@@ -908,7 +908,7 @@ describe('Conditional Task', () => {
             await navigationPage.signOut();
              await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplatePetramcoData.templateName);
             await editCaseTemplatePage.clickOnCopyCaseTemplate();
             await createCaseTemplatePage.setCompanyName('Psilon');
@@ -924,7 +924,7 @@ describe('Conditional Task', () => {
             await previewTaskTemplatePo.clickOnBackButton();
 
             await navigationPage.gotoSettingsPage()
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.searchOnGridConsole(externalTaskTemplateData.templateName);
             expect(await taskTemplateConsolePage.isCompanyColumnValueMatches(['Psilon', 'Petramco'])).toBeTruthy('Psilon task template is not copied');
             await utilGrid.clearGridSearchBox();

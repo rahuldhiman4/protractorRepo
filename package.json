@@ -23,7 +23,7 @@
     "form-data": "^3.0.0",
     "jasmine-core": "~3.4.0",
     "jasmine-spec-reporter": "~4.2.1",
-    "json2csv": "^4.5.4",
+    "json2csv": "^5.0.5",
     "lodash-es": "^4.17.20",
     "minimist": "^1.2.5",
     "pg": "^8.5.1",

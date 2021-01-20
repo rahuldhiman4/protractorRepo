@@ -22,7 +22,7 @@ import copyNotificationTemplatePo from '../../pageobject/settings/notification-c
 import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from "../../utils/util.common";
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -30,7 +30,6 @@ import utilityGrid from '../../utils/utility.grid';
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
-const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
 
 describe("Compose Email", () => {
@@ -93,7 +92,7 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilGrid.clearFilter();
             await utilGrid.searchAndSelectGridRecord('Case Status Change');
             await consoleNotificationTemplatePo.clickCopyTemplate();
@@ -625,7 +624,7 @@ describe("Compose Email", () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName("templateName" + randomString);
             console.log("templateName" + randomString);
@@ -910,7 +909,7 @@ describe("Compose Email", () => {
         it('[3600]: Compose email using email template and check attachments are added', async () => {
             //link doc to email template
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             await editEmailTemplatePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
