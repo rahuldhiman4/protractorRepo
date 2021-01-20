@@ -512,7 +512,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Create Case Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName(title);
             expect(await createCasetemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
@@ -526,7 +526,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Create Task Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
             await createTasktemplatePo.setTemplateName(title);
             await createTasktemplatePo.setTaskSummary(summary);
@@ -540,7 +540,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Create Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Assignments - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentsConfigConsolePo.clickOnCreateAssignmentConfiguration();
             await createAssignmentsConfigPo.setAssignmentMapName(title);
             expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
@@ -555,7 +555,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Case Read Access', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Read Access - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName(title);
             await addReadAccess.selectCompany('Petramco');
@@ -570,7 +570,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Label', '=', 'LABEL', labelActive1);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
@@ -626,7 +626,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Edit Case Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(title);
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeLabelValue(labelInactive);
@@ -645,7 +645,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Inactive, deprecated label With Edit Task Template', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows')).toEqual('Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await consoleTasktemplatePo.searchAndOpenTaskTemplate(title);
             await viewTasktemplatePo.clickOnEditLink();
             await editTasktemplatePo.selectLabel(labelInactive);
@@ -668,7 +668,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Edit Assignment Mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
 
             await editAssignmentsConfigPo.setLabel(labelInactive);
@@ -690,7 +690,7 @@ describe('Menu Item', () => {
 
         it('[4277]: Verify Label With Edit Case Read Access', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.searchAndOpenReadAccess(title);
 
             await editReadAccessConfigPo.setLabel(labelInactive);

@@ -8,7 +8,7 @@ import createNotificationEventPage from '../../pageobject/settings/notification-
 import createNotificationTemplatePage from '../../pageobject/settings/notification-config/create-notification-template.po';
 import editNotificationEventPage from '../../pageobject/settings/notification-config/edit-notification-event.po';
 import editNotificationTemplate from "../../pageobject/settings/notification-config/edit-notification-template.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -20,7 +20,7 @@ describe("Notification Template", () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
     });
 
     afterAll(async () => {
@@ -63,7 +63,7 @@ describe("Notification Template", () => {
 
         it('[3898]: [Copy Notification] - UI behavior when copying a notification template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilityGrid.searchAndSelectGridRecord("Case Agent Assignment");
             await notificationTempGridPage.clickCopyTemplate();
             //Select Company drpdown value again, and click Copy Template button
@@ -81,7 +81,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to same LOB case manager');
         });
 
@@ -89,7 +89,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is not visible to different LOB case BA');
         });
 
@@ -97,7 +97,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is not visible to different LOB case manager');
         });
 
@@ -105,7 +105,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to same LOB with different case BA');
         });
 
@@ -113,7 +113,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to case manager with multiple LOB access');
 
@@ -125,7 +125,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is visible to case BA with multiple LOB access');
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -232,7 +232,7 @@ describe("Notification Template", () => {
 
         it('[4589]: Verify notification event validation wrt same LOB ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Events - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName(notificationEventHRGlobal);
             await createNotificationEventPage.setCompanyValue('Petramco');
@@ -255,7 +255,7 @@ describe("Notification Template", () => {
 
         it('[4589]: To create new template with an event', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.selectModuleName('Cases');
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
@@ -304,7 +304,7 @@ describe("Notification Template", () => {
 
         it('[4589]: Verify notification template validation wrt same LOB ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.selectModuleName('Cases');
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
@@ -326,7 +326,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Events - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName(notificationEventHRGlobal);
             await createNotificationEventPage.setCompanyValue('Petramco');
@@ -337,7 +337,7 @@ describe("Notification Template", () => {
 
         it('[4589]: Verify notification template validation wrt different LOB ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.selectModuleName('Cases');
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
@@ -360,7 +360,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         });
 
     });
@@ -376,7 +376,7 @@ describe("Notification Template", () => {
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         expect(await notificationTempGridPage.areColumnHeaderMatches(allColumns)).toBeTruthy('Columns are not matching');
         expect(await notificationTempGridPage.isGridColumnSorted('Template Name')).toBeTruthy('Template Name column is not sorted');
         await notificationTempGridPage.removeGridColumns(columns);
@@ -505,7 +505,7 @@ describe("Notification Template", () => {
 
     it('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await notificationTempGridPage.clickOnCreateNotificationTemplate();
         expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
         await createNotificationTemplatePage.setTemplateName('Email Based Approval 4357');
@@ -531,13 +531,13 @@ describe("Notification Template", () => {
 
     it('[4356]: Verify OOB Notification Event and Template for Email based Approval', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Events - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilityGrid.clearFilter();
         await utilityGrid.addFilter('Company', '- Global -', 'text');
         await utilityGrid.searchRecord('Email Based Approval');
         expect(await notificationEventConsolePage.getDescriptionValue()).toBe('Notification Event');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Templates - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilityGrid.clearFilter();
         await utilityGrid.addFilter('Company', '- Global -', 'textbox');
         await utilityGrid.searchAndOpenHyperlink('Email Based Approval');

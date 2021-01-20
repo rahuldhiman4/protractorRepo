@@ -8,7 +8,7 @@ import personProfile from "../../pageobject/common/person-profile.po";
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import relationshipsConfigsPage from '../../pageobject/settings/relationship/relationships-configs.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
+import { BWF_BASE_URL, operation, security, type, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -329,7 +329,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
             await relationshipsConfigsPage.setRelationshipName('Former Manager', 'relation updated');
             await relationshipsConfigsPage.saveConfig();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
@@ -640,7 +640,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
 
             //Check all out of box relations are present
             expect(await relationshipsConfigsPage.isRelationshipPresent('Manager')).toBeTruthy('Manager relationship is not present');
@@ -686,7 +686,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
             await relationshipsConfigsPage.clickAddRelationshipButton();
             await relationshipsConfigsPage.setNewRelationshipName(`4573 Rname Inactive ${randomStr}`);
             await relationshipsConfigsPage.setNewReverseRelationshipName(`4573 RRname Inacitve ${randomStr}`);
@@ -705,7 +705,7 @@ describe('Person Profile test', () => {
             await loginPage.login('tadmin');
             //Verify the Relationship Type with Deprecated status
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
             await relationshipsConfigsPage.clickAddRelationshipButton();
             await relationshipsConfigsPage.setNewRelationshipName(`4573 Rname Deprecated ${randomStr}`);
             await relationshipsConfigsPage.setNewReverseRelationshipName(`4573 RRname Deprecated ${randomStr}`);
@@ -994,7 +994,7 @@ describe('Person Profile test', () => {
             let caseToCaseReverseRelation = 'HR C2C Reverse';
             //create same name record in same LOB
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_CASE);
             await utilGrid.selectLineOfBusiness('Human Resource');
             await relationshipsConfigsPage.clickAddRelationshipButton();
             await relationshipsConfigsPage.setNewRelationshipName(caseToCaseRelation);
@@ -1023,7 +1023,7 @@ describe('Person Profile test', () => {
             let caseToPersonRelation = 'HR C2P';
             let caseToPersonReverseRelation = 'HR C2P Reverse';
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', 'Case To Person Relationship Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_PERSON);
             await utilGrid.selectLineOfBusiness('Human Resource');
             await relationshipsConfigsPage.clickAddRelationshipButton();
             await relationshipsConfigsPage.setNewRelationshipName(caseToPersonRelation);
@@ -1052,7 +1052,7 @@ describe('Person Profile test', () => {
             let personToPersonRelation = 'HR P2P';
             let personToPersonReverseRelation = 'HR P2P Reverse';
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', 'Person To Person Relationship console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
             await utilGrid.selectLineOfBusiness('Human Resource');
             await relationshipsConfigsPage.clickAddRelationshipButton();
             await relationshipsConfigsPage.setNewRelationshipName(personToPersonRelation);

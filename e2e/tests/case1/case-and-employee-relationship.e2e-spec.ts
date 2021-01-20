@@ -13,7 +13,7 @@ import { default as relatedCasePage, default as relatedCaseTabPo } from '../../p
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import composeEmailPage from '../../pageobject/email/compose-mail.po';
 import relationConfigPage from '../../pageobject/settings/relationship/relationships-configs.po';
-import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
+import { BWF_BASE_URL, operation, security, type, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -408,7 +408,7 @@ describe('Case And Employee Relationship', () => {
         });
         it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', 'Case to Case Relationship Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_CASE);
             expect(await relationConfigPage.isRelationshipPresent('Parent')).toBeTruthy('Parent relationship is not present');
             expect(await relationConfigPage.getReverseRelationShipName('Parent')).toBe('Child', 'Reverse Relationship name for Parent does not match');
             expect(await relationConfigPage.isRelationshipPresent('Duplicates')).toBeTruthy('Duplicates relationship is not present');

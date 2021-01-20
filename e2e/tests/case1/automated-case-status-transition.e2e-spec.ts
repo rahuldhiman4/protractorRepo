@@ -7,7 +7,7 @@ import notificationPo from '../../pageobject/notification/notification.po';
 import automatedStatusTransitionConsole from "../../pageobject/settings/case-management/automated-status-transition-console.po";
 import automatedStatusTransitionCreatePage from "../../pageobject/settings/case-management/create-automated-status-config.po";
 import automatedStatusTransitionEditPage from "../../pageobject/settings/case-management/edit-automated-status-config.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -19,7 +19,7 @@ describe('Automated Case Status Transition', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('jbarnes');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
     });
 
     afterAll(async () => {
@@ -90,7 +90,7 @@ describe('Automated Case Status Transition', () => {
             await apiHelper.apiLogin('jbarnes');
             await apiHelper.deleteAutomatedCaseStatusTransition();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
             //Create first Record
             configName1 = cloneDeep(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
             configName1.name = 'ConfigName1' + randomStr;
@@ -111,7 +111,7 @@ describe('Automated Case Status Transition', () => {
             await loginPage.login('frieda');
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
             expect(await automatedStatusTransitionConsole.isAddAutomatedStatusTransitionBtnPresent()).toBeFalsy('Add button is available');
             await utilGrid.searchAndSelectGridRecord(configName1.name);
             expect(await automatedStatusTransitionConsole.isDeleteAutomatedStatusTransitionBtnPresent()).toBeFalsy('Delete button is available');
@@ -144,7 +144,7 @@ describe('Automated Case Status Transition', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
         });
     });
 
@@ -259,7 +259,7 @@ describe('Automated Case Status Transition', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNewMenuItem(menuItemData);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
 
         expect(await automatedStatusTransitionCreatePage.isNameRequiredText()).toBeTruthy("Name Required text not present");

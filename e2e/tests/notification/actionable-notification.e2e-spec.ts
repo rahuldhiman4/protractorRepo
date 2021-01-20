@@ -6,7 +6,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import notificationPo from '../../pageobject/notification/notification.po';
 import notificationTemplateEditPage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import viewTaskPage from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -27,7 +27,6 @@ import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 
 const caseData = require('../../data/ui/case/case.ui.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
-const notifTempGridPageTitle = 'Manage Notification Template - Business Workflows';
 let displayIdStr: string = 'Display ID';
 
 describe("Actionable Notifications", () => {
@@ -36,7 +35,7 @@ describe("Actionable Notifications", () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.addFilter('Company', '- Global -', 'text');
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         await apiHelper.apiLogin('tadmin');
@@ -63,7 +62,7 @@ describe("Actionable Notifications", () => {
 
         await navigationPage.gotoSettingsPage();
         try {
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilGrid.searchAndOpenHyperlink('Case Reopened');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -89,7 +88,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -123,7 +122,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.updateCaseStatus(response.id, 'Assigned');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Case Group Assignment');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -158,7 +157,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Case Status Change');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -193,7 +192,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.changeCaseAssignment(response.id, 'Facilities Support', 'Facilities', 'Fritz');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Case Watchlist - Assignment Change');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -228,7 +227,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Case Watchlist - Status Change');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -265,7 +264,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.changeCaseAssignment(response.id, 'United States Support', 'US Support 2');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Case Watchlist - Group Assignment Change');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -308,7 +307,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.updateCaseStatus(response1.id, 'InProgress');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Task Agent Assignment');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -351,7 +350,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.updateTaskStatus(response2.id, 'InProgress');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Task Status Change');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -385,7 +384,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.postActivityCommentsWithoutAttachments('Actionable Notifications', 'Case', response1.id);
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Case');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
@@ -431,7 +430,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.postActivityCommentsWithoutAttachments('Actionable Notifications', 'Task', response2.id);
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Task');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
@@ -475,7 +474,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.updateCaseStatus(response1.id, 'InProgress');
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Task Group Assignment');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -510,7 +509,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.postActivityCommentsWithAttachments('Attachment is Posted for Actionable Notifications', 'Case', response1.id, attachment);
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Case with attachment');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
@@ -556,7 +555,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.postActivityCommentsWithAttachments('Actionable Notifications', 'Task', response2.id, attachment);
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilGrid.searchAndOpenHyperlink('Notes from Activity Feed in Task with attachment');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
@@ -637,7 +636,7 @@ describe("Actionable Notifications", () => {
 
             //Verify all the Notification Templates of Knowledge Module
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilGrid.searchAndOpenHyperlink('Article Reviewer Assignment');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
@@ -737,7 +736,7 @@ describe("Actionable Notifications", () => {
 
         it('[4193]: Check out of the box notification-"Case SLA missed" is actionable for type Alert', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilGrid.searchAndOpenHyperlink('Case SLA Missed');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Alert');
@@ -813,7 +812,7 @@ describe("Actionable Notifications", () => {
 
         it('[4173]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, notifTempGridPageTitle);
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilGrid.searchAndOpenHyperlink('Task SLA Missed');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Alert');
@@ -849,7 +848,7 @@ describe("Actionable Notifications", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.createDocumentAndProcessForActionableNotifications();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
         });
         it('[4133]: Check newly created notification template is actionable', async () => {
             //Create Automated Task Template
@@ -868,7 +867,7 @@ describe("Actionable Notifications", () => {
 
             //Create Notification Event
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName('Actionable Notification Event');
             await createNotificationEventPage.setCompanyValue('- Global -');
@@ -878,7 +877,7 @@ describe("Actionable Notifications", () => {
         it('[4133]: Check newly created notification template is actionable', async () => {
             //Create NotificationTemplate
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTemplateConsolePage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.setTemplateName('Actionable Notification');
             await createNotificationTemplatePage.selectModuleName('Cases');

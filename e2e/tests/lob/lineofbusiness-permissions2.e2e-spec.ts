@@ -10,7 +10,7 @@ import lobManagmentCreatePo from '../../pageobject/settings/lob/create-lob-confi
 import lobManagmentConsolePo from '../../pageobject/settings/lob/define-lob-config.po';
 import lobManagmentEditPo from '../../pageobject/settings/lob/edit-lob-config.po';
 import lobManagementConsolePo from '../../pageobject/settings/lob/lob-management-console.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -40,7 +40,7 @@ describe('Line of Business Permissions Tests Extended', () => {
         });
         it('[5480]: [Email Configuration] Configure email with One Line of Business', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await consoleEmailConfigurationPo.clickNewEmailConfiguration();
             expect(await createEmailConfigPo.isLineOfBusinessEnabled()).toBeFalsy();
             await createEmailConfigPo.setEmailID(emailID);
@@ -66,7 +66,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.setDescription("destrt");
             await editEmailConfigPo.clickSaveButton();
@@ -77,7 +77,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await consoleEmailConfigurationPo.clickNewEmailConfiguration();
             expect(await createEmailConfigPo.isLineOfBusinessEnabled()).toBeFalsy();
@@ -96,7 +96,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await loginPage.login('jbarnes');
             await utilityGrid.selectLineOfBusiness("Human Resource");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.setDescription("updated description");
             await editEmailConfigPo.clickSaveButton();
@@ -106,7 +106,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             expect(await consoleEmailConfigurationPo.isClickNewEmailConfigurationBtnPresent()).toBeFalsy();
             await consoleEmailConfigurationPo.searchAndSelectCheckbox(emailID);
         });
@@ -138,7 +138,7 @@ describe('Line of Business Permissions Tests Extended', () => {
         });
         it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilGrid.selectLineOfBusiness("Human Resource");
             await utilGrid.searchAndOpenHyperlink(emailIDHR.email);
             await editEmailConfigPo.selectTab("Trusted Email");
@@ -212,7 +212,7 @@ describe('Line of Business Permissions Tests Extended', () => {
         });
         it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilGrid.selectLineOfBusiness("Facilities");
             await utilGrid.searchAndOpenHyperlink(emailIDFacility.email);
             await editEmailConfigPo.selectTab("Trusted Email");

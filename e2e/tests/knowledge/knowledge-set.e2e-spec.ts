@@ -5,7 +5,7 @@ import navigationPage from '../../pageobject/common/navigation.po';
 import consoleKnowledgeSetPo from '../../pageobject/settings/knowledge-management/console-knowledge-set.po';
 import createKnowledgeSetPo from '../../pageobject/settings/knowledge-management/create-knowledge-set.po';
 import editKnowledgeSet from '../../pageobject/settings/knowledge-management/edit-knowledge-set.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -37,7 +37,7 @@ describe('Knowledge Article Set', () => {
 
         it('[6357]: Knowledge set_Tenant Administrator creates knowledge set', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
             expect(await createKnowledgeSetPo.isFieldRequired('Knowledge Set')).toBeTruthy('Knowledge Set field is not tagged as required');
             expect(await createKnowledgeSetPo.isFieldRequired('Description')).toBeTruthy('Description field is not tagged as required');
@@ -86,7 +86,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
             expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to different LOB Case BA.');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
@@ -106,7 +106,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company.');
             expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with same LOB and differrent Company');
             expect(await utilityGrid.isGridRecordPresent(knowledgesetFacilities)).toBeFalsy('Knowledge set are displayed to same LOB Case BA.');
@@ -116,7 +116,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeTruthy('Knowledge set are not displayed to Case BA with multiple LOB access');
@@ -131,7 +131,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent('6375' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent('6375_1' + randomStr)).toBeFalsy('Knowledge set are displayed to Case BA with multiple LOB access');
@@ -154,7 +154,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleKnowledgeSetPo.clickOnAddKnowledgeSetBtn();
             await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
@@ -252,7 +252,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             await utilityGrid.searchAndOpenHyperlink(knowledgeSetTitle);
             await editKnowledgeSet.removeApplicationAssociation('com.bmc.dsm.bwfa');
             await editKnowledgeSet.clickSaveButton();
@@ -268,7 +268,7 @@ describe('Knowledge Article Set', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             await utilityGrid.searchAndOpenHyperlink(knowledgeSetTitle);
             await editKnowledgeSet.removeApplicationAssociation('com.bmc.dsm.knowledge');
             await editKnowledgeSet.clickSaveButton();

@@ -3,7 +3,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createFieldAssociationMappingsPo from '../../pageobject/settings/application-config/create-field-association-mappings.po';
 import fieldAssociationMappingsConsolePo from '../../pageobject/settings/application-config/field-association-mappings-console.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilGrid from '../../utils/util.grid';
@@ -26,7 +26,7 @@ describe('Field Association', () => {
 
         beforeAll(async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Field Associations', 'Field Association Mappings - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Field Associations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.FIELD_ASSOCIATIONS);
         });
 
         it('[5424]: Verify Record With Application Or Bundle Name Column', async () => {

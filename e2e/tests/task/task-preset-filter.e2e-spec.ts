@@ -4,7 +4,7 @@ import * as taskData from "../../data/ui/case/presetFilter.data.ui";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import dbConnectObj from '../../utils/utility.db-connect';
 import utilityGrid from "../../utils/utility.grid";
@@ -31,7 +31,7 @@ describe('Task Console Preset Filter', () => {
         browser.sleep(6000); //New user is created above, waiting for its backend access preperation
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfig.setCompanyDropdown('Phylum', 'task');
             await statusConfig.clickEditLifeCycleLink();
             await statusConfig.addCustomStatus('Completed', 'Closed', 'AfterCompleted');

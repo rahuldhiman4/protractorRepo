@@ -28,7 +28,7 @@ import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
@@ -74,7 +74,7 @@ describe('CKE Description', () => {
         let copyCasetemplate = 'copyCaseTemplate' + randomString;
         it('[3528,3527,3523,3517,3520,3518] Create case template bold , italic and underline with CKE', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             caseTemplateName = caseTemplateAllFields.templateName + randomString;
             caseTemplateAllFields.templateName = caseTemplateName;
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -205,7 +205,7 @@ describe('CKE Description', () => {
         });
         it('[3528,3527,3523,3517,3520,3518] Verify detail on COPY case template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndSelectGridRecord(caseTemplateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             //verify detail on copy case template screen
@@ -306,7 +306,7 @@ describe('CKE Description', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickShowMoreDescriptionLink();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
@@ -336,7 +336,7 @@ describe('CKE Description', () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[3526,3525,3524,3516] Create task template bold , italic and underline with CKE', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await consoleTasktemplatePo.clickOnManualTaskTemplateButton();
             await createTasktemplatePo.setTemplateName('taskTemplateNameDRDMV22091' + randomString);
             await createTasktemplatePo.setTaskSummary('taskTemplateSummaryDRDMV22091' + randomString);
@@ -461,7 +461,7 @@ describe('CKE Description', () => {
         });
         it('[3526,3525,3524,3516] Verify detail on COPY task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
             await viewTasktemplatePo.clickOnCopyTemplate();
             //verify detail on copy task template screen
@@ -543,7 +543,7 @@ describe('CKE Description', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
             await viewTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isBoldTextDisplayed(boldText)).toBeTruthy();
