@@ -13,7 +13,7 @@ import copyNotificationTemplatePage from '../../pageobject/settings/notification
 import createNotificationTemplatePage from '../../pageobject/settings/notification-config/create-notification-template.po';
 import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
-import { BWF_BASE_URL, operation, security, type } from '../../utils/constants';
+import { BWF_BASE_URL, operation, security, type, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -59,7 +59,7 @@ describe("Notifications", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.setDefaultNotificationForUser('idphylum1', "Alert");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfig.setCompanyDropdown('Phylum', 'case');
             await statusConfig.clickEditLifeCycleLink();
             await statusConfig.addCustomStatus('Resolved', 'Closed', 'AfterResolved');
@@ -219,13 +219,13 @@ describe("Notifications", () => {
         });
         it('[59944]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilGrid.searchAndSelectGridRecord("Case Agent Assignment");
             await notificationTempGridPage.clickCopyTemplate();
             await copyNotificationTemplatePage.setCompanyValue('Petramco');
             await copyNotificationTemplatePage.clickOnCreateCopyButton();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilGrid.addFilter('Company', 'Petramco', 'text');
             await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();

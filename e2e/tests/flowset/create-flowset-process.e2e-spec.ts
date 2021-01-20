@@ -7,7 +7,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
 import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
 import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import consoleFlowsetConfigPage from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
 import createFlowsetPage from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
@@ -93,7 +93,7 @@ describe('Create Process in Flowset', () => {
 
         it('[5637]: [Flowsets] Create new Register Process', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
 
             await apiHelper.apiLogin('tadmin');
             let case_management = CASE_MANAGEMENT_LIB_PROCESS;
@@ -133,7 +133,7 @@ describe('Create Process in Flowset', () => {
             await createFlowsetProcessLibrary.selectProcessName(processName);
             await createFlowsetProcessLibrary.setAliasName(processName + randomStr);
             await createFlowsetProcessLibrary.clickSaveButton();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "name is not present");
         });
 
@@ -141,7 +141,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "name is not present");
         });
 
@@ -149,7 +149,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is displayed for different LOB Case BA");
         });
 
@@ -157,7 +157,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is displayed for different LOB Case manager");
         });
 
@@ -165,7 +165,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for same LOB and different company Case BA");
         });
 
@@ -173,7 +173,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for different LOB Case manager");
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -184,7 +184,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for different LOB Case BA");
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -195,7 +195,7 @@ describe('Create Process in Flowset', () => {
             await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
             await editFlowsetProcessLibrary.selectStatus('Draft');
             await editFlowsetProcessLibrary.clickOnSaveButton();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
         });
 
@@ -263,13 +263,13 @@ describe('Create Process in Flowset', () => {
         await apiHelper.createProcessLibConfig(processLibConfData);
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
         await consoleFlowsetProcessLibrary.searchAndSelectFlowset(processLibConfData.processAliasName);
         await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
         await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
         await editFlowsetProcessLibrary.selectStatus('Draft');
         await editFlowsetProcessLibrary.clickOnSaveButton();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
         expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
         expect(await editFlowsetProcessLibrary.getDescription('UpdataDescription' + randomStr)).toBe('UpdataDescription' + randomStr);
         expect(await consoleFlowsetProcessLibrary.isProcessPresentOnGrid('No Name Process')).toBeFalsy('Unnecessary register is not display');
@@ -307,7 +307,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isRegisterProcessDisplayed()).toBeFalsy("Register Process Link button displayed for case manager.");
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processLibConfData.processAliasName)).toBeTruthy(processLibConfData.processAliasName + " Name is not present");
 
@@ -315,13 +315,13 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await consoleFlowsetProcessLibrary.searchAndSelectFlowset(processLibConfData.processAliasName);
             await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
             alias = 'UpdateAlias' + randomStr;
             await editFlowsetProcessLibrary.setAliasName(alias);
             await editFlowsetProcessLibrary.clickOnSaveButton();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeTruthy(alias + "Name is not present");
         });
 
@@ -330,14 +330,14 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeFalsy(alias + "Name is present");
 
             //login with different company Manager
             await navigationPage.signOut();
             await loginPage.login('rrovnitov');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(alias)).toBeFalsy(alias + "Name is present");
 
             //login with same company Agent
@@ -379,7 +379,7 @@ describe('Create Process in Flowset', () => {
             await apiHelper.createProcessLibConfig(processLibConfData1);
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await consoleFlowsetProcessLibrary.addColumn(["Application", "ID", "Process Name"]);
             expect(await consoleFlowsetProcessLibrary.isAllVisibleColumnPresent(allHeaders)).toBeTruthy("Available value is not present");
             await consoleFlowsetProcessLibrary.removeColumn(["Process Name"]);
@@ -397,7 +397,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process are not displayed to same LOB Case manager.');
         });
 
@@ -405,7 +405,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case BA.');
         });
 
@@ -413,7 +413,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case manager.');
         });
 
@@ -421,7 +421,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is displayed to same LOB with different company Case BA.');
         });
 
@@ -429,7 +429,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case manager havin access to multiple LOB.');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -440,7 +440,7 @@ describe('Create Process in Flowset', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case BA havin access to multiple LOB.');
             await utilGrid.selectLineOfBusiness('Facilities');
@@ -547,7 +547,7 @@ describe('Create Process in Flowset', () => {
             let processName = `Agent Origin ${randomStr}`
             await apiHelper.createProcess(processName, 'AGENT_ORIGIN');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
 
             //Register Process
@@ -561,7 +561,7 @@ describe('Create Process in Flowset', () => {
 
             //Create a Flowset
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await consoleFlowsetConfigPage.clickOnAddFlowset();
             await createFlowsetPage.selectCompany('Petramco');
             await createFlowsetPage.setFlowsetname('Flowset' + randomStr);
@@ -581,7 +581,7 @@ describe('Create Process in Flowset', () => {
         it('[5317]: Initialization process execution for case origin Agent', async () => {
             //Create a Case Template
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePage.clickOnCreateCaseTemplateButton();
             await createCaseTemplatePage.setTemplateName('5317 Tname ' + randomStr);
             await createCaseTemplatePage.setCompanyName('Petramco');
@@ -706,7 +706,7 @@ describe('Create Process in Flowset', () => {
 
         it('[6270]: [Flowsets] Filter menu verification on Register Process Console', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await consoleFlowsetProcessLibrary.addColumn(['Process Name', 'ID']);
 
             expect(await utilGrid.isAllFilterValueMatches(['Application', 'ID', 'Company', 'Process Alias Name', 'Process Description', 'Process Name', 'Status']));

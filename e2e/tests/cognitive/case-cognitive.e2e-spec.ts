@@ -14,7 +14,7 @@ import createCognitiveTemplateMappingPo from '../../pageobject/settings/case-man
 import editCognitiveCategorizationMappingPo from '../../pageobject/settings/case-management/edit-cognitive-categorization-mapping.po';
 import editCognitiveTemplateMappingPo from '../../pageobject/settings/case-management/edit-cognitive-template-mapping.po';
 import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -318,7 +318,7 @@ describe('Case Cognitive', () => {
             await navigationPage.signOut();
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.COGNITIVE.TEMPLATE);
             await utilGrid.searchAndOpenHyperlink("Petramco Template Dataset Mapping");
             await editCognitiveTemplateMappingPo.updateValueOfCasesCreatedAutomatically("90");
             await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("90");
@@ -489,7 +489,7 @@ describe('Case Cognitive', () => {
         });
         it('[5415,5417,5416,5412,5414,5413]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', BWF_PAGE_TITLES.CASE_MANAGEMENT.COGNITIVE.CATEGORIZATION);
             await consoleCognitivePo.clickAddDataSetMapping();
             expect(await createCognitiveCategorizationMappingPo.isMappingRequiredTextPresent()).toBeTruthy();
             expect(await createCognitiveCategorizationMappingPo.isCompanyTextPresent()).toBeTruthy();
@@ -582,7 +582,7 @@ describe('Case Cognitive', () => {
         it('[5415,5417,5416,5412,5414,5413]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', 'Categorization - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Categorization', BWF_PAGE_TITLES.CASE_MANAGEMENT.COGNITIVE.CATEGORIZATION);
             let column: string[] = ["Mapping Status"];
             await consoleCognitivePo.addColumnOnCategorization(column);
             await utilityGrid.addFilter("Mapping Name", "Add Mapping Group " + randomStr, "text");
@@ -625,7 +625,7 @@ describe('Case Cognitive', () => {
         });
         it('[5495,5496,5485,5494,5493,5492]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', 'Template - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.COGNITIVE.TEMPLATE);
             await consoleCognitivePo.clickAddDataSetMapping();
             expect(await createCognitiveTemplateMappingPo.isMappingRequiredTextPresent()).toBeTruthy();
             expect(await createCognitiveTemplateMappingPo.isCompanyTextPresent()).toBeTruthy();

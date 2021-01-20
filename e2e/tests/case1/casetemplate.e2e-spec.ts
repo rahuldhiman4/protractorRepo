@@ -22,7 +22,7 @@ import viewCaseTemplate from "../../pageobject/settings/case-management/view-cas
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -55,7 +55,7 @@ describe('Case Template', () => {
     //ptidke
     it('[5245,5242]: Case Template creation with Template validation as OPTIONAL using BA login', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
         await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
         await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
@@ -74,7 +74,7 @@ describe('Case Template', () => {
     //ptidke
     it('[5240]: Case Template update with Template validation as ENFORCED', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
         await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
         await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
@@ -102,7 +102,7 @@ describe('Case Template', () => {
     describe('[5247]: Case Template creation with Template validation as ENFORCED', async () => {
         it('[5247]: Case Template creation with Template validation as ENFORCED', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
@@ -122,7 +122,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Human Resource');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
@@ -176,7 +176,7 @@ describe('Case Template', () => {
     //ptidke
     it('[5243]: Case Template creation with Template validation as NONE', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
         await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
         await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
@@ -210,7 +210,7 @@ describe('Case Template', () => {
     //ptidke
     it('[4549]: Verify the values present in the Case assignment method dropdownlist-Round Robin and None', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
         await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
         await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
@@ -236,7 +236,7 @@ describe('Case Template', () => {
     //ptidke
     it('[4548]: Verify Case assignment method is set to None by default in a New/already existing Case template', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
         await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
         await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
@@ -256,7 +256,7 @@ describe('Case Template', () => {
     //ptidke 
     it('[6303]: [Edit Case Template] Template metadata edit', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         const randomStr = Math.floor(Math.random() * 100000);
         let templateData = {
             "templateName": MANDATORY_FIELD.templateName + randomStr,
@@ -273,7 +273,7 @@ describe('Case Template', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         await utilGrid.searchAndOpenHyperlink(templateData.templateName);
         await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
         await editCasetemplatePo.changeBusinessUnitDropdownValue(MANDATORY_FIELD.ownerBusinessUnit);
@@ -291,7 +291,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
         await utilCommon.closePopUpMessage();
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         await utilGrid.searchAndOpenHyperlink(templateData.templateName);
         expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(MANDATORY_FIELD.ownerGroup);
         expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
@@ -301,7 +301,7 @@ describe('Case Template', () => {
     //ptidke 
     it('[6305]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
             "templateName": 'caseTemplateName' + randomStr,
@@ -397,7 +397,7 @@ describe('Case Template', () => {
         await navigationPage.signOut();
         await loginPage.login('elizabeth');
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         await utilGrid.searchAndOpenHyperlink(templateData.templateName);
         await viewCaseTemplate.clickOnEditCaseTemplateButton();
         expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy();
@@ -409,7 +409,7 @@ describe('Case Template', () => {
     it('[3804]:[RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case Template view Look & Feel after adding new configuration field', async () => {
         try {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
@@ -676,7 +676,7 @@ describe('Case Template', () => {
         });
         it('[6315]: Create Case Template with all fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
             expect(await viewCaseTemplate.getAssigneeText()).toBe('Qadim Katawazi');
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe("Petramco");
@@ -707,7 +707,7 @@ describe('Case Template', () => {
 
         it('[6315]: [Case Template] Configuring an Assignment Mapping for Human Resource Line of Business', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateCompany);
             await createCaseTemplate.setCompanyName('Petramco');
@@ -721,7 +721,7 @@ describe('Case Template', () => {
             expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateGlobal);
             await createCaseTemplate.setCompanyName('Petramco');
@@ -739,7 +739,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to same LOB Case manager.');
             expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to same LOB Case manager.');
         });
@@ -748,7 +748,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is not displayed to different LOB Case BA.');
             expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is not displayed to different LOB Case BA.');
         });
@@ -757,7 +757,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is not displayed to different LOB Case manager.');
             expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is not displayed to different LOB Case manager.');
         });
@@ -766,7 +766,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to same LOB and different company Case BA.');
             expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to same LOB and different company Case BA.');
         });
@@ -775,7 +775,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs.');
             expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs');
@@ -788,7 +788,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Facilities');
             expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs.');
             expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs');
@@ -840,7 +840,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeBusinessUnitDropdownValue('Australia Support');
@@ -1100,7 +1100,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateName);
             await createCaseTemplate.setCaseSummary(caseTemplateName);
@@ -1126,7 +1126,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy('Case Summary is editable');
@@ -1175,7 +1175,7 @@ describe('Case Template', () => {
         });
         it('[6290]: [Case Template] Template status lifecycle', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy();
@@ -1190,7 +1190,7 @@ describe('Case Template', () => {
         });
         it('[6290]: Case Agent checks for Draft template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
@@ -1276,7 +1276,7 @@ describe('Case Template', () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateName);
@@ -1289,7 +1289,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
             await createCaseTemplate.clickSaveCaseTemplate();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateName);
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeOwnerCompanyValue('Petramco');
@@ -1320,7 +1320,7 @@ describe('Case Template', () => {
         await apiHelper.createNewFlowset(flowsetGlobalFieldsData);
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         let caseTemplateName: string = MANDATORY_FIELD.templateName + Math.floor(Math.random() * 100000);
         MANDATORY_FIELD.templateName = caseTemplateName;
         await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -1417,7 +1417,7 @@ describe('Case Template', () => {
         });
         it('[4433]: Adding methods to case template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateName1);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeAssignmentMethodValue('Round Robin');

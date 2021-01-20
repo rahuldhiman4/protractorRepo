@@ -42,7 +42,7 @@ export const BWF_PAGE_TITLES = {
             CATEGORIZATION: 'Categorization - Settings - Business Workflows',
             TEMPLATE: 'Template - Settings - Business Workflows',
         },
-        NOTE_TEMPLATE: 'Note Template - Settings - Business Workflows',
+        NOTES_TEMPLATES: 'Note Template - Settings - Business Workflows',
         READ_ACCESS: 'Read Access - Settings - Business Workflows',
         STATUS_CONFIGURATION: 'Status Configuration - Settings - Business Workflows',
         TEMPLATES: 'Templates - Settings - Business Workflows'
@@ -85,6 +85,8 @@ export const BWF_PAGE_TITLES = {
         PERSON_TO_PERSON: 'Person to Person - Settings - Business Workflows' 
     },
     SERVICE_LEVEL_MANAGEMENT: {
+        BUSINESS_TIME_SEGMENT: 'Business Time Segment - Settings - Business Workflows',
+        BUSINESS_TIME_SHARED_ENTITY: 'Business Time Shared Entity - Settings - Business Workflows',
         CONFIGURE_DATA_SOURCE: 'Configure Data Source - Settings - Business Workflows',
         GOAL_TYPE: 'Goal Type - Settings - Business Workflows',
         SERVICE_TARGET: 'Service Target - Settings - Business Workflows',

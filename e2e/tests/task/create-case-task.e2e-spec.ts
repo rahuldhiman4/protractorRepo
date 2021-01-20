@@ -25,7 +25,7 @@ import editTask from "../../pageobject/task/edit-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -141,7 +141,7 @@ describe('Create Case Task', () => {
             //Automated task Template with Required Data
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
             await taskTemplate.setTemplateName(autmationTaskTemplateWithRequiredData);
             await taskTemplate.setTaskSummary(autmationTaskSummaryWithRequiredData);
@@ -157,7 +157,7 @@ describe('Create Case Task', () => {
         it('[5559,5565,6425,6386]: Create manual task template', async () => {
             //Automation Task template
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
             await taskTemplate.setTemplateName(automationTaskTemplateWithallField);
             await taskTemplate.setTaskSummary(automationTaskSummaryWithallField);
@@ -301,7 +301,7 @@ describe('Create Case Task', () => {
         });
         it('[5569]: Verify the manual Active task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
@@ -311,7 +311,7 @@ describe('Create Case Task', () => {
         });
         it('[5569]: Verify the manual inActive task template ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateInActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
@@ -321,7 +321,7 @@ describe('Create Case Task', () => {
         });
         it('[5569]: Verify the manual Draft task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateDraft');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
@@ -331,7 +331,7 @@ describe('Create Case Task', () => {
         });
         it('[5569]: Verify the Automation Active task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
@@ -341,7 +341,7 @@ describe('Create Case Task', () => {
         });
         it('[5569]: Verify the Automation inActive task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateInActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
@@ -351,7 +351,7 @@ describe('Create Case Task', () => {
         });
         it('[5569]: [Automatic Task] - Task Template UI in Edit mode: New fields validations', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateDraft');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
@@ -370,7 +370,7 @@ describe('Create Case Task', () => {
         it('[5015,5014,5020,4997]: Create Manual task with global category ', async () => {
             //manual Task template
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await taskTemplate.setTemplateName(TaskTemplate);
             await taskTemplate.setTaskSummary(TaskSummary);
@@ -444,7 +444,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await taskTemplate.setTemplateName(TaskTemplate);
             await taskTemplate.setTaskSummary(TaskSummary);
@@ -459,7 +459,7 @@ describe('Create Case Task', () => {
         it('[4941]: Edit the above template', async () => {
             //search above template
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTasktemplatePo.clickOnEditLink();
             await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
@@ -518,7 +518,7 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
@@ -600,7 +600,7 @@ describe('Create Case Task', () => {
     //ankagraw
     it('[5571]: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
         await utilGrid.clearFilter();
         expect(await selectTaskTemplate.clickOnColumnAndIsColumnSortedAsending('Task Type')).toBeTruthy();
         expect(await selectTaskTemplate.clickOnColumnAndIsColumnSortedDescending('Task Type')).toBeTruthy();
@@ -618,7 +618,7 @@ describe('Create Case Task', () => {
         let allColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Assignee', 'Support Group', 'Modified Date', 'Task Company'];
         let updateAllColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Assignee', 'Support Group', 'Modified Date', 'Task Company', 'Label'];
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
         expect(await selectTaskTemplate.isAllColumnTitleDisplayed(allColoumn)).toBeTruthy("All Coloumn is not present");
         await selectTaskTemplate.addColumn(addColoumn);
         expect(await selectTaskTemplate.isAllColumnTitleDisplayed(updateAllColoumn)).toBeTruthy("Updated All Coloumn is not present");
@@ -765,7 +765,7 @@ describe('Create Case Task', () => {
         });
         it('[5800]: Verify the task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateDraft1 ${randomStr}`);
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await editTaskTemplate.clickOnEditMetadataLink();
@@ -786,7 +786,7 @@ describe('Create Case Task', () => {
         });
         it('[5800]: Update the task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateActive ${randomStr}`);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Inactive");

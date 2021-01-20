@@ -20,7 +20,7 @@ import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-bla
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import statusConfigPO from '../../pageobject/settings/common/status-config.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
@@ -1542,7 +1542,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
         it('[3697]:  Verify the article versioning with respect to custom status configuration', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', 'Status Configuration - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPO.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPO.clickEditLifeCycleLink();
             await statusConfigPO.clickEditStatus("Published");

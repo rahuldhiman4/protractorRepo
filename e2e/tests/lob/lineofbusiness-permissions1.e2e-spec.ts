@@ -58,7 +58,7 @@ import selectTaskTemplate from "../../pageobject/settings/task-management/consol
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -339,83 +339,83 @@ describe('Line of Business Permission Tests', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             expect(await createMenuItemsBladePo.isMenuOptionLinkPresent()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             expect(await dynamicFieldLibraryConfigConsolePo.isAddDynamicFieldButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
             expect(await dynamicGroupLibraryConfigConsolePo.isAddDynamicGroupButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             expect(await consoleCasetemplatePo.isCreateCaseTemplateEnabled()).toBeFalsy();
             expect(await utilityGrid.isGridRecordPresent(caseID)).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             expect(await approvalMappingConsolePo.isCreateApprovalMappingBtnEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             expect(await assignmentsConfigConsolePo.isCreateAssignmentConfigurationEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
             expect(await automatedStatusTransitionConsolePo.isAddAutomatedStatusTransitionBtnEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             expect(await consoleNotestemplatePo.isCreateNotesTemplateEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             expect(await readAccessConsolePo.isAddButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Petramco', 'case');
             expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             expect(await createDocumentLibraryPo.isAddNewDocumentBladeEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             expect(await createDocumentTemplatePo.isAddTemplateEnabled()).toBeFalsy();
 
         });
         it('[12027,12026]: Validate that LOB specific Functional Role available for the foundation users', async () => {
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             expect(await consoleAcknowledgmentTemplatePo.isAddAcknowledgeTemplateButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             expect(await consoleEmailConfigurationPo.isNewEmailConfigurationEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await consoleEmailTemplatePo.isAddEmailTemplateButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Approvals - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
             expect(await approvalMappingConsoleKnowledgePo.isCreateApprovalMappingBtnEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Article Templates - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.ARTICLE_TEMPLATES);
             expect(await consoleKnowledgeTemplatePo.isCreateNewKATemplateEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Sets - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             expect(await consoleKnowledgeSetPo.isAddKnowledgeSetBtnEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
             expect(await consoleNotestemplatePo.isCreateNotesTemplateEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             expect(consoleFlowsetConfigPo.isAddFlowsetButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(consoleFlowsetConfigPo.isAddFlowsetButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             expect(await notificationTempGridPage.isAddNotificationTemplateBtnEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
             expect(await consoleNotificationEventPo.isAddNotificationEventBtnEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await consoleNotestemplatePo.isCreateNotesTemplateEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             expect(await selectTaskTemplate.isManualTaskTemplateButtonEnabled()).toBeFalsy();
             expect(await selectTaskTemplate.isAutomationTaskTemplateButtonEnabled()).toBeFalsy();
             expect(await selectTaskTemplate.isExtrnalTaskTemplateButtonEnabled()).toBeFalsy();
@@ -447,83 +447,83 @@ describe('Line of Business Permission Tests', () => {
 
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             expect(await createMenuItemsBladePo.isMenuOptionLinkEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             expect(await dynamicFieldLibraryConfigConsolePo.isAddDynamicFieldButtonEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
             expect(await dynamicGroupLibraryConfigConsolePo.isAddDynamicGroupButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             expect(await consoleCasetemplatePo.isCreateCaseTemplateEnabled()).toBeTruthy();
             expect(await utilityGrid.isGridRecordPresent(caseID)).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', 'Configure Case Approvals - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             expect(await approvalMappingConsolePo.isCreateApprovalMappingBtnEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', 'Configure Case Assignments - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             expect(await assignmentsConfigConsolePo.isCreateAssignmentConfigurationEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
             expect(await automatedStatusTransitionConsolePo.isAddAutomatedStatusTransitionBtnEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', 'Activity Notes Template Console - Case - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             expect(await consoleNotestemplatePo.isCreateNotesTemplateEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', 'Case Read Access Configuration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             expect(await readAccessConsolePo.isAddButtonEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', 'Configure Case Status Transition - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Petramco', 'case');
             expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Document Management--Library', 'Document Library Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             expect(await createDocumentLibraryPo.isAddNewDocumentBladeEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             expect(await createDocumentTemplatePo.isAddTemplateEnabled()).toBeTruthy();
 
         });
         it('[12027,12026]: Validate that LOB specific Functional Role available for the foundation users', async () => {
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             expect(await consoleAcknowledgmentTemplatePo.isAddAcknowledgeTemplateButtonEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             expect(await consoleEmailConfigurationPo.isNewEmailConfigurationEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await consoleEmailTemplatePo.isAddEmailTemplateButtonEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', 'Configure Knowledge Approval Mapping - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
             expect(await approvalMappingConsoleKnowledgePo.isCreateApprovalMappingBtnEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', 'Knowledge Article Templates');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.ARTICLE_TEMPLATES);
             expect(await consoleKnowledgeTemplatePo.isCreateNewKATemplateEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', 'Knowledge Set Console');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Knowledge Sets', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.KNOWLEDGE_SETS);
             expect(await consoleKnowledgeSetPo.isAddKnowledgeSetBtnEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', 'Activity Notes Template Console - Knowledge - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
             expect(await consoleNotestemplatePo.isCreateNotesTemplateEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             expect(consoleFlowsetConfigPo.isAddFlowsetButtonEnabled()).toBeTruthy("Add flowset is disabled");
 
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', 'Process Library - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(consoleFlowsetConfigPo.isAddFlowsetButtonEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', 'Manage Notification Template - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             expect(await notificationTempGridPage.isAddNotificationTemplateBtnEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', 'Manage Notification Event - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
             expect(await consoleNotificationEventPo.isAddNotificationEventBtnEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', 'Activity Notes Template Console - Person - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await consoleNotestemplatePo.isCreateNotesTemplateEnabled()).toBeTruthy();
 
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             expect(await selectTaskTemplate.isManualTaskTemplateButtonEnabled()).toBeTruthy();
             expect(await selectTaskTemplate.isAutomationTaskTemplateButtonEnabled()).toBeTruthy();
             expect(await selectTaskTemplate.isExtrnalTaskTemplateButtonEnabled()).toBeTruthy();
@@ -574,7 +574,7 @@ describe('Line of Business Permission Tests', () => {
             await utilityCommon.closedWarningTextOfLineOfBuisness();
             expect(await utilityGrid.isGridRecordPresent(KnowledgeArticleID)).toBeTruthy();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityCommon.closedWarningTextOfLineOfBuisness();
             expect(await consoleCasetemplatePo.isCreateCaseTemplateEnabled()).toBeFalsy();
             expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy();
@@ -645,7 +645,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName(randomStr + 'templateName');
             await createCasetemplatePo.setCompanyName('Petramco');
@@ -657,7 +657,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName('templateName123' + randomStr);
             await createCasetemplatePo.setCompanyName('Petramco');
@@ -673,7 +673,7 @@ describe('Line of Business Permission Tests', () => {
             await apiHelper.createEmailConfiguration();
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent(randomStr + 'templateName')).toBeFalsy();
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
@@ -742,7 +742,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
             await utilGrid.selectLineOfBusiness("Human Resource");
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(randomStr + "Group");
@@ -758,7 +758,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
             await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
             expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('5866');
             await editServiceTargetGroupConfigPo.clickClose();
@@ -766,7 +766,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
             expect(await utilGrid.isGridRecordPresent(randomStr + "Group")).toBeTruthy();
 
         });
@@ -774,20 +774,20 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
             expect(await utilGrid.isGridRecordPresent(randomStr + "Group")).toBeFalsy();
 
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
             expect(await utilGrid.isGridRecordPresent(randomStr + "Group")).toBeFalsy();
         });
         it('[5866]: Create new SVT Group for Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', 'Service Target Group - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
             await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
             expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('5866');
             await editServiceTargetGroupConfigPo.clickClose();
@@ -816,7 +816,7 @@ describe('Line of Business Permission Tests', () => {
         });
         it('[4086]: Configure Resolution Code on Menu Items using Case BA', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             await createMenuItemsBladePo.clickOnMenuOptionLink();
             expect(await createMenuItemsBladePo.isLineOfBusinessEnabled()).toBeFalsy();
             await createMenuItemsBladePo.selectMenuNameDropDown('Resolution Code');
@@ -842,7 +842,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             expect(await createMenuItemsBladePo.isMenuOptionLinkPresent()).toBeFalsy();
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
@@ -854,7 +854,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', 'Menu Items - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             expect(await menuItemsConfigConsolePo.isMenuItemRecordPresentOnGridConsole(label)).toBeFalsy();
 
             await navigationPage.signOut();
@@ -873,7 +873,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
             //Create first Record
             configName1 = AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name = 'ConfigName1' + randomStr;
             AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.changeStatusAfter = Math.floor(Math.random() * 180) + 1;
@@ -886,7 +886,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
             await utilGrid.clearFilter();
             await utilGrid.searchAndOpenHyperlink(configName1);
             await automatedStatusTransitionEditPage.updateConfigurationName('UpdatedConfigName1' + randomStr);
@@ -898,7 +898,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
         });
@@ -906,7 +906,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', 'Configure Automated Status Transitions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
             await utilGrid.selectLineOfBusiness("Human Resource");
             await utilGrid.clearFilter();
             expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeTruthy();
@@ -1013,7 +1013,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilGrid.selectLineOfBusiness('Facilities');
             await consoleFlowsetConfigPo.searchAndSelectFlowset(flowsetName3);
             await editFlowsetConfigPo.setFlowset("edit Flowset" + randomStr);
@@ -1024,7 +1024,7 @@ describe('Line of Business Permission Tests', () => {
         });
         it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Facilities');
             ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -1054,13 +1054,13 @@ describe('Line of Business Permission Tests', () => {
         });
         it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', 'Flowsets - Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilGrid.selectLineOfBusiness('Human Resource');
             expect(await utilGrid.isGridRecordPresent(flowsetName1)).toBeFalsy();
             expect(await utilGrid.isGridRecordPresent(flowsetName2)).toBeFalsy();
             expect(await utilGrid.isGridRecordPresent(flowsetName3)).toBeFalsy();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Human Resource');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             let flowsetValues: string[] = [flowsetName1, flowsetName2, flowsetName3];
@@ -1093,7 +1093,7 @@ describe('Line of Business Permission Tests', () => {
         });
         it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilGrid.selectLineOfBusiness('Facilities');
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilGrid.selectLineOfBusiness('Human Resource');
@@ -1101,7 +1101,7 @@ describe('Line of Business Permission Tests', () => {
         });
         it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await utilGrid.selectLineOfBusiness('Facilities');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
@@ -1117,7 +1117,7 @@ describe('Line of Business Permission Tests', () => {
         });
         it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Facilities');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
@@ -1135,26 +1135,26 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy();
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Templates', 'Email Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', 'Email Ack Template Console - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy();
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Email--Configuration', 'Email Box Console - Business Workflows'));
+            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });

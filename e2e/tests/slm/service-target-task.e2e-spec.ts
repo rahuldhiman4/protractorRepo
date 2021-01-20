@@ -14,7 +14,7 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import { default as manageTask, default as manageTaskBladePo } from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import taskConsolePage from "../../pageobject/task/console-task.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -73,7 +73,7 @@ describe('Service Target Tests for Tasks', () => {
         });
         it('[4907]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             //Create a SVT with 2 mins timeline
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
             await slmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Manual');
@@ -176,7 +176,7 @@ describe('Service Target Tests for Tasks', () => {
         });
         it('[4906]: Create a SVT', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
             await slmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Automated');
             await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -243,7 +243,7 @@ describe('Service Target Tests for Tasks', () => {
         let expressionOperatorFields: string[] = ["(", ")", ">", "<", "=", "!=", ">=", "<=", "LIKE", "AND", "OR", "NOT", "NEW VALUE", "OLD VALUE"];
         it('[4900]: Verify Qualification Builder UI for Task SVT', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             //Create a SVT with 2 mins timeline
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
             let expressionFieldsVal1 = await slmExpressionBuilder.getExpressionFieldAvailableAll(firstLevelAssociationFields);
@@ -268,7 +268,7 @@ describe('Service Target Tests for Tasks', () => {
         });
         it('[4920,4919,4899]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
             await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
             await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -431,7 +431,7 @@ describe('Service Target Tests for Tasks', () => {
             await navigationPage.signOut();
             await loginPage.login(psilonCaseBAUser);
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', 'Configure Task Status Tranistions - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfig.setCompanyDropdown('Psilon', 'task');
             await statusConfig.clickEditLifeCycleLink();
             await statusConfig.addCustomStatus('Staged', 'Assigned', 'Planning');
@@ -439,7 +439,7 @@ describe('Service Target Tests for Tasks', () => {
         });
         it('[4905]: Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Psilon', 'Task Management');
             await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
             await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');

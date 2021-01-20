@@ -3,7 +3,7 @@ import apiHelper from "../../api/api.helper";
 import * as taskData from "../../data/ui/case/filter-combination.data.ui";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
@@ -164,7 +164,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
         let taskId: string[] = [];
         beforeAll(async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', 'Service Target - Administration - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Task Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');

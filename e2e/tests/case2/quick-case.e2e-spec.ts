@@ -12,7 +12,7 @@ import consoleCasetemplatePo from '../../pageobject/settings/case-management/con
 import editCaseTemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import activityPo from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -338,7 +338,7 @@ describe("Quick Case", () => {
             expect(await quickCasePo.selectCaseTemplate(templateData.templateName)).toBeFalsy("Draft Template is founded");;
             //Active Template Verification
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         });
         it('[6361]: Checking change case template button', async () => {
             await utilGrid.searchAndOpenHyperlink(templateData.templateName);
@@ -412,7 +412,7 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName('adam');
             expect(await quickCasePo.selectCaseTemplate(caseTemplatePsilon.templateName)).toBeFalsy('Psilon case template present');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         });
         it('[6384]: Psilon Case template search in Resources', async () => {
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateDraftStatus.templateName);
@@ -1020,7 +1020,7 @@ describe("Quick Case", () => {
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
@@ -1085,7 +1085,7 @@ describe("Quick Case", () => {
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
@@ -1131,7 +1131,7 @@ describe("Quick Case", () => {
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
@@ -1148,7 +1148,7 @@ describe("Quick Case", () => {
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
@@ -1158,7 +1158,7 @@ describe("Quick Case", () => {
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
@@ -1175,7 +1175,7 @@ describe("Quick Case", () => {
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
             await navigationPo.gotoSettingsPage();
-            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');

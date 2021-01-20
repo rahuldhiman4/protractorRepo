@@ -33,7 +33,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
@@ -82,7 +82,7 @@ describe('Dynamic Hidden Data', () => {
         it('[4820]: Validate Automated Task Template ', async () => {
             //Automation Task template
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
             expect(await createTaskTemplate.isAddTaskTemplateTitleDisplayed('Add Task Template')).toBeTruthy('Add Task Template Title not displayed');
             expect(await createTaskTemplate.isTemplateMetadataTitleDisplayed('Template Metadata')).toBeTruthy('Template Metadata Title not displayed');
@@ -115,7 +115,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[4820]: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(automatedTaskTemplate1);
             expect(await viewTaskTemplate.isEditProcessLinkDisplayed()).toBeTruthy(" Edit link in not displayed");
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy(" Manage link not present");
@@ -129,7 +129,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows'));
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.selectLineOfBusiness('Human Resource');
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
             await createTaskTemplate.setTemplateName(automatedTaskTemplate1);
@@ -203,7 +203,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[4819]: Add Dynamic on above task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTaskTemplate.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
@@ -243,13 +243,13 @@ describe('Dynamic Hidden Data', () => {
     //ankagraw
     it('[3621,3620]: Verify hidden radio button should not present in dynamic field library', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', 'Dynamic Field Library - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
         await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
         expect(await createDynamicFieldLibraryConfigPo.isHiddenFieldPresent("Hidden")).toBeFalsy();
         await createDynamicFieldLibraryConfigPo.clickCancelButton();
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', 'Dynamic Group Library - Settings - Business Workflows');
+        await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Group Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_GROUP_LIBRARY);
         await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
         await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
         expect(await createDynamicGroupLibraryConfigPo.verifyTitle("Hidden")).toBeFalsy();
@@ -446,7 +446,7 @@ describe('Dynamic Hidden Data', () => {
         it('[3607,3613]: Validate dynamic field and change the it teask template status', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeFalsy();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTaskTemplate.clickOnEditMetaData();
             await editTaskTemplate.selectTemplateStatus("Draft");
@@ -513,7 +513,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3608,3612,3623]: Change the status of case template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
@@ -580,7 +580,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3622,3611]: Change the status of the task', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTaskTemplate.clickOnEditMetaData();
             await editTaskTemplate.selectTemplateStatus("Draft");
@@ -649,7 +649,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3610]: Change the status of case template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
@@ -819,7 +819,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[4033,4006,4849]: verify dynamic group fields on Copy case template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(randomStr + 'caseTemplateName');
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCasetemplatePo.setTemplateName('copyCaseTemplateName' + randomStr);
@@ -836,7 +836,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[4033,4006,4849]: verify dynamic group fields on Copy case template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', 'Document Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName("Document" + randomStr);
             await createDocumentTemplatePo.setCompany("Petramco");
@@ -917,7 +917,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[4032]: verify dynamic fields group on Copy Task template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTasktemplatePo.setTemplateName("New One" + randomStr);
@@ -1029,7 +1029,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[4065]: [Dynamic Data] [UI] - Update Dynamic Fields UI from Case Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', 'Case Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group1')).toBeTruthy();
@@ -1080,11 +1080,11 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[4843]: [Dynamic Data]- Add Dynamic Fields and Groups to Task Template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTemplate2);
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', 'Task Templates - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTemplate1);
             expect(await viewTaskTemplate.isDynamicFieldPresent('FieldGroup1')).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group1')).toBeTruthy();
@@ -1113,7 +1113,7 @@ describe('Dynamic Hidden Data', () => {
     describe('[3486]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
         it('[3486]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.COMMON_CONFIGURATION);
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             await applicationConfigPo.clickConfigurationDropDownArrow();
@@ -1174,7 +1174,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.COMMON_CONFIGURATION);
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.isConfigValuesDisplayed('dd MMM yyyy hh:mm:ss a')).toBeTruthy();
@@ -1197,7 +1197,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.COMMON_CONFIGURATION);
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.isConfigValuesDisplayed('dd MMM yyyy hh:mm:ss a')).toBeTruthy();

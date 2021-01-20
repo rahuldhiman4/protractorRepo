@@ -1,6 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import loginPage from "../../pageobject/common/login.po";
 import utilityCommon from '../../utils/utility.common';
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -45,7 +45,7 @@ describe('Application Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId+'@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', 'Common Configurations - Settings - Business Workflows');
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.COMMON_CONFIGURATION);
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             await applicationConfigPo.clickAddConfigurationValue();
