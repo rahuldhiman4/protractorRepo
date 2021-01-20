@@ -119,8 +119,8 @@ describe('Case Activity', () => {
         });
     });
 
-    //kgaikwad (await activityTabPage.clickOnHyperlinkFromActivity)
-    xdescribe('[3973]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
+    //kgaikwad
+    describe('[3973]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
         let caseBodyText = `CaseBody${randomStr}`;
         it('[3973]: Verify After Click On Person Name It Should Navigate To Person Profile Page ', async () => {
             await navigationPage.gotoCreateCase();
