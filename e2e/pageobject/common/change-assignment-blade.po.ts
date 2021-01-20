@@ -7,7 +7,7 @@ class ChangeAssignmentBlade {
         changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
         assignButton: '.modal-footer .btn-primary',
         assignmentDropDownList: '.flex-wrap bwf-select-with-pagination, .change-assignment-component-wrapper adapt-rx-select',
-        selectOptions: '.dropdown-item span',
+        selectOptions: '.dropdown-item span,.default-support-group .popup-person',
         cancelButton: '.modal-footer .btn-secondary',
         multipleSuppGrpMsg: '.manual-select-sg-msg',
         assignToMeCheckBox: '.checkbox__input',
