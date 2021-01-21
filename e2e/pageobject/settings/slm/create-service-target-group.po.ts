@@ -45,9 +45,9 @@ class CreateServiceTargetGroup {
     async getLobValue(): Promise<string> {
         return await $(this.selectors.lob).getText();
     }
-
+//swapnil 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.company), company);
+        await utilCommon.selectDropDown2($(this.selectors.company), company);// no relevance
     }
 
     async selectDataSource(dataSource: string): Promise<void> {

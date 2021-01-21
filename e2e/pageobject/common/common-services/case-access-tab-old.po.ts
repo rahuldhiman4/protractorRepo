@@ -1,6 +1,4 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilCommon from '../../../utils/util.common';
-import utilityCommon from '../../../utils/utility.common';
 class CaseOldAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {

@@ -1,7 +1,5 @@
 import { $, by, element, protractor, ProtractorExpectedConditions, browser, $$ } from "protractor";
-import utilGrid from '../../utils/utility.grid';
-import utilityGrid from '../../utils/utility.grid';
-import utilityCommon from '../../utils/utility.common';
+
 
 class PinValidationPO {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

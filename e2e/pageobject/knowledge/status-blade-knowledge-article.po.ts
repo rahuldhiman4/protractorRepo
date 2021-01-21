@@ -1,5 +1,4 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 import changeAssignmentBladePo from '../common/change-assignment-blade.po';
 import utilityCommon from '../../utils/utility.common';
 

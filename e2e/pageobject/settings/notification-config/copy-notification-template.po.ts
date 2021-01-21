@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, Key, browser } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class CopyNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,7 +10,7 @@ class CopyNotificationTemplate {
     }
 
     async setCompanyValue(value:string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid,value);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid,value);
     }
 
     async setTemplateName(value:string): Promise<void> {

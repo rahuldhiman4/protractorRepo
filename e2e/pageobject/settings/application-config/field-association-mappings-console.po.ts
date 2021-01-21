@@ -1,5 +1,5 @@
 import { element, by, $, protractor, ProtractorExpectedConditions, browser, $$ } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 class FieldAssociationMappingConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -11,7 +11,7 @@ class FieldAssociationMappingConsole {
     }
 
     async selectCheckBox(record:string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(record);
+        await utilityGrid.searchAndSelectGridRecord(record);
     }
 
     async clickAddFieldAssociationMapping(): Promise<void> {
@@ -24,11 +24,11 @@ class FieldAssociationMappingConsole {
     }
 
     async clickOnGridRefreshButton(): Promise<void> {
-        await utilGrid.clickOnGridRefreshButton();
+        await utilityGrid.clickRefreshIcon();
     }
 
     async addFilter(fieldName: string, textValue: string, type: string): Promise<void> {
-        await utilGrid.addFilter(fieldName, textValue, type);
+        await utilityGrid.addFilter(fieldName, textValue, type);
     }
 
     async isHeaderDisplayed(headerName:string): Promise<boolean> {
@@ -36,39 +36,39 @@ class FieldAssociationMappingConsole {
     }
 
     async isGridRecordPresent(searchRecord:string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(searchRecord);
+        return await utilityGrid.isGridRecordPresent(searchRecord);
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
-        await utilGrid.searchOnGridConsole(value);
+        await utilityGrid.searchRecord(value);
     }
 
     async addColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.addGridColumn( columnHeader,this.selectors.gridGuid);
     }
 
     async clearGridSearchBox(): Promise<void> {
-        await utilGrid.clearGridSearchBox();
+        await utilityGrid.clearSearchBox();
     }
 
     async removeColumnOnGrid(columnHeader: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGuid, columnHeader);
+        await utilityGrid.removeGridColumn(columnHeader,this.selectors.gridGuid);
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.gridGuid);
+        return await utilityGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.gridGuid);
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader,this.selectors.gridGuid);
     }
 
     async areGridColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.areColumnHeaderMatches(columnHeader,this.selectors.gridGuid);
     }
 
     async searchAndOpenFieldAssociationMappingRecord(value: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(value);
+        await utilityGrid.searchAndOpenHyperlink(value);
     }
 }
 

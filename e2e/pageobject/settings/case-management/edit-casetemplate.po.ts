@@ -1,6 +1,5 @@
 import { ICaseTemplateUI } from '../../../data/interface/template.interface';
 import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import utilCommon from '../../../utils/util.common';
 import utilityCommon from '../../../utils/utility.common';
 
 class EditCaseTemplate {

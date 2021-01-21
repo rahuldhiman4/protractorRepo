@@ -1,5 +1,6 @@
 import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
+
 class CreateFlowset {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

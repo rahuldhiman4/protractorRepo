@@ -1,5 +1,5 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from "../../../utils/util.common";
+import utilityCommon from "../../../utils/utility.common";
 
 class BusinessTimeSegmentConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -13,7 +13,7 @@ class BusinessTimeSegmentConfigEditPage {
 
     
     async updateStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
     async clickNextButton(): Promise<void> {

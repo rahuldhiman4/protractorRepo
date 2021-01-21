@@ -1,5 +1,4 @@
 import { $, $$, by, element, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common'
 import { resolve } from 'path';
 
@@ -211,11 +210,11 @@ class EditKnowledgePage {
     }
 
     async getRegionSelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+        return await utilityCommon.getSelectedFieldValue(fieldName);
     }
 
     async getSiteSelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+        return await utilityCommon.getSelectedFieldValue(fieldName);
     }
 
     async getSelectedFieldValue(fieldName: string): Promise<string> {

@@ -1,6 +1,5 @@
 import utilityCommon from '../../../utils/utility.common';
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
 
 class EditDynamicFieldLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

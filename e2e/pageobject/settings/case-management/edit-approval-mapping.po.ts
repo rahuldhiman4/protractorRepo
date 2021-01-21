@@ -1,5 +1,5 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilCommon from "../../../utils/util.common";
+import utilityCommon from "../../../utils/utility.common";
 
 class EditApprovalMapping {
 
@@ -55,7 +55,7 @@ class EditApprovalMapping {
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async isApprovalMappingNameDisabled(): Promise<boolean> {
@@ -96,7 +96,7 @@ class EditApprovalMapping {
     }
 
     async selectFlowset(flowset: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
+        await utilityCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
     }
 
     async getSelectedCompany(): Promise<string> {
@@ -128,47 +128,47 @@ class EditApprovalMapping {
     }
 
     async selectStatusTrigger(approvalStatusTrigger: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
+        await utilityCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
     }
 
     async selectStatusMappingApproved(approvedStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingApproved, approvedStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingApproved, approvedStatusMapping);
     }
 
     async selectStatusMappingNoApprovalFound(NoApprovalFoundStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
     }
 
     async selectStatusMappingRejected(rejectedStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingRejected, rejectedStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingRejected, rejectedStatusMapping);
     }
 
     async selectStatusMappingError(errorStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
     }
 
     async isSelectFlowsetDropDownOptionsMatches(flowsetValues: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowsetGuid, flowsetValues);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.flowsetGuid, flowsetValues);
     }
 
     async isStatusTriggerDropDownOptionsMatches(approvalStatusTrigger: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
     }
 
     async isStatusMappingApprovedDropDownOptionsMatches(approvedStatusMapping: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusMappingApproved, approvedStatusMapping);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusMappingApproved, approvedStatusMapping);
     }
 
     async isStatusMappingNoApprovalFoundDropDownOptionsMatches(NoApprovalFoundStatusMapping: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
     }
 
     async isStatusMappingRejectedDropDownOptionsMatches(rejectedStatusMapping: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusMappingRejected, rejectedStatusMapping);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusMappingRejected, rejectedStatusMapping);
     }
 
     async isStatusMappingErrorDropDownOptionsMatches(errorStatusMapping: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusMappingError, errorStatusMapping);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusMappingError, errorStatusMapping);
     }
 
     async isSaveApprovalMappingBtnEnabled(): Promise<boolean> {
@@ -282,7 +282,7 @@ class EditApprovalMapping {
     }
 
     async setCaseCreatedUsingTemplateGoInApprovalToggle(enable: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.casesCreatedWithoutTemplateToggleBtnGuid, enable);
+        await utilityCommon.selectToggleButton(this.selectors.casesCreatedWithoutTemplateToggleBtnGuid, enable);
     }
 
     async getLobValue(): Promise<string> {

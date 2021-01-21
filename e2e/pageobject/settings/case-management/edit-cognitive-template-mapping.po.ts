@@ -1,5 +1,5 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilityCommon from "../../../utils/util.common";
+import utilityCommon from "../../../utils/utility.common";
 
 class EditTemplateMapping {
 

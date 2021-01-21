@@ -1,5 +1,4 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from "../../../utils/util.common";
 import utilityCommon from '../../../utils/utility.common';
 
 class StatusConfigPage {
@@ -52,7 +51,7 @@ class StatusConfigPage {
 
 
     async selectFlowset(flowset: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
+        await utilityCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -134,7 +133,7 @@ class StatusConfigPage {
                 break;
             }
         }
-        return await utilCommon.isRequiredTagToField(companyGuid);
+        return await utilityCommon.isRequiredTagToField(companyGuid);
     }
 
     async clickOnBackButton(): Promise<void> {
@@ -162,7 +161,7 @@ class StatusConfigPage {
                 break;
             }
         }
-        await utilCommon.selectDropDown(companyGuid, company);
+        await utilityCommon.selectDropDown(companyGuid, company);
     }
 
     async isEditLifeCycleBtnDisabled(): Promise<boolean> {

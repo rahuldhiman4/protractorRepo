@@ -1,5 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
+
 
 class EditDataSourceConfigurationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -28,7 +30,7 @@ class EditDataSourceConfigurationPage {
 
     async isDataSourceFieldRequired(fieldName: string): Promise<boolean> {
         let fieldNameRequiredTag = await element(by.cssContainingText(this.selectors.fieldNameLabel, fieldName));
-        return await utilCommon.isRequiredTagToFieldElement(fieldNameRequiredTag);
+        return await utilityCommon.isRequiredTagPresent(fieldNameRequiredTag);
     }
 
     async isBuildExpressionBtnDisabled(): Promise<boolean> {
@@ -95,7 +97,7 @@ class EditDataSourceConfigurationPage {
     }
 
     async selectDataSourceFieldOption(fieldName: string, fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDownWithName(fieldName, fieldOption);
+        await utilCommon.selectDropDownWithName(fieldName, fieldOption);// no relevance found
     }
 
     async isUseEndTimeCheckboxAlreadySelected(): Promise<boolean> {

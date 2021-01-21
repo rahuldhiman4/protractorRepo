@@ -1,5 +1,4 @@
 import { protractor, ProtractorExpectedConditions, browser, element, by } from "protractor";
-import utilCommon from '../../../utils/util.common';
 import utilityGrid from '../../../utils/utility.grid';
 
 class DocumentLibraryPage {

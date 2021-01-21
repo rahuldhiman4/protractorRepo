@@ -1,6 +1,5 @@
 import utilityGrid from '../../../utils/utility.grid';
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
 
 class DynamicGroupLibraryConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
