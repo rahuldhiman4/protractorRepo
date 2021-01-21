@@ -154,6 +154,6 @@ export enum LOB {
     "KingstonOracle Finance" = "AGGADGG8ECDC0AQ88BAWQ79OADDSFJ"
 }
 
-export enum ArticleTemplateStuses {
+export enum ArticleTemplateStatus {
     Disable = 10,
 };

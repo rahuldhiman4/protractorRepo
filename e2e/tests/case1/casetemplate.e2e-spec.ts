@@ -34,17 +34,10 @@ describe('Case Template', () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
-        userData = {
-            "firstName": "Multiple",
-            "lastName": "Company",
-            "userId": "nosg",
-            "emailId": "nosg@petramco.com",
-            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
-        }
-        await apiHelper.createNewUser(userData);
-        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
-        await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
+    });
+
+    afterEach(async () => {
+        await navigationPage.gotoCaseConsole();
     });
 
     afterAll(async () => {
@@ -69,6 +62,7 @@ describe('Case Template', () => {
         await createCaseTemplate.clickSaveCaseTemplate();
         expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
         expect(await viewCaseTemplate.getIdentityValdationValue()).toContain(ALL_FIELD.identityValidation);
+        await viewCaseTemplate.clickBackArrowBtn();
     });
 
     //ptidke
@@ -96,6 +90,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeIdentityValidationValue('Enforced');
         await editCasetemplatePo.clickSaveCaseTemplate();
         expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
+        await viewCaseTemplate.clickBackArrowBtn();
     });
 
     //ptidke
@@ -116,6 +111,7 @@ describe('Case Template', () => {
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
             expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
+            await viewCaseTemplate.clickBackArrowBtn();
         });
         it('[5247]: create same name record in same LOB', async () => {
             //create same name record in same LOB
@@ -190,6 +186,7 @@ describe('Case Template', () => {
         await createCaseTemplate.clickSaveCaseTemplate();
         expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
         expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('None');
+        await viewCaseTemplate.clickBackArrowBtn();
     });
 
     //ptidke
@@ -221,16 +218,17 @@ describe('Case Template', () => {
         expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain('None');
         await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
-        await createCaseTemplate.setAssignmentMethodValue(ALL_FIELD.assignmentMethod);
-        expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain(ALL_FIELD.assignmentMethod);
+        await createCaseTemplate.setAssignmentMethodValue("Round");
+        expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain("Round Robin");
         await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
         await createCaseTemplate.clickSaveCaseTemplate();
         await editCasetemplatePo.clickEditCaseTemplate();
         await editCasetemplatePo.changeAssignmentMethodValue('None');
         expect(await editCasetemplatePo.getValueOfAssignmentMethod()).toContain('None');
-        await editCasetemplatePo.changeAssignmentMethodValue(ALL_FIELD.assignmentMethod);
-        expect(await editCasetemplatePo.getValueOfAssignmentMethod()).toContain(ALL_FIELD.assignmentMethod);
+        await editCasetemplatePo.changeAssignmentMethodValue("Round");
+        expect(await editCasetemplatePo.getValueOfAssignmentMethod()).toContain("Round Robin");
         await editCasetemplatePo.clickSaveCaseTemplate();
+        await viewCaseTemplate.clickBackArrowBtn();
     });
 
     //ptidke
@@ -251,6 +249,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.clickEditCaseTemplate();
         expect(await editCasetemplatePo.getValueOfAssignmentMethod()).toContain('None');
         await editCasetemplatePo.clickSaveCaseTemplate();
+        await viewCaseTemplate.clickBackArrowBtn();
     });
 
     //ptidke 
@@ -264,9 +263,6 @@ describe('Case Template', () => {
             "caseStatus": "InProgress",
             "templateStatus": "Active",
             "company": "Petramco",
-            "businessUnit": "United States Support",
-            "supportGroup": "US Support 3",
-            "assignee": "qkatawazi",
             "ownerBU": 'United States Support',
             "ownerGroup": "US Support 3",
         }
@@ -290,12 +286,14 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
         await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
         await utilCommon.closePopUpMessage();
+        await viewCaseTemplate.clickBackArrowBtn();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         await utilGrid.searchAndOpenHyperlink(templateData.templateName);
         expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(MANDATORY_FIELD.ownerGroup);
         expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(MANDATORY_FIELD.templateStatus);
+        await viewCaseTemplate.clickBackArrowBtn();
     });
 
     //ptidke 
@@ -1096,6 +1094,19 @@ describe('Case Template', () => {
 
     describe('[4936,4944]: Case Template access when owner group from different company is applied', async () => {
         let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
+        beforeAll(async () => {
+            userData = {
+                "firstName": "Multiple",
+                "lastName": "Company",
+                "userId": "nosg",
+                "emailId": "nosg@petramco.com",
+                "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
+            }
+            await apiHelper.createNewUser(userData);
+            await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+            await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
+            await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
+        });
         it('[4936,4944]: Checking change case template button for In Progress', async () => {
             await navigationPage.signOut();
             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
