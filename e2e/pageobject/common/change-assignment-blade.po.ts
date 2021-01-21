@@ -140,7 +140,7 @@ class ChangeAssignmentBlade {
         const supportGroupDropDown = await $$(this.selectors.assignmentDropDownList).get(3);
         await supportGroupDropDown.$('button').click();
         await supportGroupDropDown.$('input').sendKeys(name);
-        let option = await element(by.cssContainingText(this.selectors.selectOptions, name));
+        let option = await element(by.cssContainingText('.support-agent-list .popup-person' , name));
         await option.click();
     }
 
