@@ -1,3 +1,7 @@
+import copyTasktemplatePo from "e2e/pageobject/settings/task-management/copy-tasktemplate.po";
+import editTasktemplatePo from "e2e/pageobject/settings/task-management/edit-tasktemplate.po";
+import previewTaskTemplatePo from "e2e/pageobject/settings/task-management/preview-task-template.po";
+import viewTasktemplatePo from "e2e/pageobject/settings/task-management/view-tasktemplate.po";
 import { browser } from "protractor";
 import { ALL_FIELD } from '../../data/ui/case/casetemplate.data.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
@@ -19,17 +23,12 @@ import editCasetemplatePo from '../../pageobject/settings/case-management/edit-c
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
 import consoleTasktemplatePo from '../../pageobject/settings/task-management/console-tasktemplate.po';
-import copyTasktemplatePo from '../../pageobject/settings/task-management/copy-tasktemplate.po';
 import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
-import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
-import viewTasktemplatePo from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -59,7 +58,7 @@ let imageSource;
 describe('CKE Description', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login("qkatawazi");
+        await loginPage.login('qtao');
     });
 
     afterAll(async () => {
@@ -206,7 +205,7 @@ describe('CKE Description', () => {
         it('[3528,3527,3523,3517,3520,3518] Verify detail on COPY case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndSelectGridRecord(caseTemplateName);
+            await utilityGrid.searchAndSelectGridRecord(caseTemplateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             //verify detail on copy case template screen
             await copyCasetemplatePo.setTemplateName(copyCasetemplate);
@@ -307,7 +306,7 @@ describe('CKE Description', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickShowMoreDescriptionLink();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
             expect(await ckeditorValidationPo.isUnderLineTextDisplayed(underLineText)).toBeTruthy();
@@ -347,17 +346,17 @@ describe('CKE Description', () => {
             await createTasktemplatePo.updateTaskDescription(boldText);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             await ckeditorOpsPo.clickOnBoldIcon();
-            //italic
+            // //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await createTasktemplatePo.updateTaskDescription(italicText);
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.clickOnItalicIcon();
-            //underline
+            // //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await createTasktemplatePo.updateTaskDescription(underLineText);
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
-            //Center Align
+            // //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await createTasktemplatePo.updateTaskDescription(centerAlignText);
             expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
@@ -372,23 +371,23 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
-            //Right Align
+            // //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await createTasktemplatePo.updateTaskDescription(rightAlignText);
             expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
-            //set color
+            // //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await createTasktemplatePo.updateTaskDescription(redColorText);
             expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
-            //checking number list
+            // //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.setNumberList(['PlusOne']);
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
-            // checking bullot points
+            // // checking bullot points
             await ckeditorOpsPo.setBulletList(['BulletOne']);
             expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
@@ -462,7 +461,7 @@ describe('CKE Description', () => {
         it('[3526,3525,3524,3516] Verify detail on COPY task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
             await viewTasktemplatePo.clickOnCopyTemplate();
             //verify detail on copy task template screen
             await copyTasktemplatePo.setTemplateName(randomString);
@@ -544,7 +543,7 @@ describe('CKE Description', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
+            await utilityGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
             await viewTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isBoldTextDisplayed(boldText)).toBeTruthy();
             expect(await viewTasktemplatePo.isUnderLineTextDisplayed(underLineText)).toBeTruthy();
@@ -569,14 +568,14 @@ describe('CKE Description', () => {
         });
     });
 
-    describe('[3522]:Verify case description field with CK editor functionality on Case', async () => {
+   describe('[3522]:Verify case description field with CK editor functionality on Case', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[3522] Create case bold , italic and underline with CKE', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qdu');
             await createCasePo.setSummary('new case summary1');
-            //   await createCasePo.clickSaveCaseButton();
-            //   await casePreviewPo.clickGoToCaseButton();
+              await createCasePo.clickSaveCaseButton();
+               await casePreviewPo.clickGoToCaseButton();
             // bold
             await createCasePo.updateCaseDescription("this is text");
             await ckeditorOpsPo.clickOnBoldIcon();

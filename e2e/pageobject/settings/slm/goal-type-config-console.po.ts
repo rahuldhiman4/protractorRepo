@@ -1,5 +1,5 @@
 import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by, Key } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 class GoalTypeConfigConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -18,23 +18,23 @@ class GoalTypeConfigConsolePage {
     }
 
     async removeColumns(columnNames: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.goalTypeConsoleGUID, columnNames);
+        await utilityGrid.removeGridColumn(columnNames,this.selectors.goalTypeConsoleGUID);
     }
 
     async addColumns(columnNames: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.goalTypeConsoleGUID, columnNames);
+        await utilityGrid.addGridColumn(columnNames,this.selectors.goalTypeConsoleGUID);
     }
 
     async searchOnGridConsole(searchValue: string): Promise<void> {
-        await utilGrid.searchOnGridConsole(searchValue, this.selectors.goalTypeConsoleGUID);
+        await utilityGrid.searchRecord(searchValue, this.selectors.goalTypeConsoleGUID);
     }
 
     async isGridRecordDisplayed(searchValue: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(searchValue, this.selectors.goalTypeConsoleGUID);
+        return await utilityGrid.isGridRecordPresent(searchValue, this.selectors.goalTypeConsoleGUID);
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.goalTypeConsoleGUID);
+        return await utilityGrid.isGridColumnSorted(columnHeader, sortType, this.selectors.goalTypeConsoleGUID);
     }
 
     async getGoalTypeGUID(): Promise<string> {

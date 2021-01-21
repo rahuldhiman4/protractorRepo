@@ -1,6 +1,6 @@
 import { $, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
-import util from "../../../utils/util.common";
+import utilityCommon from "../../../utils/utility.common";
 
 class Copytaskpage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -70,23 +70,23 @@ class Copytaskpage {
     }
 
     async selectTemplateStatus(status: string): Promise<void> {
-        await util.selectDropDown(this.selectors.templateStatus, status);
+        await utilityCommon.selectDropDown(this.selectors.templateStatus, status);
     }
 
     async selectTaskCompany(companyName: string): Promise<void> {
-        await util.selectDropDown(this.selectors.companyGiud, companyName);
+        await utilityCommon.selectDropDown(this.selectors.companyGiud, companyName);
     }
 
     async selectOwnerCompany(companyName: string): Promise<void> {
-        await util.selectDropDown(this.selectors.ownerCompanyGiud, companyName);
+        await utilityCommon.selectDropDown(this.selectors.ownerCompanyGiud, companyName);
     }
 
     async selectOwnerGroup(ownerGroup: string): Promise<void> {
-        await util.selectDropDown(this.selectors.ownerGroupGuid, ownerGroup);
+        await utilityCommon.selectDropDown(this.selectors.ownerGroupGuid, ownerGroup);
     }
 
     async selectOwnerBusinessUnit(businessUnit: string): Promise<void> {
-        await util.selectDropDown(this.selectors.ownerBusinessUnitGuid, businessUnit);
+        await utilityCommon.selectDropDown(this.selectors.ownerBusinessUnitGuid, businessUnit);
     }
 
     async clickShowMoreDescriptionLink(): Promise<void> {

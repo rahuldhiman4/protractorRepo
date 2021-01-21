@@ -2,6 +2,7 @@ import { $,$$, by, element, protractor, ProtractorExpectedConditions, browser } 
 import utilityCommon from '../../../utils/utility.common';
 import utilCommon from '../../../utils/util.common';
 
+
 class createNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -40,7 +41,7 @@ class createNotificationTemplate {
     }
 
     async selectNthEvent(value: string, n: number): Promise<void> {
-        await utilCommon.selectNthDropDown(this.selectors.eventDropDownGuid, value, n);
+        await utilCommon.selectNthDropDown(this.selectors.eventDropDownGuid, value, n);//no relevance founs
     }
 
     async setTemplateName(value: string): Promise<void> {

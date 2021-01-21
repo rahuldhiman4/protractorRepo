@@ -1,7 +1,5 @@
 import { element, by, $, protractor, ProtractorExpectedConditions, browser, $$ } from "protractor";
-import utilGrid from '../../../utils/util.grid';
 import utilityCommon from '../../../utils/utility.common';
-import utilCommon from '../../../utils/util.common';
 
 class FieldAssociationMappingConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,11 +15,11 @@ class FieldAssociationMappingConsole {
     }
 
     async selectApplicationOrBundleNameDropDown(value: string): Promise<void> {
-        return await utilCommon.selectDropDown(this.selectors.ApplicationOrBundleNameguid, value);
+        return await utilityCommon.selectDropDown(this.selectors.ApplicationOrBundleNameguid, value);
     }
 
     async selectRecordDefinitionNameDropDown(value: string): Promise<void> {
-        return await utilCommon.selectDropDown(this.selectors.RecordDefinitionNameguid, value);
+        return await utilityCommon.selectDropDown(this.selectors.RecordDefinitionNameguid, value);
     }
 
     async selectFieldNameValue(dropDownSearchValue: string): Promise<void> {
@@ -42,7 +40,7 @@ class FieldAssociationMappingConsole {
     }
 
     async selectStatusDropDown(value: string): Promise<void> {
-        return await utilCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
+        return await utilityCommon.selectDropDown(this.selectors.statusDropDownGuid, value);
     }
 
     async clickSaveButton(): Promise<void> {

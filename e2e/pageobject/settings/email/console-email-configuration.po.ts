@@ -1,5 +1,5 @@
 import { $ } from 'protractor';
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 export class ConsoleEmailConfig {
     selectors = {
@@ -33,27 +33,27 @@ export class ConsoleEmailConfig {
      }
 
     async getColumnHeaderValue(header:string): Promise<string> {
-     return await utilGrid.getSelectedGridRecordValue(this.selectors.emailConfigGuid,header);
+     return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.emailConfigGuid,header);
     }
 
     async searchAndSelectCheckbox(value:string): Promise<void> {
-        await utilGrid.clickCheckBoxOfValueInGrid(value);
+        await utilityGrid.clickCheckBoxOfValueInGrid(value);
     }
     
     async searchValueOnGrid(value:string): Promise<void> {
-        await utilGrid.searchOnGridConsole(value);
+        await utilityGrid.searchRecord(value);
     }
 
     async coloumnHeaderMatches(value: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.emailConfigGuid, value)
+        return await utilityGrid.areColumnHeaderMatches(value,this.selectors.emailConfigGuid)
     }
 
     async addHeader(header: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.emailConfigGuid,header);
+        await utilityGrid.addGridColumn(header,this.selectors.emailConfigGuid);
     }
 
     async removeHeader(header: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.emailConfigGuid,header);
+        await utilityGrid.removeGridColumn(header,this.selectors.emailConfigGuid);
     }
 
     async isDeleteBtnDisplayed(): Promise<boolean> {

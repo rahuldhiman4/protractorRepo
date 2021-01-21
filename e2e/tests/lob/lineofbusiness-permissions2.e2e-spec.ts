@@ -11,8 +11,6 @@ import lobManagmentConsolePo from '../../pageobject/settings/lob/define-lob-conf
 import lobManagmentEditPo from '../../pageobject/settings/lob/edit-lob-config.po';
 import lobManagementConsolePo from '../../pageobject/settings/lob/lob-management-console.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -58,16 +56,16 @@ describe('Line of Business Permissions Tests Extended', () => {
             await createEmailConfigPo.selectStatus("Active");
             await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
             await createEmailConfigPo.clickSave();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
             await createEmailConfigPo.clickCancel();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5480]: [Email Configuration] Configure email with One Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.setDescription("destrt");
             await editEmailConfigPo.clickSaveButton();
             await consoleEmailConfigurationPo.searchAndSelectCheckbox(emailID);
@@ -78,7 +76,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await consoleEmailConfigurationPo.clickNewEmailConfiguration();
             expect(await createEmailConfigPo.isLineOfBusinessEnabled()).toBeFalsy();
             await createEmailConfigPo.setEmailID(emailID);
@@ -87,9 +85,9 @@ describe('Line of Business Permissions Tests Extended', () => {
             await createEmailConfigPo.selectStatus("Active");
             await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
             await createEmailConfigPo.clickSave();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
             await createEmailConfigPo.clickCancel();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5480]: [Email Configuration] Configure email with One Line of Business', async () => {
             await navigationPage.signOut();
@@ -97,7 +95,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await utilityGrid.selectLineOfBusiness("Human Resource");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.setDescription("updated description");
             await editEmailConfigPo.clickSaveButton();
             await consoleEmailConfigurationPo.searchAndSelectCheckbox(emailID);
@@ -139,14 +137,14 @@ describe('Line of Business Permissions Tests Extended', () => {
         it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            await utilGrid.selectLineOfBusiness("Human Resource");
-            await utilGrid.searchAndOpenHyperlink(emailIDHR.email);
+            await utilityGrid.selectLineOfBusiness("Human Resource");
+            await utilityGrid.searchAndOpenHyperlink(emailIDHR.email);
             await editEmailConfigPo.selectTab("Trusted Email");
             await editEmailConfigPo.clickAddTrustedEmailBtn();
             await editEmailConfigPo.setNewTrustedEmail("*@*");
             await editEmailConfigPo.selectMappedRequesterDropDown("Al Allbrook");
             await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
-            expect(await utilCommon.isPopUpMessagePresent('WARNING (222342): *@* enables case creation for emails sent from any email ID.')).toBeTruthy("Popup message doesn't match");
+            expect(await utilityCommon.isPopUpMessagePresent('WARNING (222342): *@* enables case creation for emails sent from any email ID.')).toBeTruthy("Popup message doesn't match");
 
             await editEmailConfigPo.clickAddTrustedEmailBtn();
             await editEmailConfigPo.setNewTrustedEmail("testingCheck@gmail.com");
@@ -157,20 +155,20 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.setNewTrustedEmail("testingCheck@gmail.com");
             await editEmailConfigPo.selectMappedRequesterDropDown("Adam Warlock");
             await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222323): Mapping for same email address or domain already exists.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222323): Mapping for same email address or domain already exists.')).toBeTruthy();
             await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await editEmailConfigPo.selectAndClickCheckboxOnTrustedEmail("testingCheck@gmail.com");
             await editEmailConfigPo.clickEditTrustedEmailButtonOnTrustedEmail();
             await editEmailConfigPo.setEmailOnEditTrustedEmail("Test");
             await editEmailConfigPo.clickEditTrustedEmailSaveButtonOnTrustedEmail();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid Trusted Email')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid Trusted Email')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await editEmailConfigPo.setEmailOnEditTrustedEmail("Test");
             await editEmailConfigPo.clickEditTrustedEmailSaveButtonOnTrustedEmail();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid Trusted Email')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid Trusted Email')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
         });
         it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await editEmailConfigPo.setEmailOnEditTrustedEmail("Test@xyz.com");
@@ -178,7 +176,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             expect(await editEmailConfigPo.isRecordPresentonTrustedEmail("Test@xyz.com")).toBeTruthy();
             await editEmailConfigPo.selectAndClickCheckboxOnTrustedEmail("Test@xyz.com");
             await editEmailConfigPo.clickRemoveTrustedEmailButtonOnTrustedEmail();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await editEmailConfigPo.isRecordPresentonTrustedEmail("Test@xyz.com")).toBeFalsy();
             await editEmailConfigPo.clickAddTrustedEmailBtn();
             await editEmailConfigPo.setNewTrustedEmail("testingCheck@gmail.com");
@@ -191,20 +189,20 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.clickOnNewBlockedEmailBtn();
             await editEmailConfigPo.setEmailOnBlockedNewEmail("testingCheck@gmail.com");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222323): Mapping for same email address or domain already exists.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222323): Mapping for same email address or domain already exists.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
         });
         it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await editEmailConfigPo.setEmailOnBlockedNewEmail("*@*");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid email address')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid email address')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await editEmailConfigPo.setEmailOnBlockedNewEmail("testing123@acc.com");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();
             expect(await editEmailConfigPo.isRecordPresentonBlockedEmail("testing123@acc.com")).toBeTruthy();
             await editEmailConfigPo.selectAndClickCheckboxOnBlockedEmail("testing123@acc.com");
             await editEmailConfigPo.clickOnDelteBlockedEmailBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await editEmailConfigPo.isRecordPresentonBlockedEmail("testing123@acc.com")).toBeFalsy();
             await editEmailConfigPo.clickOnNewBlockedEmailBtn();
             await editEmailConfigPo.setEmailOnBlockedNewEmail("testing@bmc.com");
@@ -213,8 +211,8 @@ describe('Line of Business Permissions Tests Extended', () => {
         it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            await utilGrid.selectLineOfBusiness("Facilities");
-            await utilGrid.searchAndOpenHyperlink(emailIDFacility.email);
+            await utilityGrid.selectLineOfBusiness("Facilities");
+            await utilityGrid.searchAndOpenHyperlink(emailIDFacility.email);
             await editEmailConfigPo.selectTab("Trusted Email");
             expect(await editEmailConfigPo.isRecordPresentonTrustedEmail("testingCheck@gmail.com")).toBeFalsy();
             await editEmailConfigPo.selectTab("Blocked Email");
@@ -261,7 +259,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             expect(await lobManagementConsolePo.isTabPresent("Support Group")).toBeTruthy();
             await lobManagementConsolePo.setLobDescription(' Human Resource Description');
             await lobManagementConsolePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await navigationPage.isSettingSubMenusMatches("Line of Business", lineOfBusinessConfigurationList)).toBeFalsy("Application Configuration");
 
             await navigationPage.signOut();
@@ -271,7 +269,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             expect(await lobManagementConsolePo.isLobBundleDisabled()).toBeTruthy();
             await lobManagementConsolePo.setLobDescription('Facilities Description');
             await lobManagementConsolePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[12040]: Validate that tenant admin/case BA is able to view/update the LOB record', async () => {
@@ -279,17 +277,17 @@ describe('Line of Business Permissions Tests Extended', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Line of Business--Manage Line of Business', 'LOB Configuration - Edit - Business Workflows');
-            await utilGrid.selectLineOfBusiness("Human Resource");
+            await utilityGrid.selectLineOfBusiness("Human Resource");
             await lobManagementConsolePo.setLobDescription(' Human Resource');
             await lobManagementConsolePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Line of Business--Manage Line of Business', 'LOB Configuration - Edit - Business Workflows');
-            await utilGrid.selectLineOfBusiness("Facilities");
+            await utilityGrid.selectLineOfBusiness("Facilities");
             await lobManagementConsolePo.setLobDescription('Facilities');
             await lobManagementConsolePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 });

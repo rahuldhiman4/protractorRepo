@@ -2,7 +2,6 @@ import { resolve } from "path";
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import selectCasetemplateBladePo from './select-casetemplate-blade.po';
-import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 class CreateCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

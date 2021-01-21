@@ -18,8 +18,6 @@ import documentLibraryPage from '../../pageobject/settings/document-management/d
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from "../../utils/util.grid";
 import utilityGrid from "../../utils/utility.grid";
 import utilityCommon from '../../utils/utility.common';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
@@ -573,10 +571,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(emptyStr);
             await navigationPage.signOut();
         });
@@ -587,11 +585,11 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
 
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            expect(await utilGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
+            expect(await utilityGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
             await navigationPage.signOut();
 
             //Login with Case Agent
@@ -599,11 +597,11 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
-            await utilGrid.searchOnGridConsole(regionFieldVal);
+            await utilityGrid.searchRecord(regionFieldVal);
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
 
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            expect(await utilGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
+            expect(await utilityGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
         });
 
         afterAll(async () => {

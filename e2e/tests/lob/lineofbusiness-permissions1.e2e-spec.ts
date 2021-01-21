@@ -59,8 +59,6 @@ import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -229,9 +227,9 @@ describe('Line of Business Permission Tests', () => {
             await defineLobCreate.saveLob();
 
             //View created LOB and Verify
-            await utilGrid.clickOnGridRefreshButton();
+            await utilityGrid.clickRefreshIcon();
             await browser.sleep(5000); //Waiting for Group Id to be reflected
-            await utilGrid.searchAndOpenHyperlink(lobName);
+            await utilityGrid.searchAndOpenHyperlink(lobName);
             expect(await editLobConfig.getDescription()).toBe(`q1@$W Description ${randomString}`);
             expect(await editLobConfig.getName()).toBe(lobName);
             expect(await editLobConfig.getBundleName()).toContain(`com.petramco.`);
@@ -246,8 +244,8 @@ describe('Line of Business Permission Tests', () => {
                 "domainTagName": `AccountsDomain123 ${randomString}`
             }
             await apiHelper.createDomainTag(domainTagData);
-            await utilGrid.clickOnGridRefreshButton();
-            await utilGrid.isGridRecordPresent(`AccountsDomain123 ${randomString}`);
+            await utilityGrid.clickRefreshIcon();
+            await utilityGrid.isGridRecordPresent(`AccountsDomain123 ${randomString}`);
 
             await consoleDefineLob.clickAddLobBtn();
             await defineLobCreate.setName(lobName);
@@ -255,8 +253,8 @@ describe('Line of Business Permission Tests', () => {
             await defineLobCreate.setUseAsDefaultValue(false);
             await defineLobCreate.selectEmailOutgoingProfile('Email Profile for Outgoing');
             await defineLobCreate.saveLob();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Line of Business with the given name already exists. Select a different name.')).toBeTruthy('Error message is not matching');
-            await utilCommon.closeBladeOnSettings();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Line of Business with the given name already exists. Select a different name.')).toBeTruthy('Error message is not matching');
+            await utilityCommon.closeAllBlades();
 
             let guid = await consoleDefineLob.getColumnValueOfRecord('Domain ID', lobName);
             expect(await coreApi.getDomainTagGuid(lobName)).toBe(guid);
@@ -577,7 +575,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityCommon.closedWarningTextOfLineOfBuisness();
             expect(await consoleCasetemplatePo.isCreateCaseTemplateEnabled()).toBeFalsy();
-            expect(await utilGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(templateData.templateName)).toBeTruthy();
 
         });
         it('[12028]: Validate that tenant admin/case BA change the LOB status to Inactive - observe the impact of this action', async () => {
@@ -674,7 +672,7 @@ describe('Line of Business Permission Tests', () => {
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            await utilGrid.searchAndOpenHyperlink(emailID);
+            await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent(randomStr + 'templateName')).toBeFalsy();
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown('templateName123' + randomStr)).toBeTruthy();
@@ -743,7 +741,7 @@ describe('Line of Business Permission Tests', () => {
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
-            await utilGrid.selectLineOfBusiness("Human Resource");
+            await utilityGrid.selectLineOfBusiness("Human Resource");
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(randomStr + "Group");
             expect(await createServiceTargetGroupPo.isLobEnabled('disabled')).toBeTruthy();
@@ -759,7 +757,7 @@ describe('Line of Business Permission Tests', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
-            await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
+            await utilityGrid.searchAndOpenHyperlink(randomStr + "Group");
             expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('5866');
             await editServiceTargetGroupConfigPo.clickClose();
 
@@ -767,7 +765,7 @@ describe('Line of Business Permission Tests', () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
-            expect(await utilGrid.isGridRecordPresent(randomStr + "Group")).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(randomStr + "Group")).toBeTruthy();
 
         });
         it('[5866]: Create new SVT Group for Line of Business', async () => {
@@ -775,20 +773,20 @@ describe('Line of Business Permission Tests', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
-            expect(await utilGrid.isGridRecordPresent(randomStr + "Group")).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(randomStr + "Group")).toBeFalsy();
 
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
-            expect(await utilGrid.isGridRecordPresent(randomStr + "Group")).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(randomStr + "Group")).toBeFalsy();
         });
         it('[5866]: Create new SVT Group for Line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
-            await utilGrid.searchAndOpenHyperlink(randomStr + "Group");
+            await utilityGrid.searchAndOpenHyperlink(randomStr + "Group");
             expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('5866');
             await editServiceTargetGroupConfigPo.clickClose();
         });
@@ -826,7 +824,7 @@ describe('Line of Business Permission Tests', () => {
             await createMenuItemsBladePo.selectStatusDropDown('Active');
             await createMenuItemsBladePo.selectAvailableOnUiToggleButton(true);
             await createMenuItemsBladePo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(randomStr + 'DRDMV17649');
@@ -881,38 +879,38 @@ describe('Line of Business Permission Tests', () => {
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
         });
         it('[4109]: Create new automatic case status transition rule for one line of Business', async () => {
-            await utilGrid.clearGridSearchBox();
-            expect(await utilGrid.isGridRecordPresent(configName1)).toBeTruthy();
+            await utilityGrid.clearSearchBox();
+            expect(await utilityGrid.isGridRecordPresent(configName1)).toBeTruthy();
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndOpenHyperlink(configName1);
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndOpenHyperlink(configName1);
             await automatedStatusTransitionEditPage.updateConfigurationName('UpdatedConfigName1' + randomStr);
             await automatedStatusTransitionEditPage.saveConfiguration();
-            await utilGrid.clearGridSearchBox();
-            expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeTruthy();
+            await utilityGrid.clearSearchBox();
+            expect(await utilityGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeTruthy();
         });
         it('[4109]: Create new automatic case status transition rule for one line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
-            await utilGrid.clearFilter();
-            expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
         });
         it('[4109]: Create new automatic case status transition rule for one line of Business', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
-            await utilGrid.selectLineOfBusiness("Human Resource");
-            await utilGrid.clearFilter();
-            expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeTruthy();
-            await utilGrid.selectLineOfBusiness("Facilities");
-            await utilGrid.clearFilter();
-            expect(await utilGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
+            await utilityGrid.selectLineOfBusiness("Human Resource");
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeTruthy();
+            await utilityGrid.selectLineOfBusiness("Facilities");
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.isGridRecordPresent('UpdatedConfigName1' + randomStr)).toBeFalsy();
         });
         it('[4109]: create same name record in same LOB', async () => {
             //create same name record in same LOB
@@ -921,17 +919,17 @@ describe('Line of Business Permission Tests', () => {
             tempData.changeStatusAfter = 3;
             tempData.fromStatus = "In Progress";
             tempData.toStatus = "Pending";
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
-            await utilCommon.isDrpDownvalueDisplayed(automatedStatusTransitionCreatePage.selectors.categoryTier1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await utilityCommon.isAllDropDownValuesMatches(automatedStatusTransitionCreatePage.selectors.categoryTier1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(tempData);
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await automatedStatusTransitionCreatePage.clickCancelBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4109]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
             await automatedStatusTransitionCreatePage.setName(tempData.name);
             await automatedStatusTransitionCreatePage.setCompany(tempData.company);
@@ -941,15 +939,15 @@ describe('Line of Business Permission Tests', () => {
             // verify LOB on create page
             expect(await automatedStatusTransitionCreatePage.getLobValue()).toBe("Facilities");
             await automatedStatusTransitionCreatePage.saveConfig();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // verify LOB on edit page
             await automatedStatusTransitionConsolePo.openAutomatedTransitionConfig(tempData.name);
             expect(await automatedStatusTransitionEditPage.getLobValue()).toBe("Facilities");
             await automatedStatusTransitionEditPage.clickCancel();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1014,7 +1012,7 @@ describe('Line of Business Permission Tests', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleFlowsetConfigPo.searchAndSelectFlowset(flowsetName3);
             await editFlowsetConfigPo.setFlowset("edit Flowset" + randomStr);
             await editFlowsetConfigPo.setDescription("edit description" + randomStr);
@@ -1025,7 +1023,7 @@ describe('Line of Business Permission Tests', () => {
         it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             ALL_FIELD.templateName = ALL_FIELD.templateName + Math.floor(Math.random() * 100000);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCasetemplatePo.setTemplateName(ALL_FIELD.templateName);
@@ -1055,13 +1053,13 @@ describe('Line of Business Permission Tests', () => {
         it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(flowsetName1)).toBeFalsy();
-            expect(await utilGrid.isGridRecordPresent(flowsetName2)).toBeFalsy();
-            expect(await utilGrid.isGridRecordPresent(flowsetName3)).toBeFalsy();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(flowsetName1)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(flowsetName2)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(flowsetName3)).toBeFalsy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             let flowsetValues: string[] = [flowsetName1, flowsetName2, flowsetName3];
             expect(await createCasetemplatePo.flowsetOptionsPresent(flowsetValues)).toBeFalsy('Status in dropdown does not match');
@@ -1094,15 +1092,15 @@ describe('Line of Business Permission Tests', () => {
         it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
         });
         it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -1111,14 +1109,14 @@ describe('Line of Business Permission Tests', () => {
             await createAcknowledgmentTemplatesPo.setSubject(templateName);
             await createAcknowledgmentTemplatesPo.setBody(templateName);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy();
+            await utilityCommon.closePopUpMessage();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy();
         });
         it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
@@ -1127,35 +1125,35 @@ describe('Line of Business Permission Tests', () => {
             await createEmailTemplatePo.setSubject(templateName1);
             await createEmailTemplatePo.setBody(templateName1);
             await createEmailTemplatePo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy();
+            await utilityCommon.closePopUpMessage();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy();
         });
         it('[12063]: LOB updates for agent must reflect permissions on Email Configurations.', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeTruthy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
-            expect(await utilGrid.isGridRecordPresent(templateName1)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
-            expect(await utilGrid.isGridRecordPresent(templateName)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            expect(await utilGrid.isGridRecordPresent(emailID)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateFoundationEntity('Person', 'Fritz', { functionalRole: "Facilities" });
         });

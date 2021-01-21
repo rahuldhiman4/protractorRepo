@@ -1,6 +1,4 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 
 class SelectEmailTemplateBlad {
@@ -24,7 +22,7 @@ class SelectEmailTemplateBlad {
     }
 
     async isEmailTemplateGridEmpty(templateName: string): Promise<boolean> {
-        let value = await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, 'Title');
+        let value = await utilityGrid.getFirstGridRecordColumnValue('Title');
         return value == templateName ? true : false;
     }
 
@@ -50,7 +48,7 @@ class SelectEmailTemplateBlad {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue( columnHeader);
     }
 
     async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {

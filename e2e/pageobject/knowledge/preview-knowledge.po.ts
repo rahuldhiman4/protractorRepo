@@ -1,6 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import utilityCommon from '../../utils/utility.common';
-import { version } from 'process';
+
 
 class PreviewKnowledge {
 

@@ -5,7 +5,6 @@ import articleTemplateStylePo from '../../pageobject/settings/knowledge-manageme
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Knowledge article template style', () => {
@@ -100,7 +99,7 @@ describe('Knowledge article template style', () => {
         expect(await articleTemplateStylePo.getStyleNameFieldRequiredValue()).toContain('required', 'Field is not reuqired');
         await articleTemplateStylePo.setStyleName(randomStr);
         await articleTemplateStylePo.clickCancelButton();
-        expect(await utilCommon.getWarningMessageTextKnowledgeStyle()).toContain('You have unsaved data. Do you want to continue?');
+        expect(await utilityCommon.getWarningDialogMsg()).toContain('You have unsaved data. Do you want to continue?');
         utilityCommon.clickOnApplicationWarningYesNoButton('No');
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();

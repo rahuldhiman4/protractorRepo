@@ -2,7 +2,6 @@ import apiHelper from '../../../api/api.helper';
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import { ICaseTemplateUI } from "../../../data/interface/template.interface";
 import caseTemplateGrid from "../../../pageobject/settings/case-management/console-casetemplate.po";
-import utilityCom from '../../../utils/util.common';
 import utilityCommon from '../../../utils/utility.common';
 import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
 import { flowsetMandatoryFields } from '../../../data/ui/flowset/flowset.ui';

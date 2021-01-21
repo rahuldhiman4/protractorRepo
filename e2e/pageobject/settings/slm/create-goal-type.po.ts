@@ -1,5 +1,6 @@
+import utilCommon from "e2e/utils/util.common";
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class GoalTypeCreateConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

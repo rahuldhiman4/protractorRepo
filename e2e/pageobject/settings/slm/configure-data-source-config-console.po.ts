@@ -1,5 +1,4 @@
 import { $$, $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
-import utilCommon from '../../../utils/util.common';
 
 class ConfigureDataSourceConfigConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -1,4 +1,5 @@
 import { $$, $, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 import utilCommon from '../../../utils/util.common';
 
 class CreateDataSourceConfigurationPage {
@@ -25,7 +26,7 @@ class CreateDataSourceConfigurationPage {
 
     async isDataSourceFieldRequired(fieldName: string): Promise<boolean> {
         let fieldNameRequiredTag = await element(by.cssContainingText(this.selectors.fieldNameLabel, fieldName));
-        return await utilCommon.isRequiredTagToFieldElement(fieldNameRequiredTag);
+        return await utilityCommon.isRequiredTagToField(fieldNameRequiredTag);
     }
 
     async selectDataSourceFieldOption(fieldName: string, fieldOption: string): Promise<void> {
@@ -83,7 +84,7 @@ class CreateDataSourceConfigurationPage {
     }
 
     async isDataSourceDropDownOptionsMatches(fieldName: string, dropdownOptions: string[], fieldValue: string): Promise<boolean> {
-        return await utilCommon.isDropDownOptionsMatches(fieldName, dropdownOptions, fieldValue);
+        return await utilCommon.isDropDownOptionsMatches(fieldName, dropdownOptions, fieldValue);//no relevance found
     }
 
     async isUseEndTimeCheckboxAlreadySelected(): Promise<boolean> {

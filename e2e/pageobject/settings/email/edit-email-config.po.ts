@@ -1,6 +1,6 @@
 import { $, $$, by, element, browser, ProtractorExpectedConditions } from 'protractor';
-import utilCommon from '../../../utils/util.common';
-import utilGrid from '../../../utils/util.grid';
+import utilityCommon from '../../../utils/utility.common';
+import utilityGrid from '../../../utils/utility.grid';
 import { protractor } from 'protractor/built/ptor';
 
 export class EditEmailConfig {
@@ -94,7 +94,7 @@ export class EditEmailConfig {
     }
 
     async isColumnPresentInAcknowledgementTemplateGrid(header: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.acknowledgementTemplateGridGuid, header);
+        return await utilityGrid.areColumnHeaderMatches( header);
     }
 
     async isAssociatedSupportGroupListHeaderPresentInAssociatedSupportGroupTab(): Promise<boolean> {
@@ -118,7 +118,7 @@ export class EditEmailConfig {
     }
 
     async selectDefaultCaseTemplate(tabValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.defaultCaseTemplateGuid, tabValue);
+        await utilityCommon.selectDropDown(this.selectors.defaultCaseTemplateGuid, tabValue);
         await browser.sleep(500); // case template save takes little time ('save' word appears below the dropdown)
     }
 
@@ -171,11 +171,11 @@ export class EditEmailConfig {
     }
 
     async selectAcknowledgementTemplate(template: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.acknowledgementTemplateGuid, template);
+        await utilityCommon.selectDropDown(this.selectors.acknowledgementTemplateGuid, template);
     }
 
     async selectBusinessUnitInAssociatedSupportGroupTab(template: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.associatedSupportGroupBuisnessGroupGuid, template);
+        await utilityCommon.selectDropDown(this.selectors.associatedSupportGroupBuisnessGroupGuid, template);
     }
 
     async clickAssociatedSupportGroupRightArrow(): Promise<void> {
@@ -211,23 +211,23 @@ export class EditEmailConfig {
     }
 
     async searchOnGrid(gridValue: string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(gridValue, this.selectors.exclusiveSubjectGuid);
+        await utilityGrid.searchAndSelectGridRecord(gridValue, this.selectors.exclusiveSubjectGuid);
     }
 
     async searchAndClickOnCheckbox(gridValue: string): Promise<void> {
-        await utilGrid.clickCheckBoxOfValueInGrid(gridValue, this.selectors.editEmailConfigGuid);
+        await utilityGrid.clickCheckBoxOfValueInGrid(gridValue, this.selectors.editEmailConfigGuid);
     }
 
     async searchAndClickCheckboxOnAcknowledgementTemplateGrid(gridValue: string): Promise<void> {
-        await utilGrid.searchAndSelectFirstCheckBox(this.selectors.acknowledgementTemplateGridGuid, gridValue);
+        await utilityGrid.clickCheckBoxOfValueInGrid(gridValue,this.selectors.acknowledgementTemplateGridGuid);
     }
 
     async isRecordPresentInExclusiveGrid(gridValue: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(gridValue, this.selectors.exclusiveSubjectGuid);
+        return await utilityGrid.isGridRecordPresent(gridValue, this.selectors.exclusiveSubjectGuid);
     }
 
     async isRecordPresentInAcknowledgementTemplateGrid(gridValue: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(gridValue, this.selectors.acknowledgementTemplateGridGuid);
+        return await utilityGrid.isGridRecordPresent(gridValue, this.selectors.acknowledgementTemplateGridGuid);
     }
 
     async removeExclusiveSubjectsButton(): Promise<void> {
@@ -255,11 +255,11 @@ export class EditEmailConfig {
     }
 
     async isDefaultCaseTemplatetoUsePresent(template: string): Promise<boolean> {
-        return utilCommon.isValuePresentInDropDown(this.selectors.defaultCaseTemplateGuid, template);
+        return utilityCommon.isValuePresentInDropDown(this.selectors.defaultCaseTemplateGuid, template);
     }
 
     async isAcknowledgementDropDownPresent(template: string): Promise<boolean> {
-        return utilCommon.isValuePresentInDropDown(this.selectors.acknowledgementTemplateGuid, template);
+        return utilityCommon.isValuePresentInDropDown(this.selectors.acknowledgementTemplateGuid, template);
     }
 
     async isDefaultCaseTemplatePresentinDropDown(template: string): Promise<boolean> {
@@ -323,23 +323,23 @@ export class EditEmailConfig {
     }
 
     async  selectMappedRequesterDropDown(email: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.newTrustedEmailMappedRequesterGuid, email);
+        await utilityCommon.selectDropDown(this.selectors.newTrustedEmailMappedRequesterGuid, email);
     }
 
     async isNewTrustedEmailRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.newTrustedEmailIdGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.newTrustedEmailIdGuid);
     }
 
     async isColumnPresentIn(header: string[]): Promise<boolean> {
-        return await utilGrid.areColumnHeaderMatches(this.selectors.acknowledgementTemplateGridGuid, header);
+        return await utilityGrid.areColumnHeaderMatches( header);
     }
 
     async isMappedRequesterRequiredTextPresent(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.newTrustedEmailMappedRequesterGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.newTrustedEmailMappedRequesterGuid);
     }
 
     async isMappedRequesterDropDownPresent(email: string): Promise<void> {
-        await utilCommon.isValuePresentInDropDown(this.selectors.newTrustedEmailMappedRequesterGuid, email);
+        await utilityCommon.isValuePresentInDropDown(this.selectors.newTrustedEmailMappedRequesterGuid, email);
     }
 
     async isValuePresentInDropDown(value: string): Promise<boolean> {
@@ -375,20 +375,20 @@ export class EditEmailConfig {
     }
 
     async selectAndClickCheckboxOnBlockedEmail(value: string): Promise<void> {
-        await utilGrid.searchAndSelectFirstCheckBox(this.selectors.blockedEmailConsoleGuid, value);
+        await utilityGrid.clickCheckBoxOfValueInGrid(value,this.selectors.blockedEmailConsoleGuid);
     }
 
     async isRecordPresentonBlockedEmail(value: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(value, this.selectors.blockedEmailConsoleGuid);
+        return await utilityGrid.isGridRecordPresent(value, this.selectors.blockedEmailConsoleGuid);
     }
 
 
     async selectAndClickCheckboxOnTrustedEmail(value: string): Promise<void> {
-        await utilGrid.searchAndSelectFirstCheckBox(this.selectors.trustedEmailConsoleGuid, value);
+        await utilityGrid.clickCheckBoxOfValueInGrid(value,this.selectors.trustedEmailConsoleGuid);
     }
 
     async isRecordPresentonTrustedEmail(value: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(value, this.selectors.trustedEmailConsoleGuid);
+        return await utilityGrid.isGridRecordPresent(value, this.selectors.trustedEmailConsoleGuid);
     }
 
     async clickEditTrustedEmailButtonOnTrustedEmail(): Promise<void> {

@@ -1,5 +1,5 @@
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from "../../../utils/util.common";
+import utilityCommon from "../../../utils/utility.common";
 
 class CopyCaseTemplate {
 
@@ -57,7 +57,7 @@ class CopyCaseTemplate {
     }
 
     async setOwnerGroupDropdownValue(ownerGroup: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.ownerGroupDropdown, ownerGroup);
+        await utilityCommon.selectDropDown(this.selectors.ownerGroupDropdown, ownerGroup);
     }
 
     async clickSaveCaseTemplate(): Promise<void> {
@@ -200,7 +200,7 @@ class CopyCaseTemplate {
     }
 
     async setCompanyName(companyValue: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyDropDown, companyValue);
+        await utilityCommon.selectDropDown(this.selectors.companyDropDown, companyValue);
     }
 
     async clickCancelCaseTemplate(): Promise<void> {

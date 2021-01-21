@@ -1,6 +1,5 @@
 import { element, by, protractor, ProtractorExpectedConditions, $, $$, browser } from "protractor";
-import utilCommon from '../../../utils/util.common';
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 class ServiceTargetViewConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,7 +16,7 @@ class ServiceTargetViewConsole {
     }
 
     async searchServiceTarget(searchSVT: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(searchSVT);
+        await utilityGrid.searchAndOpenHyperlink(searchSVT);
     }
 
     async isAddSVTButtonEnabled(): Promise<boolean> {
@@ -59,11 +58,11 @@ class ServiceTargetViewConsole {
     }
 
     async searchOnGridConsole(searchValue: string): Promise<void> {
-        await utilGrid.searchOnGridConsole(searchValue);
+        await utilityGrid.searchRecord(searchValue);
     }
 
     async isGridRecordDisplayed(searchValue: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(searchValue);
+        return await utilityGrid.isGridRecordPresent(searchValue);
     }
 
     async isGridColumnSorted(columnHeader: string, sortType: string): Promise<boolean> {

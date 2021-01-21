@@ -1,6 +1,5 @@
 import utilityGrid from '../../../utils/utility.grid';
 import { $, protractor, ProtractorExpectedConditions, promise } from "protractor";
-import utilGrid from '../../../utils/util.grid';
 
 class DynamicFieldLibraryConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

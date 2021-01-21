@@ -1,6 +1,5 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
-import utilCommon from '../../../utils/util.common';
 import utilityCommon from "../../../utils/utility.common";
 
 class ViewTaskTemplate {

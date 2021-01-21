@@ -1,4 +1,4 @@
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 import { $, protractor, ProtractorExpectedConditions, $$, browser } from 'protractor';
 
 class ApprovalMappingConsole {
@@ -39,26 +39,26 @@ class ApprovalMappingConsole {
         });
     }
     async addColumnOnGrid(columnName: string[]): Promise<void> {
-        await utilGrid.addGridColumn(this.selectors.gridGUID, columnName);
+        await utilityGrid.addGridColumn(columnName,this.selectors.gridGUID);
     }
 
     async removeColumnFromGrid(columnName: string[]): Promise<void> {
-        await utilGrid.removeGridColumn(this.selectors.gridGUID, columnName)
+        await utilityGrid.removeGridColumn(columnName,this.selectors.gridGUID)
     }
     async areGridColumnMatches(data: string[]): Promise<boolean>{
-        return await utilGrid.areColumnHeaderMatches(this.selectors.gridGUID, data);
+        return await utilityGrid.areColumnHeaderMatches(data,this.selectors.gridGUID,);
     }
     async isColumnSorted(value: string, sortType: string): Promise<boolean> {
-        return await utilGrid.isGridColumnSorted(value, sortType, this.selectors.gridGUID)
+        return await utilityGrid.isGridColumnSorted(value, sortType, this.selectors.gridGUID)
     }
     async addFilter(fieldName: string, textValue: string,type:string): Promise<void> {
-        await utilGrid.addFilter(fieldName,textValue,type);
+        await utilityGrid.addFilter(fieldName,textValue,type);
     }
     async isRecordPresent(value: string): Promise<boolean> {
-        return await utilGrid.isGridRecordPresent(value, this.selectors.gridGUID)
+        return await utilityGrid.isGridRecordPresent(value, this.selectors.gridGUID)
     }
     async searchValueOnGrid(value:string): Promise<void> {
-        await utilGrid.searchOnGridConsole(value);
+        await utilityGrid.searchRecord(value);
     }
 
 }

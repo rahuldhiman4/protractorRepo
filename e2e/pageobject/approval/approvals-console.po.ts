@@ -1,7 +1,7 @@
 import { browser, $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
-import utilCommon from '../../utils/util.common';
+import utilityCommon from '../../utils/utility.common';
+
 
 
 class ApprovalsConsole {
@@ -26,7 +26,7 @@ class ApprovalsConsole {
     }
 
     async searchCaseOnApprovalConsole(caseSummary: string, approve: string): Promise<void> {
-        await utilGrid.searchAndSelectGridRecord(caseSummary);
+        await utilityGrid.searchAndSelectGridRecord(caseSummary);
         switch (approve) {
             case "Approve": {
                 await this.clickApproverButton();
@@ -45,11 +45,8 @@ class ApprovalsConsole {
                 break;
             }
         }
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
-
-
-
 }
 
 export default new ApprovalsConsole();

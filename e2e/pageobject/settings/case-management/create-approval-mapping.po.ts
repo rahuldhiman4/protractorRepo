@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilCommon from "../../../utils/util.common";
+import utilityCommon from "../../../utils/utility.common";
 
 class CreateApprovalMapping {
 
@@ -53,40 +53,40 @@ class CreateApprovalMapping {
     }
 
     async isApprovalMappingFieldDisplayed(approvalMappingFieldLabel: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.approvalMappingFields, approvalMappingFieldLabel);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.approvalMappingFields, approvalMappingFieldLabel);
     }
 
     async isApprovalMappingStatusTriggerFieldDisplayed(approvalMappingFieldLabel: string): Promise<boolean> {
-        return await utilCommon.isFieldLabelDisplayed(this.selectors.statusTriggerDropDownGuid, approvalMappingFieldLabel);
+        return await utilityCommon.isFieldLabelDisplayed(this.selectors.statusTriggerDropDownGuid, approvalMappingFieldLabel);
     }
 
     async isApprovalMappingNameFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.approvalMappingNameGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.approvalMappingNameGuid);
     }
 
     async isCompanyFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.companyGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.companyGuid);
     }
 
     async isFlowsetFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.flowsetGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.flowsetGuid);
     }
 
     async isStatusTriggerFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusTriggerDropDownGuid);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusTriggerDropDownGuid);
     }
 
     async isStatusMappingApprovedFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusMappingApproved);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusMappingApproved);
     }
     async isStatusMappingNoApproverFoundFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusMappingNoApprovalFound);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusMappingNoApprovalFound);
     }
     async isStatusMappingRejectedFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusMappingRejected);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusMappingRejected);
     }
     async isStatusMappingErrorFieldMandatory(): Promise<boolean> {
-        return await utilCommon.isRequiredTagToField(this.selectors.statusMappingError);
+        return await utilityCommon.isRequiredTagToField(this.selectors.statusMappingError);
     }
 
     async getDefaultSelectedStatusTriggerOption(): Promise<string> {
@@ -94,11 +94,11 @@ class CreateApprovalMapping {
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, company);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async selectFlowset(flowset: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
+        await utilityCommon.selectDropDown(this.selectors.flowsetGuid, flowset);
     }
 
     async clickStatusTriggerDropDown(): Promise<void> {
@@ -122,47 +122,47 @@ class CreateApprovalMapping {
     }
 
     async selectStatusTrigger(approvalStatusTrigger: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
+        await utilityCommon.selectDropDown(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
     }
 
     async selectStatusMappingApproved(approvedStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingApproved, approvedStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingApproved, approvedStatusMapping);
     }
 
     async selectStatusMappingNoApprovalFound(NoApprovalFoundStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
     }
 
     async selectStatusMappingRejected(rejectedStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingRejected, rejectedStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingRejected, rejectedStatusMapping);
     }
 
     async selectStatusMappingError(errorStatusMapping: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
+        await utilityCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
     }
 
     async isSelectFlowsetDropDownOptionsMatches(flowsetValues: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.flowsetGuid, flowsetValues);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.flowsetGuid, flowsetValues);
     }
 
     async isStatusTriggerDropDownOptionsMatches(approvalStatusTrigger: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusTriggerDropDownGuid, approvalStatusTrigger);
     }
 
     async isStatusMappingApprovedDropDownOptionsMatches(approvedStatusMapping: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusMappingApproved, approvedStatusMapping);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusMappingApproved, approvedStatusMapping);
     }
 
     async isStatusMappingNoApprovalFoundDropDownOptionsMatches(NoApprovalFoundStatusMapping: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusMappingNoApprovalFound, NoApprovalFoundStatusMapping);
     }
 
     async isStatusMappingRejectedDropDownOptionsMatches(rejectedStatusMapping: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusMappingRejected, rejectedStatusMapping);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusMappingRejected, rejectedStatusMapping);
     }
 
     async isStatusMappingErrorDropDownOptionsMatches(errorStatusMapping: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusMappingError, errorStatusMapping);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusMappingError, errorStatusMapping);
     }
 
     async isSaveApprovalMappingBtnEnabled(): Promise<boolean> {
