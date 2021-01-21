@@ -1,4 +1,4 @@
-import utilCommon from "e2e/utils/util.common";
+import utilCommon from "../../../utils/util.common";
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 
