@@ -48,6 +48,8 @@ import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import resourceTabPo from '../../pageobject/common/resources-tab.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 
 describe("Attachment", () => {
     beforeAll(async () => {
@@ -1465,6 +1467,80 @@ describe("Attachment", () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
             await activityTabPo.clickAndDownloadAttachmentFile(fileName12);
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+        });
+    });
+
+    describe('[12125]: Verify all the Options are loaded in Region Dropdown on multiple screens if Region Count is more than 50', () => {
+        let caseResponse = undefined;
+        let regionStr:string = 'Region';
+        let lastRegionValue:string = 'Region Tier39';
+        let applyBtnStr:string = 'Apply';
+        let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            for (let i = 0; i < 40; i++)
+                await apiHelper.createRegion(`Region${i}`, `Region Tier${i}`);
+            await apiHelper.apiLogin('qfeng');
+            let caseData = {
+                "Description": "Simple test case desc",
+                "Requester": "qfeng",
+                "Summary": "Simple test case summary",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1"
+            }
+            caseResponse = await apiHelper.createCase(caseData);
+        });
+
+        it('[12125]: Verify all the Options are loaded in Region Dropdown on Case Advanced Search', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePo.clickOnTab('Resources');
+            await resourceTabPo.clickOnAdvancedSearchOptions();
+            await resourceTabPo.enterAdvancedSearchText('a');
+            await resourceTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourceTabPo.selectAdvancedSearchFilterOption(regionStr, lastRegionValue);
+            expect(await utilityCommon.getSelectedDropdownFiledValue(regionStr)).toBe(lastRegionValue);
+            await resourceTabPo.clickOnAdvancedSearchFiltersButton(applyBtnStr);
+        });
+
+        it('[12125]: Verify all the Options are loaded in Region Dropdown on Quick Advanced Search', async () => {
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('qkatawazi');
+            await quickCasePo.setCaseSummary('a');
+            await resourceTabPo.clickOnAdvancedSearchOptions();
+            await resourceTabPo.enterAdvancedSearchText('a');
+            await resourceTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourceTabPo.selectAdvancedSearchFilterOption(regionStr, lastRegionValue);
+            expect(await utilityCommon.getSelectedDropdownFiledValue(regionStr)).toBe(lastRegionValue);
+            await resourceTabPo.clickOnAdvancedSearchFiltersButton(applyBtnStr);
+        });
+
+        it('[12125]: Verify all the Options are loaded in Region Dropdown on Knowledge Article', async () => {
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('KCS');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(`${randomStr}2Casetemplate`);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectRegionDropDownOption(lastRegionValue);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(lastRegionValue);
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePo.selectRegionDropDownOption('Region Tier38');
+            await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Region Tier38');
+        });
+
+        it('[12125]: Verify all the Options are loaded in Region Dropdown on Knowledge Article', async () => {
+            await viewKnowledgeArticlePo.clickOnTab("Resources");
+            await resourceTabPo.clickOnAdvancedSearchOptions();
+            await resourceTabPo.enterAdvancedSearchText("a");
+            await resourceTabPo.clickOnAdvancedSearchSettingsIconToOpen();
+            await resourceTabPo.selectAdvancedSearchFilterOption(regionStr, lastRegionValue);
+            expect(await utilityCommon.getSelectedDropdownFiledValue(regionStr)).toBe(lastRegionValue);
+            await resourceTabPo.clickOnAdvancedSearchFiltersButton(applyBtnStr);
         });
     });
 });

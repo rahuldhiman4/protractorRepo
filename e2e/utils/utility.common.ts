@@ -567,6 +567,26 @@ export class Utility {
         return await $(this.selectors.warningDialogMsg).getText();
     }
 
+    async getSelectedDropdownFiledValue(dropDownLabel: string): Promise<string> {
+        let dropdownValue:string = undefined;
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$('.dropdown.dropdown_select').count();
+            return count >= 1;
+        }), 3000);
+        const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
+        for (let i: number = 0; i < dropDown.length; i++) {
+            await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
+                if (result) {
+                    let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
+                    if (dropDownLabelText === dropDownLabel) {
+                        dropdownValue = await dropDown[i].$('button').getText();
+                    }
+                }
+            });
+        }
+        return dropdownValue;
+    }
+
 }
 
 export default new Utility();

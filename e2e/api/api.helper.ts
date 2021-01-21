@@ -55,6 +55,8 @@ import { NOTES_TEMPLATE } from '../data/api/social/notes.template.api';
 import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
 import { RELATIONSHIPS } from '../data/api/shared-services/relationship.api';
 import { UpdateLOB, CreateLOB } from '../data/api/foundation/lob.api';
+import { REGION, REGION_TIER } from '../data/api/foundation/region.api';
+
 let fs = require('fs');
 
 axios.defaults.baseURL = browser.baseUrl;
@@ -1995,7 +1997,7 @@ class ApiHelper {
         knowledgeSetTemplateData.sections[0].title = data.sectionTitle;
         knowledgeSetTemplateData.templateDescription = data.templateDescription ? data.templateDescription : knowledgeSetTemplateData.templateDescription;
         knowledgeSetTemplateData.knowledgeSet = data.knowledgeSetTitle ? data.knowledgeSetTitle : knowledgeSetTemplateData.templateDescription;
-        knowledgeSetTemplateData.status = data.status ? await constants.ArticleTemplateStuses[data.status] : knowledgeSetTemplateData.status;
+        knowledgeSetTemplateData.status = data.status ? await constants.ArticleTemplateStatus[data.status] : knowledgeSetTemplateData.status;
         knowledgeSetTemplateData.knowledgeSetId = await apiCoreUtil.getKnowledgeSetGuid(data.knowledgeSetTitle);
         // knowledgeSetTemplateData.lobId = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeSetTemplateData.lobId;
         const articleTemplateResponse = await axios.post(
@@ -3280,6 +3282,30 @@ class ApiHelper {
         console.log('Create Service Target Goal Type API Status =============>', slmResponse.status);
 
         return slmResponse.status == 201;
+    }
+
+    async createRegion(regionName: string, regionTierName: string, lob?: string): Promise<boolean> {
+        let regionPayload = cloneDeep(REGION);
+        regionPayload.fieldInstances[260000001].value = regionName;
+        regionPayload.fieldInstances[304417331].value = lob ? lob : regionPayload.fieldInstances[304417331].value;
+        let regionResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(regionPayload);
+        console.log('Create Region API Status =============>', regionResponse.status);
+        let response = await axios.get(
+            regionResponse.headers.location
+        );
+        let responseData = {
+            id: response.data.id,
+            displayId: response.data.displayId
+        };
+
+        let regionTierPayload = cloneDeep(REGION_TIER);
+        regionTierPayload.fieldInstances[260000001].value = regionTierName;
+        regionTierPayload.fieldInstances[304410971].value = responseData.id;
+        regionTierPayload.fieldInstances[304417331].value = lob ? lob : regionTierPayload.fieldInstances[304417331].value;
+        let regionTierResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(regionTierPayload);
+        console.log('Create Region Tier API Status =============>', regionTierResponse.status);
+        await apiCoreUtil.associateFoundationElements('Region to Site', responseData.id, '723de966290232b2da35cb2d9d0562acfc1b1b93983bf518c2edda8f6eea9ae7246362254728de6b4aebea56dc6acaa5f9ca1d552e3ebb4afc1354ff01c53c4c');
+        return regionResponse.status == 201 && regionTierResponse.status == 201;
     }
 }
 
