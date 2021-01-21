@@ -7,8 +7,6 @@ import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-mana
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
 import editKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/edit-knowledge-article-template.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -33,7 +31,7 @@ describe('Knowledge Article Template', () => {
         await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
         await createKnowledgeArticleTemplatePo.setTemplateName('template1062' + randomStr);
         await createKnowledgeArticleTemplatePo.clickCancelBtn();
-        expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+        expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         expect(await utilityGrid.isGridRecordPresent('template1062' + randomStr)).toBeFalsy('Record should not be created');
     });
@@ -148,11 +146,11 @@ describe('Knowledge Article Template', () => {
             expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Template Name')).toBeTruthy('Template Name');
             expect(await createKnowledgeArticleTemplatePo.getfieldLabel('Template Description')).toBeTruthy('Template Description');
 
-            expect(await utilCommon.isButtonVisible('Add Section')).toBeTruthy('Add Section button is not visible');
-            expect(await utilCommon.isButtonVisible('Expand All')).toBeTruthy('Expand All button is not visible');
-            expect(await utilCommon.isButtonVisible('Collapse All')).toBeTruthy('Collapse All button is not visible');
-            expect(await utilCommon.isButtonVisible('Save')).toBeTruthy('Save button is not visible');
-            expect(await utilCommon.isButtonVisible('Cancel')).toBeTruthy('Cancel button is not visible');
+            expect(await utilityCommon.isButtonVisible('Add Section')).toBeTruthy('Add Section button is not visible');
+            expect(await utilityCommon.isButtonVisible('Expand All')).toBeTruthy('Expand All button is not visible');
+            expect(await utilityCommon.isButtonVisible('Collapse All')).toBeTruthy('Collapse All button is not visible');
+            expect(await utilityCommon.isButtonVisible('Save')).toBeTruthy('Save button is not visible');
+            expect(await utilityCommon.isButtonVisible('Cancel')).toBeTruthy('Cancel button is not visible');
 
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Knowledge Template : DRDMV1065 has been successfully created')).toBeTruthy('Success message does not match');
@@ -164,7 +162,7 @@ describe('Knowledge Article Template', () => {
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
             expect(await utilityGrid.isGridRecordPresent('DRDMV1065')).toBeTruthy('Record does not exist');
             expect(await utilityGrid.isGridRecordPresent('DRDMV619')).toBeTruthy('Record does not exist');
-            await utilCommon.switchToNewWidnow(1);
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToApplication("Knowledge Management");
             await navigationPage.gotoCreateKnowledge();
         });

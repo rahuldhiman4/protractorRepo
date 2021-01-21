@@ -17,8 +17,6 @@ import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledg
 import editKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/edit-knowledge-article-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import accessTabPo from '../../pageobject/common/access-tab.po';
@@ -620,9 +618,9 @@ describe('Knowledge Article', () => {
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setSectionTitle('First' + randomStr);
             await editKnowledgeArticleTemplatePo.clickOnCancelButton();
-            expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-            expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+            expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
             await createKnowledgeArticleTemplatePo.setTemplateName('template1064' + randomStr);
