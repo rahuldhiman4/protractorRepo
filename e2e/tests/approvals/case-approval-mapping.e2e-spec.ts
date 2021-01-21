@@ -11,8 +11,8 @@ import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import viewCasePo from '../../pageobject/case/view-case.po';
-import { CaseTemplate } from 'e2e/api/constant.api';
-let userData, userData1, userData2 = undefined;
+
+let userData1, userData2 = undefined;
 
 describe("Case Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
