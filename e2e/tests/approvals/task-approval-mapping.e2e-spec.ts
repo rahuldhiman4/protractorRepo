@@ -6,8 +6,8 @@ import approvalMappingConsolePage from "../../pageobject/settings/task-managemen
 import createApprovalMappingPage from "../../pageobject/settings/task-management/create-approval-mapping.po";
 import editApprovalMappingPage from "../../pageobject/settings/task-management/edit-approval-mapping.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe("Task Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
@@ -521,7 +521,7 @@ describe("Task Approval Mapping Tests", () => {
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are displayed to the Case Manager of same LOB');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are displayed to the Case Manager of same LOB');
         });
 
         it('[3592,3514]: Verify Task Approval Mapping is accessible to other Line of business Case BA', async () => {
@@ -529,7 +529,7 @@ describe("Task Approval Mapping Tests", () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
         it('[3592,3514]: Verify Task Approval Mapping is accessible to other Line of business Case Manager', async () => {
@@ -537,7 +537,7 @@ describe("Task Approval Mapping Tests", () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
         it('[3592,3514]: Verify Task Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
@@ -545,11 +545,11 @@ describe("Task Approval Mapping Tests", () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
 
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
         it('[3592,3514]: Verify Task Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
@@ -557,12 +557,12 @@ describe("Task Approval Mapping Tests", () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
 
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
-            await utilGrid.searchAndOpenHyperlink(taskApprovalMappingStr);
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await utilityGrid.searchAndOpenHyperlink(taskApprovalMappingStr);
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(taskApprovalMappingStr);
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('Petramco');
             expect(await editApprovalMappingPage.getSelectedStatusTriggerOption()).toBe('Assigned');
@@ -613,8 +613,8 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
 
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr + "_changed")).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
-            await utilGrid.searchAndOpenHyperlink(taskApprovalMappingStr + "_changed");
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr + "_changed")).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            await utilityGrid.searchAndOpenHyperlink(taskApprovalMappingStr + "_changed");
             await editApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_update");
             await editApprovalMappingPage.selectStatusMappingApproved('Completed');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -625,8 +625,8 @@ describe("Task Approval Mapping Tests", () => {
 
         it('[3592,3514]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr + "_update")).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr + "_update")).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_update");
             await createApprovalMappingPage.selectCompany('Petramco');
@@ -639,7 +639,7 @@ describe("Task Approval Mapping Tests", () => {
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
-            expect(await utilGrid.isGridRecordPresent(taskApprovalMappingStr + "_update")).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
+            expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr + "_update")).toBeTruthy('Task Approval Mapping for Facilities LOB are not displayed to Human Resource LOB User.');
         });
 
         afterAll(async () => {
@@ -719,7 +719,7 @@ describe("Task Approval Mapping Tests", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             expect(await approvalMappingConsolePage.isCreateApprovalMappingButtonDisplayed()).toBeFalsy('Create Approval Mapping Button is displayed.');
-            await utilGrid.searchAndOpenHyperlink(taskApprovalMappingStr);
+            await utilityGrid.searchAndOpenHyperlink(taskApprovalMappingStr);
             expect(await editApprovalMappingPage.isApprovalMappingNameDisabled()).toBeTruthy('Approval Mapping Name is editable');
             expect(await editApprovalMappingPage.isDropdownDisabled('Company')).toBeTruthy('Company dropdown is editable');
             expect(await editApprovalMappingPage.isDropdownDisabled('StatusTrigger')).toBeTruthy('StatusTrigger dropdown is editable');
