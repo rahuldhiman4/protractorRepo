@@ -96,7 +96,7 @@ class EditDataSourceConfigurationPage {
     }
 
     async selectDataSourceFieldOption(fieldName: string, fieldOption: string): Promise<void> {
-        await utilityCommon.selectDropDown(fieldName, fieldOption, DropDownType.Name);// no relevance found
+        await utilityCommon.selectDropDown(fieldName, fieldOption, DropDownType.Label);// can use DropDownType.Name
     }
 
     async isUseEndTimeCheckboxAlreadySelected(): Promise<boolean> {
