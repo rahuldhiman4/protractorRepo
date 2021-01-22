@@ -8,7 +8,7 @@ import createNotificationEventPage from '../../pageobject/settings/notification-
 import createNotificationTemplatePage from '../../pageobject/settings/notification-config/create-notification-template.po';
 import editNotificationEventPage from '../../pageobject/settings/notification-config/edit-notification-event.po';
 import editNotificationTemplate from "../../pageobject/settings/notification-config/edit-notification-template.po";
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -451,17 +451,17 @@ describe("Notification Template", () => {
         expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Save');
         expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Cancel');
 
-        await editNotificationTemplate.selectDropdownWithName('Company', 'Petramco');
-        await editNotificationTemplate.selectDropdownWithName('Business Unit', 'HR Support');
-        await editNotificationTemplate.selectDropdownWithName('Support Group', 'Compensation and Benefits');
+        await utilityCommon.selectDropDown('Company', 'Petramco', DropDownType.Label);
+        await utilityCommon.selectDropDown('Business Unit', 'HR Support', DropDownType.Label);
+        await utilityCommon.selectDropDown('Support Group', 'Compensation and Benefits', DropDownType.Label);
         await editNotificationTemplate.clickApplyButton();
         await editNotificationTemplate.selectIndividualRecipient('Elizabeth Peters');
         await editNotificationTemplate.saveAddRecipients();
 
         await editNotificationTemplate.clickAddRecipientsBtn();
         await editNotificationTemplate.selectRecipientType('Group');
-        await editNotificationTemplate.selectDropdownWithName('Company', 'Petramco');
-        await editNotificationTemplate.selectDropdownWithName('Business Unit', 'Australia Support');
+        await utilityCommon.selectDropDown('Company', 'Petramco', DropDownType.Label);
+        await utilityCommon.selectDropDown('Business Unit', 'Australia Support', DropDownType.Label);
         await editNotificationTemplate.clickApplyButton();
         await editNotificationTemplate.selectIndividualRecipient('AU Support 1');
         await editNotificationTemplate.saveAddRecipients();
