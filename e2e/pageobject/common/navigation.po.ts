@@ -249,13 +249,13 @@ class NavigationPage {
     }
 
     async isSettingSubMenusMatches(pathStr: string, listOfSubItems: string[]): Promise<boolean> {
-        await element(by.xpath(`//rx-administration-settings//*[text()="${pathStr}"]/../*[@class="tree-branch-head"]`)).click();
-        let loc: string = `//*[text()="${pathStr}"]/ancestor::li[@class="tree-expanded"]//*[@class="tree-label "]`;
+        await element(by.xpath(`//rx-admin-settings-explorer//*[text()="${pathStr}"]/../../../*[@role="img"]`)).click();
+        let loc: string = `//*[text()="${pathStr}"]/ancestor::li[@role="listitem"]//adapt-highlight`;
         let list: string[] = [];
         let subitemCounts: number = await element.all(by.xpath(loc)).count();
         let baseCounts: number = 1;
         for (baseCounts; baseCounts <= subitemCounts; baseCounts++) {
-            list[baseCounts] = await element(by.xpath(`(//*[text()="${pathStr}"]/ancestor::li[@class="tree-expanded"]//*[@class="tree-label "])` + "[" + baseCounts + "]")).getText();
+            list[baseCounts] = await element(by.xpath(`(//*[text()="${pathStr}"]/ancestor::li[@role="listitem"]//adapt-highlight)` + "[" + baseCounts + "]")).getText();
         }
         let returnedvalue = list.filter(function (el) {
             return el != null;
