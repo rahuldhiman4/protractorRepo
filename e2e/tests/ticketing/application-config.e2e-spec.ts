@@ -4,7 +4,6 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import loginPage from "../../pageobject/common/login.po";
 import utilityCommon from '../../utils/utility.common';
 import navigationPage from "../../pageobject/common/navigation.po";
-import utilCommon from '../../utils/util.common';
 import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
 
 describe('Application Configuration', () => {
@@ -49,12 +48,12 @@ describe('Application Configuration', () => {
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             await applicationConfigPo.clickAddConfigurationValue();
-            expect(await utilCommon.isDropDownOptionsMatches('Company', ['- Global -', 'Petramco', 'Phyto', 'Phylum', 'BMCOpsMonitoring'])).toBeTruthy();
+            expect(await utilityCommon.isAllDropDownValuesMatches('Company', ['- Global -', 'Petramco', 'Phyto', 'Phylum', 'BMCOpsMonitoring'])).toBeTruthy();
             await applicationConfigPo.clickCancelButton();
             await applicationConfigPo.clickApplicationConfiguration('ADD_DWP_SURVEY_ON_CASE');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('ADD_DWP_SURVEY_ON_CASE');
             await applicationConfigPo.clickAddConfigurationValue();
-            expect(await utilCommon.isDropDownOptionsMatches('Company', ['- Global -', 'Petramco', 'Phyto', 'Phylum', 'BMCOpsMonitoring'])).toBeTruthy();
+            expect(await utilityCommon.isAllDropDownValuesMatches('Company', ['- Global -', 'Petramco', 'Phyto', 'Phylum', 'BMCOpsMonitoring'])).toBeTruthy();
             await applicationConfigPo.clickCancelButton();
             
         });

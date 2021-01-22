@@ -21,8 +21,6 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import createDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-group-library-config.po';
 import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-group-library-config-console.po';
@@ -70,10 +68,10 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
             await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy();
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await createDynamicFieldLibraryConfigPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[4867]: create same name record in different LOB', async () => {
@@ -82,7 +80,7 @@ describe('Dynamic Library Configuration', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName(dynamicFieldName);
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
@@ -93,7 +91,7 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });
 
         afterAll(async () => {
@@ -518,11 +516,11 @@ describe('Dynamic Library Configuration', () => {
         it('[4869]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDRDMV13128');
+            await utilityGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDRDMV13128');
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDraft');
+            await utilityGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateDraft');
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeTruthy();
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
@@ -547,7 +545,7 @@ describe('Dynamic Library Configuration', () => {
         it('[4869]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateInactive');
+            await utilityGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateInactive');
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy();
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             expect(await dynamicFieldsPage.isAddDynamicGroupDisplayed()).toBeTruthy();
@@ -595,7 +593,7 @@ describe('Dynamic Library Configuration', () => {
         it('[4863]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();

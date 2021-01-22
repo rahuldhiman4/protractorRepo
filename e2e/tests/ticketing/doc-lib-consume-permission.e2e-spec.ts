@@ -21,7 +21,6 @@ import adhoctaskTemplate from '../../pageobject/task/create-adhoc-task.po';
 import manageTask from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Document Library Consume Permission', () => {
@@ -375,7 +374,7 @@ describe('Document Library Consume Permission', () => {
             await editDocumentLibraryPo.setSite('Canberra');
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             let objDate: Date = new Date();
             let allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             let day = "" + objDate.getDate(); //if (day.length == 1) { day = "0" + day; }

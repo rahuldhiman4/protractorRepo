@@ -8,7 +8,6 @@ import notificationTemplateEditPage from '../../pageobject/settings/notification
 import viewTaskPage from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityGrid from '../../utils/utility.grid';
-
 import utilityCommon from '../../utils/utility.common';
 import knowledgeArticleViewPage from '../../pageobject/knowledge/view-knowledge-article.po';
 import taskTemplateConsolePage from '../../pageobject/settings/task-management/console-tasktemplate.po';
@@ -355,7 +354,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
         await notificationTemplateEditPage.cancelAlertMessageText();
-                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -389,7 +388,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
         await notificationTemplateEditPage.cancelAlertMessageText();
-                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
@@ -435,7 +434,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
         await notificationTemplateEditPage.cancelAlertMessageText();
-                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
@@ -479,7 +478,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
         await notificationTemplateEditPage.cancelAlertMessageText();
-                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
@@ -514,7 +513,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
         await notificationTemplateEditPage.cancelAlertMessageText();
-                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
@@ -560,7 +559,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
         await notificationTemplateEditPage.cancelAlertMessageText();
-                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
@@ -653,7 +652,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-                    await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
@@ -665,7 +664,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-                    await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
@@ -743,7 +742,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Alert');
             await notificationTemplateEditPage.cancelAlertMessageText();
-                    await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Email');
@@ -819,7 +818,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Alert');
             await notificationTemplateEditPage.cancelAlertMessageText();
-                    await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Email');

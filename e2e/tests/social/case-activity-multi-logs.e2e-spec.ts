@@ -16,7 +16,6 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
 import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
-import utilCommon from '../../utils/util.common';
 import utilityGrid from '../../utils/utility.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
