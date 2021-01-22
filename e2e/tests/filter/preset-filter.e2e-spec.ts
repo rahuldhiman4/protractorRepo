@@ -13,7 +13,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-
 describe('Preset Filter Funcational Verification', () => {
     let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let caseAgentuserData;

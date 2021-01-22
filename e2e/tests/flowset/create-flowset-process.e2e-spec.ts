@@ -1,30 +1,30 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import { flowsetGlobalFields, flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
 import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
-import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
-import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
-import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
-import consoleFlowsetConfigPage from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
-import createFlowsetPage from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
-import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
-import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
-import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePage from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
-import utilityGrid from '../../utils/utility.grid';
-import activityTabPage from '../../pageobject/social/activity-tab.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 import statusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeEmailPo from '../../pageobject/email/compose-mail.po';
-import { flowsetMandatoryFields, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
-import { cloneDeep } from 'lodash';
-let userData, userData1, userData2 = undefined;
+import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
+import consoleFlowsetConfigPage from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
+import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
+import createFlowsetPage from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
+import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
+import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
+import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
+let userData1, userData2 = undefined;
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
@@ -208,7 +208,7 @@ describe('Create Process in Flowset', () => {
             await createFlowsetProcessLibrary.clickSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already existsfor the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createFlowsetProcessLibrary.clickCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes'); 
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await consoleFlowsetProcessLibrary.searchAndSelectFlowset(processAliasNameCaseHR);
             await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
             await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
@@ -216,7 +216,7 @@ describe('Create Process in Flowset', () => {
             await editFlowsetProcessLibrary.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already exists for the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editFlowsetProcessLibrary.clickOnCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes'); 
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5637]:  Validate create new record with same name in different LOB', async () => {

@@ -260,17 +260,17 @@ describe('Case Status Verification', () => {
         it('[3484]: Give Access To Users For case1', async () => {
             //Give Read Access User3
             await viewCasePage.clickOnTab('Case Access');
-            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
-            await accessTabPo.selectAgent('Qing Yuan','Agent');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
+            await accessTabPo.selectAgent('Qing Yuan', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
 
             //Give Write Access User3
-            await accessTabPo.selectAgent('qstrong','Agent');
+            await accessTabPo.selectAgent('qstrong', 'Agent');
             await accessTabPo.clickAssignWriteAccessCheckbox('Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
 
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qing Yuan','Read')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong','Write')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qing Yuan', 'Read')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Write')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
             await updateStatusBladePo.changeCaseStatus(statusResolved);
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
@@ -294,16 +294,16 @@ describe('Case Status Verification', () => {
         it('[3484]: Give Access To Users For Case2 And Change Case Status To Closed', async () => {
             //Give Read Access User3
             await viewCasePage.clickOnTab('Case Access');
-            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
-            await accessTabPo.selectAgent('Qing Yuan','Agent');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
+            await accessTabPo.selectAgent('Qing Yuan', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
-            await expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qing Yuan','Read')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
+            await expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qing Yuan', 'Read')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
             //Give Write Access User3
-            await accessTabPo.selectAgent('qstrong','Agent');
+            await accessTabPo.selectAgent('qstrong', 'Agent');
             await accessTabPo.clickAssignWriteAccessCheckbox('Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
 
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong','Write')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Write')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
             await updateStatusBladePo.changeCaseStatus(statusResolved);
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();

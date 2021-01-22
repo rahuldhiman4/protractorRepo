@@ -1,15 +1,15 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import * as taskData from "../../data/ui/case/filter-combination.data.ui";
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
+import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
-import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
-import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 
 describe('Task and Knowledge Console Filter Combinations', () => {
     beforeAll(async () => {
@@ -297,7 +297,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             let response4 = await apiHelper.createAdhocTask(response3.id, taskData.TASK_DATA_Combination_3);
             taskId.push(response4.displayId);
             await apiHelper.updateTaskStatus(response4.id, 'Assigned');
-           
+
             let response5 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
             await apiHelper.updateCaseStatus(response5.id, "InProgress");
             let response6 = await apiHelper.createAdhocTask(response5.id, taskData.TASK_DATA_Combination_5);
@@ -449,7 +449,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             knowledgeId.push(knowledgeArticleData1.displayId);
             await apiHelper.flagAndUnflagKnowledgeArticle(knowledgeArticleData1.id, "FlagComment1", 1);
 
-             knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(taskData.ARTICLE_DATA_Combination2);
+            knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(taskData.ARTICLE_DATA_Combination2);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
             knowledgeId.push(knowledgeArticleData2.displayId);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'SMEReview', 'khardison', 'CA Support 3', 'Petramco');

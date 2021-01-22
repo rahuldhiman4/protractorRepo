@@ -12,7 +12,6 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 
 describe('Case Console Filter Combinations', () => {
-    const caseModule = 'Case';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");

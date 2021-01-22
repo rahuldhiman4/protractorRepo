@@ -531,7 +531,7 @@ describe('Case Console Preset Filter', () => {
             await utilityGrid.applyPresetFilter('My Open Breached Cases');
             let allOpenCase: string[] = ['My Open Breached Cases'];
             expect(await utilityGrid.isAppliedFilterMatches(allOpenCase)).toBeTruthy();
-            
+
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }

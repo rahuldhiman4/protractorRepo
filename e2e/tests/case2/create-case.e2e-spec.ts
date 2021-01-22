@@ -28,17 +28,13 @@ import viewTasktemplatePage from '../../pageobject/settings/task-management/view
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import taskConsolepage from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
-import manageTask from "../../pageobject/task/manage-task-blade.po";
+import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
+import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-describe("Create Case", () => {
 
+describe("Create Case", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -96,7 +92,7 @@ describe("Create Case", () => {
             await localizeValuePopPo.setLocalizeValue(randVal);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            await utilGrid.searchRecord(randVal);
+            await utilityGrid.searchRecord(randVal);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await $(viewCasePage.selectors.resolutionCodeText).isDisplayed()).toBeTruthy('Missing Resolution Text');
@@ -187,7 +183,7 @@ describe("Create Case", () => {
             await menuItemConsole.searchAndEditMenuOption(randVal);
             await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(false);
             await editMenuItemsConfigPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(caseId2);
             await viewCasePage.clickEditCaseButton();
@@ -209,9 +205,9 @@ describe("Create Case", () => {
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
         await createCasePage.selectRequester('adam');
         expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy();
-        //expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).tobeTruthy; Save button wont enable unless summary is set
-        //await utilCommon.closePopUpMessage();
-        //await utilCommon.closePopUpMessage();
+        //expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).tobeTruthy; Save button wont enable unless summary is set
+        //await utilityCommon.closePopUpMessage();
+        //await utilityCommon.closePopUpMessage();
         await createCasePage.setSummary(caseSummary);
         expect(await createCasePage.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
         await createCasePage.clickAssignToMeButton();
@@ -401,8 +397,8 @@ describe("Create Case", () => {
 
         it('[5454]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddTaskFromTemplateButton();
-            await manageTask.searchAndOpenTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.clickAddTaskFromTemplateButton();
+            await manageTaskBladePo.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -483,10 +479,10 @@ describe("Create Case", () => {
             expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
             await createCasePage.selectRequester('adam');
             // await createCasePage.clickSaveCaseButtonWithoutMessageDisappear();
-            // expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.').tobeTruthy();
-            // await utilCommon.closePopUpMessage();
+            // expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.').tobeTruthy();
+            // await utilityCommon.closePopUpMessage();
             await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
-            //await utilCommon.closePopUpMessage();
+            //await utilityCommon.closePopUpMessage();
             await createCasePage.setSummary(caseSummary);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -526,7 +522,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCaseConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase(closed);
             await viewCasePage.clickEditCaseButton();
             await editCasePage.updateCasePriority('Critical');
@@ -606,7 +602,7 @@ describe("Create Case", () => {
             await attachmentBladePage.searchAndSelectCheckBox('bwfPdf');
             expect(await attachmentBladePage.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
             await attachmentBladePage.clickDownloadButton();
-            expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
             await utilityCommon.closeAllBlades();
         });
 
@@ -637,7 +633,7 @@ describe("Create Case", () => {
 
         it('[5075]: Verify  sort on all attachments grid', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddAdhocTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             await adhoctaskTemplate.setSummary(summary);
             await adhoctaskTemplate.setDescription("Description");
@@ -647,8 +643,8 @@ describe("Create Case", () => {
             await adhoctaskTemplate.addAttachmentInDescription(filesToUpload2);
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
-            await manageTask.clickCloseButton();
-            await utilCommon.closePopUpMessage();
+            await manageTaskBladePo.clickCloseButton();
+            await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAttachmentsLink();
             expect(await utilityGrid.isGridColumnSorted('Attachments', 'desc')).toBeTruthy("Attachment Not Sorted Desecnding");
             expect(await utilityGrid.isGridColumnSorted('Attachments', 'asc')).toBeTruthy("Attachment Not Sorted Asecnding");
@@ -749,7 +745,7 @@ describe("Create Case", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getAssignedGroupText()).toBe('Workforce Administration');
-            await updateStatusBladePo.changeCaseStatus('In Progress');       
+            await updateStatusBladePo.changeCaseStatus('In Progress');
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
         });
@@ -805,10 +801,10 @@ describe("Create Case", () => {
                 "Origin": "Email"
             }
             caseDataForDwp =
-            {
-                "requester": "qtao",
-                "summary": "Testing case creation with minimal input data"
-            }
+                {
+                    "requester": "qtao",
+                    "summary": "Testing case creation with minimal input data"
+                }
             await apiHelper.apiLogin('qkatawazi');
             caseIdForEmail = await apiHelper.createCase(caseDataForEmail);
             caseIdForDWP = await apiHelper.createCaseFromDwp(caseDataForDwp);
@@ -845,7 +841,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             //case template without reopen case
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -859,7 +855,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[4325]: Verify allow case reopen tag in case template', async () => {
@@ -939,7 +935,7 @@ describe("Create Case", () => {
             await createTaskTemplate.selectTemplateStatus('Active');
             await createTaskTemplate.clickOnSaveTaskTemplate();
             await expect(viewTasktemplatePage.getOwnerCompanyValue()).toBe("Petramco");
-            //await utilCommon.closePopUpMessage();
+            //await utilityCommon.closePopUpMessage();
             //Create Case
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -950,11 +946,11 @@ describe("Create Case", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddTaskFromTemplateButton();
-            await manageTask.setTaskSearchBoxValue(TaskSummary);
-            await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-            await manageTask.clickTaskGridSaveButton();
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.clickAddTaskFromTemplateButton();
+            await manageTaskBladePo.setTaskSearchBoxValue(TaskSummary);
+            await manageTaskBladePo.clickFirstCheckBoxInTaskTemplateSearchGrid();
+            await manageTaskBladePo.clickTaskGridSaveButton();
+            await manageTaskBladePo.clickCloseButton();
         });
 
         it('[5010]: [ Task ] - Verify create case with Global task template having assignment', async () => {
@@ -985,11 +981,11 @@ describe("Create Case", () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(psilonCaseResponse.displayId);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddTaskFromTemplateButton();
-            await manageTask.setTaskSearchBoxValue(TaskSummary);
-            await manageTask.clickFirstCheckBoxInTaskTemplateSearchGrid();
-            await manageTask.clickTaskGridSaveButton();
-            await manageTask.clickTaskLink(TaskSummary);
+            await manageTaskBladePo.clickAddTaskFromTemplateButton();
+            await manageTaskBladePo.setTaskSearchBoxValue(TaskSummary);
+            await manageTaskBladePo.clickFirstCheckBoxInTaskTemplateSearchGrid();
+            await manageTaskBladePo.clickTaskGridSaveButton();
+            await manageTaskBladePo.clickTaskLink(TaskSummary);
             expect(await viewTaskPo.getAssigneeText()).toBe('None', 'Assignee Should be blank');
         });
 
