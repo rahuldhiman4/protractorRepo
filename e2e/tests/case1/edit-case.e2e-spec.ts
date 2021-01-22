@@ -1,4 +1,5 @@
 import { browser } from "protractor";
+import apiHelper from '../../api/api.helper';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
@@ -11,8 +12,7 @@ import personProfilePage from '../../pageobject/common/person-profile.po';
 import composemailPage from '../../pageobject/email/compose-mail.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
-import { default as utilCommon, default as utilityCommon } from '../../utils/utility.common';
-import apiHelper from '../../api/api.helper';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Edit Case', () => {
     beforeAll(async () => {
@@ -150,7 +150,7 @@ describe('Edit Case', () => {
         await changeAssignmentPage.selectBusinessUnit('HR Support');
         await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
         await editCasePage.clickSaveCase();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
     });
 
     describe('[59943]: UI fields should be visible for user with login ID contains @ sign', async () => {

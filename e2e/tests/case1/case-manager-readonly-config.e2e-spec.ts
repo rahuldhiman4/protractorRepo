@@ -52,9 +52,8 @@ import taskTemplateConsolePage from '../../pageobject/settings/task-management/c
 import editTaskTemplatePage from '../../pageobject/settings/task-management/edit-tasktemplate.po';
 import viewTaskTemplatePage from '../../pageobject/settings/task-management/view-tasktemplate.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from "../../utils/util.grid";
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
 
 describe('Case Manager Read-only Config', () => {
     let caseModule = 'Case';
@@ -75,9 +74,10 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
         expect(await assignmentConfigConsole.isAddAssignmentsBtnDisplayed()).toBeFalsy();
-        await utilGrid.searchAndSelectAllCheckBoxWOGrid("Benefits Assignment");
+        await utilityGrid.searchRecord("Benefits Assignment");
+        await utilityGrid.selectAllCheckBox();
         expect(await assignmentConfigConsole.isDeleteAssignmentConfigBtnDisplayed()).toBeFalsy();
-        await utilGrid.searchAndOpenHyperlink("Benefits Assignment");
+        await utilityGrid.searchAndOpenHyperlink("Benefits Assignment");
         expect(await assignmentConfigEditPage.isEditAssignmentNameDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
@@ -103,9 +103,10 @@ describe('Case Manager Read-only Config', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             expect(await caseReadAccessConfigConsole.isAddButtonDisplayed()).toBeFalsy();
-            await utilGrid.searchAndSelectAllCheckBoxWOGrid('Read Access Mapping Name' + randomStr);
+            await utilityGrid.searchRecord('Read Access Mapping Name' + randomStr);
+            await utilityGrid.selectAllCheckBox();
             expect(await caseReadAccessConfigConsole.isDeleteButtonDisplayed()).toBeFalsy();
-            await utilGrid.searchAndOpenHyperlink('Read Access Mapping Name' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink('Read Access Mapping Name' + randomStr);
             expect(await caseReadAccessConfigEditPage.isAccessMappingNameDisabled()).toBeTruthy();
             expect(await caseReadAccessConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
             expect(await caseReadAccessConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
@@ -138,7 +139,7 @@ describe('Case Manager Read-only Config', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             expect(await processLibraryConfigConsole.isRegisterProcessBtnDisplayed()).toBeFalsy();
-            await utilGrid.searchAndOpenHyperlink(`Process${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(`Process${randomStr}`);
             expect(await processLibraryEditPage.isDescriptionDisabled()).toBeTruthy("Description field is enabled");
             expect(await processLibraryEditPage.isStatusDisabled()).toBeTruthy("Status field is enabled");
             expect(await processLibraryEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
@@ -161,7 +162,7 @@ describe('Case Manager Read-only Config', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
             expect(await menuItemsConfigConsole.isAddButtonDisplayed()).toBeFalsy();
-            await utilGrid.searchAndOpenHyperlink(label);
+            await utilityGrid.searchAndOpenHyperlink(label);
             expect(await menuItemEditPage.isMenuItemsStatusDisabled()).toBeTruthy("Status field is enabled");
             expect(await menuItemEditPage.isDefaultToggleBtnDisabled()).toBeTruthy("Default Toggle is enabled");
             expect(await menuItemEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
@@ -190,7 +191,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
         expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisplayed()).toBeFalsy("Add button is enabled");
-        await utilGrid.searchAndOpenHyperlink("Case Resolution Time");
+        await utilityGrid.searchAndOpenHyperlink("Case Resolution Time");
         expect(await goalTypeEditPage.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await goalTypeEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
     });
@@ -202,7 +203,7 @@ describe('Case Manager Read-only Config', () => {
         console.log("bbb");
         expect(await configureDataSourceConfigConsole.isConfigDataSourceBtnDisabled()).toBeTruthy("Add button is enabled");
         console.log("aaa");
-        await utilGrid.searchAndOpenHyperlink("Case Management");
+        await utilityGrid.searchAndOpenHyperlink("Case Management");
         await configureDataSourceEditPage.clickDataSourceLink('Show Advanced Settings');
         expect(await configureDataSourceEditPage.isAssociationNameDisabled()).toBeTruthy("Association Name is enabled");
         expect(await configureDataSourceEditPage.isBuildExpressionBtnDisabled()).toBeTruthy("Build Expression button is enabled");
@@ -216,7 +217,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Shared Entity', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.BUSINESS_TIME_SHARED_ENTITY);
         expect(await businessTimeSharedEntityConfigConsole.isAddBtnDisplayed()).toBeFalsy("Add button is enabled");
-        await utilGrid.searchAndOpenHyperlink("India Business Hours");
+        await utilityGrid.searchAndOpenHyperlink("India Business Hours");
         await businessTimeEntityConfigEditPage.updateStatus("Pending");
         expect(await businessTimeEntityConfigEditPage.isSaveBtnDisabled()).toBeTruthy("Save button is enabled");
         expect(await businessTimeEntityConfigEditPage.isAddBusinessSegmentBtnDisabled()).toBeTruthy("Add business time segment button is enabled");
@@ -231,7 +232,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Segment', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.BUSINESS_TIME_SEGMENT);
         expect(await businessTimeSegmentConfigConsole.isAddBusinessSegmentBtnDisplayed()).toBeFalsy("Add Business Time Segment button is enabled");
-        await utilGrid.searchAndOpenHyperlink("India Available M-F 9AM-5PM");
+        await utilityGrid.searchAndOpenHyperlink("India Available M-F 9AM-5PM");
         await businessTimeSegmentConfigEditPage.updateStatus("Draft");
         await businessTimeSegmentConfigEditPage.clickNextButton();
         expect(await businessTimeSegmentConfigEditPage.isFinishButtonDisabled()).toBeTruthy("Finish button is enabled");
@@ -249,9 +250,9 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
-        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
     });
@@ -267,9 +268,9 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
-        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
     });
@@ -285,9 +286,9 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
-        await utilGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await editNotesTemplateConfig.isDescriptionFieldDisabled()).toBeTruthy("Description field is enabled");
     });
@@ -304,7 +305,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
         expect(await flowsetConsole.isAddFlowsetButtonDisplayed()).toBeFalsy("Add button is enabled");
-        await utilGrid.searchAndOpenHyperlink(flowsetMandatoryFieldsData.flowsetName);
+        await utilityGrid.searchAndOpenHyperlink(flowsetMandatoryFieldsData.flowsetName);
         expect(await flowsetEditPage.isFlowsetNameDisabled()).toBeTruthy("Flowset name  is enabled");
         expect(await flowsetEditPage.isStatusFieldDisabled()).toBeTruthy("Add Associate Category button is enabled");
         expect(await flowsetEditPage.isSaveBtnDisabled()).toBeTruthy("Add Associate Category button is enabled");
@@ -350,10 +351,10 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
         expect(await emailTemplateConsolePage.isAddEmailTemplateButtonDisplayed()).toBeFalsy('Add Email Template Button is enabled');
-        await utilGrid.searchRecord(emailTemplateName);
-        await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
+        await utilityGrid.searchRecord(emailTemplateName);
+        await utilityGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
         expect(await emailTemplateConsolePage.isDeleteEmailTemplateButtonDisplayed()).toBeFalsy('Delete Template Button is enabled');
-        await utilGrid.searchAndOpenHyperlink(emailTemplateName);
+        await utilityGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editEmailTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
         expect(await editEmailTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
         expect(await editEmailTemplatePage.isLocalizedMessageButtonEnabled()).toBeFalsy('Localized Message button is enabled');
@@ -375,10 +376,10 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
         expect(await acknowledgementTemplateConsolePage.isAddAcknowledgeTemplateButtonDisplayed()).toBeFalsy('Add Email Template Button is enabled');
-        await utilGrid.searchRecord(emailTemplateName);
-        await utilGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
+        await utilityGrid.searchRecord(emailTemplateName);
+        await utilityGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
         expect(await acknowledgementTemplateConsolePage.isDeleteAcknowledgementTemplateButtonDisplayed()).toBeFalsy('Delete Template Button is enabled');
-        await utilGrid.searchAndOpenHyperlink(emailTemplateName);
+        await utilityGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editAcknowledementTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
         expect(await editAcknowledementTemplatePage.isStatusFieldEnabled()).toBeFalsy('Status field is enabled');
         expect(await editAcknowledementTemplatePage.isLocalizedMessageButtonEnabled()).toBeFalsy('Localized Message button is enabled');
@@ -409,7 +410,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
         expect(await serviceTargetConsolePage.isAddSVTButtonEnabled()).toBeFalsy('Add SVT button is enabled');
-        await utilGrid.searchAndOpenHyperlink("DRDMV18170" + randomStr);
+        await utilityGrid.searchAndOpenHyperlink("DRDMV18170" + randomStr);
         expect(await editServiceTargetConfigPage.isStatusFieldDisabled()).toBeTruthy('Status field is enabled');
         expect(await editServiceTargetConfigPage.isBuildExpressionButtonEnabled()).toBeFalsy('Build Expression button is enabled');
         expect(await editServiceTargetConfigPage.isDescriptionFieldEnabled()).toBeFalsy('Description field is enabled');
@@ -453,12 +454,12 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
         expect(await serviceTargetGroupConsole.isAddServiceTargetGroupBtnEnabled()).toBeFalsy('Add Button is enabled');
-        await utilGrid.searchAndOpenHyperlink(svtGrpName);
+        await utilityGrid.searchAndOpenHyperlink(svtGrpName);
         expect(await editServiceTargetGroupPage.isSVTGroupNameEnabled()).toBeFalsy('SVT Group name is enabled');
         expect(await editServiceTargetGroupPage.isSVTSelectRadioBtnDisabled()).toBeTruthy('SVT Selection is enabled');
         expect(await editServiceTargetGroupPage.isSaveBtnEnabled()).toBeFalsy('Save button is enabled');
         await editServiceTargetGroupPage.clickClose();
-        await utilGrid.searchAndSelectGridRecord(svtGrpName);
+        await utilityGrid.searchAndSelectGridRecord(svtGrpName);
         expect(await serviceTargetGroupConsole.isDeleteButtonEnabled()).toBeFalsy('Delete Button is enabled');
     });
 
@@ -467,10 +468,9 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         expect(await notificationTemplateConsolePage.isAddNotificationTemplateBtnDisplayed()).toBeFalsy('Add Button is enabled');
-        await utilGrid.searchAndSelectGridRecord('Cancel Template');
+        await utilityGrid.searchAndSelectGridRecord('Cancel Template');
         expect(await notificationTemplateConsolePage.isDeleteNotificationTemplateBtnDisplayed()).toBeFalsy('Delete Button is enabled');
-        await utilGrid.clearGridSearchBox();
-        await utilGrid.searchAndOpenHyperlink('Cancel Template');
+        await utilityGrid.searchAndOpenHyperlink('Cancel Template');
         expect(await editNotificationTemplatePage.isDescriptionFieldDisabled()).toBeTruthy('Description field is enabled');
         expect(await editNotificationTemplatePage.isEventDropdownDisabled()).toBeTruthy('Event dropdown is enabled');
         expect(await editNotificationTemplatePage.isAddLocalizedButtonEnabled()).toBeFalsy('Add Localized button is enabled');
@@ -509,12 +509,12 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
         expect(await approvalMappingConsolePO.isAddApprovalMappingBtnDisplayed()).toBeFalsy('Add Config button is displayed');
-        await utilGrid.searchAndOpenHyperlink("Approval Mapping Name" + randomStr);
+        await utilityGrid.searchAndOpenHyperlink("Approval Mapping Name" + randomStr);
         expect(await editApprovalMappingPage.isApprovalMappingNameDisabled()).toBeTruthy('Approval Mapping Name is editable');
         expect(await editApprovalMappingPage.isDropdownDisabled('StatusTrigger')).toBeTruthy('StatusTrigger dropdown is editable');
         expect(await editApprovalMappingPage.isCasesCreatedWithoutTemplateToggleDisabled()).toBeTruthy('CasesCreatedWithoutTemplateToggleButton is editable');
-        await utilCommon.closeBladeOnSettings();
-        await utilGrid.searchAndSelectGridRecord("Approval Mapping Name" + randomStr);
+        await utilityCommon.closeAllBlades();
+        await utilityGrid.searchAndSelectGridRecord("Approval Mapping Name" + randomStr);
         expect(await approvalMappingConsolePO.isDeleteApprovalMappingBtnDisplayed()).toBeFalsy('Delete button is displayed');
         //Case Template selection disabled part is covered in test case 6267
     });
@@ -527,14 +527,13 @@ describe('Case Manager Read-only Config', () => {
             await apiHelper.createEmailConfiguration();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
-            await utilGrid.searchAndSelectGridRecord('test@gmail.com');
+            await utilityGrid.searchAndSelectGridRecord('test@gmail.com');
             expect(await emailConfigurationConsole.isDeleteBtnDisplayed()).toBeFalsy('Delete Button is displayed');
-            await utilGrid.clearGridSearchBox();
-            await utilGrid.searchAndOpenHyperlink('test@gmail.com');
+            await utilityGrid.searchAndOpenHyperlink('test@gmail.com');
             expect(await editEmailConfiguration.isDefaultCaseTemplateToUseBtnDisabled()).toBeTruthy('Default Case Template field is enabled');
             expect(await editEmailConfiguration.isAddNewRuleBtnEnabled()).toBeFalsy('Add New Rule button is enabled');
             expect(await editEmailConfiguration.isAddAvailableGlobalSubjectBtnEnabled()).toBeFalsy('Add available Global Subject button is enabled');
-            await utilGrid.clickCheckBoxOfValueInGrid('Out Of Office');
+            await utilityGrid.clickCheckBoxOfValueInGrid('Out Of Office');
             expect(await editEmailConfiguration.isRemoveExlusionSubjectEnabled()).toBeFalsy('Remove Exclusion Subject button is enabled');
             expect(await editEmailConfiguration.isEditExlusiceSubjectEnabled()).toBeFalsy('Edit Exclusive Subject button is enabled');
             await editEmailConfiguration.selectTab("Acknowledgment Templates");
@@ -573,8 +572,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await caseTemplateConsolePage.isAddCaseTemplateBtnDisplayed()).toBeFalsy('Add Case Template button is displayed');
         await caseTemplateConsolePage.searchAndselectCaseTemplate('4016 Name' + randomStr);
         expect(await caseTemplateConsolePage.isCopyCaseTemplateBtnDisplayed()).toBeFalsy('Copy Case Template button is displayed');
-        await utilGrid.clearGridSearchBox();
-        await utilGrid.searchAndOpenHyperlink('4016 Name' + randomStr);
+        await utilityGrid.searchAndOpenHyperlink('4016 Name' + randomStr);
         await editCaseTemplatePage.clickEditCaseTemplate();
         expect(await editCaseTemplatePage.isCaseStatusFieldDisabled()).toBeTruthy('Case status field is enabled');
         expect(await editCaseTemplatePage.isCaseSummaryFieldDisabled()).toBeTruthy('Case summary field is enabled');
@@ -610,8 +608,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await taskTemplateConsolePage.isAddExternalTaskTemplateBtnDisplayed()).toBeFalsy('Add External Task Template button is displayed');
         await taskTemplateConsolePage.searchAndSelectTaskTemplate(taskTemplateName);
         expect(await taskTemplateConsolePage.isCopyTaskTemplateBtnDisplayed()).toBeFalsy('Copy Task Template button is displayed');
-        await utilGrid.clearGridSearchBox();
-        await utilGrid.searchAndOpenHyperlink(taskTemplateName);
+        await utilityGrid.searchAndOpenHyperlink(taskTemplateName);
         expect(await viewTaskTemplatePage.isCopyTaskButtonEnabled()).toBeFalsy('Copy task template button is enabled');
         await viewTaskTemplatePage.clickOnEditLink();
         expect(await editTaskTemplatePage.isTaskSummaryFieldDisabled()).toBeTruthy('Task Summary field is enabled');
@@ -620,7 +617,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editTaskTemplatePage.isTemplateStatusDisabled()).toBeTruthy('Template status field is enabled');
         expect(await editTaskTemplatePage.isSaveTemplateMetadataBtnEnabled()).toBeFalsy('Task template metadata save button is enabled');
     });
-    
+
     it('[DRDMV-18076]: Check Case manager is not able to perform Create Update Delete operation on Document Template', async () => {
         let documentTemplateName = 'DRDMV-18076' + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let documentTemplateData = {
@@ -634,10 +631,9 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
         expect(await documentTemplateConsolePo.isAddDocumentTemplateBtnDisplayed()).toBeFalsy('Add Document template button is displayed');
-        await utilGrid.searchAndSelectGridRecord(documentTemplateName);
+        await utilityGrid.searchAndSelectGridRecord(documentTemplateName);
         expect(await documentTemplateConsolePo.isDeleteDocumentTemplateBtnDisplayed()).toBeFalsy('Delete Document template button is displayed');
-        await utilGrid.clearGridSearchBox();
-        await utilGrid.searchAndOpenHyperlink(documentTemplateName);
+        await utilityGrid.searchAndOpenHyperlink(documentTemplateName);
         expect(await editDocumentTemplatePage.isDescriptionFieldDisabled()).toBeTruthy('Description Field is enabled');
         expect(await editDocumentTemplatePage.isSaveButtonEnabled()).toBeFalsy('Status button is enabled');
     });

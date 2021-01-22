@@ -6,12 +6,14 @@ import caseConsole from '../../pageobject/case/case-console.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
 import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import resourceTabPo from '../../pageobject/common/resources-tab.po';
 import composeMail from '../../pageobject/email/compose-mail.po';
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
@@ -44,12 +46,8 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import resourceTabPo from '../../pageobject/common/resources-tab.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
 
 describe("Attachment", () => {
     beforeAll(async () => {
@@ -131,11 +129,11 @@ describe("Attachment", () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('demo.txt')).toBeTruthy('Attached file not Present');
 
             await viewCasePo.clickAttachmentsLink();
-            expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('demo');
             expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('demo')).toBeTruthy('demo txt file name is missing');
             await attachmentBladePo.clickDownloadButton();
-            expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -165,17 +163,17 @@ describe("Attachment", () => {
         await viewCasePo.clickAttachmentsLink();
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
         expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfPdf')).toBeTruthy('Attachment file name is missing');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is deleted sucessfully');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is deleted sucessfully');
         // 5076
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeFalsy('Download button is enabled');
         await attachmentBladePo.searchAndSelectCheckBox('bwfPdf');
         expect(await attachmentBladePo.isDownloadButtonEnabled()).toBeTruthy('Download button is disabled');
         await attachmentBladePo.clickDownloadButton();
-        expect(await utilCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('File is not downloaded.');
         await attachmentBladePo.clickCloseButton();
         await activityTabPo.clickOnHyperlinkFromActivity(1, 'Qianru Tao');
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is delete sucessfully');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is delete sucessfully');
         await navigationPage.gotoPersonProfile();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
     });
@@ -223,7 +221,7 @@ describe("Attachment", () => {
             await viewCasePo.clickAttachmentsLink();
             expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfXlsx')).toBeTruthy('Attachment file name is missing');
             expect(await (await attachmentBladePo.getGridColumnValues('Attached to')).includes('Task')).toBeTruthy('Attach to column value is missing');
-            expect(await utilCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('File is delete sucessfully');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfXlsx.xlsx')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.searchAndSelectCheckBox('bwfXlsx');
             await attachmentBladePo.clickDownloadButton();
             await attachmentBladePo.clickCloseButton();
@@ -274,11 +272,11 @@ describe("Attachment", () => {
         it('[5059,5057]: Large number of attachments verification', async () => {
             for (let j: number = 0; j < fileName.length; j++) {
                 let file: string = fileName[j].substring(0, fileName[j].indexOf("."));
-                await utilCommon.deleteAlreadyDownloadedFile(file);
+                await utilityCommon.deleteAlreadyDownloadedFile(file);
                 await attachmentBladePo.searchAndSelectCheckBox(file);
                 await attachmentBladePo.clickDownloadButton(); // select file checkbox
-                expect(await utilCommon.isFileDownloaded(fileName[j])).toBeTruthy(`${fileName[j]} File is not downloaded.`);
-                expect(await utilCommon.deleteAlreadyDownloadedFile(file)).toBeTruthy('File is deleted sucessfully');
+                expect(await utilityCommon.isFileDownloaded(fileName[j])).toBeTruthy(`${fileName[j]} File is not downloaded.`);
+                expect(await utilityCommon.deleteAlreadyDownloadedFile(file)).toBeTruthy('File is deleted sucessfully');
                 await attachmentBladePo.searchAndSelectCheckBox(file); // unselect file checkbox
             }
         });
@@ -398,13 +396,13 @@ describe("Attachment", () => {
         await casePreviewPo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
         await attachmentBladePo.clickAllCheckboxButton();
-        expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName[0]}`)).toBeTruthy('File is delete sucessfully');
-        expect(await utilCommon.deleteAlreadyDownloadedFile(`${fileName[1]}`)).toBeTruthy('File is delete sucessfully');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName[0]}`)).toBeTruthy('File is delete sucessfully');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName[1]}`)).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.clickDownloadButton();
         await browser.sleep(5000); // hard wait to download all files
         for (let j: number = 0; j < fileName.length; j++) {
-            expect(await utilCommon.isFileDownloaded(fileName[j])).toBeTruthy('File is not downloaded.');
-            expect(await utilCommon.deleteAlreadyDownloadedFile(fileName[j])).toBeTruthy('File is delete sucessfully');
+            expect(await utilityCommon.isFileDownloaded(fileName[j])).toBeTruthy('File is not downloaded.');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(fileName[j])).toBeTruthy('File is delete sucessfully');
         }
         await attachmentBladePo.clickCloseButton();
     });
@@ -445,14 +443,14 @@ describe("Attachment", () => {
             expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('50/50 files selected', 'selected checkbox count is missing for page1');
             await attachmentBladePo.clickPaginationNext();
             expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('50/2 files selected', 'selected checkbox count is missing for page2');
-            expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg1.jpg')).toBeTruthy('File is delete sucessfully');
-            expect(await utilCommon.deleteAlreadyDownloadedFile('articleStatus.png')).toBeTruthy('File is delete sucessfully');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg1.jpg')).toBeTruthy('File is delete sucessfully');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('articleStatus.png')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.clickDownloadButton();
             await browser.sleep(5000); // hard wait to download 52 all files
             // File from first page is downloaded
-            expect(await utilCommon.isFileDownloaded('bwfJpg1.jpg')).toBeTruthy('bwfJpg1.jpg File is not downloaded.');
+            expect(await utilityCommon.isFileDownloaded('bwfJpg1.jpg')).toBeTruthy('bwfJpg1.jpg File is not downloaded.');
             // File from last page is not downloaded
-            expect(await utilCommon.isFileDownloaded('articleStatus.png')).toBeFalsy('articleStatus.png File is downloaded.');
+            expect(await utilityCommon.isFileDownloaded('articleStatus.png')).toBeFalsy('articleStatus.png File is downloaded.');
             await attachmentBladePo.clickPaginationPrevious();
             expect(await attachmentBladePo.isCheckBoxSelected('bwfPdf')).toBeFalsy('bwfPdf CheckBox is selected');
             expect(await attachmentBladePo.isCheckBoxSelected('bwfJson5')).toBeFalsy('bwfJson5 CheckBox is selected');
@@ -523,7 +521,7 @@ describe("Attachment", () => {
         finalDate = date + '/' + month + '/' + year;
         await casePreviewPo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
         expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
         expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
@@ -536,7 +534,7 @@ describe("Attachment", () => {
         expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
         expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
         await attachmentBladePo.clickDownloadButton();
-        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
 
         await attachmentBladePo.clickFileName('bwfJpg');
         expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
@@ -548,10 +546,10 @@ describe("Attachment", () => {
         expect(await attachmentInformationBladePo.getValuesOfInformation(finalDate)).toContain(finalDate, 'Created date is missing');
         expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
         expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
         await attachmentInformationBladePo.clickDownloadButton();
-        expect(await utilCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
+        expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('File is not downloaded.');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
         await attachmentInformationBladePo.clickCloseButton();
         await attachmentBladePo.clickCloseButton();
     });
@@ -635,7 +633,7 @@ describe("Attachment", () => {
             expect(await editCasetemplatePo.getValueOfTier4()).toBe(categName4, 'FailureMsg6: CategoryTier4 is displayed');
             expect(await editCasetemplatePo.isCaseTemplateLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
             await editCasetemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
         it('[4428]: Verify Category Tier 4 With Assignment Mapping ', async () => {
@@ -676,7 +674,7 @@ describe("Attachment", () => {
             await addReadAccess.selectCategoryTier4(categName4);
             await addReadAccess.selectLabel(label);
             await addReadAccess.clickOnSave();
-            await utilGrid.searchAndOpenHyperlink(title);
+            await utilityGrid.searchAndOpenHyperlink(title);
             expect(await editReadAccess.getCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
             expect(await editReadAccess.isLabelValueDisplayed(label)).toBeTruthy('FailureMsg6: label is missing');
             await editReadAccess.clickOnCancel();
@@ -697,7 +695,7 @@ describe("Attachment", () => {
             await createDocumentLibraryPo.selectCategoryTier3(categName3);
             await createDocumentLibraryPo.selectCategoryTier4(categName4);
             await createDocumentLibraryPo.clickOnSaveButton();
-            await utilGrid.searchRecord(title);
+            await utilityGrid.searchRecord(title);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(title);
             expect(await editDocumentLibraryPo.getCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
         });
@@ -1472,9 +1470,9 @@ describe("Attachment", () => {
 
     describe('[12125]: Verify all the Options are loaded in Region Dropdown on multiple screens if Region Count is more than 50', () => {
         let caseResponse = undefined;
-        let regionStr:string = 'Region';
-        let lastRegionValue:string = 'Region Tier39';
-        let applyBtnStr:string = 'Apply';
+        let regionStr: string = 'Region';
+        let lastRegionValue: string = 'Region Tier39';
+        let applyBtnStr: string = 'Apply';
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');

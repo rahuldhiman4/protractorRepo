@@ -1,5 +1,7 @@
+import { cloneDeep } from 'lodash';
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiHelper from '../../api/api.helper';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
@@ -9,8 +11,6 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 let caseTemplateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Preview";
 
@@ -65,8 +65,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier2Displayed('Compensation')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Bonus')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('Qadim Katawazi')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('US Support 3','Assigned group name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco','Assigned company name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('US Support 3', 'Assigned group name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
     });
@@ -91,8 +91,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier2Displayed('-')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('-')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('Workforce Administration','Assigned group name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco','Assigned company name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('Workforce Administration', 'Assigned group name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
     });
@@ -119,8 +119,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier2Displayed('Leave')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('PTO')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('None')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('Compensation and Benefits','Assigned group name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco','Assigned company name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('Compensation and Benefits', 'Assigned group name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
         await casePreviewPo.clickGoToCaseButton();
@@ -174,8 +174,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier2Displayed('Compensation')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Bonus')).toBeTruthy('CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('Qianru Tao')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('US Support 1','Assigned group name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco','Assigned company name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('US Support 1', 'Assigned group name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
         await casePreviewPo.clickGoToCaseButton();
@@ -256,8 +256,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier2Displayed("Compensation")).toBeTruthy('failureMsg: CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed("Bonus")).toBeTruthy('failureMsg: CategoryTier3 is missing');
         expect(await casePreviewPo.isAssigneeDisplayed('Qianru Tao')).toBeTruthy('failureMsg: Assignee name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('US Support 1','failureMsg: Assigned group name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco','failureMsg: Assigned company name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('US Support 1', 'failureMsg: Assigned group name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'failureMsg: Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('failureMsg: Create New Case button is missing');
         await casePreviewPo.clickGoToCaseButton();
     });

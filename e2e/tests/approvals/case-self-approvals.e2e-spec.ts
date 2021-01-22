@@ -11,7 +11,6 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe("Case Self Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
-    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
     let caseModule = 'Case';
 
     beforeAll(async () => {
@@ -66,8 +65,8 @@ describe("Case Self Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",
@@ -183,8 +182,8 @@ describe("Case Self Approval Tests", () => {
                 "company": "Petramco",
                 "mappingName": "Approval Mapping for Self Approval"
             }
-            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule,approvalMappingData);
-            await apiHelper.associateTemplateWithApprovalMapping(caseModule,caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
+            let approvalMappingId = await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
+            await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
                 "Requester": "qdu",

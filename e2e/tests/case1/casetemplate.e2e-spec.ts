@@ -23,13 +23,11 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Template', () => {
-    let userData = undefined,userData1 = undefined,userData2 = undefined;
+    let userData = undefined, userData1 = undefined, userData2 = undefined;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -85,7 +83,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
         await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
         await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await editCasetemplatePo.clickEditCaseTemplate();
         await editCasetemplatePo.changeIdentityValidationValue('Enforced');
         await editCasetemplatePo.clickSaveCaseTemplate();
@@ -119,30 +117,30 @@ describe('Case Template', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
             await createCaseTemplate.setCompanyName(ALL_FIELD.company);
             await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
             await createCaseTemplate.clickSaveCaseTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await createCaseTemplate.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[5247]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(ALL_FIELD.templateName);
             await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
             await createCaseTemplate.setCompanyName(ALL_FIELD.company);
             // verify categ1, BU and SG as per LOB
-            await utilCommon.isDrpDownvalueDisplayed(createCaseTemplate.selectors.caseCategoryTier1Guid, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.caseCategoryTier1Guid, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
-            await utilCommon.isDrpDownvalueDisplayed(createCaseTemplate.selectors.businessUnitDropdown, ['Facilities', 'Facilities Support']);
+            await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.businessUnitDropdown, ['Facilities', 'Facilities Support']);
             await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
             await createCaseTemplate.setBusinessUnitDropdownValue('Facilities Support');
-            await utilCommon.isDrpDownvalueDisplayed(createCaseTemplate.selectors.ownerGroupDropdown, ['Facilities', 'Pantry Service']);
+            await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.ownerGroupDropdown, ['Facilities', 'Pantry Service']);
             await createCaseTemplate.setBusinessUnitDropdownValue('Facilities Support');
             await createCaseTemplate.setOwnerGroupDropdownValue('Facilities');
             await createCaseTemplate.clickOnChangeAssignmentButton();
@@ -155,13 +153,13 @@ describe('Case Template', () => {
             // verify LOB is there
             expect(await createCaseTemplate.getLobValue()).toBe("Facilities");
             await createCaseTemplate.clickSaveCaseTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await viewCaseTemplate.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(ALL_FIELD.templateName);
             expect(await viewCaseTemplate.getLobValue()).toBe("Facilities");
             await viewCaseTemplate.clickBackArrowBtn();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -270,7 +268,7 @@ describe('Case Template', () => {
         await apiHelper.createCaseTemplate(templateData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+        await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
         await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
         await editCasetemplatePo.changeBusinessUnitDropdownValue(MANDATORY_FIELD.ownerBusinessUnit);
         await editCasetemplatePo.changeOwnerGroupDropdownValue(MANDATORY_FIELD.ownerGroup);
@@ -279,17 +277,17 @@ describe('Case Template', () => {
         await editCasetemplatePo.clickEditCaseTemplate();
         await editCasetemplatePo.clearCaseSummary();
         await editCasetemplatePo.clickSaveCaseTemplate();
-        expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         await editCasetemplatePo.changeCaseSummary('Updated Summary');
         await editCasetemplatePo.clickSaveCaseTemplate();
         await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
         await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
         await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await viewCaseTemplate.clickBackArrowBtn();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+        await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
         expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(MANDATORY_FIELD.ownerGroup);
         expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
         expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(MANDATORY_FIELD.templateStatus);
@@ -317,15 +315,15 @@ describe('Case Template', () => {
         let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
         let column1: string[] = ["Display ID"];
         await consoleCasetemplatePo.addColumnOnGrid(column1);
-        await utilGrid.searchRecord(newCaseTemplate.displayId);
+        await utilityGrid.searchRecord(newCaseTemplate.displayId);
         expect(await consoleCasetemplatePo.getFirstRecordValue("Display ID")).toContain(newCaseTemplate.displayId);
         await consoleCasetemplatePo.clickOnClearSearchIcon();
         expect(await consoleCasetemplatePo.moreRecordsArePresentAfterClear()).toBeGreaterThan(7);
-        await utilGrid.searchRecord(templateData.templateName);
+        await utilityGrid.searchRecord(templateData.templateName);
         expect(await consoleCasetemplatePo.getFirstRecordValue("Template Name")).toContain(templateData.templateName);
         await consoleCasetemplatePo.clickOnClearSearchIcon();
         expect(await consoleCasetemplatePo.moreRecordsArePresentAfterClear()).toBeGreaterThan(7);
-        await utilGrid.searchRecord('xyzsdasdlkdasd');
+        await utilityGrid.searchRecord('xyzsdasdlkdasd');
         expect(await consoleCasetemplatePo.moreRecordsArePresentAfterClear()).toBeLessThanOrEqual(0);
         await consoleCasetemplatePo.removeColumnFromGrid(column1);
     });
@@ -396,7 +394,7 @@ describe('Case Template', () => {
         await loginPage.login('elizabeth');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+        await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
         await viewCaseTemplate.clickOnEditCaseTemplateButton();
         expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy();
         await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
@@ -675,7 +673,7 @@ describe('Case Template', () => {
         it('[6315]: Create Case Template with all fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
+            await utilityGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
             expect(await viewCaseTemplate.getAssigneeText()).toBe('Qadim Katawazi');
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe("Petramco");
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toBe(casetemplatePetramco.templateName);
@@ -716,7 +714,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
             await createCaseTemplate.clickSaveCaseTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -730,7 +728,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active')
             await createCaseTemplate.clickSaveCaseTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6315]: Verify if case template is accessible to same LOB Case Manager', async () => {
@@ -738,8 +736,8 @@ describe('Case Template', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to same LOB Case manager.');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to same LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to same LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to same LOB Case manager.');
         });
 
         it('[6315]: Verify if case template is accessible to different LOB Case BA', async () => {
@@ -747,8 +745,8 @@ describe('Case Template', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is not displayed to different LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is not displayed to different LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is not displayed to different LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is not displayed to different LOB Case BA.');
         });
 
         it('[6315]: Verify if case template is accessible to different LOB Case Manager', async () => {
@@ -756,8 +754,8 @@ describe('Case Template', () => {
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is not displayed to different LOB Case manager.');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is not displayed to different LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is not displayed to different LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is not displayed to different LOB Case manager.');
         });
 
         it('[6315]: Verify if case template is accessible to Case BA belonging to different company with same LOB', async () => {
@@ -765,8 +763,8 @@ describe('Case Template', () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to same LOB and different company Case BA.');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to same LOB and different company Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to same LOB and different company Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to same LOB and different company Case BA.');
         });
 
         it('[6315]: Verify if case template is accessible to Case Manager user having access to multiple LOB', async () => {
@@ -774,12 +772,12 @@ describe('Case Template', () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs.');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs.');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs');
         });
 
         it('[6315]: Verify if case template is accessible to Case BA user having access to multiple LOB', async () => {
@@ -787,20 +785,20 @@ describe('Case Template', () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs.');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateGlobal)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateCompany)).toBeFalsy('Case Template is displayed to Case BA having access to multiple LOBs');
 
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs.');
-            expect(await utilGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateGlobal)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs.');
+            expect(await utilityGrid.isGridRecordPresent(caseTemplateCompany)).toBeTruthy('Case Template is not displayed to Case BA having access to multiple LOBs');
 
-            await utilGrid.searchAndOpenHyperlink(caseTemplateCompany);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateCompany);
             await editCasetemplatePo.clickEditCaseTemplate();
             await editCasetemplatePo.changeCaseSummary('Updated Summary');
             await editCasetemplatePo.clickSaveCaseTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
         });
 
         afterAll(async () => {
@@ -839,7 +837,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeBusinessUnitDropdownValue('Australia Support');
             await editCasetemplatePo.changeOwnerGroupDropdownValue('AU Support 1');
@@ -855,7 +853,7 @@ describe('Case Template', () => {
             expect(await editCasetemplatePo.allPriorityOptionsPresent(priority)).toBeTruthy('Priorities does not match');
             await editCasetemplatePo.changeCaseSummary('Updated Summary');
             await editCasetemplatePo.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[6316]: [Case Template] Case Status, Template status, Priority, Case Company, Owner population', async () => {
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(caseTemplateName);
@@ -1138,7 +1136,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy('Case Summary is editable');
             expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy('Case Company is enabled');
@@ -1187,7 +1185,7 @@ describe('Case Template', () => {
         it('[6290]: [Case Template] Template status lifecycle', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             expect(await editCasetemplatePo.isCaseCompanyDisabled()).toBeTruthy();
             expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy();
@@ -1202,7 +1200,7 @@ describe('Case Template', () => {
         it('[6290]: Case Agent checks for Draft template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
@@ -1301,7 +1299,7 @@ describe('Case Template', () => {
             await createCaseTemplate.clickSaveCaseTemplate();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeOwnerCompanyValue('Petramco');
             await editCasetemplatePo.changeBusinessUnitDropdownValue("Petramco Support Org1");
@@ -1429,15 +1427,15 @@ describe('Case Template', () => {
         it('[4433]: Adding methods to case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName1);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName1);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeAssignmentMethodValue('Round Robin');
             await editCasetemplatePo.clickSaveCaseTemplate();
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.clickOnBackArrow();
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName2);
+            await viewCaseTemplate.clickBackArrowBtn();
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName2);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeAssignmentMethodValue('Round Robin');
             await editCasetemplatePo.clickSaveCaseTemplate();
