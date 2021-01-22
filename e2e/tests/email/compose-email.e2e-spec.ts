@@ -1,4 +1,3 @@
-import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import caseConsole from '../../pageobject/case/case-console.po';
@@ -6,6 +5,8 @@ import quickCase from "../../pageobject/case/quick-case.po";
 import viewCasePo from '../../pageobject/case/view-case.po';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
+import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.po';
 import tablePropertiesPo from '../../pageobject/common/ck-editor/table-properties.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -23,11 +24,8 @@ import editMessageTextBladePo from '../../pageobject/settings/notification-confi
 import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from "../../utils/util.common";
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
@@ -93,16 +91,16 @@ describe("Compose Email", () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndSelectGridRecord('Case Status Change');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndSelectGridRecord('Case Status Change');
             await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.clickOnCreateCopyButton();
             await editNotificationTemplatePo.clickOnCancelButton();
-            await utilGrid.clickCheckBoxOfValueInGrid('Case Status Change');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Company", 'Petramco', "text");
-            await utilGrid.searchAndOpenHyperlink('Case Status Change');
+            await utilityGrid.clickCheckBoxOfValueInGrid('Case Status Change');
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Company", 'Petramco', "text");
+            await utilityGrid.searchAndOpenHyperlink('Case Status Change');
 
             await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
             await editNotificationTemplatePo.clickOnEmailTab();
@@ -174,7 +172,7 @@ describe("Compose Email", () => {
             console.log("Subject of the email: ", subject);
             await browser.sleep(5000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
-            let body = await apiHelper.getHTMLBodyOfEmail(subject,'qheroux@petramco.com');
+            let body = await apiHelper.getHTMLBodyOfEmail(subject, 'qheroux@petramco.com');
             console.log('body:', body);
             //color span
             await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
@@ -240,7 +238,7 @@ describe("Compose Email", () => {
             await quickCase.selectRequesterName('adam');
             await quickCase.setCaseSummary('new case');
             await quickCase.createCaseButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await quickCase.gotoCaseButton();
             let quickCaseId: string = await viewCasePo.getCaseID();
             await viewCasePo.clickOnEmailLink();
@@ -814,11 +812,11 @@ describe("Compose Email", () => {
             await ckeditorOpsPo.setDataInTable(3, 1, 'SettingColor', 'tableSummary');
             //set font
             await ckeditorOpsPo.clickInTableCell(3, 2, 'tableSummary');
-            await ckeditorOpsPo.selectFontTypeOrSize('18','FontSize');
+            await ckeditorOpsPo.selectFontTypeOrSize('18', 'FontSize');
             await ckeditorOpsPo.setDataInTable(3, 2, 'SettingFontSize', 'tableSummary');
             //set fontType
-            await ckeditorOpsPo.clickInTableCell(3,3, 'tableSummary');
-            await ckeditorOpsPo.selectFontTypeOrSize('Courier New','FontType');
+            await ckeditorOpsPo.clickInTableCell(3, 3, 'tableSummary');
+            await ckeditorOpsPo.selectFontTypeOrSize('Courier New', 'FontType');
             await ckeditorOpsPo.setDataInTable(3, 3, 'SettingFontType', 'tableSummary');
             //checking number and bullot points and setting values for them
             await composeMail.setToOrCCInputTextbox('To', 'qkatawazi@petramco.com');
@@ -914,8 +912,8 @@ describe("Compose Email", () => {
             await editEmailTemplatePo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(publishDocData.docLibTitle);
             await editEmailTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not added in Email Template');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             //Create a Case and compose email and send it
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase.displayId);

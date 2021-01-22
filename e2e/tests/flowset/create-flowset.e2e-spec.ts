@@ -1,6 +1,8 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import { flowsetGlobalFields, flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
 import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -8,11 +10,9 @@ import consoleFlowset from '../../pageobject/settings/manage-flowset/console-flo
 import createFlowset from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
 import editFlowset from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilityGrid from '../../utils/utility.grid';
 import utilityCommon from '../../utils/utility.common';
-import { flowsetMandatoryFields, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
-import { cloneDeep } from 'lodash';
-let userData, userData1, userData2 = undefined;
+import utilityGrid from '../../utils/utility.grid';
+let userData1, userData2 = undefined;
 
 describe('Create Flowset', () => {
     beforeAll(async () => {
@@ -317,7 +317,7 @@ describe('Create Flowset', () => {
             await createFlowset.clickSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('ERROR (222175): Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createFlowset.clickCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');  
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[6278]:  Validate create new record with same name in different LOB', async () => {

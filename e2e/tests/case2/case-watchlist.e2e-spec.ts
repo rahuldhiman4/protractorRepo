@@ -1,6 +1,6 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { cloneDeep } from 'lodash';
 import caseConsole from '../../pageobject/case/case-console.po';
 import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
 import editCase from '../../pageobject/case/edit-case.po';
@@ -554,7 +554,7 @@ describe('Case Watchlist', () => {
         it('[4261]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
             await apiHelper.apiLogin(qfengStr);
             let caseDataForTest = caseData['caseWatchlist'];
-            caseDataForTest.Summary =  [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let response = await apiHelper.createCase(caseDataForTest);
             caseId = response.displayId;
             await navigationPage.gotoCaseConsole();
@@ -814,7 +814,7 @@ describe('Case Watchlist', () => {
     });
 
     describe('[4336]: Verify that once user add the cases to watchlist from case console then they are still available in Case console and Agent could add them again without any error', async () => {
-        let caseDataForTest = cloneDeep (caseData['caseWatchlist']);
+        let caseDataForTest = cloneDeep(caseData['caseWatchlist']);
         let caseId: string[] = [];
         beforeAll(async () => {
             caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

@@ -4,7 +4,7 @@ import viewCasePo from "../../pageobject/case/view-case.po";
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import emailPo from '../../pageobject/email/compose-mail.po';
+import composeMailPo from '../../pageobject/email/compose-mail.po';
 import emailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-acknowledgment-template.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
@@ -12,11 +12,8 @@ import editTask from "../../pageobject/task/edit-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
-import selectEmailTemplateBladePo from '../../pageobject/email/select-email-template-blade.po';
 
 describe('Email Task', () => {
     beforeAll(async () => {
@@ -110,25 +107,25 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(automatedTaskSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(automatedTaskSummary);
-            await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
+            await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             await viewTaskPo.clickEmailLink();
-            await emailPo.clickOnDiscardButton();
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnViewCase();
         });
         it('[3907]: Automated task should not have email options but other type of task should have email option	', async () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
-            await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
+            await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             await viewTaskPo.clickEmailLink();
-            await emailPo.clickOnDiscardButton();
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
-            await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
+            await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             await viewTaskPo.clickEmailLink();
-            await emailPo.clickOnDiscardButton();
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });
@@ -184,17 +181,17 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await browser.sleep(2000);// To wait until view task page gets load corrrectly.
-            await expect(await emailPo.isEmailIconLinkPresent()).toBeTruthy();
+            await expect(await composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
-            expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
+            expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             //story changes
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-            expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
-            expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
-            await emailPo.clickOnDiscardButton();
+            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(3);
+            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(3);
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnRequesterEmail();
         });
@@ -203,26 +200,26 @@ describe('Email Task', () => {
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-            expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
-            expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
-            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
+            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(3);
+            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(3);
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             //verify activity email post
-            await emailPo.clickOnSendButton();
+            await composeMailPo.clickOnSendButton();
             expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
-            await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
+            await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             ExternaltaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
-            expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
+            expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-            expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
-            expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
-            await emailPo.clickOnDiscardButton();
+            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(3);
+            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(3);
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnRequesterEmail();
         });
@@ -230,12 +227,12 @@ describe('Email Task', () => {
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-            expect(await emailPo.searchPerson('To', 'fri')).toBe(3);
-            expect(await emailPo.searchPerson('Cc', 'fri')).toBe(3);
-            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
+            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(3);
+            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(3);
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             //verify activity email post
-            await emailPo.clickOnSendButton();
+            await composeMailPo.clickOnSendButton();
             expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
         });
     });
@@ -297,11 +294,11 @@ describe('Email Task', () => {
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
-            await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
+            await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
-            expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
-            await emailPo.clickOnDiscardButton();
+            expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewTaskPo.clickOnViewCase();
         });
@@ -316,11 +313,11 @@ describe('Email Task', () => {
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
-            await expect(emailPo.isEmailIconLinkPresent()).toBeTruthy();
+            await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             ExternaltaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
-            expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
-            await emailPo.clickOnDiscardButton();
+            expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[3909]: Verify Subject of Email from Task Compose email', async () => {
@@ -329,14 +326,14 @@ describe('Email Task', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(ExternaltaskID);
             await viewTaskPo.clickEmailLink();
-            expect(await emailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
-            await emailPo.clickOnDiscardButton();
+            expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickEmailLink();
-            expect(await emailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
-            await emailPo.clickOnDiscardButton();
+            expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
@@ -439,12 +436,12 @@ describe('Email Task', () => {
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
             await composeMailPo.clickOnSelectEmailTemplateLink();
-            await selectEmailTemplateBladePo.clickOnCancelButton();
-            await emailPo.setEmailBody('this is new email sending frist time to the user');
-            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            await emailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com');
-            await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
-            await emailPo.clickOnSendButton();
+            await emailTemplateBladePo.clickOnCancelButton();
+            await composeMailPo.setEmailBody('this is new email sending frist time to the user');
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com');
+            await composeMailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
+            await composeMailPo.clickOnSendButton();
         });
         it('[3843]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
             expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
@@ -453,20 +450,20 @@ describe('Email Task', () => {
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
             await activityTabPo.clickOnReplyAll();
-            await emailPo.isComposeEmailUIDisplay();
-            expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
-            expect(await emailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
-            expect(await emailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
-            expect(await emailPo.getEmailBody()).toContain('------ While replying, please do not add information below this line -----');
-            await emailPo.setEmailBody('this is second reply to all');
-            await emailPo.clickOnSendButton();
+            await composeMailPo.isComposeEmailUIDisplay();
+            expect(await composeMailPo.getToEmailPerson()).toContain('Fritz Schulz');
+            expect(await composeMailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
+            expect(await composeMailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
+            expect(await composeMailPo.getEmailBody()).toContain('------ While replying, please do not add information below this line -----');
+            await composeMailPo.setEmailBody('this is second reply to all');
+            await composeMailPo.clickOnSendButton();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
             await activityTabPo.clickOnReply();
-            expect(await emailPo.getToEmailPerson()).toContain('Qadim Katawazi');
+            expect(await composeMailPo.getToEmailPerson()).toContain('Qadim Katawazi');
             expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
-            await emailPo.setEmailBody('this is third reply');
-            await emailPo.clickOnSendButton();
+            await composeMailPo.setEmailBody('this is third reply');
+            await composeMailPo.clickOnSendButton();
             await viewTaskPo.clickOnViewCase();
         });
         it('[3843]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
@@ -474,11 +471,11 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             let externaltaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickEmailLink();
-            await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
-            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            await emailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com')
-            await emailPo.setEmailBody('this is new email sending frist time to the user');
-            await emailPo.clickOnSendButton();
+            await composeMailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com')
+            await composeMailPo.setEmailBody('this is new email sending frist time to the user');
+            await composeMailPo.clickOnSendButton();
             expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
             expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + externaltaskID + ':' + externalTaskSummary);
@@ -486,23 +483,23 @@ describe('Email Task', () => {
             expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user', "460");
             await activityTabPo.clickShowLessLinkInActivity(1);
             await activityTabPo.clickOnReplyAll();
-            await emailPo.isComposeEmailUIDisplay();
+            await composeMailPo.isComposeEmailUIDisplay();
         });
         it('[3843]: Reply / Reply All earlier email context should be copied as part of email composition on Task', async () => {
-            expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
-            expect(await emailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
-            expect(await emailPo.getEmailBody()).toContain('------ While replying, please do not add information below this line -----');
-            expect(await emailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
-            await emailPo.setEmailBody('this is second reply to all');
-            await emailPo.clickOnSendButton();
+            expect(await composeMailPo.getToEmailPerson()).toContain('Fritz Schulz');
+            expect(await composeMailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
+            expect(await composeMailPo.getEmailBody()).toContain('------ While replying, please do not add information below this line -----');
+            expect(await composeMailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
+            await composeMailPo.setEmailBody('this is second reply to all');
+            await composeMailPo.clickOnSendButton();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
             await activityTabPo.clickOnReply();
-            expect(await emailPo.getToEmailPerson()).toContain('Qadim Katawazi');
-            expect(await emailPo.getEmailBody()).toContain('this is second reply to all');
-            await emailPo.setEmailBody('this is third reply');
-            await emailPo.clickOnSendButton();
+            expect(await composeMailPo.getToEmailPerson()).toContain('Qadim Katawazi');
+            expect(await composeMailPo.getEmailBody()).toContain('this is second reply to all');
+            await composeMailPo.setEmailBody('this is third reply');
+            await composeMailPo.clickOnSendButton();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getEmailBody()).toContain('this is third reply', "477");
@@ -526,31 +523,31 @@ describe('Email Task', () => {
         await utilityGrid.searchAndOpenHyperlink(displayId);
         await viewCasePo.clickOnEmailLink();
         await composeMailPo.clickOnSelectEmailTemplateLink();
-        await selectEmailTemplateBladePo.clickOnCancelButton();
-        await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-        await emailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com');
-        await emailPo.setEmailBody('this is new email sending frist time to the user');
-        await emailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
-        await emailPo.clickOnSendButton();
+        await emailTemplateBladePo.clickOnCancelButton();
+        await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+        await composeMailPo.setToOrCCInputTextbox('Cc', 'qkatawazi@petramco.com');
+        await composeMailPo.setEmailBody('this is new email sending frist time to the user');
+        await composeMailPo.addAttachment(['../../data/ui/attachment/demo.txt']);
+        await composeMailPo.clickOnSendButton();
         expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
         expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + 'Create case for Email Test');
         expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
         await activityTabPo.clickOnReplyAll();
-        await emailPo.isComposeEmailUIDisplay();
-        expect(await emailPo.getToEmailPerson()).toContain('Fritz Schulz');
-        expect(await emailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
-        expect(await emailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
-        expect(await emailPo.getEmailBody()).toContain('While replying, please do not add information below this line');
-        await emailPo.setEmailBody('this is second reply to all');
-        await emailPo.clickOnSendButton();
+        await composeMailPo.isComposeEmailUIDisplay();
+        expect(await composeMailPo.getToEmailPerson()).toContain('Fritz Schulz');
+        expect(await composeMailPo.getCcEmailPerson()).toContain('Qadim Katawazi');
+        expect(await composeMailPo.getEmailBody()).toContain('this is new email sending frist time to the user');
+        expect(await composeMailPo.getEmailBody()).toContain('While replying, please do not add information below this line');
+        await composeMailPo.setEmailBody('this is second reply to all');
+        await composeMailPo.clickOnSendButton();
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getEmailBody()).toContain('this is second reply to all');
         await activityTabPo.clickOnReply();
-        expect(await emailPo.getToEmailPerson()).toContain('Qadim Katawazi');
-        expect(await emailPo.getEmailBody()).toContain('this is second reply to all');
-        await emailPo.setEmailBody('this is third reply');
-        await emailPo.clickOnSendButton();
+        expect(await composeMailPo.getToEmailPerson()).toContain('Qadim Katawazi');
+        expect(await composeMailPo.getEmailBody()).toContain('this is second reply to all');
+        await composeMailPo.setEmailBody('this is third reply');
+        await composeMailPo.clickOnSendButton();
     });
 
     describe('[3844]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
@@ -618,22 +615,22 @@ describe('Email Task', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await viewTaskPo.clickOnRequesterEmail();
-            await emailPo.clickOnSelectTempalteButton();
+            await composeMailPo.clickOnSelectTempalteButton();
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await emailTemplateBladePo.clickOnApplyButton();
-            await emailPo.clickOnSendButton();
+            await composeMailPo.clickOnSendButton();
         });
         it('[3844]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
             expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
             expect(await activityTabPo.getRecipientInTo()).toContain('To: Qiang Du');
             await activityTabPo.clickOnReply();
-            expect(await emailPo.getToEmailPerson()).toContain("Qadim Katawazi");
-            expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
-            await emailPo.clickOnSelectTempalteButton();
+            expect(await composeMailPo.getToEmailPerson()).toContain("Qadim Katawazi");
+            expect(await composeMailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+            await composeMailPo.clickOnSelectTempalteButton();
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest2.TemplateName);
             await emailTemplateBladePo.clickOnApplyButton();
-            expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
-            await emailPo.clickOnSendButton();
+            expect(await composeMailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+            await composeMailPo.clickOnSendButton();
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
@@ -647,31 +644,31 @@ describe('Email Task', () => {
         });
         it('[3844]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
             await viewTaskPo.clickOnRequesterEmail();
-            await emailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
-            await emailPo.clickOnSelectTempalteButton();
+            await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
+            await composeMailPo.clickOnSelectTempalteButton();
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest1.TemplateName);
             await emailTemplateBladePo.clickOnApplyButton();
-            await emailPo.clickOnSendButton();
+            await composeMailPo.clickOnSendButton();
             await browser.sleep(2000); // After sent email wait until email log gets displayed on actvity.
             await activityTabPo.clickOnReply();
-            expect(await emailPo.getToEmailPerson()).toContain('Qadim Katawazi');
-            expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
-            await emailPo.clickOnSelectTempalteButton();
+            expect(await composeMailPo.getToEmailPerson()).toContain('Qadim Katawazi');
+            expect(await composeMailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+            await composeMailPo.clickOnSelectTempalteButton();
             await emailTemplateBladePo.searchAndSelectEmailTemplate(emailTemplateDataForTest2.TemplateName);
             await emailTemplateBladePo.clickOnApplyButton();
-            expect(await emailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
-            await emailPo.clickOnSendButton();
+            expect(await composeMailPo.getEmailBody()).toContain('Hi Team ,\n\nI am taking leave today.\n\nThanks.');
+            await composeMailPo.clickOnSendButton();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
-    
+
     });
 
     it('[3845]: Verify task acknowledgement template are listed in Email Acknowledgement template and In Email Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink('Task Update Ack Template');
+        await utilityGrid.searchAndOpenHyperlink('Task Update Ack Template');
         expect(await editAcknowledgmentTemplatePo.getCompanyName()).toContain('- Global -');
         expect(await editAcknowledgmentTemplatePo.getModuleName()).toContain('Tasks');
         expect(await editAcknowledgmentTemplatePo.getStatusValue()).toContain('Active');
@@ -697,7 +694,7 @@ describe('Email Task', () => {
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3"
             }
-            
+
             let externaltemplateData = {
                 "templateName": `${externalTaskTemplateName}`,
                 "templateSummary": `${externalTaskSummary}`,
@@ -752,8 +749,8 @@ describe('Email Task', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await viewTaskPo.clickOnRequesterEmail();
-            expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeTruthy('Email template link not present');
-            await emailPo.clickOnDiscardButton();
+            expect(await composeMailPo.isSelectEmailTemplateButtonPresent()).toBeTruthy('Email template link not present');
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[3846]: Email Templates option driven by Task assignee permission for case', async () => {
@@ -763,8 +760,8 @@ describe('Email Task', () => {
             await utilityGrid.searchAndOpenHyperlink(ManualtaskID);
             await viewTaskPo.clickOnRequesterEmail();
             await browser.sleep(2000); // Wait until Email Pop up gets display.
-            expect(await emailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy("Email template button visible to task assignee having no case access");
-            await emailPo.clickOnDiscardButton();
+            expect(await composeMailPo.isSelectEmailTemplateButtonPresent()).toBeFalsy("Email template button visible to task assignee having no case access");
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });

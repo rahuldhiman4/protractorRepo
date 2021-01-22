@@ -1,7 +1,11 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import previewCasePo from '../../pageobject/case/case-preview.po';
+import { SOURCE_ACTIVE_NOT_ON_UI, SOURCE_DEPRECATED, SOURCE_INACTIVE, SOURCE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
 import quickCasePo from "../../pageobject/case/quick-case.po";
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPo from "../../pageobject/common/login.po";
 import navigationPo from "../../pageobject/common/navigation.po";
@@ -11,18 +15,11 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import editCaseTemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import templateAccessTabPo from '../../pageobject/settings/case-management/template-access-tab.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import activityPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
-import createCasePo from '../../pageobject/case/create-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import templateAccessTabPo from '../../pageobject/settings/case-management/template-access-tab.po';
-import { SOURCE_MENU_ITEM, SOURCE_INACTIVE, SOURCE_DEPRECATED, SOURCE_ACTIVE_NOT_ON_UI } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 import utilityGrid from '../../utils/utility.grid';
 
 describe("Quick Case", () => {
@@ -40,28 +37,28 @@ describe("Quick Case", () => {
             "lastName": "Person1",
             "userId": "userData1",
             "company": "Petramco",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         userData2 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData2",
             "company": "Petramco",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         userData3 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData3",
             "company": "Petramco",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         userData4 = {
             "firstName": "Person1",
             "lastName": "Person1",
             "userId": "userData4",
             "company": "Petramco",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createNewUser(userData1);
@@ -175,8 +172,8 @@ describe("Quick Case", () => {
             expect(await quickCasePo.getDrpDownValueByIndex(1)).toBe('Another person contacting on behalf of the requester');
             await quickCasePo.setCaseSummary('address');
             await quickCasePo.saveCase();
-            expect(await previewCasePo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
-            expect(await previewCasePo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
+            expect(await casePreviewPo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
+            expect(await casePreviewPo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
             await quickCasePo.gotoCaseButton();
         });
         afterAll(async () => {
@@ -267,13 +264,13 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData1.templateName);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData2.templateName);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
         });
         it('[6391]: [Quick Case] Case creation with all case statuses in template', async () => {
@@ -283,13 +280,13 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.selectCaseTemplate(templateData4.templateName);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("fritz");
             await quickCasePo.selectCaseTemplate(templateData3.templateName);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
         afterAll(async () => {
@@ -341,18 +338,18 @@ describe("Quick Case", () => {
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         });
         it('[6361]: Checking change case template button', async () => {
-            await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
             await editCaseTemplatePo.clickOnEditCaseTemplateMetadata();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPo.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData.templateName);
             await quickCasePo.setCaseSummary(randomStr);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[6361]: [Quick Case] Case Template search via !', async () => {
             //Different Company Search
@@ -419,7 +416,7 @@ describe("Quick Case", () => {
             await editCaseTemplatePo.clickOnEditCaseTemplateMetadata();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             expect(await quickCasePo.selectCaseTemplate(caseTemplatePsilon.templateName)).toBeFalsy('Different organization case template present');
@@ -540,7 +537,7 @@ describe("Quick Case", () => {
             await resourcesPo.clickOnAdvancedSearchFiltersButton("Apply");
             await resourcesPo.pinRecommendedKnowledgeArticles(1);
             await quickCasePo.saveCase();
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[6407]: [Quick Case] Case creation with template (end-to-end)', async () => {
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateData.templateName, "Template is not Found");
@@ -712,18 +709,18 @@ describe("Quick Case", () => {
             await resourcesPo.clickOnAdvancedSearchOptions();
             await resourcesPo.enterAdvancedSearchText(caseTemplateData.templateName);
             await resourcesPo.clickOnAdvancedSearchSettingsIconToOpen();
-            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');           
+            await resourcesPo.clickOnAdvancedSearchFiltersButton('Apply');
             await resourcesPo.clickArrowFirstRecommendedKnowledge('Recommended Knowledge');
             expect(await previewKnowledgePo.isStatusOfKADisplay()).toBeTruthy('Knowledge status not present');
             expect(await previewKnowledgePo.isBackButtonDisplay()).toBeTruthy('back button not present');
             await previewKnowledgePo.clickOnBackButton();
             await quickCasePo.createCaseButton();
-            expect(await previewCasePo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
-            expect(await previewCasePo.isCaseSummaryDisplayed(caseTemplateData.templateSummary)).toBeTruthy();
-            expect(await previewCasePo.getAssigneeDetails()).toContain('Petramco');
-            expect(await previewCasePo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
-            expect(await previewCasePo.isDescriptionDisplayed('Adam Pavlik ' + `${caseTemplateData.templateName}`)).toBeTruthy();
-            await previewCasePo.clickGoToCaseButton();
+            expect(await casePreviewPo.isRequesterNameDisplayed('Adam Pavlik')).toBeTruthy();
+            expect(await casePreviewPo.isCaseSummaryDisplayed(caseTemplateData.templateSummary)).toBeTruthy();
+            expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco');
+            expect(await casePreviewPo.isRequesterEmailIdDisplayed('apavlik@petramco.com')).toBeTruthy();
+            expect(await casePreviewPo.isDescriptionDisplayed('Adam Pavlik ' + `${caseTemplateData.templateName}`)).toBeTruthy();
+            await casePreviewPo.clickGoToCaseButton();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -857,13 +854,13 @@ describe("Quick Case", () => {
             await quickCasePo.setCaseSummary(unPublishedKA_Name);
             expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Draft KA not disaplyed in Recommended Knowledge`);
         });
-        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {    
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(publishedKA_Name);
             expect(await resourcesPo.isRecommendedKnowledgePresent(publishedKA_Name)).toBeTruthy(`${publishedKA_Name} not disaplyed in Recommended Knowledge`);
         });
-        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {     
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('fritz');
             await quickCasePo.setCaseSummary(articleData.keyword);
@@ -893,7 +890,7 @@ describe("Quick Case", () => {
             await quickCasePo.setCaseSummary(unPublishedKA_Name);
             expect(await resourcesPo.isRecommendedKnowledgePresent(unPublishedKA_Name)).toBeFalsy(`${unPublishedKA_Name} Canceled KA not disaplyed in Recommended Knowledge`);
         });
-        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {  
+        it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
             await navigationPo.gotoCaseConsole();
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('fritz');
@@ -1033,8 +1030,8 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
-            await utilCommon.clickOnBackArrow();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
@@ -1047,7 +1044,7 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.gotoCreateCase();
@@ -1066,7 +1063,7 @@ describe("Quick Case", () => {
             await selectCasetemplateBladePo.selectCaseTemplate(templateData1.templateName);
             await createCasePo.clickSaveCaseButton();
             expect(await casePreviewPo.isCaseTemplateDisplayed(templateData1.templateName)).toBeTruthy('Case Template is missing');
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.gotoQuickCase();
@@ -1079,7 +1076,7 @@ describe("Quick Case", () => {
             await selectCasetemplateBladePo.selectCaseTemplate(templateData2.templateName);
             await createCasePo.clickSaveCaseButton();
             expect(await casePreviewPo.isCaseTemplateDisplayed(templateData2.templateName)).toBeTruthy('Case Template is missing');
-            await previewCasePo.clickGoToCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.signOut();
@@ -1090,30 +1087,30 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
-            await utilCommon.clickOnBackArrow();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
             await templateAccessTabPo.deleteTemplateAccess('Human Resource');
-            await utilCommon.clickOnBackArrow();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
-            await utilCommon.clickOnBackArrow();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.signOut();
@@ -1122,7 +1119,7 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName("adam");
             expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy('template is present');
         });
-        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {    
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeFalsy('template is present');
@@ -1136,7 +1133,7 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
@@ -1163,7 +1160,7 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');

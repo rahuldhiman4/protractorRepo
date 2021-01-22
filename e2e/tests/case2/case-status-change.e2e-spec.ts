@@ -428,45 +428,45 @@ describe('Case Status Change', () => {
         let caseTemplateName1 = randomStr + "Petramco";
         beforeAll(async () => {
             caseData1 =
-            {
-                "Requester": "qtao",
-                "Summary": summary1,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi",
-                "Status": "New",
-            }
+                {
+                    "Requester": "qtao",
+                    "Summary": summary1,
+                    "Assigned Company": "Petramco",
+                    "Business Unit": "United States Support",
+                    "Support Group": "US Support 3",
+                    "Assignee": "qkatawazi",
+                    "Status": "New",
+                }
             caseData2 =
-            {
-                "Requester": "qtao",
-                "Summary": summary2,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi",
-                "Status": "Assigned",
-            }
+                {
+                    "Requester": "qtao",
+                    "Summary": summary2,
+                    "Assigned Company": "Petramco",
+                    "Business Unit": "United States Support",
+                    "Support Group": "US Support 3",
+                    "Assignee": "qkatawazi",
+                    "Status": "Assigned",
+                }
             caseData3 =
-            {
-                "Requester": "qtao",
-                "Summary": summary3,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi",
-                "Status": "In Progress",
-            }
+                {
+                    "Requester": "qtao",
+                    "Summary": summary3,
+                    "Assigned Company": "Petramco",
+                    "Business Unit": "United States Support",
+                    "Support Group": "US Support 3",
+                    "Assignee": "qkatawazi",
+                    "Status": "In Progress",
+                }
             caseData4 =
-            {
-                "Requester": "qtao",
-                "Summary": summary4,
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi",
-                "Status": "Pending",
-            }
+                {
+                    "Requester": "qtao",
+                    "Summary": summary4,
+                    "Assigned Company": "Petramco",
+                    "Business Unit": "United States Support",
+                    "Support Group": "US Support 3",
+                    "Assignee": "qkatawazi",
+                    "Status": "Pending",
+                }
             templateData = {
                 "templateName": caseTemplateName1,
                 "templateSummary": caseTemplateName1,

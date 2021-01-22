@@ -23,8 +23,6 @@ import viewCaseTemplate from '../../pageobject/settings/case-management/view-cas
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 let flowsetGlobalFieldsData = undefined;
@@ -182,7 +180,7 @@ describe("Case Read Access", () => {
             await addReadAccess.selectDepartment(departmentData1.orgName);
             await addReadAccess.selectSupportGroup(suppGrpData1.orgName);
             await addReadAccess.clickOnSave();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
 
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -209,7 +207,7 @@ describe("Case Read Access", () => {
             await loginPage.login('jbarnes');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName(readAccessName);
             await addReadAccess.selectCompany('Global');
@@ -219,34 +217,34 @@ describe("Case Read Access", () => {
             await addReadAccess.selectBusinessUnit('Australia Support');
             await addReadAccess.selectSupportGroup('AU Support 1');
             await addReadAccess.clickOnSave();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): The Access Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The Access Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await addReadAccess.clickOnCancel();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[5025]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName(readAccessName);
             await addReadAccess.selectCompany('Global');
             // verify categ1, BU and SG as per LOB
-            await utilCommon.isDrpDownvalueDisplayed(addReadAccess.selectors.categoryTier1Guid, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await utilityCommon.isAllDropDownValuesMatches(addReadAccess.selectors.categoryTier1Guid, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await addReadAccess.selectSupportCompany('Petramco');
-            await utilCommon.isDrpDownvalueDisplayed(addReadAccess.selectors.businessUnitGuid, ['Facilities', 'Facilities Support']);
+            await utilityCommon.isAllDropDownValuesMatches(addReadAccess.selectors.businessUnitGuid, ['Facilities', 'Facilities Support']);
             await addReadAccess.selectSupportCompany('Petramco');
             await addReadAccess.selectBusinessUnit('Facilities Support');
-            await utilCommon.isDrpDownvalueDisplayed(addReadAccess.selectors.supportGroupGuid, ['Facilities', 'Pantry Service']);
+            await utilityCommon.isAllDropDownValuesMatches(addReadAccess.selectors.supportGroupGuid, ['Facilities', 'Pantry Service']);
             await addReadAccess.selectBusinessUnit('Facilities Support');
             await addReadAccess.selectSupportGroup('Facilities');
             // verify LOB is there
             expect(await addReadAccess.getLobValue()).toBe("Facilities");
             await addReadAccess.clickOnSave();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
-            await utilGrid.searchAndOpenHyperlink(readAccessName);
+            await utilityGrid.searchAndOpenHyperlink(readAccessName);
             expect(await editReadAccess.getLobValue()).toBe("Facilities");
             await editReadAccess.clickOnCancel();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPo.signOut();
@@ -351,7 +349,7 @@ describe("Case Read Access", () => {
             expect(await addReadAccess.isSupportGroupFieldMandatory()).toBeTruthy("Support Group Field is not present");
             expect(await addReadAccess.isUseAsDefaultFieldMandatory()).toBeTruthy("Use As Default Field is not present");
             await addReadAccess.clickOnSave();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[5578,5606]: [Read Access] Configuring non-default Read Access', async () => {
             await navigationPo.gotoQuickCase();
@@ -368,7 +366,7 @@ describe("Case Read Access", () => {
             await loginPage.login('qdu');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is displayed to same LOB with different company Case BA.');
+            expect(await utilityGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is displayed to same LOB with different company Case BA.');
         });
 
         it('[5578,5606]: Verify if Case read access mapping is accessible to different LOB Case BA', async () => {
@@ -376,7 +374,7 @@ describe("Case Read Access", () => {
             await loginPage.login('fritz');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is dispayed to different LOB case BA');
+            expect(await utilityGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is dispayed to different LOB case BA');
         });
 
         it('[5578,5606]: Verify if Case read access mapping is accessible to different LOB Case Manager', async () => {
@@ -384,7 +382,7 @@ describe("Case Read Access", () => {
             await loginPage.login('frieda');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is dispayed to different LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is dispayed to different LOB case manager');
         });
 
         it('[5578,5606]: Verify if Case read access mapping is accessible to Case BA belonging to different company with same LOB', async () => {
@@ -392,7 +390,7 @@ describe("Case Read Access", () => {
             await loginPage.login('gwixillian');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is not dispayed to same LOB and different company case BA');
+            expect(await utilityGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is not dispayed to same LOB and different company case BA');
         });
 
         it('[5578,5606]: Verify Case read access mapping is accessible to Case Manager user having access to multiple LOB', async () => {
@@ -400,10 +398,10 @@ describe("Case Read Access", () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is dispayed to user with multiple LOB case manager');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is not dispayed to user with multiple LOB case manager');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is dispayed to user with multiple LOB case manager');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is not dispayed to user with multiple LOB case manager');
         });
 
         it('[5578,5606]: Verify if Case read access mapping is accessible to Case BA user having access to multiple LOB', async () => {
@@ -411,10 +409,10 @@ describe("Case Read Access", () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is dispayed to user with multiple LOB case manager');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is not dispayed to user with multiple LOB case manager');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeTruthy('Case read access mapping is dispayed to user with multiple LOB case manager');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent("ReadAccess" + randomStr)).toBeFalsy('Case read access mapping is not dispayed to user with multiple LOB case manager');
         });
 
         afterAll(async () => {
@@ -608,7 +606,7 @@ describe("Case Read Access", () => {
         it('[6060]: [Read Access] Applying mapping with flowset in case of best match', async () => {
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
             await editReadAccess.selectFlowset(flowsetGlobalFieldsData.flowsetName);
             await editReadAccess.selectPriority('Low');
             await editReadAccess.clickOnSave();
@@ -772,7 +770,7 @@ describe("Case Read Access", () => {
             await loginPage.login('qdu');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
+            await utilityGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
             expect(await consoleReadAcess.isDeleteButtonDisplayed()).toBeFalsy();
         });
         it('[5543]: [Permissions] Case Read Access visibility', async () => {
@@ -780,19 +778,19 @@ describe("Case Read Access", () => {
             await loginPage.login(userData2.userId + "@petramco.com", 'Password_1234');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
+            await utilityGrid.searchAndSelectGridRecord(readAccessMappingData.configName);
             await consoleReadAcess.clickDeleteButton();
-            await utilCommon.clickOnWarningOk();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await utilityCommon.closePopUpMessage();
             expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingData.configName)).toBeFalsy("Record is not Present");
             await navigationPo.signOut();
             await loginPage.login('gderuno');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilGrid.searchAndSelectGridRecord(readAccessMappingDataWithDiffrentCompany.configName);
+            await utilityGrid.searchAndSelectGridRecord(readAccessMappingDataWithDiffrentCompany.configName);
             await consoleReadAcess.clickDeleteButton();
-            await utilCommon.clickOnWarningOk();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await utilityCommon.closePopUpMessage();
             expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingDataWithDiffrentCompany.configName)).toBeFalsy("Record is not Present");
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
@@ -1079,10 +1077,10 @@ describe("Case Read Access", () => {
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.deleteDefaultReadAccess();
-            await utilGrid.searchAndOpenHyperlink(randomStr + '7ReadAccessMappingName');
+            await utilityGrid.searchAndOpenHyperlink(randomStr + '7ReadAccessMappingName');
             await editReadAccess.setDefaultToggleButton(true);
             await editReadAccess.clickOnSave();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPo.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('SummaryWithmapping2');

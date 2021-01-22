@@ -12,9 +12,9 @@ import editEmailConfigPo from '../../pageobject/settings/email/edit-email-config
 import editExclusiveSubjectPo from '../../pageobject/settings/email/edit-exclusive-subject.po';
 import newExclusiveSubjectPo from '../../pageobject/settings/email/new-exclusive-subject.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+
 let userData1, userData2 = undefined;
 
 describe('Email Configuration', () => {
@@ -81,7 +81,6 @@ describe('Email Configuration', () => {
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {
@@ -808,7 +807,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
-            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesAckTemplate'+ randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
         });
 
         it('[5336,5337]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {

@@ -1,4 +1,3 @@
-import utilityGrid from "../../utils/utility.grid";
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import casePreviewPo from '../../pageobject/case/case-preview.po';
@@ -15,9 +14,8 @@ import editCognitiveCategorizationMappingPo from '../../pageobject/settings/case
 import editCognitiveTemplateMappingPo from '../../pageobject/settings/case-management/edit-cognitive-template-mapping.po';
 import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
 import consoleCognitivePo from './../../pageobject/settings/case-management/console-cognitive.po';
 
 describe('Case Cognitive', () => {
@@ -319,7 +317,7 @@ describe('Case Cognitive', () => {
             await loginPage.login('tadmin');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Cognitive--Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.COGNITIVE.TEMPLATE);
-            await utilGrid.searchAndOpenHyperlink("Petramco Template Dataset Mapping");
+            await utilityGrid.searchAndOpenHyperlink("Petramco Template Dataset Mapping");
             await editCognitiveTemplateMappingPo.updateValueOfCasesCreatedAutomatically("90");
             await editCognitiveTemplateMappingPo.updateConfidentialsLevelByAgent("90");
             await editCognitiveTemplateMappingPo.clickSaveButton();
@@ -485,7 +483,7 @@ describe('Case Cognitive', () => {
             await loginPage.login('tadmin');
             await apiHelper.apiLogin('tadmin');
             let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
-            console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);    
+            console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);
         });
         it('[5415,5417,5416,5412,5414,5413]:[Cognitive] - Add Data Set Mapping for Categorization', async () => {
             await navigationPage.gotoSettingsPage();
@@ -621,7 +619,7 @@ describe('Case Cognitive', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             let dataSetMappingDeleted = await apiHelper.deleteCognitiveDataSetMapping();
-            console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);    
+            console.log("All DataSet Mapping Deleted =============> ", dataSetMappingDeleted);
         });
         it('[5495,5496,5485,5494,5493,5492]:[Cognitive] - Data Set Mapping for Templates UI validation', async () => {
             await navigationPage.gotoSettingsPage();
