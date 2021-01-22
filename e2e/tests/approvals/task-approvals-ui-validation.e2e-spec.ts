@@ -11,10 +11,9 @@ import approvalMappingConsolePage from "../../pageobject/settings/task-managemen
 import createApprovalMappingPage from "../../pageobject/settings/task-management/create-approval-mapping.po";
 import editApprovalMappingPage from "../../pageobject/settings/task-management/edit-approval-mapping.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
+import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -140,7 +139,7 @@ describe("Task Approval UI Validations", () => {
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editApprovalMappingPage.searchTaskTemplate(autoTaskTemplateData.templateName);
             await editApprovalMappingPage.selectTaskTemplateCheckbox();
             expect(await editApprovalMappingPage.isSelectTaskTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Case template can be associated');
@@ -156,11 +155,11 @@ describe("Task Approval UI Validations", () => {
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
-            expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
-            manualTaskId = await manageTask.getTaskDisplayId();
-            await manageTask.clickCloseButton();
+            await manageTaskPo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+            await manageTaskPo.waitUntilNumberOfTaskLinkAppear(1);
+            expect(await manageTaskPo.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
+            manualTaskId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickCloseButton();
         });
 
         it('[3591]: Verify if task approved is triggered for manual task', async () => {
@@ -170,7 +169,7 @@ describe("Task Approval UI Validations", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.signOut();
         });

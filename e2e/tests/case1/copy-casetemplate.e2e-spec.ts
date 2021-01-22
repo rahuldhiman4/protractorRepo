@@ -1,7 +1,9 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import { ALL_FIELD, MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data.ui';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import dynamicField from "../../pageobject/common/dynamic-fields.po";
 import loginPage from "../../pageobject/common/login.po";
@@ -13,16 +15,13 @@ import editCaseTemplate from "../../pageobject/settings/case-management/edit-cas
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import copyTasktemplatePo from '../../pageobject/settings/task-management/copy-tasktemplate.po';
-import taskTemplate from "../../pageobject/settings/task-management/create-tasktemplate.po";
+import taskTemplatePo from "../../pageobject/settings/task-management/create-tasktemplate.po";
 import editTasktemplatePo from '../../pageobject/settings/task-management/edit-tasktemplate.po';
 import previewTaskTemplateCasesPo from '../../pageobject/settings/task-management/preview-task-template.po';
-import { default as viewTaskTemplate, default as viewTasktemplatePo } from "../../pageobject/settings/task-management/view-tasktemplate.po";
+import viewTaskTemplatePo from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -402,7 +401,7 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4730]: Permission Check to verify who can edit the Case Template', async () => {
             await navigationPage.signOut();
@@ -411,8 +410,8 @@ describe('Copy Case Template', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(copyCaseTemplateName);
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is non editable");
             await navigationPage.signOut();
@@ -429,20 +428,20 @@ describe('Copy Case Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
-            await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
-            await taskTemplate.selectCompanyByName('Psilon');
-            await taskTemplate.selectOwnerCompany("Psilon");
-            await taskTemplate.selectBuisnessUnit("Psilon Support Org2");
-            await taskTemplate.selectOwnerGroup("Psilon Support Group2");
-            await taskTemplate.clickOnSaveTaskTemplate();
-            await viewTaskTemplate.clickOnCopyTemplate();
+            await taskTemplatePo.setTemplateName('manualTaskTemplate' + randomStr);
+            await taskTemplatePo.setTaskSummary('manualTaskSummary' + randomStr);
+            await taskTemplatePo.selectCompanyByName('Psilon');
+            await taskTemplatePo.selectOwnerCompany("Psilon");
+            await taskTemplatePo.selectBuisnessUnit("Psilon Support Org2");
+            await taskTemplatePo.selectOwnerGroup("Psilon Support Group2");
+            await taskTemplatePo.clickOnSaveTaskTemplate();
+            await viewTaskTemplatePo.clickOnCopyTemplate();
             await copyTasktemplatePo.setTemplateName(copytaskTemplateName);
             await copyTasktemplatePo.selectOwnerCompany('Psilon');
             await copyTasktemplatePo.selectOwnerBusinessUnit("Psilon Support Org1");
             await copyTasktemplatePo.selectOwnerGroup("Psilon Support Group1");
             await copyTasktemplatePo.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4730]: Permission Check to verify who can edit the Task Template', async () => {
             await navigationPage.signOut();
@@ -450,20 +449,20 @@ describe('Copy Case Template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(copytaskTemplateName);
-            await viewTaskTemplate.clickOnManageDynamicFieldLink();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
-            await utilCommon.closePopUpMessage();
-            await viewTaskTemplate.clickOnEditLink();
+            await viewTaskTemplatePo.clickOnManageDynamicFieldLink();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            await utilityCommon.closePopUpMessage();
+            await viewTaskTemplatePo.clickOnEditLink();
             expect(await editTasktemplatePo.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is editable");
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilGrid.searchAndOpenHyperlink(copytaskTemplateName);
-            await viewTaskTemplate.clickOnEditLink();
+            await viewTaskTemplatePo.clickOnEditLink();
             await editTasktemplatePo.setSummary("UpdatedTaskSummary");
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await viewTasktemplatePo.getSummaryValue()).toBe('UpdatedTaskSummary');
+            expect(await viewTaskTemplatePo.getSummaryValue()).toBe('UpdatedTaskSummary');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -526,15 +525,15 @@ describe('Copy Case Template', () => {
             await dynamicField.selectFieldValueType('TEXT');
             await dynamicField.selectInfromationSource('Agent');
             await dynamicField.clickSaveButton();
-            await utilCommon.closePopUpMessage();
-            await utilCommon.clickOnBackArrow();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4718]: Dynamic Field get copied upon creating copy of Case Template', async () => {
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(updatedCaseTemplate);
             await copyCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri16' + randomStr)).toBeTruthy('field not present');
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri17' + randomStr)).toBeTruthy('field not present');
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri18' + randomStr)).toBeTruthy('field not present');
@@ -628,7 +627,7 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(templateData.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskSummary()).toBe(templateData.templateSummary);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
@@ -659,10 +658,10 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
-            expect(await utilCommon.isPopupMsgsMatches(['ERROR (222112): The selected Assignee does not have access to Psilon. Please select a different Assignee or contact System Administrator to grant access.'])).toBeTruthy('Message of permission denined for group access remove not displayed');
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopupMsgsMatches(['ERROR (222112): The selected Assignee does not have access to Psilon. Please select a different Assignee or contact System Administrator to grant access.'])).toBeTruthy('Message of permission denined for group access remove not displayed');
+            await utilityCommon.closePopUpMessage();
             await copyCaseTemplate.clickCancelCaseTemplate();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await consoleCasetemplatePo.removeColumnFromGrid(column1);
         });
         afterAll(async () => {
@@ -756,7 +755,7 @@ describe('Copy Case Template', () => {
             await changeAssignmentOldPage.selectAssignee('Glit Deruno');
             await changeAssignmentOldPage.clickOnAssignButton();
             await copyCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(manualTemplateData.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskSummary()).toBe(manualTemplateData.templateSummary);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
@@ -868,7 +867,7 @@ describe('Copy Case Template', () => {
             await changeAssignmentOldPage.selectAssignee('Glit Deruno');
             await changeAssignmentOldPage.clickOnAssignButton();
             await copyCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(templateData.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(templateData.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('- Global -');
@@ -950,7 +949,7 @@ describe('Copy Case Template', () => {
             await changeAssignmentOldPage.selectAssignee('Glit Deruno');
             await changeAssignmentOldPage.clickOnAssignButton();
             await copyCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(automatedtemplateData.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskSummary()).toBe(automatedtemplateData.templateSummary);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
@@ -1027,14 +1026,14 @@ describe('Copy Case Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndSelectTaskTemplate(taskTemplateData.templateName);
             await selectTaskTemplate.clickOnCopyTaskTemplateButton();
-            await taskTemplate.setTemplateName('Copied Task Template' + randomStr);
-            await taskTemplate.selectOwnerCompany('Petramco');
-            await taskTemplate.selectBuisnessUnit('United States Support');
-            await taskTemplate.selectOwnerGroup('US Support 3');
-            await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await viewTasktemplatePo.getCategoryTier4Value()).toBe(taskTemplateData.category4);
-            expect(await viewTasktemplatePo.getLabelValue()).toBe(label);
-            await utilCommon.clickOnBackArrow();
+            await taskTemplatePo.setTemplateName('Copied Task Template' + randomStr);
+            await taskTemplatePo.selectOwnerCompany('Petramco');
+            await taskTemplatePo.selectBuisnessUnit('United States Support');
+            await taskTemplatePo.selectOwnerGroup('US Support 3');
+            await taskTemplatePo.clickOnSaveTaskTemplate();
+            expect(await viewTaskTemplatePo.getCategoryTier4Value()).toBe(taskTemplateData.category4);
+            expect(await viewTaskTemplatePo.getLabelValue()).toBe(label);
+            await viewTaskTemplatePo.clickBackArrowBtn();
         });
     });
 });

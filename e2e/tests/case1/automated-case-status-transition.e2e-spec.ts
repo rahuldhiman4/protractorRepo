@@ -1,6 +1,8 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import { AUTO_STATUS_TRANSITION_MANDATORY_FIELDS } from '../../data/ui/case/automated-status-transition.data.ui';
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationPo from '../../pageobject/notification/notification.po';
@@ -8,11 +10,8 @@ import automatedStatusTransitionConsole from "../../pageobject/settings/case-man
 import automatedStatusTransitionCreatePage from "../../pageobject/settings/case-management/create-automated-status-config.po";
 import automatedStatusTransitionEditPage from "../../pageobject/settings/case-management/edit-automated-status-config.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Automated Case Status Transition', () => {
     beforeAll(async () => {
@@ -79,7 +78,7 @@ describe('Automated Case Status Transition', () => {
             expect(await automatedStatusTransitionEditPage.isFromStatusReasonFieldEnabled()).toBeTruthy("From Staus Reason is disabled");
         });
         afterAll(async () => {
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -118,7 +117,7 @@ describe('Automated Case Status Transition', () => {
             await automatedStatusTransitionConsole.openAutomatedTransitionConfig(configName1.name);
             expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionNameEnabled()).toBeFalsy('Name field is enabled');
             expect(await automatedStatusTransitionEditPage.isAutomatedStatusTransitionSaveBtnEnabled()).toBeFalsy('Save button is enabled');
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
             //Search and presence of existing rule test
             expect(await utilGrid.isGridRecordPresent(configName1.name)).toBeTruthy('Record 1 is missing');
             await utilGrid.clearGridSearchBox();
@@ -198,10 +197,10 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setChangeStatusAfter(days);
         await automatedStatusTransitionCreatePage.saveConfig();
 
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same values already exists.')).toBeTruthy();
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same values already exists.')).toBeTruthy();
+        await utilityCommon.closePopUpMessage();
         await automatedStatusTransitionCreatePage.clickCancelBtn();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
     it('[4101]: Automatic status transition of a case - Notification is sent to assignee', async () => {
@@ -240,7 +239,7 @@ describe('Automated Case Status Transition', () => {
         await utilityCommon.refresh(); // required to get alert notification
         await notificationPo.clickOnNotificationIcon();
         expect(await notificationPo.isAlertPresent('tadmin Tenant Administrator changed the status of ' + newCase.displayId + ' to Closed')).toBeTruthy('Alert message is not present');
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
     });
 
     //ankagraw

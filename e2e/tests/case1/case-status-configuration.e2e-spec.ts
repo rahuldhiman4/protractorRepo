@@ -1,5 +1,7 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import { flowsetPhylumFields } from '../../data/ui/flowset/flowset.ui';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
@@ -7,18 +9,15 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import assignmentBladePO from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
+import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
+import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
+import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
-import viewTaskPo from '../../pageobject/task/view-task.po';
-import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
-import { flowsetPhylumFields } from '../../data/ui/flowset/flowset.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Case Status Configuration', () => {
     let flowsetPhylumFieldsData = undefined;
@@ -28,7 +27,7 @@ describe('Case Status Configuration', () => {
         await apiHelper.apiLogin('tadmin');
         const personDataFile = require('../../data/ui/foundation/person.ui.json');
         personData1 = personDataFile['PhylumCaseAdmin1'];
-   
+
         await apiHelper.createNewUser(personData1);
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
         await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
@@ -46,7 +45,7 @@ describe('Case Status Configuration', () => {
         await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phylum Support Group1');
         await browser.sleep(7000); //Wait to reflect the user created above
 
-        await loginPage.login(personData1.userId+"@petramco.com", 'Password_1234');
+        await loginPage.login(personData1.userId + "@petramco.com", 'Password_1234');
     });
 
     afterAll(async () => {
@@ -57,14 +56,14 @@ describe('Case Status Configuration', () => {
     //asahitya
     describe('[4687]: Verify User not able to delete mandatory status for case', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        
+
         beforeAll(async () => {
             flowsetPhylumFieldsData = cloneDeep(flowsetPhylumFields);
             flowsetPhylumFieldsData.flowsetName = flowsetPhylumFieldsData.flowsetName + randomStr;
             await apiHelper.apiLogin('tadmin');
             flowsetPhylumFieldsData["lineOfBusiness"] = "Finance";
             await apiHelper.createNewFlowset(flowsetPhylumFieldsData);
-            
+
         });
 
         it('[4687]: Verify User not able to delete mandatory status for case', async () => {
@@ -179,7 +178,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Assigned");
             await statusConfigPo.renameExistingStatus('Staged');
-            
+
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
@@ -254,7 +253,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy('customStatus status delete button is enabled');
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await statusConfigPo.clickOnBackButton();
         });
     });
@@ -263,7 +262,7 @@ describe('Case Status Configuration', () => {
     xdescribe('[4679]: Verify User not able to delete mandatory status for Knowledge', () => {
         it('[4679]: Verify User not able to delete mandatory status for Knowledge', async () => {
             await navigationPage.signOut();
-            await loginPage.login(personData3.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(personData3.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
@@ -308,7 +307,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("Custom");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await statusConfigPo.clickOnBackButton();
         });
     });
@@ -317,7 +316,7 @@ describe('Case Status Configuration', () => {
     it('[4678]:Verify UI for Knowledge status configuration', async () => {
         try {
             await navigationPage.signOut()
-            await loginPage.login(personData3.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(personData3.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
             expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
@@ -335,7 +334,7 @@ describe('Case Status Configuration', () => {
         }
         finally {
             await navigationPage.signOut();
-            await loginPage.login(personData1.userId+"@petramco.com", 'Password_1234');
+            await loginPage.login(personData1.userId + "@petramco.com", 'Password_1234');
         }
     });
 
@@ -369,7 +368,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             await statusConfigPo.clickOnMandatoryCheckbox();
             await statusConfigPo.saveSetting();
-            expect(await utilCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
+            expect(await utilityCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
             await statusConfigPo.setStatusReason("customStatus required");
             await statusConfigPo.clickOnBackButton();
             //delete custom status
@@ -377,7 +376,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await statusConfigPo.clickOnBackButton();
         });
 
@@ -393,7 +392,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             await statusConfigPo.clickOnMandatoryCheckbox();
             await statusConfigPo.saveSetting();
-            expect(await utilCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
+            expect(await utilityCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
             await statusConfigPo.setStatusReason("customStatus required");
             await statusConfigPo.clickOnBackButton();
             //delete custom status
@@ -401,7 +400,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await statusConfigPo.clickOnBackButton();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
@@ -418,7 +417,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickEditStatus("customStatus");
         await statusConfigPo.clickOnMandatoryCheckbox();
         await statusConfigPo.saveSetting();
-        expect(await utilCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
+        expect(await utilityCommon.getAllPopupMsg()).toContain('The Status Reason Mandatory check box is selected. Add a status reason or clear the check box.');
         await statusConfigPo.setStatusReason("customStatus required");
         await statusConfigPo.clickOnBackButton();
         //delete Custom Status
@@ -426,7 +425,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickEditStatus("customStatus");
         expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
         await statusConfigPo.clickOnDeleteButton();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await statusConfigPo.clickEditStatus("Staged");
         await statusConfigPo.updateExistingStatusName('Updated');
         await statusConfigPo.cancelSettingChange();
@@ -461,24 +460,24 @@ describe('Case Status Configuration', () => {
             await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Pico Support Group2');
             await browser.sleep(7000); //Wait to reflect the user created above
             caseData =
-            {
-                "Requester": personData3.userId,
-                "Summary": randomStr + "test",
-                "Assigned Company": "Pico Systems",
-                "Business Unit": "Pico Support Org1",
-                "Support Group": "Pico Support Group1",
-                "Assignee": personData1.userId,
-            }
+                {
+                    "Requester": personData3.userId,
+                    "Summary": randomStr + "test",
+                    "Assigned Company": "Pico Systems",
+                    "Business Unit": "Pico Support Org1",
+                    "Support Group": "Pico Support Group1",
+                    "Assignee": personData1.userId,
+                }
             caseDataInProgress =
-            {
-                "Requester": personData3.userId,
-                "Summary": randomStr + "test",
-                "Assigned Company": "Pico Systems",
-                "Business Unit": "Pico Support Org1",
-                "Support Group": "Pico Support Group1",
-                "Assignee": personData1.userId,
-                "status": "In Progress",
-            }
+                {
+                    "Requester": personData3.userId,
+                    "Summary": randomStr + "test",
+                    "Assigned Company": "Pico Systems",
+                    "Business Unit": "Pico Support Org1",
+                    "Support Group": "Pico Support Group1",
+                    "Assignee": personData1.userId,
+                    "status": "In Progress",
+                }
 
             knowledgeSetData = {
                 knowledgeSetTitle: "test knowledge" + randomStr,
@@ -538,8 +537,8 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Tasks with this status are present")).toBeTruthy("ERROR (10000): Tasks with this status are present");
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            expect(await utilityCommon.isPopUpMessagePresent("ERROR (10000): Tasks with this status are present")).toBeTruthy("ERROR (10000): Tasks with this status are present");
         });
 
         it('[4608]:Delete non mandatory and custom status', async () => {
@@ -558,7 +557,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
         it('[4608]:Delete non mandatory and custom status', async () => {
@@ -595,8 +594,8 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Cases with this status are present.")).toBeTruthy();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            expect(await utilityCommon.isPopUpMessagePresent("ERROR (10000): Cases with this status are present.")).toBeTruthy();
 
         });
         it('[4608]:Delete non mandatory and custom status', async () => {
@@ -614,8 +613,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
-
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[4608]:Delete non mandatory and custom status', async () => {
             await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
@@ -648,8 +646,8 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("Custom");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent("ERROR (10000): Knowledge articles with this status are present.")).toBeTruthy();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            expect(await utilityCommon.isPopUpMessagePresent("ERROR (10000): Knowledge articles with this status are present.")).toBeTruthy();
         });
         it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoKnowledgeConsole();
@@ -665,7 +663,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("Custom");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
         it('[4608]:Delete non mandatory and custom status', async () => {

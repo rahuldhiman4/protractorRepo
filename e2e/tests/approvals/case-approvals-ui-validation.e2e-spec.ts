@@ -5,14 +5,12 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
 
 let userData1 = undefined;
 describe("Case Approval UI Validations", () => {
@@ -29,7 +27,7 @@ describe("Case Approval UI Validations", () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "10843User1",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData1);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
@@ -814,7 +812,7 @@ describe("Case Approval UI Validations", () => {
 
     //ankagraw
     describe('[6395,6393]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
-        let caseData, caseId, caseData1, caseData2,caseData3, caseTemplateDataWithMatchingCriteria, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseData, caseId, caseData1, caseData2, caseData3, caseTemplateDataWithMatchingCriteria, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             // Create Case Template through API
             let caseTemplateData = {

@@ -9,11 +9,11 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePage from '../../pageobject/common/person-profile.po';
-import { default as relatedCasePage, default as relatedCaseTabPo } from '../../pageobject/common/related-case-tab.po';
+import relatedCaseTabPo from '../../pageobject/common/related-case-tab.po';
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import composeEmailPage from '../../pageobject/email/compose-mail.po';
 import relationConfigPage from '../../pageobject/settings/relationship/relationships-configs.po';
-import { BWF_BASE_URL, operation, security, type, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, operation, security, type } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -124,11 +124,11 @@ describe('Case And Employee Relationship', () => {
             await relatedTabPage.clickRelatedPersonName('Brad Pitt');
             await utilityCommon.switchToNewTab(1);
             await personProfilePage.clickOnTab('Related Cases');
-            expect(await relatedCasePage.getRelatedCaseAssignee(caseId)).toBe('Qianru Tao');
-            expect(await relatedCasePage.getRelatedCaseModDate(caseId)).toContain('Modified')
-            expect(await relatedCasePage.getRelatedCasePriority(caseId)).toBe('Medium');
-            expect(await relatedCasePage.getRelatedCaseStatus(caseId)).toBe('Assigned');
-            expect(await relatedCasePage.getRelatedCaseRelation(caseId)).toBe('Inspector');
+            expect(await relatedCaseTabPo.getRelatedCaseAssignee(caseId)).toBe('Qianru Tao');
+            expect(await relatedCaseTabPo.getRelatedCaseModDate(caseId)).toContain('Modified')
+            expect(await relatedCaseTabPo.getRelatedCasePriority(caseId)).toBe('Medium');
+            expect(await relatedCaseTabPo.getRelatedCaseStatus(caseId)).toBe('Assigned');
+            expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId)).toBe('Inspector');
         }
         catch (ex) { throw ex }
         finally {
@@ -170,14 +170,14 @@ describe('Case And Employee Relationship', () => {
             await utilityGrid.searchAndOpenHyperlink(caseId3);
             //Add case 1 and case 2 in related cases
             await viewCasePo.clickOnTab('Related Cases');
-            await relatedCasePage.addRelatedCases();
+            await relatedCaseTabPo.addRelatedCases();
             await addRelatedCasespopup.addRelatedCase(caseId1, "Child");
-            await relatedCasePage.addRelatedCases();
+            await relatedCaseTabPo.addRelatedCases();
             await addRelatedCasespopup.addRelatedCase(caseId2, "Child");
             //Open Case 1 and Remove the case 1
-            await relatedCasePage.openCaseFromRelatedCases(caseId1);
+            await relatedCaseTabPo.openCaseFromRelatedCases(caseId1);
             await viewCasePo.clickOnTab('Related Cases');
-            await relatedCasePage.removeRelatedCase(caseId3);
+            await relatedCaseTabPo.removeRelatedCase(caseId3);
             //await relatedCasePage.waitUntilNewRelatedCaseAdded(0);
         });
         it('[4121]: Remove Related Case from Case', async () => {
@@ -185,14 +185,14 @@ describe('Case And Employee Relationship', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId3);
             await viewCasePo.clickOnTab('Related Cases');
-            expect(await relatedCasePage.isCasePresent(caseId1)).toBeFalsy();
-            expect(await relatedCasePage.isCasePresent(caseId2)).toBeTruthy();
+            expect(await relatedCaseTabPo.isCasePresent(caseId1)).toBeFalsy();
+            expect(await relatedCaseTabPo.isCasePresent(caseId2)).toBeTruthy();
             //Remove case 2 from case 1 and verify in case 2
-            await relatedCasePage.removeRelatedCase(caseId2);
+            await relatedCaseTabPo.removeRelatedCase(caseId2);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId2);
             await viewCasePo.clickOnTab('Related Cases');
-            expect(await relatedCasePage.isCasePresent(caseId3)).toBeFalsy();
+            expect(await relatedCaseTabPo.isCasePresent(caseId3)).toBeFalsy();
         });
     });
 
@@ -225,14 +225,14 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.gotoCaseConsole();
         await utilityGrid.searchAndOpenHyperlink(caseDisplayId1);
         await viewCasePo.clickOnTab('Related Cases');
-        await relatedCasePage.addRelatedCases();
+        await relatedCaseTabPo.addRelatedCases();
         await addRelatedCasespopup.addRelatedCase(caseDisplayId2, "Child");
-        expect(await relatedCasePage.getRelatedCaseAssignee(caseDisplayId2)).toBe("Elizabeth Peters");
-        expect(await relatedCasePage.getRelatedCasePriority(caseDisplayId2)).toBe("Low");
-        expect(await relatedCasePage.getRelatedCaseModDate(caseDisplayId2)).toContain("Modified");
-        expect(await relatedCasePage.getRelatedCaseRelation(caseDisplayId2)).toBe("Child");
-        expect(await relatedCasePage.getRelatedCaseStatus(caseDisplayId2)).toBe("Assigned");
-        expect(await relatedCasePage.getRelatedCaseSummary(caseDisplayId2)).toBe("Testing Realated Persons");
+        expect(await relatedCaseTabPo.getRelatedCaseAssignee(caseDisplayId2)).toBe("Elizabeth Peters");
+        expect(await relatedCaseTabPo.getRelatedCasePriority(caseDisplayId2)).toBe("Low");
+        expect(await relatedCaseTabPo.getRelatedCaseModDate(caseDisplayId2)).toContain("Modified");
+        expect(await relatedCaseTabPo.getRelatedCaseRelation(caseDisplayId2)).toBe("Child");
+        expect(await relatedCaseTabPo.getRelatedCaseStatus(caseDisplayId2)).toBe("Assigned");
+        expect(await relatedCaseTabPo.getRelatedCaseSummary(caseDisplayId2)).toBe("Testing Realated Persons");
     });
 
     //asahitya
@@ -305,7 +305,7 @@ describe('Case And Employee Relationship', () => {
         await quickCase.createCaseButton();
         await quickCase.gotoCaseButton();
         await viewCasePo.clickOnTab('Related Cases');
-        await relatedCasePage.isCasePresent(caseId2);
+        await relatedCaseTabPo.isCasePresent(caseId2);
     });
 
     //asahitya
@@ -427,7 +427,7 @@ describe('Case And Employee Relationship', () => {
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[0])).toBe('Parent');
         });
-        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {       
+        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId[2]);
             await viewCasePo.clickOnTab('Related Cases');
