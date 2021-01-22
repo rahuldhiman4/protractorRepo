@@ -97,6 +97,7 @@ class Copytaskpage {
         let rightAlignLocator: ElementFinder = await $(this.selectors.rightAlignLocator);
         return await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText, rightAlignLocator);
     }
+
 }
 
 export default new Copytaskpage();

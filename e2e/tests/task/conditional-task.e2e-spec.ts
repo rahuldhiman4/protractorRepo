@@ -4,9 +4,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import viewCaseTemplatePage from '../../pageobject/settings/case-management/view-casetemplate.po';
-import utilGrid from '../../utils/util.grid';
 import processEditorPage from '../../pageobject/ticketing/process-editor.po';
-import utilCommon from '../../utils/util.common';
 import editCaseTemplatePage from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template.po';
 import utilityCommon from '../../utils/utility.common';
@@ -17,6 +15,7 @@ import quickCasePage from '../../pageobject/case/quick-case.po';
 import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
 import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
 import taskTemplateConsolePage from '../../pageobject/settings/task-management/console-tasktemplate.po';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Conditional Task', () => {
     let userData;
@@ -125,13 +124,13 @@ describe('Conditional Task', () => {
         it('[4540]: [Task] - Template preview from Template selection blade', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(inactiveCaseTemplatePetramcoData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(inactiveCaseTemplatePetramcoData.templateName);
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
 
             //Validate all field labels of Manual Task Template
-            await utilGrid.searchAndOpenHyperlink(manualTaskTemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(manualTaskTemplateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -170,7 +169,7 @@ describe('Conditional Task', () => {
             await taskTemplatePreview.clickOnBackButton();
 
             //Validate all field labels of External Task Template
-            await utilGrid.searchAndOpenHyperlink(externalTaskTemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(externalTaskTemplateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -209,7 +208,7 @@ describe('Conditional Task', () => {
             await taskTemplatePreview.clickOnBackButton();
 
             //Validate all field labels of Automated Task Template
-            await utilGrid.searchAndOpenHyperlink(automatedTaskTemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(automatedTaskTemplateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -317,11 +316,11 @@ describe('Conditional Task', () => {
             //Validating task flow creation with all type of task templates
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
             expect(await viewCaseTemplatePage.isTaskFlowPresentInTaskSection()).toBeFalsy('Task Flow is present');
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.addAllTaskTypeFromProcessEditor(manualTaskTemplateData.templateName, externalTaskTemplateData.templateName, automatedTaskTemplateData.templateName);
-            expect(await utilCommon.isPopUpMessagePresent('Process Definition saved successfully.')).toBeTruthy('Popup message is not matching');
+            expect(await utilityCommon.isPopUpMessagePresent('Process Definition saved successfully.')).toBeTruthy('Popup message is not matching');
             await processEditorPage.clickGoBackToTemplateBtn();
             expect(await viewCaseTemplatePage.getTotalTaskBlocks()).toEqual(5);
             await editCaseTemplatePage.clickOnEditCaseTemplateMetadata();
@@ -386,7 +385,7 @@ describe('Conditional Task', () => {
             //Making the Case Template Inactive again
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
             await editCaseTemplatePage.clickOnEditCaseTemplateMetadata();
             await editCaseTemplatePage.changeTemplateStatusDropdownValue('Inactive');
             await editCaseTemplatePage.clickOnSaveCaseTemplateMetadata();
@@ -396,7 +395,7 @@ describe('Conditional Task', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(draftCaseTemplatePetramcoData.templateName);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeFalsy('Task Flow button is enabled for Case Manager'); //Defect
         });
         afterAll(async () => {
@@ -661,7 +660,7 @@ describe('Conditional Task', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
 
             //Verify on Global Template
-            await utilGrid.searchAndOpenHyperlink(`globalDraftCaseTemplate${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(`globalDraftCaseTemplate${randomStr}`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
@@ -682,13 +681,13 @@ describe('Conditional Task', () => {
             expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
             await processEditorPage.clickCancelOnTemplateSelectBlade();
             await processEditorPage.clickGoBackToTemplateBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewCaseTemplatePage.clickBackArrowBtn();
         });
 
         it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             //Verify on Petramco Template
-            await utilGrid.searchAndOpenHyperlink(`petramcoDraftCaseTemplate${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(`petramcoDraftCaseTemplate${randomStr}`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
@@ -709,13 +708,13 @@ describe('Conditional Task', () => {
             expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
             await processEditorPage.clickCancelOnTemplateSelectBlade();
             await processEditorPage.clickGoBackToTemplateBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewCaseTemplatePage.clickBackArrowBtn();
         });
 
         it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             //Verify on Psilon Template
-            await utilGrid.searchAndOpenHyperlink(`psilonDraftCaseTemplate${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(`psilonDraftCaseTemplate${randomStr}`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
@@ -736,7 +735,7 @@ describe('Conditional Task', () => {
             expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
             await processEditorPage.clickCancelOnTemplateSelectBlade();
             await processEditorPage.clickGoBackToTemplateBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewCaseTemplatePage.clickBackArrowBtn();
         });
 
@@ -825,23 +824,23 @@ describe('Conditional Task', () => {
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(globalDraftCaseTemplateData.templateSummary);
+            await utilityGrid.searchAndOpenHyperlink(globalDraftCaseTemplateData.templateSummary);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeTruthy();
             await viewCaseTemplatePage.clickBackArrowBtn();
 
-            await utilGrid.searchAndOpenHyperlink(petramcoDraftCaseTemplateData.templateSummary);
+            await utilityGrid.searchAndOpenHyperlink(petramcoDraftCaseTemplateData.templateSummary);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeTruthy();
             await viewCaseTemplatePage.clickBackArrowBtn();
 
-            await utilGrid.searchAndOpenHyperlink(petramcoInactiveCaseTemplateData.templateSummary);
+            await utilityGrid.searchAndOpenHyperlink(petramcoInactiveCaseTemplateData.templateSummary);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeTruthy();
             await viewCaseTemplatePage.clickBackArrowBtn();
 
-            await utilGrid.searchAndOpenHyperlink(psilonDraftCaseTemplateData.templateSummary);
+            await utilityGrid.searchAndOpenHyperlink(psilonDraftCaseTemplateData.templateSummary);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeTruthy();
             await viewCaseTemplatePage.clickBackArrowBtn();
 
-            await utilGrid.searchAndOpenHyperlink(petramcoActiveCaseTemplateData.templateSummary);
+            await utilityGrid.searchAndOpenHyperlink(petramcoActiveCaseTemplateData.templateSummary);
             expect(await viewCaseTemplatePage.isTaskFlowBtnEnabled()).toBeFalsy();
             await viewCaseTemplatePage.clickBackArrowBtn();
         });
@@ -909,7 +908,7 @@ describe('Conditional Task', () => {
              await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplatePetramcoData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplatePetramcoData.templateName);
             await editCaseTemplatePage.clickOnCopyCaseTemplate();
             await createCaseTemplatePage.setCompanyName('Psilon');
             await createCaseTemplatePage.setTemplateName('Copied Case template name' + randomStr);
@@ -925,10 +924,10 @@ describe('Conditional Task', () => {
 
             await navigationPage.gotoSettingsPage()
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchOnGridConsole(externalTaskTemplateData.templateName);
+            await utilityGrid.searchRecord(externalTaskTemplateData.templateName);
             expect(await taskTemplateConsolePage.isCompanyColumnValueMatches(['Psilon', 'Petramco'])).toBeTruthy('Psilon task template is not copied');
-            await utilGrid.clearGridSearchBox();
-            await utilGrid.searchOnGridConsole(manualTaskTemplateData.templateName);
+            await utilityGrid.clearSearchBox();
+            await utilityGrid.searchRecord(manualTaskTemplateData.templateName);
             expect(await taskTemplateConsolePage.isCompanyColumnValueMatches(['- Global -'])).toBeTruthy('Gloabl task template is copied');
         });
     });

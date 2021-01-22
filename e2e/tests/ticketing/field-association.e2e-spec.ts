@@ -4,10 +4,9 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import createFieldAssociationMappingsPo from '../../pageobject/settings/application-config/create-field-association-mappings.po';
 import fieldAssociationMappingsConsolePo from '../../pageobject/settings/application-config/field-association-mappings-console.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
-import utilGrid from '../../utils/util.grid';
 import editFieldAssociationMappingsPo from '../../pageobject/settings/application-config/edit-field-association-mappings.po';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Field Association', () => {
     beforeAll(async () => {
@@ -30,20 +29,20 @@ describe('Field Association', () => {
         });
 
         it('[5424]: Verify Record With Application Or Bundle Name Column', async () => {
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             expect(await fieldAssociationMappingsConsolePo.areGridColumnHeaderMatches(allColoumn)).toBeTruthy("All Coloumn is not present");
             await fieldAssociationMappingsConsolePo.addFilter('Application Or Bundle Name', 'com.bmc.dsm.case-lib', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Field Name', 'Template Name', 'text');
             expect(await fieldAssociationMappingsConsolePo.isGridRecordPresent('Template Name')).toBeTruthy('Field not present on grid');
             expect(await fieldAssociationMappingsConsolePo.isGridRecordPresent('com.bmc.dsm.case-lib')).toBeTruthy('Field not present on grid');
 
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await fieldAssociationMappingsConsolePo.addFilter('Application Or Bundle Name', 'com.bmc.dsm.task-lib', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Field Name', 'Ticket Status GUID', 'text');
             expect(await fieldAssociationMappingsConsolePo.isGridRecordPresent('Ticket Status GUID')).toBeTruthy('Field not present on grid');
             expect(await fieldAssociationMappingsConsolePo.isGridRecordPresent('com.bmc.dsm.task-lib')).toBeTruthy('Field not present on grid');
 
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await fieldAssociationMappingsConsolePo.addFilter('Application Or Bundle Name', 'com.bmc.dsm.knowledge', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Field Name', 'Template Id', 'text');
             expect(await fieldAssociationMappingsConsolePo.isGridRecordPresent('Template Id')).toBeTruthy('Field not present on grid');
@@ -54,12 +53,12 @@ describe('Field Association', () => {
             await fieldAssociationMappingsConsolePo.clickAddFieldAssociationMapping();
             expect(await createFieldAssociationMappingsPo.isSaveButtonEnabled()).toBeTruthy('FailureMsg1: Save button is enabled');
             let BundleNameArr: string[] = ['Approval', 'Assignment', 'Attachment Service', 'BMC Chatbot', 'Business Workflows', 'Case Management Service', 'Catalog Interface Service', 'Chatbot Starter Kit', 'Cognitive Service', 'Data Management Console', 'Email Service', 'Environment Configuration', 'Flowsets Service', 'Foundation', 'Innovation Studio', 'Knowledge Management', 'LOB - Ericsson HR', 'LOB - Ericsson SAM', 'LOB - Facilities', 'LOB - Finance', 'LOB - Human Resource', 'LOB - Kingston HR', 'LOB - Kingston Legal', 'LOB - KingstonOracle Finance', 'LOB - Oracle HR', 'Notification Service', 'Search Service', 'Settings', 'Shared Components', 'Shared Services', 'SLM Service', 'Social Service', 'Standard Library', 'Task Management Service', 'Ticketing Service'];
-            expect(await utilCommon.isDropDownOptionsMatches('Application Or Bundle Name', BundleNameArr)).toBeTruthy('BundleName dorp down is not matching');
+            expect(await utilityCommon.isAllDropDownValuesMatches('Application Or Bundle Name', BundleNameArr)).toBeTruthy('BundleName dorp down is not matching');
             await createFieldAssociationMappingsPo.selectStatusDropDown('Inactive');
             await createFieldAssociationMappingsPo.selectApplicationOrBundleNameDropDown('Case Management Service');
 
             let recordDefinitionNameArr: string[] = ['Case Approval Mapping', 'Case Qualification', 'Case Assignment Mapping', 'Case Question', 'Case', 'Case Template', 'Case Question Attachment', 'Case Audit', 'Case Access - Interface', 'Person Extension', 'Case Audit - Migration', 'Case Watchlist', 'Event Scheduler', 'Case Requester Statistics_ReportData', 'Case Requester Statistics By Company_ReportData', 'Case History', 'Permissions - Case Business Analyst', 'Case Detail', 'Case Detail Signature', 'Case Detail Signature Question', 'Case Detail Signature Question Attachment'];
-            expect(await utilCommon.isDropDownOptionsMatches('Record Definition Name', recordDefinitionNameArr)).toBeTruthy('RecordDefinitionName dorp down is not matching');
+            expect(await utilityCommon.isAllDropDownValuesMatches('Record Definition Name', recordDefinitionNameArr)).toBeTruthy('RecordDefinitionName dorp down is not matching');
             await createFieldAssociationMappingsPo.selectStatusDropDown('Active');
             await createFieldAssociationMappingsPo.selectRecordDefinitionNameDropDown('Case Approval Mapping');
             await createFieldAssociationMappingsPo.selectFieldNameValue('Assignee');
@@ -71,7 +70,7 @@ describe('Field Association', () => {
         });
 
         it('[5424]: Verify Edit Field Associtation Mapping', async () => {
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await fieldAssociationMappingsConsolePo.addFilter('Association Name', 'Case Approval Mapping Field - Category Tier 1 > Created By', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Application Or Bundle Name', 'com.bmc.dsm.case-lib', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Field Name', 'Assignee', 'text');
@@ -92,7 +91,7 @@ describe('Field Association', () => {
         });
 
         it('[5424]: Verify Field Association On Grid', async () => {
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await fieldAssociationMappingsConsolePo.addFilter('Association Name', 'Case Template - Assigned Company > Created Date', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Application Or Bundle Name', 'com.bmc.dsm.case-lib', 'text');
             await fieldAssociationMappingsConsolePo.addFilter('Field Name', 'Assigned Group', 'text');
@@ -109,7 +108,7 @@ describe('Field Association', () => {
         it('[5424]: Delete record and Add/Remove Column', async () => {
             await fieldAssociationMappingsConsolePo.selectCheckBox('Assigned Group');
             await fieldAssociationMappingsConsolePo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await fieldAssociationMappingsConsolePo.isGridRecordPresent('Assigned Group')).toBeFalsy('Field present on grid');
 
 

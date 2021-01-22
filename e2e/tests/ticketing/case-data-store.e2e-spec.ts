@@ -24,8 +24,6 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -197,7 +195,7 @@ describe('Case Data Store', () => {
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_REMOVE_FIELDS');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+        await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         //field in right section
         expect(await dynamicFieldsPo.isFieldDisplayedInFieldSection('temp')).toBeTruthy();
@@ -255,7 +253,7 @@ describe('Case Data Store', () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
             expect(await viewCasetemplatePo.isGroupDisplayed(groupName)).toBeTruthy('Group Not found');
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field1InGroup)).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field2InGroup)).toBeTruthy();
@@ -352,12 +350,12 @@ describe('Case Data Store', () => {
         it('[4842]: Create Task Template With Dynamic Fields', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(activeTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(activeTemplateName);
             expect(await viewTaskPo.isDynamicFieldSectionPresent()).toBeFalsy('fields are present');
             //draft to active
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(draftToActiveTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(draftToActiveTemplateName);
             await viewTaskTemplate.clickOnEditMetaData();
             await editTaskTemplate.selectTemplateStatus('Active');
             await editTaskTemplate.clickOnSaveMetadata();
@@ -368,7 +366,7 @@ describe('Case Data Store', () => {
             //draft only
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(draftTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(draftTemplateName);
             for (let i = 0; i < arr.length; i++) {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
@@ -382,11 +380,11 @@ describe('Case Data Store', () => {
                 expect(await editTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
             await editTaskTemplate.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             //Inactive
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(inactiveTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(inactiveTemplateName);
             for (let i = 0; i < arr.length; i++) {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
@@ -402,7 +400,7 @@ describe('Case Data Store', () => {
         });
         afterAll(async () => {
             await editTaskTemplate.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
     });
 
@@ -516,7 +514,6 @@ describe('Case Data Store', () => {
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setSummaryAndClickOnRecommandedCase(caseID, casetemplateData.templateSummary);
             //case preview
-            // await utilCommon.waitUntilSpinnerToHide();
             expect(await casePreviewPo.isGroupDisplayed(group1)).toBeTruthy('group is not present');
             expect(await casePreviewPo.isGroupDisplayed(group2)).toBeTruthy('group is not present');
             for (let i = 0; i < dynamicFields.length; i++) {
@@ -587,7 +584,7 @@ describe('Case Data Store', () => {
         await apiHelper.createCaseTemplate(casetemplateData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
+        await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         await dynamicFieldsPo.clickOnDynamicField();
         await dynamicFieldsPo.setFieldName('news16' + randomStr);
@@ -640,7 +637,7 @@ describe('Case Data Store', () => {
         await apiHelper.createAutomatedTaskTemplate(templateData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink(templateData.templateSummary);
+        await utilityGrid.searchAndOpenHyperlink(templateData.templateSummary);
         await viewTaskTemplate.clickOnEditLink();
         expect(await editTaskTemplate.isAutomatedTaskTypeDisabled()).toBeTruthy('not disabled');
         expect(await editTaskTemplate.isProcessNameDisabled()).toBeTruthy('not disabled');
@@ -711,7 +708,7 @@ describe('Case Data Store', () => {
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(casetemplateddetails.displayId, tasktemplate.displayId);
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
             await viewCasetemplatePo.clickOneTask();
             expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();
@@ -953,7 +950,7 @@ describe('Case Data Store', () => {
             //navigate to case template
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName)
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateName)
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             for (let i = 0; i < arr.length; i++) {
                 expect(await dynamicFieldsPo.isDynamicFieldPresentInDynamicSection(arr[i])).toBeTruthy('field not present' + arr[i]);
@@ -970,7 +967,7 @@ describe('Case Data Store', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName('LibBooleanField');
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
@@ -980,13 +977,13 @@ describe('Case Data Store', () => {
             await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
             await createDynamicFieldLibraryConfigPo.setFieldValueType('BOOLEAN');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy("Error message absent");
             await createDynamicFieldLibraryConfigPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4867]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await dynamicFieldLibraryConfigConsolePo.clickAddDynamicFieldButton();
             await createDynamicFieldLibraryConfigPo.setFieldName('LibBooleanField');
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
@@ -998,12 +995,12 @@ describe('Case Data Store', () => {
             // verify LOB is there
             expect(await createDynamicFieldLibraryConfigPo.getLobValue()).toBe("Facilities");
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
-            await utilGrid.searchAndOpenHyperlink('LibBooleanField');
+            await utilityGrid.searchAndOpenHyperlink('LibBooleanField');
             expect(await editDynamicFieldLibraryConfigPo.getLobValue()).toBe("Facilities");
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1050,12 +1047,12 @@ describe('Case Data Store', () => {
         it('[4868]: Verify Dynamic Fields On Active Case Template  ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'attachment2', 'attachment3']
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(activeTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(activeTemplateName);
             for (let i = 0; i < arr.length; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('Group Not found');
             }
@@ -1064,7 +1061,7 @@ describe('Case Data Store', () => {
         it('[4868]: Create and Verify Dynamic Fields On Case Template  ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(draftTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(draftTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link not present');
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicFieldsPo.clickOnDynamicField();
@@ -1085,12 +1082,12 @@ describe('Case Data Store', () => {
             expect(await editCasetemplatePo.isDynamicFieldDisplayed('newDescri112' + randomStr)).toBeTruthy('field not present');
             expect(await editCasetemplatePo.isDynamicFieldDisplayed('newDescri1127' + randomStr)).toBeTruthy('field not present');
             await editCasetemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4868]: [Dynamic Data] [UI] - Dynamic Fields display on Case Template Edit view UI', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(inactiveTemplateName);
+            await utilityGrid.searchAndOpenHyperlink(inactiveTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link not present');
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicFieldsPo.clickOnDynamicField();
@@ -1113,7 +1110,7 @@ describe('Case Data Store', () => {
         });
         afterAll(async () => {
             await editCasetemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
     });
 
@@ -1162,7 +1159,6 @@ describe('Case Data Store', () => {
             await localizeValuePopPo.setLocalizeValue('NewLibTextField' + randomStr);
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.clickCancelButton();
-            //expect(await utilCommon.getWarningDialogMsg()).toBe("You have unsaved data. Do you want to continue without saving?");
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);

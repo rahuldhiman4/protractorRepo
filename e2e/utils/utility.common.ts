@@ -586,7 +586,6 @@ export class Utility {
         }
         return dropdownValue;
     }
-
 }
 
 export default new Utility();

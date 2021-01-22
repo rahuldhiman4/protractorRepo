@@ -27,8 +27,6 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -159,7 +157,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalTaskField2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
             await createNotificationTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await browser.navigate().back();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
@@ -186,7 +184,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
             await createDocumentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
     });
 
@@ -374,7 +372,7 @@ describe('Dynamic data', () => {
             expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('LocalNonConfidential')).toBeTruthy();
             expect(await createEmailTemplatePo.isDynamicFieldDisplayedInBody('nonConfidentialPulic')).toBeTruthy();
             await createEmailTemplatePo.clickOnSaveButton();
-            await utilGrid.searchRecord('emailTemp' + randomStr);
+            await utilityGrid.searchRecord('emailTemp' + randomStr);
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toContain('emailTemp' + randomStr, 'value is not displaying in Grid');
         });
         it('[3875]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
@@ -432,7 +430,7 @@ describe('Dynamic data', () => {
             expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Confidential data')).toBeTruthy();
             expect(await createNotestemplatePo.isDynamicFieldDisplayedInBody('Additional Site Details')).toBeTruthy();
             await createNotestemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });
     });
 
@@ -557,7 +555,7 @@ describe('Dynamic data', () => {
         let filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         await editTaskPo.addAttachmentInDynamicField('attachment1', filesToUpload2);
         await editTaskPo.clickOnSaveButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await viewCasePo.clickOnRefreshTaskList();
         //verify show more and show less button
         expect(await viewTaskPo.getShowMoreLessAttachmentsLinkText('attachment1')).toContain('more');
@@ -860,7 +858,7 @@ describe('Dynamic data', () => {
             await editCasePo.setTimeInDynamicField('02');
             await editCasePo.selectValueFromList('dynamicList', 'listvalues');
             await editCasePo.clickSaveCase();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4853]: [Dynamic Data] - Create Case with Case Template having dynamic fields and Update dynamic fields data in Case', async () => {
             //verify update values on case view
@@ -994,7 +992,7 @@ describe('Dynamic data', () => {
             await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(2);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskTemplateData.templateSummary);
             await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(3);
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4827]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
             await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
@@ -1042,7 +1040,7 @@ describe('Dynamic data', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.closePopUpMessage();
@@ -1087,25 +1085,25 @@ describe('Dynamic data', () => {
         await apiHelper.createCaseTemplate(templateData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink(templateData.templateName);
+        await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         await dynamicFieldsPo.clickOnDynamicField();
         await dynamicFieldsPo.setFieldName('news' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         //duplicate
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         await dynamicFieldsPo.clickOnDynamicField();
         await dynamicFieldsPo.setFieldName('news' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
+        await utilityCommon.closePopUpMessage();
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewDescription' + randomStr)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri' + randomStr)).toBeTruthy();
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
@@ -1113,12 +1111,12 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
-        await utilCommon.closePopUpMessage();
+        expect(await utilityCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
+        await utilityCommon.closePopUpMessage();
         await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewUpdatedDescription' + randomStr)).toBeTruthy();
     });
 

@@ -14,8 +14,6 @@ import createNotificationTemplatePage from '../../pageobject/settings/notificati
 import editMessageTextBladePo from '../../pageobject/settings/notification-config/edit-Message-Text-Blade.po';
 import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import { BWF_BASE_URL, operation, security, type, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -220,14 +218,14 @@ describe("Notifications", () => {
         it('[59944]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.searchAndSelectGridRecord("Case Agent Assignment");
+            await utilityGrid.searchAndSelectGridRecord("Case Agent Assignment");
             await notificationTempGridPage.clickCopyTemplate();
             await copyNotificationTemplatePage.setCompanyValue('Petramco');
             await copyNotificationTemplatePage.clickOnCreateCopyButton();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.addFilter('Company', 'Petramco', 'text');
-            await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
+            await utilityGrid.addFilter('Company', 'Petramco', 'text');
+            await utilityGrid.searchAndOpenHyperlink('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
             await browser.sleep(2000); // required to load edit message tab completely
             await editNotificationTemplatePage.updateAlertEmailMsgs('Hi' + Key.ENTER + 'Hello' + Key.ENTER + 'Hey' + Key.ENTER);
@@ -256,13 +254,13 @@ describe("Notifications", () => {
             await addFieldsPopup.clickOnOkButtonOfEditor();
             await editMessageTextBladePo.clickOnSaveButton();
             await editNotificationTemplatePage.clickOnCancelButton();
-            await utilGrid.searchAndOpenHyperlink('Case Agent Assignment');
+            await utilityGrid.searchAndOpenHyperlink('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
             expect(await editMessageTextBladePo.getMessageBody()).toContain('Hello');
             expect(await editMessageTextBladePo.getMessageBody()).toContain('Hey');
             await editMessageTextBladePo.clickOnSaveButton();
-            await utilCommon.closeBladeOnSettings();
-            await utilGrid.clearFilter();
+            await utilityCommon.closeAllBlades();
+            await utilityGrid.clearFilter();
         });
         it('[59944]: Formatting for notifications-multi line data appearing in notification', async () => {
             await navigationPage.signOut();

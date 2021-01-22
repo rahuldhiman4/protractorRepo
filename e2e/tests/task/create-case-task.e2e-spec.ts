@@ -26,8 +26,6 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -152,7 +150,6 @@ describe('Create Case Task', () => {
             await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
-            //await utilCommon.closePopUpMessage();
         });
         it('[5559,5565,6425,6386]: Create manual task template', async () => {
             //Automation Task template
@@ -383,7 +380,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewTasktemplatePo.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe('Bonus');
@@ -454,7 +451,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectOwnerGroup('Psilon Support Group1');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4941]: Edit the above template', async () => {
             //search above template
@@ -469,7 +466,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveButton();
         });
         it('[4941]: Edit the above template', async () => {
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTaskDescriptionNameValue()).toBe(description, 'description is not present');
             expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe('Employee Relations', 'Employee Relations is not present');
             expect(await viewTasktemplatePo.getCategoryTier2Value()).toBe('Compensation', 'Compensation is not present');
@@ -577,7 +574,7 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             //validate Automation Template With Required Field
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickTaskLink(automationTaskSummary);
             await viewTask.clickOnChangeStatus();
@@ -601,15 +598,15 @@ describe('Create Case Task', () => {
     it('[5571]: [Automatic Task] - Task Template Console: Verify Task Type column, filter ', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         expect(await selectTaskTemplate.clickOnColumnAndIsColumnSortedAsending('Task Type')).toBeTruthy();
         expect(await selectTaskTemplate.clickOnColumnAndIsColumnSortedDescending('Task Type')).toBeTruthy();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Manual');
         expect(await selectTaskTemplate.isTaskTypeFilterValue('Manual')).toBeTruthy();
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
         await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
         expect(await selectTaskTemplate.isTaskTypeFilterValue('Automated')).toBeTruthy();
-        await utilGrid.clearFilter();
+        await utilityGrid.clearFilter();
     });
 
     //ankagraw
@@ -771,17 +768,17 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Active");
             await editTaskTemplate.clickOnSaveMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Active');
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Inactive");
             await editTaskTemplate.clickOnSaveMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Inactive');
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Draft");
             await editTaskTemplate.clickOnSaveMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Draft');
         });
         it('[5800]: Update the task template', async () => {
@@ -791,12 +788,12 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Inactive");
             await editTaskTemplate.clickOnSaveMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Inactive');
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Draft");
             await editTaskTemplate.clickOnSaveMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Draft');
         });
     });
@@ -1200,7 +1197,7 @@ describe('Create Case Task', () => {
         it('[5563,5562]: Create InProgress status case and assign task on it', async () => {
             //Verify In_progress Case
             await navigationPage.gotoCaseConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase(inProgress);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
@@ -1214,7 +1211,7 @@ describe('Create Case Task', () => {
         it('[5563,5562]: Create Pending status case and assign task on it', async () => {
             //Verify Pending Case
             await navigationPage.gotoCaseConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase(pending);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
@@ -1228,20 +1225,20 @@ describe('Create Case Task', () => {
         it('[5563,5562]: Create resolved status case and assign task on it', async () => {
             //Verify Resolved Case
             await navigationPage.gotoCaseConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase(resolved);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
         });
         it('[5563,5562]: Create closed status case', async () => {
             //Verify Closed Case
             await navigationPage.gotoCaseConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase(closed);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
 
             //Verify Canceled Case
             await navigationPage.gotoCaseConsole();
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await caseConsolePage.searchAndOpenCase(canceled);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy("Add task button Visible");
         });
@@ -1694,7 +1691,7 @@ describe('Create Case Task', () => {
             await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
             await updateStatusBladePo.changeCaseStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
             await viewTask.clickOnContactName();

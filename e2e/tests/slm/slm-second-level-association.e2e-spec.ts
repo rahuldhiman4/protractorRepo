@@ -11,8 +11,7 @@ import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbu
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 
 let caseBAUser = 'qkatawazi';
 
@@ -96,7 +95,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3815]:Create a Case and observe if SVT is attached to the Case', async () => {
@@ -156,7 +155,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3815]:Create a Case and check if second svt is attached', async () => {
@@ -226,7 +225,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3820]:Create a case and verify if SVT is attached to the case', async () => {
@@ -280,7 +279,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3819]:Create a case and verify if SVT attached to the case', async () => {
@@ -349,7 +348,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3818]:Create a case and verify if SVT attached to the case', async () => {
@@ -402,7 +401,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3817]:Create a case and verify if SVT is attached to the case', async () => {
@@ -456,7 +455,7 @@ describe('Service Target - Second Level Association Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3814]:Create a case and verify if SVT attached to the case', async () => {
@@ -474,14 +473,14 @@ describe('Service Target - Second Level Association Tests', () => {
         it('[3814]:SVT Configurations are updated once SVT attached to the case', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
+            await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
             await serviceTargetConfig.clickBuildExpressionLink();
             await slmExpressionBuilder.selectOperator('and');
             await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Low');
             await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await slmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[3814]:Create a case and verify if SVT attached to the case', async () => {

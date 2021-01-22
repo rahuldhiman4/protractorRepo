@@ -5,8 +5,6 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import { default as serviceTargetBladePo, default as serviceTargetConfig } from '../../pageobject/settings/slm/service-target-blade.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import createCasePo from '../../pageobject/case/create-case.po';
 import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
@@ -119,7 +117,7 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
             await serviceTargetConfig.clickCloseButton();
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is displayed.');
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
         it('[6021]: Verify SVT warning appears when optional fields entered', async () => {
@@ -129,10 +127,10 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save SVT button is enabled when no mandatory fields are left empty.');
             expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
             await serviceTargetConfig.clickCloseButton();
-            expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-            expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+            expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
         it('[6021]: Verify SVT warning when optional fields entered', async () => {
@@ -142,12 +140,12 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save SVT button is enabled when no mandatory fields are left empty.');
             expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
             await serviceTargetConfig.clickCloseButton();
-            expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-            await utilCommon.clickOnWarningCancel();
+            expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('No');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is not displayed.');
             expect(await serviceTargetConfig.getGoalTypeSelectedValue('Case Response Time')).toBeTruthy('Goal Type field value is not matched.');
             await serviceTargetConfig.clickCloseButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[6021]: Verify SVT with mandatory fields options', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
@@ -162,7 +160,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[6021]: Verify Edit SVT with no updates', async () => {
-            await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
+            await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is displayed.');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save SVT button is enabled when no mandatory fields are left empty.');
             expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
@@ -170,30 +168,30 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
         it('[6021]: Verify Edit SVT warning appears with optionals fields updated', async () => {
-            await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
+            await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
             await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
             expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
             await serviceTargetConfig.clickCloseButton();
-            expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-            expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+            expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
         it('[6021]: Verify Edit SVT warning when fields updated', async () => {
-            await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
+            await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
             await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
             expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
             expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
             await serviceTargetConfig.clickCloseButton();
-            expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-            await utilCommon.clickOnWarningCancel();
+            expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('No');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is not displayed.');
             await serviceTargetConfig.clickCloseButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
     });
 
@@ -215,7 +213,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[6022]: Create SVT with All Fields', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
@@ -230,19 +228,19 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[6022]:Verify SVT updation', async () => {
-            await utilGrid.searchAndOpenHyperlink('SVT with mandatory fields');
+            await utilityGrid.searchAndOpenHyperlink('SVT with mandatory fields');
             // await browser.sleep(1000);
             await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await utilGrid.searchAndOpenHyperlink('SVT with all fields');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityGrid.searchAndOpenHyperlink('SVT with all fields');
             // await browser.sleep(1000);
             await serviceTargetConfig.clearSVTDescription();
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 
@@ -304,7 +302,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[5711,4132]: Verify "Terms and Condition" qualification on Service Target - Edit View', async () => {
-            await utilGrid.searchAndOpenHyperlink('SVT from Protractor');
+            await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Edit Service Target Configuration blade is not displayed.');
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty. 1');
             expect(await serviceTargetBladePo.isTermsAndConditionsFieldMandatory()).toBeTruthy('Terms and Conditions field is optional.');
@@ -347,17 +345,17 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[6019]: Verify SVT Updation', async () => {
-            await utilGrid.searchAndOpenHyperlink('SVT with all fields');
+            await utilityGrid.searchAndOpenHyperlink('SVT with all fields');
             await browser.sleep(1000);
             await serviceTargetConfig.selectMeasurement();
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "New");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "In Progress");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 
@@ -459,20 +457,20 @@ describe('Service Target Configs', () => {
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("60");
-            expect(await utilCommon.isPopUpMessagePresent('Minutes can have max value of 59')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Minutes can have max value of 59')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("366", "Days");
-            expect(await utilCommon.isPopUpMessagePresent('Days can have max value of 365')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Days can have max value of 365')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("24", "Hours");
-            expect(await utilCommon.isPopUpMessagePresent('Hours can have max value of 23')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Hours can have max value of 23')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("-1");
-            expect(await utilCommon.isPopUpMessagePresent('Minutes can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Minutes can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("-1", "Hours");
-            expect(await utilCommon.isPopUpMessagePresent('Hours can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Hours can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("-1", "Days");
-            expect(await utilCommon.isPopUpMessagePresent('Days can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Days can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.clickCloseButton();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[6025]: Verify SVT warning when data source is modified', async () => {
@@ -486,8 +484,8 @@ describe('Service Target Configs', () => {
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
             await serviceTargetConfig.selectDataSource('Task Management');
             let expectedWarningMsg = `You are about to change the Data source for this service target. All parameters including 'Milestones', 'Measurements', 'Goal', and 'Measurement Criteria' will be switched to default values.Are you sure you want to continue ?`;
-            expect(await utilCommon.getWarningDialogMsg()).toBe(expectedWarningMsg);
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.getWarningDialogMsg()).toBe(expectedWarningMsg);
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         afterAll(async () => {
@@ -523,7 +521,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6020]: Verify Service Target for Task Creation', async () => {
@@ -546,8 +544,8 @@ describe('Service Target Configs', () => {
             await serviceTargetConsole.searchOnGridConsole(svtName);
             serviceTargetGUID = await serviceTargetConsole.getServiceTargetGUID();
             serviceTargetID = await serviceTargetConsole.getServiceTargetID();
-            await utilGrid.clearFilter();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.clearFilter();
+            await utilityGrid.clearSearchBox();
             expect(await serviceTargetConsole.isGridColumnSorted('Service Target Title', 'asc')).toBeTruthy('Goal Type Name Column is not sorted in ascending order');
             expect(await serviceTargetConsole.isGridColumnSorted('Service Target Title', 'desc')).toBeTruthy('Goal Type Name Column is not sorted in descending order');
             await serviceTargetConsole.clickRefreshIcon();
@@ -580,34 +578,34 @@ describe('Service Target Configs', () => {
         });
 
         it('[6020]: Verify Service Target Console Fields Search functionality', async () => {
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.clearSearchBox();
             await serviceTargetConsole.clickRefreshIcon();
-            await utilGrid.addFilter('Service Target Title', svtName, 'text');
+            await utilityGrid.addFilter('Service Target Title', svtName, 'text');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Title record is not searched.');
 
             await serviceTargetConsole.clearFilter();
             await serviceTargetConsole.clickRefreshIcon();
-            await utilGrid.addFilter('Service Target ID', serviceTargetID, 'text');
+            await utilityGrid.addFilter('Service Target ID', serviceTargetID, 'text');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target ID record is not searched.');
 
             await serviceTargetConsole.clearFilter();
             await serviceTargetConsole.clickRefreshIcon();
-            await utilGrid.addFilter('GUID', serviceTargetGUID, 'text');
+            await utilityGrid.addFilter('GUID', serviceTargetGUID, 'text');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target GUID record is not searched.');
 
             await serviceTargetConsole.clearFilter();
             await serviceTargetConsole.clickRefreshIcon();
-            await utilGrid.addFilter('Data source', svtDataSource, 'text');
+            await utilityGrid.addFilter('Data source', svtDataSource, 'text');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Data Source record is not searched.');
 
             await serviceTargetConsole.clearFilter();
             await serviceTargetConsole.clickRefreshIcon();
-            await utilGrid.addFilter('Goal Type', 'Case Resolution Time', 'text');
+            await utilityGrid.addFilter('Goal Type', 'Case Resolution Time', 'text');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Data Source record is not searched.');
 
             await serviceTargetConsole.clearFilter();
             await serviceTargetConsole.clickRefreshIcon();
-            await utilGrid.addFilter('Status', 'Enabled', 'checkbox');
+            await utilityGrid.addFilter('Status', 'Enabled', 'checkbox');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Status record is not searched.');
             await serviceTargetConsole.clearFilter();
         });
@@ -657,7 +655,7 @@ describe('Service Target Configs', () => {
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
         it('[6024,6211,6209,6201]: Create SVT and check whether goal type and measurement details are disabled', async () => {
@@ -678,10 +676,10 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickCloseButton();
-            expect(await utilCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-            expect(await utilCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
+            expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[6024,6211,6209,6201]: Verify the SVT details', async () => {
@@ -708,7 +706,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await serviceTargetConsole.searchServiceTarget("SVT with mandatory fields");
             await serviceTargetConfig.selectGoalTypeCheckbox('Business Entity');
             await serviceTargetConfig.selectGoalTypeCheckbox('Start Time');
@@ -771,7 +769,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 
@@ -794,15 +792,15 @@ describe('Service Target Configs', () => {
         it('[5647]: Create Copy of notification templates for SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndSelectGridRecord('Case SLA Missed');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndSelectGridRecord('Case SLA Missed');
             await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.setTemplateName(caseNotificationHR);
             await copyNotificationTemplatePo.clickOnCreateCopyButton();
             await editNotificationTemplatePo.clickOnCancelButton();
             await consoleNotificationTemplatePo.selectTemplate();
-            await utilGrid.searchAndSelectGridRecord('Task SLA Missed');
+            await utilityGrid.searchAndSelectGridRecord('Task SLA Missed');
             await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.setTemplateName(taskNotificationHR);
@@ -815,15 +813,15 @@ describe('Service Target Configs', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.clearFilter();
-            await utilGrid.searchAndSelectGridRecord('Case SLA Missed');
+            await utilityGrid.clearFilter();
+            await utilityGrid.searchAndSelectGridRecord('Case SLA Missed');
             await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.setTemplateName(caseNotificationFacilities);
             await copyNotificationTemplatePo.clickOnCreateCopyButton();
             await editNotificationTemplatePo.clickOnCancelButton();
             await consoleNotificationTemplatePo.selectTemplate();
-            await utilGrid.searchAndSelectGridRecord('Task SLA Missed');
+            await utilityGrid.searchAndSelectGridRecord('Task SLA Missed');
             await consoleNotificationTemplatePo.clickCopyTemplate();
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.setTemplateName(taskNotificationFacilities);
@@ -888,11 +886,11 @@ describe('Service Target Configs', () => {
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[5647]: Milestone notification template validation with respect to LOB', async () => {
-            await utilGrid.searchAndOpenHyperlink(svttile);
+            await utilityGrid.searchAndOpenHyperlink(svttile);
             await serviceTargetConfig.selectMilestone();
             await serviceTargetConfig.clickAddNewMileStoneBtn();
             expect(await milestoneConfig.isSLMMileStonePopUpDisplayed()).toBeTruthy("SLM Milestone Pop up window not displayed");
@@ -928,7 +926,7 @@ describe('Service Target Configs', () => {
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[5647]: Create a case and verify if the case is updated as per the milestone configurations', async () => {
@@ -991,7 +989,7 @@ describe('Service Target Configs', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is displayed to same LOB with different company Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is displayed to same LOB with different company Case BA.');
         });
 
         it('[5647]: Verify if SVT with milestone is accessible to different LOB Case BA', async () => {
@@ -999,7 +997,7 @@ describe('Service Target Configs', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is dispayed to different LOB case BA');
+            expect(await utilityGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is dispayed to different LOB case BA');
         });
 
         it('[5647]: Verify if SVT with milestone is accessible to different LOB Case Manager', async () => {
@@ -1007,7 +1005,7 @@ describe('Service Target Configs', () => {
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is dispayed to different LOB case manager');
+            expect(await utilityGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is dispayed to different LOB case manager');
         });
 
         it('[5647]: Verify if SVT with milestone is accessible to Case BA belonging to different company with same LOB', async () => {
@@ -1015,7 +1013,7 @@ describe('Service Target Configs', () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is not dispayed to same LOB and different company case BA');
+            expect(await utilityGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is not dispayed to same LOB and different company case BA');
         });
 
         it('[5647]: Verify if SVT with milestone is accessible to Case Manager user having access to multiple LOB', async () => {
@@ -1023,10 +1021,10 @@ describe('Service Target Configs', () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is dispayed to user with multiple LOB case manager');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is dispayed to user with multiple LOB case manager');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
         });
 
         it('[5647]: Verify if SVT with milestone is accessible to Case BA user having access to multiple LOB', async () => {
@@ -1034,14 +1032,14 @@ describe('Service Target Configs', () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is dispayed to user with multiple LOB case manager');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(svttile)).toBeTruthy('SVT with milestone is dispayed to user with multiple LOB case manager');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(svttile)).toBeFalsy('SVT with milestone is not dispayed to user with multiple LOB case manager');
         });
 
         it('[5647]: create same name record in same LOB', async () => {
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -1054,10 +1052,10 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[5647]: create same name record in different LOB', async () => {
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
             await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
@@ -1070,7 +1068,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         afterAll(async () => {
@@ -1151,11 +1149,11 @@ describe('Service Target Configs', () => {
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6028]: Milestone notification template validation with respect to LOB', async () => {
-            await utilGrid.searchAndOpenHyperlink(svttile);
+            await utilityGrid.searchAndOpenHyperlink(svttile);
             await serviceTargetConfig.selectMilestone();
             await serviceTargetConfig.clickAddNewMileStoneBtn();
             expect(await milestoneConfig.isSLMMileStonePopUpDisplayed()).toBeTruthy("SLM Milestone Pop up window not displayed");
@@ -1197,7 +1195,7 @@ describe('Service Target Configs', () => {
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6028]: Create a task and verify if the case is updated as per the milestone configurations', async () => {
@@ -1229,7 +1227,7 @@ describe('Service Target Configs', () => {
             await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
 
             await navigationPage.gotoTaskConsole();
-            await utilGrid.searchAndOpenHyperlink(taskId);
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             expect(await viewTaskPo.getTaskSummaryValue()).toBe(updatedTaskSummary);
             await activityTabPo.clickOnRefreshButton();
@@ -1340,7 +1338,7 @@ describe('Service Target Configs', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'Case Company');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
@@ -1348,7 +1346,7 @@ describe('Service Target Configs', () => {
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
@@ -1364,7 +1362,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await serviceTargetConfig.createServiceTargetConfig(svttileWithoutGoalType, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
@@ -1377,7 +1375,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await serviceTargetConfig.createServiceTargetConfig(svttileWithDSGT, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
@@ -1392,7 +1390,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
         });
 
@@ -1401,7 +1399,7 @@ describe('Service Target Configs', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.CONFIGURE_DATA_SOURCE);
-            expect(await utilGrid.isGridRecordPresent(dataSourceTitle)).toBeTruthy();
+            expect(await utilityGrid.isGridRecordPresent(dataSourceTitle)).toBeTruthy();
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceTitleFacilities);
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
@@ -1409,7 +1407,7 @@ describe('Service Target Configs', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'Company');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', 'Goal Type');
@@ -1417,7 +1415,7 @@ describe('Service Target Configs', () => {
             await createGoalType.enterGoalTypeName(goalTypeTitleFacilities);
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
@@ -1433,7 +1431,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await serviceTargetConfig.createServiceTargetConfig(svttileWithoutGoalTypeFacilities, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
@@ -1446,7 +1444,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         
         it('[5955]: Verify data source / goal type reflection based on LOB in Service Target Group', async () => {
@@ -1493,7 +1491,7 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
             await createServiceTargetGroupPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
@@ -1506,7 +1504,7 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
             await createServiceTargetGroupPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             //Service target filteration based on company and data source
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
@@ -1521,7 +1519,7 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeTruthy();
             await createServiceTargetGroupPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
@@ -1535,7 +1533,7 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
             await createServiceTargetGroupPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             //Service target filteration based on company and goal type
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
@@ -1550,7 +1548,7 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
             await createServiceTargetGroupPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
@@ -1564,7 +1562,7 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
             await createServiceTargetGroupPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
@@ -1578,7 +1576,7 @@ describe('Service Target Configs', () => {
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
             expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
             await createServiceTargetGroupPo.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
            //Service target filteration based on company, data source and goal type
            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
@@ -1595,7 +1593,7 @@ describe('Service Target Configs', () => {
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
            await createServiceTargetGroupPo.clickCancelButton();
-           await utilCommon.clickOnWarningOk();
+           await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
@@ -1611,7 +1609,7 @@ describe('Service Target Configs', () => {
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
            await createServiceTargetGroupPo.clickCancelButton();
-           await utilCommon.clickOnWarningOk();
+           await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5955]: create Service target group for same LOB', async () => {
@@ -1623,16 +1621,16 @@ describe('Service Target Configs', () => {
             await createServiceTargetGroupPo.selectDataSource('Case Management');
             await createServiceTargetGroupPo.selectServiceTarget(svttileWithoutGoalType);
             await createServiceTargetGroupPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
 
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('Petramco');
             await createServiceTargetGroupPo.selectDataSource('Case Management');
             await createServiceTargetGroupPo.selectServiceTarget(svttileWithoutGoalType);
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await createServiceTargetGroupPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
         });
 
         it('[5955]: create Service target group for different LOB', async () => {
@@ -1640,14 +1638,14 @@ describe('Service Target Configs', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
-            expect(await utilGrid.isGridRecordPresent(svtGroupNameHR)).toBeFalsy();
+            expect(await utilityGrid.isGridRecordPresent(svtGroupNameHR)).toBeFalsy();
             await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
             await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
             await createServiceTargetGroupPo.selectCompany('Petramco');
             await createServiceTargetGroupPo.selectDataSource('Case Management');
             await createServiceTargetGroupPo.selectServiceTarget(svttileWithoutGoalTypeFacilities);
             await createServiceTargetGroupPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy();
         });
 
         afterAll(async () => {
