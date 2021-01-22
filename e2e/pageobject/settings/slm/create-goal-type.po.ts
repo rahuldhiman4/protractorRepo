@@ -1,5 +1,5 @@
-import utilCommon from "../../../utils/util.common";
-import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { DropDownType } from '../../../utils/constants';
 import utilityCommon from '../../../utils/utility.common';
 
 class GoalTypeCreateConfigPage {
@@ -45,7 +45,7 @@ class GoalTypeCreateConfigPage {
     }
 
     async selectGoalTypeStatus(goalTypeStatus: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.statusDropDown), goalTypeStatus);
+        await utilityCommon.selectDropDown($(this.selectors.statusDropDown), goalTypeStatus, DropDownType.Label);
     }
 
     async clickSaveGoalTypeButton(): Promise<void> {

@@ -1,4 +1,3 @@
-import utilityGrid from 'e2e/utils/utility.grid';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import viewCasePage from '../../pageobject/case/view-case.po';
@@ -8,6 +7,7 @@ import notificationPo from '../../pageobject/notification/notification.po';
 import notificationTemplateEditPage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
 let requestSecondaryStr: string = 'Request Secondary';

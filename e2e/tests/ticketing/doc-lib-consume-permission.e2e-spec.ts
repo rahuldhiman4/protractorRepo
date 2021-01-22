@@ -20,7 +20,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import adhoctaskTemplate from '../../pageobject/task/create-adhoc-task.po';
 import manageTask from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Document Library Consume Permission', () => {
@@ -405,7 +405,7 @@ describe('Document Library Consume Permission', () => {
             expect(await attachDocumentBladePo.isDocumentInfoDisplayed(documentDate)).toBeTruthy('Failure: Date is missing');
             expect(await attachDocumentBladePo.isDocumentInfoDisplayed('bwfJpg.jpg')).toBeTruthy('Failure: File name is missing');
         });
-        
+
         it('[4747]: Search and UI Validation of document library search view', async () => {
             await attachDocumentBladePo.searchRecord('%');
             expect(await attachDocumentBladePo.isPaginationPresent()).toBeTruthy('Failure: Pagination is missing');
@@ -428,9 +428,9 @@ describe('Document Library Consume Permission', () => {
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
 
-            await resourcesTabPo.selectAdvancedSearchFilterOption('Site', 'Canberra');
-            await resourcesTabPo.selectAdvancedSearchFilterOption('Operational Category Tier 1', 'Employee Relations');
-            await resourcesTabPo.selectAdvancedSearchFilterOption('Region', 'Australia');
+            await utilityCommon.selectDropDown('Site', 'Canberra', DropDownType.Label);
+            await utilityCommon.selectDropDown('Operational Category Tier 1', 'Employee Relations', DropDownType.Label);
+            await utilityCommon.selectDropDown('Region', 'Australia', DropDownType.Label);
             await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
@@ -446,7 +446,7 @@ describe('Document Library Consume Permission', () => {
             await activityTabPo.clickAndDownloadAttachmentFile('bwfPdf.pdf');
             expect(await utilityCommon.isFileDownloaded('bwfPdf.pdf')).toBeTruthy('FailuerMsg: bwfPdf.pdf File is not downloaded.');
         });
-        
+
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });

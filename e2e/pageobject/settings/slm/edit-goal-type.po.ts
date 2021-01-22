@@ -1,5 +1,6 @@
 import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { DropDownType } from '../../../utils/constants';
+import utilityCommon from '../../../utils/utility.common';
 
 class GoalTypeConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -31,16 +32,16 @@ class GoalTypeConfigEditPage {
     }
 
     async selectGoalTypeStatus(goalTypeStatus: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.statusDropDown), goalTypeStatus);
+        await utilityCommon.selectDropDown($(this.selectors.statusDropDown), goalTypeStatus, DropDownType.Label);
     }
 
     async clickSaveGoalTypeButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)),2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)), 2000);
         await $(this.selectors.saveButton).click();
     }
 
     async clickCloseGoalTypeButton(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)),2000);
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.closeButton)), 2000);
         await $(this.selectors.closeButton).click();
     }
 

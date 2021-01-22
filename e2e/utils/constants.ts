@@ -13,6 +13,12 @@ export enum type {
     group = "GROUP"
 }
 
+export enum DropDownType {
+    Label,
+    WebElement,
+    Name,
+}
+
 export const BWF_BASE_URL = '/helix/index.html#/com.bmc.dsm.bwfa';
 
 export const BWF_PAGE_TITLES = {
@@ -82,7 +88,7 @@ export const BWF_PAGE_TITLES = {
     RELATIONSHIPS: {
         CASE_TO_CASE: 'Case to Case - Settings - Business Workflows',
         CASE_TO_PERSON: 'Case to Person - Settings - Business Workflows',
-        PERSON_TO_PERSON: 'Person to Person - Settings - Business Workflows' 
+        PERSON_TO_PERSON: 'Person to Person - Settings - Business Workflows'
     },
     SERVICE_LEVEL_MANAGEMENT: {
         BUSINESS_TIME_SEGMENT: 'Business Time Segment - Settings - Business Workflows',

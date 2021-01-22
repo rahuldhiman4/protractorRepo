@@ -45,7 +45,7 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -1497,7 +1497,7 @@ describe("Attachment", () => {
             await resourceTabPo.clickOnAdvancedSearchOptions();
             await resourceTabPo.enterAdvancedSearchText('a');
             await resourceTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            await resourceTabPo.selectAdvancedSearchFilterOption(regionStr, lastRegionValue);
+            await utilityCommon.selectDropDown(regionStr, lastRegionValue, DropDownType.Label);
             expect(await utilityCommon.getSelectedDropdownFiledValue(regionStr)).toBe(lastRegionValue);
             await resourceTabPo.clickOnAdvancedSearchFiltersButton(applyBtnStr);
         });
@@ -1509,7 +1509,7 @@ describe("Attachment", () => {
             await resourceTabPo.clickOnAdvancedSearchOptions();
             await resourceTabPo.enterAdvancedSearchText('a');
             await resourceTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            await resourceTabPo.selectAdvancedSearchFilterOption(regionStr, lastRegionValue);
+            await utilityCommon.selectDropDown(regionStr, lastRegionValue, DropDownType.Label);
             expect(await utilityCommon.getSelectedDropdownFiledValue(regionStr)).toBe(lastRegionValue);
             await resourceTabPo.clickOnAdvancedSearchFiltersButton(applyBtnStr);
         });
@@ -1536,7 +1536,7 @@ describe("Attachment", () => {
             await resourceTabPo.clickOnAdvancedSearchOptions();
             await resourceTabPo.enterAdvancedSearchText("a");
             await resourceTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            await resourceTabPo.selectAdvancedSearchFilterOption(regionStr, lastRegionValue);
+            await utilityCommon.selectDropDown(regionStr, lastRegionValue, DropDownType.Label);
             expect(await utilityCommon.getSelectedDropdownFiledValue(regionStr)).toBe(lastRegionValue);
             await resourceTabPo.clickOnAdvancedSearchFiltersButton(applyBtnStr);
         });

@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions, $$, element, by, browser, ElementFinder } from "protractor";
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 class EditNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -39,7 +39,7 @@ class EditNotificationTemplate {
         emailSubject: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
-        emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.d-icon-check' 
+        emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.d-icon-check'
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
@@ -168,30 +168,6 @@ class EditNotificationTemplate {
         await element(by.cssContainingText(`${this.selectors.recipientTypeSelect} option`, option)).click();
     }
 
-    
-    async selectDropdownWithName(dropDownName: string, option: string): Promise<void> {
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$('.rx-recipients-assignment-select').count();
-            return count >= 1;
-        }), 3000);
-        const dropDown: ElementFinder[] = await $$('.rx-recipients-assignment-select');
-        for (let i: number = 0; i < dropDown.length; i++) {
-            await dropDown[i].$('.rx-recipients-assignment-select-label').isPresent().then(async (result) => {
-                if (result) {
-                    let dropDownLabelText: string = await dropDown[i].$('.rx-recipients-assignment-select-label').getText();
-                    if (dropDownLabelText === dropDownName) {
-                        await dropDown[i].$('.d-icon-angle_down').click();
-                        await dropDown[i].$('input').sendKeys(option);
-                        await element(by.cssContainingText("li[ng-repeat*='option']", option)).isPresent().then(async () => {
-                            await browser.sleep(1000); // Wait For Drop Down Value Is Ready To Select.
-                            await element(by.cssContainingText(".is-open li[ng-repeat*='option']", option)).click();
-                        });
-                    }
-                }
-            });
-        }
-    }
-
     async clickApplyButton(): Promise<void> {
         await $(this.selectors.applyButton).click();
     }
@@ -214,15 +190,15 @@ class EditNotificationTemplate {
         }
         switch (recipientOption) {
             case "TO": {
-                checkboxCount = count + 1 ;
+                checkboxCount = count + 1;
                 break;
             }
             case "CC": {
-                checkboxCount = count+ 2;
+                checkboxCount = count + 2;
                 break;
             }
             case "BCC": {
-                checkboxCount = count + 3 ;
+                checkboxCount = count + 3;
                 break;
             }
             default: {
@@ -264,11 +240,11 @@ class EditNotificationTemplate {
 
     async isRecipientDisplayed(recipientName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.recipientList, recipientName)).isPresent().then(async (result) => {
-            if(result) 
-            return await element(by.cssContainingText(this.selectors.recipientList, recipientName)).isDisplayed();
+            if (result)
+                return await element(by.cssContainingText(this.selectors.recipientList, recipientName)).isDisplayed();
             else return false;
         });
-    } 
+    }
 
     async isNotificationMethodDisabled(): Promise<boolean> {
         return await $(this.selectors.notificationMethod).getAttribute('disabled') == 'true';
@@ -297,7 +273,7 @@ class EditNotificationTemplate {
     }
 
     async getSelectedFieldValue(fieldName: string): Promise<string> {
-        let fieldGuid: string = undefined; 
+        let fieldGuid: string = undefined;
         switch (fieldName) {
             case "Company": {
                 fieldGuid = '0d86e65f-f804-40c4-a955-ff82dd531956';
@@ -340,10 +316,10 @@ class EditNotificationTemplate {
     }
 
     async isEmailBodyContains(value: string): Promise<boolean> {
-        let allLocatorCount:number = (await $$(this.selectors.emailBody)).length;
+        let allLocatorCount: number = (await $$(this.selectors.emailBody)).length;
         let allValues: string = '';
-        for(let i=0; i<allLocatorCount; i++){
-            allValues =  allValues + await $$(this.selectors.emailBody).get(i).getAttribute('innerText');
+        for (let i = 0; i < allLocatorCount; i++) {
+            allValues = allValues + await $$(this.selectors.emailBody).get(i).getAttribute('innerText');
         }
         return (allValues.replace(/\s/g, "")).includes(value.replace(/\s/g, ""));
     }
