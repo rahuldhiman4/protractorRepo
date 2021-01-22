@@ -1,6 +1,5 @@
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../../utils/utility.grid';
-import utilGrid from '../../../utils/util.grid';
 
 class AcknowledgmentTemplateConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
