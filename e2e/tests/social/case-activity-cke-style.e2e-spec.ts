@@ -85,9 +85,9 @@ describe('Case Activity CKE Styling', () => {
                 "Requester": "qtao",
                 "Summary": "DRDMV21617TC",
                 "Assigned Company": "Petramco",
-                "Business Unit": "Canada Support",
-                "Support Group": "CA Support 1",
-                "Assignee": "qdu"
+                "Business Unit": "United Kingdom Support",
+                "Support Group": "GB Support 2",
+                "Assignee": "qstrong"
             }
             newCase = await apiHelper.createCase(caseData);
             
@@ -582,7 +582,7 @@ describe('Case Activity CKE Styling', () => {
         it('[3582,3581]: Verify CkEditor On Person Profile With Activity Tab', async () => {
             // Profile View CK Editor
             await navigationPage.signOut();
-            await loginPage.login('qdu');
+            await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing.');
             await activityTabPage.clickOnRefreshButton();

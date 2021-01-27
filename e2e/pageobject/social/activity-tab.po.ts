@@ -732,7 +732,7 @@ class ActivityTabPage {
     }
 
     async isCenterAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('div[style="text-align: center;"]').getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('p[style="text-align: center;"]').getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;

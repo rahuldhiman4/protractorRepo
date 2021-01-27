@@ -80,7 +80,8 @@ describe('Case Activity Multi Logs', () => {
         // Verify logs with more than 5 lines
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
+        await activityTabPage.clickOnRefreshButton();
+        expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg3: BodyText is missing');
         expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
         expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
         expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
@@ -99,6 +100,7 @@ describe('Case Activity Multi Logs', () => {
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.addAttachment([filePath[2], filePath[3]]);
         await activityTabPage.clickOnPostButton();
+        await activityTabPage.clickOnRefreshButton();
         expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath[2]} is missing`);
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath[3]} is missing`);
@@ -110,12 +112,13 @@ describe('Case Activity Multi Logs', () => {
         await activityTabPage.addAttachment([filePath[4], filePath[5], filePath[6], filePath[7], filePath[8]]);
 
         await activityTabPage.clickOnPostButton();
-        expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
+        await activityTabPage.clickOnRefreshButton();
+        expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg22: BodyText is missing');
         expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
         expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
         expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
         expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
-        expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg26: BodyText is missing');
+        expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg26: BodyText is missing');
 
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath[4]} is missing`);
         expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson2.json')).toBeTruthy(`FailureMsg28: ${filePath[5]} is missing`);
@@ -191,9 +194,9 @@ describe('Case Activity Multi Logs', () => {
                 "Requester": "qtao",
                 "Summary": "DRDMV16755TC"+randomStr,
                 "Assigned Company": "Petramco",
-                "Business Unit": "Canada Support",
-                "Support Group": "CA Support 1",
-                "Assignee": "qdu"
+                "Business Unit": "United Kingdom Support",
+                "Support Group": "GB Support 2",
+                "Assignee": "qstrong"
             }
             newCase = await apiHelper.createCase(caseData);
         });
@@ -207,6 +210,7 @@ describe('Case Activity Multi Logs', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateSummary);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateSummary);
             await manageTaskBladePo.clickCloseButton();
+            await activityTabPage.clickOnRefreshButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
         });
@@ -349,7 +353,9 @@ describe('Case Activity Multi Logs', () => {
 
         it('[4229]: Assign Manual Task Validate Its Activity', async () => {
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.clickOnAssignToMe();
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectAssignee('qkatawazi');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
@@ -373,7 +379,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.clickOnRefreshButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateSummary);
-            // Verify Task Activity 
+            // // Verify Create Task Activity 
             expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 2)).toBeTruthy('FailureMsg2: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi created the task')).toBeTruthy('FailureMsg4: log title is missing');
@@ -439,7 +445,9 @@ describe('Case Activity Multi Logs', () => {
         it('[4229]: Assign External Task Validate Its Activity', async () => {
             // Assign Task 
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.clickOnAssignToMe();
+            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
+            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectAssignee('qkatawazi');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
@@ -708,8 +716,8 @@ describe('Case Activity Multi Logs', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
-                "assignee": "qfeng",
+                "supportGroup": "GB Support 2",
+                "assignee": "qstrong",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
@@ -809,11 +817,11 @@ describe('Case Activity Multi Logs', () => {
         });
 
         it('[4241]:Create case and verify self approval without process', async () => {
-            await apiHelper.apiLogin('qfeng');
+            await apiHelper.apiLogin('qstrong');
             caseResponseDetails = await apiHelper.createCase(caseData);
             caseId = caseResponseDetails.displayId;
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('qstrong');
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.applyActivityFilter('Approvals');
