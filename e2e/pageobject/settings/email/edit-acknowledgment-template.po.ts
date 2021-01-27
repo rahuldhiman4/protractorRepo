@@ -24,9 +24,9 @@ class EditAcknowledgementTemplate {
         saveButton: '.rx-action-button_primary .btn-primary',
         cancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
         gridGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
-        msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .ui-grid-row-header-cell',
+        msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] span.radio__label',
         editPencilButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-left-pencil',
-        statusField: '[rx-view-component-id="a1e0042f-41e7-4c80-9cd8-014786f346e6"] .ui-select-match',
+        statusField: '[rx-view-component-id="a1e0042f-41e7-4c80-9cd8-014786f346e6"] button',
         lobValue: '[rx-view-component-id="88459fe5-ba0c-445f-b99d-838351677590"] .pull-left'
     }
 
@@ -186,7 +186,7 @@ class EditAcknowledgementTemplate {
     }
 
     async isStatusFieldEnabled(): Promise<boolean>{
-        return await $(this.selectors.statusField).getAttribute('readonly') =='false';
+        return await $(this.selectors.statusField).getAttribute('aria-disabled') =='false';
     }
 
     async clickOnBodyCheckbox(): Promise<void>{

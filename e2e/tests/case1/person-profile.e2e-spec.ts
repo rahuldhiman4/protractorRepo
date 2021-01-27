@@ -99,12 +99,12 @@ describe('Person Profile test', () => {
         expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
         expect(await personProfile.getJobTitle()).toBe('HR Business Analyst', 'Job tite does not match');
         expect(await personProfile.getCorporateID()).toBe('200003', 'Corporate Id does not match');
-        expect(await personProfile.getEmployeeTypeValue()).toBe('Full time', 'Employee Type value does not match');
+        expect(await personProfile.getEmployeeTypeValue()).toBe('Office-Based Employee', 'Employee Type value does not match');
         expect(await personProfile.getLoginID()).toBe('Elizabeth', 'Login Id does not match');
-        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach, Case Business Analyst, Case Catalog Administrator, Human Resource', 'Functional Role are not matching');
+        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach,Case Business Analyst,Case Catalog Administrator');
         expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
-        expect(await personProfile.getContactNumber()).toBe("+19255553456", "Phone number mismatch");
+        expect(await personProfile.getContactNumber()).toBe("1 925 5553456", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("elizabeth@bwflabs.localdomain", "Email mismatch");
         expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States ", "Site mismatch");
         expect(await personProfile.isPersonProfileImageDisplayed()).toBeTruthy("Person Profile image is not displayed");

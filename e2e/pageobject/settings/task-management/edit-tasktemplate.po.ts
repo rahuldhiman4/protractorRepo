@@ -133,7 +133,7 @@ class EditTaskTemplate {
     }
 
     async isTemplateStatusDisabled(): Promise<boolean> {
-        return (await $(this.selectors.templateStatusAttribute).getAttribute("disabled")) == 'true';
+        return (await $(this.selectors.templateStatusAttribute).getAttribute("aria-disabled")) == 'true';
     }
 
     async clickOnCancelMetadataButton() {

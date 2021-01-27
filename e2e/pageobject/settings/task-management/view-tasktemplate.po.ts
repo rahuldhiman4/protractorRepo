@@ -311,7 +311,10 @@ class ViewTaskTemplate {
     }
 
     async isCopyTaskButtonEnabled(): Promise<boolean> {
-        return await $(this.selectors.copyTaskButton).isEnabled();
+        return await $(this.selectors.copyTaskButton).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.copyTaskButton).isDisplayed();
+            else return false;
+        });
     }
 
     async clickBackArrowBtn(): Promise<void> {

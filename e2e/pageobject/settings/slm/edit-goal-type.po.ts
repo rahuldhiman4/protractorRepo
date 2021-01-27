@@ -20,7 +20,7 @@ class GoalTypeConfigEditPage {
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
-        return await $(this.selectors.saveButton).getAttribute("aria-disabled") == "true";
+        return await $(this.selectors.saveButton).getAttribute("disabled") == "true";
     }
 
     async isGoalTypeFieldDisabled(): Promise<boolean> {

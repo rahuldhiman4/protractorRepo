@@ -54,7 +54,7 @@ class MenuItemsConfigEditPage {
 
     async isMenuItemsStatusDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        return await $(this.selectors.status).getAttribute("readonly") == "true";
+        return await $(this.selectors.status).getAttribute("aria-disabled") == "true";
     }
 
     async isSaveButtonDisabled(): Promise<boolean> {
