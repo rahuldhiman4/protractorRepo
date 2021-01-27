@@ -1,5 +1,5 @@
 import { $, by, protractor, ProtractorExpectedConditions, element } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class DefineLOBCreate {
 
@@ -33,11 +33,11 @@ class DefineLOBCreate {
     }
 
     async setUseAsDefaultValue(value: boolean): Promise<void> {
-        await utilCommon.selectToggleButton(this.selectors.toggleBoxGuid, value);
+        await utilityCommon.selectToggleButton(this.selectors.toggleBoxGuid, value);
     }
 
     async selectEmailOutgoingProfile(value: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.emailOutgoingProfileGuid, value);
+        await utilityCommon.selectDropDown(this.selectors.emailOutgoingProfileGuid, value);
     }
 
     async saveLob(): Promise<void> {

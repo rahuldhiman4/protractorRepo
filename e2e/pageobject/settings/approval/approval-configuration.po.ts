@@ -1,6 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions, element, by, $$, browser } from "protractor";
-import utilGrid from '../../../utils/util.grid';
-import utilCommon from '../../../utils/util.common';
+import utilityGrid from '../../../utils/utility.grid';
 
 class ApprovalsConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -57,7 +56,7 @@ class ApprovalsConsole {
     }
 
     async searchAndOpenApprovalConfiguration(apporvalConfiguration: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(apporvalConfiguration);
+        await utilityGrid.searchAndOpenHyperlink(apporvalConfiguration);
     }
 
     async clickApprovalConfigurationTab(approvalConfigTab: string): Promise<void> {
@@ -144,11 +143,11 @@ class ApprovalsConsole {
     }
 
     async searchFoundationDataToApprovalExpression(foundationDataOption: string): Promise<void> {
-        await utilGrid.searchRecord(foundationDataOption);
+        await utilityGrid.searchRecord(foundationDataOption);
     }
 
     async selectFoundationDataToApprovalExpression(foundationDataOption: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(foundationDataOption);
+        await utilityGrid.searchAndOpenHyperlink(foundationDataOption);
     }
 
     async clickSelectLink(): Promise<void> {
@@ -219,7 +218,7 @@ class ApprovalsConsole {
                 // await $(this.selectors.primaryOrganizationForApprovalFlow).click();
                 await this.selectApproverSectionForGeneralApprovalFlow(approverType);
                 await $(this.selectors.approvalFlowSearchIcon).click();
-                await utilGrid.searchAndSelectGridRecord(approver);
+                await utilityGrid.searchAndSelectGridRecord(approver);
                 await $(this.selectors.selectApprovalFlow).click();
                 break;
             }
@@ -227,7 +226,7 @@ class ApprovalsConsole {
                 // await $(this.selectors.businessUnitForApprovalFlow).click();
                 await this.selectApproverSectionForGeneralApprovalFlow(approverType);
                 await $(this.selectors.approvalFlowSearchIcon).click();
-                await utilGrid.searchAndSelectGridRecord(approver);
+                await utilityGrid.searchAndSelectGridRecord(approver);
                 await $(this.selectors.selectApprovalFlow).click();
                 break;
             }
@@ -235,7 +234,7 @@ class ApprovalsConsole {
                 // await $(this.selectors.departmentForApprovalFlow).click();
                 await this.selectApproverSectionForGeneralApprovalFlow(approverType);
                 await $(this.selectors.approvalFlowSearchIcon).click();
-                await utilGrid.searchAndSelectGridRecord(approver);
+                await utilityGrid.searchAndSelectGridRecord(approver);
                 await $(this.selectors.selectApprovalFlow).click();
                 break;
             }
@@ -243,7 +242,7 @@ class ApprovalsConsole {
                 // await $(this.selectors.supportGroupForApprovalFlow).click();
                 await this.selectApproverSectionForGeneralApprovalFlow(approverType);
                 await $(this.selectors.approvalFlowSearchIcon).click();
-                await utilGrid.searchAndSelectGridRecord(approver);
+                await utilityGrid.searchAndSelectGridRecord(approver);
                 await $(this.selectors.selectApprovalFlow).click();
                 break;
             }
@@ -251,7 +250,7 @@ class ApprovalsConsole {
                 // await $(this.selectors.personForApprovalFlow).click();
                 await this.selectApproverSectionForGeneralApprovalFlow(approverType);
                 await $(this.selectors.approvalFlowSearchIcon).click();
-                await utilGrid.searchAndSelectGridRecord(approver);
+                await utilityGrid.searchAndSelectGridRecord(approver);
                 await $(this.selectors.selectApprovalFlow).click();
                 break;
             }

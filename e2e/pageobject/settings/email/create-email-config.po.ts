@@ -1,4 +1,4 @@
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 import { $ } from 'protractor';
 
 export class CreateEmailConfig {
@@ -44,15 +44,15 @@ export class CreateEmailConfig {
     }
 
     async selectCompany(emailID: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.companyGuid, emailID);
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, emailID);
     }
 
     async selectStatus(emailID: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, emailID);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, emailID);
     }
 
     async selectIncomingMailBoxName(emailID: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.incomingMailBoxNameGuid, emailID);
+        await utilityCommon.selectDropDown(this.selectors.incomingMailBoxNameGuid, emailID);
     }
 
     async getLobValue(): Promise<string> {

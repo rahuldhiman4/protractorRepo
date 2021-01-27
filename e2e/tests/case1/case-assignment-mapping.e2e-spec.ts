@@ -29,9 +29,8 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe("Create Case Assignment Mapping", () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
@@ -219,7 +218,7 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
             await assignmentConfigCreatePage.setCompany("Petramco");
@@ -227,34 +226,34 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setBusinessUnit("Australia Support");
             await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
             await assignmentConfigCreatePage.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222099): The Assignment Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222099): The Assignment Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await assignmentConfigCreatePage.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[6293]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
             await assignmentConfigCreatePage.setCompany("Petramco");
             // verify categ1, BU and SG as per LOB
-            await utilCommon.isDrpDownvalueDisplayed(assignmentConfigCreatePage.selectors.catTier1DrpDwn, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await utilityCommon.isAllDropDownValuesMatches(assignmentConfigCreatePage.selectors.catTier1DrpDwn, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await assignmentConfigCreatePage.setSupportCompany("Petramco");
-            await utilCommon.isDrpDownvalueDisplayed(assignmentConfigCreatePage.selectors.businessUnitDrpDwn, ['Facilities', 'Facilities Support']);
+            await utilityCommon.isAllDropDownValuesMatches(assignmentConfigCreatePage.selectors.businessUnitDrpDwn, ['Facilities', 'Facilities Support']);
             await assignmentConfigCreatePage.setSupportCompany("Petramco");
             await assignmentConfigCreatePage.setBusinessUnit('Facilities Support');
-            await utilCommon.isDrpDownvalueDisplayed(assignmentConfigCreatePage.selectors.supportGrpDrpDwn, ['Facilities', 'Pantry Service']);
+            await utilityCommon.isAllDropDownValuesMatches(assignmentConfigCreatePage.selectors.supportGrpDrpDwn, ['Facilities', 'Pantry Service']);
             await assignmentConfigCreatePage.setBusinessUnit('Facilities Support');
             await assignmentConfigCreatePage.setSupportGroup('Facilities');
             // verify LOB is there
             expect(await assignmentConfigCreatePage.getLobValue()).toBe("Facilities");
             await assignmentConfigCreatePage.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentMappingName);
             expect(await editAssignmentsConfigPo.getLobValue()).toBe("Facilities");
             await editAssignmentsConfigPo.clickOnCancelButton();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -304,8 +303,8 @@ describe("Create Case Assignment Mapping", () => {
         await assignmentConfigConsolePage.searchAndselectAssignmentConfig(assignmentMappingName);
         expect(await assignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Company")).toContain("- Global -");
         await assignmentConfigConsolePage.clickDeleteButton();
-        await utilCommon.clickOnWarningOk();
-        //expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.').tobeTruthy();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        //expect(await utilityCommon.isPopUpMessagePresent('Record(s) deleted successfully.').tobeTruthy();
     });
 
     //radhiman
@@ -377,7 +376,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.clickonSaveButton();
             await assignmentConfigConsolePage.searchAssignmentConfig(companyAssignmentMappingName);
             expect(await assignmentConfigConsolePage.getValueOnAssignmentConfigGrid("Assignment Name")).toContain(companyAssignmentMappingName);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("5016 Case Summary");
@@ -466,7 +465,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
             await assignmentConfigCreatePage.setSupportGroup("AU Support 2");
             await assignmentConfigCreatePage.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
 
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName(companyAssignmentMappingName);
@@ -476,7 +475,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
             await assignmentConfigCreatePage.setSupportGroup("AU Support 3");
             await assignmentConfigCreatePage.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6319]: Verify if case assignment mapping is accessible to same LOB Case Manager', async () => {
@@ -484,8 +483,8 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case manager.');
-            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case manager.');
         });
 
         it('[6319]: Verify if case assignment mapping is accessible to different LOB Case BA', async () => {
@@ -493,8 +492,8 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case BA.');
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName(facilitiesAssignmentMappingName);
             await assignmentConfigCreatePage.setCompany("Petramco");
@@ -503,7 +502,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setBusinessUnit('Facilities Support');
             await assignmentConfigCreatePage.setSupportGroup("Facilities");
             await assignmentConfigCreatePage.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6319]: Verify if case assignment mapping is accessible to different LOB Case Manager', async () => {
@@ -511,9 +510,9 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case Manager.');
-            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case Manager.');
-            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are displayed to same LOB Case Manager.');
+            expect(await utilityGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case Manager.');
+            expect(await utilityGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to different LOB Case Manager.');
+            expect(await utilityGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are displayed to same LOB Case Manager.');
         });
 
         it('[6319]: Verify if case assignment mapping is accessible to Case BA belonging to different company with same LOB', async () => {
@@ -521,8 +520,8 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to same LOB Case BA.');
         });
 
         it('[6319]: Verify if case assignment mapping is accessible to Case Manager user having access to multiple LOB', async () => {
@@ -530,14 +529,14 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case manager.');
-            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case manager.');
-            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
-            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
-            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case Manager.');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
+            expect(await utilityGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case Manager.');
+            expect(await utilityGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case Manager.');
         });
 
         it('[6319]: Verify if case assignment mapping is accessible to Case BA user having access to multiple LOB', async () => {
@@ -545,19 +544,19 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
 
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
-            expect(await utilGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent(globalAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(companyAssignmentMappingName)).toBeTruthy('Case Assignment Mapping are not displayed to multiple LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent(facilitiesAssignmentMappingName)).toBeFalsy('Case Assignment Mapping are displayed to multiple LOB Case BA.');
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(companyAssignmentMappingName);
             await editAssignmentsConfigPo.setAssignee('RA3 Liu');
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6319]: Verify if case assignment mapping is applied to the case created', async () => {
@@ -637,7 +636,7 @@ describe("Create Case Assignment Mapping", () => {
             await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
             await changeAssignmentPage.clickOnAssignButton();
             await editTaskPo.clickOnSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
             expect(await viewTask.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
             expect(await viewTask.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
@@ -667,7 +666,7 @@ describe("Create Case Assignment Mapping", () => {
             expect(await viewCaseTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
             expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
             expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-            await utilCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[5047,5046,5045,5044,5027]: Verify Company and Support Group selection hierarchy.', async () => {
             await navigationPage.gotoSettingsPage();
@@ -749,7 +748,7 @@ describe("Create Case Assignment Mapping", () => {
             //Create Assignment mapping
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             expect(await assignmentConfigCreatePage.isCompanyDropdownValueMatches(['- Global -', 'Petramco'])).toBeTruthy('Dropdown values do not match');
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName('Assignement Mapping' + randomStr);
             await assignmentConfigCreatePage.setCompany("- Global -");
@@ -757,19 +756,20 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setBusinessUnit('Australia Support');
             await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
             await assignmentConfigCreatePage.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Successfull message is not appeared');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Successfull message is not appeared');
 
             //Update assignment mapping
-            await utilGrid.searchAndOpenHyperlink('Assignement Mapping' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink('Assignement Mapping' + randomStr);
             await editAssignmentsConfigPo.setAssignmentMappingName("Assignement Mapping_updated " + randomStr);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Successfull message is not appeared');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Successfull message is not appeared');
 
             //Delete Assignment mapping
-            await utilGrid.searchAndSelectAllCheckBoxWOGrid("Assignement Mapping_updated " + randomStr);
+            await utilityGrid.searchRecord("Assignement Mapping_updated " + randomStr);
+            await utilityGrid.selectAllCheckBox();
             await assignmentConfigConsolePage.clickDeleteButton();
-            await utilCommon.clickOnWarningOk();
-            expect(await utilCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy('Successfull message is not appeared');
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            expect(await utilityCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy('Successfull message is not appeared');
         });
 
         it('[6109]: [Permissions] Case Assignment Mapping access of different company user', async () => {
@@ -779,14 +779,14 @@ describe("Create Case Assignment Mapping", () => {
             await loginPage.login('rrovnitov');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            expect(await utilGrid.isGridRecordPresent("Assignement Mapping_updated " + randomStr)).toBeFalsy('Record is available');
+            expect(await utilityGrid.isGridRecordPresent("Assignement Mapping_updated " + randomStr)).toBeFalsy('Record is available');
 
             //Login with Psilon Case Admin and verify the access
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            expect(await utilGrid.isGridRecordPresent("Assignement Mapping_updated " + randomStr)).toBeFalsy('Record is available');
+            expect(await utilityGrid.isGridRecordPresent("Assignement Mapping_updated " + randomStr)).toBeFalsy('Record is available');
         });
 
         afterAll(async () => {
@@ -980,60 +980,60 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentData1.assignmentMappingName);
             await editAssignmentsConfigPo.setDefaultToggleButton(true);
             await editAssignmentsConfigPo.clickonSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Company', 'Phylum', 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Support Company', 'Phylum', 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Region', 'North America', 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Site', 'Phylum Site2', 'text');
-            await utilGrid.searchRecord(assignmentData2.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData2.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Case Priority', 'Low', 'checkbox');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Default Mapping', 'True', 'checkbox');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
             expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Default Mapping')).toContain("True", 'Filter Default Mapping is missing in column');
         });
         it('[4449]: Assignment mapping search using filters', async () => {
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Assignment Name', assignmentData2.assignmentMappingName, 'text');
-            await utilGrid.searchRecord(assignmentData2.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData2.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Category Tier 1', "Employee Relations", 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Category Tier 2', 'Finance', 'text');
-            await utilGrid.searchRecord(assignmentData2.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData2.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Category Tier 3', "Bonus", 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Support Group', suppGrpData.orgName, 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
         });
         it('[4449]: Assignment mapping search using filters', async () => {
             await navigationPage.gotoSettingsPage();
@@ -1042,32 +1042,32 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.addColumns(arr1);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Department', departmentData.orgName, 'text');
-            await utilGrid.searchRecord(assignmentData2.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData2.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Business Unit', businessData.orgName, 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Label', "MappingLabel" + randomStr, 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
             expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Label')).toContain("MappingLabel" + randomStr, 'Filter Flowset is missing in column');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("ID", id, "text");
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(id)).toBeTruthy(id + ' not present');
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("ID", id, "text");
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(id)).toBeTruthy(id + ' not present');
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Category Tier 4', "Retention Bonus", 'text');
-            await utilGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await utilGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             assignmentData1.assignmentMappingName = randomStr + "3DRDMV8968";
             assignmentData1.flowset = flowsetGlobalFieldsData.flowsetName;
             await apiHelper.createCaseAssignmentMapping(assignmentData1);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Flowset', flowsetGlobalFieldsData.flowsetName, 'text');
-            await utilGrid.searchRecord(randomStr + "3DRDMV8968");
+            await utilityGrid.searchRecord(randomStr + "3DRDMV8968");
             expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Flowset')).toContain(flowsetGlobalFieldsData.flowsetName, 'Filter Flowset is missing in column');
             await assignmentConfigConsolePage.removeColumns(arr1);
             await assignmentConfigConsolePage.addColumns(defaultCaseAssignmentColumns);
@@ -1103,7 +1103,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setSupportGroup(suppGrpData.orgName);
             await assignmentConfigCreatePage.setAssignee("phylumfn4 phylumln4");
             await assignmentConfigCreatePage.clickonSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("Anna");
             await createCasePage.setSummary("5418 Case Summary1");
@@ -1120,7 +1120,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig("1DRDMV8968 " + randomStr);
             await editAssignmentsConfigPo.setCategoryTier2("Compensation");
             await editAssignmentsConfigPo.clickonSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("Anna");
             await createCasePage.setSummary("5418 Case Summary2");
@@ -1138,7 +1138,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig("1DRDMV8968 " + randomStr);
             await editAssignmentsConfigPo.setCategoryTier3("Bonus");
             await editAssignmentsConfigPo.clickonSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("Anna");
             await createCasePage.setSummary("5418 Case Summary3");
@@ -1201,23 +1201,23 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setSupportGroup(suppGrpData.orgName);
             await assignmentConfigCreatePage.setAssignee("phylumfn4 phylumln4");
             await assignmentConfigCreatePage.clickonSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[5365]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
             await navigationPage.signOut();
             await loginPage.login(userId1, 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.changeOwnerCompanyValue('Phylum');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[5365]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
             await navigationPage.gotoCreateCase();
@@ -1320,7 +1320,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentData.assignmentMappingName);
             await editAssignmentsConfigPo.setDefaultToggleButton(true);
             await editAssignmentsConfigPo.clickonSaveButton();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[6324,6323]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
             assignmentData.assignmentMappingName = randomStr + '4DRDMV1206';
@@ -1398,36 +1398,36 @@ describe("Create Case Assignment Mapping", () => {
         it('[6324,6323]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.changeOwnerCompanyValue('Phylum');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData1.templateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData1.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.changeOwnerCompanyValue('Phylum');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentData.assignmentMappingName);
             await editAssignmentsConfigPo.setDefaultToggleButton(true);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (10000): Only one default record is allowed for a company. Please change the default flag and save the record.')).toBeTruthy('Message Not Present');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Only one default record is allowed for a company. Please change the default flag and save the record.')).toBeTruthy('Message Not Present');
             await editAssignmentsConfigPo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[6324,6323]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
             await navigationPage.gotoCreateCase();

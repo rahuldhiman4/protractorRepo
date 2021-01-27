@@ -21,7 +21,6 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import statusConfigPO from '../../pageobject/settings/common/status-config.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 

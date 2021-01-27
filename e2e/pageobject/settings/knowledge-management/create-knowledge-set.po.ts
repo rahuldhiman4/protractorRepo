@@ -1,6 +1,5 @@
 import utilityCommon from '../../../utils/utility.common';
 import { $, $$, element, by } from "protractor";
-import utilCommon from '../../../utils/util.common';
 
 class CreateKnowledgeSet {
 

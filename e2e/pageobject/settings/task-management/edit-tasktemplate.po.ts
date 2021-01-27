@@ -1,5 +1,4 @@
 import { $, browser, protractor, ProtractorExpectedConditions, element, by, $$ } from "protractor";
-import utilCommon from '../../../utils/util.common';
 import utilityCommon from '../../../utils/utility.common';
 import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
 

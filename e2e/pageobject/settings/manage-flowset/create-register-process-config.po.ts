@@ -1,15 +1,15 @@
 import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
-import utilCommon from "../../../utils/util.common";
+
 class CreateFlowset {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         companyGuid: '838b3d55-e82c-4d5e-859b-4144ad048254',
         searchIcon:' button[rx-id="search-button"]',///done
-       searchProcessTxtbox: 'input[id="rx-textfield-10"]',//done
-        selectProcess: '[class="dropdown-item ng-star-inserted"]',//done
-        processName: '[rx-selected-item]',//done
+        searchProcessTxtbox: '.input-group-sm input',//done
+        selectProcess: '.rx-bundle button span',//done
+        processName: '[rx-view-component-id="7fc0ca1d-6fa7-418c-826a-4a09c9dccf87"] button',//done
         company: '[rx-view-component-id="838b3d55-e82c-4d5e-859b-4144ad048254"] rx-select-with-pagination',//done
         ProcessNameGuid: '7fc0ca1d-6fa7-418c-826a-4a09c9dccf87',
         ApplicationServiceGuid: 'ec882563-a0bc-446a-ba86-12723ab22d2e',
@@ -98,8 +98,8 @@ class CreateFlowset {
         return await $(this.selectors.savebutton).isEnabled();
     }
 
-    async isErrorMsgPresent(): Promise<boolean> {
-        return await utilCommon.isErrorMsgPresent();
+    async isErrorMsgPresent(msg:string): Promise<boolean> {
+        return await utilityCommon.isPopUpMessagePresent(msg);
     }
 
     async clickCancelButton(): Promise<void> {
@@ -107,7 +107,7 @@ class CreateFlowset {
     }
 
     async statusDropDownValuesDisplayed(statusValues: string[]): Promise<boolean> {
-        return await utilCommon.isDrpDownvalueDisplayed(this.selectors.statusGuid, statusValues);
+        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.statusGuid, statusValues);
     }
 
     async setDescription(description: string): Promise<void> {

@@ -21,7 +21,7 @@ class CKEValidation {
         strikeThroughTextCkEditorTextArea: '.cke_enable_context_menu s',
         justifyAlignText: '.cke_enable_context_menu [style="text-align: justify;"]',
         deletedTextInCKE: '.cke_editable_themed del',
-        rightAlignText: '.cke_enable_context_menu div[style="text-align: right;"],.cke_enable_context_menu p',
+        rightAlignText: '.cke_enable_context_menu div[style="text-align: right;"],.cke_enable_context_menu p[style="text-align: right;"]',
         centerAlignText: '.cke_enable_context_menu [style="text-align: center;"]',
         numberListCkEditorTextArea: '.cke_enable_context_menu ol li',
         bulletListTextCkEditorTextArea: '.cke_enable_context_menu ul li',
@@ -283,6 +283,7 @@ class CKEValidation {
                         await browser.waitForAngularEnabled(true);
                         return true;
                     }
+                    else return false;
                 }
                 else return false;
             });
@@ -294,6 +295,7 @@ class CKEValidation {
                     if (rightAlignTextCke.includes(bodyText)) {
                         return true;
                     }
+                    else return false;
                 }
                 else return false;
             });

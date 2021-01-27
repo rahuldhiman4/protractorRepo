@@ -1,6 +1,5 @@
 import utilityCommon from '../../utils/utility.common';
 import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
-import gridUtil from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 
 
@@ -81,7 +80,7 @@ class CaseConsolePage {
     }
 
     async selectCase(caseID: string): Promise<void> {
-        await gridUtil.searchAndSelectGridRecord(caseID);
+        await utilityGrid.searchAndSelectGridRecord(caseID);
     }
 
     async clickOnAddToWatchlist(): Promise<void> {

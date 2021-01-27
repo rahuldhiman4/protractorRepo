@@ -1,5 +1,4 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
 import utilityCommon from "../../../utils/utility.common";
 
 class editNotesTemplate {

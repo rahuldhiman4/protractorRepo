@@ -46,26 +46,6 @@ export class Resources {
         await $(this.selectors.advancedSearchSettingsBtnClose).click();
     }
 
-    async selectAdvancedSearchFilterOption(dropDownLabel: string, dropDownValue: string): Promise<void> {
-        await browser.wait(this.EC.or(async () => {
-            let count = await $$('.dropdown.dropdown_select').count();
-            return count >= 1;
-        }), 3000);
-        const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
-        for (let i: number = 0; i < dropDown.length; i++) {
-            await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
-                if (result) {
-                    let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
-                    if (dropDownLabelText === dropDownLabel) {
-                        await dropDown[i].$('button').click();
-                        await dropDown[i].$('input').sendKeys(dropDownValue);
-                        await element(by.cssContainingText('[role="option"] span', dropDownValue)).click();
-                    }
-                }
-            });
-        }
-    }
-
     async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
         let elementDropdown:ElementFinder =  await element(by.cssContainingText('.form-control-label', dropDownLabel));
         return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);

@@ -1,32 +1,30 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import { flowsetGlobalFields, flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
 import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
-import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
-import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
-import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilityCommon from '../../utils/utility.common';
-import consoleFlowsetConfigPage from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
-import createFlowsetPage from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
-import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
-import utilCommon from '../../utils/util.common';
-import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
-import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
-import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePage from '../../pageobject/case/case-preview.po';
+import createCasePage from '../../pageobject/case/create-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
-import utilityGrid from '../../utils/utility.grid';
-import utilGrid from '../../utils/util.grid';
-import activityTabPage from '../../pageobject/social/activity-tab.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
 import statusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeEmailPo from '../../pageobject/email/compose-mail.po';
-import { flowsetMandatoryFields, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
-import { cloneDeep } from 'lodash';
-let userData, userData1, userData2 = undefined;
+import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
+import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
+import consoleFlowsetConfigPage from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
+import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
+import createFlowsetPage from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
+import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
+import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
+import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
+let userData1, userData2 = undefined;
 
 describe('Create Process in Flowset', () => {
     beforeAll(async () => {
@@ -123,7 +121,7 @@ describe('Create Process in Flowset', () => {
             await expect(createFlowsetProcessLibrary.isStatusRequiredTextDisplayed()).toBeTruthy(" Status Required text not present ");
             await expect(createFlowsetProcessLibrary.isProcessAliasRequiredTextDisplayed()).toBeTruthy(" Process Alias Required text not present ");
             await createFlowsetProcessLibrary.clickSaveButton();
-            await expect(createFlowsetProcessLibrary.isErrorMsgPresent()).toBeTruthy("Error msg not present");
+            await expect(createFlowsetProcessLibrary.isErrorMsgPresent('Resolve the field validation errors and then try again.')).toBeTruthy("Error msg not present");
 
             //add Flowsets
             await createFlowsetProcessLibrary.selectCompany('Petramco');
@@ -174,9 +172,9 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for different LOB Case manager");
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is not displayed for same LOB Case manager");
         });
 
@@ -185,11 +183,11 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeTruthy(processName + randomStr + "register process is displayed for different LOB Case BA");
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid(processName + randomStr)).toBeFalsy(processName + randomStr + "register process is not displayed for same LOB Case BA");
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await consoleFlowsetProcessLibrary.searchAndSelectFlowset(processName + randomStr);
             await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
             await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
@@ -208,22 +206,21 @@ describe('Create Process in Flowset', () => {
             await createFlowsetProcessLibrary.selectProcessName(processName);
             await createFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
             await createFlowsetProcessLibrary.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already existsfor the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already existsfor the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createFlowsetProcessLibrary.clickCancelButton();
-            await utilCommon.clickOnWarningOk();
-
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await consoleFlowsetProcessLibrary.searchAndSelectFlowset(processAliasNameCaseHR);
             await editFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
             await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
             await editFlowsetProcessLibrary.selectStatus('Draft');
             await editFlowsetProcessLibrary.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already exists for the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (22096): The process alias name already exists for the line of business. Please select a different process alias name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editFlowsetProcessLibrary.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5637]:  Validate create new record with same name in different LOB', async () => {
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
             await createFlowsetProcessLibrary.selectCompany('Petramco');
             await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
@@ -232,7 +229,7 @@ describe('Create Process in Flowset', () => {
             await createFlowsetProcessLibrary.selectProcessName(processName);
             await createFlowsetProcessLibrary.setAliasName('UpdateAlias' + randomStr);
             await createFlowsetProcessLibrary.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         afterAll(async () => {
@@ -242,7 +239,6 @@ describe('Create Process in Flowset', () => {
 
 
     });
-
 
     it('[6276,6273]: [Flowsets] Search Register Process on Console', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -269,6 +265,7 @@ describe('Create Process in Flowset', () => {
         await editFlowsetProcessLibrary.setDescription('UpdataDescription' + randomStr);
         await editFlowsetProcessLibrary.selectStatus('Draft');
         await editFlowsetProcessLibrary.clickOnSaveButton();
+        await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
         expect(await consoleFlowsetProcessLibrary.isAliasNamePresentOnGrid('UpdateAlias' + randomStr)).toBeTruthy('UpdateAlias' + randomStr + "name is not present");
         expect(await editFlowsetProcessLibrary.getDescription('UpdataDescription' + randomStr)).toBe('UpdataDescription' + randomStr);
@@ -398,7 +395,7 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process are not displayed to same LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process are not displayed to same LOB Case manager.');
         });
 
         it('[6271]: Verify if flowset process is accessible to different LOB Case BA', async () => {
@@ -406,7 +403,7 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case BA.');
+            expect(await utilityGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case BA.');
         });
 
         it('[6271]: Verify if flowset process is accessible to different LOB Case Manager', async () => {
@@ -414,7 +411,7 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case manager.');
+            expect(await utilityGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to different LOB Case manager.');
         });
 
         it('[6271]: Verify if flowset process is accessible to Case BA belonging to different company with same LOB', async () => {
@@ -422,7 +419,7 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is displayed to same LOB with different company Case BA.');
+            expect(await utilityGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is displayed to same LOB with different company Case BA.');
         });
 
         it('[6271]: Verify if flowset process is accessible to Case Manager user having access to multiple LOB', async () => {
@@ -430,10 +427,10 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case manager havin access to multiple LOB.');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to Case manager havin access to multiple LOB');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case manager havin access to multiple LOB.');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to Case manager havin access to multiple LOB');
         });
 
         it('[6271]: Verify if flowset process is accessible to Case BA user having access to multiple LOB', async () => {
@@ -441,10 +438,10 @@ describe('Create Process in Flowset', () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            await utilGrid.selectLineOfBusiness('Human Resource');
-            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case BA havin access to multiple LOB.');
-            await utilGrid.selectLineOfBusiness('Facilities');
-            expect(await utilGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to Case BA havin access to multiple LOB');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            expect(await utilityGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeTruthy('Flowset process is not displayed to Case BA havin access to multiple LOB.');
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            expect(await utilityGrid.isGridRecordPresent('UpdateAlias' + randomStr)).toBeFalsy('Flowset process is displayed to Case BA havin access to multiple LOB');
         });
 
         afterAll(async () => {
@@ -568,7 +565,7 @@ describe('Create Process in Flowset', () => {
             await createFlowsetPage.setDescription("description" + randomStr);
             await createFlowsetPage.selectStatus("Active");
             await createFlowsetPage.clickSaveButton();
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
 
             await consoleFlowsetProcessLibrary.searchAndSelectFlowset('Flowset' + randomStr);
             await editFlowsetConfigPo.clickOnAddNewMappingBtn();
@@ -576,7 +573,7 @@ describe('Create Process in Flowset', () => {
             await editFlowsetConfigPo.selectFunction('Initialization');
             await editFlowsetConfigPo.selectProcessStatus('Active');
             await editFlowsetConfigPo.clickSaveBtnOnProcessMapping();
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
         });
         it('[5317]: Initialization process execution for case origin Agent', async () => {
             //Create a Case Template
@@ -709,62 +706,62 @@ describe('Create Process in Flowset', () => {
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await consoleFlowsetProcessLibrary.addColumn(['Process Name', 'ID']);
 
-            expect(await utilGrid.isAllFilterValueMatches(['Application', 'ID', 'Company', 'Process Alias Name', 'Process Description', 'Process Name', 'Status']));
-            await utilGrid.addFilter('Process Name', processName, 'text');
+            expect(await utilityGrid.isAppliedFilterMatches(['Application', 'ID', 'Company', 'Process Alias Name', 'Process Description', 'Process Name', 'Status']));
+            await utilityGrid.addFilter('Process Name', processName, 'text');
             expect(await consoleFlowsetProcessLibrary.isColumnContainsSameValue('Process Name', processName)).toBeTruthy();
-            await utilGrid.clearFilter();
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
-            await utilGrid.searchOnGridConsole(processName);
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
+            await utilityGrid.searchRecord(processName);
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(1);
             expect(await consoleFlowsetProcessLibrary.getFirstValueOfColumn('Process Name')).toBe(processName);
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.clearSearchBox();
 
-            await utilGrid.addFilter('Process Alias Name', processAliasName, 'text');
+            await utilityGrid.addFilter('Process Alias Name', processAliasName, 'text');
             expect(await consoleFlowsetProcessLibrary.isColumnContainsSameValue('Process Alias Name', processAliasName)).toBeTruthy();
-            await utilGrid.clearFilter();
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
-            await utilGrid.searchOnGridConsole(processAliasName);
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
+            await utilityGrid.searchRecord(processAliasName);
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(1);
             expect(await consoleFlowsetProcessLibrary.getFirstValueOfColumn('Process Alias Name')).toBe(processAliasName);
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.clearSearchBox();
 
-            await utilGrid.addFilter('Process Description', 'Desc ' + randomStr, 'text');
+            await utilityGrid.addFilter('Process Description', 'Desc ' + randomStr, 'text');
             expect(await consoleFlowsetProcessLibrary.isColumnContainsSameValue('Process Description', 'Desc ' + randomStr)).toBeTruthy();
-            await utilGrid.clearFilter();
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
-            await utilGrid.searchOnGridConsole('Desc ' + randomStr);
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
+            await utilityGrid.searchRecord('Desc ' + randomStr);
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(1);
             expect(await consoleFlowsetProcessLibrary.getFirstValueOfColumn('Process Description')).toBe('Desc ' + randomStr);
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.clearSearchBox();
 
-            await utilGrid.addFilter('Company', 'Petramco', 'text');
+            await utilityGrid.addFilter('Company', 'Petramco', 'text');
             expect(await consoleFlowsetProcessLibrary.isColumnContainsSameValue('Company', 'Petramco')).toBeTruthy();
-            await utilGrid.clearFilter();
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
-            await utilGrid.searchOnGridConsole('Petramco');
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toBeGreaterThanOrEqual(1);
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
+            await utilityGrid.searchRecord('Petramco');
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toBeGreaterThanOrEqual(1);
             expect(await consoleFlowsetProcessLibrary.isColumnContainsSameValue('Company', 'Petramco')).toBeTruthy();
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.clearSearchBox();
 
-            await utilGrid.addFilter('Status', 'Active', 'checkbox');
+            await utilityGrid.addFilter('Status', 'Active', 'checkbox');
             expect(await consoleFlowsetProcessLibrary.isColumnContainsSameValue('Status', 'Active')).toBeTruthy();
-            await utilGrid.clearFilter();
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
 
             //Search with Active does not work
-            // await utilGrid.searchOnGridConsole('Active');  
-            // expect(await utilGrid.getNumberOfRecordsInGrid()).toBeGreaterThanOrEqual(1);
+            // await utilityGrid.searchOnGridConsole('Active');  
+            // expect(await utilityGrid.getNumberOfRecordsInGrid()).toBeGreaterThanOrEqual(1);
             // expect(await consoleFlowsetProcessLibrary.isColumnContainsSameValue('Status', 'Active')).toBeTruthy();
-            // await utilGrid.clearGridSearchBox();
+            // await utilityGrid.clearGridSearchBox();
 
-            await utilGrid.addFilter('ID', registeredProcessResponse.id, 'text');
+            await utilityGrid.addFilter('ID', registeredProcessResponse.id, 'text');
             expect(await consoleFlowsetProcessLibrary.isColumnContainsSameValue('ID', registeredProcessResponse.id)).toBeTruthy();
-            await utilGrid.clearFilter();
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
-            await utilGrid.searchOnGridConsole(registeredProcessResponse.id);
-            expect(await utilGrid.getNumberOfRecordsInGrid()).toEqual(1);
+            await utilityGrid.clearFilter();
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toBeGreaterThan(1);
+            await utilityGrid.searchRecord(registeredProcessResponse.id);
+            expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(1);
             expect(await consoleFlowsetProcessLibrary.getFirstValueOfColumn('ID')).toBe(registeredProcessResponse.id);
-            await utilGrid.clearGridSearchBox();
+            await utilityGrid.clearSearchBox();
 
             await consoleFlowsetProcessLibrary.removeColumn(['Process Name', 'ID']);
         });

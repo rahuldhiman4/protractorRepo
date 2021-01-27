@@ -1,6 +1,5 @@
-import { $,$$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
-import utilCommon from '../../../utils/util.common';
 
 class createNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -22,7 +21,7 @@ class createNotificationTemplate {
         alertMessage: '[rx-view-component-id="560e4bbc-9f76-4a7b-9029-e561bdaa5526"] .cke_wysiwyg_div',
         emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] .d-textfield',
         emailBasedApprovalToggleGuid: '4437da1b-4da6-4e84-bf9c-f7366cca0f1a',
-        notificationMethodGuid: '0f634bc9-63ce-4515-99d1-525fdb4e44a9',
+        notificationMethodGuid: '0788e5c4-93ca-4d92-b61a-cd024f523a3e',
         generateClickableLinkIconAlert: '[rx-view-component-id="34d2b4a6-5403-4e22-809d-5d26fe2f4ad8"] .cke_button__clickablelink_icon',
         generateClickableLinkIconEmail: '[rx-view-component-id="ac6ba449-9c5a-46f9-85fb-8384bf57fc92"] .cke_button__clickablelink_icon',
         emailBodyGuid: '7ecf7b01-9de9-45a6-a448-2806fe51cece',
@@ -30,7 +29,7 @@ class createNotificationTemplate {
         eventDropDown: '[rx-view-component-id="a0554358-c226-4dae-9bef-0792a0e32c5f"] button',
         dropDownOption: '.dropdown-item',
     }
-    
+
     async selectModuleName(value: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.moduleName, value);
     }
@@ -40,7 +39,7 @@ class createNotificationTemplate {
     }
 
     async selectNthEvent(value: string, n: number): Promise<void> {
-        await utilCommon.selectNthDropDown(this.selectors.eventDropDownGuid, value, n);
+        await utilityCommon.selectNthDropDown(this.selectors.eventDropDownGuid, value, n);
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -130,20 +129,20 @@ class createNotificationTemplate {
         await $(this.selectors.generateClickableLinkIconEmail).click();
     }
 
-    async clickOnNotificationEventDropDown():Promise<void>{
+    async clickOnNotificationEventDropDown(): Promise<void> {
         await $(this.selectors.eventDropDown).click();
     }
 
-    async clearNotificationEventFromDropDown():Promise<void>{
+    async clearNotificationEventFromDropDown(): Promise<void> {
         await $(this.selectors.eventDropDownInput).clear();
     }
 
     async isNotificationEventOptionPresentInDropDown(notificationEvent: string): Promise<boolean> {
         await $(this.selectors.eventDropDownInput).clear();
         await $(this.selectors.eventDropDownInput).sendKeys(notificationEvent);
-        let values= await $$(this.selectors.dropDownOption).count();
+        let values = await $$(this.selectors.dropDownOption).count();
         if (values >= 1) { return true; } else { return false; }
-    } 
+    }
 
 
 }

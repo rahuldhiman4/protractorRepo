@@ -231,43 +231,31 @@ class NavigationPage {
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
-        let menuItemStr = '.a-tree__label.is-flip adapt-highlight';
-        let ismenuItemSelected = await $(menuItemStr).isPresent().then(async (result) => {
-            if (result) return await $(menuItemStr).isDisplayed();
-            else return false;
-        });
-        if (ismenuItemSelected) {
-            let menuItemVal = await $(menuItemStr).getText();
-            if (menuItems.includes(menuItemVal)) console.log("Menu Item already selected.");
-        } else {
-            for (let i = 0; i < menuItems.length; i++) {
-                let submenuItemLocator = await $$('.a-tree__content');
-                if (i < menuItems.length - 1) {
-                    for (let j = 0; j < submenuItemLocator.length; j++) {
-                        if (await submenuItemLocator[j].$('adapt-highlight').getText() == menuItems[i])
-                            await submenuItemLocator[j].$('span.a-tree__toggle').click();
-                    }
-                } else {
-                    let regex = new RegExp("^" + menuItems[i] + "$");
-                    await element(by.cssContainingText('.a-tree__children adapt-highlight', regex)).click();
+        if($(".is-flip").isPresent()) await $(".a-tree__filter button").click();
+        for (let i = 0; i < menuItems.length; i++) {
+            let submenuItemLocator = await $$('.a-tree__content');
+            if (i < menuItems.length - 1) {
+                for (let j = 0; j < submenuItemLocator.length; j++) {
+                    if (await submenuItemLocator[j].$('adapt-highlight').getText() == menuItems[i])
+                        await submenuItemLocator[j].$('span.a-tree__toggle').click();
                 }
+            } else {
+                let regex = new RegExp("^" + menuItems[i] + "$");
+                await element(by.cssContainingText('.a-tree__children adapt-highlight', regex)).click();
             }
         }
-        //Temporary workaround for Task Template LOB popup
-        if(await $('.modal-content').isPresent())
-            await $('.modal-content .close').click();
         await browser.wait(this.EC.titleContains(expectedTitle), 10000);
         return await browser.getTitle();
     }
 
     async isSettingSubMenusMatches(pathStr: string, listOfSubItems: string[]): Promise<boolean> {
-        await element(by.xpath(`//rx-administration-settings//*[text()="${pathStr}"]/../*[@class="tree-branch-head"]`)).click();
-        let loc: string = `//*[text()="${pathStr}"]/ancestor::li[@class="tree-expanded"]//*[@class="tree-label "]`;
+        await element(by.xpath(`//rx-admin-settings-explorer//*[text()="${pathStr}"]/../../../*[@role="img"]`)).click();
+        let loc: string = `//*[text()="${pathStr}"]/ancestor::li[@role="listitem"]//adapt-highlight`;
         let list: string[] = [];
         let subitemCounts: number = await element.all(by.xpath(loc)).count();
         let baseCounts: number = 1;
         for (baseCounts; baseCounts <= subitemCounts; baseCounts++) {
-            list[baseCounts] = await element(by.xpath(`(//*[text()="${pathStr}"]/ancestor::li[@class="tree-expanded"]//*[@class="tree-label "])` + "[" + baseCounts + "]")).getText();
+            list[baseCounts] = await element(by.xpath(`(//*[text()="${pathStr}"]/ancestor::li[@role="listitem"]//adapt-highlight)` + "[" + baseCounts + "]")).getText();
         }
         let returnedvalue = list.filter(function (el) {
             return el != null;

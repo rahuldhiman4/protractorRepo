@@ -1,5 +1,4 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser, ElementFinder } from "protractor";
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 class AccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

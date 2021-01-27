@@ -1,6 +1,4 @@
-import utilityCommon from '../../utils/utility.common';
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../utils/util.grid';
 import utilityGrid from '../../utils/utility.grid';
 class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

@@ -1,5 +1,5 @@
+import { $, browser, protractor } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { browser, $, protractor } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import dateTimeSelectorPo from '../../pageobject/settings/common/date-time-selector.po';
@@ -272,10 +272,10 @@ describe('Date and Time Preset Filter', () => {
             }
 
             caseDataDWp =
-            {
-                "requester": "qtao",
-                "summary": "Testing case creation with minimal input data, Human Resource"
-            }
+                {
+                    "requester": "qtao",
+                    "summary": "Testing case creation with minimal input data, Human Resource"
+                }
 
             await apiHelper.apiLogin("qkatawazi");
             caseId = await apiHelper.createCase(caseData);
@@ -328,7 +328,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
         });
     });
-    
+
     describe('[12074]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium;

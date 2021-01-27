@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class DefineLOBEdit {
 
@@ -33,7 +33,7 @@ class DefineLOBEdit {
                 break;
             }
         }
-        return await utilCommon.isRequiredTagToField(guid);
+        return await utilityCommon.isRequiredTagToField(guid);
     }
 
     async getBundleName(): Promise<string> {

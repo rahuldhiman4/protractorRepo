@@ -1,6 +1,5 @@
 import utilityCommon from '../../utils/utility.common';
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../utils/util.grid'
 import utilityGrid from '../../utils/utility.grid';
 
 
@@ -69,7 +68,7 @@ class TaskGridPage {
     }
 
     async clearFilter(): Promise<void> {
-        await utilGrid.clearFilter()
+        await utilityGrid.clearFilter()
     }
 
     async searchAndOpenTask(taskId: string): Promise<void> {

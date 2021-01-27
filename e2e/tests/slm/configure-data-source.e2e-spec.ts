@@ -3,14 +3,13 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import configureDataSourceConsolePage from '../../pageobject/settings/slm/configure-data-source-config-console.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import createConfigureDataSourceConfigPo from '../../pageobject/settings/slm/create-configure-data-source-config.po';
 import editConfigureDataSourceConfigPo from '../../pageobject/settings/slm/edit-configure-data-source-config.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import utilityCommon from '../../utils/utility.common';
 import { default as serviceTargetConfig } from '../../pageobject/settings/slm/service-target-blade.po';
 import SlmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
+import utilityGrid from '../../utils/utility.grid';
 
 let caseBAUser = 'qkatawazi';
 
@@ -54,10 +53,10 @@ describe('Data Source Configuration Tests', () => {
             expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
             await createConfigureDataSourceConfigPo.clickCancelButton();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-            await utilCommon.clickOnWarningCancel();
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('No');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Innovation Studio');
-            expect(await utilCommon.isPopUpMessagePresent('No Record Definition exists for the selected Application Name Innovation Studio')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('No Record Definition exists for the selected Application Name Innovation Studio')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeTruthy('Save button is found enabled.');
 
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
@@ -103,11 +102,11 @@ describe('Data Source Configuration Tests', () => {
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
         it('[6052,6051,6050,6048,6042,6043]: Verify Data Source Configuration Updation', async () => {
-            await utilGrid.searchAndOpenHyperlink(dataSourceDisplayName);
+            await utilityGrid.searchAndOpenHyperlink(dataSourceDisplayName);
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Display Name')).toBeTruthy('Display Name field is optional on Edit Data Source Config screen');
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Application Name')).toBeTruthy('Application Name field is optional on Edit Data Source Config screen');
@@ -141,8 +140,8 @@ describe('Data Source Configuration Tests', () => {
             expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Reset Goal Condition')).toBe(expectedSelectedExp);
             await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Department Primary');
             await editConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
-            await utilGrid.searchAndOpenHyperlink(dataSourceDisplayName);
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            await utilityGrid.searchAndOpenHyperlink(dataSourceDisplayName);
             await browser.sleep(2000); // added hard wait to close Edit Data Source Blade
             await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
             expect(await editConfigureDataSourceConfigPo.getDatSourceAdvancedFieldValue('Assigned Group')).toBe('Assigned Department Primary');
@@ -157,22 +156,22 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
             expect(await createConfigureDataSourceConfigPo.isDataSourceDropDownOptionsMatches('Record Definition Name', dataSourceRecordDefinitionOptions, 'Case Detail')).toBeFalsy('Field Option Not Displayed');
             await editConfigureDataSourceConfigPo.clickCancelButton();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[6052,6051,6050,6048,6042,6043]: Verify the error when existing data source used in SVT configs is modified', async () => {
-            await utilGrid.searchRecord('nonmatchingtext');
-            await utilGrid.searchAndOpenHyperlink('Case Management');
+            await utilityGrid.searchRecord('nonmatchingtext');
+            await utilityGrid.searchAndOpenHyperlink('Case Management');
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
             expect(await editConfigureDataSourceConfigPo.isDatSourceFieldDisabled('Display Name')).toBeTruthy('Display Name field is enabled on Edit Data Source Config screen');
             await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
             await editConfigureDataSourceConfigPo.clearDatSourceAdvancedFieldSelection('Assigned Group');
-            expect(await utilCommon.isPopUpMessagePresent('For a valid measurement data, ensure that Service Targets do not use this option.')).toBeTruthy('Error : error message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('For a valid measurement data, ensure that Service Targets do not use this option.')).toBeTruthy('Error : error message is not displayed.');
             expect(await editConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await editConfigureDataSourceConfigPo.clickCancelButton();
-            expect(await utilCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
-            await utilCommon.clickOnWarningOk();
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
     });
@@ -197,7 +196,7 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'Company');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (306): Value does not fall within the limits specified for the field (Field ID - com.bmc.dsm.slm-lib:Config Data Source <300520600>, Maximum length - 50)')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (306): Value does not fall within the limits specified for the field (Field ID - com.bmc.dsm.slm-lib:Config Data Source <300520600>, Maximum length - 50)')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceAlphaNumeric);
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeTruthy('Dynamic End Time Field is enabled on Create Data Source Config screen');
@@ -213,7 +212,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeFalsy('Dynamic End Time Field is disabled on Create Data Source Config screen');
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic Goal Time Field')).toBeTruthy('Dynamic Goal Time Field is enabled on Create Data Source Config screen');
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('You must enter an End Time value.')).toBeTruthy('Dynamic End Time Validation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('You must enter an End Time value.')).toBeTruthy('Dynamic End Time Validation message is not displayed.');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created Date');
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
@@ -229,11 +228,11 @@ describe('Data Source Configuration Tests', () => {
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
         it('[6049,6049,6045,6047]: Verify Data Source Configuration Creation with Reset Goal Validation', async () => {
-            await utilGrid.searchAndOpenHyperlink(dataSourceAlphaNumeric);
+            await utilityGrid.searchAndOpenHyperlink(dataSourceAlphaNumeric);
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
             expect(await editConfigureDataSourceConfigPo.getDatSourceFieldValue('Display Name')).toBe(dataSourceAlphaNumeric);
             await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
@@ -252,7 +251,7 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'ASSIGNED COMPANY_ID');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
     });
@@ -266,7 +265,7 @@ describe('Data Source Configuration Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.CONFIGURE_DATA_SOURCE);
             expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleHeading()).toBe(dataSourceConsoleHeading);
             // expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleDescription()).toBe(dataSourceConsoleDesc);
-            await utilGrid.searchAndOpenHyperlink(dataSourceDisplayName);
+            await utilityGrid.searchAndOpenHyperlink(dataSourceDisplayName);
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Company');
@@ -288,7 +287,7 @@ describe('Data Source Configuration Tests', () => {
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
         it('[4901]: Create a Task SVT and verify the data source details are enabled', async () => {
@@ -318,7 +317,7 @@ describe('Data Source Configuration Tests', () => {
             await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
             await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 

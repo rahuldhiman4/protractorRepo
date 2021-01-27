@@ -1,5 +1,4 @@
 import { $, $$, by, element, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common'
 import { resolve } from 'path';
 
@@ -11,7 +10,7 @@ class EditKnowledgePage {
         statusCancelBtn: '[rx-view-component-id="cf381d41-6377-4ee2-9cbc-87b59207eb3d"] button',
         changeReviewerBtn: '[rx-view-component-id="f8c32272-6166-4001-a2dc-60762b5f6d69"] button',
         assigneToMeReviewerAssign: '[rx-view-component-id="7b202136-47a8-4234-b369-c300297055c6"] button',
-        reviewerCompanyfldStatusBlade: '[rx-view-component-id="b4f529dc-f3b8-476a-b25d-40f5e6b71b5f"] adapt-select',
+        reviewerCompanyfldStatusBlade: '[rx-view-component-id="6f8e4177-cad6-4d59-9467-074b688aa06e"] adapt-select',
         reviewerBUfldStatusBlade: '[rx-view-component-id="bd3d17d2-074a-41e6-8d27-c5d47c6b6a63"] adapt-select',
         reviewerDepfldStatusBlade: '[rx-view-component-id="a70e47b4-b9fb-4a34-86ac-b263178e39ed"] adapt-select',
         reviewerGrpfldStatusBlade: '[rx-view-component-id="0605287c-c69c-45d9-b346-60a441174f8c"] adapt-select',
@@ -30,7 +29,7 @@ class EditKnowledgePage {
         knowledgeReviewHeader: '[rx-view-component-id="1d906e6a-cf0e-4358-94e8-d86ff0733068"] span',
         knowledgeRevierGroup: '[rx-view-component-id="0b622151-c917-4d1c-97e4-3a9b7f082e2d"] button',
         KnowledgeReviewer: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] button',
-        knowledgeReviewerValue: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] button',
+        knowledgeReviewerValue: '[rx-view-component-id="b56b4649-9f86-4ba9-a8a5-56d9c000cc89"] button',
         siteValue: '[rx-view-component-id="ff94cecf-1b32-46c2-a207-cd3e426d52f7"] button',
         removeRegionValues: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .glyphicon-remove',
         articleEditOption: '[rx-view-component-id="1592eebc-8777-48cc-ae6c-d2b82a60a972"] adapt-button',
@@ -167,7 +166,7 @@ class EditKnowledgePage {
     }
 
     async isReviewerCompanyFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
-        return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("aria-readonly") == "true";
+        return await $(this.selectors.reviewerCompanyfldStatusBlade).getAttribute("aria-disabled") == "true";
     }
 
     async isReviewerBusinessUnitFieldDisbaledOnStatusChangeBlade(): Promise<Boolean> {
@@ -211,11 +210,11 @@ class EditKnowledgePage {
     }
 
     async getRegionSelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+        return await utilityCommon.getSelectedFieldValue(fieldName);
     }
 
     async getSiteSelectedValue(fieldName: string): Promise<string> {
-        return await utilCommon.getSelectedFieldValue(fieldName);
+        return await utilityCommon.getSelectedFieldValue(fieldName);
     }
 
     async getSelectedFieldValue(fieldName: string): Promise<string> {
@@ -246,7 +245,7 @@ class EditKnowledgePage {
     }
 
     async getReviewerValue(): Promise<string> {
-        return await $(this.selectors.knowledgeReviewerValue).getText()
+        return await $(this.selectors.knowledgeReviewerValue).get(3).getText()
     }
 
     async isArticleEditOptionDisplayed(editOption: string): Promise<boolean> {

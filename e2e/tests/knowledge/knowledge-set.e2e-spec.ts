@@ -6,8 +6,6 @@ import consoleKnowledgeSetPo from '../../pageobject/settings/knowledge-managemen
 import createKnowledgeSetPo from '../../pageobject/settings/knowledge-management/create-knowledge-set.po';
 import editKnowledgeSet from '../../pageobject/settings/knowledge-management/edit-knowledge-set.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import utilityGrid from '../../utils/utility.grid';

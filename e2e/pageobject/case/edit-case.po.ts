@@ -19,13 +19,13 @@ class CaseEditPage {
         priorityGuid: 'add23d12-52e7-4c43-aa78-2aa0c6125bb5',
         priorityRequiredText: '[rx-view-component-id="add23d12-52e7-4c43-aa78-2aa0c6125bb5"] .btn-secondary',
         clearContactButton: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-cross',
-        categoryTier1Guid: '3c587e17-abb1-4154-b801-dd5930cef79a',
-        categoryTier2Guid: '7beae951-8345-4f97-9cac-48933083928f',
-        categoryTier3Guid: '68d56b74-b9ad-444e-8dfc-ddec1e16897f',
-        categoryTier4Guid: 'aa75da42-eeb4-4a6f-946b-74d5316b7641',
-        categoryTier1Drpbox: '[rx-view-component-id="3c587e17-abb1-4154-b801-dd5930cef79a"] adapt-select',
-        categoryTier2Drpbox: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] adapt-select',
-        categoryTier3Drpbox: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] adapt-select',
+        categoryTier1Guid: '59769557-4b17-4a1a-952f-63e9418fb7ff',
+        categoryTier2Guid: '0aa422df-d89a-40ac-8956-c4f5480b2e36',
+        categoryTier3Guid: 'f59cd305-9f35-4d39-891e-8824a97724e2',
+        categoryTier4Guid: '7f7f2d24-1f78-427e-b972-f99e55f1d070',
+        categoryTier1Drpbox: '[rx-view-component-id="59769557-4b17-4a1a-952f-63e9418fb7ff"] adapt-select',
+        categoryTier2Drpbox: '[rx-view-component-id="0aa422df-d89a-40ac-8956-c4f5480b2e36"] adapt-select',
+        categoryTier3Drpbox: '[rx-view-component-id="f59cd305-9f35-4d39-891e-8824a97724e2"] adapt-select',
         labelGuid: 'd9b7ead5-02e4-4af4-b87e-9103439922b7',
         caseLabel: '[rx-view-component-id="d9b7ead5-02e4-4af4-b87e-9103439922b7y"] .btn-secondary',
         siteGuid: '6f909ad9-4b55-4010-8500-c4b1bf0fffa5',
@@ -51,7 +51,7 @@ class CaseEditPage {
         assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] adapt-select',
         assigneeCompanyGuid: '196878af-30b3-4ae2-ae7f-4c65baa5d951',
         department: '[rx-view-component-id="3265d389-cd00-45ca-b65a-8335c67582b7"] adapt-select',
-        assigneee: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] adapt-select',
+        assigneee: '.assignee button',
         buisnessUnit: '[rx-view-component-id="54e4d84f-daca-4988-b064-d79084ab9421"] adapt-select',
         assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] adapt-select',
         assignedGroupGuid: '116edc77-c040-42db-8a32-dc836e4cb254',
@@ -216,11 +216,11 @@ class CaseEditPage {
     }
 
     async isSummaryRequiredText(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.summaryGuid);
+        return await utilityCommon.isRequiredTagPresent(this.selectors.summaryGuid);
     }
 
     async isPriorityRequiredText(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.priorityGuid);
+        return await utilityCommon.isRequiredTagPresent(this.selectors.priorityGuid);
     }
 
     async isAssignedCompanyRequiredText(): Promise<boolean> {

@@ -17,7 +17,6 @@ import editTask from "../../pageobject/task/edit-task.po";
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -221,15 +220,15 @@ describe('Create Adhoc task', () => {
         await viewCasePage.clickOnRefreshTaskList();
         await viewCasePage.clickOnTaskLink(summary);
         expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is missing');
-        await utilCommon.deleteAlreadyDownloadedFile('demo.txt');
+        await utilityCommon.deleteAlreadyDownloadedFile('demo.txt');
         await viewTask.clickOnAttachments('demo.txt');
-        expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+        expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
 
         //Navigated To Case and Verify attachments grid for task attachments
         await viewTask.clickOnViewCase();
         await viewCasePage.clickAttachmentsLink();
         await attachmentBladePo.clickFileName('demo');
-        let finalDate: string = await utilCommon.getCurrentDate();
+        let finalDate: string = await utilityCommon.getCurrentDate();
         expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
         expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
         expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: demo', 'FileName is missing');
@@ -238,10 +237,10 @@ describe('Create Adhoc task', () => {
         expect(await attachmentInformationBladePo.getValuesOfInformation('Created date')).toContain(finalDate);
         expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
         expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
-        expect(await utilCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
+        expect(await utilityCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
         await attachmentInformationBladePo.clickDownloadButton();
-        expect(await utilCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
-        await utilCommon.deleteAlreadyDownloadedFile('demo.txt');
+        expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+        await utilityCommon.deleteAlreadyDownloadedFile('demo.txt');
         await attachmentInformationBladePo.clickCloseButton();
         await attachmentBladePo.clickCloseButton();
     });
@@ -329,7 +328,7 @@ describe('Create Adhoc task', () => {
         expect(await adhoctaskTemplate.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
         expect(await adhoctaskTemplate.getAttachmentLimitWarningText()).toBe('The maximum number of attachments allowed is 20');
         await adhoctaskTemplate.clickSaveAdhoctask();
-        await utilCommon.closePopUpMessage();
+        await utilityCommon.closePopUpMessage();
         await browser.sleep(10000); // hardwait to upload multiple files
         await manageTask.clickTaskLink(summary);
         await viewTask.clickShowMoreShowLessLink();

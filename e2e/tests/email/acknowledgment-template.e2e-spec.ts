@@ -8,7 +8,7 @@ import editAcknowledgmentTemplatePo from '../../pageobject/settings/email/edit-a
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-let userData, userData1, userData2 = undefined;
+let userData1, userData2 = undefined;
 
 
 describe('Email Acknowledgment Template', () => {
@@ -290,9 +290,9 @@ describe('Email Acknowledgment Template', () => {
             await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
             await utilityCommon.closePopUpMessage();
             await consoleAcknowledgmentTemplatePo.searchOnGridConsole('body');
-             expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
-             await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
-             expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
+            expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
+            await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
+            expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
         });
         it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {

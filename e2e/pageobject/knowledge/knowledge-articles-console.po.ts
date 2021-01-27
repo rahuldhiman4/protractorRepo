@@ -1,6 +1,5 @@
 import utilityCommon from '../../utils/utility.common';
 import { $, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
-import utilGrid from "../../utils/util.grid";
 import utilityGrid from '../../utils/utility.grid';
 
 class KnowledgeArticlesGridConsole {
@@ -48,7 +47,7 @@ class KnowledgeArticlesGridConsole {
     }
 
     async clearGridSearchBox(): Promise<void> {
-        await utilGrid.clearGridSearchBox();
+        await utilityGrid.clearSearchBox();
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 

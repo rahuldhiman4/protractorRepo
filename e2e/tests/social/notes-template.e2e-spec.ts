@@ -232,7 +232,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(templateName);
             await createNotesTemplate.setStatusValue('Active');
@@ -250,7 +250,7 @@ describe('Notes template', () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
@@ -258,7 +258,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
@@ -266,7 +266,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
@@ -274,7 +274,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
 
@@ -286,12 +286,12 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
 
             await utilityGrid.selectLineOfBusiness('Facilities');
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
             let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
             await editNotetemplate.changeStatusValue('Inactive');
@@ -323,7 +323,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(templateName);
             await createNotesTemplate.setStatusValue('Active');
@@ -340,7 +340,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
 
         });
@@ -349,7 +349,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
@@ -357,7 +357,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
@@ -365,7 +365,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('task notes template for Facilities LOB are displayed to Human Resource LOB User.');
 
@@ -377,12 +377,12 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(templateName)).toBeFalsy('people notes template for Facilities LOB are displayed to Human Resource LOB User.');
 
             await utilityGrid.selectLineOfBusiness('Facilities');
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(templateName);
             let updateBody: string = "UpdateNotesTemplate" + Math.floor(Math.random() * 100000);
             await editNotetemplate.changeStatusValue('Inactive');
@@ -519,13 +519,13 @@ describe('Notes template', () => {
         expect(await createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         expect(await createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+        await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
         expect(await consoleNotesTemplatePo.isNotesTemplateUIConsolePresent()).toBeTruthy();
         await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
         expect(await createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
         expect(await createNotesTemplate.isCreateNotesTemplateUIPresent()).toBeTruthy();
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+        await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
         expect(await consoleNotesTemplatePo.isNotesTemplateUIConsolePresent()).toBeTruthy();
         await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
         expect(await createNotesTemplate.isSaveButtonDisabled()).toBeFalsy();
@@ -553,7 +553,7 @@ describe('Notes template', () => {
         });
         it('[4299]: Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             peopleNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(peopleNotesTemplate);
             await editNotetemplate.changeLanguageValue('Italian (Italy)');
@@ -563,7 +563,7 @@ describe('Notes template', () => {
         });
         it('[4299]: [Design Time] Verify warning Message for locale values if template message is not configured against that locale value', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             taskNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(taskNotesTemplate);
             await editNotetemplate.changeLanguageValue('Italian (Italy)');
@@ -600,7 +600,7 @@ describe('Notes template', () => {
         it('[4299]: People Notes template create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(peopleNotesTemplate);
             await createNotesTemplate.setCompanyValue('Petramco');
@@ -613,7 +613,7 @@ describe('Notes template', () => {
         it('[4299]: Task Notes template create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(taskNotesTemplate);
             await createNotesTemplate.setCompanyValue('Petramco');
@@ -655,7 +655,7 @@ describe('Notes template', () => {
         it('[4299]: People Notes template create same name record in different LOB', async () => {
             //create same name record in different LOB
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(peopleNotesTemplate);
             await createNotesTemplate.setCompanyValue('Petramco');
@@ -672,7 +672,7 @@ describe('Notes template', () => {
         it('[4299]: Task Notes template create same name record in different LOB', async () => {
             //create same name record in different LOB
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(taskNotesTemplate);
             await createNotesTemplate.setCompanyValue('Petramco');
@@ -2106,7 +2106,7 @@ describe('Notes template', () => {
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             templateName = "PeopleNotesTemplate" + Math.floor(Math.random() * 100000);
 
@@ -2568,7 +2568,7 @@ describe('Notes template', () => {
         //Pepole
         it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             peopleTemplateName = "PeopleNotesTemplate" + Math.floor(Math.random() * 100000);
             await createNotesTemplate.setTemplateName(peopleTemplateName);
@@ -2700,7 +2700,7 @@ describe('Notes template', () => {
         //Task
         it('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             taskTemplateName = "taskNotesTemplate" + Math.floor(Math.random() * 100000);
             await createNotesTemplate.setTemplateName(taskTemplateName);
@@ -2812,7 +2812,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('22653User@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(taskTemplateName);
             updateBody = "UpdateTaskNotesTemplate" + Math.floor(Math.random() * 100000);
             await editNotetemplate.changeStatusValue('Inactive');
@@ -2825,7 +2825,7 @@ describe('Notes template', () => {
         });
         it('[3436]: Verify access of notes template to Case BA With People', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(peopleTemplateName);
             updateBody = "UpdatePeopleNotesTemplate" + Math.floor(Math.random() * 100000);
             await editNotetemplate.changeStatusValue('Inactive');
@@ -2871,13 +2871,13 @@ describe('Notes template', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
         it('[3436]: Verify Person / Knowledge Notes Templates are accessible to other Line of business Case BA', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
@@ -2893,13 +2893,13 @@ describe('Notes template', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
         it('[3436]: Verify Knowledge / Person Notes Templates are accessible to other Line of business Case Manager user', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
@@ -2916,13 +2916,13 @@ describe('Notes template', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
         it('[3436]: Verify Person / Knowledge Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
@@ -2937,11 +2937,11 @@ describe('Notes template', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateName)).toBeTruthy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(peopleTemplateName)).toBeTruthy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
@@ -2958,13 +2958,13 @@ describe('Notes template', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
         });
 
         it('[3436]: Verify Knowledge / Person Notes Templates are accessible to Case Manager user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
@@ -2980,11 +2980,11 @@ describe('Notes template', () => {
             expect(await utilityGrid.isGridRecordPresent(caseTemplateName)).toBeTruthy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('Task Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(peopleTemplateName)).toBeTruthy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
 
             await navigationPage.gotoSettingsPage();
@@ -3074,7 +3074,7 @@ describe('Notes template', () => {
         });
         it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             templateName = "taskNotesTemplate" + Math.floor(Math.random() * 100000);
             await createNotesTemplate.setTemplateName(templateName);

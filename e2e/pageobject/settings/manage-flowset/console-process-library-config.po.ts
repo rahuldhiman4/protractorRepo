@@ -12,9 +12,9 @@ class ConsoleProcessLibrary {
     }
 
     async isProcessPresentOnGrid(process: string): Promise<boolean> {
-        return await element(by.cssContainingText('.ui-grid-cell-contents', process)).isPresent().then(async (result) => {
+        return await element(by.cssContainingText('.at-data-cell', process)).isPresent().then(async (result) => {
             if(result){
-                return await element(by.cssContainingText('.ui-grid-cell-contents', process)).getText() == process ? true : false;
+                return await element(by.cssContainingText('.at-data-cell', process)).getText() == process ? true : false;
             } else {
                 console.log("Flowset not present");
                 return false;
@@ -41,9 +41,9 @@ class ConsoleProcessLibrary {
 
     async isAliasNamePresentOnGrid(alias: string): Promise<boolean> {
         await utilityGrid.isGridRecordPresent(alias);
-        return await element(by.cssContainingText('.ui-grid__link', alias)).isPresent().then(async (result) => {
+        return await element(by.cssContainingText('.at-data-row a', alias)).isPresent().then(async (result) => {
             if(result){
-                return await element(by.cssContainingText('.ui-grid__link', alias)).getText() == alias ? true : false;
+                return await element(by.cssContainingText('.at-data-row a', alias)).getText() == alias ? true : false;
             } else {
                 console.log("Flowset not present");
                 return false;

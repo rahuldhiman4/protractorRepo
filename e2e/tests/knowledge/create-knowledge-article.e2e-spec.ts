@@ -69,8 +69,6 @@ describe('Knowledge Article', () => {
 
     it('[3905]: On Create KA, Assign to me button should process properly on KA', async () => {
         try {
-            let suppGrpData = supportGrpDataFile['SuppGrpData'];
-            let personData = personDataFile['PersonData'];
             let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
             let knowledgeData = knowledgeDataFile['3905'];
             await navigationPage.signOut();
@@ -121,13 +119,11 @@ describe('Knowledge Article', () => {
         expect(await editKnowledgePage.isReviewerFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
         expect(await statusBladeKnowledgeArticlePo.isChangeReviewerButtonPresent()).toBeTruthy();
         expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeTruthy();
-        await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
         await changeAssignmentBlade.selectCompany(knowledgeData.Company);
         await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
         await changeAssignmentBlade.selectDepartment(departmentData.orgName);
         await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
         await changeAssignmentBlade.selectAssignee(personData.firstName);
-        await changeAssignmentBlade.clickOnAssignButton();
         await editKnowledgePage.clickSaveStatusBtn();
         await utilityCommon.closePopUpMessage();
         await editKnowledgePage.isReviewPendingButtonDisplayed();
@@ -149,23 +145,17 @@ describe('Knowledge Article', () => {
         await previewKnowledgePo.clickGoToArticleButton();
         expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.clickChangeAssignmentButton();
-        await changeAssignmentBlade.isCompanyDrpDwnDisplayed();
-        await changeAssignmentBlade.isBuisnessUnitDrpDwnDisplayed();
-        await changeAssignmentBlade.isDepartmentDrpDwnDisplayed();
-        await expect(changeAssignmentBlade.isAssignButtonDisabled()).toBeTruthy();
         await changeAssignmentBlade.selectCompany(knowledgeData.Company);
         await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
         await changeAssignmentBlade.selectDepartment(departmentData.orgName);
         await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
         await changeAssignmentBlade.selectAssignee(personData.firstName);
-        await changeAssignmentBlade.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         let assigneeFullName = personData.firstName + " " + personData.lastName;
         expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe(assigneeFullName);
         expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe(suppGrpData.orgName);
     });
-
+//status config defect
     it('[3902]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         await navigationPage.signOut();
         await loginPage.login('elizabeth');
@@ -368,6 +358,7 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -421,6 +412,7 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -450,14 +442,14 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
-            expect(await editKnowledgePage.isReviewerFieldDisabledInEdit()).toBeTruthy('Reviwer field is enabled');
-            expect(await editKnowledgePage.isReviewerGroupFieldDisabledInEdit()).toBeTruthy('Reviwer Group field is enabled');
-            await editKnowledgePage.clickChangeReviewerBtn();
+            // expect(await editKnowledgePage.isReviewerFieldDisabledInEdit()).toBeTruthy('Reviwer field is enabled');
+            // expect(await editKnowledgePage.isReviewerGroupFieldDisabledInEdit()).toBeTruthy('Reviwer Group field is enabled');
+            //await editKnowledgePage.clickChangeReviewerBtn();
             await changeAssignmentBlade.selectCompany('Petramco');
             await changeAssignmentBlade.selectBusinessUnit('Australia Support');
             await changeAssignmentBlade.selectSupportGroup('AU Support 3');
             await changeAssignmentBlade.selectAssignee('Kane Williamson');
-            await changeAssignmentBlade.clickOnAssignButton();
+            //await changeAssignmentBlade.clickOnAssignButton();
             expect(await editKnowledgePage.getReviewerValue()).toContain('Kane Williamson', 'Reviewer not matched with expected');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
@@ -466,6 +458,7 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -514,6 +507,7 @@ describe('Knowledge Article', () => {
             throw e;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         }
@@ -576,6 +570,7 @@ describe('Knowledge Article', () => {
             await navigationPage.gotoSettingsPage();
             let knowledgeManagementList: string[] = ['Approvals', 'Article Template Styles', 'Article Templates', 'Knowledge Sets', 'Notes Template', 'Status Configuration', 'Knowledge Management'];
             expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
+            await navigationPage.switchToApplication('Knowledge Management');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
@@ -585,6 +580,7 @@ describe('Knowledge Article', () => {
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            await navigationPage.switchToApplication('Knowledge Management');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
@@ -596,6 +592,7 @@ describe('Knowledge Article', () => {
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            await navigationPage.switchToApplication('Knowledge Management');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
@@ -605,6 +602,7 @@ describe('Knowledge Article', () => {
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            await navigationPage.switchToApplication('Knowledge Management');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();

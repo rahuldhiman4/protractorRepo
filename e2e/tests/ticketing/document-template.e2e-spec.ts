@@ -1,3 +1,4 @@
+import utilityGrid from '../../utils/utility.grid';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
@@ -8,8 +9,6 @@ import createDocumentTemplatePo from '../../pageobject/settings/document-managem
 import documentTemplateConsolePo from '../../pageobject/settings/document-management/document-template-console.po';
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Document Template', () => {
@@ -73,20 +72,20 @@ describe('Document Template', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName);
             await createDocumentTemplatePo.setCompany('Petramco');
             await createDocumentTemplatePo.setDescription(documentDescription);
             await createDocumentTemplatePo.setDocumentBody(documentBody);
             await createDocumentTemplatePo.clickOnSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent(`ERROR (2220154): Template Already exist with given name:${documentName}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (2220154): Template Already exist with given name:${documentName}`)).toBeTruthy("Error message absent");
             await createDocumentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4510]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(documentName);
             await createDocumentTemplatePo.setCompany('Petramco');
@@ -95,12 +94,12 @@ describe('Document Template', () => {
             // verify LOB is there
             expect(await createDocumentTemplatePo.getLobValue()).toBe("Facilities");
             await createDocumentTemplatePo.clickOnSaveButton();
-            //expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent"); NO SUCCESS MESSAGE ON UI
+            //expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent"); NO SUCCESS MESSAGE ON UI
             // open the record and verify LOB is on edit screen
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName);
             expect(await editDocumentTemplatePo.getLobValue()).toBe("Facilities");
             await editDocumentTemplatePo.clickOnCancelButton();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -125,7 +124,7 @@ describe('Document Template', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness("Facilities");
+            await utilityGrid.selectLineOfBusiness("Facilities");
             await createDocumentTemplatePo.clickOnAddTemplate();
             expect(await createDocumentTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
             await createDocumentTemplatePo.setTemplateName(templateRandVal1);
@@ -136,7 +135,7 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.clickOnDocumentBodyImageButton();
             await imagePropertiesPo.addImg('Upload', '../../../data/ui/attachment/articleStatus.png');
             await createDocumentTemplatePo.clickOnSaveButton();
-            await utilGrid.selectLineOfBusiness("Human Resource");
+            await utilityGrid.selectLineOfBusiness("Human Resource");
             await createDocumentTemplatePo.clickOnAddTemplate();
             await createDocumentTemplatePo.setTemplateName(templateRandVal2);
             expect(await createDocumentTemplatePo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
@@ -147,7 +146,7 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.clickOnSaveButton();
         });
         it('[4516,4512,4515,4514]: Validation of document template', async () => {
-            await utilGrid.selectLineOfBusiness("Facilities");
+            await utilityGrid.selectLineOfBusiness("Facilities");
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal1)).toBeTruthy('Template Name is missing');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('Petramco')).toBeTruthy('Petramco Company Name is missing');
@@ -156,8 +155,8 @@ describe('Document Template', () => {
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody1)).toBeTruthy('Document body text is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyImgDisplay()).toBeTruthy('Document body Img text is missing');
             await editDocumentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
-            await utilGrid.selectLineOfBusiness("Human Resource");
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityGrid.selectLineOfBusiness("Human Resource");
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal2);
             expect(await editDocumentTemplatePo.isTemplateNameDisplayed(templateRandVal2)).toBeTruthy('Template Name is missing for Global company');
             expect(await editDocumentTemplatePo.isCompanyNameDisplayed('- Global -')).toBeTruthy('Global Company Name is missing ');
@@ -166,10 +165,10 @@ describe('Document Template', () => {
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody1)).toBeTruthy('Document body text is missing of Global company');
             expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('company drop down is enabled of Global company');
             await editDocumentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4516,4512,4515,4514]: Update document template', async () => {
-            await utilGrid.selectLineOfBusiness("Facilities");
+            await utilityGrid.selectLineOfBusiness("Facilities");
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(templateRandVal1);
             expect(await editDocumentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company Drop down is not disabled');
             expect(await editDocumentTemplatePo.isTemplateNameDisabled()).toBeTruthy('Template Name is disabled');
@@ -184,7 +183,7 @@ describe('Document Template', () => {
             expect(await editDocumentTemplatePo.isDescriptionValueDisplayed(description2)).toBeTruthy('Description2 Name is missing');
             expect(await editDocumentTemplatePo.isDocumentBodyDisplayed(documentBody2)).toBeTruthy('Document body2 text is missing');
             await editDocumentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await documentTemplateConsolePo.searchOnGridConsole(templateRandVal1);
         });
         it('[4516,4512,4515,4514]: Verify Document template creation with Case business analyst only and different validations on the window', async () => {
@@ -199,7 +198,7 @@ describe('Document Template', () => {
             await documentTemplateConsolePo.clearGridSearchBox();
             await documentTemplateConsolePo.selectCheckBox(templateRandVal2);
             await documentTemplateConsolePo.clickOnDeleteButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await documentTemplateConsolePo.isGridRecordPresent(templateRandVal2)).toBeFalsy('template name is preset on grid');
         });
         afterAll(async () => {
@@ -336,7 +335,7 @@ describe('Document Template', () => {
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName1);
             expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('Category Tier 1');
             await editDocumentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[4513]: Verify Document Template With Add Case Template Dynamic Field  ', async () => {
@@ -365,7 +364,7 @@ describe('Document Template', () => {
             await documentTemplateConsolePo.searchAndOpenDocumentTemplate(documentName2);
             expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
             await editDocumentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[4513]: Verify Document Template With Confidential, Non Confidential Required and Hidden ', async () => {
@@ -379,7 +378,7 @@ describe('Document Template', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('hiddenFieldTrue')).toBeTruthy("hiddenFieldTrue is missing");
             await addFieldsPopPo.clickOnCancelButtonOfEditor();
             await createDocumentTemplatePo.clickOnCancelButton();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[4513]: Verify Document Template With Case Template Without Dynamic Field  ', async () => {

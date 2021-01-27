@@ -6,9 +6,8 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import notificationPo from '../../pageobject/notification/notification.po';
 import notificationTemplateEditPage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
 let requestSecondaryStr: string = 'Request Secondary';
@@ -24,8 +23,8 @@ describe("Actionable Notification Approval", () => {
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        await utilGrid.clearFilter();
-        await utilGrid.addFilter('Company', '- Global -', 'text');
+        await utilityGrid.clearFilter();
+        await utilityGrid.addFilter('Company', '- Global -', 'text');
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         await apiHelper.setDefaultNotificationForUser('qdu', "Alert");
@@ -100,11 +99,11 @@ describe("Actionable Notification Approval", () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('New Signature Template');
+            await utilityGrid.searchAndOpenHyperlink('New Signature Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
@@ -131,11 +130,11 @@ describe("Actionable Notification Approval", () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('Approve Template');
+            await utilityGrid.searchAndOpenHyperlink('Approve Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
@@ -162,11 +161,11 @@ describe("Actionable Notification Approval", () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('Cancel Template');
+            await utilityGrid.searchAndOpenHyperlink('Cancel Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
@@ -193,11 +192,11 @@ describe("Actionable Notification Approval", () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('Reject Template');
+            await utilityGrid.searchAndOpenHyperlink('Reject Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
@@ -224,11 +223,11 @@ describe("Actionable Notification Approval", () => {
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        await utilGrid.searchAndOpenHyperlink('Reassign Template');
+        await utilityGrid.searchAndOpenHyperlink('Reassign Template');
         await notificationTemplateEditPage.openAlertEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
         await notificationTemplateEditPage.cancelAlertMessageText();
-        await utilCommon.clickOnWarningOk();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
@@ -260,11 +259,11 @@ describe("Actionable Notification Approval", () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('Hold Template');
+            await utilityGrid.searchAndOpenHyperlink('Hold Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
@@ -291,11 +290,11 @@ describe("Actionable Notification Approval", () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('More Info Template');
+            await utilityGrid.searchAndOpenHyperlink('More Info Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
@@ -323,11 +322,11 @@ describe("Actionable Notification Approval", () => {
         try {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink('More Info Return Template');
+            await utilityGrid.searchAndOpenHyperlink('More Info Return Template');
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');

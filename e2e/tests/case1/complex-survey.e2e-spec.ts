@@ -34,7 +34,7 @@ describe('Complex Surveys', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId;
         let response = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId,'surveyDateTimeTop_DRDMV_18118_1');
+        await apiHelper.createComplexSurvey(serviceReqId, 'surveyDateTimeTop_DRDMV_18118_1');
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 4 (out of 5)", "Rating does not match");
         expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
@@ -63,7 +63,7 @@ describe('Complex Surveys', () => {
         let serviceReqId1: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId1;
         let response1 = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId1,'surveyRadioButtonTop_DRDMV_18118_2');
+        await apiHelper.createComplexSurvey(serviceReqId1, 'surveyRadioButtonTop_DRDMV_18118_2');
         await utilityGrid.searchAndOpenHyperlink(response1.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 3 (out of 5)", "Rating does not match");
         expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("How would you rate the knowledge of our SMEs ? (This is Radio Button question, User can select only one option)");
@@ -92,7 +92,7 @@ describe('Complex Surveys', () => {
         let serviceReqId2: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId2;
         let response2 = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId2,'surveyCheckboxTop_DRDMV_18118_3');
+        await apiHelper.createComplexSurvey(serviceReqId2, 'surveyCheckboxTop_DRDMV_18118_3');
         await utilityGrid.searchAndOpenHyperlink(response2.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 5 (out of 5)", "Rating does not match");
         expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("Which of the following words would you use to describe our products? Select all that apply. (This is Checkbox type question, user can select multiple options)");
@@ -120,7 +120,7 @@ describe('Complex Surveys', () => {
         let serviceReqId3: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId3;
         let response3 = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId3,'surveyDropdownTop_DRDMV_18118_4');
+        await apiHelper.createComplexSurvey(serviceReqId3, 'surveyDropdownTop_DRDMV_18118_4');
         await utilityGrid.searchAndOpenHyperlink(response3.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 5 (out of 5)", "Rating does not match");
         expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("How would you rate quality of our service ? (This is Single Select drop down list question, user can select one option)");
@@ -149,7 +149,7 @@ describe('Complex Surveys', () => {
         let serviceReqId4: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId4;
         let response4 = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId4,'surveyTextFieldTop_DRDMV_18118_5');
+        await apiHelper.createComplexSurvey(serviceReqId4, 'surveyTextFieldTop_DRDMV_18118_5');
         await utilityGrid.searchAndOpenHyperlink(response4.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 1 (out of 5)", "Rating does not match");
         expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("How likely is it that you would recommend this Service to a friend or colleague? (This is Text Field type question, please describe in single line comment)");
@@ -177,7 +177,7 @@ describe('Complex Surveys', () => {
         let serviceReqId5: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId5;
         let response5 = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId5,'surveyTextAreaTop_DRDMV_18118_6');
+        await apiHelper.createComplexSurvey(serviceReqId5, 'surveyTextAreaTop_DRDMV_18118_6');
         await utilityGrid.searchAndOpenHyperlink(response5.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 2 (out of 5)", "Rating does not match");
         expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("Overall, how satisfied or dissatisfied are you with our company? (This is Text Area type question, please describe in multiline comment)");
@@ -209,7 +209,7 @@ describe('Complex Surveys', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId;
         let response = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId,'simpleSurveyLongFeedback_DRDMV_18117_1');
+        await apiHelper.createComplexSurvey(serviceReqId, 'simpleSurveyLongFeedback_DRDMV_18117_1');
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 3 (out of 5)", "Rating does not match");
         let stringText = "Line 1 - Definition: \nLine 2 - Survey Feedback\nLine 3 – Is added as long text in single line, this single line text should get adjusted in multiline when viewing in Case Activity. Survey Feedback is tool which provides an organization with a honest opinion of what their present or future customers think about them and helps them in taking an informed decision.\nRead Next\nSurvey Research\nSurvey\n\n\nSteps Involved in Survey Feedback:\n\n(a) Identifying the objective of conducting the survey.\n\n(b) Informing all the members including the team leads and other employees about the procedure for conducting the survey.\n\n(c) Starting the ground work.\n\n(d) Organizing and conducting the interviews of target groups.\n\n(e) Analyzing the data obtained and generating a report out of that.\n\n(f) Based on the report providing proper feedback.\n\n(g) Presenting the final report to the top management.\n\n(h) Devising policies so that the survey results can help to serve the given objective.\n\n\n\nBenefits:\n\nKnowing the wants and needs of the customers with respect to the products and services is the driving force for product innovation. Customer is the king in today’";
@@ -225,7 +225,7 @@ describe('Complex Surveys', () => {
         let serviceReqId1: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId1;
         let response1 = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId1,'simpleSurveyShortFeedback_DRDMV_18117_2');
+        await apiHelper.createComplexSurvey(serviceReqId1, 'simpleSurveyShortFeedback_DRDMV_18117_2');
         await utilityGrid.searchAndOpenHyperlink(response1.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 5 (out of 5)", "Rating does not match");
         expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain(" Short Feedback in one line ");
@@ -238,7 +238,7 @@ describe('Complex Surveys', () => {
         let serviceReqId2: string = "sid" + [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId2;
         let response2 = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId2,'simpleSurveyShortWithoutQuestions_DRDMV_18117_3');
+        await apiHelper.createComplexSurvey(serviceReqId2, 'simpleSurveyShortWithoutQuestions_DRDMV_18117_3');
         await utilityGrid.searchAndOpenHyperlink(response2.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 2 (out of 5)", "Rating does not match");
         expect(await activityTabPage.isViewSurveyInformationLinkPresent()).toBeFalsy("Link is present");
@@ -250,7 +250,7 @@ describe('Complex Surveys', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId;
         let response = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId,'complexSurveyQuestionsAndFeedback_DRDMV_19366');
+        await apiHelper.createComplexSurvey(serviceReqId, 'complexSurveyQuestionsAndFeedback_DRDMV_19366');
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 1 (out of 5)", "Rating does not match");
         expect(await (await activityTabPage.getAllSurveyTextOnActivityTab()).localeCompare("Definition: Survey Feedback\nSurvey Feedback is tool which provides an organization with a honest opinion of what")).toBeTruthy("Definition: Survey Feedback\nSurvey Feedback is tool which provides an organization with a honest opinion of what");
@@ -280,7 +280,7 @@ describe('Complex Surveys', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId;
         let response = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId,'simpleSurveyLongFeedback_DRDMV_18117_1');
+        await apiHelper.createComplexSurvey(serviceReqId, 'simpleSurveyLongFeedback_DRDMV_18117_1');
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         await activityTabPage.addActivityNote("hello");
         await activityTabPage.clickOnPostButton();
@@ -293,7 +293,7 @@ describe('Complex Surveys', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         caseData['complexSurvey']['Service Request ID'] = serviceReqId;
         let response = await apiHelper.createCase(caseData['complexSurvey']);
-        await apiHelper.createComplexSurvey(serviceReqId,'simpleSurveyLongFeedback_DRDMV_18117_1');
+        await apiHelper.createComplexSurvey(serviceReqId, 'simpleSurveyLongFeedback_DRDMV_18117_1');
         await utilityGrid.searchAndOpenHyperlink(response.displayId);
         await activityTabPage.addActivityNote("hello");
         await activityTabPage.clickOnPostButton();

@@ -23,8 +23,6 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -94,7 +92,6 @@ describe('Create Task Template', () => {
             await taskTemplate.clickOnSaveTaskTemplate();
         });
         it('[5796,5795]: [Task Template] Task Template Create view (UI verification)', async () => {
-            //await utilCommon.closePopUpMessage();
             expect(await viewTaskTemplate.isTaskSummaryTitlePresent('Task Summary')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskTypeTitlePresent('Task Type')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskCompanyTitlePresent('Task Company')).toBeTruthy();
@@ -132,7 +129,7 @@ describe('Create Task Template', () => {
         await viewTaskTemplate.clickOnEditLink();
         await editTaskTemplate.selectTaskCompany('Petramco');
         await editTaskTemplate.clickOnSaveButton();
-        expect(await utilCommon.isPopUpMessagePresent('ERROR (222121): Company marked for Global usage cannot be modified.')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('ERROR (222121): Company marked for Global usage cannot be modified.')).toBeTruthy();
     });
 
     //ankagraw
@@ -278,34 +275,34 @@ describe('Create Task Template', () => {
             let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
             await selectTaskTemplate.addColumn(addColoumn);
-            await utilGrid.addFilter("Support Group", 'US Support 3', 'text');
-            expect(await utilGrid.isGridRecordPresent('US Support 3')).toBeTruthy('US Support 3 not present');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Modified Date", dateFormate + "-" + modifiedDateFormate, 'date');
-            expect(await utilGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy(taskTemplateName);
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Template Name", 'Code of Conduct', 'text');
-            expect(await utilGrid.isGridRecordPresent('Code of Conduct')).toBeTruthy('Code of Conduct not present');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Task Category Tier 1", 'Employee Relations', 'text');
-            expect(await utilGrid.isGridRecordPresent('Employee Relations')).toBeTruthy('Employee Relations not present');
+            await utilityGrid.addFilter("Support Group", 'US Support 3', 'text');
+            expect(await utilityGrid.isGridRecordPresent('US Support 3')).toBeTruthy('US Support 3 not present');
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Modified Date", dateFormate + "-" + modifiedDateFormate, 'date');
+            expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy(taskTemplateName);
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Template Name", 'Code of Conduct', 'text');
+            expect(await utilityGrid.isGridRecordPresent('Code of Conduct')).toBeTruthy('Code of Conduct not present');
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Task Category Tier 1", 'Employee Relations', 'text');
+            expect(await utilityGrid.isGridRecordPresent('Employee Relations')).toBeTruthy('Employee Relations not present');
         });
         it('[5801]: Apply Filter Options and verify remaining fields', async () => {
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Template Status", 'Active', 'checkbox');
-            expect(await utilGrid.isGridRecordPresent('Active')).toBeTruthy('Active not present');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Template Status", 'Draft', 'checkbox');
-            expect(await utilGrid.isGridRecordPresent('Draft')).toBeTruthy('Draft not present');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Template Status", 'Inactive', 'checkbox');
-            expect(await utilGrid.isGridRecordPresent('Inactive')).toBeTruthy('Inactive not present');
-            await utilGrid.clearFilter();
-            await utilGrid.addFilter("Display ID", taskTemplateId, 'text');
-            expect(await utilGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
-            await utilGrid.clearFilter();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Template Status", 'Active', 'checkbox');
+            expect(await utilityGrid.isGridRecordPresent('Active')).toBeTruthy('Active not present');
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Template Status", 'Draft', 'checkbox');
+            expect(await utilityGrid.isGridRecordPresent('Draft')).toBeTruthy('Draft not present');
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Template Status", 'Inactive', 'checkbox');
+            expect(await utilityGrid.isGridRecordPresent('Inactive')).toBeTruthy('Inactive not present');
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Display ID", taskTemplateId, 'text');
+            expect(await utilityGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
+            await utilityGrid.clearFilter();
             await selectTaskTemplate.removeColumn(addColoumn);
         });
         it('[5801]: create same name record in same LOB', async () => {
@@ -314,20 +311,20 @@ describe('Create Task Template', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await taskTemplate.setTemplateName(taskTemplateName);
             await taskTemplate.setTaskSummary(taskTemplateSummary);
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await taskTemplate.clickOnCancelTaskTemplate();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5801]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await taskTemplate.setTemplateName(taskTemplateName);
             await taskTemplate.setTaskSummary(taskTemplateSummary);
@@ -335,12 +332,12 @@ describe('Create Task Template', () => {
             await taskTemplate.selectCompanyByName('Petramco');
 
             // verify categ1, BU and SG as per LOB
-            await utilCommon.isDrpDownvalueDisplayed(taskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await utilityCommon.isAllDropDownValuesMatches(taskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await taskTemplate.selectOwnerCompany('Petramco');
-            await utilCommon.isDrpDownvalueDisplayed(taskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
+            await utilityCommon.isAllDropDownValuesMatches(taskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
             await taskTemplate.selectOwnerCompany('Petramco');
             await taskTemplate.selectBuisnessUnit('Facilities Support');
-            await utilCommon.isDrpDownvalueDisplayed(taskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
+            await utilityCommon.isAllDropDownValuesMatches(taskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
             await taskTemplate.selectBuisnessUnit('Facilities Support');
             await taskTemplate.selectOwnerGroup('Facilities');
             await taskTemplate.clickOnAssignment();
@@ -353,13 +350,13 @@ describe('Create Task Template', () => {
             // verify LOB is there
             expect(await taskTemplate.getLobValue()).toBe("Facilities");
             await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
             expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
             await viewTaskTemplate.clickBackArrowBtn();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -645,7 +642,7 @@ describe('Create Task Template', () => {
             await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
             await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
             await createCaseTemplate.clickSaveCaseTemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewCaseTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
             expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);

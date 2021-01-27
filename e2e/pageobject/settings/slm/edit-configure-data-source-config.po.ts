@@ -1,5 +1,6 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { DropDownType } from '../../../utils/constants';
+import utilityCommon from '../../../utils/utility.common';
 
 class EditDataSourceConfigurationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -28,7 +29,7 @@ class EditDataSourceConfigurationPage {
 
     async isDataSourceFieldRequired(fieldName: string): Promise<boolean> {
         let fieldNameRequiredTag = await element(by.cssContainingText(this.selectors.fieldNameLabel, fieldName));
-        return await utilCommon.isRequiredTagToFieldElement(fieldNameRequiredTag);
+        return await utilityCommon.isRequiredTagPresent(fieldNameRequiredTag);
     }
 
     async isBuildExpressionBtnDisabled(): Promise<boolean> {
@@ -95,12 +96,12 @@ class EditDataSourceConfigurationPage {
     }
 
     async selectDataSourceFieldOption(fieldName: string, fieldOption: string): Promise<void> {
-        await utilCommon.selectDropDownWithName(fieldName, fieldOption);
+        await utilityCommon.selectDropDown(fieldName, fieldOption, DropDownType.Label);// can use DropDownType.Name
     }
 
     async isUseEndTimeCheckboxAlreadySelected(): Promise<boolean> {
-        return await $(this.selectors.useEndTimeCheckbox).getAttribute("checked")  == "true" ? true : false;
-      }  
+        return await $(this.selectors.useEndTimeCheckbox).getAttribute("checked") == "true" ? true : false;
+    }
 
 }
 

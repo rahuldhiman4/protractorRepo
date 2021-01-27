@@ -34,8 +34,6 @@ import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 let userData1 = undefined, userData2;
@@ -110,8 +108,8 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.selectBuisnessUnit('United States Support');
             await createTaskTemplate.selectOwnerGroup('US Support 3');
             await createTaskTemplate.clickOnSaveTaskTemplate();
-            await utilCommon.clickOnWarningOk();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.closePopUpMessage();
         });
         it('[4820]: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {
             await navigationPage.gotoSettingsPage();
@@ -130,20 +128,20 @@ describe('Dynamic Hidden Data', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
             await createTaskTemplate.setTemplateName(automatedTaskTemplate1);
             await createTaskTemplate.setTaskSummary(automatedTaskSummary1);
             await createTaskTemplate.selectCompanyByName('Petramco');
             await createTaskTemplate.setNewProcessName('Process' + randomStr);
             await createTaskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await createTaskTemplate.clickOnCancelTaskTemplate();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4820]: create same name record in different LOB', async () => {
             //create same name record in different LOB
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
             await createTaskTemplate.setTemplateName(automatedTaskTemplate1);
             await createTaskTemplate.setTaskSummary(automatedTaskSummary1);
@@ -151,12 +149,12 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.selectCompanyByName('Petramco');
 
             // verify categ1, BU and SG as per LOB
-            await utilCommon.isDrpDownvalueDisplayed(createTaskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await createTaskTemplate.selectOwnerCompany('Petramco');
-            await utilCommon.isDrpDownvalueDisplayed(createTaskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
+            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
             await createTaskTemplate.selectOwnerCompany('Petramco');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
-            await utilCommon.isDrpDownvalueDisplayed(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
+            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
             await createTaskTemplate.selectOwnerGroup('Facilities');
             await createTaskTemplate.clickOnAssignment();
@@ -169,13 +167,13 @@ describe('Dynamic Hidden Data', () => {
             // verify LOB is there
             expect(await createTaskTemplate.getLobValue()).toBe("Facilities");
             await createTaskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automatedTaskTemplate1);
             expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
             await viewTaskTemplate.clickBackArrowBtn();
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -514,11 +512,11 @@ describe('Dynamic Hidden Data', () => {
         it('[3608,3612,3623]: Change the status of case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         });
         it('[3608,3612,3623]: Make dymanic field as visible', async () => {
@@ -650,7 +648,7 @@ describe('Dynamic Hidden Data', () => {
         it('[3610]: Change the status of case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
@@ -850,7 +848,7 @@ describe('Dynamic Hidden Data', () => {
             await createDocumentTemplatePo.setDescription("Description");
             expect(await createDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
             await createDocumentTemplatePo.clickOnSaveButton();
-            await utilGrid.searchAndOpenHyperlink('Document' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink('Document' + randomStr);
             expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
         });
         it('[4033,4006,4849]: verify dynamic group fields on Copy case template', async () => {
@@ -1030,7 +1028,7 @@ describe('Dynamic Hidden Data', () => {
         it('[4065]: [Dynamic Data] [UI] - Update Dynamic Fields UI from Case Template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.searchAndOpenHyperlink(casetemplateData.templateName);
+            await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group1')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group2')).toBeTruthy();

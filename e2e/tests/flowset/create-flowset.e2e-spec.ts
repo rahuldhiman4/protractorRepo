@@ -1,6 +1,8 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import { flowsetGlobalFields, flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
 import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -8,12 +10,9 @@ import consoleFlowset from '../../pageobject/settings/manage-flowset/console-flo
 import createFlowset from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
 import editFlowset from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
-import { flowsetMandatoryFields, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
-import { cloneDeep } from 'lodash';
-import utilCommon from '../../utils/util.common';
-let userData, userData1, userData2 = undefined;
+import utilityGrid from '../../utils/utility.grid';
+let userData1, userData2 = undefined;
 
 describe('Create Flowset', () => {
     beforeAll(async () => {
@@ -203,7 +202,7 @@ describe('Create Flowset', () => {
             expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameSocialFacilities)).toBeFalsy();
             expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameCaseHR)).toBeTruthy();
             expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameSocialHR)).toBeTruthy();
-            await utilCommon.closeBladeOnSettings();
+            await utilityCommon.closeAllBlades();
 
             await editFlowset.clickOnAddNewMappingBtn();
             await editFlowset.selectProcessName(processAliasNameCaseHR);
@@ -280,11 +279,11 @@ describe('Create Flowset', () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
 
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy("Flowset is not displayed to other LOB");
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeTruthy(" Flowset is not displayed to other LOB");
         });
@@ -294,11 +293,11 @@ describe('Create Flowset', () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeFalsy(" Flowset is present ");
 
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy("Flowset is not displayed to other LOB");
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeTruthy(" Flowset is not displayed to other LOB");
         });
@@ -307,29 +306,29 @@ describe('Create Flowset', () => {
             await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
             await editFlowset.setFlowset(flowsetWithGlobalFieldsData.flowsetName);
             await editFlowset.clickSaveBtn();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222175): Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222175): Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editFlowset.clickCancelFlowsetBtn();
-            await utilCommon.clickOnWarningOk();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await consoleFlowset.clickOnAddFlowset();
             await createFlowset.selectCompany('Petramco');
             await createFlowset.setFlowsetname(flowsetMandatoryFieldsData.flowsetName);
             await createFlowset.setDescription("description" + randomStr);
             await createFlowset.selectStatus("Active");
             await createFlowset.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('ERROR (222175): Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222175): Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createFlowset.clickCancelButton();
-            await utilCommon.clickOnWarningOk();    
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[6278]:  Validate create new record with same name in different LOB', async () => {
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await consoleFlowset.clickOnAddFlowset();
             await createFlowset.selectCompany('Petramco');
             await createFlowset.setFlowsetname(flowsetMandatoryFieldsData.flowsetName);
             await createFlowset.setDescription("description" + randomStr);
             await createFlowset.selectStatus("Active");
             await createFlowset.clickSaveButton();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         afterAll(async () => {
@@ -403,9 +402,9 @@ describe('Create Flowset', () => {
             await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is dispayed to user with multiple LOB case manager');
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is not dispayed to user with multiple LOB case manager');
         });
 
@@ -414,9 +413,9 @@ describe('Create Flowset', () => {
             await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            await utilGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is dispayed to user with multiple LOB case manager');
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is not dispayed to user with multiple LOB case manager');
         });
 
@@ -450,31 +449,31 @@ describe('Create Flowset', () => {
             await consoleFlowset.addColumn(["ID", 'Display ID']);
             await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
 
-            await utilGrid.addFilter("Flowset Name", flowsetMandatoryFieldsData.flowsetName, "text");
-            expect(await utilGrid.isGridRecordPresent(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy('flowsetName not present');
-            await utilGrid.clearFilter();
+            await utilityGrid.addFilter("Flowset Name", flowsetMandatoryFieldsData.flowsetName, "text");
+            expect(await utilityGrid.isGridRecordPresent(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy('flowsetName not present');
+            await utilityGrid.clearFilter();
 
-            await utilGrid.addFilter("Description", "Test Flowset name description", "text");
-            expect(await utilGrid.isGridRecordPresent('Test Flowset name description')).toBeTruthy('Test Flowset name description not present');
-            await utilGrid.clearFilter();
+            await utilityGrid.addFilter("Description", "Test Flowset name description", "text");
+            expect(await utilityGrid.isGridRecordPresent('Test Flowset name description')).toBeTruthy('Test Flowset name description not present');
+            await utilityGrid.clearFilter();
         });
 
         it('[5639]: [Flowsets] Filter menu verification on Define Flowsets Console	', async () => {
-            await utilGrid.addFilter("Company", "Petramco", "text");
-            expect(await utilGrid.isGridRecordPresent('Petramco')).toBeTruthy('Petramco not present');
-            await utilGrid.clearFilter();
+            await utilityGrid.addFilter("Company", "Petramco", "text");
+            expect(await utilityGrid.isGridRecordPresent('Petramco')).toBeTruthy('Petramco not present');
+            await utilityGrid.clearFilter();
 
-            await utilGrid.addFilter("Status", "Active", "checkbox");
-            expect(await utilGrid.isGridRecordPresent(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy('Active not present');
-            await utilGrid.clearFilter();
+            await utilityGrid.addFilter("Status", "Active", "checkbox");
+            expect(await utilityGrid.isGridRecordPresent(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy('Active not present');
+            await utilityGrid.clearFilter();
 
-            await utilGrid.addFilter("Display ID", displayId, "text");
-            expect(await utilGrid.isGridRecordPresent(displayId)).toBeTruthy(displayId + ' not present');
-            await utilGrid.clearFilter();
+            await utilityGrid.addFilter("Display ID", displayId, "text");
+            expect(await utilityGrid.isGridRecordPresent(displayId)).toBeTruthy(displayId + ' not present');
+            await utilityGrid.clearFilter();
 
-            await utilGrid.addFilter("ID", id, "text");
-            expect(await utilGrid.isGridRecordPresent(id)).toBeTruthy(id + ' not present');
-            await utilGrid.clearFilter();
+            await utilityGrid.addFilter("ID", id, "text");
+            expect(await utilityGrid.isGridRecordPresent(id)).toBeTruthy(id + ' not present');
+            await utilityGrid.clearFilter();
 
             await consoleFlowset.removeColumn(["ID", 'Display ID']);
         });

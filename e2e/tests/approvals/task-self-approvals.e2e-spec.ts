@@ -3,21 +3,19 @@ import apiHelper from '../../api/api.helper';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
+import approvalMappingConsolePage from "../../pageobject/settings/task-management/approval-mapping-console.po";
+import createApprovalMappingPage from "../../pageobject/settings/task-management/create-approval-mapping.po";
+import editApprovalMappingPage from "../../pageobject/settings/task-management/edit-approval-mapping.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
+import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import approvalMappingConsolePage from "../../pageobject/settings/task-management/approval-mapping-console.po";
-import createApprovalMappingPage from "../../pageobject/settings/task-management/create-approval-mapping.po";
-import utilCommon from '../../utils/util.common';
-import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
-import viewTask from "../../pageobject/task/view-task.po";
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import editApprovalMappingPage from "../../pageobject/settings/task-management/edit-approval-mapping.po";
-import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
-import utilGrid from '../../utils/util.grid';
-import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 
 
 describe("Task Self Approval Tests", () => {
@@ -120,7 +118,7 @@ describe("Task Self Approval Tests", () => {
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editApprovalMappingPage.searchTaskTemplate(autoTaskTemplateData.templateName);
             await editApprovalMappingPage.selectTaskTemplateCheckbox();
             expect(await editApprovalMappingPage.isSelectTaskTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Case template can be associated');
@@ -136,10 +134,10 @@ describe("Task Self Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
-            expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickCloseButton();
+            await manageTaskPo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+            await manageTaskPo.waitUntilNumberOfTaskLinkAppear(1);
+            expect(await manageTaskPo.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
+            await manageTaskPo.clickCloseButton();
         });
 
         it('[3586]: Verify if task approved is triggered for manual task', async () => {
@@ -149,7 +147,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -162,15 +160,15 @@ describe("Task Self Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(caseId2);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(autoTaskTemplateData.templateName);
-            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
-            expect(await manageTask.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickCloseButton();
+            await manageTaskPo.addTaskFromTaskTemplate(autoTaskTemplateData.templateName);
+            await manageTaskPo.waitUntilNumberOfTaskLinkAppear(1);
+            expect(await manageTaskPo.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
+            await manageTaskPo.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -271,7 +269,7 @@ describe("Task Self Approval Tests", () => {
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editApprovalMappingPage.searchTaskTemplate(autoTaskTemplateData.templateName);
             await editApprovalMappingPage.selectTaskTemplateCheckbox();
             expect(await editApprovalMappingPage.isSelectTaskTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Case template can be associated');
@@ -287,10 +285,10 @@ describe("Task Self Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
-            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
-            expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickCloseButton();
+            await manageTaskPo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+            await manageTaskPo.waitUntilNumberOfTaskLinkAppear(1);
+            expect(await manageTaskPo.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
+            await manageTaskPo.clickCloseButton();
         });
 
         it('[3587]: Verify if task approved is triggered for manual task', async () => {
@@ -300,7 +298,7 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -313,15 +311,15 @@ describe("Task Self Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(caseId2);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await viewCasePo.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(autoTaskTemplateData.templateName);
-            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
-            expect(await manageTask.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
-            await manageTask.clickCloseButton();
+            await manageTaskPo.addTaskFromTaskTemplate(autoTaskTemplateData.templateName);
+            await manageTaskPo.waitUntilNumberOfTaskLinkAppear(1);
+            expect(await manageTaskPo.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
+            await manageTaskPo.clickCloseButton();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -453,8 +451,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            manualTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeTruthy('Show Approvers Banner is not displayed');
         });
@@ -489,8 +487,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(taskData.taskName);
+            manualTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(taskData.taskName);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
         });
@@ -513,8 +511,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData1.templateSummary);
+            manualTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
         });
@@ -524,7 +522,7 @@ describe("Task Self Approval Tests", () => {
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
-            await utilGrid.searchAndOpenHyperlink(approvalMappingData.mappingName);
+            await utilityGrid.searchAndOpenHyperlink(approvalMappingData.mappingName);
             await editApprovalMappingPage.setTaskCreatedUsingTemplateGoInApprovalToggle(true);
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
         });
@@ -549,8 +547,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            manualTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -584,7 +582,7 @@ describe("Task Self Approval Tests", () => {
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             await viewCasePo.clickAddTaskButton();
-            await manageTask.clickAddAdhocTaskButton();
+            await manageTaskPo.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary(taskData.taskName);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('Low');
@@ -598,8 +596,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(taskData.taskName);
+            manualTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(taskData.taskName);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -625,8 +623,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData1.templateSummary);
+            manualTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
         });
@@ -723,8 +721,8 @@ describe("Task Self Approval Tests", () => {
         });
         it('[3471,3470]: Verify the task approval details', async () => {
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            manualTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
@@ -765,8 +763,8 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.openTaskCard(1);
-            manualTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            manualTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(manualTaskDisplayId);
@@ -897,8 +895,8 @@ describe("Task Self Approval Tests", () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
@@ -977,8 +975,8 @@ describe("Task Self Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);

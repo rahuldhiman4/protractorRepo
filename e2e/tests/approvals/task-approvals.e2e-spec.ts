@@ -1,18 +1,17 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
 import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL } from '../../utils/constants';
 import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
+import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
+import viewTask from "../../pageobject/task/view-task.po";
+import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import utilCommon from '../../utils/util.common';
-import { default as manageTask } from "../../pageobject/task/manage-task-blade.po";
-import viewTask from "../../pageobject/task/view-task.po";
-import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
-import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
 
 let userData1 = undefined;
 describe("Task Approval Tests", () => {
@@ -27,7 +26,7 @@ describe("Task Approval Tests", () => {
             "firstName": "Petramco",
             "lastName": "SGUser1",
             "userId": "21827user1",
-            "userPermission": ["Case Business Analyst","Human Resource"]
+            "userPermission": ["Case Business Analyst", "Human Resource"]
         }
         await apiHelper.createNewUser(userData1);
         await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
@@ -125,8 +124,8 @@ describe("Task Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
@@ -233,8 +232,8 @@ describe("Task Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
@@ -355,8 +354,8 @@ describe("Task Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
@@ -425,8 +424,8 @@ describe("Task Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
@@ -553,8 +552,8 @@ describe("Task Approval Tests", () => {
 
         it('[3475]: Verify the task approval details', async () => {
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -634,8 +633,8 @@ describe("Task Approval Tests", () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
@@ -820,8 +819,8 @@ describe("Task Approval Tests", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -841,8 +840,8 @@ describe("Task Approval Tests", () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1); // navigation requried to reflect updated task status
             await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTask.getTaskDisplayId();
-            await manageTask.clickTaskLink(externaltemplateData.templateSummary);
+            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
+            await manageTaskPo.clickTaskLink(externaltemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
             expect(await activityTabPage.getApprovalErrorActivityText('An error occurred during approval')).toBeTruthy('Show Approvers Banner is not displayed');

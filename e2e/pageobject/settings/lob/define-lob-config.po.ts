@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
+import utilityGrid from '../../../utils/utility.grid';
 
 class ConsoleDefineLOB {
 
@@ -14,16 +14,16 @@ class ConsoleDefineLOB {
     }
 
     async getColumnValueOfRecord(columnName: string, valueName: string): Promise<string> {
-        await utilGrid.searchOnGridConsole(valueName);
-        return await utilGrid.getSelectedGridRecordValue(this.selectors.consoleGuid, columnName);
+        await utilityGrid.searchRecord(valueName);
+        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.consoleGuid, columnName);
     }
 
     async searchAndOpenLob(lob: string): Promise<void> {
-        await utilGrid.searchAndOpenHyperlink(lob, this.selectors.consoleGuid)
+        await utilityGrid.searchAndOpenHyperlink(lob, this.selectors.consoleGuid)
     }
 
     async isLobPresent(lob: string): Promise<void> {
-        await utilGrid.isGridRecordPresent(lob, this.selectors.consoleGuid)
+        await utilityGrid.isGridRecordPresent(lob, this.selectors.consoleGuid)
     }
 
 }

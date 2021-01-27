@@ -1,5 +1,5 @@
 import { $, $$, browser, element, by, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
-import utilGrid from '../../utils/util.grid';
+import utilityGrid from '../../utils/utility.grid';
 
 class ProcessEditor {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -34,8 +34,8 @@ class ProcessEditor {
     }
 
     async isTemplatePresent(templateName: string): Promise<boolean> {
-        await utilGrid.clearGridSearchBox();
-        await utilGrid.searchOnGridConsole(templateName);
+        await utilityGrid.clearSearchBox();
+        await utilityGrid.searchRecord(templateName);
         let recordLocator: ElementFinder = await element(by.cssContainingText(this.selectors.gridLink, templateName));
         return await recordLocator.isPresent().then(async (result) => {
             if (result) return await recordLocator.isDisplayed();
@@ -70,21 +70,21 @@ class ProcessEditor {
         //Connect first create block to second create block
         await browser.actions().mouseMove(destination1).click().perform();
         await this.clickSelectTemplateBtn();
-        await utilGrid.searchAndSelectGridRecord(temp1);
+        await utilityGrid.searchAndSelectGridRecord(temp1);
         await this.saveTemplateBtn();
         await browser.actions().dragAndDrop(source1, await $$('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner').get(3)).perform();
 
         //Connect second create block to third create block
         await browser.actions().mouseMove(await $$('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner').get(3)).click().perform();
         await this.clickSelectTemplateBtn();
-        await utilGrid.searchAndSelectGridRecord(temp2);
+        await utilityGrid.searchAndSelectGridRecord(temp2);
         await this.saveTemplateBtn();
         await browser.actions().dragAndDrop(source1, await $$('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner').get(1)).perform();
 
         //Connect third create block to End Event
         await browser.actions().mouseMove(await $$('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner').get(1)).click().perform();
         await this.clickSelectTemplateBtn();
-        await utilGrid.searchAndSelectGridRecord(temp3);
+        await utilityGrid.searchAndSelectGridRecord(temp3);
         await this.saveTemplateBtn();
         await browser.actions().dragAndDrop(source1, await $$('.rotatable image[data-icon-type="transparent"]').get(3)).perform();
         await $(this.selectors.processSaveBtn).click();

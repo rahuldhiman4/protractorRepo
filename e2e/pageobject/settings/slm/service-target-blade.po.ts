@@ -1,6 +1,6 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
 import SlmExpressionBuilder from './slm-expressionbuilder.pop.po';
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class ServiceTargetConfig {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -296,7 +296,7 @@ class ServiceTargetConfig {
 
     async isServiceTargetFieldRequired(fieldName: string): Promise<boolean> {
         let fieldNameRequiredTag = await element(by.cssContainingText(this.selectors.fieldNameLabel, fieldName));
-        return await utilCommon.isRequiredTagToFieldElement(fieldNameRequiredTag);
+        return await utilityCommon.isRequiredTagToField(fieldNameRequiredTag);
     }
 
     async selectMilestone() {

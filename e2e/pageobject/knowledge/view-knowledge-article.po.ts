@@ -1,5 +1,4 @@
 import { $, $$, by, element, browser, protractor, ProtractorExpectedConditions } from "protractor";
-import resources from '../../pageobject/common/resources-tab.po';
 
 class ViewKnowledgePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

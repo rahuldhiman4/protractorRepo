@@ -1,6 +1,5 @@
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilGrid from '../../../utils/util.grid';
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 
 class EditRegisterProcessPage {
 
@@ -21,11 +20,11 @@ class EditRegisterProcessPage {
     }
    
     async searchAndGetDescription(description: string): Promise<string> {
-        return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText();
+        return await element(by.cssContainingText('.at-data-cell', description)).getText();
     }
 
     async getDescription(description: string): Promise<string> {
-        return await element(by.cssContainingText('.ui-grid-cell-contents', description)).getText();
+        return await element(by.cssContainingText('.at-data-cell', description)).getText();
     }
 
     async setDescription(description: string): Promise<void> {
@@ -34,7 +33,7 @@ class EditRegisterProcessPage {
     }
 
     async selectStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
     async clickOnSaveButton(): Promise<void> {

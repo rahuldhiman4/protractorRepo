@@ -1,5 +1,11 @@
+import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
+import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import caseConsolePo from '../../pageobject/case/case-console.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import assignmentConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
@@ -9,12 +15,6 @@ import taskTemplateConsolePO from '../../pageobject/settings/task-management/con
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
-import viewCasePo from '../../pageobject/case/view-case.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import caseConsolePo from '../../pageobject/case/case-console.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import { cloneDeep } from 'lodash';
 
 describe('Case Console', () => {
     beforeAll(async () => {
@@ -234,8 +234,8 @@ describe('Case Console', () => {
             newCase1 = await apiHelper.createCase(caseData1);
             await apiHelper.createCaseTemplate(caseTemplateData1);
             caseData1.Requester = "apavlik",
-            caseData1.Summary =  "CaseFilter2" + randomStr,
-            newCase2 = await apiHelper.createCase(caseData1);
+                caseData1.Summary = "CaseFilter2" + randomStr,
+                newCase2 = await apiHelper.createCase(caseData1);
             await apiHelper.createCaseTemplate(caseTemplateData2);
             month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
@@ -296,7 +296,7 @@ describe('Case Console', () => {
         it('[5531]:[Case Workspace] Cases search using filters', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(newCase1.displayId);
-            await utilityGrid.addFilter('Category Tier 1',"Employee Relations", 'text');
+            await utilityGrid.addFilter('Category Tier 1', "Employee Relations", 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
             await utilityGrid.searchRecord(newCase2.displayId);
@@ -351,7 +351,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy(newCase2.displayId);
         });
-        it('[5531]:[Case Workspace] Cases search using filters', async () => { 
+        it('[5531]:[Case Workspace] Cases search using filters', async () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Label', "CaseLabel" + randomStr, 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy(newCase1.displayId);

@@ -1,4 +1,4 @@
-import utilCommon from '../../../utils/util.common';
+import utilityCommon from '../../../utils/utility.common';
 import { $, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
 
 class LobManagementConsole {
@@ -34,7 +34,7 @@ class LobManagementConsole {
     }
 
     async selectStatus(status: string): Promise<void> {
-        await utilCommon.selectDropDown(this.selectors.statusGuid, status);
+        await utilityCommon.selectDropDown(this.selectors.statusGuid, status);
     }
 
     async isTabPresent(giventab: string): Promise<boolean> {

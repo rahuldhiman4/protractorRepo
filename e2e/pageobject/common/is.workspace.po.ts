@@ -1,5 +1,4 @@
 import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilCommon from '../../utils/util.common';
 
 class WorkspacePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;

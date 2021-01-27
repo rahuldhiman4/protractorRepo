@@ -1,4 +1,5 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
+import { DropDownType } from './constants';
 
 const fs = require('fs');
 
@@ -38,27 +39,74 @@ export class Utility {
         warningDialogMsg: '.modal-content .modal-body span'
     }
 
-    async selectDropDown(guid: string | ElementFinder, value: string): Promise<void> {
-        if (typeof guid === 'string') {
-            const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-            const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
-            await this.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus
-            await dropDown.$(this.selectors.dropdownBox).click();
-            console.log(`Selecting dropdown value: ${value}`);
-            let isSearchPresent: boolean = await dropDownInputElement.isPresent();
-            if (isSearchPresent) await dropDownInputElement.sendKeys(value);
-            //this changes is required on create email template screen to select status and other fields
-            let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown-item`;
-            let option = await element(by.cssContainingText(optionCss, value));
-            await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
-                await option.click();
-            });
-        } else {
-            await guid.click();
-            let option = await element(by.cssContainingText(this.selectors.dropDownChoice, value));
-            await option.click();
+    async selectDropDown(dropDownIdentifier: string | ElementFinder, dropDownValue: string, inputType?: DropDownType): Promise<void> {
+        switch (inputType) {
+            case DropDownType.WebElement: {
+                if (!(typeof dropDownIdentifier === 'string')) {
+                    await dropDownIdentifier.click();
+                    let option = await element(by.cssContainingText(this.selectors.dropDownChoice, dropDownValue));
+                    await option.click();
+                }
+                break;
+            }
+            case DropDownType.Label: {
+                await browser.wait(this.EC.or(async () => {
+                    let count = await $$('.dropdown.dropdown_select').count();
+                    return count >= 1;
+                }), 3000);
+                const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
+                for (let i: number = 0; i < dropDown.length; i++) {
+                    await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
+                        if (result) {
+                            let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
+                            if (dropDownLabelText === dropDownIdentifier) {
+                                await dropDown[i].$('button').click();
+                                await dropDown[i].$('input').sendKeys(dropDownValue);
+                                await element(by.cssContainingText('[role="option"] span', dropDownValue)).click();
+                            }
+                        }
+                    });
+                }
+                break;
+            }
+            case DropDownType.Name: {
+                await browser.wait(this.EC.or(async () => {
+                    let count = await $$('.rx-assignment-select').count();
+                    return count >= 1;
+                }), 3000);
+                const dropDown: ElementFinder[] = await $$('.rx-assignment-select');
+                for (let i: number = 0; i < dropDown.length; i++) {
+                    await dropDown[i].$('.rx-assignment-select-label').isPresent().then(async (result) => {
+                        if (result) {
+                            let dropDownLabelText: string = await dropDown[i].$('.rx-assignment-select-label').getText();
+                            if (dropDownLabelText === dropDownIdentifier) {
+                                await dropDown[i].$('.d-icon-angle_down').click();
+                                await dropDown[i].$('input').sendKeys(dropDownValue);
+                                await element(by.cssContainingText("li[ng-repeat*='option']", dropDownValue)).isPresent().then(async () => {
+                                    await browser.sleep(1000); // Wait For Drop Down Values Are Loaded And Ready To Select Value.
+                                    await element(by.cssContainingText(".is-open li[ng-repeat*='option']", dropDownValue)).click();
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+            default: {
+                const dropDown = await $(`[rx-view-component-id="${dropDownIdentifier}"]`);
+                const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
+                //await this.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus
+                await dropDown.$(this.selectors.dropdownBox).click();
+                console.log(`Selecting dropdown value: ${dropDownValue}`);
+                let isSearchPresent: boolean = await dropDownInputElement.isPresent();
+                if (isSearchPresent) await dropDownInputElement.sendKeys(dropDownValue);
+                let optionCss: string = `[rx-view-component-id="${dropDownIdentifier}"] .dropdown-item`;
+                let option = await element(by.cssContainingText(optionCss, dropDownValue));
+                await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
+                    await option.click();
+                });
+                break;
+            }
         }
-
     }
 
     async getWarningTextOfLineOfBuisness(): Promise<string> {
@@ -104,24 +152,41 @@ export class Utility {
         if (count >= 1) { return true; } else { return false; }
     }
 
-    async isAllDropDownValuesMatches(guid: string | ElementFinder, data: string[]): Promise<boolean> {
+    async isAllDropDownValuesMatches(dropDownIdentifier: string | ElementFinder, dropDownValueArr: string[], inputType?: DropDownType, dropDownSearchValue?: string, ): Promise<boolean> {
+        let drpDwnvalue: number = 0;
         let arr: string[] = [];
-        if (typeof guid === 'string') {
-            const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-            const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-            await dropDownBoxElement.click();
-        } else {
-            await guid.click();
+        switch (inputType) {
+            case DropDownType.WebElement: {
+                if (!(typeof dropDownIdentifier === 'string')) {
+                    await dropDownIdentifier.click();
+                    drpDwnvalue = await $$(this.selectors.dropDownOption).count();
+                }
+                break;
+            }
+            case DropDownType.Label: {
+                const dropDown = await $(`[title="${dropDownIdentifier}"],[aria-label="${dropDownIdentifier}"]`);
+                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+                await dropDownBoxElement.click();
+                const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+                if (dropDownSearchValue) await dropDownInputElement.sendKeys(dropDownSearchValue);
+                drpDwnvalue = await $$(this.selectors.dropDownOption).count(); // drpDwnvalue = await $$('.ui-select-choices-row-inner *').count();
+                break;
+            }
+            default: {
+                const dropDown = await $(`[rx-view-component-id="${dropDownIdentifier}"]`);
+                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+                await dropDownBoxElement.click();
+                drpDwnvalue = await $$(this.selectors.dropDownOption).count();
+            }
         }
-        let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
         for (let i = 0; i < drpDwnvalue; i++) {
             let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
             arr[i] = ab;
         }
         arr = arr.sort();
-        data = data.sort();
-        return arr.length === data.length && arr.every(
-            (value, index) => (value === data[index])
+        dropDownValueArr = dropDownValueArr.sort();
+        return arr.length === dropDownValueArr.length && arr.every(
+            (value, index) => (value === dropDownValueArr[index])
         );
     }
 
@@ -567,6 +632,37 @@ export class Utility {
         return await $(this.selectors.warningDialogMsg).getText();
     }
 
+    async getSelectedDropdownFiledValue(dropDownLabel: string): Promise<string> {
+        let dropdownValue: string = undefined;
+        await browser.wait(this.EC.or(async () => {
+            let count = await $$('.dropdown.dropdown_select').count();
+            return count >= 1;
+        }), 3000);
+        const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
+        for (let i: number = 0; i < dropDown.length; i++) {
+            await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
+                if (result) {
+                    let dropDownLabelText: string = await dropDown[i].$('.form-control-label').getText();
+                    if (dropDownLabelText === dropDownLabel) {
+                        dropdownValue = await dropDown[i].$('button').getText();
+                    }
+                }
+            });
+        }
+        return dropdownValue;
+    }
+
+    async selectNthDropDown(guid: string, value: string, n: number): Promise<void> {
+        const dropDown = await $(`[rx-view-component-id="${guid}"]`);
+        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        await dropDown.$(this.selectors.dropdownBox).click();
+        await dropDownInputElement.sendKeys(value);
+        let optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
+        let option = await element.all(by.cssContainingText(optionCss, value)).get(n - 1);
+        await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
+            await element.all(by.cssContainingText(optionCss, value)).get(n - 1).click();
+        });
+    }
 }
 
 export default new Utility();

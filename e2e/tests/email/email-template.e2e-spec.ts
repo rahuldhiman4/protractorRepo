@@ -13,7 +13,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let userData, userData1, userData2 = undefined;
+let userData1, userData2 = undefined;
 
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
@@ -42,7 +42,6 @@ describe('Email Template', () => {
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {

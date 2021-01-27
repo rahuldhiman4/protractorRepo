@@ -12,7 +12,6 @@ import viewTaskTemplate from "../../pageobject/settings/task-management/view-tas
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilCommon from '../../utils/util.common';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -81,8 +80,8 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectTemplateStatus('Active');
             await copyTemplatePage.setTaskSummary(randomStr + 'Summary2')
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.clickOnWarningOk();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.closePopUpMessage();
         });
         it('[4570]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
             await navigationPage.signOut();
@@ -144,7 +143,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newManualTaskTemplate);
             expect(await copyTemplatePage.isOwnerGroupEmpty()).toBeTruthy();
             await copyTemplatePage.clickSaveCopytemplate();
-            expect(await utilCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
         });
         afterAll(async () => {
@@ -187,7 +186,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(autoTemplate2);
             await copyTemplatePage.setNewProcessName(taskProcess2);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
             expect(await viewTaskTemplate.getSummaryValue()).toBe(templateData.templateSummary);
             expect(await viewTaskTemplate.getTaskTypeValue()).toBe('Automated');
@@ -211,7 +210,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectOwnerBusinessUnit('United States Support');
             await copyTemplatePage.selectOwnerGroup('US Support 3');
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
         });
         it('[4566,4715]: Login through only Petramco User', async () => {
@@ -269,10 +268,10 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectOwnerBusinessUnit('United States Support');
             await copyTemplatePage.selectOwnerGroup('US Support 3');
             await copyTemplatePage.clickSaveCopytemplate();// Failing due to defect (turned improvement DRDMV-21097)
-            expect(await utilCommon.isPopUpMessagePresent(`ERROR (902): Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy(); // ERROR (902): Duplicate process name
+            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (902): Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy(); // ERROR (902): Duplicate process name
             await copyTemplatePage.clickCancelCopytemplate();
-            await utilCommon.clickOnWarningOk();
-            await utilCommon.clickOnBackArrow();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + templateData.processName);
         });
@@ -308,7 +307,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(newManualTaskTemplate);
             await copyTemplatePage.setTaskSummary(newmanualTaskSummary);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', async () => {
             expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
@@ -362,7 +361,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setNewProcessName(newProcessName);
             await copyTemplatePage.selectTemplateStatus('Active');
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4569]: Create Copy of an automated Task and check execution', async () => {
             await navigationPage.gotoCaseConsole();
@@ -409,16 +408,16 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.setNewProcessName(templateData.processName);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4563]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', async () => {
             await copyTemplatePage.clickCancelCopytemplate();
-            await utilCommon.clickOnWarningOk();
-            await utilCommon.clickOnBackArrow();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
             await viewTaskTemplate.clickOnEditProcessLink();
-            expect(await utilCommon.isPopUpMessagePresent(`WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :${templateData.templateSummary}`)).toBeTruthy("Popup message doesn't match");
-            await utilCommon.closePopUpMessage();
+            expect(await utilityCommon.isPopUpMessagePresent(`WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :${templateData.templateSummary}`)).toBeTruthy("Popup message doesn't match");
+            await utilityCommon.closePopUpMessage();
         });
         afterAll(async () => {
             await navigationPage.gotoCaseConsole();
@@ -452,7 +451,7 @@ describe('Copy Task Template', () => {
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
             expect(await viewTaskTemplate.getSummaryValue()).toBe(templateData.templateSummary);
             expect(await viewTaskTemplate.getTaskTypeValue()).toBe('External');
@@ -496,7 +495,7 @@ describe('Copy Task Template', () => {
             await viewTaskTemplate.clickOnCopyTemplate();
             await copyTemplatePage.setTemplateName(updatedTaskTemplate);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
 
             expect(await viewTaskTemplate.getTemplateStatus()).toBe('Draft');
             expect(await viewTaskTemplate.getSummaryValue()).toBe(templateData.templateSummary);
@@ -551,8 +550,8 @@ describe('Copy Task Template', () => {
             await dynamicField.setFieldName(dynamicFieldName1);
             await dynamicField.setDescriptionName(dynamicFieldDescription1);
             await dynamicField.clickSaveButton();
-            await utilCommon.closePopUpMessage();
-            await utilCommon.clickOnBackArrow();
+            await utilityCommon.closePopUpMessage();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4719,4564]: Verify dynamic field is present', async () => {
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -561,7 +560,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.setTaskSummary(updatedTaskSummary);
             await copyTemplatePage.setNewProcessName(updateProcessName);
             await copyTemplatePage.clickSaveCopytemplate();
-            await utilCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.isDynamicFieldPresent(dynamicFieldDescription1)).toBeTruthy(`${dynamicFieldDescription1} dynamic field not present`);
         });
         it('[4719,4564]: Verify Warning message when Dynamic fields are added to a Automated Task template', async () => {
@@ -570,7 +569,7 @@ describe('Copy Task Template', () => {
             await dynamicField.setFieldName(dynamicFieldName2);
             await dynamicField.setDescriptionName(dynamicFieldDescription2);
             await dynamicField.clickSaveButton();
-            await utilCommon.closePopUpMessage();// is it defect no warning message
+            await utilityCommon.closePopUpMessage();// is it defect no warning message
             expect(await viewTaskTemplate.isDynamicFieldPresent(dynamicFieldDescription2)).toBeTruthy(`${dynamicFieldDescription2} dynamic field not present`);
         });
     });

@@ -1,5 +1,6 @@
-import { $,$$, by, protractor, ProtractorExpectedConditions, element } from "protractor";
-import utilCommon from '../../../utils/util.common';
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { DropDownType } from '../../../utils/constants';
+import utilityCommon from '../../../utils/utility.common';
 
 class CreateServiceTargetGroup {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -31,7 +32,7 @@ class CreateServiceTargetGroup {
         await $(this.selectors.serviceTarget).sendKeys(servicetarget);
     }
 
-    async isLobEnabled(attribute:string): Promise<string> {
+    async isLobEnabled(attribute: string): Promise<string> {
         return await $(this.selectors.lob).getAttribute(attribute);
     }
 
@@ -47,15 +48,15 @@ class CreateServiceTargetGroup {
     }
 
     async selectCompany(company: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.company), company);
+        await utilityCommon.selectDropDown($(this.selectors.company), company, DropDownType.Label);
     }
 
     async selectDataSource(dataSource: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.dataSource), dataSource);
+        await utilityCommon.selectDropDown($(this.selectors.dataSource), dataSource, DropDownType.Label);
     }
 
     async selectGoalType(goalType: string): Promise<void> {
-        await utilCommon.selectDropDown2($(this.selectors.goalType), goalType);
+        await utilityCommon.selectDropDown($(this.selectors.goalType), goalType, DropDownType.Label);
     }
 
     async clickSaveButton(): Promise<void> {
@@ -65,11 +66,11 @@ class CreateServiceTargetGroup {
     async isSVTOptionsPresentInDropDown(svtTitle: string): Promise<boolean> {
         await $(this.selectors.serviceTarget).clear();
         await $(this.selectors.serviceTarget).sendKeys(svtTitle);
-        let values= await $$(this.selectors.serviceTargetdrpdwn).count();
+        let values = await $$(this.selectors.serviceTargetdrpdwn).count();
         if (values >= 1) { return true; } else { return false; }
-    } 
+    }
 
-    async selectServiceTarget(svtTitle: string):Promise<void>{
+    async selectServiceTarget(svtTitle: string): Promise<void> {
         await $(this.selectors.serviceTarget).clear();
         await $(this.selectors.serviceTarget).sendKeys(svtTitle);
         await $(this.selectors.selectServiceTarget).click();
@@ -79,35 +80,35 @@ class CreateServiceTargetGroup {
         await $(this.selectors.cancelButton).click();
     }
 
-    async clickOnGoalTypeDropDown():Promise<void>{
+    async clickOnGoalTypeDropDown(): Promise<void> {
         await $(this.selectors.goalTypeDropDown).click();
     }
 
     async isGoalTypeOptionPresentInDropDown(goalType: string): Promise<boolean> {
         await $(this.selectors.goalTypeDropDownInput).clear();
         await $(this.selectors.goalTypeDropDownInput).sendKeys(goalType);
-        let values= await $$(this.selectors.dropDownOption).count();
+        let values = await $$(this.selectors.dropDownOption).count();
         if (values >= 1) { return true; } else { return false; }
-    } 
+    }
 
-    async clickOnDataSourceDropDown():Promise<void>{
+    async clickOnDataSourceDropDown(): Promise<void> {
         await $(this.selectors.dataSourceDropDown).click();
     }
 
     async clearDataSourceOptionFromDropDown(): Promise<void> {
         await $(this.selectors.dataSourceDropDownInput).clear();
-    } 
+    }
 
     async clearGoalTypeOptionFromDropDown(): Promise<void> {
         await $(this.selectors.goalTypeDropDownInput).clear();
-    } 
+    }
 
     async isDataSourceOptionPresentInDropDown(dataSource: string): Promise<boolean> {
         await $(this.selectors.dataSourceDropDownInput).clear();
         await $(this.selectors.dataSourceDropDownInput).sendKeys(dataSource);
-        let values= await $$(this.selectors.dropDownOption).count();
+        let values = await $$(this.selectors.dropDownOption).count();
         if (values >= 1) { return true; } else { return false; }
-    } 
+    }
 
 
 

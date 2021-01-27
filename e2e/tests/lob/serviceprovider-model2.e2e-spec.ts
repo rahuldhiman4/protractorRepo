@@ -23,7 +23,6 @@ import previewCaseTemplateCasesPo from '../../pageobject/settings/case-managemen
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import utilGrid from '../../utils/util.grid';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -578,7 +577,7 @@ describe('Service Provider Model Tests Extended', () => {
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Facilities');
         });
         it('[3942]: Flowset in existing template can be changed and other dependent fields respond correctly.', async () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
