@@ -1742,7 +1742,6 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
-            await utilityCommon.refresh(); // workaround for 60116
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');

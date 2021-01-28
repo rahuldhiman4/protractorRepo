@@ -584,7 +584,7 @@ export class Utility {
     }
 
     async scrollToElement(element: ElementFinder): Promise<void> {
-        await browser.executeScript("arguments[0].scrollIntoView();", element.getWebElement());
+        await browser.actions().mouseMove(element.getWebElement()).perform();
     }
 
     async getFieldValue(fieldName: string): Promise<string> {
