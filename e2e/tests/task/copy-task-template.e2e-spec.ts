@@ -313,6 +313,7 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("US Support 3");
+            await viewTaskTemplate.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(newManualTaskTemplate);

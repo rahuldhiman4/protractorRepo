@@ -131,7 +131,6 @@ describe('Create Case Task', () => {
         beforeAll(async () => {
             menuItem = cloneDeep(SAMPLE_MENU_ITEM);
             menuItem.menuItemName = "TestMenuItemName" + randomStr;
-            await apiHelper.apiLogin('tadmin');
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createNewMenuItem(menuItem);
         });
