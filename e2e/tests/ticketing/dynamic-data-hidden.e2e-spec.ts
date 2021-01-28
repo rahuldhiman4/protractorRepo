@@ -873,7 +873,6 @@ describe('Dynamic Hidden Data', () => {
             await editCasePo.selectValueFromList('dynamicList', 'listvalues');
             await editCasePo.addAttachment('externalAttachment1', ['../../data/ui/attachment/demo.txt']);
             await editCasePo.clickSaveCase();
-            await utilityCommon.refresh(); // workaround for 60116
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getAllTaskActivity("TextFieldlistvalues")).toBe('TextFieldlistvalues');
             expect(await activityTabPo.getAllTaskActivity("333")).toBe("333");
