@@ -12,7 +12,7 @@ class ConfigureDataSourceConfigConsolePage {
     }
 
     async isConfigDataSourceBtnDisabled(): Promise<boolean> {
-        let addBtnLocator = await $$(this.selectors.addConfigDataSource).get(0);
+        let addBtnLocator = await $(this.selectors.addConfigDataSource);
         return await addBtnLocator.getAttribute("aria-disabled") == "true";
     }
 

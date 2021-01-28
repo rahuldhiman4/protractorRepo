@@ -205,28 +205,6 @@ class CreateCaseTemplate {
         await utilityCommon.selectDropDown(this.selectors.supportCompany, values);
     }
 
-    async createCaseTemplateWithMandatoryFields(caseTemplate: ICaseTemplateUI): Promise<void> {
-        await caseTemplateGrid.clickOnCreateCaseTemplateButton();
-        await this.setTemplateName(caseTemplate.templateName);
-        await this.setCaseSummary(caseTemplate.templateSummary);
-        await this.setCompanyName(caseTemplate.company);
-        await this.setBusinessUnitDropdownValue(caseTemplate.ownerBusinessUnit);
-        await this.setOwnerGroupDropdownValue(caseTemplate.ownerGroup);
-        await this.setCaseDescription(caseTemplate.templateDescription);
-        await this.setCategoryTier1(caseTemplate.categoryTier1);
-        await this.setCategoryTier2(caseTemplate.categoryTier2);
-        await this.setCategoryTier3(caseTemplate.categoryTier3);
-        await this.isResolutionCodeRequired(true);
-        await this.isResolutionDescriptionRequired(true);
-        await changeAssignemetOldBlade.selectBusinessUnit(caseTemplate.businessUnit);
-        await changeAssignemetOldBlade.selectSupportGroup(caseTemplate.supportGroup);
-        await changeAssignemetOldBlade.selectAssignee(caseTemplate.assignee);
-        await changeAssignemetOldBlade.clickOnAssignButton();
-        //        await browser.sleep(2000);
-        // expect(await copyCasetemplatePo.getValueOfAssignee()).toBe(caseTemplate.assignee);
-        await this.clickSaveCaseTemplate();
-    }
-
     async createCaseTemplateWithAllFields(caseTemplate: ICaseTemplateUI): Promise<void> {
         //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');

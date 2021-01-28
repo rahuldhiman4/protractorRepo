@@ -7,11 +7,11 @@ class EditNotificationTemplate {
         cancelButton: '[rx-view-component-id="d2dd0f98-69d0-462f-9002-5da452b67f63"] button,[rx-view-component-id="2a50e7b7-b260-4749-ad9d-1d7cb65b5d95"] button',
         header: '.dp-title',
         saveButton: '[rx-view-component-id="50e25982-5452-4f20-ac79-5682de7cb467"] button',
-        emailTab: 'li.nav-item button',
+        emailTab: 'li.nav-item button[aria-posinset="2"]',
         editButtonOnEmailTab: '[rx-view-component-id="a0c7d2a0-326b-4c8c-88ab-1b626b865769"] button',
         checkBoxEmailTab: '[rx-view-component-id="a0c7d2a0-326b-4c8c-88ab-1b626b865769"] .ui-chkbox',
         alertSubjectCheckbox: '[rx-view-component-id="5a882133-425e-4ca6-af62-cb9cb0b133b7"] label.radio__label',
-        editCheckbox: '[rx-view-component-id="5a882133-425e-4ca6-af62-cb9cb0b133b7"] [rx-id="refresh-button"]',
+        editCheckbox: '.d-icon-left-pencil',
         clickableField: 'div.cke_contents.cke_reset span[contenteditable]',
         cancelAlertMessageTextButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
         defaultNotificationMethodGuid: "911e28fd-89bb-4ee0-bea9-1d22e48f1134",
@@ -32,6 +32,7 @@ class EditNotificationTemplate {
         recipientTypeSelect: '[id="adapt-select-37"] .dropdown-toggle',
         selectRecipient: '.rx-recipients-assignment-person-fullName, .rx-recipients-assignment-person-structure',
         recipientList: '.body tr td',
+        unCheckEmailGridvalue: '[rx-view-component-id="a0c7d2a0-326b-4c8c-88ab-1b626b865769"] input[type="checkbox"]',
         recipientsCheckbox: '.body tr td label span input',
         recipientsCheckboxInput: '.body tr td label span input',
         notificationMethod: '[rx-view-component-id="c80f9de5-1a84-46fa-949d-fc073d65ebd8"] .dropdown',
@@ -97,6 +98,10 @@ class EditNotificationTemplate {
     async openEmailSubjectEditMessageText(): Promise<void> {
         await $$(this.selectors.checkBoxEmailTab).get(0).click();
         await $$(this.selectors.editCheckbox).last().click();
+    }
+
+    async clickEmailUncheckvalue(): Promise<void> {
+        await $$(this.selectors.unCheckEmailGridvalue).get(0).click();
     }
 
     async isDescriptionFieldDisabled(): Promise<boolean> {
@@ -276,23 +281,23 @@ class EditNotificationTemplate {
         let fieldGuid: string = undefined;
         switch (fieldName) {
             case "Company": {
-                fieldGuid = '0d86e65f-f804-40c4-a955-ff82dd531956';
+                fieldGuid = 'a423a785-aec4-453b-b2b7-d44f534fd2ed';
                 break;
             }
             case "Status": {
-                fieldGuid = 'da40a967-db52-4c1b-8d69-0c441f290323';
+                fieldGuid = 'edadf429-50e9-4867-ab44-d027826932df';
                 break;
             }
             case "Module": {
-                fieldGuid = 'bdd94b56-3700-4876-8455-62f1e1b05ff6';
+                fieldGuid = '4fd471a8-c2c4-44f3-8c33-57501411df07';
                 break;
             }
             case "Default Notification Method": {
-                fieldGuid = 'c80f9de5-1a84-46fa-949d-fc073d65ebd8';
+                fieldGuid = '911e28fd-89bb-4ee0-bea9-1d22e48f1134';
                 break;
             }
             case "Event": {
-                fieldGuid = 'f535976d-f547-460a-8fa6-f959eb485d38';
+                fieldGuid = '15aad4c8-1522-4586-b9d3-6be376cfcaa8';
                 break;
             }
             default: {
@@ -300,7 +305,7 @@ class EditNotificationTemplate {
                 break;
             }
         }
-        return await $(`[rx-view-component-id="${fieldGuid}"] .ui-select-match-text`).getText();
+        return await $(`[rx-view-component-id="${fieldGuid}"] button`).getText();
     }
 
     async isEmailBasedApprovalFlagTrue(): Promise<boolean> {

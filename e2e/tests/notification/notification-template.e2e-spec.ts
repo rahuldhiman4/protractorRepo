@@ -519,7 +519,7 @@ describe("Notification Template", () => {
         await createNotificationTemplatePage.clickOnEmailTab();
         await createNotificationTemplatePage.setSubject('Sample Subject text');
         await createNotificationTemplatePage.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Template already exists with given Event and Module combination.')).toBeTruthy();
         await utilityCommon.closeAllBlades();
         await notificationTempGridPage.clickOnCreateNotificationTemplate();
         await createNotificationTemplatePage.setTemplateName('Email Based Approval 4357');
@@ -553,6 +553,7 @@ describe("Notification Template", () => {
         await editNotificationTemplate.openEmailSubjectEditMessageText();
         expect(await editNotificationTemplate.getEmailSubjectValue()).toBe('$10051$ has been sent for approval.');
         await editNotificationTemplate.cancelEmailSubjectBlade();
+        await editNotificationTemplate.clickEmailUncheckvalue();
         await editNotificationTemplate.openEmailBodyEditMessageText();
         expect(await editNotificationTemplate.isEmailBodyContains('Case Details')).toBeTruthy('Case Details is not present');
         expect(await editNotificationTemplate.isEmailBodyContains('Requester')).toBeTruthy('Requester is not present');
