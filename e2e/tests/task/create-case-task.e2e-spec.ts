@@ -600,10 +600,10 @@ describe('Create Case Task', () => {
         await utilityGrid.clearFilter();
         expect(await selectTaskTemplate.clickOnColumnAndIsColumnSortedAsending('Task Type')).toBeTruthy();
         expect(await selectTaskTemplate.clickOnColumnAndIsColumnSortedDescending('Task Type')).toBeTruthy();
-        await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Manual');
+        await utilityGrid.addFilter('Task Type', 'Manual', "checkbox");
         expect(await selectTaskTemplate.isTaskTypeFilterValue('Manual')).toBeTruthy();
         await utilityGrid.clearFilter();
-        await selectTaskTemplate.clickOnApplyFilter('Task Type', 'Automated');
+        await utilityGrid.addFilter('Task Type', 'Automated', "checkbox");
         expect(await selectTaskTemplate.isTaskTypeFilterValue('Automated')).toBeTruthy();
         await utilityGrid.clearFilter();
     });
@@ -625,8 +625,8 @@ describe('Create Case Task', () => {
     it('[5546]: [Automatic Task] - Task Console: Task Type column and filter validation', async () => {
         await navigationPage.gotoTaskConsole();
         await utilityGrid.clearFilter();
-        expect(await utilityGrid.isGridColumnSorted('Task ID', 'asc')).toBeTruthy('Ascendigly not sorted');
-        expect(await utilityGrid.isGridColumnSorted('Task ID', 'desc')).toBeTruthy('Descendigly not sorted');
+        expect(await utilityGrid.isGridColumnSorted('Task ID', 'ascending')).toBeTruthy('Ascendigly not sorted');
+        expect(await utilityGrid.isGridColumnSorted('Task ID', 'descending')).toBeTruthy('Descendigly not sorted');
         await utilityGrid.addFilter('Task Type', 'Manual', "checkbox");
         expect(await consoleTask.isTaskTypeFilterValue('Manual')).toBeTruthy('Task filter not applied');
         await utilityGrid.clearFilter();
@@ -677,8 +677,8 @@ describe('Create Case Task', () => {
         });
         it('[5564,5570]: Verify the console of select task template', async () => {
             await utilityGrid.addGridColumn(['Display ID']);
-            expect(await utilityGrid.isGridColumnSorted('Display ID', 'asc')).toBeTruthy('Ascendigly not sorted');
-            expect(await utilityGrid.isGridColumnSorted('Display ID', 'desc')).toBeTruthy('Descendigly not sorted');
+            expect(await utilityGrid.isGridColumnSorted('Display ID', 'ascending')).toBeTruthy('Ascendigly not sorted');
+            expect(await utilityGrid.isGridColumnSorted('Display ID', 'descending')).toBeTruthy('Descendigly not sorted');
             await utilityGrid.removeGridColumn(['Display ID']);
             await utilityGrid.addFilter('Task Type', 'Manual', "checkbox");
             expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
@@ -898,7 +898,7 @@ describe('Create Case Task', () => {
         await updateStatusBladePo.setStatusReason('Customer Canceled');
         await updateStatusBladePo.clickSaveStatus();
         await utilityCommon.closePopUpMessage();
-        await viewCasePage.clickOnTaskLink(` AutomatedTaskTemplateActive ${randomStr} `);
+        await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
         expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
     });
 
@@ -1403,7 +1403,7 @@ describe('Create Case Task', () => {
                 "categoryTier2": "Compensation",
                 "categoryTier3": "Bonus",
                 "casePriority": "Low",
-                "caseStatus": "New",
+                // "caseStatus": "New",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 1",
@@ -1439,11 +1439,10 @@ describe('Create Case Task', () => {
         });
         it('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.selectCompany('Petramco')
             await changeAssignmentBladePo.selectBusinessUnit('United States Support');
             await changeAssignmentBladePo.selectSupportGroup('US Support 1');
             await changeAssignmentBladePo.selectAssignee('Qiao Feng');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
