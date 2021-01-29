@@ -25,7 +25,7 @@ class CreateEmailTemplateBlade {
         localizeMessageSaveButton: '[rx-view-component-id="1ff4ce55-6547-451c-b7ef-afe1c93dd194"] button',
         cancelButton: 'rx-action-button .btn-secondary',
         gridGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
-        msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .ui-grid-row-header-cell',
+        msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] span.radio__label',
         editPencilButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-left-pencil',
         statusField: '[rx-view-component-id="a1e0042f-41e7-4c80-9cd8-014786f346e6"] button',
         attachLink: 'bwf-button-link button',

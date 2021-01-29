@@ -1,3 +1,4 @@
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
@@ -61,6 +62,10 @@ describe('Case Manager Read-only Config', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qdu');
+    });
+
+    afterEach(async () => {
+        await navigationPage.gotoCaseConsole();
     });
 
     afterAll(async () => {
@@ -200,9 +205,7 @@ describe('Case Manager Read-only Config', () => {
     it('[3993]: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.CONFIGURE_DATA_SOURCE);
-        console.log("bbb");
         expect(await configureDataSourceConfigConsole.isConfigDataSourceBtnDisabled()).toBeTruthy("Add button is enabled");
-        console.log("aaa");
         await utilityGrid.searchAndOpenHyperlink("Case Management");
         await configureDataSourceEditPage.clickDataSourceLink('Show Advanced Settings');
         expect(await configureDataSourceEditPage.isAssociationNameDisabled()).toBeTruthy("Association Name is enabled");
@@ -582,6 +585,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editCaseTemplatePage.isTemplateStatusDisabled()).toBeTruthy('Template status field is enabled');
         expect(await editCaseTemplatePage.isSaveMetadataBtnEnabled()).toBeFalsy('Save metadata button is enabled');
         await editCaseTemplatePage.clickOnCancelButton();
+        await viewCasetemplatePo.clickBackArrowBtn();
     });
 
     //asahitya
@@ -623,7 +627,8 @@ describe('Case Manager Read-only Config', () => {
         let documentTemplateData = {
             "templateName": documentTemplateName,
             "description": documentTemplateName + "desc",
-            "messageBody": "Message Body"
+            "messageBody": "Message Body",
+            "company": "Petramco",
         }
 
         await apiHelper.apiLogin('qkatawazi');
@@ -637,5 +642,4 @@ describe('Case Manager Read-only Config', () => {
         expect(await editDocumentTemplatePage.isDescriptionFieldDisabled()).toBeTruthy('Description Field is enabled');
         expect(await editDocumentTemplatePage.isSaveButtonEnabled()).toBeFalsy('Status button is enabled');
     });
-
 });

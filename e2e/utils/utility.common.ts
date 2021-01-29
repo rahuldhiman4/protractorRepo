@@ -36,7 +36,8 @@ export class Utility {
         buttonText: 'button[adapt-button] span, button[adapt-button]',
         warningDialog: '.modal-content',
         warningMsgText: '.modal-title',
-        warningDialogMsg: '.modal-content .modal-body span'
+        warningDialogMsg: '.modal-content .modal-body span',
+        backButton: 'button.d-icon-left-undo'
     }
 
     async selectDropDown(dropDownIdentifier: string | ElementFinder, dropDownValue: string, inputType?: DropDownType): Promise<void> {
@@ -583,7 +584,7 @@ export class Utility {
     }
 
     async scrollToElement(element: ElementFinder): Promise<void> {
-        await browser.executeScript("arguments[0].scrollIntoView();", element.getWebElement());
+        await browser.actions().mouseMove(element.getWebElement()).perform();
     }
 
     async getFieldValue(fieldName: string): Promise<string> {

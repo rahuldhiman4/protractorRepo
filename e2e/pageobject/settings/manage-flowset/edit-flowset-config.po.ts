@@ -16,7 +16,7 @@ class EditFlowsetPage {
         descriptionField: '[rx-view-component-id="a825a900-6197-430c-ae9e-197291a6ff01"] textarea',//same
         statusGuid: '046e725c-0b9a-440d-9c96-77a730cf23f3',
         processStatusGuid: 'b48823c7-8eb0-4b30-bd9a-b44e53fcc195',
-        status: '[rx-view-component-id="046e725c-0b9a-440d-9c96-77a730cf23f3"] button div',//done
+        status: '[rx-view-component-id="046e725c-0b9a-440d-9c96-77a730cf23f3"] button',//done
         addAssociateCategoryBtn: '[rx-view-component-id="88810c80-2be6-4052-bd3c-40dbc782f046"] button',//not found
          saveButton:'[rx-view-component-id="ec655846-3db8-4072-beef-2dab6438e0e3"] button',//done
         addNewMapping: '[rx-view-component-id="1d59b685-ac65-4ac6-a39b-268596c8ae9c"] button',//same
@@ -72,7 +72,7 @@ class EditFlowsetPage {
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {
-        return await $(this.selectors.status).getAttribute("disabled") == "true";
+        return await $(this.selectors.status).getAttribute("aria-disabled") == "true";
     }
 
     async isAddAssociationBtnDisabled(): Promise<boolean> {

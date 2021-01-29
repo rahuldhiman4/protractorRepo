@@ -78,10 +78,10 @@ describe('Create Task Template', () => {
             expect(await taskTemplate.isOwnerComapnyRequiredText()).toBeTruthy('Owner Company Required text Not Present');
             expect(await taskTemplate.isOwnerGroupRequiredText()).toBeTruthy('Owner Group Required text Not Present');
             expect(await taskTemplate.isTaskDescriptionTitlePresent('Task Description')).toBeTruthy('Task Description not present');
-            expect(await taskTemplate.isTaskCategoryTier1TitlePresent('Task Category Tier 1')).toBeTruthy('Task Category Tier 1 not present');
-            expect(await taskTemplate.isTaskCategoryTier2TitlePresent('Task Category Tier 2')).toBeTruthy('Task Category Tier 2 not present');
-            expect(await taskTemplate.isTaskCategoryTier3TitlePresent('Task Category Tier 3')).toBeTruthy('Task Category Tier 3 not present');
-            expect(await taskTemplate.isTaskCategoryTier4TitlePresent('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 not present');
+            expect(await taskTemplate.isTaskCategoryTier1TitlePresent('Category Tier 1')).toBeTruthy('Task Category Tier 1 not present');
+            expect(await taskTemplate.isTaskCategoryTier2TitlePresent('Category Tier 2')).toBeTruthy('Task Category Tier 2 not present');
+            expect(await taskTemplate.isTaskCategoryTier3TitlePresent('Category Tier 3')).toBeTruthy('Task Category Tier 3 not present');
+            expect(await taskTemplate.isTaskCategoryTier4TitlePresent('Category Tier 4')).toBeTruthy('Task Category Tier 4 not present');
             await taskTemplate.setTemplateName("manualTaskTemplate" + randomStr);
             await taskTemplate.setTaskSummary("manualTaskSummary" + randomStr);
             await taskTemplate.setTaskDescription('Description in manual task');
@@ -95,10 +95,10 @@ describe('Create Task Template', () => {
             expect(await viewTaskTemplate.isTaskSummaryTitlePresent('Task Summary')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskTypeTitlePresent('Task Type')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskCompanyTitlePresent('Task Company')).toBeTruthy();
-            expect(await viewTaskTemplate.isTaskCategoryTier1TitlePresent('Task Category Tier 1')).toBeTruthy();
-            expect(await viewTaskTemplate.isTaskCategoryTier2TitlePresent('Task Category Tier 2')).toBeTruthy();
-            expect(await viewTaskTemplate.isTaskCategoryTier3TitlePresent('Task Category Tier 3')).toBeTruthy();
-            expect(await viewTaskTemplate.isTaskCategoryTier4TitlePresent('Task Category Tier 4')).toBeTruthy();
+            expect(await viewTaskTemplate.isTaskCategoryTier1TitlePresent('Category Tier 1')).toBeTruthy();
+            expect(await viewTaskTemplate.isTaskCategoryTier2TitlePresent('Category Tier 2')).toBeTruthy();
+            expect(await viewTaskTemplate.isTaskCategoryTier3TitlePresent('Category Tier 3')).toBeTruthy();
+            expect(await viewTaskTemplate.isTaskCategoryTier4TitlePresent('Category Tier 4')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskLabelTitlePresent('Label')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskDescriptionTitlePresent('Task Description')).toBeTruthy();
             expect(await viewTaskTemplate.isTemplateStatusTitlePresent('Status')).toBeTruthy();
@@ -129,7 +129,7 @@ describe('Create Task Template', () => {
         await viewTaskTemplate.clickOnEditLink();
         await editTaskTemplate.selectTaskCompany('Petramco');
         await editTaskTemplate.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('ERROR (222121): Company marked for Global usage cannot be modified.')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Company marked for Global usage cannot be modified.')).toBeTruthy();
     });
 
     //ankagraw
@@ -383,10 +383,10 @@ describe('Create Task Template', () => {
             "Support Group": "US Support 3",
             "Assignee": "qkatawazi"
         }
-        let displayId, taskName1, taskName2, taskName3, taskName4, taskName5;
+        let newCase1, taskName1, taskName2, taskName3, taskName4, taskName5;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            let newCase1 = await apiHelper.createCase(caseData1);
+            newCase1 = await apiHelper.createCase(caseData1);
             let tasktemp = await apiHelper.createAdhocTask(newCase1.id, templateData);
             taskName1 = templateData.taskName = 'manualTaskTemplateInProgress' + randomStr;
             let tasktemp1 = await apiHelper.createAdhocTask(newCase1.id, templateData);
@@ -407,11 +407,10 @@ describe('Create Task Template', () => {
             await apiHelper.updateTaskStatus(tasktemp3.id, 'Completed', 'Successful');
             await apiHelper.updateTaskStatus(tasktemp4.id, 'Canceled');
             await apiHelper.updateTaskStatus(tasktemp5.id, 'Closed');
-            displayId = newCase1.displayId;
         });
         it('[5786,5787,5785,5775,5779]: Open the case verify the Assigned Status ', async () => {
             await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(displayId);
+            await caseConsolePo.searchAndOpenCase(newCase1.displayId);
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink('manualTaskTemplateAssigned' + randomStr);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned');

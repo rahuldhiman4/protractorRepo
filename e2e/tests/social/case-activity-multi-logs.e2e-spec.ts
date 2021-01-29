@@ -523,7 +523,6 @@ describe('Case Activity Multi Logs', () => {
         });
 
         it('[4233]: Verify Gerneral Notes 100 Activity', async () => {
-            await utilityCommon.refresh(); //Need this refresh because Case edit button, filter button gets hide after scroll down.
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.selectFilterCheckBox('General Notes');
             await activityTabPage.clickOnFilterApplyButton();

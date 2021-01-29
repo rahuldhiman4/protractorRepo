@@ -272,7 +272,6 @@ describe('CKE Description', () => {
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(copyCasetemplate);
             await editCasePo.clickSaveCase();
-            await utilityCommon.refresh(); // workaround for 60116
             await viewCasePo.clickDescriptionShowMore();
             expect(await viewCasePo.getCaseTemplateText()).toContain(copyCasetemplate);
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();

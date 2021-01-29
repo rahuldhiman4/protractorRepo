@@ -12,7 +12,7 @@ class EditCaseTemplate {
         caseDescriptionGuid: '3b3506af-b9a2-47bd-88f7-032092bc1264',
         saveButton: '[rx-view-component-id="60fae5e7-7bf2-477f-9e60-8be66292e6b5"] button',
         cancelButton: '[rx-view-component-id="a68b0e71-032d-4ecf-9d12-e0cd49f4b652"] button',
-        templateStatusReadOnly: '[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] .read-only-content',
+        templateStatusReadOnly: '[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] button',
         companyDropDown: '39db6cc5-79ae-4934-a4bc-74765278fcda',
         flowset: '2fe19a48-630b-4380-8b17-cbff70023a89',
         resolveCaseOnLastTaskCompletion: 'e4956197-0230-4272-8fc4-87358bd084bf',
@@ -55,7 +55,7 @@ class EditCaseTemplate {
         caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown-toggle',
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
-        caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .dropdown',
+        caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] button',
         labelValue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .dropdown-toggle',
         dropdownBox: '.dropdown-toggle',
 
@@ -327,7 +327,10 @@ class EditCaseTemplate {
     }
 
     async isCopyTemplateBtnDisplayed(): Promise<boolean> {
-        return await $(this.selectors.copyTemplate).isDisplayed();
+        return await $(this.selectors.copyTemplate).isPresent().then(async (result) => {
+            if (result) return await  $(this.selectors.copyTemplate).isDisplayed();
+            else return false;
+        });
     }
 
     async isCaseSummaryFieldDisabled(): Promise<boolean> {
@@ -335,7 +338,7 @@ class EditCaseTemplate {
     }
 
     async isTemplateStatusDisabled(): Promise<boolean> {
-        return await $(this.selectors.templateStatusReadOnly).getAttribute('readonly') == 'true';
+        return await $(this.selectors.templateStatusReadOnly).getAttribute('aria-disabled') == 'true';
     }
 
     async isSaveTemplateBtnEnabled(): Promise<boolean> {
@@ -360,7 +363,7 @@ class EditCaseTemplate {
     async clickOnFlowsetDropDown(): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="12abf0f1-146b-4c94-bd9b-d7a55200153d"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        await browser.executeScript("arguments[0].scrollIntoView();", dropDownBoxElement);
+        await utilityCommon.scrollToElement(dropDownBoxElement);
         await dropDownBoxElement.click();
     }
 

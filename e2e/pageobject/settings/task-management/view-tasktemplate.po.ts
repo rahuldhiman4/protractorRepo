@@ -13,7 +13,7 @@ class ViewTaskTemplate {
         templateStatus: '[rx-view-component-id="d8b9ff29-11a1-406c-b746-81ac9491ce23"] .read-only-content',
         summaryValue: '[rx-view-component-id="80087f51-1b1f-4b47-9fde-36aed981db13"] .read-only-content',
         taskTypeValue: '[rx-view-component-id="27f3842f-613a-4439-a29c-bedd51b0eecd"] .read-only-content',
-        taskDescriptionValue: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] p',
+        taskDescriptionValue: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] .contents ',
         taskCompanyValue: '[rx-view-component-id="2717de6b-2e4e-47d2-a39e-b5ade14ea3e9"] .read-only-content',
         categoryTier1Value: '[rx-view-component-id="636d53eb-5cf3-4fbd-9af4-e258cf3424c2"] .read-only-content',
         categoryTier2Value: '[rx-view-component-id="a52e2f89-e120-442c-8df4-e466cafeb657"] .read-only-content',
@@ -311,7 +311,10 @@ class ViewTaskTemplate {
     }
 
     async isCopyTaskButtonEnabled(): Promise<boolean> {
-        return await $(this.selectors.copyTaskButton).isEnabled();
+        return await $(this.selectors.copyTaskButton).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.copyTaskButton).isDisplayed();
+            else return false;
+        });
     }
 
     async clickBackArrowBtn(): Promise<void> {
