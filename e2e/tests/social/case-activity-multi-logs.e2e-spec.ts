@@ -81,7 +81,6 @@ describe('Case Activity Multi Logs', () => {
         await activityTabPage.addActivityNote(addNoteBodyText2);
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnRefreshButton();
-        expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg3: BodyText is missing');
         expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
         expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
         expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
@@ -113,7 +112,6 @@ describe('Case Activity Multi Logs', () => {
 
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnRefreshButton();
-        expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg22: BodyText is missing');
         expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
         expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
         expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
@@ -194,9 +192,9 @@ describe('Case Activity Multi Logs', () => {
                 "Requester": "qtao",
                 "Summary": "DRDMV16755TC"+randomStr,
                 "Assigned Company": "Petramco",
-                "Business Unit": "United Kingdom Support",
-                "Support Group": "GB Support 2",
-                "Assignee": "qstrong"
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
             }
             newCase = await apiHelper.createCase(caseData);
         });
@@ -716,8 +714,8 @@ describe('Case Activity Multi Logs', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
-                "supportGroup": "GB Support 2",
-                "assignee": "qstrong",
+                "supportGroup": "US Support 3",
+                "assignee": "qfeng",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
@@ -817,11 +815,11 @@ describe('Case Activity Multi Logs', () => {
         });
 
         it('[4241]:Create case and verify self approval without process', async () => {
-            await apiHelper.apiLogin('qstrong');
+            await apiHelper.apiLogin('qfeng');
             caseResponseDetails = await apiHelper.createCase(caseData);
             caseId = caseResponseDetails.displayId;
             await navigationPage.signOut();
-            await loginPage.login('qstrong');
+            await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
             await activityTabPage.applyActivityFilter('Approvals');

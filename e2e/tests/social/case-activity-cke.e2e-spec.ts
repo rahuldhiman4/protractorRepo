@@ -90,9 +90,9 @@ describe('Case Activity CKE', () => {
                 "Requester": "qtao",
                 "Summary": "DRDMV21619TC2",
                 "Assigned Company": "Petramco",
-                "Business Unit": "United Kingdom Support",
-                "Support Group": "GB Support 2",
-                "Assignee": "qstrong"
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
             }
             newCase = await apiHelper.createCase(caseData);
 
@@ -628,7 +628,7 @@ describe('Case Activity CKE', () => {
 
         it('[3580]: Login in with Assignee User And Navigate to Person Profile', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qstrong');
+            await loginPage.login('qdu');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing');
             // Profile View CK Editor
@@ -823,9 +823,9 @@ describe('Case Activity CKE', () => {
                 "Requester": "qtao",
                 "Summary": "3582_TC",
                 "Assigned Company": "Petramco",
-                "Business Unit": "United Kingdom Support",
-                "Support Group": "GB Support 2",
-                "Assignee": "qstrong"
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 1",
+                "Assignee": "qdu"
             }
             newCase = await apiHelper.createCase(caseData);
         });
@@ -854,7 +854,7 @@ describe('Case Activity CKE', () => {
         it('[3579]: Verify the Comments posted in activity with notes template For Person Profile ', async () => {
             // Profile View CK Editor
             await navigationPage.signOut();
-            await loginPage.login('qstrong');
+            await loginPage.login('qdu');
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
