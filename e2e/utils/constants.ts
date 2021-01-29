@@ -36,8 +36,8 @@ export const BWF_PAGE_TITLES = {
 
     },
     APPROVALS: {
-        APPROVAL_CONFIGURATION: 'Approval Configurations - Settings - Business Workflows',
-        NOTIFICATION_CONFIGURATION: 'Notification Configurations - Settings - Business Workflows',
+        APPROVAL_CONFIGURATION: 'Approval Configuration - Settings - Business Workflows',
+        NOTIFICATION_CONFIGURATION: 'Notification Configuration - Settings - Business Workflows',
 
     },
     CASE_MANAGEMENT: {
