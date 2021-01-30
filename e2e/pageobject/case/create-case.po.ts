@@ -11,8 +11,8 @@ class CreateCasePage {
         attachmentLink: '[rx-view-component-id="e494b462-7749-44aa-922e-fc5d9b3dd5cb"] button',
         autoCategorization: '[rx-view-component-id="cfb3cc65-210c-4530-b529-3bc414b6d8dc"] button',
         changeAssignment: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
-        assignedCompany: '[rx-view-component-id="8ac19557-eebc-4c14-9304-efc60d01e09f"] .adapt-select',
-        businessUnit: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] .adapt-select',
+        assignedCompany: '[rx-view-component-id="8bdf1730-165d-4703-a3fe-26a830a7f947"] button',
+        businessUnit: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] button',
         department: '[rx-view-component-id="a2a501d1-ac3c-460f-8422-2a559be7445e"] .adapt-select',
         assignedGroup: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] .adapt-select',
         assignee: '[rx-view-component-id="43c3e9ee-dde2-4e10-94e9-c6ee68217cda"] .dropdown-toggle',
@@ -27,7 +27,7 @@ class CreateCasePage {
         site: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] input.form-control',
         siteOption: '[rx-view-component-id="1113b368-e1eb-40e9-898f-65c075565462"] .dropdown_select__menu-content button',
         priorityDropDown: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .dropdown-toggle',
-        priorityOption: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .dropdown_select__menu-content button',
+        priorityOption: '[rx-view-component-id="367e71d0-f31f-452a-934b-d7a78125cdf1"] .dropdown-item',
         descriptionGuid: 'e494b462-7749-44aa-922e-fc5d9b3dd5cb',
         categoryTier1Guid: '51754f35-9122-4c1f-8e31-e1061aa52002',
         categoryTier2Guid: 'f29162d1-0c65-48be-988b-9255a48303f8',
@@ -137,7 +137,7 @@ class CreateCasePage {
     }
 
     async isAssignedCompanyReadOnly(): Promise<boolean> {
-        return await $(this.selectors.assignedCompany).getAttribute('aria-readonly') == 'true';
+        return await $(this.selectors.assignedCompany).getAttribute('disabled') == 'true';
     }
 
     async isBusinessUnitReadOnly(): Promise<boolean> {
