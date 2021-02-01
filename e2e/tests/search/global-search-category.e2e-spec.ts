@@ -577,6 +577,11 @@ describe('Global Search Category Validation', () => {
             expect(await taskPreviewPo.isTaskDescriptionDisplayed(description)).toBeTruthy('FailureMsg44: Task Description is missing');
         });
 
+        it('[4296]: Click On Goto Task button and verify ', async () => {
+            await taskPreviewPo.clickGotoTaskButton();
+            expect(await viewTaskPo.getTaskID()).toBe(taskDisplayId[0], 'FailureMsg45: Task id is missing on view task page');
+        });
+        
         it('[4296]: Verify Task with non matching Task summary and description Also Verify Task summary and description who have not access of the task', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary);
