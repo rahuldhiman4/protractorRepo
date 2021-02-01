@@ -146,22 +146,6 @@ class ChangeAssignmentBlade {
         await utilityCommon.selectDropDown(dropDownElement, 'None', DropDownType.WebElement);
     }
 
-    async isAgentListSorted(): Promise<boolean> {
-        // use apurva's getAllDropDownValueMethod
-        let arr: string[] = [], copy: string[] = [];
-        let agentRecords: number = await $$('div[aria-label*="name"]').count();
-        for (let i = 0; i < agentRecords; i++) {
-            let ab: string = await $$('div[aria-label*="name"]').get(i).getText();
-            arr[i] = ab;
-        }
-        copy = Object.assign([], arr);
-        copy = copy.sort();
-        arr = arr.sort();
-        return arr.length === copy.length && arr.every(
-            (value, index) => (value === copy[index])
-        );
-    }
-
     // write separate method for this operation
     async setAssigneeOnBlade(company: string, bu: string, group: string, assignee: string): Promise<void> {
         await this.selectCompany(company);
@@ -218,6 +202,44 @@ class ChangeAssignmentBlade {
     async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
         let elementDropdown: ElementFinder = await element(by.cssContainingText('.assignment-component-wrapper bwf-select-with-pagination button', `Select ${dropDownLabel}`));
         return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
+    }
+
+    async isDropDownListSorted(dropDownName:string): Promise<boolean> {     
+        let arr: string[] = [], copy: string[] = [];    
+        arr = await this.getAllDropDownValues(dropDownName);
+        copy = Object.assign([], arr);
+        copy = copy.sort();
+        arr = arr.sort();        
+        return arr.length === copy.length && arr.every(
+            (value, index) => (value === copy[index])
+        );
+    }
+
+    async getAllDropDownValues(dropDownName:string): Promise<string[]> {
+        let dropDownElement;
+        switch (dropDownName) {
+            case "Company": {
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(0);               
+                break;
+            }
+            case "SupportOrg": {
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(1);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(2);
+                break;
+            }
+            case "Assignee": {
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(3);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+        return utilityCommon.getAllDropDownValues(dropDownElement, DropDownType.WebElement);
     }
 }
 
