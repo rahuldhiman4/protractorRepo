@@ -415,19 +415,22 @@ describe('Person Profile test', () => {
         await personProfile.clickOnManagerLink();
         await utilityCommon.switchToNewTab(1);
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
-        expect(await personProfile.getContactNumber()).toBe("+12135559393", "Phone number mismatch");
+        expect(await personProfile.getContactNumber()).toBe("1 213 5559393", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("hannah.haas@petramco.com", "Email mismatch");
-        expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Nagoya-shi, Aichi, 450-0002, Japan ");
+        expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Aichi, Aichi, 450-0002, Japan ");
         await personProfile.clickOnTab("Requested Cases");
         await personProfile.clickOnTab("Assigned Cases");
         await personProfile.clickOnTab("Support Groups");
         await personProfile.clickOnTab("Related Cases");
         await personProfile.clickOnTab("Related Persons");
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
     //asahitya
     it('[4127]: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', async () => {
         try {
+            await personProfile.clickOnManagerLink();
+            await utilityCommon.switchToNewTab(1);
             await activityTabPage.addActivityNote("4127");
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote("4127")).toBeTruthy("Activity notes is missing");
