@@ -135,7 +135,7 @@ describe('Service Provider Model Tests Extended', () => {
             await createKnowledgePage.clickAssignToMeButton();
             await createKnowledgePage.clickChangeAssignmentButton();
             expect(await changeAssignmentBladePo.getCompanyDefaultValue()).toBe('Phyto');
-            expect(await changeAssignmentBladePo.getSupportGroupDefaultValue()).toBe('Kingston AskHR');
+            expect(await changeAssignmentBladePo.getAssignedGroupDefaultValue()).toBe('Kingston AskHR');
             await changeAssignmentBladePo.clickOnCancelButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             knowledgeKingstanID = await previewKnowledgePo.getKnowledgeArticleID();
@@ -151,8 +151,8 @@ describe('Service Provider Model Tests Extended', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
-            await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
+            await changeAssignmentBladePo.selectSupportOrg('Kingston HR');
+            await changeAssignmentBladePo.selectAssignedGroup('Kingston AskHR');
             await changeAssignmentBladePo.selectAssignee('Jack Torrance');
             await changeAssignmentBladePo.clickOnAssignButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
@@ -457,9 +457,9 @@ describe('Service Provider Model Tests Extended', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(templateDataGlobalCompany.templateName);
             await editCasePo.clickChangeAssignmentButton();
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Oracle HR')).toBeFalsy();
-            await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
+            await changeAssignmentBladePo.selectSupportOrg('Kingston HR');
             expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Oracle AskHR')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
+            await changeAssignmentBladePo.selectAssignedGroup('Kingston AskHR');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade('Unamuno Miguel de')).toBeTruthy('User is not present on Assignment blade');
             await changeAssignmentBladePo.selectAssignee('David Kramer');
             await changeAssignmentBladePo.clickOnAssignButton();

@@ -289,8 +289,8 @@ describe('Email Task', () => {
             await browser.sleep(2000); // To wait until view task page gets load correctly.
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
-            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
+            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -308,8 +308,8 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
-            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
+            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -609,8 +609,8 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee("Qadim Katawazi");
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -636,8 +636,8 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -729,8 +729,8 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
-            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
+            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -743,8 +743,8 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
-            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
+            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();

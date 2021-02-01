@@ -907,8 +907,8 @@ describe("Actionable Notifications", () => {
             await createCasePage.setSummary("4285");
             await createCasePage.clickChangeAssignmentButton();
             await assignmentBladePO.selectCompany('Petramco');
-            await assignmentBladePO.selectBusinessUnit('United States Support');
-            await assignmentBladePO.selectSupportGroup('US Support 3');
+            await assignmentBladePO.selectSupportOrg('United States Support');
+            await assignmentBladePO.selectAssignedGroup('US Support 3');
             await assignmentBladePO.selectAssignee('Qiao Feng');
             await assignmentBladePO.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();

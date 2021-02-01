@@ -17,8 +17,8 @@ class StatusBladKnowledgeArticle {
         await $(this.selectors.statusChange).click();
         await utilityCommon.selectDropDown(this.selectors.statusChangeDrpDwnGuid, knowledgeStatus);
         await changeAssignmentBladePo.selectCompany(company)
-        await changeAssignmentBladePo.selectBusinessUnit(reviewerBusinessUnit);
-        await changeAssignmentBladePo.selectSupportGroup(reviewerSupportGroup);
+        await changeAssignmentBladePo.selectSupportOrg(reviewerBusinessUnit);
+        await changeAssignmentBladePo.selectAssignedGroup(reviewerSupportGroup);
         await changeAssignmentBladePo.selectAssignee(reviewer);
         await $(this.selectors.saveButtonOnReviewer).click();
     }

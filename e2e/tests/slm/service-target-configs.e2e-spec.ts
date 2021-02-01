@@ -409,8 +409,8 @@ describe('Service Target Configs', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectBusinessUnit('United States Support');
-            await changeAssignmentPage.selectSupportGroup('US Support 3');
+            await changeAssignmentPage.selectSupportOrg('United States Support');
+            await changeAssignmentPage.selectAssignedGroup('US Support 3');
             await changeAssignmentPage.selectAssignee('Qiao Feng');
             await changeAssignmentPage.clickOnAssignButton();
             await editCasePo.clickSaveCase();

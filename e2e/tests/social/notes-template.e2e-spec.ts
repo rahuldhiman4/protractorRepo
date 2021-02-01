@@ -2000,8 +2000,8 @@ describe('Notes template', () => {
             await createKnowlegePo.selectKnowledgeSet("HR");
             await createKnowlegePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
-            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
+            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
 
             await changeAssignmentBladePo.clickOnAssignButton();
