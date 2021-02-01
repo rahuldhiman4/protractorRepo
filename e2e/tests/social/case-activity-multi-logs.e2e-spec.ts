@@ -350,8 +350,8 @@ describe('Case Activity Multi Logs', () => {
 
         it('[4229]: Assign Manual Task Validate Its Activity', async () => {
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('qkatawazi');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
@@ -442,8 +442,8 @@ describe('Case Activity Multi Logs', () => {
         it('[4229]: Assign External Task Validate Its Activity', async () => {
             // Assign Task 
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('qkatawazi');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
@@ -945,8 +945,8 @@ describe('Case Activity Multi Logs', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Petramco')
-            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
-            await changeAssignmentBladePo.selectSupportGroup('CA Support 1');
+            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
+            await changeAssignmentBladePo.selectAssignedGroup('CA Support 1');
             await changeAssignmentBladePo.selectAssignee('Qiang Du');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();

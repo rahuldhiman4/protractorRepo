@@ -191,6 +191,40 @@ export class Utility {
         );
     }
 
+    async getAllDropDownValues(dropDownIdentifier: string | ElementFinder, inputType?: DropDownType, dropDownSearchValue?: string): Promise<string[]> {
+        let drpDwnvalue: number = 0;
+        let arr: string[] = [];
+        switch (inputType) {
+            case DropDownType.WebElement: {
+                if (!(typeof dropDownIdentifier === 'string')) {
+                    await dropDownIdentifier.click();
+                    drpDwnvalue = await $$(this.selectors.dropDownOption).count();
+                }
+                break;
+            }
+            case DropDownType.Label: {
+                const dropDown = await $(`[title="${dropDownIdentifier}"],[aria-label="${dropDownIdentifier}"]`);
+                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+                await dropDownBoxElement.click();
+                const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+                if (dropDownSearchValue) await dropDownInputElement.sendKeys(dropDownSearchValue);
+                drpDwnvalue = await $$(this.selectors.dropDownOption).count(); // drpDwnvalue = await $$('.ui-select-choices-row-inner *').count();
+                break;
+            }
+            default: {
+                const dropDown = await $(`[rx-view-component-id="${dropDownIdentifier}"]`);
+                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+                await dropDownBoxElement.click();
+                drpDwnvalue = await $$(this.selectors.dropDownOption).count();
+            }
+        }
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+            arr[i] = ab;
+        }
+        return arr;
+    }
+
     async isPopUpMessagePresent(expectedMsg: string, actualNumberOfPopups?: number): Promise<boolean> {
         let arr: string[] = await this.getAllPopupMsg(actualNumberOfPopups);
         return arr.includes(expectedMsg);

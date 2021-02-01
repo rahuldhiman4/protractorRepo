@@ -407,17 +407,17 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Assignee validation3', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed();
+            await changeAssignmentBladePo.isAssignedGroupDrpDwnDisplayed();
             await changeAssignmentBladePo.selectCompany("Petramco");
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -432,8 +432,8 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
@@ -470,17 +470,17 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Second Task validation2', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.isSupportGroupDrpDwnDisplayed();
+            await changeAssignmentBladePo.isAssignedGroupDrpDwnDisplayed();
             await changeAssignmentBladePo.selectCompany("Petramco");
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -495,8 +495,8 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');

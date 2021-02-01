@@ -1568,8 +1568,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await editKnowledgePage.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
             await changeAssignmentBlade.selectCompany('Phylum');
-            await changeAssignmentBlade.selectBusinessUnit('Phylum Support Org1');
-            await changeAssignmentBlade.selectSupportGroup('Phylum Support Group1');
+            await changeAssignmentBlade.selectSupportOrg('Phylum Support Org1');
+            await changeAssignmentBlade.selectAssignedGroup('Phylum Support Group1');
             await changeAssignmentBlade.selectAssignee('phylumfnk1 phylumlnk1');
             await changeAssignmentBlade.clickOnAssignButton();
             await editKnowledgePage.clickSaveStatusBtn();

@@ -77,10 +77,9 @@ describe('Edit Case', () => {
 
         await editCasePage.clickChangeAssignmentButton();
         await expect(changeAssignmentPage.isCompanyDrpDwnDisplayed()).toBeTruthy();
-        await expect(changeAssignmentPage.isDepartmentDrpDwnDisplayed()).toBeTruthy();
-        await expect(changeAssignmentPage.isBuisnessUnitDrpDwnDisplayed()).toBeTruthy();
-        await expect(changeAssignmentPage.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
-        await expect(changeAssignmentPage.isAssigneeListPresent()).toBeTruthy();
+        await expect(changeAssignmentPage.isSupporOrgDrpDwnDisplayed()).toBeTruthy();
+        await expect(changeAssignmentPage.isAssignedGroupDrpDwnDisplayed()).toBeTruthy();
+        await expect(changeAssignmentPage.isAssigneeDrpDwnDisplayed()).toBeTruthy();
         await changeAssignmentPage.clickOnCancelButton();
         await editCasePage.waitForEditCasePageToBeDisplayed();
         await expect(editCasePage.getSelectCaseTemplate()).toBe('Select Case Template');
@@ -119,24 +118,24 @@ describe('Edit Case', () => {
         await editCasePage.clickChangeAssignmentButton();
         expect(await changeAssignmentPage.isAssignToMeCheckBoxSelected()).toBeFalsy("Checkbox is selected");
         expect(await changeAssignmentPage.getCompanyDefaultValue()).toBe('Petramco');
-        expect(await changeAssignmentPage.getSupportGroupDefaultValue()).toBe('US Support 3');
-        expect(await changeAssignmentPage.isSupportGroupDrpDwnDisplayed()).toBeTruthy();
+        expect(await changeAssignmentPage.getAssignedGroupDefaultValue()).toBe('US Support 3');
+        expect(await changeAssignmentPage.isAssignedGroupDrpDwnDisplayed()).toBeTruthy();
         await changeAssignmentPage.selectAssignee('Qiao Feng');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
 
         await viewCasePage.clickEditCaseButton();
-        await changeAssignmentPage.selectBusinessUnit('Australia Support');
-        await changeAssignmentPage.selectSupportGroup('AU Support 1');
+        await changeAssignmentPage.selectSupportOrg('Australia Support');
+        await changeAssignmentPage.selectAssignedGroup('AU Support 1');
         await editCasePage.clickSaveCase();
         expect(await viewCasePage.getAssignedGroupText()).toBe('AU Support 1');
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getAllTaskActivity('AU Support 1')).toBe('AU Support 1');
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickChangeAssignmentButton();
-        await changeAssignmentPage.selectBusinessUnit('United States Support');
-        await changeAssignmentPage.selectSupportGroup('US Support 3');
+        await changeAssignmentPage.selectSupportOrg('United States Support');
+        await changeAssignmentPage.selectAssignedGroup('US Support 3');
         await changeAssignmentPage.selectAssignee('Qadim Katawazi');
         await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
@@ -147,8 +146,8 @@ describe('Edit Case', () => {
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.isTextPresentInActivityLog('US Support 3')).toBeTruthy();
         await viewCasePage.clickEditCaseButton();
-        await changeAssignmentPage.selectBusinessUnit('HR Support');
-        await changeAssignmentPage.selectSupportGroup('Compensation and Benefits');
+        await changeAssignmentPage.selectSupportOrg('HR Support');
+        await changeAssignmentPage.selectAssignedGroup('Compensation and Benefits');
         await editCasePage.clickSaveCase();
         await utilityCommon.closePopUpMessage();
     });

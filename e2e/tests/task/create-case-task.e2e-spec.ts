@@ -1440,8 +1440,8 @@ describe('Create Case Task', () => {
         it('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
             await changeAssignmentBladePo.selectCompany('Petramco')
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await changeAssignmentBladePo.selectAssignee('Qiao Feng');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -1451,7 +1451,7 @@ describe('Create Case Task', () => {
         });
         it('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewCasePage.clickEditCaseButton();
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 1');
@@ -1464,7 +1464,7 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
             await adhoctaskTemplate.selectCategoryTier2('Compensation');
             await adhoctaskTemplate.selectCategoryTier3('Bonus');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTask.clickTaskLink("Summary2" + randomStr);
@@ -1601,8 +1601,8 @@ describe('Create Case Task', () => {
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('Description' + randomStr);
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-            await changeAssignmentBladePo.selectSupportGroup('Workforce Administration');
+            await changeAssignmentBladePo.selectSupportOrg('HR Support');
+            await changeAssignmentBladePo.selectAssignedGroup('Workforce Administration');
             await changeAssignmentBladePo.selectAssignee('Peter Kahn');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnCancelButton();
@@ -1628,8 +1628,8 @@ describe('Create Case Task', () => {
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('UpdatedDescription' + randomStr);
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-            await changeAssignmentBladePo.selectSupportGroup('Workforce Administration');
+            await changeAssignmentBladePo.selectSupportOrg('HR Support');
+            await changeAssignmentBladePo.selectAssignedGroup('Workforce Administration');
             await changeAssignmentBladePo.selectAssignee('Peter Kahn');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -1662,8 +1662,8 @@ describe('Create Case Task', () => {
             await expect(viewCasePage.getContactPersonName()).toBe('Elizabeth Peters');
             await viewCasePage.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
             await changeAssignmentBladePo.selectAssignee('Qiao Feng');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
@@ -1697,7 +1697,7 @@ describe('Create Case Task', () => {
             await expect(personProfilePo.getPersonName()).toBe('Elizabeth Peters');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe(templateData.supportGroup);
