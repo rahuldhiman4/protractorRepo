@@ -76,7 +76,7 @@ class GlobalSearch {
 
     async isCategoryAllDropDownValuesMatches(data: string[]): Promise<boolean> {
         let element = await $(this.selectors.categoryDropDown);
-        return await utilityCommon.isAllDropDownValuesMatches(element, data, DropDownType.WebElement);//no relevance found
+        return await utilityCommon.isAllDropDownValuesMatches(element, data, DropDownType.WebElement);
     }
 
     async selectCategoryDropDownValue(categoryDropdownValue: string): Promise<void> {
