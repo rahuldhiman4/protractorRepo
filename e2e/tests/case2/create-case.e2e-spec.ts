@@ -690,9 +690,8 @@ describe("Create Case", () => {
             await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplateData.templateName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await viewCasePage.clickEditCaseButton();
-            await editCasePage.clickChangeAssignmentButton();
-            expect(await changeAssignmentPage.isAgentListSorted()).toBeTruthy("Agent List is Sorted");
+            await viewCasePage.clickEditCaseButton();           
+            expect(await changeAssignmentPage.isDropDownListSorted("Assignee")).toBeTruthy("Agent List is Sorted");
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
