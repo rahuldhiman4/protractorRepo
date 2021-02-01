@@ -39,7 +39,7 @@ describe('Global Search Category Validation', () => {
         year = new Number(numYear).toString();
 
         let numMonth: number = objDate.getUTCMonth() + 1;
-        let monthArr: string[] = ["Null", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let monthArr: string[] = ["Null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
         let numDate: number = objDate.getUTCDate();
@@ -71,7 +71,6 @@ describe('Global Search Category Validation', () => {
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
         await apiHelper.associatePersonToSupportGroup(userData1.userId, "CA Support 1");
-
     });
 
     afterAll(async () => {
@@ -204,7 +203,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isFieldLabelDisplayed('Category Tier 3')).toBeTruthy('FailureMsg14: Category Tier 3 label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Category Tier 4')).toBeTruthy('FailureMsg15: Category Tier 4 label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Assignee')).toBeTruthy('FailureMsg16: Assignee label is missing');
-            expect(await casePreviewPo.isFieldLabelDisplayed('Assigned Group')).toBeTruthy('FailureMsg17: Assigned Group label is missing');
+            expect(await casePreviewPo.isFieldLabelDisplayed('Support Organization')).toBeTruthy('FailureMsg17: Support Organization label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Assigned Company')).toBeTruthy('FailureMsg18: Assigned Company label is missing');
         });
         it('[4334]: Verify Case Preview Field Values', async () => {
@@ -214,7 +213,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg22: Case Priority is missing');
             expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg23: Reqester Name missing');
             expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg24: Reqester Company is missing');
-            expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('FailureMsg25: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 512 343-1923')).toBeTruthy('FailureMsg25: Reqester Phone is missing');
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg26: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg27: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg28: Source Value is missing');
@@ -224,7 +223,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco','FailureMsg32: Assigned Company Value is missing');
         });
         it('[4334]: Verify Modules Catergoy drop down ', async () => {
-            let category: string[] = ['All', 'Case', 'Task', 'People', 'Knowledge', 'Document', 'Case Template', 'Task Template'];
+            let category: string[] = ['','All', 'Case', 'Task', 'People', 'Knowledge', 'Document', 'Case Template', 'Task Template'];
             expect(await searchPo.isCategoryAllDropDownValuesMatches(category)).toBeTruthy('FailureMsg33: Category options mismatch');
         });
     });
@@ -262,8 +261,8 @@ describe('Global Search Category Validation', () => {
 
             // Non access to case
             await apiHelper.apiLogin('qdu');
-                let caseDetails3 = await createCase(summary, description);
-                caseDisplayId4[0] = caseDetails3.displayId;
+            let caseDetails3 = await createCase(summary, description);
+            caseDisplayId4[0] = caseDetails3.displayId;
         });
 
         it('[4307]: Verify Module Title & Pagination', async () => {
@@ -291,7 +290,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isFieldLabelDisplayed('Category Tier 3')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Category Tier 4')).toBeTruthy('FailureMsg28: Category Tier 4 label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
-            expect(await casePreviewPo.isFieldLabelDisplayed('Assigned Group')).toBeTruthy('FailureMsg30: Assigned Group label is missing');
+            expect(await casePreviewPo.isFieldLabelDisplayed('Support Organization')).toBeTruthy('FailureMsg30: Support Organization label is missing');
             expect(await casePreviewPo.isFieldLabelDisplayed('Assigned Company')).toBeTruthy('FailureMsg31: Assigned Company label is missing');
 
             expect(await casePreviewPo.isCaseSummaryDisplayed(summary)).toBeTruthy('FailureMsg20: Case Summary is missing');
@@ -300,7 +299,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg35: Case Priority is missing');
             expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg36: Reqester Name missing');
             expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg37: Reqester Company is missing');
-            expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 512 343-1923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
@@ -568,18 +567,14 @@ describe('Global Search Category Validation', () => {
             expect(await taskPreviewPo.isAssigneeNameDisplayed('Quies Columbcille')).toBeTruthy('FailureMsg39: Assignee Name is missing');
             expect(await taskPreviewPo.isAassignedGroupValueDisplayed('LA Support 2')).toBeTruthy('FailureMsg40: Assigned Support Group Value is missing');
             expect(await taskPreviewPo.isTaskDescriptionDisplayed(description)).toBeTruthy('FailureMsg41: Task Description value is missing');
+        });
 
-            // Search Task with description
+        it('[4296]: Search Task with description', async () => {
             await searchPo.searchRecord(description);
             expect(await searchPo.isModuleTitleDisplayed(description, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg42: Task module title is missing');
             await searchPo.clickOnLeftPannelRecord(taskDisplayId[0], taskModule);
             expect(await taskPreviewPo.isTaskIdDisplayed(taskDisplayId[0])).toBeTruthy('FailureMsg43: Task id is missing');
             expect(await taskPreviewPo.isTaskDescriptionDisplayed(description)).toBeTruthy('FailureMsg44: Task Description is missing');
-        });
-
-        it('[4296]: Click On Goto Task button and verify ', async () => {
-            await taskPreviewPo.clickGotoTaskButton();
-            expect(await viewTaskPo.getTaskID()).toBe(taskDisplayId[0], 'FailureMsg45: Task id is missing on view task page');
         });
 
         it('[4296]: Verify Task with non matching Task summary and description Also Verify Task summary and description who have not access of the task', async () => {
@@ -822,6 +817,7 @@ describe('Global Search Category Validation', () => {
             await editKnowledgePo.setKnowledgeStatus('Publish Approval');
             await browser.sleep(4000);//Need this sleep till status gets change from Publish Approval to Published
             await utilityCommon.refresh(); // Need this refresh status gets change from Publish Approval to Published
+            
             expect(await viewKnowledgeArticlePo.getStatusValue()).toBe('Published', 'FailureMsg25: On view knowledge article status value is missing');
 
             // Verify with draft status
@@ -891,9 +887,13 @@ describe('Global Search Category Validation', () => {
         it('[4297]: Verify vesion 2 with publish status ', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary5);
-            expect(await searchPo.isModuleTitleDisplayed(summary5, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary5, 'Knowledge Articles (2)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
             await searchPo.clickOnLeftPannelRecord(kaDisplayId6, KAModule);
-
+            expect(await knowledgeArticlePreview.getArticleVersion()).toBe(expectedVersion1, 'FailureMsg24: version 1 is displayed');
+            
+            await searchPo.searchRecord(summary5);
+            expect(await searchPo.isModuleTitleDisplayed(summary5, 'Knowledge Articles (2)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
+            await searchPo.clickOnLeftPannelRecord(kaDisplayId6, KAModule,2);
             expect(await knowledgeArticlePreview.getArticleVersion()).not.toBe(expectedVersion1, 'FailureMsg24: version 1 is displayed');
             expect(await knowledgeArticlePreview.getArticleVersion()).toBe(expectedVersion2, 'FailureMsg24: version 2 is missing on KA preview');
             expect(await knowledgeArticlePreview.getStatusOfKA()).toBe('Published', 'FailureMsg26: version 2 is missing on KA preview');
