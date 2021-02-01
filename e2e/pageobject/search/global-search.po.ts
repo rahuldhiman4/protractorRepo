@@ -1,5 +1,6 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser, ElementFinder } from "protractor";
 import utilityCommon from '../../utils/utility.common';
+import { DropDownType } from '../../utils/constants';
 
 class GlobalSearch {
 
@@ -25,9 +26,10 @@ class GlobalSearch {
     }
 
     async searchRecord(record: string): Promise<void> {
-        await $$(this.selectors.searchBox).get(1).clear();
-        await $$(this.selectors.searchBox).get(1).sendKeys(record);
-        await $$(this.selectors.searchBox).get(1).sendKeys(protractor.Key.ENTER);
+        await $(this.selectors.searchBox).clear();
+        await $(this.selectors.searchBox).sendKeys(record);
+        await $(this.selectors.searchBox).sendKeys(protractor.Key.ENTER);
+
     }
 
     async isSearchBoxLabelDisplayed(): Promise<boolean> {
@@ -74,12 +76,12 @@ class GlobalSearch {
 
     async isCategoryAllDropDownValuesMatches(data: string[]): Promise<boolean> {
         let element = await $(this.selectors.categoryDropDown);
-        return await utilityCommon.isAllDropDownValuesMatches(element, data);
+        return await utilityCommon.isAllDropDownValuesMatches(element, data, DropDownType.WebElement);
     }
 
     async selectCategoryDropDownValue(categoryDropdownValue: string): Promise<void> {
         let elemeent = await $(this.selectors.categoryDropDown);
-        await utilityCommon.selectDropDown(elemeent, categoryDropdownValue);
+        await utilityCommon.selectDropDown(elemeent, categoryDropdownValue,DropDownType.WebElement);
     }
 
     async clickOnRecentSearchDropDownButton(): Promise<void> {
@@ -262,7 +264,7 @@ class GlobalSearch {
         }
     }
 
-    async clickOnLeftPannelRecord(record: string, moduleName: string): Promise<void> {
+    async clickOnLeftPannelRecord(record: string, moduleName: string, recordNumber?:number): Promise<void> {
         let guid;
         switch (moduleName) {
             case "Case": {
@@ -298,7 +300,12 @@ class GlobalSearch {
                 break;
             }
         }
-        await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).click();
+
+        if (recordNumber) {
+            await $$(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).get(recordNumber-1).click();  
+        } else {
+            await $(`[rx-view-component-id="${guid}"] .bwf-search-fields[title="${record}"]`).click();     
+           }
     }
 
     async clickOnPaginationPageNo(moduleName: string, pageNo: string): Promise<void> {
