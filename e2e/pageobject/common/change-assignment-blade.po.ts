@@ -11,7 +11,35 @@ class ChangeAssignmentBlade {
         assignee: '.person__info .name',
     }
 
-    //May not required. Test steps need to change
+    async setDropDownValue(dropDownValue: string, dropDownName: string, guid?: string): Promise<void> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        let dropDownElement: ElementFinder;
+        switch (dropDownName) {
+            case "Company": {
+                dropDownElement = await $$(locator).get(0);
+                break;
+            }
+            case "SupportOrg": {
+                dropDownElement = await $$(locator).get(1);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(locator).get(2);
+                break;
+            }
+            case "Assignee": {
+                dropDownElement = await $$(locator).get(3);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+        await utilityCommon.selectDropDown(dropDownElement, dropDownValue, DropDownType.WebElement);
+    }
+
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {
         return await $('.checkbox__input').isSelected();
     }
