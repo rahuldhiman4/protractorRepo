@@ -272,8 +272,8 @@ export class Utility {
             if (result) {
                 return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
             } else {
-                let fieldLabel = `.clearfix label, [rx-view-component-id='${guid}'] label, .saved-advanced-filters-header, .form-control-label, [rx-view-component-id='${guid}'] span span, [rx-view-component-id='${guid}'] label span`;
-                return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
+                let fieldLabel2 = `.clearfix label, [rx-view-component-id='${guid}'] label, .saved-advanced-filters-header, .form-control-label, [rx-view-component-id='${guid}'] span span, [rx-view-component-id='${guid}'] label span`;
+                return await element(by.cssContainingText(fieldLabel2, fieldName)).getText() == fieldName ? true : false;
             }
         });
 
