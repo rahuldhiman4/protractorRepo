@@ -9,7 +9,6 @@ class ChangeAssignmentBlade {
         assignButton: '.modal-footer .btn-primary',
         searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
         assignee: '.person__info .name',
-        supportGroupName: '.person__info',
     }
 
     //May not required. Test steps need to change
@@ -73,21 +72,6 @@ class ChangeAssignmentBlade {
     //deprecated now
     async clickOnAssignButton(): Promise<void> {
         await $(this.selectors.assignButton).click();
-    }
-
-    //deprecated now
-    async getCountOfSupportGroup(): Promise<number> {
-        return await $$(this.selectors.supportGroupName).count();
-    }
-
-    //deprecated now
-    async clickOnSupportGroup(name: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.supportGroupName, name)).click();
-    }
-
-    //deprecated now
-    async getTextOfSupportGroup(name: string): Promise<string> {
-        return await element(by.cssContainingText(this.selectors.supportGroupName, name)).getText();
     }
 
     async isAssignButtonDisabled(): Promise<Boolean> {
@@ -204,22 +188,22 @@ class ChangeAssignmentBlade {
         return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
     }
 
-    async isDropDownListSorted(dropDownName:string): Promise<boolean> {     
-        let arr: string[] = [], copy: string[] = [];    
+    async isDropDownListSorted(dropDownName: string): Promise<boolean> {
+        let arr: string[] = [], copy: string[] = [];
         arr = await this.getAllDropDownValues(dropDownName);
         copy = Object.assign([], arr);
         copy = copy.sort();
-        arr = arr.sort();        
+        arr = arr.sort();
         return arr.length === copy.length && arr.every(
             (value, index) => (value === copy[index])
         );
     }
 
-    async getAllDropDownValues(dropDownName:string): Promise<string[]> {
+    async getAllDropDownValues(dropDownName: string): Promise<string[]> {
         let dropDownElement;
         switch (dropDownName) {
             case "Company": {
-                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(0);               
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(0);
                 break;
             }
             case "SupportOrg": {

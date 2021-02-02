@@ -683,9 +683,10 @@ describe('Knowledge Article', () => {
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
-        expect(await changeAssignmentBladePo.getCountOfSupportGroup()).toBe(1);
-        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Australia Support')).toContain('Kane Williamson');
-        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Australia Support')).toContain('Petramco');
+        let assignedGroupList: string[] = await changeAssignmentBladePo.getAllDropDownValues("AssignedGroup")
+        expect(assignedGroupList.length).toBe(1);
+        expect(await changeAssignmentBladePo.getAssigneeValue()).toContain('Kane Williamson');
+        expect(await changeAssignmentBladePo.getAssigneeValue()).toContain('Petramco');
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Kane Williamson');

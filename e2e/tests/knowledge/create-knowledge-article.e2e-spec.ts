@@ -258,8 +258,9 @@ describe('Knowledge Article', () => {
             expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Group')).toBeTruthy('Assign Field is enabled');
             expect(await createKnowledgePage.isAssignedToFieldDisabled('Assigned To')).toBeTruthy('Assign Field is enabled');
             await createKnowledgePage.clickAssignToMeButton();
-            expect(await changeAssignmentBlade.getCountOfSupportGroup()).toBeGreaterThanOrEqual(2);
-            await changeAssignmentBlade.clickOnSupportGroup('UI-SupportGroup-19501');
+            let assignedGroupList: string[] = await changeAssignmentBlade.getAllDropDownValues("AssignedGroup")
+            expect(assignedGroupList.length).toBeGreaterThanOrEqual(2);
+            await changeAssignmentBlade.selectAssignedGroup('UI-SupportGroup-19501');
             await changeAssignmentBlade.clickOnAssignButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
