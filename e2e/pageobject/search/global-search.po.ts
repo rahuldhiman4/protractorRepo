@@ -85,7 +85,7 @@ class GlobalSearch {
     }
 
     async clickOnRecentSearchDropDownButton(): Promise<void> {
-        await $$(this.selectors.searchBox).get(1).click();
+        await $(this.selectors.searchBox).click();
         await $(this.selectors.recentSearch).click();
     }
 

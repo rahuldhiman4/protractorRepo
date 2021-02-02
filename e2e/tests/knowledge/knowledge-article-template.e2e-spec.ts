@@ -35,7 +35,7 @@ describe('Knowledge Article Template', () => {
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         expect(await utilityGrid.isGridRecordPresent('template1062' + randomStr)).toBeFalsy('Record should not be created');
     });
-
+ 
     it('[6360]: [Create Mode] Unable to create the duplicate template', async () => {
         let templateName = 'Template Name DRDMV_1088';
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -205,6 +205,7 @@ describe('Knowledge Article Template', () => {
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article1 is not present');
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article2 is not present');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         })
     });
 });

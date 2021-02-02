@@ -12,7 +12,7 @@ class NavigationPage {
         hamburgerIcon: '.a-hamburger',
         hamburgerHelpIcon: '[class="d-n-hamburger__nav-link d-icon-left-question_circle"]',
         closeHambergerMenu: 'button.close.close-inverse',
-        panelHeadingOfSetting: 'rx-administration-settings .rx-admin-settings .panel-heading h4',
+        panelHeadingOfSetting: '.a-tree__no-matches',
         adaptIconTiles: 'button.d-icon-tiles',
         TileSearchInput: 'input.adapt-search-field',
         TileSearchResult: 'button.a-dropdown__link',

@@ -130,6 +130,9 @@ describe('Create Task Template', () => {
         await editTaskTemplate.selectTaskCompany('Petramco');
         await editTaskTemplate.clickOnSaveButton();
         expect(await utilityCommon.isPopUpMessagePresent('Company marked for Global usage cannot be modified.')).toBeTruthy();
+        await editTaskTemplate.clickOnCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await viewTaskTemplate.clickBackArrowBtn();
     });
 
     //ankagraw
@@ -156,6 +159,7 @@ describe('Create Task Template', () => {
             await editTaskTemplate.clickOnEditMetadataLink();
             expect(await editTaskTemplate.isTemplateStatusDisabled()).toBeTruthy("Template status is enabled");
             await editTaskTemplate.clickOnCancelMetadataButton();
+            await viewTaskTemplate.clickBackArrowBtn();
         } catch (error) {
             throw error;
         } finally {
@@ -196,6 +200,7 @@ describe('Create Task Template', () => {
             expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe('Description' + randomStr);
             expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Employee Relations");
             expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Compensation");
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
@@ -228,6 +233,7 @@ describe('Create Task Template', () => {
         expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe('Description' + randomStr);
         expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Employee Relations");
         expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Compensation");
+        await viewTaskTemplate.clickBackArrowBtn();
     });//, 220 * 1000);
 
     //ankagraw
@@ -252,6 +258,7 @@ describe('Create Task Template', () => {
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.clickOnSaveTaskTemplate();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[5801]: Created task template and change the status of it', async () => {
             await navigationPage.gotoSettingsPage();
@@ -261,12 +268,14 @@ describe('Create Task Template', () => {
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
             await editTaskTemplate.clickOnSaveMetadata();
+            await viewTaskTemplate.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Inactive');
             await editTaskTemplate.clickOnSaveMetadata();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[5801]: Apply Filter Options', async () => {
             let modifiedDate = new Date();
