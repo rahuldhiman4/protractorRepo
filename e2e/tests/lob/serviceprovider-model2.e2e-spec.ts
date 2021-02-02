@@ -134,8 +134,8 @@ describe('Service Provider Model Tests Extended', () => {
             await createKnowledgePage.selectCategoryTier3Option('Chatter');
             await createKnowledgePage.clickAssignToMeButton();
             await createKnowledgePage.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.getCompanyDefaultValue()).toBe('Phyto');
-            expect(await changeAssignmentBladePo.getAssignedGroupDefaultValue()).toBe('Kingston AskHR');
+            expect(await changeAssignmentBladePo.getDropDownValue("Company")).toBe('Phyto');
+            expect(await changeAssignmentBladePo.getDropDownValue("SupportOrg")).toBe('Kingston AskHR');
             await changeAssignmentBladePo.clickOnCancelButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             knowledgeKingstanID = await previewKnowledgePo.getKnowledgeArticleID();
@@ -150,10 +150,10 @@ describe('Service Provider Model Tests Extended', () => {
             await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectSupportOrg('Kingston HR');
-            await changeAssignmentBladePo.selectAssignedGroup('Kingston AskHR');
-            await changeAssignmentBladePo.selectAssignee('Jack Torrance');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Phyto');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Kingston HR');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Kingston AskHR');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Jack Torrance');
             await changeAssignmentBladePo.clickOnAssignButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePo.setCategoryTier1('Employee Relations');
@@ -456,12 +456,12 @@ describe('Service Provider Model Tests Extended', () => {
             expect(await selectCasetemplateBladePo.isRecordPresent(templateDataKingstanCompany1.templateName)).toBeTruthy();
             await selectCasetemplateBladePo.selectCaseTemplate(templateDataGlobalCompany.templateName);
             await editCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Oracle HR')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Kingston HR');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Oracle AskHR')).toBeFalsy();
-            await changeAssignmentBladePo.selectAssignedGroup('Kingston AskHR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Oracle HR')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Kingston HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Oracle AskHR')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Kingston AskHR');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade('Unamuno Miguel de')).toBeTruthy('User is not present on Assignment blade');
-            await changeAssignmentBladePo.selectAssignee('David Kramer');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'David Kramer');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             caseId = await viewCasePo.getCaseID();
@@ -547,12 +547,12 @@ describe('Service Provider Model Tests Extended', () => {
             await createCasetemplatePo.setCompanyName("- Global -");
             expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceData.flowsetName])).toBeFalsy();
             await createCasetemplatePo.setCompanyName("- Global -");
-            expect(await createCasetemplatePo.flowsetOptionsPresent(['Benefits',flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
+            expect(await createCasetemplatePo.flowsetOptionsPresent(['Benefits', flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
             await createCasetemplatePo.setCompanyName("Petramco");
             await createCasetemplatePo.setCategoryTier1("Applications");
             expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetFacilitiesData.flowsetName])).toBeFalsy();
             await createCasetemplatePo.setCompanyName("Petramco");
-            expect(await createCasetemplatePo.flowsetOptionsPresent(['Human Resources','Benefits',flowsetHumanResourceData.flowsetName, flowsetHumanResourceData1.flowsetName,flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
+            expect(await createCasetemplatePo.flowsetOptionsPresent(['Human Resources', 'Benefits', flowsetHumanResourceData.flowsetName, flowsetHumanResourceData1.flowsetName, flowsetHumanResourceGlobalData.flowsetName])).toBeTruthy();
             await createCasetemplatePo.setCompanyName("Petramco");
             await createCasetemplatePo.setFlowsetValue(flowsetHumanResourceData.flowsetName);
             await createCasetemplatePo.clickOnChangeAssignmentButton();

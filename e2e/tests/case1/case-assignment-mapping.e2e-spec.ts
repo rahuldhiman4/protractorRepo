@@ -605,9 +605,9 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.setSummary("5047 Case Summary");
             await createCasePage.setPriority("Medium");
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectSupportOrg(businessData.orgName);
-            await changeAssignmentPage.selectAssignedGroup(suppGrpData.orgName);
-            await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', businessData.orgName);
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpData.orgName);
+            await changeAssignmentPage.setDropDownValue('Assignee', 'fnPerson11825 lnPerson11825');
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await utilityCommon.closePopUpMessage();
@@ -629,9 +629,9 @@ describe("Create Case Assignment Mapping", () => {
             await viewTask.clickOnEditTask();
             await editTaskPo.updateTaskSummary(summary + "new");
             await editTaskPo.clickOnChangeAssignementButton();
-            await changeAssignmentPage.selectSupportOrg(businessData.orgName);
-            await changeAssignmentPage.selectAssignedGroup(suppGrpData.orgName);
-            await changeAssignmentPage.selectAssignee('fnPerson11825 lnPerson11825');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', businessData.orgName);
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpData.orgName);
+            await changeAssignmentPage.setDropDownValue('Assignee', 'fnPerson11825 lnPerson11825');
             await changeAssignmentPage.clickOnAssignButton();
             await editTaskPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();

@@ -409,9 +409,9 @@ describe('Service Target Configs', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectSupportOrg('United States Support');
-            await changeAssignmentPage.selectAssignedGroup('US Support 3');
-            await changeAssignmentPage.selectAssignee('Qiao Feng');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Qiao Feng');
             await changeAssignmentPage.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green

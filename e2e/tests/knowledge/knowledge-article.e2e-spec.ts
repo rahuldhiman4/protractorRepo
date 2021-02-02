@@ -1,5 +1,10 @@
 import { browser } from "protractor";
+import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
+import editCasePo from '../../pageobject/case/edit-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import viewCasePage from '../../pageobject/case/view-case.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -10,7 +15,10 @@ import feedbackBladeKnowledgeArticlePo from '../../pageobject/knowledge/feedback
 import flagUnflagKnowledgePo from '../../pageobject/knowledge/flag-unflag-knowledge.po';
 import { default as knowledgeArticlesConsolePo, default as knowledgeConsolePo } from '../../pageobject/knowledge/knowledge-articles-console.po';
 import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po';
+import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
+import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import notificationPo from '../../pageobject/notification/notification.po';
 import imagePropertiesPo from '../../pageobject/settings/common/image-properties.po';
 import consoleKnowledgeTemplatePo from '../../pageobject/settings/knowledge-management/console-knowledge-template.po';
 import createKnowledgeArticleTemplatePo from '../../pageobject/settings/knowledge-management/create-knowledge-article-template.po';
@@ -19,14 +27,6 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import accessTabPo from '../../pageobject/common/access-tab.po';
-import viewCasePage from '../../pageobject/case/view-case.po';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
-import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
-import reviewCommentsPo from '../../pageobject/knowledge/review-comments.po';
-import notificationPo from '../../pageobject/notification/notification.po';
-import apiCoreUtil from '../../api/api.core.util';
 
 describe('Knowledge Article', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -683,9 +683,10 @@ describe('Knowledge Article', () => {
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
-        expect(await changeAssignmentBladePo.getCountOfSupportGroup()).toBe(1);
-        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Australia Support')).toContain('Kane Williamson');
-        expect(await changeAssignmentBladePo.getTextOfSupportGroup('Australia Support')).toContain('Petramco');
+        let assignedGroupList: string[] = await changeAssignmentBladePo.getAllDropDownValues("AssignedGroup")
+        expect(assignedGroupList.length).toBe(1);
+        expect(await changeAssignmentBladePo.getDropDownValue("Assignee")).toContain('Kane Williamson');
+        expect(await changeAssignmentBladePo.getDropDownValue("Assignee")).toContain('Petramco');
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Kane Williamson');
@@ -716,14 +717,14 @@ describe('Knowledge Article', () => {
         await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
-        expect(await changeAssignmentBladePo.isCompanyDrpDwnDisplayed()).toBeTruthy("Company dropdown not displayed");
-        expect(await changeAssignmentBladePo.isAssignedGroupDrpDwnDisplayed()).toBeTruthy("SupportGroup dropdown not displayed");
+        expect(await changeAssignmentBladePo.isDropDownDisplayed("Company")).toBeTruthy("Company dropdown not displayed");
+        expect(await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup")).toBeTruthy("SupportGroup dropdown not displayed");
         expect(await changeAssignmentBladePo.isSearchInputBoxPresent()).toBeTruthy("Search Box not present");
         expect(await changeAssignmentBladePo.isAssignToMeCheckBoxSelected()).toBeFalsy("AssignToMe checkbox shouldbe unchecked");
-        await changeAssignmentBladePo.selectCompany('Petramco');
-        await changeAssignmentBladePo.selectSupportOrg('HR Support');
-        await changeAssignmentBladePo.selectAssignedGroup('Compensation and Benefits');
-        await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
+        await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+        await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
@@ -840,10 +841,10 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportOrg('HR Support');
-            await changeAssignmentBladePo.selectAssignedGroup('Compensation and Benefits');
-            await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
             await createKnowledgePage.selectCategoryTier2Option('Compensation');
@@ -1093,10 +1094,10 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
         await createKnowledgePage.selectKnowledgeSet('HR');
         await createKnowledgePage.clickChangeAssignmentButton();
-        await changeAssignmentBladePo.selectCompany('Petramco');
-        await changeAssignmentBladePo.selectSupportOrg('HR Support');
-        await changeAssignmentBladePo.selectAssignedGroup('Compensation and Benefits');
-        await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
+        await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+        await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
         await changeAssignmentBladePo.clickOnAssignButton();
         await createKnowledgePage.selectCategoryTier1Option('Total Rewards');
         await createKnowledgePage.selectCategoryTier2Option('Leave');
@@ -1182,10 +1183,10 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.setCategoryTier3('Bonus');
         await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
         await editKnowledgePage.clickChangeAssignmentButton();
-        await changeAssignmentBladePo.selectCompany('Petramco');
-        await changeAssignmentBladePo.selectSupportOrg('HR Support');
-        await changeAssignmentBladePo.selectAssignedGroup('Compensation and Benefits');
-        await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
+        await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+        await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
@@ -1222,10 +1223,10 @@ describe('Knowledge Article', () => {
         await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
-        await changeAssignmentBladePo.selectCompany('Petramco');
-        await changeAssignmentBladePo.selectSupportOrg('HR Support');
-        await changeAssignmentBladePo.selectAssignedGroup('Compensation and Benefits');
-        await changeAssignmentBladePo.selectAssignee('Peter Kahn');
+        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
+        await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+        await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
@@ -1237,10 +1238,10 @@ describe('Knowledge Article', () => {
         await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         await editKnowledgePage.clickChangeAssignmentButton();
-        await changeAssignmentBladePo.selectCompany('Petramco');
-        await changeAssignmentBladePo.selectSupportOrg('HR Support');
-        await changeAssignmentBladePo.selectAssignedGroup('Employee Relations');
-        await changeAssignmentBladePo.selectAssignee('Elizabeth Peters');
+        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
+        await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Employee Relations');
+        await changeAssignmentBladePo.setDropDownValue('Assignee', 'Elizabeth Peters');
         await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
@@ -1316,7 +1317,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('qkatawazi');
         });
     });
-    
+
     it('[5783]:CK Editor - Should be able to upload image using url', async () => {
         let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
         let imageUrlFieldIndex = 0;
@@ -2399,7 +2400,7 @@ describe('Knowledge Article', () => {
             await apiHelper.apiLogin('qkatawazi');
             let articleData = {
                 "knowledgeSet": "HR",
-                "title": randomStr+'DRDMV753KnowledgeArticleKA',
+                "title": randomStr + 'DRDMV753KnowledgeArticleKA',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -2408,22 +2409,22 @@ describe('Knowledge Article', () => {
             }
             kaDetails1 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID1 = kaDetails1.id;
-            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
+            articleData.title = randomStr + 'DRDMV753KnowledgeArticleKA';
             kaDetails2 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID2 = kaDetails2.id;
-            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
+            articleData.title = randomStr + 'DRDMV753KnowledgeArticleKA';
             kaDetails3 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID3 = kaDetails3.id;
-            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
+            articleData.title = randomStr + 'DRDMV753KnowledgeArticleKA';
             kaDetails4 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID4 = kaDetails4.id;
-            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
+            articleData.title = randomStr + 'DRDMV753KnowledgeArticleKA';
             kaDetails5 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID5 = kaDetails5.id;
-            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
+            articleData.title = randomStr + 'DRDMV753KnowledgeArticleKA';
             kaDetails6 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID6 = kaDetails6.id;
-            articleData.title = randomStr+'DRDMV753KnowledgeArticleKA';
+            articleData.title = randomStr + 'DRDMV753KnowledgeArticleKA';
             kaDetails7 = await apiHelper.createKnowledgeArticle(articleData);
             let knowledgeArticleGUID7 = kaDetails7.id;
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID1, 'Draft')).toBeTruthy('Status Not Set');
@@ -2450,7 +2451,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab('Resources');
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText(randomStr+'DRDMV753KnowledgeArticleKA');
+            await resources.enterAdvancedSearchText(randomStr + 'DRDMV753KnowledgeArticleKA');
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(1);
@@ -2461,7 +2462,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText(randomStr+'DRDMV753KnowledgeArticleKA');
+            await resources.enterAdvancedSearchText(randomStr + 'DRDMV753KnowledgeArticleKA');
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
@@ -2488,7 +2489,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(kaDetails2.displayId);
             await viewKnowledgeArticlePo.clickOnTab("Resources");
             await resources.clickOnAdvancedSearchOptions();
-            await resources.enterAdvancedSearchText(randomStr+'DRDMV753KnowledgeArticleKA');
+            await resources.enterAdvancedSearchText(randomStr + 'DRDMV753KnowledgeArticleKA');
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.clickOnAdvancedSearchFiltersButton("Apply");
             await resources.pinRecommendedKnowledgeArticles(2);

@@ -124,10 +124,10 @@ describe('Ericsson Data Model Tests', () => {
         });
         it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await createCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isSupporOrgPresentInDropDown('Ericsson Asset Management - USA')).toBeFalsy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Ericsson Asset Management - USA')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await createCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isSupporOrgPresentInDropDown('Ericsson United States Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Ericsson United States Support')).toBeTruthy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
@@ -147,12 +147,12 @@ describe('Ericsson Data Model Tests', () => {
             await editCasePo.updateCaseCategoryTier2('Help Desk');
             await editCasePo.updateCaseCategoryTier3('Incident');
             await editCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isSupporOrgPresentInDropDown('Ericsson Asset Management - India')).toBeFalsy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Ericsson Asset Management - India')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
-            await changeAssignmentBladePo.selectAssignee('Rudner Rita');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Rudner Rita');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Applications');

@@ -1999,10 +1999,10 @@ describe('Notes template', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField("KnowledgeTitle_" + randomString);
             await createKnowlegePo.selectKnowledgeSet("HR");
             await createKnowlegePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
-            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
 
             await changeAssignmentBladePo.clickOnAssignButton();
             await createKnowlegePo.clickOnSaveKnowledgeButton();

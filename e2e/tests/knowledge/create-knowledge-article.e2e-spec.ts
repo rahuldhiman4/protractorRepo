@@ -119,10 +119,10 @@ describe('Knowledge Article', () => {
         expect(await editKnowledgePage.isReviewerFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
         expect(await statusBladeKnowledgeArticlePo.isChangeReviewerButtonPresent()).toBeTruthy();
         expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeTruthy();
-        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-        await changeAssignmentBlade.selectSupportOrg(businessData.orgName);
-        await changeAssignmentBlade.selectAssignedGroup(suppGrpData.orgName);
-        await changeAssignmentBlade.selectAssignee(personData.firstName);
+        await changeAssignmentBlade.setDropDownValue('Company', knowledgeData.Company);
+        await changeAssignmentBlade.setDropDownValue('SupportOrg', businessData.orgName);
+        await changeAssignmentBlade.setDropDownValue('AssignedGroup', suppGrpData.orgName);
+        await changeAssignmentBlade.setDropDownValue('Assignee', personData.firstName);
         await editKnowledgePage.clickSaveStatusBtn();
         await utilityCommon.closePopUpMessage();
         await editKnowledgePage.isReviewPendingButtonDisplayed();
@@ -144,10 +144,10 @@ describe('Knowledge Article', () => {
         await previewKnowledgePo.clickGoToArticleButton();
         expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-        await changeAssignmentBlade.selectSupportOrg(businessData.orgName);
-        await changeAssignmentBlade.selectAssignedGroup(suppGrpData.orgName);
-        await changeAssignmentBlade.selectAssignee(personData.firstName);
+        await changeAssignmentBlade.setDropDownValue('Company', knowledgeData.Company);
+        await changeAssignmentBlade.setDropDownValue('SupportOrg', businessData.orgName);
+        await changeAssignmentBlade.setDropDownValue('AssignedGroup', suppGrpData.orgName);
+        await changeAssignmentBlade.setDropDownValue('Assignee', personData.firstName);
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         let assigneeFullName = personData.firstName + " " + personData.lastName;
         expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe(assigneeFullName);
@@ -198,7 +198,6 @@ describe('Knowledge Article', () => {
         await navigationPage.signOut();
         await loginPage.login('peter');
         let businessData = businessDataFile['BusinessUnitData'];
-        let departmentData = departmentDataFile['DepartmentData'];
         let suppGrpData = supportGrpDataFile['SuppGrpData'];
         let personData = personDataFile['PersonData'];
         let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
@@ -207,15 +206,15 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.clickChangeAssignmentButton();
-        expect(await changeAssignmentBlade.isCompanyDrpDwnDisplayed()).toBeTruthy("Company dropdown not displayed");
-        expect(await changeAssignmentBlade.isAssignedGroupDrpDwnDisplayed()).toBeTruthy("SupportGroup dropdown not displayed");
+        expect(await changeAssignmentBlade.isDropDownDisplayed("Company")).toBeTruthy("Company dropdown not displayed");
+        expect(await changeAssignmentBlade.isDropDownDisplayed("AssignedGroup")).toBeTruthy("SupportGroup dropdown not displayed");
         expect(await changeAssignmentBlade.isSearchInputBoxPresent()).toBeTruthy("Search Box not present");
         expect(await changeAssignmentBlade.isAssignToMeCheckBoxSelected()).toBeFalsy("AssignToMe checkbox shouldbe unchecked");
         await expect(changeAssignmentBlade.isAssignButtonDisabled()).toBeTruthy();
-        await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-        await changeAssignmentBlade.selectSupportOrg(businessData.orgName);
-        await changeAssignmentBlade.selectAssignedGroup(suppGrpData.orgName);
-        await changeAssignmentBlade.selectAssignee(personData.firstName);
+        await changeAssignmentBlade.setDropDownValue('Company', knowledgeData.Company);
+        await changeAssignmentBlade.setDropDownValue('SupportOrg', businessData.orgName);
+        await changeAssignmentBlade.setDropDownValue('AssignedGroup', suppGrpData.orgName);
+        await changeAssignmentBlade.setDropDownValue('Assignee', personData.firstName);
         await changeAssignmentBlade.clickOnAssignButton();
     });
 
@@ -257,8 +256,9 @@ describe('Knowledge Article', () => {
             expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Group')).toBeTruthy('Assign Field is enabled');
             expect(await createKnowledgePage.isAssignedToFieldDisabled('Assigned To')).toBeTruthy('Assign Field is enabled');
             await createKnowledgePage.clickAssignToMeButton();
-            expect(await changeAssignmentBlade.getCountOfSupportGroup()).toBeGreaterThanOrEqual(2);
-            await changeAssignmentBlade.clickOnSupportGroup('UI-SupportGroup-19501');
+            let assignedGroupList: string[] = await changeAssignmentBlade.getAllDropDownValues("AssignedGroup")
+            expect(assignedGroupList.length).toBeGreaterThanOrEqual(2);
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'UI-SupportGroup-19501');
             await changeAssignmentBlade.clickOnAssignButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -438,10 +438,10 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
-            await changeAssignmentBlade.selectCompany('Petramco');
-            await changeAssignmentBlade.selectSupportOrg('Australia Support');
-            await changeAssignmentBlade.selectAssignedGroup('AU Support 3');
-            await changeAssignmentBlade.selectAssignee('Kane Williamson');
+            await changeAssignmentBlade.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Australia Support');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'AU Support 3');
+            await changeAssignmentBlade.setDropDownValue('Assignee', 'Kane Williamson');
             expect(await editKnowledgePage.getReviewerValue()).toContain('Kane Williamson', 'Reviewer not matched with expected');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();

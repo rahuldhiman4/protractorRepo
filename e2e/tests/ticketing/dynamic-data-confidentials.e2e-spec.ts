@@ -86,9 +86,9 @@ describe('Dynamic Confidentials Data', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.setDynamicFieldValue("LocalNonConfidentialDesc", "Test 1");
             await editCasePo.setDynamicFieldValue("LocalConfidentialDesc", "1234");
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportOrg("United Kingdom Support");
-            await changeAssignmentBladePo.selectAssignedGroup('GB Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', "United Kingdom Support");
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'GB Support 2');
             await editCasePo.clickSaveCase();
         });
         it('[4058]: Validation of Confidential fields in Dynamic Field Group on Case', async () => {

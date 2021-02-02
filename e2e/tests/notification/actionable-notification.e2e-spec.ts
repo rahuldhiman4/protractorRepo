@@ -906,10 +906,10 @@ describe("Actionable Notifications", () => {
             await createCasePage.selectRequester("Allen");
             await createCasePage.setSummary("4285");
             await createCasePage.clickChangeAssignmentButton();
-            await assignmentBladePO.selectCompany('Petramco');
-            await assignmentBladePO.selectSupportOrg('United States Support');
-            await assignmentBladePO.selectAssignedGroup('US Support 3');
-            await assignmentBladePO.selectAssignee('Qiao Feng');
+            await assignmentBladePO.setDropDownValue('Company', 'Petramco');
+            await assignmentBladePO.setDropDownValue('SupportOrg', 'United States Support');
+            await assignmentBladePO.setDropDownValue('AssignedGroup', 'US Support 3');
+            await assignmentBladePO.setDropDownValue('Assignee', 'Qiao Feng');
             await assignmentBladePO.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
