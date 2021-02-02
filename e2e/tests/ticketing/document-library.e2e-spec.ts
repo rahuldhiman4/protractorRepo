@@ -811,7 +811,7 @@ describe('Document Library', () => {
             await navigationPage.signOut();
             await loginPage.login('kayo');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            expect(await navigationPage.isSettingPanelTextMatches(" No matches found ")).toBeTruthy();
         } catch (e) {
             throw e;
         } finally {
