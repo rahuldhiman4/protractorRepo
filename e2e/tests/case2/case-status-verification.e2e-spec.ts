@@ -248,9 +248,9 @@ describe('Case Status Verification', () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case1_Summary');
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
-            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -282,9 +282,9 @@ describe('Case Status Verification', () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case2_Summary');
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
-            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();

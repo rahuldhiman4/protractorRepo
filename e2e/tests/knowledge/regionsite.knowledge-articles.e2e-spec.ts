@@ -292,7 +292,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
             await createKnowledgePage.clickAssignToMeButton();
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 1');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 1');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();

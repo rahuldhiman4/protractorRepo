@@ -285,10 +285,10 @@ describe('Case Bulk Operation', () => {
                 await apiHelper.updateCaseAccess(caseGuid[i], caseReadAccessDataQtao);
             }
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany(petramcoStr);
-            await changeAssignmentBladePo.selectSupportOrg(businessData.orgName);
-            await changeAssignmentBladePo.selectAssignedGroup(suppGrpData.orgName);
-            await changeAssignmentBladePo.selectAssignee(`${personData.firstName} ${personData.lastName}`);
+            await changeAssignmentBladePo.setDropDownValue('Company', petramcoStr);
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', businessData.orgName);
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', suppGrpData.orgName);
+            await changeAssignmentBladePo.setDropDownValue('Assignee', `${personData.firstName} ${personData.lastName}`);
             await changeAssignmentBladePo.clickOnAssignButton();
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
             await utilityCommon.closePopUpMessage();

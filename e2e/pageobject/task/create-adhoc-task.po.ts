@@ -1,10 +1,10 @@
 import { resolve } from "path";
 import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import utilityCommon from '../../utils/utility.common';
-import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
-import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
+import utilityCommon from '../../utils/utility.common';
 import changeAssignmentBladePo from "../common/change-assignment-blade.po";
+import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
+import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 
 class CreateAdhocTaskTemplatePage {
 
@@ -39,7 +39,7 @@ class CreateAdhocTaskTemplatePage {
         numberIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__numberedlist_icon',
         bulletIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__bulletedlist_icon',
         lineOfBussiness: '[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] input',
-        assignmentGuid : '0d11a862-c378-49cc-bda8-2d6efbd2beeb'
+        assignmentGuid: '0d11a862-c378-49cc-bda8-2d6efbd2beeb'
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
@@ -52,39 +52,39 @@ class CreateAdhocTaskTemplatePage {
         await utilityCommon.setCKEditor(description, this.selectors.descriptionGuid);
     }
 
-    async updateTaskDescription(description:string):Promise<void>{
+    async updateTaskDescription(description: string): Promise<void> {
         await utilityCommon.updateCKEditor(description, this.selectors.descriptionGuid);
     }
 
-    async clickOnLeftAlignIcon():Promise<void>{
+    async clickOnLeftAlignIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnLeftAlignIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnRightAlignIcon():Promise<void>{
+    async clickOnRightAlignIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnRightAlignIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnCenterAlignIcon():Promise<void>{
+    async clickOnCenterAlignIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnCenterAlignIcon(this.selectors.descriptionGuid);
     }
 
-    async selectColor(value:string):Promise<void>{
-        await ckeditorOpsPo.selectColor(value,this.selectors.descriptionGuid);
+    async selectColor(value: string): Promise<void> {
+        await ckeditorOpsPo.selectColor(value, this.selectors.descriptionGuid);
     }
 
-    async enterNewLineInCKE():Promise<void>{
+    async enterNewLineInCKE(): Promise<void> {
         await ckeditorOpsPo.enterNewLineInCKE(this.selectors.descriptionGuid);
     }
 
-    async clickOnBoldIcon():Promise<void>{
+    async clickOnBoldIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnBoldIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnItalicIcon():Promise<void>{
+    async clickOnItalicIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnItalicIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnUnderLineIcon():Promise<void>{
+    async clickOnUnderLineIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnUnderLineIcon(this.selectors.descriptionGuid);
     }
 
@@ -291,43 +291,43 @@ class CreateAdhocTaskTemplatePage {
         await $(this.selectors.adHocTaskTextArea).sendKeys(value);
     }
 
-    async clickMaximizeMinimizeIcon():Promise<void>{
+    async clickMaximizeMinimizeIcon(): Promise<void> {
         await ckeditorOpsPo.clickMaximizeMinimizeIcon(this.selectors.descriptionGuid);
-    }  
+    }
 
-    async clickOnLinkIcon():Promise<void>{
+    async clickOnLinkIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnLinkIcon(this.selectors.descriptionGuid);
     }
-    
-    async clickOnTableIcon():Promise<void>{
+
+    async clickOnTableIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnTableIcon(this.selectors.descriptionGuid);
     }
 
-    async clickOnImageIcon():Promise<void>{
+    async clickOnImageIcon(): Promise<void> {
         await ckeditorOpsPo.clickOnImageIcon(this.selectors.descriptionGuid);
     }
 
     async getLineOfBussinessValue(): Promise<string> {
-    let elementPresent = await $(this.selectors.lineOfBussiness).isPresent()
-    if (elementPresent == true) return await $(this.selectors.lineOfBussiness).getAttribute("placeholder");
-    else return await $('[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] .dropdown-toggle').getText();
+        let elementPresent = await $(this.selectors.lineOfBussiness).isPresent()
+        if (elementPresent == true) return await $(this.selectors.lineOfBussiness).getAttribute("placeholder");
+        else return await $('[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] .dropdown-toggle').getText();
 
     }
 
     async getAssignedGroupText(): Promise<string> {
-        return await changeAssignmentBladePo.getAssignedGroupDefaultValue(this.selectors.assignmentGuid);
+        return await changeAssignmentBladePo.getDropDownValue("SupportOrg", this.selectors.assignmentGuid);
     }
 
     async getAssigneeValue(): Promise<string> {
-        return await changeAssignmentBladePo.getAssigneeValue(this.selectors.assignmentGuid);
+        return await changeAssignmentBladePo.getDropDownValue("Assignee", this.selectors.assignmentGuid);
     }
 
     async getCompanyValue(): Promise<string> {
-        return await changeAssignmentBladePo.getCompanyDefaultValue(this.selectors.assignmentGuid);
+        return await changeAssignmentBladePo.getDropDownValue("Company", this.selectors.assignmentGuid);
     }
 
     async isDropDownListSorted(dropdown: string): Promise<boolean> {
-        return await changeAssignmentBladePo.isDropDownListSorted(dropdown,this.selectors.assignmentGuid);
+        return await changeAssignmentBladePo.isDropDownListSorted(dropdown, this.selectors.assignmentGuid);
     }
 }
 

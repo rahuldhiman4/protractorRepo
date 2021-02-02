@@ -1567,10 +1567,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.closePopUpMessage();
             await editKnowledgePage.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBlade.selectCompany('Phylum');
-            await changeAssignmentBlade.selectSupportOrg('Phylum Support Org1');
-            await changeAssignmentBlade.selectAssignedGroup('Phylum Support Group1');
-            await changeAssignmentBlade.selectAssignee('phylumfnk1 phylumlnk1');
+            await changeAssignmentBlade.setDropDownValue('Company', 'Phylum');
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Phylum Support Org1');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Phylum Support Group1');
+            await changeAssignmentBlade.setDropDownValue('Assignee', 'phylumfnk1 phylumlnk1');
             await changeAssignmentBlade.clickOnAssignButton();
             await editKnowledgePage.clickSaveStatusBtn();
             await viewKnowledgeArticlePo.clickReviewPendingLink();

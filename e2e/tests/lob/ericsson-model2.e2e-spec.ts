@@ -217,12 +217,12 @@ describe('Ericsson Model Test Extended', () => {
             await editCasePo.updateCaseCategoryTier2('Compensation');
             await editCasePo.updateCaseCategoryTier3('Bonus');
             await editCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isSupporOrgPresentInDropDown('Ericsson Asset Management - India')).toBeFalsy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Ericsson Asset Management - India')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
-            await changeAssignmentBladePo.selectAssignee('Rudner Rita');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Rudner Rita');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Employee Relations');
@@ -257,12 +257,12 @@ describe('Ericsson Model Test Extended', () => {
             await editCasePo.updateCaseCategoryTier1('Fixed Assets');
             await editCasePo.updateCaseCategoryTier2('Impairment');
             await editCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isSupporOrgPresentInDropDown('Ericsson United States Support')).toBeFalsy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Ericsson United States Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson Asset Management - India');
-            await changeAssignmentBladePo.selectAssignedGroup('Old Asset Management');
-            await changeAssignmentBladePo.selectAssignee('Tynan Kenneth');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson Asset Management - India');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Old Asset Management');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Tynan Kenneth');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Fixed Assets');
@@ -480,9 +480,9 @@ describe('Ericsson Model Test Extended', () => {
 
             await createCasePage.clickChangeAssignmentButton();
             // Verify negative scenario for Ericsson SAM LOB for change assignment
-            await changeAssignmentBladePo.selectCompany('Ericsson SAM')
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - USA')).toBeFalsy('BU is diaplayed');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Asset Disposal')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson SAM')
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - USA')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Asset Disposal')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickChangeAssignmentButton();
@@ -504,9 +504,9 @@ describe('Ericsson Model Test Extended', () => {
 
             // Verify negative scenario for Ericsson HR LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Ericsson HR')
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson United States Support')).toBeFalsy('BU is diaplayed');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'US Support 1')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR')
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson United States Support')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'US Support 1')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
         });
 
@@ -604,9 +604,9 @@ describe('Ericsson Model Test Extended', () => {
             await editCasePo.clickChangeAssignmentButton();
 
             // Verify negative scenario for Ericsson SAM LOB for change assignment
-            await changeAssignmentBladePo.selectCompany('Ericsson SAM')
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - USA')).toBeFalsy('BU is diaplayed');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'Asset Disposal')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson SAM')
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - USA')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Asset Disposal')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickSaveCase();
 
@@ -676,9 +676,9 @@ describe('Ericsson Model Test Extended', () => {
 
             // Verify negative scenario for Ericsson HR LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Ericsson HR')
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson United States Support')).toBeFalsy('BU is diaplayed');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support', 'US Support 1')).toBeFalsy('Support Group is displayed');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR')
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson United States Support')).toBeFalsy('BU is diaplayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'US Support 1')).toBeFalsy('Support Group is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
@@ -1044,9 +1044,9 @@ describe('Ericsson Model Test Extended', () => {
 
             // Verify negative scenario for Ericsson SAM LOB for change assignment
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Ericsson SAM');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - USA')).toBeFalsy('BU is displayed');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Asset Disposal')).toBeFalsy('SG is displayed');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson SAM');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - USA')).toBeFalsy('BU is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Asset Disposal')).toBeFalsy('SG is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickSaveCase();
         });
@@ -1093,9 +1093,9 @@ describe('Ericsson Model Test Extended', () => {
 
             // Verify negative scenario for Ericsson SAM LOB for change assignment
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Ericsson SAM');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - USA')).toBeFalsy('BU is displayed');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Asset Disposal')).toBeFalsy('SG is displayed');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson SAM');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - USA')).toBeFalsy('BU is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Asset Disposal')).toBeFalsy('SG is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickSaveCase();
         });
@@ -1216,9 +1216,9 @@ describe('Ericsson Model Test Extended', () => {
 
             // Verify negative scenario for Ericsson SAM LOB for change assignment
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Ericsson HR');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson United States Support')).toBeFalsy('BU is displayed');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'US Support 1')).toBeFalsy('SG is displayed');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson United States Support')).toBeFalsy('BU is displayed');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'US Support 1')).toBeFalsy('SG is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickSaveCase();
         });
@@ -1335,14 +1335,14 @@ describe('Ericsson Model Test Extended', () => {
 
             //Validating Assignment fields
             await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Ericsson HR');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson HR Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -1382,14 +1382,14 @@ describe('Ericsson Model Test Extended', () => {
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBladePo.selectCompany('Ericsson HR');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson HR Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -1408,14 +1408,14 @@ describe('Ericsson Model Test Extended', () => {
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBladePo.selectCompany('Ericsson HR');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson HR Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -1537,14 +1537,14 @@ describe('Ericsson Model Test Extended', () => {
 
             //Validating Assignment fields
             await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Ericsson HR');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson HR Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -1588,14 +1588,14 @@ describe('Ericsson Model Test Extended', () => {
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBladePo.selectCompany('Ericsson HR');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson HR Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'EricssonCo SAM')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Ericsson United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson HR Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Ericsson Asset Management - India')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson HR Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo SAM')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData3.firstName} ${userData3.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData4.firstName} ${userData4.lastName}`)).toBeTruthy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
