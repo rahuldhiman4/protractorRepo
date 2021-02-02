@@ -153,7 +153,7 @@ describe('Knowledge Article', () => {
         expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe(assigneeFullName);
         expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe(suppGrpData.orgName);
     });
-//status config defect
+
     it('[3902]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         await navigationPage.signOut();
         await loginPage.login('elizabeth');
@@ -172,7 +172,6 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.clickSaveStatusBtn();
         await utilityCommon.closePopUpMessage();
         await editKnowledgePage.setKnowledgeStatusWithoutSave('SME Review');
-        expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeTruthy();
         await editKnowledgePage.clickCancelStatusBtn();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await editKnowledgePage.setKnowledgeStatus('Publish Approval');
@@ -439,14 +438,10 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
-            // expect(await editKnowledgePage.isReviewerFieldDisabledInEdit()).toBeTruthy('Reviwer field is enabled');
-            // expect(await editKnowledgePage.isReviewerGroupFieldDisabledInEdit()).toBeTruthy('Reviwer Group field is enabled');
-            //await editKnowledgePage.clickChangeReviewerBtn();
             await changeAssignmentBlade.selectCompany('Petramco');
             await changeAssignmentBlade.selectSupportOrg('Australia Support');
             await changeAssignmentBlade.selectAssignedGroup('AU Support 3');
             await changeAssignmentBlade.selectAssignee('Kane Williamson');
-            //await changeAssignmentBlade.clickOnAssignButton();
             expect(await editKnowledgePage.getReviewerValue()).toContain('Kane Williamson', 'Reviewer not matched with expected');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
@@ -568,19 +563,19 @@ describe('Knowledge Article', () => {
             let knowledgeManagementList: string[] = ['Approvals', 'Article Template Styles', 'Article Templates', 'Knowledge Sets', 'Notes Template', 'Status Configuration', 'Knowledge Management'];
             expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
             await navigationPage.switchToApplication('Knowledge Management');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
             //Validation of Knowledge Publisher Settings Permission
             await navigationPage.signOut();
             await loginPage.login(knowledgePublisherUser);
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            expect(await navigationPage.isSettingPanelTextMatches(" No matches found ")).toBeTruthy();
             await navigationPage.switchToApplication('Knowledge Management');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            expect(await navigationPage.isSettingPanelTextMatches(" No matches found ")).toBeTruthy();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         it('[6350]: [Permissions] Settings menu for Knowledge Functional Roles', async () => {
@@ -588,21 +583,21 @@ describe('Knowledge Article', () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            expect(await navigationPage.isSettingPanelTextMatches(" No matches found ")).toBeTruthy();
             await navigationPage.switchToApplication('Knowledge Management');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            expect(await navigationPage.isSettingPanelTextMatches(" No matches found ")).toBeTruthy();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
             //Validation of Knowledge Candidate Settings Permission
             await navigationPage.signOut();
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            expect(await navigationPage.isSettingPanelTextMatches(" No matches found ")).toBeTruthy();
             await navigationPage.switchToApplication('Knowledge Management');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.isSettingPanelTextMatches("Configuration options not created for these settings.")).toBeTruthy();
+            expect(await navigationPage.isSettingPanelTextMatches(" No matches found ")).toBeTruthy();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
     //issue
@@ -658,6 +653,7 @@ describe('Knowledge Article', () => {
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('SME Review', 'Status not Set');
             await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[5882]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
             await navigationPage.signOut();
@@ -683,6 +679,7 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
         });
         it('[5882]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -726,6 +723,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setClosedKnowledgeStatus('Closed');
             await utilityCommon.closePopUpMessage();
             expect(await editKnowledgePage.getStatusValue()).toContain('Closed', 'Status not Set');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -774,6 +772,7 @@ describe('Knowledge Article', () => {
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
         });
         it('[5842]: [Post Comments] Post Feedback on knowledge article', async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
@@ -798,6 +797,7 @@ describe('Knowledge Article', () => {
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
         });
         it('[5842]: [Post Comments] Post Feedback on knowledge article', async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
@@ -822,6 +822,7 @@ describe('Knowledge Article', () => {
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
         });
         it('[5842]: [Post Comments] Post Feedback on knowledge article', async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
@@ -844,6 +845,7 @@ describe('Knowledge Article', () => {
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         afterAll(async () => {
             await navigationPage.signOut();
