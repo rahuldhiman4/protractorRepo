@@ -60,7 +60,7 @@ class ViewCasePage {
         approvalButtons: '.approval-buttons span',
         approveButton: '.d-icon-left-check_shield',
         rejectButton: '.d-icon-left-cross_circle',
-        assignee: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"]',
+        assignee: '[rx-view-component-id="13635426-50b0-4b53-8026-a1682ab656e8"]',
         taskCardName: '.task-list__task-card .task-summary__name',
         taskCountOnTaskCard: '.task-list__task-card .task-summary__adhoc-task-count',
         taskTab: '[rx-view-component-id="4c82d32f-5efd-437d-b020-a57910532aa0"] adapt-button',
@@ -72,6 +72,7 @@ class ViewCasePage {
         flowset: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .read-only-content',
         lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .read-only-content',
         recommendedCaseGuid: '[rx-view-component-id="1bd34505-c98c-4046-a129-5d3c09e87955"]',
+        assigneeHierachy: '.read-only-hierachy div.read-only-content',
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -317,7 +318,7 @@ class ViewCasePage {
     }
 
     async getAssignedGroupText(): Promise<string> {
-        return await $(this.selectors.assignedGroupText).getText();
+        return await $(this.selectors.assigneeHierachy).getText();
     }
 
     async getDepartmentText(): Promise<string> {

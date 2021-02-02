@@ -4,6 +4,7 @@ import utilityCommon from '../../utils/utility.common';
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
+import changeAssignmentBladePo from "../common/change-assignment-blade.po";
 
 class CreateAdhocTaskTemplatePage {
 
@@ -37,7 +38,8 @@ class CreateAdhocTaskTemplatePage {
         adHocTaskTextArea: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_editable_themed',
         numberIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__numberedlist_icon',
         bulletIcon: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_button__bulletedlist_icon',
-        lineOfBussiness: '[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] input'
+        lineOfBussiness: '[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] input',
+        assignmentGuid : '0d11a862-c378-49cc-bda8-2d6efbd2beeb'
     }
 
     async addAttachment(fileToUpload: string[]): Promise<void> {
@@ -310,6 +312,22 @@ class CreateAdhocTaskTemplatePage {
     if (elementPresent == true) return await $(this.selectors.lineOfBussiness).getAttribute("placeholder");
     else return await $('[rx-view-component-id="832baf9f-dd74-44f2-b63d-6f240baaab9b"] .dropdown-toggle').getText();
 
+    }
+
+    async getAssignedGroupText(): Promise<string> {
+        return await changeAssignmentBladePo.getAssignedGroupDefaultValue(this.selectors.assignmentGuid);
+    }
+
+    async getAssigneeValue(): Promise<string> {
+        return await changeAssignmentBladePo.getAssigneeValue(this.selectors.assignmentGuid);
+    }
+
+    async getCompanyValue(): Promise<string> {
+        return await changeAssignmentBladePo.getCompanyDefaultValue(this.selectors.assignmentGuid);
+    }
+
+    async isDropDownListSorted(dropdown: string): Promise<boolean> {
+        return await changeAssignmentBladePo.isDropDownListSorted(dropdown,this.selectors.assignmentGuid);
     }
 }
 
