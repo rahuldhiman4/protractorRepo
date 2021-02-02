@@ -11,6 +11,56 @@ class ChangeAssignmentBlade {
         assignee: '.person__info .name',
     }
 
+    async isDropDownDisplayed(dropDownName: string, guid?: string): Promise<boolean> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        let dropDownElement: ElementFinder;
+        switch (dropDownName) {
+            case "Company": {
+                dropDownElement = await $$(locator).get(0);
+                break;
+            }
+            case "SupportOrg": {
+                dropDownElement = await $$(locator).get(1);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(locator).get(2);
+                break;
+            }
+            case "Assignee": {
+                dropDownElement = await $$(locator).get(3);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+        return await dropDownElement.isDisplayed();
+    }
+
+    async isDropDownDisabled(dropDownName: string): Promise<boolean> {
+        switch (dropDownName) {
+            case "Company": {
+                return await $$(this.selectors.changeAssignmentComponent).get(0).getAttribute("disabled") == "true";
+            }
+            case "SupportOrg": {
+                return await $$(this.selectors.changeAssignmentComponent).get(1).getAttribute("disabled") == "true";
+            }
+            case "AssignedGroup": {
+                return await $$(this.selectors.changeAssignmentComponent).get(2).getAttribute("disabled") == "true";
+            }
+            case "Assignee": {
+                return await $$(this.selectors.changeAssignmentComponent).get(3).getAttribute("disabled") == "true";
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+    }
+
     async setDropDownValue(dropDownValue: string, dropDownName: string, guid?: string): Promise<void> {
         let locator = this.selectors.changeAssignmentComponent;
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
@@ -38,6 +88,39 @@ class ChangeAssignmentBlade {
             }
         }
         await utilityCommon.selectDropDown(dropDownElement, dropDownValue, DropDownType.WebElement);
+    }
+
+    async getDropDownValue(dropDownName: string, guid?: string): Promise<string> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        let dropDownElement: ElementFinder;
+        switch (dropDownName) {
+            case "Company": {
+                dropDownElement = await $$(locator).get(0);
+                break;
+            }
+            case "SupportOrg": {
+                dropDownElement = await $$(locator).get(1);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(locator).get(2);
+                break;
+            }
+            case "Assignee": {
+                dropDownElement = await $$(locator).get(3);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+        return await dropDownElement.getText();
+    }
+
+    async clearDropDownValue(dropDownValue: string, dropDownName: string, guid?: string): Promise<void> {
+
     }
 
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {
@@ -216,9 +299,9 @@ class ChangeAssignmentBlade {
         return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
     }
 
-    async isDropDownListSorted(dropDownName: string,guid?: string): Promise<boolean> {
+    async isDropDownListSorted(dropDownName: string, guid?: string): Promise<boolean> {
         let arr: string[] = [], copy: string[] = [];
-        arr = await this.getAllDropDownValues(dropDownName,guid);
+        arr = await this.getAllDropDownValues(dropDownName, guid);
         copy = Object.assign([], arr);
         copy = copy.sort();
         arr = arr.sort();
@@ -227,35 +310,8 @@ class ChangeAssignmentBlade {
         );
     }
 
-    async isDropDownDisabled(dropDownName: string): Promise<boolean> {
-        let dropDownElement;
-        switch (dropDownName) {
-            case "Company": {
-                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(0).getAttribute("disabled") == "true";
-                break;
-            }
-            case "SupportOrg": {
-                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(1).getAttribute("disabled") == "true";
-                break;
-            }
-            case "AssignedGroup": {
-                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(2).getAttribute("disabled") == "true";
-                break;
-            }
-            case "Assignee": {
-                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(3).getAttribute("disabled") == "true";
-                break;
-            }
-            default: {
-                console.log('Dropdown Not Available');
-                break;
-            }
-        }
-        return dropDownElement;
-    }
-
-    async getAllDropDownValues(dropDownName: string,guid?: string): Promise<string[]> {
-        let dropDownElement;
+    async getAllDropDownValues(dropDownName: string, guid?: string): Promise<string[]> {
+        let dropDownElement: ElementFinder;
         let locator = this.selectors.changeAssignmentComponent;
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         switch (dropDownName) {
