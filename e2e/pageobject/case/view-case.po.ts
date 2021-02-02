@@ -5,7 +5,7 @@ class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        categoryTier1Value: '[rx-view-component-id="3c587e17-abb1-4154-b801-dd5930cef79a"] .read-only-content',
+        categoryTier1Value: '[rx-view-component-id="636d53eb-5cf3-4fbd-9af4-e258cf3424c2"] .read-only-content',
         categoryTier2Value: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] .read-only-content',
         categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] .read-only-content',
