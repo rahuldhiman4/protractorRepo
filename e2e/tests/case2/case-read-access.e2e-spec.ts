@@ -189,8 +189,8 @@ describe("Case Read Access", () => {
             await createCasePage.setPriority('Critical');
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentPage.selectCompany('Petramco');
-            await changeAssignmentPage.selectBusinessUnit('United States Support')
-            await changeAssignmentPage.selectSupportGroup('US Support 3');
+            await changeAssignmentPage.selectSupportOrg('United States Support')
+            await changeAssignmentPage.selectAssignedGroup('US Support 3');
             await changeAssignmentPage.selectAssignee('Qadim Katawazi');
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();

@@ -248,8 +248,8 @@ describe('Case Status Verification', () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case1_Summary');
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
-            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
+            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
@@ -282,8 +282,8 @@ describe('Case Status Verification', () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case2_Summary');
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectBusinessUnit('Canada Support');
-            await changeAssignmentBladePo.selectSupportGroup('CA Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
+            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
             await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();

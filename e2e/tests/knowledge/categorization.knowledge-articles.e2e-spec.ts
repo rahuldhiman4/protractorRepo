@@ -878,9 +878,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(await createKnowledgePage.isCategoryTier4FieldLabelDisplayed(categoryTier4)).toBe(true);
             await createKnowledgePage.clickChangeAssignmentButton();
             await changeAssignmentBlade.selectCompany(knowledgeData.Company);
-            await changeAssignmentBlade.selectBusinessUnit(businessData.orgName);
-            await changeAssignmentBlade.selectDepartment(departmentData.orgName);
-            await changeAssignmentBlade.selectSupportGroup(suppGrpData.orgName);
+            await changeAssignmentBlade.selectSupportOrg(businessData.orgName);
+            await changeAssignmentBlade.selectAssignedGroup(suppGrpData.orgName);
             await changeAssignmentBlade.selectAssignee('Doomi');
             await changeAssignmentBlade.clickOnAssignButton();
             await createKnowledgePage.selectCategoryTier1Option(categoryTier1FieldVal);

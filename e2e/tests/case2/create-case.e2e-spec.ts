@@ -437,13 +437,13 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary');
             expect(await createCasePage.getCompany()).toBe('Petramco');
             expect(await changeAssignmentPage.getCompanyDefaultValue()).toBe('Petramco');
-            await changeAssignmentPage.selectBusinessUnit('United States Support')
-            await changeAssignmentPage.selectSupportGroup('US Support 3');
+            await changeAssignmentPage.selectSupportOrg('United States Support')
+            await changeAssignmentPage.selectAssignedGroup('US Support 3');
             await changeAssignmentPage.selectAssignee('Kyle Kohri');
             await createCasePage.clickAssignToMeButton();
-            expect(await changeAssignmentPage.getAssigneeName()).toBe('Qadim Katawazi');
-            await changeAssignmentPage.selectBusinessUnit('United States Support')
-            await changeAssignmentPage.selectSupportGroup('US Support 3');
+            expect(await changeAssignmentPage.getAssigneeValue()).toBe('Qadim Katawazi');
+            await changeAssignmentPage.selectSupportOrg('United States Support')
+            await changeAssignmentPage.selectAssignedGroup('US Support 3');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -575,8 +575,8 @@ describe("Create Case", () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
             await changeAssignmentPage.selectCompany(petramcoStr);
-            await changeAssignmentPage.selectBusinessUnit('Australia');
-            await changeAssignmentPage.selectSupportGroup("AU");
+            await changeAssignmentPage.selectSupportOrg('Australia');
+            await changeAssignmentPage.selectAssignedGroup("AU");
             await changeAssignmentPage.selectAssignee("Qiwei");
             await editCasePage.clickSaveCase();
             expect(await activityTabPo.isTextPresentInActivityLog("Qiwei Liu")).toBeTruthy("Text is not present in activiy tab1");
@@ -690,9 +690,8 @@ describe("Create Case", () => {
             await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplateData.templateName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await viewCasePage.clickEditCaseButton();
-            await editCasePage.clickChangeAssignmentButton();
-            expect(await changeAssignmentPage.isAgentListSorted()).toBeTruthy("Agent List is Sorted");
+            await viewCasePage.clickEditCaseButton();           
+            expect(await changeAssignmentPage.isDropDownListSorted("Assignee")).toBeTruthy("Agent List is Sorted");
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -857,8 +856,8 @@ describe("Create Case", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
             await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
@@ -1023,8 +1022,8 @@ describe("Create Case", () => {
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.setCaseStatusValue("Assigned");
             await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 3');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
             await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
             await createCaseTemplate.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickBackArrowBtn();

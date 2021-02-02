@@ -517,16 +517,16 @@ describe('Case Watchlist', () => {
 
             //Assign the case to Au Suppport 1 Group
             await viewCasePage.clickEditCaseButton();
-            await changeAssignment.selectBusinessUnit('Australia Support');
-            await changeAssignment.selectSupportGroup(auSupport1Str);
+            await changeAssignment.selectSupportOrg('Australia Support');
+            await changeAssignment.selectAssignedGroup(auSupport1Str);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
             //Stop watching and change the Group Assignee to Compensation and Benefits
             await viewCasePage.clickStopWatchingLink();
             await viewCasePage.clickEditCaseButton();
-            await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
+            await changeAssignment.selectSupportOrg('HR Support');
+            await changeAssignment.selectAssignedGroup(compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -567,8 +567,8 @@ describe('Case Watchlist', () => {
 
             //Assign the case to Au Suppport 1 Group
             await viewCasePage.clickEditCaseButton();
-            await changeAssignment.selectBusinessUnit('Australia Support');
-            await changeAssignment.selectSupportGroup(auSupport1Str);
+            await changeAssignment.selectSupportOrg('Australia Support');
+            await changeAssignment.selectAssignedGroup(auSupport1Str);
             await editCase.clickSaveCase();
 
             //Stop watching and change the Group Assignee to Compensation and Benefits
@@ -583,8 +583,8 @@ describe('Case Watchlist', () => {
         it('[4261]: Verify that Agent can Follow and Unfollow the Case Group Assignment from Case Console', async () => {
             //Assign the case to Compensation and Benefits Group
             await viewCasePage.clickEditCaseButton();
-            await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
+            await changeAssignment.selectSupportOrg('HR Support');
+            await changeAssignment.selectAssignedGroup(compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -643,8 +643,8 @@ describe('Case Watchlist', () => {
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
+            await changeAssignment.selectSupportOrg('HR Support');
+            await changeAssignment.selectAssignedGroup(compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
 
@@ -714,8 +714,8 @@ describe('Case Watchlist', () => {
             await caseWatchlist.clickOnBackBtn();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             await viewCasePage.clickEditCaseButton();
-            await changeAssignment.selectBusinessUnit('HR Support');
-            await changeAssignment.selectSupportGroup(compensationAndBenefitsStr);
+            await changeAssignment.selectSupportOrg('HR Support');
+            await changeAssignment.selectAssignedGroup(compensationAndBenefitsStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeCaseStatus("Assigned");

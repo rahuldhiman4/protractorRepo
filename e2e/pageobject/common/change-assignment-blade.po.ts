@@ -1,40 +1,41 @@
-import { $, $$, by, element, Key, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
+import { $, $$, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
 class ChangeAssignmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        changeAssignmentButton: '[rx-view-component-id="6041cce1-05bd-458d-b097-eb310507cae3"] button',
+        changeAssignmentComponent: 'bwf-change-assignment button',
         assignButton: '.modal-footer .btn-primary',
-        assignmentDropDownList: '.flex-wrap bwf-select-with-pagination, .change-assignment-component-wrapper adapt-rx-select',
-        selectOptions: '.dropdown-item span,.default-support-group .popup-person',
-        cancelButton: '.modal-footer .btn-secondary',
-        multipleSuppGrpMsg: '.manual-select-sg-msg',
-        assignToMeCheckBox: '.checkbox__input',
         searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
         assignee: '.person__info .name',
-        filterDropdowns: '.flex-wrap button.dropdown-toggle',
-        businessUnit: 'selectedBusinessUnitId',
         supportGroupName: '.person__info',
-        department: 'selectedDepartmentId',
-        supportGroup: 'selectedSupportGroupId',
-        agentName: 'div[aria-label*="name"]',
-        assignToMeBtn: 'bwf-assign-to-me button'
     }
 
     //May not required. Test steps need to change
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {
-        return await $(this.selectors.assignToMeCheckBox).isSelected();
+        return await $('.checkbox__input').isSelected();
     }
 
     //Will remain same
-    async getCompanyDefaultValue(): Promise<string> {
-        return await $$(this.selectors.filterDropdowns).get(0).getText();
+    async getCompanyDefaultValue(guid?: string): Promise<string> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        return await $$(locator).get(0).getText();
     }
 
     ////Will remain same
-    async getSupportGroupDefaultValue(): Promise<string> {
-        return await $$(this.selectors.filterDropdowns).get(3).getText();
+    async getAssignedGroupDefaultValue(guid?: string): Promise<string> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        return await $$(locator).get(2).getText();
+    }
+
+    //Updated
+    async getAssigneeValue(guid?: string): Promise<string> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        return await $$(locator).get(3).getText();
     }
 
     //May not required now
@@ -43,32 +44,30 @@ class ChangeAssignmentBlade {
     }
 
     //Will remain same
-    async isCompanyDrpDwnDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.filterDropdowns).get(0).isDisplayed();
+    async isCompanyDrpDwnDisplayed(guid?: string): Promise<boolean> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        return await $$(locator).get(0).isDisplayed();
     }
 
     //Will remain same
-    async isBuisnessUnitDrpDwnDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.filterDropdowns).get(1).isDisplayed();
+    async isSupporOrgDrpDwnDisplayed(guid?: string): Promise<boolean> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        return await $$(locator).get(1).isDisplayed();
     }
 
     //Will remain same
-    async isDepartmentDrpDwnDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.filterDropdowns).get(2).isDisplayed();
+    async isAssignedGroupDrpDwnDisplayed(guid?: string): Promise<boolean> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        return await $$(locator).get(2).isDisplayed();
     }
 
-    //Will remain same
-    async isSupportGroupDrpDwnDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.filterDropdowns).get(3).isDisplayed();
-    }
-
-    async isAssigneeListPresent(): Promise<boolean> {
-        return await $$(this.selectors.filterDropdowns).get(3).isDisplayed();
-    }
-
-    //Updated
-    async getAssigneeName(): Promise<string> {
-        return await $$(this.selectors.filterDropdowns).get(3).getText();
+    async isAssigneeDrpDwnDisplayed(guid?: string): Promise<boolean> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        return await $$(locator).get(3).isDisplayed();
     }
 
     //deprecated now
@@ -97,83 +96,66 @@ class ChangeAssignmentBlade {
 
     //deprecated now
     async clickOnAssignToMeCheckBox(): Promise<void> {
-        await $(this.selectors.assignToMeCheckBox).click();
+        await $('.manual-select-sg-msg').click();
     }
 
     //deprecated now
     async clickOnCancelButton(): Promise<void> {
-        await $(this.selectors.cancelButton).click();
+        await $('.modal-footer .btn-secondary').click();
     }
 
-    async selectCompany(companyValue: string): Promise<void> {
-        const companyDropDown = await $$(this.selectors.assignmentDropDownList).get(0);
-        await companyDropDown.$('button').click();
-        await companyDropDown.$('input').sendKeys(companyValue);
-        let option = await element(by.cssContainingText(this.selectors.selectOptions, companyValue));
-        await option.click();
+    async selectCompany(company: string, guid?: string): Promise<void> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        const dropDownElement = await $$(locator).get(0);
+        await utilityCommon.selectDropDown(dropDownElement, company, DropDownType.WebElement);
     }
 
-    async selectBusinessUnit(businessUnit: string): Promise<void> {
-        const businessUnitDropDown = await $$(this.selectors.assignmentDropDownList).get(1);
-        await businessUnitDropDown.$('button').click();
-        await businessUnitDropDown.$('input').sendKeys(businessUnit);
-        await element(by.cssContainingText(this.selectors.selectOptions, businessUnit)).click();
+    async selectSupportOrg(supportOrg: string, guid?: string): Promise<void> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        const dropDownElement = await $$(locator).get(1);
+        await utilityCommon.selectDropDown(dropDownElement, supportOrg, DropDownType.WebElement);
     }
 
-    async selectDepartment(department: string): Promise<void> {
-        const departmentDropdown = await $$(this.selectors.assignmentDropDownList).get(2);
-        await departmentDropdown.$('button').click();
-        await departmentDropdown.$('input').sendKeys(department);
-        let option = await element(by.cssContainingText(this.selectors.selectOptions, department));
-        await option.click();
+    async selectAssignedGroup(assignedGroup: string, guid?: string): Promise<void> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        const dropDownElement = await $$(locator).get(2);
+        await utilityCommon.selectDropDown(dropDownElement, assignedGroup, DropDownType.WebElement);
     }
 
-    async selectSupportGroup(supportGroup: string): Promise<void> {
-        const supportGroupDropDown = await $$(this.selectors.assignmentDropDownList).get(2);
-        await supportGroupDropDown.$('button').click();
-        await supportGroupDropDown.$('input').sendKeys(supportGroup);
-        let option = await element(by.cssContainingText(this.selectors.selectOptions, supportGroup));
-        await option.click();
+    async selectAssignee(assignee: string, guid?: string): Promise<void> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        const dropDownElement = await $$(locator).get(3);
+        await utilityCommon.selectDropDown(dropDownElement, assignee, DropDownType.WebElement);
     }
 
-    async selectAssignee(name: string): Promise<void> {
-        const supportGroupDropDown = await $$(this.selectors.assignmentDropDownList).get(3);
-        await supportGroupDropDown.$('button').click();
-        await supportGroupDropDown.$('input').sendKeys(name);
-        let option = await element(by.cssContainingText('.support-agent-list .popup-person' , name));
-        await option.click();
+    async setAssignee(company: string, supportOrg: string, assignedGroup: string, assignee: string, guid?: string): Promise<void> {
+        await this.selectCompany(company, guid);
+        await this.selectSupportOrg(supportOrg, guid);
+        await this.selectAssignedGroup(assignedGroup, guid);
+        await this.selectAssignee(assignee, guid);
     }
 
-    async setAssignee(company: string, bu: string, group: string, assignee: string): Promise<void> {
-        await this.selectCompany(company);
-        await this.selectBusinessUnit(bu);
-        await this.selectSupportGroup(group);
-        await this.selectAssignee(assignee);
+    async selectNoneCompany(guid?: string): Promise<void> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        const dropDownElement = await $$(locator).get(0);
+        await utilityCommon.selectDropDown(dropDownElement, 'None', DropDownType.WebElement);
     }
 
-    async isAgentListSorted(): Promise<boolean> {
-        let arr: string[] = [], copy: string[] = [];
-        let agentRecords: number = await $$(this.selectors.agentName).count();
-        for (let i = 0; i < agentRecords; i++) {
-            let ab: string = await $$(this.selectors.agentName).get(i).getText();
-            arr[i] = ab;
-        }
-        copy = Object.assign([], arr);
-        copy = copy.sort();
-        arr = arr.sort();
-        return arr.length === copy.length && arr.every(
-            (value, index) => (value === copy[index])
-        );
-    }
-
+    // write separate method for this operation
     async setAssigneeOnBlade(company: string, bu: string, group: string, assignee: string): Promise<void> {
         await this.selectCompany(company);
-        await this.selectBusinessUnit(bu);
-        await this.selectSupportGroup(group);
+        await this.selectSupportOrg(bu);
+        await this.selectAssignedGroup(group);
         await this.selectAssigneeOnBlade(assignee);
         await this.clickOnAssignButton();
     }
 
+    // write separate method for this operation
     async selectAssigneeOnBlade(name: string): Promise<void> {
         await $(this.selectors.searchAsignee).click();
         await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
@@ -186,33 +168,24 @@ class ChangeAssignmentBlade {
         });
     }
 
-    async isAssignmentFieldsDisabled(): Promise<boolean> {
-        let stat = false;
-        for (let i = 0; i < (await $$(this.selectors.assignmentDropDownList)).length; i++) {
-            if (!(await ($$(this.selectors.assignmentDropDownList).get(i).$('button').isEnabled()))) stat = true;
-            else {
-                stat = false;
-                break;
-            }
-        }
-        return stat;
+    async clickAssignToMeBtn(guid?: string): Promise<void> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        await $$(locator).get(4).click();
     }
 
-    async clickAssignToMeBtn(): Promise<void> {
-        await $(this.selectors.assignToMeBtn).click();
+    async isSupporOrgPresentInDropDown(supportOrg: string, guid?: string): Promise<boolean> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        const dropDownElement = await $$(locator).get(1);
+        return await utilityCommon.isValuePresentInDropDown(dropDownElement, supportOrg);
     }
 
-    async businessUnitOptionsPresent(businessUnit: string): Promise<boolean> {
-        const businessUnitDropDown = await $$(this.selectors.assignmentDropDownList).get(1);
-        await businessUnitDropDown.$('button').click();
-        await businessUnitDropDown.$('input').sendKeys(businessUnit);
-        let count =await $$(this.selectors.selectOptions).count();
-        if (count >= 1) { return true; } else { return false; }
-    }
-
-    async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
-        let elementDropdown:ElementFinder = await element(by.cssContainingText('.assignment-component-wrapper bwf-select-with-pagination button', `Select ${dropDownLabel}`));
-        return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
+    async isAssigneePresentInDropDown(assignee: string, guid?: string): Promise<boolean> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        const dropDownElement = await $$(locator).get(3);
+        return await utilityCommon.isValuePresentInDropDown(dropDownElement, assignee);
     }
 
     async isPersonAvailableOnAssignBlade(name: string): Promise<boolean> {
@@ -220,26 +193,53 @@ class ChangeAssignmentBlade {
         await $(this.selectors.searchAsignee).clear();
         await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
         return await element(by.cssContainingText(this.selectors.assignee, name)).isPresent().then(async (result) => {
-            if(result) return await element(by.cssContainingText(this.selectors.assignee, name)).isDisplayed();
+            if (result) return await element(by.cssContainingText(this.selectors.assignee, name)).isDisplayed();
             else return false;
         });
     }
 
-    async selectNoneCompany(): Promise<void> {
-        const companyDropDown = await $$(this.selectors.assignmentDropDownList).get(0);
-        await companyDropDown.$('button').click();
-        let option = await element(by.cssContainingText(this.selectors.selectOptions, 'None'));
-        await option.click();
+    // remove
+    async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
+        let elementDropdown: ElementFinder = await element(by.cssContainingText('.assignment-component-wrapper bwf-select-with-pagination button', `Select ${dropDownLabel}`));
+        return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
     }
 
-    async isAssigneeDisplayed(name: string): Promise<boolean> {
-        await $(this.selectors.searchAsignee).click();
-        await $(this.selectors.searchAsignee).clear();
-        await $(this.selectors.searchAsignee).sendKeys(name + Key.ENTER);
-        return await element(by.cssContainingText(this.selectors.assignee, name)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.assignee, name)).isDisplayed();
-            else return false;
-        });
+    async isDropDownListSorted(dropDownName:string): Promise<boolean> {     
+        let arr: string[] = [], copy: string[] = [];    
+        arr = await this.getAllDropDownValues(dropDownName);
+        copy = Object.assign([], arr);
+        copy = copy.sort();
+        arr = arr.sort();        
+        return arr.length === copy.length && arr.every(
+            (value, index) => (value === copy[index])
+        );
+    }
+
+    async getAllDropDownValues(dropDownName:string): Promise<string[]> {
+        let dropDownElement;
+        switch (dropDownName) {
+            case "Company": {
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(0);               
+                break;
+            }
+            case "SupportOrg": {
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(1);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(2);
+                break;
+            }
+            case "Assignee": {
+                dropDownElement = await $$(this.selectors.changeAssignmentComponent).get(3);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+        return utilityCommon.getAllDropDownValues(dropDownElement, DropDownType.WebElement);
     }
 }
 

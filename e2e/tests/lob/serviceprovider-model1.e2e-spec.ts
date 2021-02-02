@@ -1201,9 +1201,9 @@ describe('Service Provider Data Model Tests', () => {
             // Verify negative scenario for Kingston HR LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
-            await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
-            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Samara Moran')).toBeFalsy('BU is diaplayed');
+            await changeAssignmentBladePo.selectSupportOrg('Kingston HR');
+            await changeAssignmentBladePo.selectAssignedGroup('Kingston AskHR');
+            expect(await changeAssignmentBladePo.isAssigneePresentInDropDown('Samara Moran')).toBeFalsy('BU is diaplayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
@@ -1442,9 +1442,9 @@ describe('Service Provider Data Model Tests', () => {
 
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
-            await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
-            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Ueshiba Morihei')).toBeFalsy('Assignee name is displayed');
+            await changeAssignmentBladePo.selectSupportOrg('Oracle HR');
+            await changeAssignmentBladePo.selectAssignedGroup('Oracle AskHR');
+            expect(await changeAssignmentBladePo.isAssigneePresentInDropDown('Ueshiba Morihei')).toBeFalsy('Assignee name is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickChangeAssignmentButton();
@@ -1630,9 +1630,9 @@ describe('Service Provider Data Model Tests', () => {
 
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Finance Back Office');
-            await changeAssignmentBladePo.selectSupportGroup('Finance Back Support');
-            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Wright Steven')).toBeFalsy('Assignee name is displayed');
+            await changeAssignmentBladePo.selectSupportOrg('Finance Back Office');
+            await changeAssignmentBladePo.selectAssignedGroup('Finance Back Support');
+            expect(await changeAssignmentBladePo.isAssigneePresentInDropDown('Wright Steven')).toBeFalsy('Assignee name is displayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
@@ -1832,9 +1832,9 @@ describe('Service Provider Data Model Tests', () => {
             // Verify negative scenario for Ericsson SAM LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
-            await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
-            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.selectSupportOrg('Oracle HR');
+            await changeAssignmentBladePo.selectAssignedGroup('Oracle AskHR');
+            expect(await changeAssignmentBladePo.isAssigneePresentInDropDown('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
@@ -1910,9 +1910,9 @@ describe('Service Provider Data Model Tests', () => {
             // Verify negative scenario for Ericsson SAM LOB for change assignment
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
-            await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
-            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.selectSupportOrg('Oracle HR');
+            await changeAssignmentBladePo.selectAssignedGroup('Oracle AskHR');
+            expect(await changeAssignmentBladePo.isAssigneePresentInDropDown('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await editCasePo.clickSaveCase();
@@ -1986,9 +1986,9 @@ describe('Service Provider Data Model Tests', () => {
             // Verify negative scenario for kingston HR LOB for change assignment
             await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
-            await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
-            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Samara Moran')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.selectSupportOrg('Kingston HR');
+            await changeAssignmentBladePo.selectAssignedGroup('Kingston AskHR');
+            expect(await changeAssignmentBladePo.isAssigneePresentInDropDown('Samara Moran')).toBeFalsy('Assignee is diaplayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await createCasePage.clickSaveCaseButton();
@@ -2292,9 +2292,9 @@ describe('Service Provider Data Model Tests', () => {
             // Verify negative scenario for Ericsson SAM LOB for change assignment
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Oracle HR');
-            await changeAssignmentBladePo.selectSupportGroup('Oracle AskHR');
-            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.selectSupportOrg('Oracle HR');
+            await changeAssignmentBladePo.selectAssignedGroup('Oracle AskHR');
+            expect(await changeAssignmentBladePo.isAssigneePresentInDropDown('Unamuno Miguel de')).toBeFalsy('Assignee is diaplayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await editCasePo.clickSaveCase();
@@ -2412,9 +2412,9 @@ describe('Service Provider Data Model Tests', () => {
             // Verify negative scenario for Ericsson SAM LOB for change assignment
             await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.selectCompany('Phyto');
-            await changeAssignmentBladePo.selectBusinessUnit('Kingston HR');
-            await changeAssignmentBladePo.selectSupportGroup('Kingston AskHR');
-            expect(await changeAssignmentBladePo.isAssigneeDisplayed('Sherri Ochoa')).toBeFalsy('Assignee is diaplayed');
+            await changeAssignmentBladePo.selectSupportOrg('Kingston HR');
+            await changeAssignmentBladePo.selectAssignedGroup('Kingston AskHR');
+            expect(await changeAssignmentBladePo.isAssigneePresentInDropDown('Sherri Ochoa')).toBeFalsy('Assignee is diaplayed');
             await changeAssignmentBladePo.clickOnCancelButton();
 
             await editCasePo.clickSaveCase();

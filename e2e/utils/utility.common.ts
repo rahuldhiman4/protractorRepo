@@ -153,38 +153,9 @@ export class Utility {
         if (count >= 1) { return true; } else { return false; }
     }
 
-    async isAllDropDownValuesMatches(dropDownIdentifier: string | ElementFinder, dropDownValueArr: string[], inputType?: DropDownType, dropDownSearchValue?: string, ): Promise<boolean> {
-        let drpDwnvalue: number = 0;
-        let arr: string[] = [];
-        switch (inputType) {
-            case DropDownType.WebElement: {
-                if (!(typeof dropDownIdentifier === 'string')) {
-                    await dropDownIdentifier.click();
-                    drpDwnvalue = await $$(this.selectors.dropDownOption).count();
-                }
-                break;
-            }
-            case DropDownType.Label: {
-                const dropDown = await $(`[title="${dropDownIdentifier}"],[aria-label="${dropDownIdentifier}"]`);
-                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-                await dropDownBoxElement.click();
-                const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
-                if (dropDownSearchValue) await dropDownInputElement.sendKeys(dropDownSearchValue);
-                drpDwnvalue = await $$(this.selectors.dropDownOption).count(); // drpDwnvalue = await $$('.ui-select-choices-row-inner *').count();
-                break;
-            }
-            default: {
-                const dropDown = await $(`[rx-view-component-id="${dropDownIdentifier}"]`);
-                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-                await dropDownBoxElement.click();
-                drpDwnvalue = await $$(this.selectors.dropDownOption).count();
-            }
-        }
-        for (let i = 0; i < drpDwnvalue; i++) {
-            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
-            arr[i] = ab;
-        }
-        arr = arr.sort();
+    async isAllDropDownValuesMatches(dropDownIdentifier: string | ElementFinder, dropDownValueArr: string[], inputType?: DropDownType, dropDownSearchValue?: string): Promise<boolean> {
+        let arr: string[] =await this.getAllDropDownValues(dropDownIdentifier,inputType,dropDownSearchValue);
+        arr.sort();
         dropDownValueArr = dropDownValueArr.sort();
         return arr.length === dropDownValueArr.length && arr.every(
             (value, index) => (value === dropDownValueArr[index])
@@ -663,6 +634,40 @@ export class Utility {
         await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
             await element.all(by.cssContainingText(optionCss, value)).get(n - 1).click();
         });
+    }
+
+    async getAllDropDownValues(dropDownIdentifier: string | ElementFinder, inputType?: DropDownType, dropDownSearchValue?: string): Promise<string[]> {
+        let drpDwnvalue: number = 0;
+        let arr: string[] = [];
+        switch (inputType) {
+            case DropDownType.WebElement: {
+                if (!(typeof dropDownIdentifier === 'string')) {
+                    await dropDownIdentifier.click();
+                    drpDwnvalue = await $$(this.selectors.dropDownOption).count();
+                }
+                break;
+            }
+            case DropDownType.Label: {
+                const dropDown = await $(`[title="${dropDownIdentifier}"],[aria-label="${dropDownIdentifier}"]`);
+                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+                await dropDownBoxElement.click();
+                const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+                if (dropDownSearchValue) await dropDownInputElement.sendKeys(dropDownSearchValue);
+                drpDwnvalue = await $$(this.selectors.dropDownOption).count(); // drpDwnvalue = await $$('.ui-select-choices-row-inner *').count();
+                break;
+            }
+            default: {
+                const dropDown = await $(`[rx-view-component-id="${dropDownIdentifier}"]`);
+                const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
+                await dropDownBoxElement.click();
+                drpDwnvalue = await $$(this.selectors.dropDownOption).count();
+            }
+        }
+        for (let i = 0; i < drpDwnvalue; i++) {
+            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+            arr[i] = ab;
+        }
+        return arr;
     }
 }
 

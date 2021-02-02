@@ -164,8 +164,8 @@ describe('Case Status Configuration', () => {
             await createCasePo.setSummary("4612 before configuration");
             await createCasePo.clickChangeAssignmentButton();
             await assignmentBladePO.selectCompany('Phylum');
-            await assignmentBladePO.selectBusinessUnit('Phylum Support Org1');
-            await assignmentBladePO.selectSupportGroup('Phylum Support Group1');
+            await assignmentBladePO.selectSupportOrg('Phylum Support Org1');
+            await assignmentBladePO.selectAssignedGroup('Phylum Support Group1');
             await assignmentBladePO.selectAssignee('Zaheer Khan');
             await assignmentBladePO.clickOnAssignButton();
             await createCasePo.clickSaveCaseButton();

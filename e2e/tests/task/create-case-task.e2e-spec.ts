@@ -302,58 +302,60 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: Verify the manual inActive task template ', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateInActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: Verify the manual Draft task template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateDraft');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: Verify the Automation Active task template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: Verify the Automation inActive task template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateInActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: [Automatic Task] - Task Template UI in Edit mode: New fields validations', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateDraft');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+            await editTaskTemplate.clickOnCancelButton();
+            await viewTasktemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -383,7 +385,9 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewTasktemplatePo.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe('Bonus');
-            expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe('- Global -')
+            expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe('- Global -');
+            await viewTasktemplatePo.clickBackArrowBtn();
+
         });
         it('[5015,5014,5020,4997]: Create case with above task template ', async () => {
             //Create a Case
@@ -779,6 +783,8 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveMetadata();
             await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Draft');
+            await viewTasktemplatePo.clickBackArrowBtn();
+
         });
         it('[5800]: Update the task template', async () => {
             await navigationPage.gotoSettingsPage();
@@ -794,6 +800,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveMetadata();
             await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Draft');
+            await viewTasktemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -1440,8 +1447,8 @@ describe('Create Case Task', () => {
         it('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
             await changeAssignmentBladePo.selectCompany('Petramco')
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await changeAssignmentBladePo.selectAssignee('Qiao Feng');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -1451,7 +1458,7 @@ describe('Create Case Task', () => {
         });
         it('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewCasePage.clickEditCaseButton();
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 1');
@@ -1464,7 +1471,7 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
             await adhoctaskTemplate.selectCategoryTier2('Compensation');
             await adhoctaskTemplate.selectCategoryTier3('Bonus');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 1');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 1');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTask.clickTaskLink("Summary2" + randomStr);
@@ -1601,8 +1608,8 @@ describe('Create Case Task', () => {
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('Description' + randomStr);
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-            await changeAssignmentBladePo.selectSupportGroup('Workforce Administration');
+            await changeAssignmentBladePo.selectSupportOrg('HR Support');
+            await changeAssignmentBladePo.selectAssignedGroup('Workforce Administration');
             await changeAssignmentBladePo.selectAssignee('Peter Kahn');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnCancelButton();
@@ -1628,8 +1635,8 @@ describe('Create Case Task', () => {
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('UpdatedDescription' + randomStr);
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectBusinessUnit('HR Support');
-            await changeAssignmentBladePo.selectSupportGroup('Workforce Administration');
+            await changeAssignmentBladePo.selectSupportOrg('HR Support');
+            await changeAssignmentBladePo.selectAssignedGroup('Workforce Administration');
             await changeAssignmentBladePo.selectAssignee('Peter Kahn');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
@@ -1662,8 +1669,8 @@ describe('Create Case Task', () => {
             await expect(viewCasePage.getContactPersonName()).toBe('Elizabeth Peters');
             await viewCasePage.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectBusinessUnit('United States Support');
-            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            await changeAssignmentBladePo.selectSupportOrg('United States Support');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
             await changeAssignmentBladePo.selectAssignee('Qiao Feng');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
@@ -1697,7 +1704,7 @@ describe('Create Case Task', () => {
             await expect(personProfilePo.getPersonName()).toBe('Elizabeth Peters');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.selectSupportGroup('US Support 2');
+            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssignedGroupText()).toBe(templateData.supportGroup);
