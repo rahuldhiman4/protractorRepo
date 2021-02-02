@@ -34,7 +34,7 @@ describe('Multi Search Validation', () => {
         year = new Number(numYear).toString();
 
         let numMonth: number = objDate.getUTCMonth() + 1;
-        let monthArr: string[] = ["Null", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let monthArr: string[] = ["Null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
         let numDate: number = objDate.getUTCDate();
@@ -677,10 +677,9 @@ describe('Multi Search Validation', () => {
         let taskTemplateName = 'taskTemplateDRDMV16825' + randomStr;
         let knowledgeTitle = 'knowledgeTitleDRDMV16825' + randomStr;
         let documentName = 'documentNameDRDMV16825' + randomStr;
-        let firstName = 'firstNameDRDMV16825' + randomStr;
-        let lastName = 'lastNameDRDMV16825' + randomStr;
+        let firstName = ' Qadim';
+        let lastName = 'Katawazi';
         let dummyText = 'dummyTextDRDMV16825' + randomStr;
-        let loginId = 'loginIdDRDMV16825' + randomStr;
         let caseDisplayId = [];
         let taskDisplayId;
         let caseTemplateDisplayId;
@@ -713,10 +712,6 @@ describe('Multi Search Validation', () => {
 
             // Create Document Library
             await createPublishDocumentLibrary(documentName, attachmentFilePath);
-
-            // Create New User
-            await apiHelper.apiLogin('tadmin');
-            await createNewUser(firstName, lastName, loginId, 'DRDMV16825@petramco.com', 'Petramco');
         });
 
         it('[4194]: Verify Recent With Case Summary', async () => {

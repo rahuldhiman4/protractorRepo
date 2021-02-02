@@ -62,7 +62,11 @@ class CasePreview {
     }
 
     async isCaseSiteDisplayed(caseSite: string): Promise<boolean> {
-        return await $(this.selectors.caseSite).getText() == caseSite ? true : false;
+        return await element(by.cssContainingText(this.selectors.caseSite, caseSite)).isPresent().then(async (link) => {
+            if (link) {
+                return await element(by.cssContainingText(this.selectors.caseSite, caseSite)).isDisplayed();
+            } else return false;
+        });
     }
 
     async isTitleDisplayed(): Promise<boolean> {
