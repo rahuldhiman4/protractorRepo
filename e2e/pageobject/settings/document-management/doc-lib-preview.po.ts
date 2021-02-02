@@ -10,8 +10,8 @@ class DocumentLibraryPreview {
         docStatus: '[rx-view-component-id="bef89c7c-b2f7-47a0-b06f-e61a8753c9fd"] span',
         company: '[rx-view-component-id="be45ce22-9f2d-407b-b2a8-a694f9594a6a"] .read-only-content',
         shareExternally: '[rx-view-component-id="4fbaab2c-551d-4768-85c6-597b0626fffb"] .read-only-content',
-        bussinessUnit: '[rx-view-component-id="99db67d8-24d4-4627-ae49-c5143a442917"] .read-only-content',
-        ownerGroup: '[rx-view-component-id="245a88c2-bf08-49c3-8b7d-df1594a17fd1"] .read-only-content',
+        SupportOrganization: '[rx-view-component-id="3a6db173-b1dd-43c5-a93b-a0452dda157b"] .read-only-content',
+        ownerGroup: '[rx-view-component-id="af638726-22f4-4bd9-add3-a214b55ef75a"] .read-only-content',
         keyword: '[rx-view-component-id="696edd09-c171-4913-993c-a43c00350ca0"] .bwf-item-text',
         operationalCategory: '[rx-view-component-id="0c703f2c-73f7-432c-94fd-f464cf6a2c70"] p',
         location: '[rx-view-component-id="54f83c0c-81cb-4997-b520-4d768e2d826c"] p'
@@ -32,12 +32,8 @@ class DocumentLibraryPreview {
                 guid = 'be45ce22-9f2d-407b-b2a8-a694f9594a6a';
                 break;
             }
-            case "Business Unit": {
-                guid = '99db67d8-24d4-4627-ae49-c5143a442917';
-                break;
-            }
-            case "Department": {
-                guid = '96137f86-1ffc-4c1c-a96c-0acc906232f7';
+            case "Support Organization": {
+                guid = '3a6db173-b1dd-43c5-a93b-a0452dda157b';
                 break;
             }
             case "Owner Group": {
@@ -73,7 +69,7 @@ class DocumentLibraryPreview {
                 break;
             }
             case "Site": {
-                guid = '59ee56d4-884d-4fc6-ab0b-a72da6910bd4';
+                guid = '614496f1-c688-45c2-a123-84452dfd5665';
                 break;
             }
 
@@ -121,8 +117,8 @@ class DocumentLibraryPreview {
                 getElements = this.selectors.company;
                 break;
             }
-            case "BussinessUnit": {
-                getElements = this.selectors.bussinessUnit;
+            case "SupportOrganization": {
+                getElements = this.selectors.SupportOrganization;
                 break;
             }
             case "OwnerGroup": {

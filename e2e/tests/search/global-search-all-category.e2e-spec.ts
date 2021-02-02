@@ -45,7 +45,7 @@ describe('Global Search All Category', () => {
         year = new Number(numYear).toString();
 
         let numMonth: number = objDate.getUTCMonth() + 1;
-        let monthArr: string[] = ["Null", "Jan", "Feb", "Mar", "Apr", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let monthArr: string[] = ["Null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
         let numDate: number = objDate.getUTCDate();
@@ -414,14 +414,13 @@ describe('Global Search All Category', () => {
             expect(await caseTemplatePreviewPo.isFlowsetTitleDisplayed('Flowset')).toBeTruthy('FailureMsg23: Flowset label is missing');
             expect(await caseTemplatePreviewPo.isLabelTitleDisplayed('Label')).toBeTruthy('FailureMsg24: Label field label is missing');
             expect(await caseTemplatePreviewPo.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy('FailureMsg25: Case Company label is missing');
-            expect(await caseTemplatePreviewPo.isCaseCategoryTier1TitleDisplayed('Case Category Tier 1')).toBeTruthy('Case Category Tier 1 is not getting displayed');
-            expect(await caseTemplatePreviewPo.isCaseCategoryTier2TitleDisplayed('Case Category Tier 2')).toBeTruthy('Case Category Tier 2 is not getting displayed');
-            expect(await caseTemplatePreviewPo.isCaseCategoryTier3TitleDisplayed('Case Category Tier 3')).toBeTruthy('Case Category Tier 3 is not getting displayed');
-            expect(await caseTemplatePreviewPo.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4')).toBeTruthy('Case Category Tier 4 is not getting displayed');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier1TitleDisplayed('Category Tier 1')).toBeTruthy('Category Tier 1 is not getting displayed');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier2TitleDisplayed('Category Tier 2')).toBeTruthy('Category Tier 2 is not getting displayed');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier3TitleDisplayed('Category Tier 3')).toBeTruthy('Category Tier 3 is not getting displayed');
+            expect(await caseTemplatePreviewPo.isCaseCategoryTier4TitleDisplayed('Category Tier 4')).toBeTruthy('Category Tier 4 is not getting displayed');
             expect(await caseTemplatePreviewPo.isCaseDescriptionTitleDisplayed('Case Description')).toBeTruthy('FailureMsg29: Case Description label is missing');
             expect(await caseTemplatePreviewPo.isAssigneeTitleDisplayed()).toBeTruthy('FailureMsg29: Assignee label is missing');
-            expect(await caseTemplatePreviewPo.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy('FailureMsg30: Support Group label is missing');
-            expect(await caseTemplatePreviewPo.isSupportCompanyTitleDisplayed('Support Company')).toBeTruthy('FailureMsg31: Support Company label is missing');
+            expect(await caseTemplatePreviewPo.isSupportGroupTitleDisplayed('Assigned Company > Support Organization > Assigned Group')).toBeTruthy('FailureMsg30: Assigned Company > Support Organization > Assigned Goup label is missing');
             expect(await caseTemplatePreviewPo.getCaseTemplateName()).toBe(templateName + 1, 'FailureMsg20: Case template title is missing');
             expect(await caseTemplatePreviewPo.getCaseSummary()).toBe(commonSearchForAll, 'FailureMsg20: Case Summary is missing');
             expect(await caseTemplatePreviewPo.getCasePriority()).toBe('Low', 'FailureMsg33: Case priority is missing');
@@ -459,16 +458,15 @@ describe('Global Search All Category', () => {
             expect(await previewTaskTemplatePo.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
             expect(await previewTaskTemplatePo.isTaskDescriptionTitleDisplayed()).toBeTruthy('FailureMsg29: Task Description label is missing');
             expect(await previewTaskTemplatePo.isAssigneeTitleDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
-            expect(await previewTaskTemplatePo.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy('FailureMsg30: Support Group label is missing');
-            expect(await previewTaskTemplatePo.isTaskCompanyTitleDisplayed('Support Company')).toBeTruthy('FailureMsg31: Support Company label is missing');
+            expect(await previewTaskTemplatePo.isSupportGroupTitleDisplayed('Assigned Company > Support Organization > Assigned Group')).toBeTruthy('FailureMsg31: Assigned Company > Support Organization > Assigned Goup label is missing');
+
 
             expect(await previewTaskTemplatePo.getTaskTemplateName()).toBe(templateName + 4, 'FailureMsg20: Task template title is missing');
             expect(await previewTaskTemplatePo.getTaskSummary()).toBe('TemplateSummary', 'FailureMsg20: Task Summary is missing');
             expect(await previewTaskTemplatePo.getTaskPriority()).toBe('Medium', 'FailureMsg33: Task priority is missing');
             expect(await previewTaskTemplatePo.getTaskCompany()).toBe('Petramco', 'FailureMsg34: Task company is missing');
             expect(await previewTaskTemplatePo.getAssigneeText()).toBe('Qiang Du', 'FailureMsg39: Assignee is missing');
-            expect(await previewTaskTemplatePo.getSupportGroup()).toBe('CA Support 1', 'FailureMsg40: support group is missing');
-            expect(await previewTaskTemplatePo.getSupportCompany()).toBe('Petramco', 'FailureMsg41: Company Value is missing');
+            expect(await previewTaskTemplatePo.getSupportGroup()).toBe('Petramco > Canada Support > CA Support 1', 'FailureMsg40: support group is missing');
         });
 
         it('[4333]: Verify Document On Left Pannel ', async () => {
@@ -486,8 +484,7 @@ describe('Global Search All Category', () => {
 
         it('[4333]: Verify Document Preview', async () => {
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Company')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Business Unit')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Department')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Support Organization')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Owner Group')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Share Externally')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await previewDocumentLibraryPo.isFieldLabelDisplayed('Keywords')).toBeTruthy('FailureMsg22: field label displayed');
@@ -505,7 +502,7 @@ describe('Global Search All Category', () => {
             expect(await previewDocumentLibraryPo.isDataDisplayed('DocumentStatus', 'Published')).toBeTruthy('FailureMsg25: Doc status missing');
             expect(await previewDocumentLibraryPo.isDataDisplayed('Company', 'Petramco')).toBeTruthy('FailureMsg26: Company Value missing');
             expect(await previewDocumentLibraryPo.isDataDisplayed('ShareExternally', 'False')).toBeTruthy('FailureMsg27: Share External Value is missing');
-            expect(await previewDocumentLibraryPo.isDataDisplayed('BussinessUnit', 'Canada Support')).toBeTruthy('FailureMsg28: Status KA Displayed');
+            expect(await previewDocumentLibraryPo.isDataDisplayed('SupportOrganization', 'Canada Support')).toBeTruthy('FailureMsg28: Status KA Displayed');
             expect(await previewDocumentLibraryPo.isDataDisplayed('OwnerGroup', 'CA Support 1')).toBeTruthy('FailureMsg29: Status KA Displayed');
         });
 
