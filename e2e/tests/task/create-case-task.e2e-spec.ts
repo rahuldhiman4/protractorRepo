@@ -302,58 +302,60 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: Verify the manual inActive task template ', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateInActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: Verify the manual Draft task template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'manualTaskTemplateDraft');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Manual');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeFalsy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: Verify the Automation Active task template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: Verify the Automation inActive task template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateInActive');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+            await editTaskTemplate.clickOnCancelButton();
         });
         it('[5569]: [Automatic Task] - Task Template UI in Edit mode: New fields validations', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateDraft');
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
-            expect(await editTaskTemplate.getTaskTypeValueAttribute("disabled")).toBeTruthy();
+            expect(await editTaskTemplate.getTaskTypeValueAttribute("aria-disabled")).toBeTruthy();
             expect(await editTaskTemplate.isProcessNamePresentInTask()).toBeTruthy();
+            await editTaskTemplate.clickOnCancelButton();
+            await viewTasktemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -383,7 +385,9 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewTasktemplatePo.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe('Bonus');
-            expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe('- Global -')
+            expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe('- Global -');
+            await viewTasktemplatePo.clickBackArrowBtn();
+
         });
         it('[5015,5014,5020,4997]: Create case with above task template ', async () => {
             //Create a Case
@@ -779,6 +783,8 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveMetadata();
             await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Draft');
+            await viewTasktemplatePo.clickBackArrowBtn();
+
         });
         it('[5800]: Update the task template', async () => {
             await navigationPage.gotoSettingsPage();
@@ -794,6 +800,7 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveMetadata();
             await utilityCommon.closePopUpMessage();
             expect(await viewTasktemplatePo.getTemplateStatus()).toBe('Draft');
+            await viewTasktemplatePo.clickBackArrowBtn();
         });
     });
 

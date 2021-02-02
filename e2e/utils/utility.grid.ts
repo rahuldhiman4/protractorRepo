@@ -6,7 +6,7 @@ export class GridOperations {
     selectors = {
         selectAllCheckBox: '.adapt-selection-cell .checkbox__input',
         noFilterAppliedError: '.has-danger .form-control-feedback',
-        searchTextBox: '.adapt-search-triggerable input,.adapt-search-field-ellipsis',
+        searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
         gridRowLinks: '.at-data-row a',
         gridRowHyperLinks: '.at-data-row a',

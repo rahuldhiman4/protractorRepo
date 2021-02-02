@@ -27,7 +27,7 @@ class TaskTemplateGridPage {
 
     async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
         await utilityGrid.clearFilter();
-        await utilityGrid.searchAndOpenHyperlink(taskName);
+        await utilityGrid.searchAndOpenHyperlink(taskName,this.selectors.taskTemplateGuid);
     }
 
     async searchAndSelectTaskTemplate(taskName: string): Promise<void> {
