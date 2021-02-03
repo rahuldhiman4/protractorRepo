@@ -26,10 +26,9 @@ export let CASE_READ_ACCESS = {
             "id": 1000001437,
             "value": "Anant test4"
         },
-        //#LOB Comments
-        // "450000420": {
-        //     "id": 450000420,
-        //     "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
-        // },
+        "450000420": {
+            "id": 450000420,
+            "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        },
     }
 }
