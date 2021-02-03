@@ -1,5 +1,5 @@
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
-import changeAssignmentBladePo from '../common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../common/change-assignment.po';
 import utilityCommon from '../../utils/utility.common';
 
 class StatusBladKnowledgeArticle {

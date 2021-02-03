@@ -10,7 +10,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPo from "../../pageobject/common/navigation.po";
 import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';

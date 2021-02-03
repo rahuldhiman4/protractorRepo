@@ -3,7 +3,7 @@ import apiHelper from '../../api/api.helper';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import addFieldsPopup from '../../pageobject/common/add-fields-pop.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import notificationPo from '../../pageobject/notification/notification.po';

@@ -1,7 +1,7 @@
 import { browser, protractor, ProtractorExpectedConditions } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
-import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
+import changeAssignmentBlade from "../../pageobject/common/change-assignment.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";

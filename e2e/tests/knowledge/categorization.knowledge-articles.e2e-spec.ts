@@ -7,7 +7,7 @@ import editCasePage from '../../pageobject/case/edit-case.po';
 import quickCase from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import attachDocumentBladePO from '../../pageobject/common/attach-document-blade.po';
-import changeAssignmentBlade from "../../pageobject/common/change-assignment-blade.po";
+import changeAssignmentBlade from "../../pageobject/common/change-assignment.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import resources from '../../pageobject/common/resources-tab.po';

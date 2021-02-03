@@ -20,7 +20,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityGrid from "../../utils/utility.grid";
 import utilityCommon from '../../utils/utility.common';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 
 
 let caseBAUser = 'qkatawazi';

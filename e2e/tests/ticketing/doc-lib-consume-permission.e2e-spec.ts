@@ -9,7 +9,7 @@ import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate
 import viewCasePo from '../../pageobject/case/view-case.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from "../../pageobject/common/navigation.po";
 import resourcesTabPo from '../../pageobject/common/resources-tab.po';

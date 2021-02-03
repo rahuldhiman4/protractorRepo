@@ -20,7 +20,7 @@ import utilityGrid from '../../utils/utility.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 
 describe('Case Activity Multi Logs', () => {
 

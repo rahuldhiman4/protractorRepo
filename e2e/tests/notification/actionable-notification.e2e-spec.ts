@@ -19,7 +19,7 @@ import notificationTemplateConsolePage from "../../pageobject/settings/notificat
 import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
-import assignmentBladePO from '../../pageobject/common/change-assignment-blade.po';
+import assignmentBladePO from '../../pageobject/common/change-assignment.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
