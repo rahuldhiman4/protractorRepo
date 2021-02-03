@@ -10,7 +10,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import addFieldPo from '../../pageobject/common/add-fields-pop.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.po';

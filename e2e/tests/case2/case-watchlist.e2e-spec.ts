@@ -5,7 +5,7 @@ import caseConsole from '../../pageobject/case/case-console.po';
 import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
 import editCase from '../../pageobject/case/edit-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import changeAssignment from "../../pageobject/common/change-assignment-blade.po";
+import changeAssignment from "../../pageobject/common/change-assignment.po";
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from '../../pageobject/common/navigation.po';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';

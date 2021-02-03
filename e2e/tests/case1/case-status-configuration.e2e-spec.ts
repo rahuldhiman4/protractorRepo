@@ -6,7 +6,7 @@ import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
-import assignmentBladePO from '../../pageobject/common/change-assignment-blade.po';
+import assignmentBladePO from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';

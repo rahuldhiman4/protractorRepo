@@ -11,7 +11,7 @@ import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import viewCasePo, { default as viewCasePage } from '../../pageobject/case/view-case.po';
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import utilityGrid from '../../utils/utility.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import serviceTargetConsole from '../../pageobject/settings/slm/service-target-viewconsole.po';

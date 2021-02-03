@@ -5,7 +5,7 @@ import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePage from '../../pageobject/case/edit-case.po';
 import caseTemplatePage from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import personProfilePage from '../../pageobject/common/person-profile.po';

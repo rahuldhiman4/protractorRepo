@@ -2,7 +2,7 @@ import { resolve } from "path";
 import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import utilityCommon from '../../utils/utility.common';
-import changeAssignmentBladePo from "../common/change-assignment-blade.po";
+import changeAssignmentBladePo from "../common/change-assignment.po";
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
 

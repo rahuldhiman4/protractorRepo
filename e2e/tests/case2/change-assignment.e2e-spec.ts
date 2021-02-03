@@ -4,7 +4,7 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import loginPo from "../../pageobject/common/login.po";
 import navigationPo from "../../pageobject/common/navigation.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
