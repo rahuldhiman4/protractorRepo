@@ -56,6 +56,7 @@ import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
 import { RELATIONSHIPS } from '../data/api/shared-services/relationship.api';
 import { UpdateLOB, CreateLOB } from '../data/api/foundation/lob.api';
 import { REGION, REGION_TIER } from '../data/api/foundation/region.api';
+import { CREATE_BUSINESS_UNIT,UPDATE_BUSINESS_UNIT } from '../data/api/foundation/business.unit.api';
 
 let fs = require('fs');
 
@@ -882,7 +883,7 @@ class ApiHelper {
     async createBusinessUnit(data: IBusinessUnit): Promise<string> {
         let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(data.orgName);
         if (businessUnitGuid == null) {
-            let businessUnitDataFile = await require('../data/api/foundation/business.unit.api.json');
+            let businessUnitDataFile = cloneDeep(CREATE_BUSINESS_UNIT);
             let businessData = await businessUnitDataFile.NewBusinessUnit;
             businessData.fieldInstances[1000000010].value = data.orgName;
             businessData.fieldInstances[304411161].value = data.relatedOrgId ? data.relatedOrgId : businessData.fieldInstances[304411161].value;
@@ -3283,6 +3284,25 @@ class ApiHelper {
         console.log('Create Region Tier API Status =============>', regionTierResponse.status);
         await apiCoreUtil.associateFoundationElements('Region to Site', responseData.id, '723de966290232b2da35cb2d9d0562acfc1b1b93983bf518c2edda8f6eea9ae7246362254728de6b4aebea56dc6acaa5f9ca1d552e3ebb4afc1354ff01c53c4c');
         return regionResponse.status == 201 && regionTierResponse.status == 201;
+    }
+
+    async disassociateDomainTagFromBU(buName:string,domainTagName): Promise<boolean> {
+        let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(buName);
+        let updateBUPayLoad = cloneDeep(UPDATE_BUSINESS_UNIT);
+        console.log(updateBUPayLoad);
+        const updateBU: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.arsys.rx.foundation:Business Unit", businessUnitGuid, updateBUPayLoad)
+        return updateBU.status == 204;
+    }
+
+    async associateDomainTagFromBU(buName:string,domainTagName): Promise<boolean> {
+        let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(buName);
+        let updateBUPayLoad = cloneDeep(UPDATE_BUSINESS_UNIT);
+        let domainTag = await apiCoreUtil.getDomainTagGuid(domainTagName);
+        console.log(domainTag);
+
+        updateBUPayLoad.fieldInstances[304417331].value = domainTag;
+        const updateBU: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.arsys.rx.foundation:Business Unit", businessUnitGuid, updateBUPayLoad)
+        return updateBU.status == 204;
     }
 }
 

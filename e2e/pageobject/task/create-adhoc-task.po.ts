@@ -314,8 +314,12 @@ class CreateAdhocTaskTemplatePage {
 
     }
 
-    async getAssignedGroupText(): Promise<string> {
+    async getSupportOrgText(): Promise<string> {
         return await changeAssignmentBladePo.getDropDownValue("SupportOrg", this.selectors.assignmentGuid);
+    }
+
+    async getAssignedGroupText(): Promise<string> {
+        return await changeAssignmentBladePo.getDropDownValue("AssignedGroup", this.selectors.assignmentGuid);
     }
 
     async getAssigneeValue(): Promise<string> {

@@ -1,4 +1,4 @@
-{
+export const CREATE_BUSINESS_UNIT = {
   "NewBusinessUnit": {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "com.bmc.arsys.rx.foundation:Business Unit",
@@ -25,4 +25,26 @@
       }
     }
   }
-}
+};
+
+export const UPDATE_BUSINESS_UNIT = {
+  "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+  "id": "418e2e2d2ed191a494d959573aaf74a03c77b0b6f1f2cdc95ab31d37a4d67e7c4a28a199aee20f1875c64c22476204480461bc34867b181b6da7e390ffc7db5b",
+  "displayId": "15706",
+  "recordDefinitionName": "com.bmc.arsys.rx.foundation:Business Unit",
+  "permittedGroupsBySecurityLabels": {
+    "Parent Assignee Group": [
+      "1001426"
+    ]
+  },
+  "fieldInstances": {
+    "6": {
+      "id": 6,
+      "value": "2021-01-13T05:04:22.000Z",
+    },
+    "304417331": {
+      "id": 304417331,
+      "value": null,
+    }
+  }
+};
