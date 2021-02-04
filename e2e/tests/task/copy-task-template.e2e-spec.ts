@@ -145,6 +145,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -195,6 +196,8 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Bonus');
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4566,4715]: User having Petramco and Psilon access', async () => {
             await navigationPage.signOut();
@@ -212,6 +215,8 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4566,4715]: Login through only Petramco User', async () => {
             await navigationPage.signOut();
@@ -220,6 +225,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(autoTemplate1);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4566,4715]: The copy of Automated Task template is created across company and check the way to Edit the existing linked Process', async () => {
             //Login through only Psilon User
@@ -229,6 +235,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(autoTemplate1);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -274,6 +281,7 @@ describe('Copy Task Template', () => {
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + templateData.processName);
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -318,6 +326,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(newManualTaskTemplate);
             expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
@@ -363,6 +372,8 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectTemplateStatus('Active');
             await copyTemplatePage.clickSaveCopytemplate();
             await utilityCommon.closePopUpMessage();
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4569]: Create Copy of an automated Task and check execution', async () => {
             await navigationPage.gotoCaseConsole();
@@ -419,6 +430,7 @@ describe('Copy Task Template', () => {
             await viewTaskTemplate.clickOnEditProcessLink();
             expect(await utilityCommon.isPopUpMessagePresent(`WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :${templateData.templateSummary}`)).toBeTruthy("Popup message doesn't match");
             await utilityCommon.closePopUpMessage();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
             await navigationPage.gotoCaseConsole();
@@ -463,6 +475,8 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Bonus');
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("US Support 3");
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
@@ -509,6 +523,8 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getBuisnessunitValue()).toBe('HR Support');
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Workforce Administration");
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         } catch (e) {
             throw e;
         } finally {
@@ -572,6 +588,8 @@ describe('Copy Task Template', () => {
             await dynamicField.clickSaveButton();
             await utilityCommon.closePopUpMessage();// is it defect no warning message
             expect(await viewTaskTemplate.isDynamicFieldPresent(dynamicFieldDescription2)).toBeTruthy(`${dynamicFieldDescription2} dynamic field not present`);
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 });
