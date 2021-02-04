@@ -26,11 +26,11 @@ export const CASE_APPROVAL_MAPPING = {
       "id": 450000158,
       "value": "4000",
       "permissionType": "CHANGE"
-    },//#LOB Comments
-    // "450000420": {
-    //   "id": 450000420,
-    //   "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
-    // },
+    },
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+    },
     "1000000001": {
       "id": 1000000001,
       "value": "Petramco"

@@ -10,7 +10,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPo from "../../pageobject/common/navigation.po";
 import addReadAccess from '../../pageobject/settings/case-management/add-read-access-configuration.po';
@@ -188,10 +188,10 @@ describe("Case Read Access", () => {
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.setPriority('Critical');
             await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectCompany('Petramco');
-            await changeAssignmentPage.selectSupportOrg('United States Support')
-            await changeAssignmentPage.selectAssignedGroup('US Support 3');
-            await changeAssignmentPage.selectAssignee('Qadim Katawazi');
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
             await changeAssignmentPage.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();

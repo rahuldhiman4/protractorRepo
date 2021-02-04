@@ -25,11 +25,11 @@ export const KNOWLEDGE_ARTICLE_PAYLOAD = {
         "1000000001": {
             "id": 1000000001,
             "value": null
-        },//#LOB Comments
-        // "450000411": {
-        //     "id": 450000411,
-        //     "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
-        //   },
+        },
+        "450000411": {
+            "id": 450000411,
+            "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+          },
         "200000007": {
         "id": 200000007,
         "value": "Human Resources",

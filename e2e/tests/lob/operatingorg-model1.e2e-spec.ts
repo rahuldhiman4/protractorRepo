@@ -8,7 +8,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import { BWF_BASE_URL } from '../../utils/constants';
@@ -179,14 +179,14 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await createCasePo.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Applications is not present in Catgory Tier 1 dropdown');
             expect(await createCasePo.isValuePresentInDropdown('Category Tier 1', 'Facilities')).toBeFalsy('Facilities is present in Catgory Tier 1 dropdown');
             await createCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -225,15 +225,15 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Reporting');
 
             await editCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Company', 'Psilon')).toBeFalsy();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("Company", 'Psilon')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -262,7 +262,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataPetramcoHR.templateName);
 
             await createCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Company', 'Psilon')).toBeFalsy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("Company", 'Psilon')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await createCasePo.clickSaveCaseButton();
 
@@ -365,14 +365,14 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await createCasePo.isValuePresentInDropdown('Category Tier 1', 'Applications')).toBeTruthy('Facilities is not present in Catgory Tier 1 dropdown');
             expect(await createCasePo.isValuePresentInDropdown('Category Tier 1', 'Facilities')).toBeFalsy('Applications is present in Catgory Tier 1 dropdown');
             await createCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -413,15 +413,15 @@ describe('Operating Orgnization Data Model Tests', () => {
 
             await viewCasePage.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectNoneCompany();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('None', "Assignee");
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
             await changeAssignmentBladePo.clickOnCancelButton();
@@ -442,8 +442,8 @@ describe('Operating Orgnization Data Model Tests', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateDataPetramcoHR.templateName);
 
             await createCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectNoneCompany();
-            expect(await changeAssignmentBladePo.isValuePresentInDropdown('Organization', 'Psilon')).toBeFalsy();
+            await changeAssignmentBladePo.setDropDownValue('None', "Assignee");
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("Company", 'Psilon')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await createCasePo.clickSaveCaseButton();
 
@@ -543,10 +543,10 @@ describe('Operating Orgnization Data Model Tests', () => {
         });
         it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await createCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isSupporOrgPresentInDropDown('United States Support')).toBeFalsy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'United States Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await createCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isSupporOrgPresentInDropDown('Facilities Support')).toBeTruthy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Facilities Support')).toBeTruthy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePage.clickGoToCaseButton();
@@ -566,12 +566,12 @@ describe('Operating Orgnization Data Model Tests', () => {
             await editCasePo.updateCaseCategoryTier2('Cellular Phones');
             await editCasePo.updateCaseCategoryTier3('Service');
             await editCasePo.clickChangeAssignmentButton();
-            expect(await changeAssignmentBladePo.isSupporOrgPresentInDropDown('United States Support')).toBeFalsy();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'United States Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectSupportOrg('Facilities Support');
-            await changeAssignmentBladePo.selectAssignedGroup('Pantry Service');
-            await changeAssignmentBladePo.selectAssignee('Qing Yuan');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Facilities Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Pantry Service');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qing Yuan');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Phones');

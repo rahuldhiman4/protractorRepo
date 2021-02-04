@@ -1,4 +1,4 @@
-import changeAssignmentBladePo from "../../pageobject/common/change-assignment-blade.po";
+import changeAssignmentBladePo from "../../pageobject/common/change-assignment.po";
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from '../../data/interface/template.interface';

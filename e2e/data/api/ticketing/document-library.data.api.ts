@@ -65,11 +65,11 @@ export const DOC_LIB_DRAFT = {
         "450000167": {
             "id": 450000167,
             "value": null
-        },//#LOB
-        // "450000411":{
-        //    "id":450000411,
-        //    "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
-        // }
+        },
+        "450000411":{
+           "id":450000411,
+           "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        },
         "302299491": {
             "id": 302299491,
             "value": "0",

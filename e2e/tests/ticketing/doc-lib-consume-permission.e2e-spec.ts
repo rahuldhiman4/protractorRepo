@@ -9,7 +9,7 @@ import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate
 import viewCasePo from '../../pageobject/case/view-case.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import attachDocumentBladePo from '../../pageobject/common/attach-document-blade.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import loginPage from '../../pageobject/common/login.po';
 import navigationPage from "../../pageobject/common/navigation.po";
 import resourcesTabPo from '../../pageobject/common/resources-tab.po';
@@ -715,10 +715,10 @@ describe('Document Library Consume Permission', () => {
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportOrg('United Kingdom Support');
-            await changeAssignmentBladePo.selectAssignedGroup('GB Support 2');
-            await changeAssignmentBladePo.selectAssignee('Quin Strong');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United Kingdom Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'GB Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quin Strong');
             await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -757,10 +757,10 @@ describe('Document Library Consume Permission', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportOrg('United States Support')
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 2');
-            await changeAssignmentBladePo.selectAssignee('Quanah George');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support')
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quanah George');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');

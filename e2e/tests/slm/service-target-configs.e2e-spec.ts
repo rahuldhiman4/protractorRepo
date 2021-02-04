@@ -11,7 +11,7 @@ import serviceTargetInfoPage from '../../pageobject/slm/service-target-info.po';
 import slmProgressBar from '../../pageobject/slm/slm-progressbar.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import viewCasePo, { default as viewCasePage } from '../../pageobject/case/view-case.po';
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import utilityGrid from '../../utils/utility.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import serviceTargetConsole from '../../pageobject/settings/slm/service-target-viewconsole.po';
@@ -409,9 +409,9 @@ describe('Service Target Configs', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentPage.selectSupportOrg('United States Support');
-            await changeAssignmentPage.selectAssignedGroup('US Support 3');
-            await changeAssignmentPage.selectAssignee('Qiao Feng');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Qiao Feng');
             await changeAssignmentPage.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green

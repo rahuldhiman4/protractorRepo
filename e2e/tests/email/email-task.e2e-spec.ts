@@ -1,7 +1,7 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import viewCasePo from "../../pageobject/case/view-case.po";
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import composeMailPo from '../../pageobject/email/compose-mail.po';
@@ -289,9 +289,9 @@ describe('Email Task', () => {
             await browser.sleep(2000); // To wait until view task page gets load correctly.
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
-            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
@@ -308,9 +308,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
-            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
@@ -609,9 +609,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
-            await changeAssignmentBladePo.selectAssignee("Qadim Katawazi");
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', "Qadim Katawazi");
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await viewTaskPo.clickOnRequesterEmail();
@@ -636,9 +636,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
-            await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
         });
@@ -729,9 +729,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
-            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             ManualtaskID = await viewTaskPo.getTaskID();
@@ -743,9 +743,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
-            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await viewTaskPo.clickOnRequesterEmail();

@@ -1,4 +1,3 @@
-import viewCasetemplatePo from "../../pageobject/settings/case-management/view-casetemplate.po";
 import { $, browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import attachmentBladePage from "../../pageobject/attachment/attachment-blade.po";
@@ -8,8 +7,7 @@ import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
 import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import changeAssignmentPage from '../../pageobject/common/change-assignment-blade.po';
-import changAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
+import { default as changeAssignmentBladePo, default as changeAssignmentPage } from '../../pageobject/common/change-assignment.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -22,6 +20,7 @@ import menuItemConsole from '../../pageobject/settings/application-config/menu-i
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplate from '../../pageobject/settings/case-management/create-casetemplate.po';
 import caseTemplatePreview from '../../pageobject/settings/case-management/preview-case-template.po';
+import viewCasetemplatePo from "../../pageobject/settings/case-management/view-casetemplate.po";
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
 import createTaskTemplate from '../../pageobject/settings/task-management/create-tasktemplate.po';
 import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template.po';
@@ -34,7 +33,6 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import changeAssignmentBladePo from "../../pageobject/common/change-assignment-blade.po";
 
 describe("Create Case", () => {
     beforeAll(async () => {
@@ -436,14 +434,14 @@ describe("Create Case", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             expect(await createCasePage.getCompany()).toBe('Petramco');
-            expect(await changeAssignmentPage.getCompanyDefaultValue()).toBe('Petramco');
-            await changeAssignmentPage.selectSupportOrg('United States Support')
-            await changeAssignmentPage.selectAssignedGroup('US Support 3');
-            await changeAssignmentPage.selectAssignee('Kyle Kohri');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Kyle Kohri');
             await createCasePage.clickAssignToMeButton();
-            expect(await changeAssignmentPage.getAssigneeValue()).toBe('Qadim Katawazi');
-            await changeAssignmentPage.selectSupportOrg('United States Support')
-            await changeAssignmentPage.selectAssignedGroup('US Support 3');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qadim Katawazi');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
@@ -574,10 +572,10 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
-            await changeAssignmentPage.selectCompany(petramcoStr);
-            await changeAssignmentPage.selectSupportOrg('Australia');
-            await changeAssignmentPage.selectAssignedGroup("AU");
-            await changeAssignmentPage.selectAssignee("Qiwei");
+            await changeAssignmentPage.setDropDownValue('Company', petramcoStr);
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'Australia');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', "AU");
+            await changeAssignmentPage.setDropDownValue('Assignee', "Qiwei");
             await editCasePage.clickSaveCase();
             expect(await activityTabPo.isTextPresentInActivityLog("Qiwei Liu")).toBeTruthy("Text is not present in activiy tab1");
             await activityTabPo.clickOnShowMore();
@@ -690,7 +688,7 @@ describe("Create Case", () => {
             await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplateData.templateName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await viewCasePage.clickEditCaseButton();           
+            await viewCasePage.clickEditCaseButton();
             expect(await changeAssignmentPage.isDropDownListSorted("Assignee")).toBeTruthy("Agent List is Sorted");
         });
         afterAll(async () => {
@@ -801,10 +799,10 @@ describe("Create Case", () => {
                 "Origin": "Email"
             }
             caseDataForDwp =
-            {
-                "requester": "qtao",
-                "summary": "Testing case creation with minimal input data"
-            }
+                {
+                    "requester": "qtao",
+                    "summary": "Testing case creation with minimal input data"
+                }
             await apiHelper.apiLogin('qkatawazi');
             caseIdForEmail = await apiHelper.createCase(caseDataForEmail);
             caseIdForDWP = await apiHelper.createCaseFromDwp(caseDataForDwp);
@@ -855,10 +853,10 @@ describe("Create Case", () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
-            await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -1021,10 +1019,10 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.setCaseStatusValue("Assigned");
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
-            await changeAssignmentBladePo.selectAssignee('Qadim Katawazi');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await createCaseTemplate.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoCaseConsole();

@@ -10,7 +10,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import addFieldPo from '../../pageobject/common/add-fields-pop.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.po';
@@ -1999,10 +1999,10 @@ describe('Notes template', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField("KnowledgeTitle_" + randomString);
             await createKnowlegePo.selectKnowledgeSet("HR");
             await createKnowlegePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Petramco');
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 3');
-            await changeAssignmentBladePo.selectAssignee('Quigley Heroux');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
 
             await changeAssignmentBladePo.clickOnAssignButton();
             await createKnowlegePo.clickOnSaveKnowledgeButton();

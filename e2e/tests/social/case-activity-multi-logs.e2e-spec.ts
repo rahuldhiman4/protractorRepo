@@ -20,7 +20,7 @@ import utilityGrid from '../../utils/utility.grid';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import accessTabPo from '../../pageobject/common/access-tab.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 
 describe('Case Activity Multi Logs', () => {
 
@@ -350,9 +350,9 @@ describe('Case Activity Multi Logs', () => {
 
         it('[4229]: Assign Manual Task Validate Its Activity', async () => {
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
-            await changeAssignmentBladePo.selectAssignee('qkatawazi');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'qkatawazi');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
@@ -442,9 +442,9 @@ describe('Case Activity Multi Logs', () => {
         it('[4229]: Assign External Task Validate Its Activity', async () => {
             // Assign Task 
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.selectSupportOrg('United States Support');
-            await changeAssignmentBladePo.selectAssignedGroup('US Support 3');
-            await changeAssignmentBladePo.selectAssignee('qkatawazi');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'qkatawazi');
             await editTaskPo.clickOnSaveButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
@@ -944,10 +944,10 @@ describe('Case Activity Multi Logs', () => {
         it('[4241]:Verify social activity with change asssignment', async () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.selectCompany('Petramco')
-            await changeAssignmentBladePo.selectSupportOrg('Canada Support');
-            await changeAssignmentBladePo.selectAssignedGroup('CA Support 1');
-            await changeAssignmentBladePo.selectAssignee('Qiang Du');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco')
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 1');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiang Du');
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             await activityTabPage.clickOnShowMore();

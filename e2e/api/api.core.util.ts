@@ -65,24 +65,23 @@ class ApiCoreUtil {
         return allRecords.data.data.length >= 1 ? allRecords.data.data[0]['signatureInstanceID'] || null : null;
     }
 
-    async getNotificationEventGuid(eventName: string, company?: string): Promise<string> {
-        let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationEvent");
-        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            if (company) return obj[301718200] === eventName && obj[301566300] === company;
-            else return obj[301718200] === eventName;
-        });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
-    }
-
-    //#LOB Comments
-    // async getNotificationEventGuid(eventName: string, lob: string, company?: string): Promise<string> {
+    // async getNotificationEventGuid(eventName: string, company?: string): Promise<string> {
     //     let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationEvent");
     //     let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-    //         if (company) return obj[301718200] === eventName && obj[301566300] === company && obj[450000420] === lob;
-    //         else return obj[301718200] === eventName && obj[450000420] === lob;
+    //         if (company) return obj[301718200] === eventName && obj[301566300] === company;
+    //         else return obj[301718200] === eventName;
     //     });
     //     return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
     // }
+
+    async getNotificationEventGuid(eventName: string, lob: string, company?: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.notification-lib:NotificationEvent");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            if (company) return obj[301718200] === eventName && obj[301566300] === company && obj[450000420] === lob;
+            else return obj[301718200] === eventName && obj[450000420] === lob;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+    }
 
     async getSignatureId(guid: string): Promise<string> {
         let dataPageUri = "api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.approval.application.datapage.SignatureDetailDataPageQuery&pageSize=-1&startIndex=0&status=Pending&requestGUID="
@@ -100,7 +99,7 @@ class ApiCoreUtil {
             if (company) return obj[304412071] === emailTemplateName && obj[301566300] === company;
             else return obj[304412071] === emailTemplateName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getEmailHTMLBody(emailSubject: string, sentTo: string): Promise<string> {
@@ -116,7 +115,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[8] === dynamicFieldName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getDynamicGroupGuid(dynamicFieldName: string): Promise<string> {
@@ -124,7 +123,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[8] === dynamicFieldName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getDomainTagGuid(domainTagName: string): Promise<string> {
@@ -132,14 +131,14 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[8] === domainTagName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
     async getLineOfBusinessGuid(lobName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Line of Business");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[450000152] === lobName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
 
@@ -148,7 +147,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1000000010] === orgName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getSupportGroupGuid(supportGroupName: string): Promise<string> {
@@ -156,7 +155,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1000000010] === supportGroupName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getFlowsetGuid(flowsetName: string): Promise<string> {
@@ -164,7 +163,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[450000002] === flowsetName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getLabelGuid(labelValue: string): Promise<string> {
@@ -172,7 +171,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[450000152] === labelValue;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getPersonGuid(personName: string): Promise<string> {
@@ -180,7 +179,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[4] === personName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getPersonFunctionalRoles(personName: string): Promise<string> {
@@ -208,7 +207,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1000000010] === orgName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getDepartmentGuid(depName: string): Promise<string> {
@@ -216,7 +215,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1000000010] === depName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getCategoryGuid(category: string): Promise<string> {
@@ -224,7 +223,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[304405421] === category;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getRegionGuid(region: string): Promise<string> {
@@ -232,7 +231,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[260000001] === region;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getSiteGuid(site: string): Promise<string> {
@@ -240,7 +239,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[260000001] === site;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getStatusChangeReasonGuid(reason: string): Promise<string> {
@@ -248,7 +247,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[302307031] === reason;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getCaseTemplateGuid(caseTemplateId: string): Promise<string> {
@@ -256,7 +255,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1] === caseTemplateId;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getCaseTemplateCompanyGuid(caseTemplateId: string): Promise<string> {
@@ -272,7 +271,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1] === taskTemplateIdOrName || obj[1000001437] === taskTemplateIdOrName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getTaskGuid(summaryName: string): Promise<string> {
@@ -280,7 +279,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[8] == summaryName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getDataSourceGuid(dataSourceName: string): Promise<string> {
@@ -288,7 +287,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[300520600] === dataSourceName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getStatusGuid(applicationBundleId: string, statusValue: string, statusName?: string): Promise<string> {
@@ -296,12 +295,12 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[61001] === applicationBundleId && obj[302259063] == statusValue;
         });
-        if (entityObj.length >= 1) { return entityObj[0]['179']; }
+        if (entityObj.length >= 1) { return entityObj[0]['379']; }
         else {
             let entityObj1: any = allRecords.data.data.filter(function (obj1: string[]) {
                 return obj1[302307031] === statusName && obj1[302259063] == statusValue;
             });
-            return entityObj1.length >= 1 ? entityObj1[0]['179'] || null : null;
+            return entityObj1.length >= 1 ? entityObj1[0]['379'] || null : null;
         }
     }
 
@@ -310,7 +309,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[10051] === caseId;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async associateFoundationElements(associationName: string, entity1: string, entity2: string): Promise<AxiosResponse> {
@@ -360,7 +359,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[450000152] === domainTagGuid;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getServiceTargetGuid(serviceTargetTitle: string): Promise<string> {
@@ -368,7 +367,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[490000400] === serviceTargetTitle;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getDocLibGuid(docLibName: string): Promise<string> {
@@ -376,7 +375,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[302300502] === docLibName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getReadAccessOrAssignmentMappingGuid(recordName: string): Promise<string> {
@@ -384,7 +383,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1000001437] === recordName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async multiFormPostWithAttachment(parameters: object, url?: string): Promise<AxiosResponse> {
@@ -413,7 +412,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[301820705] === knowledgeTemplateTitle;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
     
     async getKnowledgeSetGuid(knowledgeSetTitle: string): Promise<string> {
@@ -421,7 +420,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[301820705] === knowledgeSetTitle;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getCognitiveDataSetGuid(dataSetName: string): Promise<string> {
@@ -429,7 +428,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1731] === dataSetName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async getCognitiveDataSetMappingGuid(dataSetMappingName: string): Promise<string> {
@@ -437,7 +436,7 @@ class ApiCoreUtil {
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[1731] === dataSetMappingName;
         });
-        return entityObj.length >= 1 ? entityObj[0]['179'] || null : null;
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
     async createDocumentForAutoTaskTemplate(jsonBody): Promise<AxiosResponse> {
