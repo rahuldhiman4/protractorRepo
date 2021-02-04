@@ -8,7 +8,7 @@ class ViewKnowledgePage {
         editLinkOnKA: '[rx-view-component-id="ee521675-2407-4b2a-9470-013bfb328b30"] [btn-type="tertiary"]',
         unflagButton: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] button',
         falgButton: '[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"] button',
-        assigneeName: '[rx-view-component-id="5365589a-13ad-41f0-8831-b20175beb761"] .read-only-content',
+        assigneeName: '[rx-view-component-id="5dd97fc5-a7ad-4d6a-8687-c0bb11db88d9"] .read-only-content',
         kAUsefulYesButton: '[rx-view-component-id="9d4c48c9-fbd8-4e91-bc61-0e395f52bbe7"] button',
         kAUsefulNoButton: '[rx-view-component-id="21f93bfd-53e2-4983-9b15-162e7dd12a31"] button',
         percentageValue: '[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
@@ -16,8 +16,9 @@ class ViewKnowledgePage {
         statusChnageBlade: '.modal-content',
         reviewPending: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         KnwoledgeArticleReviewMessage: '[rx-view-component-id="d2dbea0a-503e-47d8-b4ed-b6dcc9dcf555"] span',
-        regionValue: '[rx-view-component-id="d5c6cfef-2d53-48df-a03a-1a3e8381eef5"] .read-only-content',
-        siteValue: '[rx-view-component-id="aa218b2b-4fa3-4525-82f3-3e0f9bfc4193"] .read-only-content',
+        regionValue: '[rx-view-component-id="c46cafd9-8481-4ffc-812d-3f6ba1308e66"] .read-only-content',
+        siteValue: '[rx-view-component-id="b9ea351a-18bf-4048-86f4-a9c5d1307d6b"] .read-only-content',
+        siteGroupValue: '[rx-view-component-id="4380db45-e177-4005-a9a2-b308cdb38706"] .read-only-content',
         siteValueAfterClear: '[rx-view-component-id="ff94cecf-1b32-46c2-a207-cd3e426d52f7"] .read-only-content',
         articleVersion: '[rx-view-component-id="c64b0ab4-1774-4687-a7d2-56a72eeb1c1b"] button',
         articleVersionDropDown: '[rx-view-component-id="c64b0ab4-1774-4687-a7d2-56a72eeb1c1b"] .dropdown-item',
@@ -25,10 +26,10 @@ class ViewKnowledgePage {
         knowledgeCompanyValue: '[rx-view-component-id="a034803f-aa70-4c4e-94ba-d847e4e50d2f"] .read-only-content',
         knowledgeAuthorValue: '[rx-view-component-id="e4e8e3e2-d792-452d-bbfe-4393d7650541"] .read-only-content',
         assigneeGroupValue: '[rx-view-component-id="51f0da81-fea9-4566-9eb0-0c706c60a445"] .read-only-content',
-        categoryTier1Value: '[rx-view-component-id="254ef6b1-74fe-47ae-ab5f-701acbcb1fd5"] .read-only-content',
-        categoryTier2Value: '[rx-view-component-id="7e8a318c-2948-4b54-a8b6-049146bdf6c9"] .read-only-content',
-        categoryTier3Value: '[rx-view-component-id="f2703b24-f357-46f7-83bc-e216f6d33cb0"] .read-only-content',
-        categoryTier4Value: '[rx-view-component-id="863425e3-0e4e-4e83-a05d-86f57f919248"] .read-only-content',
+        categoryTier1Value: '[rx-view-component-id="548abb7f-fba4-45ff-99b1-892b3f2a4259"] .read-only-content',
+        categoryTier2Value: '[rx-view-component-id="500df0db-3051-4dbd-b0d2-047dd3ecad6f"] .read-only-content',
+        categoryTier3Value: '[rx-view-component-id="b37cdfba-76b4-46af-a635-dfbf36a8dec9"] .read-only-content',
+        categoryTier4Value: '[rx-view-component-id="d2be9bd5-28a9-45f0-8d52-b08abf029bbc"] .read-only-content',
         articleLocalValue: '[rx-view-component-id="ff9f0fe2-c714-4c6f-96ea-5c22ef78198d"] .read-only-content',
         articleAttachments: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] .bwf-attachment-container__file-name',
         articlePermissionGroups: '[rx-view-component-id="eeb63a7a-9687-4527-95ca-92af413dcc9d"] .bfw-badge',
@@ -82,6 +83,9 @@ class ViewKnowledgePage {
         return await $(this.selectors.siteValue).getText();
     }
 
+    async getSiteGroupValue(): Promise<string> {
+        return await $(this.selectors.siteGroupValue).getText();
+    }
     async getSiteValueAfterClear(): Promise<string> {
         return await $(this.selectors.siteValueAfterClear).getText();
     }

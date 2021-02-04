@@ -21,8 +21,9 @@ class EditKnowledgePage {
         cancelBtnEditMetadata: '[rx-view-component-id="ac1bd253-5d63-4175-b8a1-56293d1ef4d9"] button',
         knowledgeMetadataSection: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] label',
         saveButtonONKA: '[rx-view-component-id="813f61fe-28db-4d22-bfa5-4055e8a583fc"] button',
-        editRegionGuid: 'd5c6cfef-2d53-48df-a03a-1a3e8381eef5',
-        editSiteGuid: 'aa218b2b-4fa3-4525-82f3-3e0f9bfc4193',
+        editRegionGuid: 'c46cafd9-8481-4ffc-812d-3f6ba1308e66',
+        editSiteGuid: '04ce12b3-98c9-4239-9aa7-35b6fc950178',
+        editSiteGroupGuid:'4380db45-e177-4005-a9a2-b308cdb38706',
         statusChangeDrpDwnGuid: '6f8e4177-cad6-4d59-9467-074b688aa06e',
         knowledgeTitle: '[rx-view-component-id="cd9b041b-6a82-4322-8a07-165a370ad0dd"] input',
         statusChnageBlade: '.dp-wrapper',
@@ -43,11 +44,11 @@ class EditKnowledgePage {
         selectIsExternalGUID: '660f2cd8-9439-4954-9638-0064fbcb0e28',
         keywordValue: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] input',
         attachmentField: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] .d-icon-paperclip',
-        categoryTier1Guid: '254ef6b1-74fe-47ae-ab5f-701acbcb1fd5',
-        categoryTier2Guid: '7e8a318c-2948-4b54-a8b6-049146bdf6c9',
-        categoryTier3Guid: 'f2703b24-f357-46f7-83bc-e216f6d33cb0',
-        regionGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
-        siteGuid: '6c3548bc-bd52-4da6-b365-f546ca7bd744',
+        categoryTier1Guid: '548abb7f-fba4-45ff-99b1-892b3f2a4259',
+        categoryTier2Guid: '500df0db-3051-4dbd-b0d2-047dd3ecad6f',
+        categoryTier3Guid: 'b37cdfba-76b4-46af-a635-dfbf36a8dec9',
+        regionGuid: 'c46cafd9-8481-4ffc-812d-3f6ba1308e66',
+        siteGuid: '04ce12b3-98c9-4239-9aa7-35b6fc950178',
         uploadAttachmentField: '[rx-view-component-id="1f42f6d7-99cc-4c07-9249-94172d98d526"] input[type="file"]',
         closedTip: '.bwf-attachment-container__remove .d-icon-cross',
         closedStatusChangeGuid: 'b71875a3-b23a-4fc4-8f0f-0e29f2e6eb74',
@@ -132,6 +133,9 @@ class EditKnowledgePage {
 
     async selectSiteDropDownOption(fieldOption: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.editSiteGuid, fieldOption);
+    }
+    async selectSiteGroupDropDownOption(fieldOption: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.editSiteGroupGuid, fieldOption);
     }
 
     async updateRegionDropDownOption(guid: string, fieldOption: string): Promise<void> {
