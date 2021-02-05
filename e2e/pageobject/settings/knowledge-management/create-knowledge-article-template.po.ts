@@ -5,8 +5,8 @@ class CreateKATemplate {
 
     selectors = {
         templateName: 'input[autofocus]',
-        disabledEnabledCheck: 'input[type="checkbox"]',
-        addsection: 'button[btn-type="tertiary"] span',
+        disabledEnabledCheck: 'div.template-attributes div:nth-of-type(2) [type="checkbox"]',
+        addsection: 'div.editor-button-group .btn-link',
         sectionTitle: 'div.card-block input',
         templateDescription: 'textarea.ng-star-inserted',
         saveButton: 'button.btn-primary',

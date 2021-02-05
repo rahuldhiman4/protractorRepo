@@ -39,9 +39,9 @@ describe('Knowledge Article', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.setDefaultNotificationForUser("Peter", "Alert");
-        await foundationData('Petramco');
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.setDefaultNotificationForUser("Peter", "Alert");
+        //await foundationData('Petramco');
     });
 
     afterAll(async () => {
@@ -343,6 +343,7 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         await navigationPage.signOut();
         await loginPage.login('peter');
         await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -403,7 +404,7 @@ describe('Knowledge Article', () => {
             for (let i: number = 0; i < fileName.length; i++) {
                 await editKnowledgePage.removeAttachment();
             }
-            await editKnowledgePage.setCategoryTier1('Total Rewards');
+            await editKnowledgePage.setCategoryTier1('Employee Relations');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getAttachmentCountFromKA()).toBe(0);
@@ -422,6 +423,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.removeAttachment();
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeFalsy();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -740,7 +742,7 @@ describe('Knowledge Article', () => {
             await resources.clickOnAdvancedSearchOptions();
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
             await resources.enterAdvancedSearchText(articleData2.title);
-            await utilityCommon.selectDropDown('ArticleStatus', 'Published', DropDownType.Label);
+            await utilityCommon.selectDropDown('Status', 'Published', DropDownType.Label);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData2.title)).toEqual(articleData2.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
@@ -774,6 +776,7 @@ describe('Knowledge Article', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
