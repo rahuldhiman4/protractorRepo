@@ -28,7 +28,7 @@ export let CASE_READ_ACCESS = {
         },
         "450000420": {
             "id": 450000420,
-            "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "value": "HumanResource"
         },
     }
 }

@@ -28,7 +28,7 @@ export const KNOWLEDGE_ARTICLE_PAYLOAD = {
         },
         "450000411": {
             "id": 450000411,
-            "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+            "value": "HumanResource",
           },
         "200000007": {
         "id": 200000007,

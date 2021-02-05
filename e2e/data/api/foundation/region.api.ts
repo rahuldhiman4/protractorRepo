@@ -8,7 +8,7 @@ export const REGION = {
       },
       "304417331": {
         "id": 304417331,
-        "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "value": "HumanResource"
       }
     }
   };
@@ -27,7 +27,7 @@ export const REGION = {
       },
       "304417331": {
         "id": 304417331,
-        "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "value": "HumanResource"
       }
     }
   };

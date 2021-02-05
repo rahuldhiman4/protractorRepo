@@ -29,7 +29,7 @@ export const MENU_ITEM = {
         "450000420":{
             "resourceType":"com.bmc.arsys.rx.services.record.domain.FieldInstance",
             "id":450000420,
-            "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+            "value":"HumanResource",
             "permissionType":"CHANGE"
          },
         "1000000001": {

@@ -9,7 +9,7 @@
       "Module": "Cases",
       "TemplateName": "newtemplate",
       "EmailMessageSubject": "Leave summary",
-      "Line of Business":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+      "Line of Business":"HumanResource",
       "Category": 10,
       "Locale": "en_US",
       "Status": 1,
@@ -39,7 +39,7 @@
       "Application ID": "com.bmc.dsm.case-lib",
       "Source Definition Name": "com.bmc.dsm.case-lib:Case",
       "EmailMessageBody": "<p>HiTeam ,</p><p>&nbsp;</p><p>I am taking leave today.</p><p>&nbsp;</p><p>Thanks.</p>",
-      "Line of Business":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      "Line of Business":"HumanResource"
     }
   }
 }
