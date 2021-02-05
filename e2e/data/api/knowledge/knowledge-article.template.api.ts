@@ -10,10 +10,9 @@ export const KNOWLEDGEARTICLE_TEMPLATE = {
   "knowledgeSet": "HR",
   "status": 0,
   "company": "Petramco",
-  "knowledgeSetId": "AGGAA5V0GENSZAOO2WVBON6X9XU16V"
-  //#LOB Comments
-  // "lobId": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
-  // "global": false
+  "knowledgeSetId": "AGGAA5V0GENSZAOO2WVBON6X9XU16V",
+  "lobId": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+  "global": false
 }
 
 export const KNOWLEDGEARTICLE_HELPFULCOUNTER = {

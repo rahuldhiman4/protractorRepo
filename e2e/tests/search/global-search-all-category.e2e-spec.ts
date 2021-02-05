@@ -559,9 +559,8 @@ describe('Global Search All Category', () => {
         let taskTemplateName = 'taskTemplateDRDMV16881' + randomStr;
         let knowledgeTitle = 'knowledgeTitleDRDMV16881' + randomStr;
         let documentName = 'documentNameDRDMV16881' + randomStr;
-        let firstName = 'firstNameDRDMV16881' + randomStr;
-        let lastName = 'lastNameDRDMV16881' + randomStr;
-        let loginId = 'loginIdDRDMV16881' + randomStr;
+        let firstName = ' Qadim';
+        let lastName = 'Katawazi';
         let caseDisplayId;
         let taskDisplayId;
         let caseTemplateDisplayId;
@@ -608,9 +607,6 @@ describe('Global Search All Category', () => {
 
             // Create Document Library
             await createPublishDocumentLibrary(documentName, attachmentFilePath);
-            // Create New User
-            await apiHelper.apiLogin('tadmin');
-            await createNewUser(firstName, lastName, loginId, 'DRDMV16881@petramco.com', 'Petramco');
         });
 
         it('[4147]: Verify Recent With Case Summary And Descripiton And Check Is Duplicates Case Summary', async () => {
@@ -720,7 +716,6 @@ describe('Global Search All Category', () => {
             await searchPo.searchRecord(firstName);
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
-
         });
     });
 });

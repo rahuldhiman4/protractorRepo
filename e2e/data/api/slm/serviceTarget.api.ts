@@ -42,11 +42,10 @@ export const SERVICE_TARGET_PAYLOAD = {
       "id": 304412961,
       "value": "Phylum"
     },
-    //#LOB Comments
-    // "450000420": {
-    //   "id": 450000420,
-    //   "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
-    // },
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+    },
     "490000400": {
       "id": 490000400,
       "value": "SVT In Progress to Resolved"
@@ -146,11 +145,10 @@ export const SERVICE_TARGET_GROUP = {
       "id": 300523400,
       "value": "AGGAA5V0GFCOUAOO0SG2ON4TGYA8N5"
     },
-    //#LOB Comments
-    // "450000420": {​​​​
-    //   "id": 450000420,
-    //   "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
-    // }​​​​,
+    "450000420": {​​​​
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+    }​​​​,
     "1000000001": {
       "id": 1000000001,
       "value": "Petramco"
@@ -240,10 +238,9 @@ export const SERVICE_TARGET_GOALTYPE_PAYLOAD = {
       "id": 301263100,
       "value": "testgoal",
     },
-    //#LOB Comments
-    // "450000420": {
-    //   "id": 450000420,
-    //   "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
-    // }
+    "450000420": {
+      "id": 450000420,
+      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    }
   }
 };

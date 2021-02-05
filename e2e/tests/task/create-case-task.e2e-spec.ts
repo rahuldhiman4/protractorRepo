@@ -1733,4 +1733,224 @@ describe('Create Case Task', () => {
             await loginPage.login('qkatawazi');
         });
     });
+
+    describe('[12124]:[BOT] The domain tag is not getting populated in the task added via Task Template from the case', async () => {
+        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseId, casetemplatePetramco, casetemplateWithoutAssignement, templateData, externaltemplateData, automatedtemplateData;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            casetemplatePetramco = {
+                "templateName": randomStr + 'caseTemplateName',
+                "templateSummary": randomStr + 'caseTemplateName',
+                "templateStatus": "Active",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "casePriority": "Low",
+                "caseStatus": "New",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            casetemplateWithoutAssignement = {
+                "templateName": randomStr + 'WithoutAssignment',
+                "templateSummary": randomStr + 'WithoutAssignment',
+                "templateStatus": "Active",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
+                "casePriority": "Low",
+                "caseStatus": "New",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
+            await apiHelper.createCaseTemplate(casetemplateWithoutAssignement);
+            templateData = {
+                "templateName": randomStr + 'Manual task19011',
+                "templateSummary": randomStr + 'Manual task19011',
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+            }
+            let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
+            externaltemplateData = {
+                "templateName": randomStr + 'External task19011',
+                "templateSummary": randomStr + 'External task19011',
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+            }
+            let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externaltemplateData);
+            automatedtemplateData = {
+                "templateName": randomStr + 'Automated task19011',
+                "templateSummary": randomStr + 'Automated task19011',
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": 'Auto Proces' + randomStr,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+            }
+            let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
+            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.disassociateDomainTagFromBU("HR Support", "Human Resource");
+        });
+        it('[12124]:[BOT] The domain tag is not getting populated in the task added via Task Template from the case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('qtao');
+            await createCasePage.setSummary('DRDMV1579Summary' + randomStr);
+            expect(await createCasePage.getAssigneeGroupValue()).toBe("");
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe("");
+            await createCasePage.clickChangeAssignmentButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "United States Support")).toBeTruthy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await createCasePage.clickChangeAssignmentButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "HR Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await createCasePage.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('qtao');
+            await createCasePage.setSummary('DRDMV1579Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(casetemplateWithoutAssignement.templateName);
+            expect(await createCasePage.getAssigneeGroupValue()).toBe("");
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe("");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+        });
+        it('[12124]:[BOT] The domain tag is not getting populated in the task added via Task Template from the case', async () => {    
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.getAssignedGroupText()).toBe("");
+            expect(await adhoctaskTemplate.getSupportOrgText()).toBe("");
+            await adhoctaskTemplate.setSummary("Summary" + randomStr);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.clickChangeAssignmentButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "United States Support")).toBeTruthy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await createCasePage.clickChangeAssignmentButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "HR Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTask.clickCloseButton();
+        });
+        it('[12124]:[BOT] The domain tag is not getting populated in the task added via Task Template from the case', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('qtao');
+            await createCasePage.setSummary('DRDMV1579Summary' + randomStr);
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);
+            expect(await createCasePage.getAssigneeGroupValue()).toBe("US Support 1");
+            expect(await createCasePage.getAssigneeBusinessUnitValue()).toBe("United States Support");
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            caseId = await viewCasePage.getCaseID();
+            //Adhoc task validation
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.getAssignedGroupText()).toBe("US Support 1");
+            expect(await adhoctaskTemplate.getSupportOrgText()).toBe("United States Support");
+            await adhoctaskTemplate.setSummary("Summary" + randomStr);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.clickAssignToMeButton();
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTask.clickCloseButton();
+        });
+        it('[12124]:[BOT] The domain tag is not getting populated in the task added via Task Template from the case', async () => {
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "United States Support")).toBeTruthy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "HR Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.setDropDownValue("SupportOrg",'United States Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('AssignedGroup', "US Support 1")).toBeTruthy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnChangeAssignementButton();
+            await changeAssignmentBladePo.setDropDownValue("SupportOrg",'United States Support');
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('AssignedGroup', "HR Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnCancelButton();
+        });
+        it('[12124]:[BOT] The domain tag is not getting populated in the task added via Task Template from the case', async () => {    
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(externaltemplateData.templateName);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "United States Support")).toBeTruthy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "HR Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnCancelButton();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(automatedtemplateData.templateName);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "United States Support")).toBeTruthy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "HR Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnCancelButton();
+        });
+        it('[12124]:[BOT] The domain tag is not getting populated in the task added via Task Template from the case', async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.disassociateDomainTagFromBU("United States Support", "Human Resource");
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "United States Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnCancelButton();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(externaltemplateData.templateName);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "United States Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnCancelButton();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(automatedtemplateData.templateName);
+            await viewTask.clickOnEditTask();
+            await editTask.clickOnChangeAssignementButton();
+            expect(await changeAssignmentBladePo.isValuePresentInDropDown('SupportOrg', "United States Support")).toBeFalsy();
+            await changeAssignmentBladePo.clickOnCancelButton();
+            await editTask.clickOnCancelButton();
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePage.searchAndOpenCase(caseId);
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.getAssignedGroupText()).toBe("US Support 1");
+            expect(await adhoctaskTemplate.getSupportOrgText()).toBe("United States Support");
+            await adhoctaskTemplate.clickCancelAdhoctask()
+            await manageTask.clickCloseButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        afterAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.associateDomainTagFromBU("HR Support", "Human Resource");
+            await apiHelper.associateDomainTagFromBU("United States Support", "Human Resource");
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
+    });
 });

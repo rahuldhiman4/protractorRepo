@@ -56,6 +56,7 @@ import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
 import { RELATIONSHIPS } from '../data/api/shared-services/relationship.api';
 import { UpdateLOB, CreateLOB } from '../data/api/foundation/lob.api';
 import { REGION, REGION_TIER } from '../data/api/foundation/region.api';
+import { CREATE_BUSINESS_UNIT,UPDATE_BUSINESS_UNIT } from '../data/api/foundation/business.unit.api';
 
 let fs = require('fs');
 
@@ -122,31 +123,30 @@ class ApiHelper {
         };
     }
 
-    async updateNotificationEventStatus(eventName: string, status: string, company?: string): Promise<boolean> {
-        let notificationEventGuid;
-        if (company)
-            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, company);
-        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName);
-        let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
-        updateStatusPayload.id = notificationEventGuid;
-        updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
-        let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
-        return updateEventStatus.status == 204;
-    }
-
-    //#LOB Comments
-    // async updateNotificationEventStatus(eventName: string, lob: string, status: string, company?: string): Promise<boolean> {
+    // async updateNotificationEventStatus(eventName: string, status: string, company?: string): Promise<boolean> {
     //     let notificationEventGuid;
-    //     let lobGuid: string = constants.LOB[lob];
     //     if (company)
-    //         notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid, company);
-    //     else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid);
+    //         notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, company);
+    //     else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName);
     //     let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
     //     updateStatusPayload.id = notificationEventGuid;
     //     updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
     //     let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
     //     return updateEventStatus.status == 204;
     // }
+
+    async updateNotificationEventStatus(eventName: string, lob: string, status: string, company?: string): Promise<boolean> {
+        let notificationEventGuid;
+        let lobGuid: string = constants.LOB[lob];
+        if (company)
+            notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid, company);
+        else notificationEventGuid = await apiCoreUtil.getNotificationEventGuid(eventName, lobGuid);
+        let updateStatusPayload = cloneDeep(NOTIFICATIONS_EVENT_STATUS_CHANGE);
+        updateStatusPayload.id = notificationEventGuid;
+        updateStatusPayload.fieldInstances[7].value = constants.NotificationEventStatus[status];
+        let updateEventStatus = await apiCoreUtil.updateRecordInstance('com.bmc.dsm.notification-lib%3ANotificationEvent', notificationEventGuid, updateStatusPayload);
+        return updateEventStatus.status == 204;
+    }
 
     async createDomainTag(data: IDomainTag): Promise<string> {
         let domainTagGuid = await apiCoreUtil.getDomainTagGuid(data.domainTagName);
@@ -235,8 +235,7 @@ class ApiHelper {
         let mailBoxConfig = cloneDeep(MAILBOX_CONFIG);
         if (emailConfigData) {
             mailBoxConfig.fieldInstances[450000155].value = emailConfigData.email;
-            //#LOB Comments
-            //mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
+            mailBoxConfig.fieldInstances[450000420].value = emailConfigData.lineOfBusiness ? await constants.LOB[emailConfigData.lineOfBusiness] : mailBoxConfig.fieldInstances[450000420].value;
             mailBoxConfig.fieldInstances[1000000001].value = emailConfigData.company ? emailConfigData.company : mailBoxConfig.fieldInstances[1000000001].value;
             mailBoxConfig.fieldInstances[8].value = emailConfigData.description ? emailConfigData.description : mailBoxConfig.fieldInstances[8].value;
             mailBoxConfig.fieldInstances[450000152].value = emailConfigData.incomingMailBoxName ? emailConfigData.incomingMailBoxName : mailBoxConfig.fieldInstances[450000152].value;
@@ -397,8 +396,7 @@ class ApiHelper {
         //templateData.fieldInstances[1000000065].value = data.categoryTier3 ? await apiCoreUtil.getCategoryGuid(data.categoryTier3) : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[1000000065].value = data.categoryTier3 ? data.categoryTier3 : templateData.fieldInstances[1000000065].value;
         templateData.fieldInstances[450000061].value = data.description ? data.description : templateData.fieldInstances[450000061].value;
-        //#LOB Comments
-        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.caseStatus) {
             let statusValue = constants.CaseStatus[data.caseStatus];
             let caseTemplateStatus = {
@@ -606,8 +604,7 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? data.taskCompany : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? data.ownerBusinessUnit : templateData.fieldInstances[450000401].value;
-        //#LOB Comments
-        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
             let templateDataAssignee = {
@@ -720,8 +717,7 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? data.taskCompany : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? data.ownerBusinessUnit : templateData.fieldInstances[450000401].value;
-        //#LOB Comments
-        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.assignee) {
             let assignee = await apiCoreUtil.getPersonGuid(data.assignee);
             let templateDataAssignee = {
@@ -813,8 +809,7 @@ class ApiHelper {
         templateData.fieldInstances[1000000001].value = data.taskCompany ? data.taskCompany : templateData.fieldInstances[1000000001].value;
         templateData.fieldInstances[300287900].value = data.ownerGroup ? data.ownerGroup : templateData.fieldInstances[300287900].value;
         templateData.fieldInstances[450000401].value = data.ownerBusinessUnit ? data.ownerBusinessUnit : templateData.fieldInstances[450000401].value;
-        //#LOB Comments
-        //templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
+        templateData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.fieldInstances[450000420].value;
         if (data.priority) {
             let priority = constants.CasePriority[data.priority];
             let taskTemplateDataPriority = {
@@ -888,7 +883,7 @@ class ApiHelper {
     async createBusinessUnit(data: IBusinessUnit): Promise<string> {
         let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(data.orgName);
         if (businessUnitGuid == null) {
-            let businessUnitDataFile = await require('../data/api/foundation/business.unit.api.json');
+            let businessUnitDataFile = cloneDeep(CREATE_BUSINESS_UNIT);
             let businessData = await businessUnitDataFile.NewBusinessUnit;
             businessData.fieldInstances[1000000010].value = data.orgName;
             businessData.fieldInstances[304411161].value = data.relatedOrgId ? data.relatedOrgId : businessData.fieldInstances[304411161].value;
@@ -1272,8 +1267,7 @@ class ApiHelper {
         let templateData = await emailTemplateFile.EmailTemplateData;
         templateData.processInputValues["Company"] = data.Company;
         templateData.processInputValues["TemplateName"] = data.TemplateName;
-        //#LOB Comments
-        //templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
+        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         templateData.processInputValues["Status"] = data.Status;
         templateData.processInputValues["Description"] = data.Description;
         templateData.processInputValues["EmailMessageSubject"] = data.EmailMessageSubject;
@@ -1300,8 +1294,7 @@ class ApiHelper {
         templateData.processInputValues["EmailMessageBody"] = data.EmailMessageBody;
         templateData.processInputValues["Module"] = "Cases";
         templateData.processInputValues["Source Definition Name"] = "com.bmc.dsm.case-lib:Case";
-        //#LOB Comments
-        //templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
+        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         const emailTemplateResponse = await axios.post(
             commandUri,
             templateData
@@ -1318,8 +1311,7 @@ class ApiHelper {
         templateData.processInputValues["Status"] = data.templateStatus;
         templateData.processInputValues["MessageBody"] = data.body;
         templateData.processInputValues["Label"] = data.label ? await apiCoreUtil.getLabelGuid(data.label) : templateData.processInputValues["Label"];
-        //#LOB Comments
-        //templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
+        templateData.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : templateData.processInputValues["Line of Business"];
         switch (module) {
             case "Case": {
                 templateData.processInputValues["Module"] = "Cases";
@@ -1371,7 +1363,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
             knowledgeArticleData.fieldInstances[200000007].value = data.siteGroup;
-            // knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
+            knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
             if (data.assignedCompany) {
                 let assignedCompanyData = {
                     "id": 450000157,
@@ -1458,7 +1450,7 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
-            // knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
+            knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
             knowledgeArticleData.fieldInstances[200000007].value = data.siteGroup;
 
             if (data.assignedCompany) {
@@ -1605,8 +1597,7 @@ class ApiHelper {
         flowsetData.fieldInstances[450000002].value = data.flowsetName;
         flowsetData.fieldInstances[8].value = data.description;
         flowsetData.fieldInstances[7].value = data.flowsetStatus;
-        //#LOB Comments
-        //flowsetData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : flowsetData.fieldInstances[450000420].value;
+        flowsetData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : flowsetData.fieldInstances[450000420].value;
         const flowset = await apiCoreUtil.createRecordInstance(flowsetData);
         const flowsetDetails = await axios.get(
             flowset.headers.location
@@ -1636,8 +1627,7 @@ class ApiHelper {
         menuItemData.fieldInstances[450000152].value = data.menuItemName;
         menuItemData.fieldInstances[7].value = constants.MenuItemStatus[data.menuItemStatus];
         menuItemData.fieldInstances[450000154].value = randomStr;
-        //#LOB Comments
-        //menuItemData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : menuItemData.fieldInstances[450000420].value;
+        menuItemData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : menuItemData.fieldInstances[450000420].value;
         if (data.uiVisible) {
             let valueOfVisiable = data.uiVisible;
             let uiVisiablePayload = {
@@ -1770,8 +1760,7 @@ class ApiHelper {
         newProcessConfig.fieldInstances[7]["value"] = data.status ? constants.ProcessLibConf[data.status] : newProcessConfig.fieldInstances[7].value;
         newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
         newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? data.company : newProcessConfig.fieldInstances[1000000001].value;
-        //#LOB Comments
-        //newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
+        newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
         
         let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
 
@@ -1910,8 +1899,7 @@ class ApiHelper {
         documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? docLibDetails.category2: documentLibRecordInstanceJson.fieldInstances[1000000064].value;
         documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? docLibDetails.category3: documentLibRecordInstanceJson.fieldInstances[1000000065].value;
         documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? docLibDetails.category4: documentLibRecordInstanceJson.fieldInstances[450000167].value;
-        //#LOBChanges
-        // documentLibRecordInstanceJson.fieldInstances[450000411].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000411].value;
+        documentLibRecordInstanceJson.fieldInstances[450000411].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000411].value;
         let data = {
             recordInstance: documentLibRecordInstanceJson,
             1000000351: filePath
@@ -1971,8 +1959,7 @@ class ApiHelper {
         knowledgeSetData.fieldInstances[8].value = knowledgeSetDetails.knowledgeSetDesc;
         knowledgeSetData.fieldInstances[301820700].value = knowledgeSetDetails.knowledgeSetTitle;
         knowledgeSetData.fieldInstances[1000000001].value = knowledgeSetDetails.company
-        //#LOB Comments
-        // knowledgeSetData.fieldInstances[450000420].value = knowledgeSetDetails.lineOfBusiness ? await constants.LOB[knowledgeSetDetails.lineOfBusiness] : knowledgeSetData.fieldInstances[450000420].value;
+        knowledgeSetData.fieldInstances[450000420].value = knowledgeSetDetails.lineOfBusiness ? await constants.LOB[knowledgeSetDetails.lineOfBusiness] : knowledgeSetData.fieldInstances[450000420].value;
 
         let recordInstanceKSetAssociationJson = cloneDeep(KNOWLEDEGESET_ASSOCIATION);
         let data = {
@@ -1999,7 +1986,7 @@ class ApiHelper {
         knowledgeSetTemplateData.knowledgeSet = data.knowledgeSetTitle ? data.knowledgeSetTitle : knowledgeSetTemplateData.templateDescription;
         knowledgeSetTemplateData.status = data.status ? await constants.ArticleTemplateStatus[data.status] : knowledgeSetTemplateData.status;
         knowledgeSetTemplateData.knowledgeSetId = await apiCoreUtil.getKnowledgeSetGuid(data.knowledgeSetTitle);
-        // knowledgeSetTemplateData.lobId = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeSetTemplateData.lobId;
+        knowledgeSetTemplateData.lobId = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeSetTemplateData.lobId;
         const articleTemplateResponse = await axios.post(
             articleTemplateUri,
             knowledgeSetTemplateData
@@ -2128,8 +2115,7 @@ class ApiHelper {
         serviceTargetPayload.fieldInstances[490000400].value = svtData.svtName;
         serviceTargetPayload.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtData.dataSource);
         serviceTargetPayload.fieldInstances[304412961].value = svtData.company;
-        //#LOB Comments
-        //serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
+        serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
         let slmResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(serviceTargetPayload);
         console.log('Create Service Target API Status =============>', slmResponse.status);
         const slmDetails = await axios.get(
@@ -2152,7 +2138,6 @@ class ApiHelper {
         adhocTaskPayload.fieldInstances[450000381].value = taskData.businessUnit;
         adhocTaskPayload.fieldInstances[1000000217].value = taskData.supportGroup;
         taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
-        //#LOB Comments
         adhocTaskPayload.fieldInstances[450000411].value = taskData.lineOfBusiness ? await constants.LOB[taskData.lineOfBusiness] : adhocTaskPayload.fieldInstances[450000411].value;
         if (taskData.description) {
             let taskDescription = {
@@ -2582,8 +2567,7 @@ class ApiHelper {
         caseReadAccess.fieldInstances[450000153].value = data.assignedCompany;
         caseReadAccess.fieldInstances[1000001437].value = data.configName;
         caseReadAccess.fieldInstances[1000000001].value = data.company;
-        //#LOB Comments
-        //caseReadAccess.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : caseReadAccess.fieldInstances[450000420].value;
+        caseReadAccess.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : caseReadAccess.fieldInstances[450000420].value;
         if (data.category1) {
             // let categoryTier1 = await apiCoreUtil.getCategoryGuid(data.category1);
             let category1Data = {
@@ -2703,8 +2687,7 @@ class ApiHelper {
         svtGroup.fieldInstances[8].value = svtGroupData.svtGroupName;
         svtGroup.fieldInstances[300523400].value = await apiCoreUtil.getDataSourceGuid(svtGroupData.dataSource);
         svtGroup.fieldInstances[1000000001].value = svtGroupData.company ? svtGroupData.company : svtGroup.fieldInstances[1000000001].value;
-        //#LOB Comments
-        //svtGroup.fieldInstances[450000420].value = svtGroupData.lineOfBusiness ? await constants.LOB[svtGroupData.lineOfBusiness] : svtGroup.fieldInstances[450000420].value;
+        svtGroup.fieldInstances[450000420].value = svtGroupData.lineOfBusiness ? await constants.LOB[svtGroupData.lineOfBusiness] : svtGroup.fieldInstances[450000420].value;
         let svtGroupCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(svtGroup);
         console.log('Create SVT Group Status =============>', svtGroupCreateResponse.status);
         return svtGroupCreateResponse.status == 201;
@@ -2715,8 +2698,7 @@ class ApiHelper {
         DOCUMENT_TEMPLATE.processInputValues["Template Name"] = data.templateName;
         DOCUMENT_TEMPLATE.processInputValues.Description = data.description;
         DOCUMENT_TEMPLATE.processInputValues["Document Message Body"] = data.messageBody;
-        //#LOBChanges
-        // DOCUMENT_TEMPLATE.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : DOCUMENT_TEMPLATE.processInputValues["Line of Business"];
+        DOCUMENT_TEMPLATE.processInputValues["Line of Business"] = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : DOCUMENT_TEMPLATE.processInputValues["Line of Business"];
         let response = await axios.post(
             commandUri,
             DOCUMENT_TEMPLATE
@@ -2840,8 +2822,7 @@ class ApiHelper {
         notificationEventPayload.fieldInstances[301718200].value = data.eventName;
         notificationEventPayload.fieldInstances[7].value = data.status ? data.status : notificationEventPayload.fieldInstances[7].value;
         notificationEventPayload.fieldInstances[8].value = data.eventDescription ? data.eventDescription : notificationEventPayload.fieldInstances[8].value;
-        //#LOB Changes
-        // notificationEventPayload.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : notificationEventPayload.fieldInstances[450000420].value;
+        notificationEventPayload.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : notificationEventPayload.fieldInstances[450000420].value;
         let notificationEventCreateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(notificationEventPayload);
         console.log('Create Notification event Status =============>', notificationEventCreateResponse.status);
         const notificationEvent = await axios.get(
@@ -2859,14 +2840,12 @@ class ApiHelper {
         notificationTemplatePayload.fieldInstances[8].value = data.description;
         notificationTemplatePayload.fieldInstances[301233800].value = data.module;
         if (data.lineOfBusiness)
-            notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName);
-        //#LOB Changes
-            // notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName, await constants.LOB[data.lineOfBusiness]);
+            notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName, await constants.LOB[data.lineOfBusiness]);
         else
             notificationTemplatePayload.fieldInstances[301718200].value = await apiCoreUtil.getNotificationEventGuid(data.eventName, await constants.LOB['Human Resource']);
         notificationTemplatePayload.fieldInstances[304412071].value = data.templateName;
         notificationTemplatePayload.fieldInstances[450000153].value = data.company ? data.company : notificationTemplatePayload.fieldInstances[450000153].value;
-        // notificationTemplatePayload.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : notificationTemplatePayload.fieldInstances[450000420].value;
+        notificationTemplatePayload.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : notificationTemplatePayload.fieldInstances[450000420].value;
         let notificationTemplateResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(notificationTemplatePayload);
         console.log('Create Notification Template Status =============>', notificationTemplateResponse.status);
         const notificationTemplate = await axios.get(
@@ -3276,8 +3255,7 @@ class ApiHelper {
         let serviceTargetPayload = cloneDeep(SERVICE_TARGET_GOALTYPE_PAYLOAD);
         serviceTargetPayload.fieldInstances[301263100].value = svtData.svtGoalTypeName;
         serviceTargetPayload.fieldInstances[300473700].value = svtData.status;
-        //#LOB Comments
-        //serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
+        serviceTargetPayload.fieldInstances[450000420].value = svtData.lineOfBusiness ? await constants.LOB[svtData.lineOfBusiness] : serviceTargetPayload.fieldInstances[450000420].value;
         let slmResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(serviceTargetPayload);
         console.log('Create Service Target Goal Type API Status =============>', slmResponse.status);
 
@@ -3306,6 +3284,25 @@ class ApiHelper {
         console.log('Create Region Tier API Status =============>', regionTierResponse.status);
         await apiCoreUtil.associateFoundationElements('Region to Site', responseData.id, '723de966290232b2da35cb2d9d0562acfc1b1b93983bf518c2edda8f6eea9ae7246362254728de6b4aebea56dc6acaa5f9ca1d552e3ebb4afc1354ff01c53c4c');
         return regionResponse.status == 201 && regionTierResponse.status == 201;
+    }
+
+    async disassociateDomainTagFromBU(buName:string,domainTagName): Promise<boolean> {
+        let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(buName);
+        let updateBUPayLoad = cloneDeep(UPDATE_BUSINESS_UNIT);
+        console.log(updateBUPayLoad);
+        const updateBU: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.arsys.rx.foundation:Business Unit", businessUnitGuid, updateBUPayLoad)
+        return updateBU.status == 204;
+    }
+
+    async associateDomainTagFromBU(buName:string,domainTagName): Promise<boolean> {
+        let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(buName);
+        let updateBUPayLoad = cloneDeep(UPDATE_BUSINESS_UNIT);
+        let domainTag = await apiCoreUtil.getDomainTagGuid(domainTagName);
+        console.log(domainTag);
+
+        updateBUPayLoad.fieldInstances[304417331].value = domainTag;
+        const updateBU: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.arsys.rx.foundation:Business Unit", businessUnitGuid, updateBUPayLoad)
+        return updateBU.status == 204;
     }
 }
 
