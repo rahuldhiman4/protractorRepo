@@ -7,7 +7,7 @@ export class Utility {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         dropdownBox: '.dropdown-toggle',
-        dropDownInput: 'input.form-control',
+        dropDownInput: '.dropdown_select__search input.form-control',
         dropDownNoneOpt: '.dropdown-item span',
         dropDownOption: '.dropdown-item',
         dialogMessageTitle: '.modal-content .modal-title, .modal-content .d-modal__title',
