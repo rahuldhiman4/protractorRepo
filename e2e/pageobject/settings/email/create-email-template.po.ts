@@ -9,9 +9,9 @@ class CreateEmailTemplate {
         templateGuid: '310bbc87-54ee-4994-9a1e-93b1982155f2',
         companyGuid: 'd240380a-1de2-4b28-9082-81e96fc21415',
         statusGuid: '3cfbfd34-19ff-4ddb-818b-23b19c859dbe',
-        labelGuid: 'a0774e28-42c2-4132-9da4-0063545e791f',
-        descriptionGuid: '0fab6085-678b-442a-851d-25085b0bde8c',
-        description: '[rx-view-component-id="0fab6085-678b-442a-851d-25085b0bde8c"] input',
+        labelGuid: '7e5f9b4c-9c57-4255-b7b9-651b539dbf92',
+        descriptionGuid: '3cf801e-fc2f-4d74-a57b-77e4ebf2bde6',
+        description: '[rx-view-component-id="13cf801e-fc2f-4d74-a57b-77e4ebf2bde6"] input',
         subjectGuid: '9e4a103d-82c3-4e2f-aba8-587ff987c98c',
         subject: '[rx-view-component-id="9e4a103d-82c3-4e2f-aba8-587ff987c98c"] textarea',
         body: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_editable',
@@ -31,8 +31,8 @@ class CreateEmailTemplate {
         fontSize: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_combo__fontsize',
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
-        lineOfBusinessGuid: '14c47289-52da-433a-b297-de2e8a7402a0',
-        lobValue: '[rx-view-component-id="14c47289-52da-433a-b297-de2e8a7402a0"] .pull-left'
+        lineOfBusinessGuid: 'c4638c50-356f-4aa6-8e22-7392e1efd6c9',
+        lobValue: '[rx-view-component-id="c4638c50-356f-4aa6-8e22-7392e1efd6c9"] input'
     }
 
     async setTemplateName(value: string): Promise<void> {
