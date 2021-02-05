@@ -231,7 +231,10 @@ class NavigationPage {
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
-        if($(".is-flip").isPresent()) await $(".a-tree__filter button").click();
+        if($(".is-flip").isPresent()){
+        await $(".adapt-rx-search__input").sendKeys("test");
+         await $(".d-icon-cross_adapt").click();
+        }
         for (let i = 0; i < menuItems.length; i++) {
             let submenuItemLocator = await $$('.a-tree__content');
             if (i < menuItems.length - 1) {
