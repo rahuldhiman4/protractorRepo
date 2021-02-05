@@ -6,7 +6,7 @@ class AttachmentBlade {
     selectors = {
         row: '[rx-view-component-id="adb9ac10-3732-4fd9-8af3-29bec77272b4"] .at-row',
         gridGuid: 'adb9ac10-3732-4fd9-8af3-29bec77272b4',
-        columnnHeader: '.c-header-container .c-header-name',
+        columnnHeader: '.c-header__separator',
         selectCheckbox: '.ui-chkbox-box',
         download: '.bwf-case-attachment__footer-button  .btn-primary',
         close: '.bwf-case-attachment__footer-button  .btn-secondary',
@@ -130,8 +130,8 @@ class AttachmentBlade {
         await $(this.selectors.close).click();
     }
 
-    async getTextOfColumnHeader(columnHeader: string): Promise<string> {
-        return await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).getText();
+    async isColumnHeaderPresent(columnHeader: string): Promise<boolean> {
+        return await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).isDisplayed();
     }
 
     async isDownloadButtonDisplayed(): Promise<boolean> {
@@ -142,7 +142,7 @@ class AttachmentBlade {
         return await $(this.selectors.close).isDisplayed();
     }
 
-    async selectCheckBox(numberCheckbox:number): Promise<void> {
+    async selectCheckBox(numberCheckbox: number): Promise<void> {
         await $$(this.selectors.selectCheckbox).get(numberCheckbox - 1).click();
     }
 }

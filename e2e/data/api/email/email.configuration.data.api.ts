@@ -68,7 +68,6 @@ export const INCOMINGMAIL_DEFAULT = {
     }
 };
 
-
 export const EMAIL_PROFILE = {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "Alias Mapping",
@@ -81,6 +80,10 @@ export const EMAIL_PROFILE = {
             "id": 56150,
             "value": "email"
         },
+        "56151": {
+            "id": 56151,
+            "value": "None"
+        },
         "56152": {
             "id": 56152,
             "value": "None"
@@ -91,10 +94,10 @@ export const EMAIL_PROFILE = {
         },
         "56154": {
             "id": 56154,
-            "value": "",
+            "value": ""
         }
     }
-}
+};
 
 export const EMAIL_OUTGOING = {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
@@ -148,9 +151,9 @@ export const UPDATE_EMAIL_PROFILE_ON_LOB = {
     "id": "AGGADGG8ECDC0AQ8RJF7Q7SVSP0GP7",
     "recordDefinitionName": "com.bmc.dsm.shared-services-lib:Line of Business",
     "fieldInstances": {
-      "450000157": {
-        "id": 450000157,
-        "value": "Email Profile for Outgoing"
-      }
+        "450000157": {
+            "id": 450000157,
+            "value": "Email Profile for Outgoing"
+        }
     }
-  }
+}
