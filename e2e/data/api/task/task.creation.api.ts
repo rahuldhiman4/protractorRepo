@@ -36,7 +36,7 @@ export const ADHOC_TASK_PAYLOAD = {
         },
         "450000411": {
             "id": 450000411,
-            "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "value": "HumanResource"
         },
         "1000000001": {
             "id": 1000000001,

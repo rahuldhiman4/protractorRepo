@@ -11,7 +11,7 @@ export const KNOWLEDGEARTICLE_TEMPLATE = {
   "status": 0,
   "company": "Petramco",
   "knowledgeSetId": "AGGAA5V0GENSZAOO2WVBON6X9XU16V",
-  "lobId": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+  "lobId": "HumanResource",
   "global": false
 }
 

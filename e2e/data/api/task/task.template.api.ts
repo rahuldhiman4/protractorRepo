@@ -24,7 +24,7 @@ export const MANUAL_TASK_TEMPLATE_PAYLOAD = {
     },
     "450000420": {
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      "value": "HumanResource"
     },
     "1000000001": {
       "id": 1000000001,
@@ -75,7 +75,7 @@ export const AUTO_TASK_TEMPLATE_PAYLOAD = {
     },
     "450000420": {
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      "value": "HumanResource"
     },
     "1000000001": {
       "id": 1000000001,
@@ -133,7 +133,7 @@ export const EXTERNAL_TASK_TEMPLATE_PAYLOAD = {
     },
     "450000420": {
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      "value": "HumanResource"
     },
     "1000000001": {
       "id": 1000000001,

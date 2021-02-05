@@ -41,7 +41,7 @@ export const RELATIONSHIPS = {
       "450000420": {
         "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
         "id": 450000420,
-        "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "value": "HumanResource"
       }
     }
   }

@@ -12,7 +12,7 @@ export const NOTIFICATION_TEMPLATE = {
     },
     "450000420": {
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      "value": "HumanResource"
   },
     "301718200": {
       "id": 301718200,
@@ -60,7 +60,7 @@ export const NOTIFICATION_EVENT_ACTIVE = {
     },
     "450000420": {
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      "value": "HumanResource"
     },
     "450000152": {
       "id": 450000152,

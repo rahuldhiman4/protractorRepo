@@ -68,7 +68,7 @@ export const DOC_LIB_DRAFT = {
         },
         "450000411":{
            "id":450000411,
-           "value":"AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+           "value":"HumanResource"
         },
         "302299491": {
             "id": 302299491,
