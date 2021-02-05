@@ -4,7 +4,7 @@ import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpec
 export class Resources {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        dropDownOption: '.dropdown_select__menu-content .dropdown-item *',
+        dropDownOption: 'div[role="listbox"] .dropdown-item',
         advancedSearchInput: 'input.adapt-search-field[type="Search"]',
         advancedSearchSettingsBtn: 'span.d-icon-adjust_settings',
         advancedSearchSettingsBtnClose: 'button.opened-advance-search-option',
@@ -14,7 +14,7 @@ export class Resources {
         advancedSearchButton: 'span.d-icon-search',
         backButton: 'span.d-icon-angle_left',
         knowledgeTitle: '[rx-view-component-id="aacf8477-f930-4983-820d-1b9fa12441c0"] div.bwf-search-fields__title-text',
-        advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select',
+        advancedSearchFields: '[class="row ng-star-inserted"] span',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
         paginationNextButton: '.content-outlet .page-next',
     }

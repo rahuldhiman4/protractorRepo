@@ -52,10 +52,10 @@ export class Utility {
             }
             case DropDownType.Label: {
                 await browser.wait(this.EC.or(async () => {
-                    let count = await $$('.dropdown.dropdown_select').count();
+                    let count = await $$('adapt-rx-select').count();
                     return count >= 1;
                 }), 3000);
-                const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
+                const dropDown: ElementFinder[] = await $$('adapt-rx-select');
                 for (let i: number = 0; i < dropDown.length; i++) {
                     await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
                         if (result) {
@@ -63,7 +63,7 @@ export class Utility {
                             if (dropDownLabelText === dropDownIdentifier) {
                                 await dropDown[i].$('button').click();
                                 await dropDown[i].$('input').sendKeys(dropDownValue);
-                                await element(by.cssContainingText('[role="option"] span', dropDownValue)).click();
+                                await element(by.cssContainingText('[role="option"] div', dropDownValue)).click();
                             }
                         }
                     });
