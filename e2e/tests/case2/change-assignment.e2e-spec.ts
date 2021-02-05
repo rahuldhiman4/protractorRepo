@@ -1,3 +1,5 @@
+import apiHelper from '../../api/api.helper';
+import { MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data.ui';
 import { nth } from 'lodash';
 import { browser } from "protractor";
 import previewCasePo from '../../pageobject/case/case-preview.po';
@@ -11,7 +13,7 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -28,7 +30,7 @@ describe("Change Assignment", () => {
     });
 
     //apurva
-    it('[4000001]:Verify that all the values are sorted for Company, Support Org, SG and Company Dropdown', async () => {
+    it('[12179]:Verify that all the values are sorted for Company, Support Org, SG and Company Dropdown', async () => {
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
@@ -39,7 +41,7 @@ describe("Change Assignment", () => {
     });
 
     //apurva
-    it('[4000002]:Verify the dropdown options contains Full name and hierarchy + Full Name for all the Assignment Field Dropdowns', async () => {
+    it('[12180]:Verify the dropdown options contains Full name and hierarchy + Full Name for all the Assignment Field Dropdowns', async () => {
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
@@ -76,9 +78,9 @@ describe("Change Assignment", () => {
     });
 
     //apurva
-    describe('[4000004]:[Adhoc Task] Verify all the Assignee fields are auto selected on the basis of Case', async () => {
+    describe('[12186]:[Adhoc Task] Verify all the Assignee fields are auto selected on the basis of Case', async () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[4000004]:[Adhoc Task] Verify all the Assignee fields are auto selected on the basis of Case', async () => {
+        it('[12186]:[Adhoc Task] Verify all the Assignee fields are auto selected on the basis of Case', async () => {
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary');
@@ -101,8 +103,12 @@ describe("Change Assignment", () => {
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
             await utilityCommon.closePopUpMessage();
+            await navigationPo.gotoTaskConsole();
+            await utilityGrid.searchRecord("AdHocSummary1" + randVal);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Assigned Group')).toBe("US Support 3", "Assigned Group NOT displayed in Task console");
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Assignee')).toBe("Adam Pavlik", "Assigned Group NOT displayed in Task console");
         });
-        it('[4000004]:[Adhoc Task] Verify all the Assignee fields are auto selected on the basis of Case', async () => {
+        it('[12186]:[Adhoc Task] Verify all the Assignee fields are auto selected on the basis of Case', async () => {
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary');
@@ -120,6 +126,10 @@ describe("Change Assignment", () => {
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
             await utilityCommon.closePopUpMessage();
+            await navigationPo.gotoTaskConsole();
+            await utilityGrid.searchRecord("AdHocSummary2" + randVal);
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Assigned Group')).toBe("Workforce Administration", "Assigned Group NOT displayed in Task console");
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Assignee')).toBe("", "Assigned Group NOT displayed in Task console");
         });
     });
 
@@ -163,6 +173,59 @@ describe("Change Assignment", () => {
             expect(await changeAssignmentPage.isDropDownListSorted("Assignee")).toBeTruthy();
             await editTaskPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+    });
+
+    describe('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
+        it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary('Summary');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('None');
+            await changeAssignmentPage.setDropDownValue("Assignee", 'Adam Pavlik');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+            expect(await changeAssignmentPage.getDropDownValue("SupportOrg")).toBe('United States Support');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
+        });
+        it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
+            await changeAssignmentPage.setDropDownValue('Company', 'None');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+            expect(await changeAssignmentPage.getDropDownValue("SupportOrg")).toBe('United States Support');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+        });
+        it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
+            await changeAssignmentPage.setDropDownValue('Company', 'None');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+            expect(await changeAssignmentPage.getDropDownValue("SupportOrg")).toBe('United States Support');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Adam Pavlik');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+            expect(await changeAssignmentPage.getDropDownValue("SupportOrg")).toBe('United States Support');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 1');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
+        });
+        it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {    
+            await changeAssignmentPage.setDropDownValue('Company', 'None');
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'AU Support 1');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+            expect(await changeAssignmentPage.getDropDownValue("SupportOrg")).toBe('Australia Support');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('AU Support 1');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+            await changeAssignmentPage.setDropDownValue('Company', 'None');
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'Australia Support');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+            expect(await changeAssignmentPage.getDropDownValue("SupportOrg")).toBe('Australia Support');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('AU Support 1');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qadim Katawazi');
         });
     });
 });

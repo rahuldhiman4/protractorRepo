@@ -333,6 +333,14 @@ class CreateAdhocTaskTemplatePage {
     async isDropDownListSorted(dropdown: string): Promise<boolean> {
         return await changeAssignmentBladePo.isDropDownListSorted(dropdown, this.selectors.assignmentGuid);
     }
+
+    async setDropDownValue(dropDownName: string, dropDownValue: string, guid?: string): Promise<void> {
+        return await changeAssignmentBladePo.setDropDownValue(dropDownName,dropDownValue,this.selectors.assignmentGuid);
+    }
+
+    async isValuePresentInDropDown(dropdown: string, dropDownValue: string): Promise<boolean> {
+        return await changeAssignmentBladePo.isValuePresentInDropDown(dropdown,dropDownValue, this.selectors.assignmentGuid);
+    }
 }
 
 export default new CreateAdhocTaskTemplatePage();
