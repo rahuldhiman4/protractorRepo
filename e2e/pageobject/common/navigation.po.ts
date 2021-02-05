@@ -14,7 +14,7 @@ class NavigationPage {
         closeHambergerMenu: 'button.close.close-inverse',
         panelHeadingOfSetting: '.a-tree__no-matches',
         adaptIconTiles: 'button.d-icon-tiles',
-        TileSearchInput: 'input.adapt-search-field',
+        TileSearchInput: 'input.form-control',
         TileSearchResult: 'button.a-dropdown__link',
     }
 

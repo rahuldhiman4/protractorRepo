@@ -9,7 +9,7 @@ export interface IKnowledgeArticleTemplate {
     templateName: string,
     sectionTitle: string,
     templateDescription?: string,
-    // lineOfBusiness?: string,
+    lineOfBusiness?: string,
     status?:string,
     knowledgeSetTitle: string,
 };

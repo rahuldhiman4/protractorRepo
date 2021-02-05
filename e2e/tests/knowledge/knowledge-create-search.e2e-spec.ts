@@ -336,12 +336,10 @@ describe('Knowledge Article', () => {
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
         await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
         await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
         await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-        await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
@@ -351,12 +349,10 @@ describe('Knowledge Article', () => {
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.clickChangeAssignmentButton();
         await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
         await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
         await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Employee Relations');
         await changeAssignmentBladePo.setDropDownValue('Assignee', 'Elizabeth Peters');
-        await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         await utilityCommon.closePopUpMessage();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Elizabeth Peters');
