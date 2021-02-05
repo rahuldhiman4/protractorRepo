@@ -8,8 +8,8 @@ class DynamicField {
         fieldDescription: '.textfield-padding-transition',
         saveButton: 'button[btn-type="primary"]',
         cancelButton: '.modal-footer button[btn-type="secondary"]',
-        fieldValueType: '[aria-haspopup="listbox"]',
-        informationSource: '[aria-haspopup="listbox"]',
+        fieldValueType: '.col-md-6 .dropdown',
+        informationSource: '.col-md-6 .dropdown',
         enabledHiddenField: '[class="ng-untouched ng-valid ng-dirty"] button[aria-label="True"]',
         disabledhiddenField: '[class="ng-untouched ng-valid ng-dirty"] button[aria-label="False"]',
         enabledRequiredField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="True"]',
@@ -27,8 +27,9 @@ class DynamicField {
         searchField: '.bwf-dynamic-field-group .adapt-search-field',
         deleteButton: '.d-icon-right-cross',
         attachmentField: 'input[type="file"]',
-        columnValue: '.left-header-block span.pl-2',
-        dropdownvalue: 'button[role="option"] span',
+        columnValue: '[class="bwf-dynamic-field-simple"] .pl-1',
+        dropdownvalue: '.rx-select__option-content div',
+        globalFieldHeader: '[id="field-list"] span[class="ml-1"]'
     }
 
     async clickOnDynamicField(): Promise<void> {
@@ -119,7 +120,7 @@ class DynamicField {
     }
 
     async removeField(fieldName: string): Promise<void> {
-        await $(`[aria-label=${fieldName}] [class="d-icon-left-cross header-icon"]`).click();
+        await $(this.selectors.deleteButton).click();
     }
 
     async selectFieldValueType(dataType: string): Promise<void> {
@@ -178,8 +179,8 @@ class DynamicField {
     }
 
     async isDynamicFieldPresentInDynamicSection(value: string): Promise<boolean> {
-        return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isPresent().then(async (result) => {
-            if (result) return await $(`.rx-record-grid-column-editor__available-list-inner span[title=${value}]`).isDisplayed();
+        return await element(By.cssContainingText(this.selectors.globalFieldHeader,value)).isPresent().then(async (result) => {
+            if (result) return await element(By.cssContainingText(this.selectors.globalFieldHeader,value)).isDisplayed();
             else return false;
         });
     }
