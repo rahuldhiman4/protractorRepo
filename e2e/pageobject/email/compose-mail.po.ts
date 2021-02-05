@@ -169,14 +169,7 @@ class ComposeMail {
     }
 
     async setEmailBody(value: string): Promise<void> {
-        await browser.waitForAngularEnabled(false);
-        await browser.sleep(6000); // Wait For Switch To Frame
-        await browser.switchTo().frame(await element(by.css('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame')).getWebElement());
-        await $(this.selectors.emailBody).sendKeys(Key.chord(Key.CONTROL, Key.END));
-        await $(this.selectors.emailBody).sendKeys(Key.ENTER);
-        await $(this.selectors.emailBody).sendKeys(value);
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
+        await ckeditorOpsPo.setCKEditor(value, "c13d2848-2fe9-4e6d-adc0-79bb13e1f965");
     }
 
     async isTextPresentInEmailBody(textvalue: string): Promise<boolean> {
@@ -233,6 +226,7 @@ class ComposeMail {
     }
 
     async setToOrCCInputTextbox(value: String, emailIdForToOrCc: string): Promise<void> {
+        await browser.sleep(1000); //required to poulate to and cc
         if (value == 'To') {
             await $$(this.selectors.toCcInput).get(0).clear();
             await $$(this.selectors.toCcInput).get(0).sendKeys(emailIdForToOrCc);
