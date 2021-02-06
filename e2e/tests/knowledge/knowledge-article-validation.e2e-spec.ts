@@ -22,7 +22,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constan
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Knowledge Article', () => {
+describe('Knowledge Article Validation', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let knowledgeCandidateUser = 'kayo';
     let knowledgeContributorUser = 'kkohri';
