@@ -67,7 +67,6 @@ class EditFlowsetPage {
     }
 
     async getStatusvalue(): Promise<string> {
-        console.log($(this.selectors.status).getText());
         return await $(this.selectors.status).getText();
     }
 
