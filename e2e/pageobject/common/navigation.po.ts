@@ -225,13 +225,12 @@ class NavigationPage {
     async gotoSettingsPage(): Promise<void> {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await $(this.selectors.settingsButton).click();
-        //await $('button.d-icon-angle_right').click();
     }
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
-        if ($(".is-flip").isPresent()) {
-            await $(".adapt-rx-search__input").sendKeys("test");
+        if (await $(".is-flip").isPresent()) {
+            await $(".adapt-rx-search__input").sendKeys("collapse");
             await $(".d-icon-cross_adapt").click();
         }
         for (let i = 0; i < menuItems.length; i++) {
