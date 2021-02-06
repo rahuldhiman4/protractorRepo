@@ -853,7 +853,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
 
         await apiHelper.apiLogin('tadmin');
-        await foundationData2002('Psilon');
+        //await foundationData2002('Psilon');
 
         await apiHelper.apiLogin('gderuno');
         await apiHelper.createKnowledgeSet(knowledgeSetData);

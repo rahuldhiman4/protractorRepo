@@ -324,7 +324,7 @@ describe('Knowledge Article', () => {
             let columnName: string[] = ["Review Status"];
             await knowledgeArticlesConsolePo.addColumnOnGrid(knowledgeGridColumnFields)
             await utilityGrid.addFilter('Review Status', 'Pending Review', 'checkbox');
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId); 
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy('article review not set');
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             expect(await reviewCommentsPo.isCancelButtonDisplay()).toBeTruthy('Cancel button not present');
@@ -435,10 +435,10 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
-            await changeAssignmentBlade.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Australia Support');
-            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'AU Support 3');
-            await changeAssignmentBlade.setDropDownValue('Assignee', 'Kane Williamson');
+            await changeAssignmentBlade.setDropDownValue('Company', 'Petramco', changeAssignmentBlade.selectors.knowledgeReviewGuid);
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Australia Support', changeAssignmentBlade.selectors.knowledgeReviewGuid);
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'AU Support 3', changeAssignmentBlade.selectors.knowledgeReviewGuid);
+            await changeAssignmentBlade.setDropDownValue('Assignee', 'Kane Williamson', changeAssignmentBlade.selectors.knowledgeReviewGuid);
             expect(await editKnowledgePage.getReviewerValue()).toContain('Kane Williamson', 'Reviewer not matched with expected');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
@@ -452,7 +452,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //pass
+    //Fail - Region data not avialable
     it('[6069]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
         await navigationPage.gotoKnowledgeConsole();
@@ -501,7 +501,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //Pass
+    //fail - due to region data
     it('[5899]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {
             let knowledgeTitle = 'knowledge2887' + randomStr;
