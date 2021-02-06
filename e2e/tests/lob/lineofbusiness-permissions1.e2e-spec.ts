@@ -145,8 +145,7 @@ describe('Line of Business Permission Tests', () => {
         await apiHelper.createCaseTemplate(templateData);
         await apiHelper.apiLogin('tadmin');
         personData.userPermission = ["Case Business Analyst", "HR"]
-        let orgId = await coreApi.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = company;
         apiHelper.createLineOfBuisness(LineOfBuisness)
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         await browser.sleep(5000); // timeout requried to reflect data on UI

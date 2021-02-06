@@ -50,8 +50,7 @@ describe('Task Console Preset Filter', () => {
     async function foundationData(company: string) {
        
         let businessData = businessDataFile["PhylumBusinessUnitHRData"];
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         await browser.sleep(5000); // timeout requried to reflect data on UI
 
