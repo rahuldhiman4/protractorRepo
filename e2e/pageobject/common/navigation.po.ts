@@ -14,7 +14,7 @@ class NavigationPage {
         closeHambergerMenu: 'button.close.close-inverse',
         panelHeadingOfSetting: '.a-tree__no-matches',
         adaptIconTiles: 'button.d-icon-tiles',
-        TileSearchInput: 'input.form-control',
+        TileSearchInput: 'div.input-group-sm .adapt-rx-search__expandable-block input',
         TileSearchResult: 'button.a-dropdown__link',
     }
 
@@ -225,7 +225,7 @@ class NavigationPage {
     async gotoSettingsPage(): Promise<void> {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await $(this.selectors.settingsButton).click();
-        await $('button.d-icon-angle_right').click();
+        //await $('button.d-icon-angle_right').click();
     }
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {

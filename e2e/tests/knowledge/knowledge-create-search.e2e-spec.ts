@@ -21,7 +21,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constan
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Knowledge Article', () => {
+describe('Knowledge Create Search', () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
