@@ -58,8 +58,7 @@ describe("Create Case Assignment Mapping", () => {
         let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
         let personData = personDataFile['PersonData11825'];
         personData.userPermission = ["Case Business Analyst", "Human Resource"]
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         await browser.sleep(5000); // timeout requried to reflect data on UI
         departmentData.relatedOrgId = businessUnitId;
@@ -83,8 +82,7 @@ describe("Create Case Assignment Mapping", () => {
         personData.userPermission = ["Case Business Analyst", "Human Resource"];
         await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToCompany(personData.userId, company);
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         await browser.sleep(5000); // timeout requried to reflect data on UI
         departmentData.relatedOrgId = businessUnitId;

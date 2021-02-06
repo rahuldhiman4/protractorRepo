@@ -159,7 +159,7 @@ export const COGNITIVE_TEMPLATE_DATASET_MAPPING = {
         },
         "450000157": {
             "id": 450000157,
-            "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+            "value": "Petramco"
         },
         "450000158": {
             "id": 450000158,
@@ -202,7 +202,7 @@ export const COGNITIVE_CATEGORY_DATASET_MAPPING = {
         },
         "450000157": {
             "id": 450000157,
-            "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+            "value": "Petramco"
         },
         "450000158": {
             "id": 450000158,

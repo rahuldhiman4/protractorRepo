@@ -11,7 +11,7 @@ export let NOTES_TEMPLATE = {
     "Template Name": "Template Name Test",
     "Module": "Cases",
     "Line of Business": "HumanResource",
-    "Company": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330",
+    "Company": "Petramco",
     "MessageBody": "<p>Body of the template</p>"
   }
 }
