@@ -1,4 +1,4 @@
-import { $, $$, by, element, browser, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, by, element, browser, ProtractorExpectedConditions, By } from 'protractor';
 import utilityCommon from '../../../utils/utility.common';
 import utilityGrid from '../../../utils/utility.grid';
 import { protractor } from 'protractor/built/ptor';
@@ -16,12 +16,12 @@ export class EditEmailConfig {
         exclusiveSubjectGuid: '75ef6a19-343a-4387-a1d3-144ef4fdf110',
         searchAvailableEntitiesTextBox: '[class="list-group"] input[type="checkbox"]',
         listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="col-5"] li[class="list-group-item ng-star-inserted"]',
-        searchAssociatedEntitiesToBeRemoveTextBox: '[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] [class="adapt-search-icon d-icon-search"]',
+        searchAssociatedEntitiesToBeRemoveTextBox: '[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] input',
         listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="col-5"] li[class="list-group-item ng-star-inserted"]',
         cancelEditEmailConfig: '[rx-view-component-id="bf51aff6-d0a3-484a-bed1-e11a78971aee"] button',
         closedAssociatePublicExclusionSubjects: '[rx-view-component-id="71177700-7a94-435f-b594-24ae7bc4e22b"] button span',
         acknowledgementTemplateEditButton: '[rx-view-component-id="dd7a7212-432d-4c79-a33b-b7cc8abf787e"] button',
-        saveAcknowledgementTemplate: '[rx-view-component-id="3c7ff456-1517-42d4-a770-bf4e641c7303"] button',
+        saveAcknowledgementTemplate: '[rx-view-component-id="ae1f4f53-445e-4d4c-b6b9-13acc691b4b8"] button',
         cancelAcknowledgementTemplate: '[rx-view-component-id="e163832a-f819-43f0-af68-87aa1d5c671a"] button',
         acknowledgementTemplateGuid: 'a5437a3a-3a11-4e07-8829-9cee403dca61',
         ticketTypeAcknowledgementTemplate: '[rx-view-component-id="5f00dfc8-9dc0-4521-befd-30f4d6d51ac5"] input',
@@ -37,9 +37,10 @@ export class EditEmailConfig {
         saveEditEmailConfig: '[rx-view-component-id="e36471c2-f950-4df7-bc42-ed2bbf59898b"] button',
         acknowledgementTemplateGridGuid: '4938609e-47bd-460d-b32c-57dfc21958cd',
         defaultCaseTemplateGuid: '085b8e93-0e68-41a7-a1ed-77b6ab2c9522',
-        defaultCaseTemplatelist: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] .ui-select-choices-row-inner *',
-        defaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] .dropdown',
-        clearDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] input[type="search"]',
+        defaultCaseTemplatelist: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] button.dropdown-item',
+        defaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] button',
+        searchDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] input',
+        clearDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] button div',
         supportGroupCheckbox: '.record__list i',
         addTrustedEmailBtn: '[rx-view-component-id="0dfbc207-b03e-40ab-8e6b-c74f5609aa89"] button',
         newTrustedEmailId: '[rx-view-component-id="00fb62e7-3e31-4aba-b9b5-a60daec4db46"] input',
@@ -94,7 +95,7 @@ export class EditEmailConfig {
     }
 
     async isColumnPresentInAcknowledgementTemplateGrid(header: string[]): Promise<boolean> {
-        return await utilityGrid.areColumnHeaderMatches( header);
+        return await utilityGrid.areColumnHeaderMatches(header, this.selectors.acknowledgementTemplateGridGuid);
     }
 
     async isAssociatedSupportGroupListHeaderPresentInAssociatedSupportGroupTab(): Promise<boolean> {
@@ -151,8 +152,8 @@ export class EditEmailConfig {
     }
 
     async searchAssociatedEntitiesToBeRemoveAssociation(searchvalue: string): Promise<void> {
-        await $(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).clear();
-        await $(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).sendKeys(searchvalue);
+        await $$(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).last().clear();
+        await $$(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).last().sendKeys(searchvalue);
     }
 
     async isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
@@ -210,16 +211,12 @@ export class EditEmailConfig {
         await $(this.selectors.acknowledgementTemplateEditButton).click();
     }
 
-    async searchOnGrid(gridValue: string): Promise<void> {
-        await utilityGrid.searchAndSelectGridRecord(gridValue, this.selectors.exclusiveSubjectGuid);
-    }
-
     async searchAndClickOnCheckbox(gridValue: string): Promise<void> {
-        await utilityGrid.clickCheckBoxOfValueInGrid(gridValue, this.selectors.editEmailConfigGuid);
+        await utilityGrid.searchAndSelectGridRecord(gridValue, this.selectors.editEmailConfigGuid);
     }
 
     async searchAndClickCheckboxOnAcknowledgementTemplateGrid(gridValue: string): Promise<void> {
-        await utilityGrid.clickCheckBoxOfValueInGrid(gridValue,this.selectors.acknowledgementTemplateGridGuid);
+        await utilityGrid.searchAndSelectGridRecord(gridValue, this.selectors.acknowledgementTemplateGridGuid);
     }
 
     async isRecordPresentInExclusiveGrid(gridValue: string): Promise<boolean> {
@@ -251,11 +248,11 @@ export class EditEmailConfig {
     }
 
     async clearDefaultCaseTemplateToUseField(): Promise<void> {
-        await $(this.selectors.clearDefaultCaseTemplateToUse).clear();
+                await $(this.selectors.defaultCaseTemplateToUse).click();
     }
 
-    async isDefaultCaseTemplatetoUsePresent(template: string): Promise<boolean> {
-        return utilityCommon.isValuePresentInDropDown(this.selectors.defaultCaseTemplateGuid, template);
+    async getDefaultCaseTemplatetoUsePresent(): Promise<string> {
+        return await $(this.selectors.clearDefaultCaseTemplateToUse).getText();
     }
 
     async isAcknowledgementDropDownPresent(template: string): Promise<boolean> {
@@ -263,7 +260,8 @@ export class EditEmailConfig {
     }
 
     async isDefaultCaseTemplatePresentinDropDown(template: string): Promise<boolean> {
-        await $(this.selectors.clearDefaultCaseTemplateToUse).sendKeys(template);
+        await $(this.selectors.defaultCaseTemplateToUse).click();
+        await $(this.selectors.searchDefaultCaseTemplateToUse).sendKeys(template);
         let count = await $$(this.selectors.defaultCaseTemplatelist).count();
         if (count >= 1) { return true; } else { return false; }
     }
@@ -331,7 +329,7 @@ export class EditEmailConfig {
     }
 
     async isColumnPresentIn(header: string[]): Promise<boolean> {
-        return await utilityGrid.areColumnHeaderMatches( header);
+        return await utilityGrid.areColumnHeaderMatches(header);
     }
 
     async isMappedRequesterRequiredTextPresent(): Promise<boolean> {
@@ -375,7 +373,7 @@ export class EditEmailConfig {
     }
 
     async selectAndClickCheckboxOnBlockedEmail(value: string): Promise<void> {
-        await utilityGrid.clickCheckBoxOfValueInGrid(value,this.selectors.blockedEmailConsoleGuid);
+        await utilityGrid.clickCheckBoxOfValueInGrid(value, this.selectors.blockedEmailConsoleGuid);
     }
 
     async isRecordPresentonBlockedEmail(value: string): Promise<boolean> {
@@ -384,7 +382,7 @@ export class EditEmailConfig {
 
 
     async selectAndClickCheckboxOnTrustedEmail(value: string): Promise<void> {
-        await utilityGrid.clickCheckBoxOfValueInGrid(value,this.selectors.trustedEmailConsoleGuid);
+        await utilityGrid.clickCheckBoxOfValueInGrid(value, this.selectors.trustedEmailConsoleGuid);
     }
 
     async isRecordPresentonTrustedEmail(value: string): Promise<boolean> {

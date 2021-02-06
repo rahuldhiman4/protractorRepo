@@ -8,7 +8,7 @@ class CreateAcknowledgmentTemplateBlade {
         templateNameGuid: '310bbc87-54ee-4994-9a1e-93b1982155f2',
         companyGuid: 'e879f953-52d1-49ff-ab73-5df103d1d8de',
         statusGuid: '3cfbfd34-19ff-4ddb-818b-23b19c859dbe',
-        labelGuid: 'a0774e28-42c2-4132-9da4-0063545e791f',
+        labelGuid: '7e5f9b4c-9c57-4255-b7b9-651b539dbf92',
         description: '[rx-view-component-id="13cf801e-fc2f-4d74-a57b-77e4ebf2bde6"] input',
         subject: '[rx-view-component-id="187510cc-9804-46e2-bbda-0cdba1d6c83c"] textarea',
         subjectGuid: '187510cc-9804-46e2-bbda-0cdba1d6c83c',

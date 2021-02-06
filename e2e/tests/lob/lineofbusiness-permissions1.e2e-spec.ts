@@ -673,7 +673,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilityGrid.searchAndOpenHyperlink(emailID);
-            expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent(randomStr + 'templateName')).toBeFalsy();
+            expect(await editEmailConfigPo.getDefaultCaseTemplatetoUsePresent()).toBe(randomStr + 'templateName');
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown('templateName123' + randomStr)).toBeTruthy();
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
