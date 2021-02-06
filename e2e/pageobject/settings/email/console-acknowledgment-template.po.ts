@@ -10,7 +10,7 @@ class AcknowledgmentTemplateConsolePage {
     }
 
     async clickOnAddAcknowlegeTemplateButton(): Promise<void> {
-        await element(by.cssContainingText(this.selectors.addAckTemplates, 'Acknowledgment Template')).click();
+        await $(this.selectors.addAckTemplates).click();
     }
 
     async clickOnDeleteButton(): Promise<void> {

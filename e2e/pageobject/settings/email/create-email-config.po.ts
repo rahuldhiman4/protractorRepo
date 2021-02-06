@@ -3,17 +3,16 @@ import { $ } from 'protractor';
 
 export class CreateEmailConfig {
     selectors = {
-        addNewEmailConfiguration: '[rx-view-component-id="703593bc-16dd-4763-a8d7-b55777b0b76d"] button',
-        emailIDGuid: '92ca88a6-5f85-4b10-a1ce-5cc40671786f',
-        emailIDTextbox: '[rx-view-component-id="92ca88a6-5f85-4b10-a1ce-5cc40671786f"] input',
+        emailIDGuid: 'b122f3d6-7447-4ed4-add0-4f462480129d',
+        emailIDTextbox: '[rx-view-component-id="b122f3d6-7447-4ed4-add0-4f462480129d"] input',
         companyGuid: 'bbaa8c70-3c86-4960-9184-13c8fff61a03',
         statusGuid: '1b16dff3-02e8-4a2a-8d37-31811b872afd',
-        descriptionField: '[rx-view-component-id="6f83d1ad-52d5-4542-810a-8e7f1266a8a3"] textarea',
+        descriptionField: '[rx-view-component-id="f6c0270c-ebfb-479f-b6b5-bac3f4ac8faf"] textarea',
         saveButton: '[rx-view-component-id="cb16fd71-146e-4e5f-9e18-854ddd185d5e"] button',
         cancelButton: '[rx-view-component-id="daad4496-bc8a-4de8-8a2e-cc7665ff8813"] button',
-        incomingMailBoxNameGuid: '948378d1-5e37-4de0-a1fa-213c09c35000',
-        lob: '[rx-view-component-id="fb1732ed-a706-452a-99aa-a7262fb7409f"] input',
-        lobValue: '[rx-view-component-id="fb1732ed-a706-452a-99aa-a7262fb7409f"] .pull-left'
+        incomingMailBoxNameGuid: '2bd6a6db-bbba-489e-a1f2-7bb4cc07f69a',
+        lob: '[rx-view-component-id="15cb2eb7-6089-46c4-8de5-ea9e974b12a2"] input',
+        lobValue: '[rx-view-component-id="15cb2eb7-6089-46c4-8de5-ea9e974b12a2"] .pull-left'
     }
 
     async setDescription(description: string): Promise<void> {
