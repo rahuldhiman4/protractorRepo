@@ -9,6 +9,7 @@ class ChangeAssignmentBlade {
         assignButton: '.modal-footer .btn-primary',
         searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
         assignee: '.person__info .name',
+        knowledgeReviewGuid: 'b56b4649-9f86-4ba9-a8a5-56d9c000cc89',
     }
 
     async isDropDownDisplayed(dropDownName: string, guid?: string): Promise<boolean> {
