@@ -46,8 +46,7 @@ describe('Person Profile test', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.createNewUser(personData);
         await apiHelper.associatePersonToCompany(personData.userId, 'Petramco');
-        orgId = await apiCoreUtil.getOrganizationGuid('Petramco');
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = 'Petramco';
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         await browser.sleep(3000); // timeout requried to reflect data on UI
         departmentData.relatedOrgId = businessUnitId;

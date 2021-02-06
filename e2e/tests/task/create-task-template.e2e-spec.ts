@@ -52,8 +52,7 @@ describe('Create Task Template', () => {
         personData = personDataFile['PersonData12111'];
         await apiHelper.createNewUser(personData);
         await browser.sleep(15000); //New user is created above, waiting for its backend access preperation
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         departmentData.relatedOrgId = businessUnitId;
         let depId = await apiHelper.createDepartment(departmentData);

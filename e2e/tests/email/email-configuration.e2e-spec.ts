@@ -51,9 +51,6 @@ describe('Email Configuration', () => {
         await apiHelper.createEmailBox('incoming', incomingEmail);
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createEmailConfiguration(emailConfig);
-       
-
-        
     });
 
     afterAll(async () => {
@@ -62,19 +59,6 @@ describe('Email Configuration', () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
-
-    async function foundationData(company: string, businessUnit: string, supportGroup: string) {
-        await apiHelper.apiLogin('tadmin');
-        let businessData = businessDataFile[businessUnit];
-        let suppGrpData = supportGrpDataFile[supportGroup];
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        await browser.sleep(5000); //waiting fordata to be reflected on UI
-        suppGrpData.relatedOrgId = businessUnitId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await browser.sleep(9000); //waiting fordata to be reflected on UI
-    };
 
     //ankagraw
     describe('[5463,5464]: [Email Configuration] Verify Email configuration Grid view', async () => {

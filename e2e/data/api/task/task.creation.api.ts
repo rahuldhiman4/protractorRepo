@@ -40,7 +40,7 @@ export const ADHOC_TASK_PAYLOAD = {
         },
         "1000000001": {
             "id": 1000000001,
-            "value": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330"
+            "value": "Petramco"
         },
 
     }
@@ -62,7 +62,7 @@ export const TASK_CREATION_FROM_TEMPLATE = {
     "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand",
     "processDefinitionName": "com.bmc.dsm.case-lib:Case - Create Tasks from Template",
     "processInputValues": {
-        "Case Company": "5a30545b15c828bf11139ffa453419200d69684e9d423ab2f3e869e6bb386507ee9ee24b1252f990cf587177918283e34694939025cd17154380ba49ce43f330",
+        "Case Company": "Petramco",
         "Requester ID": "0673cd5ddeddba6bdb610bd65d696e75337d9a364d2e61ca089f5d198d2702ec03cc00b46057b6b83db4df976bd6a8b35014b3e14ded75f6796c011b942d1436",
         "ActivityId": "POST_TASK_ACTIVITY",
         "Selected Templates": "[{\"379\":\"AGGD3E0FEBFT7AP4VHYZP3Y0PDTE8X\"}]",

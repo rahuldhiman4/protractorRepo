@@ -81,8 +81,7 @@ describe("Case Read Access", () => {
         let personData1 = personDataFile['PersonData'];
         await apiHelper.createNewUser(personData1);
         await apiHelper.associatePersonToCompany(personData1.userId, company);
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData1.relatedOrgId = orgId;
+        businessData1.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData1);
         await browser.sleep(5000); // timeout requried to reflect data on UI
         departmentData1.relatedOrgId = businessUnitId;
@@ -102,8 +101,7 @@ describe("Case Read Access", () => {
         let personData2 = personDataFile['PersonData19501'];
         await apiHelper.createNewUser(personData2);
         await apiHelper.associatePersonToCompany(personData2.userId, company);
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData2.relatedOrgId = orgId;
+        businessData2.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData2);
         await browser.sleep(5000); // timeout requried to reflect data on UI
         departmentData2.relatedOrgId = businessUnitId;
