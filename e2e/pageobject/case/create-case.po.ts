@@ -55,7 +55,7 @@ class CreateCasePage {
         lobLabel: '[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] .form-control-label span',
         lobValue: '[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] button',
         lobSection: '[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] adapt-select',
-        lineofbusiness: '[rx-view-component-id="48f20aa3-5805-4a73-9118-ec32fab2a134"] .form-control',
+        lineofbusiness: '[rx-view-component-id="f0aa7414-4a27-400f-8d0a-c0e7adaab0fc"] .rx-select__search-button-title',
         lobGuid: '6f8f65cd-23eb-437f-b43e-e725bdbcf089',
         assignedBusinessUnitValue: '[rx-view-component-id="3c0986c0-c2b1-44e3-bd29-ac4757e55a66"] button',
         assignedSupportGroupValue: '[rx-view-component-id="79750d81-d8e5-447e-b923-94c54f2d3310"] button',
@@ -372,8 +372,7 @@ class CreateCasePage {
 
     async getLineOfBusinessValue(): Promise<string> {
         let elementPresent = await $(this.selectors.lineofbusiness).isPresent()
-          if (elementPresent == true) return await $(this.selectors.lineofbusiness).getAttribute("placeholder");
-          else return await $('[rx-view-component-id="6f8f65cd-23eb-437f-b43e-e725bdbcf089"] .dropdown-toggle').getText();
+          if (elementPresent == true) return await $(this.selectors.lineofbusiness).getText();
       }
 
     async selectLineOfBusiness(value: string): Promise<void> {
