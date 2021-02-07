@@ -1760,13 +1760,12 @@ class ApiHelper {
         newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
 
         let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
-
         console.log('Create New Process Lib Config API Status =============>', newProcessLibConfRecord.status);
 
         const processLibConfRecord = await axios.get(
             newProcessLibConfRecord.headers.location
         );
-        console.log('New Process API Status =============>', processLibConfRecord.status);
+        console.log(`New Process API Status ${data.processName} =============>`, processLibConfRecord.status);
 
         return {
             id: processLibConfRecord.data.id,

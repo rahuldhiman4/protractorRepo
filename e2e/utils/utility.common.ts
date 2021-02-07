@@ -154,7 +154,7 @@ export class Utility {
     }
 
     async isAllDropDownValuesMatches(dropDownIdentifier: string | ElementFinder, dropDownValueArr: string[], inputType?: DropDownType, dropDownSearchValue?: string): Promise<boolean> {
-        let arr: string[] =await this.getAllDropDownValues(dropDownIdentifier,inputType,dropDownSearchValue);
+        let arr: string[] = await this.getAllDropDownValues(dropDownIdentifier, inputType, dropDownSearchValue);
         arr.sort();
         dropDownValueArr = dropDownValueArr.sort();
         return arr.length === dropDownValueArr.length && arr.every(
@@ -668,6 +668,22 @@ export class Utility {
             arr[i] = ab;
         }
         return arr;
+    }
+
+    // for process popup component
+    async searchAndSelectProcessInSelectProcessPopup(processName: string): Promise<void> {
+        await $('.dropdown-menu [rx-id="search-button"]').click();
+        await $('.dropdown-menu adapt-rx-textfield input').sendKeys(processName);
+        await $(`[title*="${processName}"]`).click();
+    }
+
+    // for process popup component
+    async isProcessPresentInSelectProcessPopup(processName: string): Promise<boolean> {
+        await $('.dropdown-menu [rx-id="search-button"]').click();
+        await $('.dropdown-menu adapt-rx-textfield input').sendKeys(processName);
+        let values = await $$('.dropdown-menu button.dropdown-item').count();
+        if (values >= 1) return true;
+        else return false;
     }
 }
 
