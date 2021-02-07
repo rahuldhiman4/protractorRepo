@@ -41,7 +41,7 @@ class ChangeAssignmentBlade {
         return await dropDownElement.isDisplayed();
     }
 
-    async isDropDownDisabled(dropDownName: string, guid?: string): Promise<boolean> {
+    async isFieldDisabled(dropDownName: string, guid?: string): Promise<boolean> {
         let locator = this.selectors.changeAssignmentComponent;
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         switch (dropDownName) {
@@ -56,6 +56,9 @@ class ChangeAssignmentBlade {
             }
             case "Assignee": {
                 return await $$(locator).get(3).getAttribute("disabled") == "true";
+            }
+            case "AssignToMe": {
+                return await $$(locator).get(4).getAttribute("disabled") == "true";
             }
             default: {
                 console.log('Dropdown Not Available');
