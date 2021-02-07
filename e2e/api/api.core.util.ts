@@ -334,6 +334,7 @@ class ApiCoreUtil {
             "api/rx/application/process/processdefinition",
             body
         );
+        console.log("New Process Core API Status =============>", newProcess.status);
         return newGuid;
     }
 

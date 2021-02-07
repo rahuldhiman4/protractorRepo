@@ -545,7 +545,7 @@ describe('Create Process in Flowset', () => {
 
             await consoleFlowsetProcessLibrary.searchAndSelectFlowset('Flowset' + randomStr);
             await editFlowsetConfigPo.clickOnAddNewMappingBtn();
-            await editFlowsetConfigPo.selectProcessName(processName);
+            await utilityCommon.searchAndSelectProcessInSelectProcessPopup(processName);
             await editFlowsetConfigPo.selectFunction('Initialization');
             await editFlowsetConfigPo.selectProcessStatus('Active');
             await editFlowsetConfigPo.clickSaveBtnOnProcessMapping();
