@@ -19,6 +19,10 @@ describe("Knowledge Approval Mapping Tests", () => {
     let knowledgePublisherUser = 'kmills';
     let knowledgeArticlesTitleStr = "Knowledge Articles";
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");

@@ -17,6 +17,11 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 describe('Knowledge Article Set', () => {
     let knowledgeManagementApp = "Knowledge Management";
     let knowledgeArticlesTitleStr = "Knowledge Articles";
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');

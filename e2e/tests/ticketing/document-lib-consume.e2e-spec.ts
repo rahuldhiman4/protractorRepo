@@ -29,6 +29,10 @@ describe('Document Library Consume UI', () => {
     let filePath5 = 'e2e/data/ui/attachment/bwfXlsx.xlsx';
     let caseAgentuserData;
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

@@ -18,6 +18,11 @@ let userData1, userData2 = undefined;
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
     let label = "POSH";
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

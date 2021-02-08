@@ -22,6 +22,11 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Case Status Configuration', () => {
     let flowsetPhylumFieldsData = undefined;
     let personData1, personData3;
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');

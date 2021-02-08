@@ -22,6 +22,10 @@ import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 
 describe('Case Activity CKE', () => {
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

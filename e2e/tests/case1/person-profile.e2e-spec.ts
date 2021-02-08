@@ -20,6 +20,10 @@ describe('Person Profile test', () => {
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
     let businessData, departmentData, suppGrpData, personData, orgId;
+    
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
 
     beforeAll(async () => {
         await apiHelper.apiLogin('tadmin');

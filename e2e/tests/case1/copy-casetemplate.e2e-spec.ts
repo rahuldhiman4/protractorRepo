@@ -29,6 +29,11 @@ let userData1, userData2;
 let businessData, departmentData, suppGrpData;
 
 describe('Copy Case Template', () => {
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
