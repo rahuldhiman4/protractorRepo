@@ -34,8 +34,8 @@ describe('Knowledge Article Validation', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.setDefaultNotificationForUser("Peter", "Alert");
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.setDefaultNotificationForUser("Peter", "Alert");
     });
 
     afterAll(async () => {

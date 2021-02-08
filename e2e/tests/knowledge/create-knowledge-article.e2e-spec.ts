@@ -670,6 +670,8 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.setKnowledgeStatus('Retire Approval');
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
+            await navigationPage.gotoKnowledgeConsole(true);
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
             await editKnowledgePage.setClosedKnowledgeStatus('Closed');
             await utilityCommon.closePopUpMessage();
@@ -701,7 +703,6 @@ describe('Knowledge Article', () => {
         });
         it('[5882]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(KACoachDetails.displayId);
@@ -714,7 +715,6 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoKnowledgeConsole(true);
-            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(KACoachDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Retired', 'Status not Set');
             await editKnowledgePage.setClosedKnowledgeStatus('Closed');
