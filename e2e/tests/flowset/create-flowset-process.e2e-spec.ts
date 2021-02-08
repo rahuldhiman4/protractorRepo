@@ -166,7 +166,7 @@ describe('Create Process in Flowset', () => {
             await createCaseTemplatePage.setCaseSummary(`Summary ${randomStr}`);
             await createCaseTemplatePage.setFlowsetValue('Flowset' + randomStr);
             await createCaseTemplatePage.setOwnerCompanyValue('Petramco');
-            await createCaseTemplatePage.setBusinessUnitDropdownValue('United States Support');
+            await createCaseTemplatePage.setOwnerOrgDropdownValue('United States Support');
             await createCaseTemplatePage.setOwnerGroupDropdownValue('US Support 1');
             await createCaseTemplatePage.setTemplateStatusDropdownValue('Active');
             await createCaseTemplatePage.setPriorityValue('High');

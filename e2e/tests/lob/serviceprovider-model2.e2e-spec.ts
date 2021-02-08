@@ -586,7 +586,7 @@ describe('Service Provider Model Tests Extended', () => {
             await createCasetemplatePo.setCaseSummary("CaseSummary" + randomStr);
             await createCasetemplatePo.setCategoryTier1("Facilities");
             await createCasetemplatePo.setOwnerCompanyValue("Petramco");
-            await createCasetemplatePo.setBusinessUnitDropdownValue('Facilities Support');
+            await createCasetemplatePo.setOwnerOrgDropdownValue('Facilities Support');
             await createCasetemplatePo.setOwnerGroupDropdownValue('Facilities');
             expect(await createCasetemplatePo.flowsetOptionsPresent([flowsetHumanResourceData.flowsetName, flowsetHumanResourceData1.flowsetName])).toBeFalsy();
             await createCasetemplatePo.setCompanyName("Petramco");

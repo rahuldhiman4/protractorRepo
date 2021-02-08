@@ -647,7 +647,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCaseTemplate.setCompanyName("Petramco");
             await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
             await createCaseTemplate.setOwnerCompanyValue("Petramco");
-            await createCaseTemplate.setBusinessUnitDropdownValue(businessData.orgName);
+            await createCaseTemplate.setOwnerOrgDropdownValue(businessData.orgName);
             await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
             await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
             await createCaseTemplate.clickOnChangeAssignmentButton();

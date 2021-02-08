@@ -37,7 +37,7 @@ class CreateCaseTemplate {
         resolutionDescription: '8f8159e2-d647-4c46-ae71-ff56f1a81a0b',
         supportCompany: 'a370b52e-3949-429a-b49c-e10200f7ab2c',
         ownerCompany: '84efe67b-c540-4fd9-9a7a-724e9390656a',
-        businessUnitDropdown: 'c0d483a9-75ae-4eb3-a65e-96f1f1bb61ec',
+        ownerOrgDropdown: 'c0d483a9-75ae-4eb3-a65e-96f1f1bb61ec',
         departmentDropdown: '70778256-c238-4a16-a24f-86b71cc3da87',
         ownerGroupDropdown: 'a6e62e56-9bda-40af-8bce-29ad062b76f5',
         resolveCaseOnLastTaskCompletion: '0ecdd658-0479-4cb3-a103-31f0a3238c29',
@@ -141,8 +141,8 @@ class CreateCaseTemplate {
         await utilityCommon.selectDropDown(this.selectors.taskFailureConfiguration, taskFailureConfigurationValue);
     }
 
-    async setBusinessUnitDropdownValue(businessUnitDropdownValue: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.businessUnitDropdown, businessUnitDropdownValue);
+    async setOwnerOrgDropdownValue(ownerOrgValue: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.ownerOrgDropdown, ownerOrgValue);
     }
 
     async setAssignmentMethodValue(assignmentMethodValue: string): Promise<void> {
@@ -219,7 +219,7 @@ class CreateCaseTemplate {
         await this.setFlowsetValue(caseTemplate.templateName);
         await this.setCaseStatusValue(caseTemplate.caseStatus);
 
-        await this.setBusinessUnitDropdownValue(caseTemplate.ownerBusinessUnit);
+        await this.setOwnerOrgDropdownValue(caseTemplate.ownerBusinessUnit);
         await this.setOwnerGroupDropdownValue(caseTemplate.ownerGroup);
         await this.setPriorityValue(caseTemplate.casePriority);
         await this.setCategoryTier1(caseTemplate.categoryTier1);

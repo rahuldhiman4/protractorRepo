@@ -839,7 +839,7 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.setOwnerCompanyValue("Petramco");
-            await createCaseTemplate.setBusinessUnitDropdownValue("United States Support");
+            await createCaseTemplate.setOwnerOrgDropdownValue("United States Support");
             await createCaseTemplate.setOwnerGroupDropdownValue("US Support 3");
             await createCaseTemplate.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
