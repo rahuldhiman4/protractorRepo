@@ -34,6 +34,11 @@ describe("Case Read Access", () => {
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
     let businessData1, departmentData1, suppGrpData1, businessData2, departmentData2, suppGrpData2;
     let userData1 = undefined, userData2 = undefined;
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);

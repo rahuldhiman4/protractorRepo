@@ -26,6 +26,10 @@ let psilonCaseAgentUser = 'werusha';
 describe('Service Target Tests for Tasks', () => {
     const caseModule = 'Case';
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);

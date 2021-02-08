@@ -42,6 +42,11 @@ describe("Compose Email", () => {
     let linkTargetDropDownIndex = 4;
     let cellCaption: number = 7;
     let cellSummary: number = 8;
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         let emailConfig = {
             email: "bmctemptestemail@gmail.com",

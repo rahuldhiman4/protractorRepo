@@ -26,6 +26,10 @@ describe('Global Search Category Validation', () => {
     let KAModule = "Knowledge Article";
     let updatedDate;
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qtao');

@@ -16,6 +16,10 @@ describe("Actionable Notification Approval", () => {
     let caseData;
     let caseModule = 'Case';
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);

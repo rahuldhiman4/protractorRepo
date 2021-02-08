@@ -35,6 +35,11 @@ describe('Service Provider Data Model Tests', () => {
     let financeBackOfficeUserName = 'wsteven@petramco.com';
 
     let password = 'Password_1234';
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(kingstoneHRUserName, password);

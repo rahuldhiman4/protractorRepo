@@ -28,6 +28,11 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Template', () => {
     let userData = undefined, userData1 = undefined, userData2 = undefined;
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");

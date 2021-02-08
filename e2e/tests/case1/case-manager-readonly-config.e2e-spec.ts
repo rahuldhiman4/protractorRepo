@@ -59,6 +59,10 @@ import utilityGrid from "../../utils/utility.grid";
 describe('Case Manager Read-only Config', () => {
     let caseModule = 'Case';
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qdu');

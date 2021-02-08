@@ -19,6 +19,11 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe('Conditional Task', () => {
     let userData;
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         //Create new user with Psilon and Petramco access

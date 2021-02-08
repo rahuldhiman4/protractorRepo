@@ -14,6 +14,10 @@ describe('Case Console Preset Filter', () => {
     const userId1 = "idphylum1@petramco.com";
     const caseModule = 'Case';
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
 

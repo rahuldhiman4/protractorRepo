@@ -69,6 +69,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
     const domainTagDataFile = require('../../data/ui/foundation/domainTag.ui.json');
     let knowledgeModule = 'Knowledge';
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);

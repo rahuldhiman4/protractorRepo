@@ -17,6 +17,11 @@ describe('Preset Filter Funcational Verification', () => {
     let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let caseAgentuserData;
     let caseAgentUserId = "caseAgent1" + randomStr1;
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

@@ -17,6 +17,9 @@ describe('Task Console Preset Filter', () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const suppGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);

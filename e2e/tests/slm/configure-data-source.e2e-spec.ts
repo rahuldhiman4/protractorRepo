@@ -18,6 +18,10 @@ describe('Data Source Configuration Tests', () => {
     const dataSourceConsoleDesc = 'Create/update a data source for flexibility to calculate service targets differently for each record.';
     const createdataSourceConfigHeading = 'Add Service Target Data Source Configuration';
 
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);

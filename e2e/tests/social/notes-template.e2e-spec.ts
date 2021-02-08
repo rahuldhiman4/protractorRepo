@@ -61,6 +61,11 @@ let imageSource, imageSource1, imageSource2;
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
 let userData, userData1 = undefined, userData2;
 describe('Notes template', () => {
+
+    beforeEach(async () => {
+        await utilityCommon.closeAllBlades();
+    });
+
     beforeAll(async () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
