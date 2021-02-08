@@ -33,11 +33,6 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Dynamic data', () => {
     const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
     const petramcoEventName = 'Petramco Event';
-
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

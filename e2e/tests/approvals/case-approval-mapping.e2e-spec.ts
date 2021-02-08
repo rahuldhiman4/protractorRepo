@@ -28,10 +28,6 @@ describe("Case Approval Mapping Tests", () => {
 
     let twoCompanyUser;
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");

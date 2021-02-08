@@ -39,11 +39,6 @@ import utilityGrid from '../../utils/utility.grid';
 let userData1 = undefined, userData2;
 
 describe('Dynamic Hidden Data', () => {
-
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

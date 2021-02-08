@@ -12,10 +12,6 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe('Knowledge Article Template', () => {
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');

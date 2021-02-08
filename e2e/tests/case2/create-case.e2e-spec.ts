@@ -35,11 +35,6 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe("Create Case", () => {
-
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");

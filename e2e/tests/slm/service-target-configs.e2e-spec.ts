@@ -36,10 +36,6 @@ describe('Service Target Configs', () => {
     const caseModule = 'Case';
     let userData, userData1, userData2 = undefined;
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 

@@ -29,10 +29,6 @@ describe('Case Status Verification', () => {
     let caseTemplate3 = 'createCaseTemplateCaseReopenYesAndStatusClosed' + randomStr;
     let CaseTemplate4 = 'createCaseTemplateAsCaseReopenNoAndStatusClosed' + randomStr;
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

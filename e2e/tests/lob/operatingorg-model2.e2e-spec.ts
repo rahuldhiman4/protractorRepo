@@ -37,11 +37,6 @@ let supportGroupDataHR, supportGroupDataFacilities, userData0, userData1, userDa
 
 describe('Operating Orgnization Data Model Extended Tests', () => {
     let personDataFile = require('../../data/ui/foundation/person.ui.json');
-
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

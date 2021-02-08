@@ -50,11 +50,6 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe("Attachment", () => {
-    
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         let emailConfig = {
             email: "bmctemptestemail@gmail.com",

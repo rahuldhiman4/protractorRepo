@@ -54,10 +54,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
     const minorEditHelpText = `Submitting your changes will edit the existing Version 1`;
     const majorEditHelpText = `Submitting your changes will create Version 2`;
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);

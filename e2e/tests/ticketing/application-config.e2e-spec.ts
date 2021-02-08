@@ -7,11 +7,6 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
 
 describe('Application Configuration', () => {
-
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
 
         await browser.get(BWF_BASE_URL);

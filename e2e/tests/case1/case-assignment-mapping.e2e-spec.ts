@@ -40,11 +40,6 @@ describe("Create Case Assignment Mapping", () => {
     let userData = undefined, userData1 = undefined, userData2 = undefined;
     const userId1 = "idphylum4@petramco.com";
     let flowsetGlobalFieldsData = undefined;
-    
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);

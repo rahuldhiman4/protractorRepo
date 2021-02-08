@@ -29,10 +29,6 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Create Task Template', () => {
     let businessData, departmentData, suppGrpData, personData;
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");

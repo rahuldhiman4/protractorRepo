@@ -49,10 +49,6 @@ describe('Case Cognitive', () => {
         "ownerGroup": "US Support 3"
     }
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

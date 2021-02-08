@@ -16,10 +16,6 @@ import utilityGrid from '../../utils/utility.grid';
 describe("Notification Template", () => {
     let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");

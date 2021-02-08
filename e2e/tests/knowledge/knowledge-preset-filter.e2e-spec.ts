@@ -16,10 +16,6 @@ describe('Knowledge Console Preset Filter', () => {
     let knowledgeSetTitle = undefined;
     let knowledgeModule = 'Knowledge';
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
 

@@ -76,10 +76,6 @@ describe('Line of Business Permission Tests', () => {
     let personData2 = personDataFile['HRCMLOBCBA'];
     let caseID, TaskID, KnowledgeArticleID, templateData, templateData1, randomStr = Math.floor(Math.random() * 1000000);
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
