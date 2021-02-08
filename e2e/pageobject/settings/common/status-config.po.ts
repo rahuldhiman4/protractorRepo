@@ -149,7 +149,7 @@ class StatusConfigPage {
                 break;
             }
             case "case": {
-                companyGuid = '11a8a316-3947-4479-8840-10436c8d6810';
+                companyGuid = '431d76e0-365b-407a-8394-9d658febc61a';
                 break;
             }
             case "knowledge": {

@@ -65,6 +65,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     afterEach(async () => {
+        await utilityCommon.closeAllBlades();
         await navigationPage.gotoCaseConsole();
     });
 
@@ -75,14 +76,28 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[4020]: Check Case manager is not able to perform Create Update Delete operation on Case Assignment Mapping', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let assignmentMappingData =  {
+            "assignmentMappingName": "Assignment mapping name" + randomStr,
+            "company": "Petramco",
+            "supportCompany": "Petramco",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qfeng",
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus"
+        }
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createCaseAssignmentMapping(assignmentMappingData);
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
         expect(await assignmentConfigConsole.isAddAssignmentsBtnDisplayed()).toBeFalsy();
-        await utilityGrid.searchRecord("Benefits Assignment");
+        await utilityGrid.searchRecord(assignmentMappingData.assignmentMappingName);
         await utilityGrid.selectAllCheckBox();
         expect(await assignmentConfigConsole.isDeleteAssignmentConfigBtnDisplayed()).toBeFalsy();
-        await utilityGrid.searchAndOpenHyperlink("Benefits Assignment");
+        await utilityGrid.searchAndOpenHyperlink(assignmentMappingData.assignmentMappingName);
         expect(await assignmentConfigEditPage.isEditAssignmentNameDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
         expect(await assignmentConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
@@ -115,39 +130,6 @@ describe('Case Manager Read-only Config', () => {
             expect(await caseReadAccessConfigEditPage.isAccessMappingNameDisabled()).toBeTruthy();
             expect(await caseReadAccessConfigEditPage.isDefaultToggleBtnDisabled()).toBeTruthy();
             expect(await caseReadAccessConfigEditPage.isSaveBtnDisabled()).toBeTruthy();
-        });
-    });
-
-    // asahitya
-    describe('[DRDMV-18072]: Check Case manager is not able to perform Create Update operation on Process Library configuration', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            let social_Service = SOCIAL_SERVICE_PROCESS;
-            let social_Service_Process = social_Service.name + randomStr;
-            social_Service.name = social_Service_Process;
-            await apiCoreUtil.createProcess(social_Service);
-
-            let processLibConfData1 = {
-                applicationServicesLib: "com.bmc.dsm.social-lib",
-                processName: social_Service_Process,
-                processAliasName: `Process${randomStr}`,
-                company: "Petramco",
-                description: `description${randomStr}`,
-                status: "Active"
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createProcessLibConfig(processLibConfData1);
-        });
-        it('[DRDMV-18072]: Check Case manager is not able to perform Create Update operation on Process Library configuration', async () => {
-            await navigationPage.gotoCreateCase();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            expect(await processLibraryConfigConsole.isRegisterProcessBtnDisplayed()).toBeFalsy();
-            await utilityGrid.searchAndOpenHyperlink(`Process${randomStr}`);
-            expect(await processLibraryEditPage.isDescriptionDisabled()).toBeTruthy("Description field is enabled");
-            expect(await processLibraryEditPage.isStatusDisabled()).toBeTruthy("Status field is enabled");
-            expect(await processLibraryEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
         });
     });
 
@@ -193,10 +175,18 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya
     it('[3964]: Check Case manager is not able to perform Create Update operation on Goal Type', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let goalTypeInactive = {
+            "svtGoalTypeName": "Goal Type Inactive HR" + randomStr,
+            "status": 1,
+            "lineOfBusiness": "Human Resource"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createSVTGoalType(goalTypeInactive);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
         expect(await goalTypeConfigConsole.isAddGoalTypeBtnDisplayed()).toBeFalsy("Add button is enabled");
-        await utilityGrid.searchAndOpenHyperlink("Case Resolution Time");
+        await utilityGrid.searchAndOpenHyperlink(goalTypeInactive.svtGoalTypeName);
         expect(await goalTypeEditPage.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
         expect(await goalTypeEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
     });
