@@ -39,10 +39,6 @@ describe('Case Watchlist', () => {
     let hrSupportStr = 'HR Support';
     let australiaSupportStr = 'Australia Support';
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(qfengStr);

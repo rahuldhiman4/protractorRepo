@@ -31,10 +31,6 @@ describe('Global Search All Category', () => {
     let peopleModule = "People";
     let updatedDate;
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');

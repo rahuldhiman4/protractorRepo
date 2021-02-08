@@ -36,11 +36,6 @@ describe('Knowledge Create Search', () => {
     let knowledgeModule = 'Knowledge';
     let kaDetails1, kaDetails2, kaDetails3, kaDetails4, kaDetails5, kaDetails6, kaDetails7, knowledgeTemplateId;
     let knowledgeSetTitleStr = 'KASet_' + randomStr;
-
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');

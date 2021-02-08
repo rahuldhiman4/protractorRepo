@@ -16,10 +16,6 @@ describe('Service Level Management - Goal Type Tests', () => {
     let goalTypeConsoleGUID: '781a6488-ff08-481b-86c7-7c78c577357b';
     let userData, userData1, userData2 = undefined;
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);

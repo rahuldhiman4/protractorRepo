@@ -26,10 +26,6 @@ describe("Quick Case", () => {
     const requester = "The requester of the case";
     const contact = "Another person contacting on behalf of the requester";
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPo.login("qkatawazi");

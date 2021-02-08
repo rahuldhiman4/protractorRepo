@@ -13,11 +13,6 @@ let userData1, userData2 = undefined;
 
 describe('Email Acknowledgment Template', () => {
     let label = "POSH";
-
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

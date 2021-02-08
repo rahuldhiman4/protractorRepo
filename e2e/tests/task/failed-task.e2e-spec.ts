@@ -18,11 +18,6 @@ import utilityGrid from '../../utils/utility.grid';
 import taskConsolePo from '../../pageobject/task/console-task.po';
 
 describe('Failed Task', () => {
-
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

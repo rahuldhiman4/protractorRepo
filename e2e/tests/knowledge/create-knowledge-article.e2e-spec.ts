@@ -32,10 +32,6 @@ describe('Knowledge Article', () => {
     let knowledgeArticlesTitleStr = "Knowledge Articles";
     let knowledgeModule = 'Knowledge';
 
-    beforeEach(async () => {
-        await utilityCommon.closeAllBlades();
-    });
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('peter');
