@@ -178,7 +178,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
             await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
-            await createCaseTemplate.setBusinessUnitDropdownValue("United States Support");
+            await createCaseTemplate.setOwnerOrgDropdownValue("United States Support");
             await createCaseTemplate.setOwnerGroupDropdownValue("US Support 3");
             await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus);
             await createCaseTemplate.clickSaveCaseTemplate();
