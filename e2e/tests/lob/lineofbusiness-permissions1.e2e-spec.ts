@@ -1016,7 +1016,7 @@ describe('Line of Business Permission Tests', () => {
             await editFlowsetConfigPo.setFlowset("edit Flowset" + randomStr);
             await editFlowsetConfigPo.setDescription("edit description" + randomStr);
             await expect(editFlowsetConfigPo.getStatusvalue()).toBe("Active");
-            await editFlowsetConfigPo.selectStatus("Draft");
+            await editFlowsetConfigPo.selectFlowsetConfigStatus("Draft");
             await editFlowsetConfigPo.clickSaveBtn();
         });
         it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {
