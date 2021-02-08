@@ -10,8 +10,8 @@ class DynamicField {
         cancelButton: '.modal-footer button[btn-type="secondary"]',
         fieldValueType: '.col-md-6 .dropdown',
         informationSource: '.col-md-6 .dropdown',
-        enabledHiddenField: '[class="ng-untouched ng-valid ng-dirty"] button[aria-label="True"]',
-        disabledhiddenField: '[class="ng-untouched ng-valid ng-dirty"] button[aria-label="False"]',
+        enabledHiddenField: '[class="mt-4 ng-star-inserted"] button[aria-label="True"]',
+        disabledhiddenField: '[class="mt-4 ng-star-inserted"] button[aria-label="False"]',
         enabledRequiredField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="True"]',
         disabledRequiredField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="False"]',
         enabledConfidentialsField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="True"]',
@@ -53,15 +53,11 @@ class DynamicField {
     }
 
     async clickOnDownArrow(): Promise<void> {
-        await $(this.selectors.enabledConfidentialsField).isPresent().then(async (result) => {
-            await $$(this.selectors.downArrow).last().click();
-        });
+        await $$(this.selectors.downArrow).first().click();
     }
 
     async clickOnUpArrow(): Promise<void> {
-        await $(this.selectors.enabledConfidentialsField).isPresent().then(async (result) => {
-            await $(this.selectors.upArrow).click();
-        });
+        await $(this.selectors.upArrow).click();
     }
 
     async setFieldName(name: string): Promise<void> {
@@ -72,7 +68,7 @@ class DynamicField {
 
     async getFieldNameAttribute(name: string): Promise<string> {
         let size = await $$(this.selectors.fieldName).count();
-       return await $$(this.selectors.fieldName).get(size - 2).getAttribute(name);
+        return await $$(this.selectors.fieldName).get(size - 2).getAttribute(name);
     }
 
     async getDescriptionName(name: string): Promise<string> {
@@ -81,7 +77,7 @@ class DynamicField {
 
     async getFieldValueType(dataType: string): Promise<string> {
         let size = await $$(this.selectors.fieldValueType).count();
-       return await $$(this.selectors.fieldValueType).get(size - 2).getAttribute(dataType);
+        return await $$(this.selectors.fieldValueType).get(size - 2).getAttribute(dataType);
     }
 
     async setGroupName(name: string): Promise<void> {
@@ -179,8 +175,8 @@ class DynamicField {
     }
 
     async isDynamicFieldPresentInDynamicSection(value: string): Promise<boolean> {
-        return await element(By.cssContainingText(this.selectors.globalFieldHeader,value)).isPresent().then(async (result) => {
-            if (result) return await element(By.cssContainingText(this.selectors.globalFieldHeader,value)).isDisplayed();
+        return await element(By.cssContainingText(this.selectors.globalFieldHeader, value)).isPresent().then(async (result) => {
+            if (result) return await element(By.cssContainingText(this.selectors.globalFieldHeader, value)).isDisplayed();
             else return false;
         });
     }

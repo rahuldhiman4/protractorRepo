@@ -100,6 +100,9 @@ class ViewCasePage {
         return await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]`).isDisplayed();
     }
 
+    async clickOnGroupName(groupName: string): Promise<void> {
+        await $(`[rx-view-component-id="376ec3d3-9381-4613-bb06-1e8dbbaf6b18"] .group-container__name__title[title=${groupName}]`).click();
+    }
     async isAttachedDocumentPresent(fileName: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.attachmentFile, fileName)).isPresent();
     }
