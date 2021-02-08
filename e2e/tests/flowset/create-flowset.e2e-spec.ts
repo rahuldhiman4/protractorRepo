@@ -205,6 +205,10 @@ describe('Create Flowset', () => {
             await apiHelper.deleteFlowsetProcessLibConfig(processName1);
             await apiHelper.deleteFlowsetProcessLibConfig(processName);
         });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //ankagraw
