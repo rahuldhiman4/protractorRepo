@@ -42,28 +42,6 @@ describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('tadmin');
-
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {
@@ -521,12 +499,13 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3608,3612,3623]: Make dymanic field as visible', async () => {
             await dynamicFieldsPage.clickOnDownArrow();
-            expect(await dynamicFieldsPage.isEnabledTextPresent("Hidden"));
+            expect(await dynamicFieldsPage.isEnabledTextPresent("Hidden")).toBeTruthy();
             await dynamicFieldsPage.clickDisabledHiddenRadioButton();
             await dynamicFieldsPage.clickSaveButton();
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[3608,3612,3623]: Verify dynamic field is visible on case', async () => {
             await navigationPage.gotoCaseConsole();
@@ -663,6 +642,7 @@ describe('Dynamic Hidden Data', () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[3610]: Validate the dynamic field', async () => {
             await navigationPage.gotoCaseConsole();
@@ -831,6 +811,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalTime")).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalAttachment1")).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("dynamicList")).toBeTruthy();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4033,4006,4849]: verify dynamic group fields on Copy case template', async () => {
             await navigationPage.gotoSettingsPage();
@@ -850,6 +831,7 @@ describe('Dynamic Hidden Data', () => {
             await createDocumentTemplatePo.clickOnSaveButton();
             await utilityGrid.searchAndOpenHyperlink('Document' + randomStr);
             expect(await editDocumentTemplatePo.getDynamicFieldOnBody()).toContain('FieldGroup1');
+            await editDocumentTemplatePo.clickOnCancelButton();
         });
         it('[4033,4006,4849]: verify dynamic group fields on Copy case template', async () => {
             await navigationPage.gotoCreateCase();
@@ -972,6 +954,7 @@ describe('Dynamic Hidden Data', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate1);
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
+            await viewCasePo.clickOnGroupName('GroupOne');
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('externalNumber')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('externalDate')).toBeTruthy();
@@ -1028,6 +1011,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);
+            await viewCasePo.clickOnGroupName('GroupOne');
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group1')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group2')).toBeTruthy();
@@ -1192,7 +1176,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3486]:  Verify PDF Configs - Date Time Format are accessible to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.COMMON_CONFIGURATION);
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
