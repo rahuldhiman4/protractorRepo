@@ -19,7 +19,7 @@ export class EditEmailConfig {
         searchAssociatedEntitiesToBeRemoveTextBox: '[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] input',
         listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects: '[class="col-5"] li[class="list-group-item ng-star-inserted"]',
         cancelEditEmailConfig: '[rx-view-component-id="bf51aff6-d0a3-484a-bed1-e11a78971aee"] button',
-        closedAssociatePublicExclusionSubjects: '[rx-view-component-id="71177700-7a94-435f-b594-24ae7bc4e22b"] button span',
+        closedAssociatePublicExclusionSubjects: '[rx-view-component-id="71177700-7a94-435f-b594-24ae7bc4e22b"] button',
         acknowledgementTemplateEditButton: '[rx-view-component-id="dd7a7212-432d-4c79-a33b-b7cc8abf787e"] button',
         saveAcknowledgementTemplate: '[rx-view-component-id="ae1f4f53-445e-4d4c-b6b9-13acc691b4b8"] button',
         cancelAcknowledgementTemplate: '[rx-view-component-id="e163832a-f819-43f0-af68-87aa1d5c671a"] button',
@@ -30,7 +30,7 @@ export class EditEmailConfig {
         associatedSupportGroupBuisnessGroupGuid: '09c5a9d8-2aa6-449c-a041-958432203c3c',
         associatedSupportGroupValueassociatedSupportGroup: '.association-list-spacing .km-group-list-item__info span',
         selectSupportGroup: '.km-group-list-item__icon-container i',
-        associatedSupportGroup: '.button-column button',
+        associatedSupportGroup: '.bwf-association-actions button',
         supportGroupAssociatedSupportGroup: '.source-list-spacing .bottom-margin',
         associatedSupportGroupAssociatedSupportGroup: '.association-list-spacing .bottom-margin',
         associatedSupportGroupSearchResult: '.km-group-list-item__info span',
@@ -73,7 +73,7 @@ export class EditEmailConfig {
     }
 
     async clickAvailableExclusionSubjectsCheckbox(): Promise<void> {
-        await $(this.selectors.availableExclusionSubjectsCheckbox).click();
+        await $(this.selectors.searchAvailableEntitiesTextBox).click();
     }
 
     async getSupportGroupFromSupportGroupListInAssociatedSupportGroupTab(): Promise<string> {
@@ -136,19 +136,20 @@ export class EditEmailConfig {
     }
 
     async searchAvailableEntitiesToBeAssociated(searchvalue: string): Promise<void> {
-        await $(this.selectors.searchAvailableEntitiesTextBox).clear();
-        await $(this.selectors.searchAvailableEntitiesTextBox).sendKeys(searchvalue);
+        await $(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).clear();
+        await $(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).sendKeys(searchvalue);
     }
 
     async isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
+        let loc=await $$('[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] .bwf-association-list').get(0);
         if (searchvalue) {
-            return await element(by.cssContainingText(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isPresent().then(async (link) => {
+            return  await loc.element(by.cssContainingText('.list-item', searchvalue)).isPresent().then(async (link) => {
                 if (link) {
-                    return await element(by.cssContainingText(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isDisplayed();
+                    return await loc.element(by.cssContainingText('.list-item', searchvalue)).isDisplayed();
                 } else return false;
             });
         } else
-            return await $$(this.selectors.listAvailableExclusionsSubjectInAssociatePublicExclusionSubjects).count() < 1 ? false : true;
+        return await loc.element(by.cssContainingText('.list-item', searchvalue)).count() < 1 ? false : true;
     }
 
     async searchAssociatedEntitiesToBeRemoveAssociation(searchvalue: string): Promise<void> {
@@ -157,14 +158,15 @@ export class EditEmailConfig {
     }
 
     async isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
+        let loc=await $$('[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] .bwf-association-list').get(1);
         if (searchvalue) {
-            return await element(by.cssContainingText(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isPresent().then(async (link) => {
+            return  await loc.element(by.cssContainingText('.list-item', searchvalue)).isPresent().then(async (link) => {
                 if (link) {
-                    return await element(by.cssContainingText(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects, searchvalue)).isDisplayed();
+                    return await loc.element(by.cssContainingText('.list-item', searchvalue)).isDisplayed();
                 } else return false;
             });
-        }
-        return await $$(this.selectors.listAssociatedExclusionsSubjectInAssociatePublicExclusionSubjects).count() < 1 ? false : true;
+        } else
+        return await loc.element(by.cssContainingText('.list-item', searchvalue)).count() < 1 ? false : true;
     }
 
     async clickSupportGroup(): Promise<void> {

@@ -661,8 +661,6 @@ describe('Email Configuration', () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
             await createAcknowledgmentTemplatesPo.setTemplateName('companytemplateName' + randomStr);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
@@ -685,6 +683,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('companytemplateName' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
+            await editEmailConfigPo.cancelEditEmailConfig();
         });
 
         it('[5336,5337]: Verify acknowledgment template is accessible to Line of business Case Manager', async () => {
@@ -773,6 +772,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
             expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.cancelEditEmailConfig();
         });
 
         it('[5336,5337]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {

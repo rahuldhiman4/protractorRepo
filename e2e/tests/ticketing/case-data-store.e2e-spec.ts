@@ -221,6 +221,7 @@ describe('Case Data Store', () => {
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri12' + randomStr)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri13' + randomStr)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri14' + randomStr)).toBeTruthy();
+        await viewCasetemplatePo.clickBackArrowBtn();
     });
 
     //ptidke
@@ -261,6 +262,7 @@ describe('Case Data Store', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field2OutSideGroup)).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field3OutSideGroup)).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field4OutSideGroup)).toBeTruthy();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4862]: [Dynamic Data] - Case Template and Case UI with dynamic fields and groups having long title', async () => {
             await navigationPage.gotoCreateCase();
@@ -404,6 +406,7 @@ describe('Case Data Store', () => {
         afterAll(async () => {
             await editTaskTemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 

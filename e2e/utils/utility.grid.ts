@@ -11,7 +11,7 @@ export class GridOperations {
         gridRowLinks: '.at-data-row a',
         gridRowHyperLinks: '.at-data-row a',
         gridRows: '.at-data-row',
-        gridCheckbox: '.radio__label input',
+        gridCheckbox: '.ui-chkbox-box',
         appliedPresetFilter: '.a-tag-active span, adapt-table-toolbar span.btn-link',
         activeFilter: 'adapt-table-toolbar span.btn-link',
         filterPresetBtn: 'button.d-icon-left-filter',

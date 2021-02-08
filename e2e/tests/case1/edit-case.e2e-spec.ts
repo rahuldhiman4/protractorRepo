@@ -60,35 +60,34 @@ describe('Edit Case', () => {
         await expect(editCasePage.isClearSiteButtonClickable()).toBeTruthy();
         //await expect(editCasePage.isDescriptionClickable()).toBeTruthy(); Is it defect? commented because description CKEditor is always eanbled
 
-        await expect(editCasePage.getAssignedCompanyReadable()).toBeTruthy();
-        await expect(editCasePage.getDepartmentCompanyReadable()).toBeTruthy();
-        await expect(editCasePage.getAssigneeReadable()).toBeTruthy();
-        await expect(editCasePage.getBuisnessUnitReadable()).toBeTruthy();
-        await expect(editCasePage.getAssignedGroupReadable()).toBeTruthy();
-        await expect(editCasePage.isChangeAssignmentButtonPresent()).toBeTruthy();
-        await expect(editCasePage.isAssignToMePresent()).toBeTruthy();
+        //Commented below lines as these are getting covered in Change Assignment test cases
+        // await expect(editCasePage.getAssignedCompanyReadable()).toBeTruthy();
+        // await expect(editCasePage.getAssigneeReadable()).toBeTruthy();
+        // await expect(editCasePage.getBuisnessUnitReadable()).toBeTruthy();
+        // await expect(editCasePage.getAssignedGroupReadable()).toBeTruthy();
+        // await expect(editCasePage.isChangeAssignmentButtonPresent()).toBeTruthy();
+        // await expect(editCasePage.isAssignToMePresent()).toBeTruthy();
 
         await expect(editCasePage.isResourcePresent()).toBeTruthy();
         await expect(editCasePage.isActivityPresent()).toBeTruthy();
+        await activityTabPo.clickOnRefreshButton();
         await expect(editCasePage.isActivityFeedPresent()).toBeTruthy();
         await expect(editCasePage.isRequesterTextDisplayed()).toBeTruthy();
         await expect(editCasePage.isRequesterImageDisplayed()).toBeTruthy();
         await expect(editCasePage.isSiteTextPresent()).toBeTruthy();
 
-        await editCasePage.clickChangeAssignmentButton();
         await expect(changeAssignmentPage.isDropDownDisplayed("Company")).toBeTruthy();
         await expect(changeAssignmentPage.isDropDownDisplayed("SupportOrg")).toBeTruthy();
         await expect(changeAssignmentPage.isDropDownDisplayed("AssignedGroup")).toBeTruthy();
         await expect(changeAssignmentPage.isDropDownDisplayed("Assignee")).toBeTruthy();
-        await changeAssignmentPage.clickOnCancelButton();
-        await editCasePage.waitForEditCasePageToBeDisplayed();
+        
         await expect(editCasePage.getSelectCaseTemplate()).toBe('Select Case Template');
         await editCasePage.clickOnSelectCaseTemplate();
         await caseTemplatePage.selectCaseTemplate('401K Status');
 
         await expect(editCasePage.getChangeCaseTemplate()).toBe('Change Case Template');
         await editCasePage.clickSaveCase();
-        await expect(editCasePage.isActivityFeedPresent()).toBeTruthy();
+        await expect(editCasePage.isActivityFeedPresent()).toBeTruthy('Activity Feed is not visible');
         await viewCasePage.clickOnRequestersEmail();
         await composemailPage.clickOnDiscardButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -114,14 +113,11 @@ describe('Edit Case', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickEditCaseButton();
-        await editCasePage.clickOnAssignToMe();
-        await editCasePage.clickChangeAssignmentButton();
-        expect(await changeAssignmentPage.isAssignToMeCheckBoxSelected()).toBeFalsy("Checkbox is selected");
+        await changeAssignmentPage.clickAssignToMeBtn();
         expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
         expect(await changeAssignmentPage.getDropDownValue("SupportOrg")).toBe('US Support 3');
         expect(await changeAssignmentPage.isDropDownDisplayed("AssignedGroup")).toBeTruthy();
         await changeAssignmentPage.setDropDownValue('Assignee', 'Qiao Feng');
-        await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
         expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
 
@@ -129,19 +125,17 @@ describe('Edit Case', () => {
         await changeAssignmentPage.setDropDownValue('SupportOrg', 'Australia Support');
         await changeAssignmentPage.setDropDownValue('AssignedGroup', 'AU Support 1');
         await editCasePage.clickSaveCase();
-        expect(await viewCasePage.getAssignedGroupText()).toBe('AU Support 1');
+        expect(await viewCasePage.getAssignedGroupText()).toContain('AU Support 1');
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getAllTaskActivity('AU Support 1')).toBe('AU Support 1');
         await viewCasePage.clickEditCaseButton();
-        await editCasePage.clickChangeAssignmentButton();
         await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
         await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
         await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
-        await changeAssignmentPage.clickOnAssignButton();
         await editCasePage.clickSaveCase();
-        expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 3');
+        expect(await viewCasePage.getAssignedGroupText()).toContain('US Support 3');
         await viewCasePage.clickEditCaseButton();
-        await editCasePage.clickOnAssignToMe();
+        await changeAssignmentPage.clickAssignToMeBtn();
         await editCasePage.clickSaveCase();
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.isTextPresentInActivityLog('US Support 3')).toBeTruthy();
