@@ -9,6 +9,7 @@ class ChangeAssignmentBlade {
         assignButton: '.modal-footer .btn-primary',
         searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
         assignee: '.person__info .name',
+        knowledgeReviewGuid: 'b56b4649-9f86-4ba9-a8a5-56d9c000cc89',
     }
 
     async isDropDownDisplayed(dropDownName: string, guid?: string): Promise<boolean> {
@@ -40,7 +41,7 @@ class ChangeAssignmentBlade {
         return await dropDownElement.isDisplayed();
     }
 
-    async isDropDownDisabled(dropDownName: string, guid?: string): Promise<boolean> {
+    async isFieldDisabled(dropDownName: string, guid?: string): Promise<boolean> {
         let locator = this.selectors.changeAssignmentComponent;
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         switch (dropDownName) {
@@ -55,6 +56,9 @@ class ChangeAssignmentBlade {
             }
             case "Assignee": {
                 return await $$(locator).get(3).getAttribute("disabled") == "true";
+            }
+            case "AssignToMe": {
+                return await $$(locator).get(4).getAttribute("disabled") == "true";
             }
             default: {
                 console.log('Dropdown Not Available');

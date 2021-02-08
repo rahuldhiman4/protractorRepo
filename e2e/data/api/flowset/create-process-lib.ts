@@ -24,7 +24,7 @@ export const NEW_PROCESS_LIB = {
         },
         "450000420": {
             "id": 450000420,
-            "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+            "value": "HumanResource",
         },
         "1000000001": {
             "id": 1000000001,

@@ -5,14 +5,14 @@ import utilityGrid from '../../../utils/utility.grid';
 class CreateEmailTemplateBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        templateName: '[rx-view-component-id="a01af9fa-da73-44e5-a304-8f8c7632b1a0"] input',
-        company: '[rx-view-component-id="af048482-fdf7-4650-ab4b-75e262e00445"] button',
+        templateName: '[rx-view-component-id="e7893fa6-ebfd-4e5f-b997-efcd337caa8b"] input',
+        company: '[rx-view-component-id="e75104bf-e0a8-41db-ad84-31b9ef05fd9f"] button',
         moduleName: '[rx-view-component-id="8107085d-334f-4d50-beb9-ad10d8911144"] button',
-        statusGuid: 'a1e0042f-41e7-4c80-9cd8-014786f346e6',
-        labelGuid: '38ba050c-eb47-44a7-9efc-c724302560bf',
-        description: '[rx-view-component-id="f7437c9e-1ed7-4aac-974a-e4d4a643ee35"] input',
-        localeGuid: '71db023a-4979-4f58-a026-6aeda2edd96b',
-        localizeMessage: '[rx-view-component-id="88ea24dd-ddad-489f-904a-89e43f80f5e6"] button',
+        statusGuid: '2b5a61a3-16f8-4d1f-9a60-558c4575ed3a',
+        labelGuid: 'dc8431e8-b40a-43fd-88fe-8d7dc884c069',
+        description: '[rx-view-component-id="13687881-a1ff-4198-a22a-4d2583307e48"] input',
+        localeGuid: 'c1ebf410-826a-434a-9f42-e8c44ed8dcdb',
+        localizeMessage: '[rx-view-component-id="d80f1ed8-5f3a-4ad1-bd5a-aa4b68879cc2"] button',
         searchButtonClick: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-search',
         editButton: '.d-icon-left-pencil',
         body: '.cke_wysiwyg_div',
@@ -71,11 +71,11 @@ class CreateEmailTemplateBlade {
     }
 
     async isModuleNameDisabled(): Promise<boolean> {
-        return await $('[rx-view-component-id="8107085d-334f-4d50-beb9-ad10d8911144"] adapt-select').getAttribute('aria-readonly')=="true";
+        return await $('[rx-view-component-id="2a3f6607-4335-4540-aedf-f71a47c6b575"] button').getAttribute('aria-disabled')=="true";
     }
 
     async isCompanyDropDownDisabled(): Promise<boolean> {
-        return await $('[rx-view-component-id="af048482-fdf7-4650-ab4b-75e262e00445"] adapt-select').getAttribute('aria-readonly')=="true";
+        return await $('[rx-view-component-id="e75104bf-e0a8-41db-ad84-31b9ef05fd9f"] button').getAttribute('aria-disabled')=="true";
     }
 
     async isLocalizedMessageButtonDisplayed(): Promise<boolean> {

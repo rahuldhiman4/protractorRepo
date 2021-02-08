@@ -221,6 +221,7 @@ describe('Case Data Store', () => {
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri12' + randomStr)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri13' + randomStr)).toBeTruthy();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri14' + randomStr)).toBeTruthy();
+        await viewCasetemplatePo.clickBackArrowBtn();
     });
 
     //ptidke
@@ -261,6 +262,7 @@ describe('Case Data Store', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field2OutSideGroup)).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field3OutSideGroup)).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(field4OutSideGroup)).toBeTruthy();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4862]: [Dynamic Data] - Case Template and Case UI with dynamic fields and groups having long title', async () => {
             await navigationPage.gotoCreateCase();
@@ -352,6 +354,7 @@ describe('Case Data Store', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(activeTemplateName);
             expect(await viewTaskPo.isDynamicFieldSectionPresent()).toBeFalsy('fields are present');
+            await viewTaskTemplate.clickBackArrowBtn();
             //draft to active
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
@@ -363,6 +366,7 @@ describe('Case Data Store', () => {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeFalsy('Link is present');
+            await viewTaskTemplate.clickBackArrowBtn();
             //draft only
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
@@ -371,6 +375,7 @@ describe('Case Data Store', () => {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4842]: [Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
             //edit
@@ -401,6 +406,7 @@ describe('Case Data Store', () => {
         afterAll(async () => {
             await editTaskTemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -617,6 +623,7 @@ describe('Case Data Store', () => {
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri18' + randomStr)).toBeTruthy('field not present');
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri19' + randomStr)).toBeTruthy('field not present');
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri20' + randomStr)).toBeTruthy('field not present');
+        await viewCasetemplatePo.clickBackArrowBtn();
     });
 
     //ptidke
@@ -648,6 +655,7 @@ describe('Case Data Store', () => {
         expect(await viewTaskTemplate.getCategoryTier1Value()).toBe('Applications');
         expect(await viewTaskTemplate.getSummaryValue()).toBe('update' + randomStr);
         expect(await viewTaskTemplate.getPriorityValue()).toBe('High');
+        await viewTaskTemplate.clickBackArrowBtn();
     });
 
     //ptidke
@@ -828,6 +836,7 @@ describe('Case Data Store', () => {
         for (let i = 0; i < arr.length; i++) {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('field not presnet ' + arr[i]);
         }
+        await viewCasetemplatePo.clickBackArrowBtn();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
         for (let i = 0; i < arr.length; i++) {
@@ -1050,6 +1059,7 @@ describe('Case Data Store', () => {
             await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'attachment2', 'attachment3']
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(activeTemplateName);
@@ -1057,6 +1067,7 @@ describe('Case Data Store', () => {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('Group Not found');
             }
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4868]: Create and Verify Dynamic Fields On Case Template  ', async () => {
             await navigationPage.gotoSettingsPage();
@@ -1083,6 +1094,7 @@ describe('Case Data Store', () => {
             expect(await editCasetemplatePo.isDynamicFieldDisplayed('newDescri1127' + randomStr)).toBeTruthy('field not present');
             await editCasetemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4868]: [Dynamic Data] [UI] - Dynamic Fields display on Case Template Edit view UI', async () => {
             await navigationPage.gotoSettingsPage();
@@ -1111,6 +1123,7 @@ describe('Case Data Store', () => {
         afterAll(async () => {
             await editCasetemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 

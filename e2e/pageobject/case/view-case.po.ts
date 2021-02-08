@@ -73,6 +73,8 @@ class ViewCasePage {
         lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .read-only-content',
         recommendedCaseGuid: '[rx-view-component-id="1bd34505-c98c-4046-a129-5d3c09e87955"]',
         assigneeHierachy: '.read-only-hierachy div.read-only-content',
+        editAssignment: '.edit-button button',
+        assignToMe: '.assign-to-me button'
     }
 
     async clickDescriptionShowMore(): Promise<void> {
@@ -603,6 +605,22 @@ class ViewCasePage {
 
     async clickFirstRecommendedCases(): Promise<void> {
         await $(this.selectors.recommendedCaseGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
+    }
+    
+    async isEditAssignmenetDisabled(): Promise<boolean> {
+        return await $(this.selectors.editAssignment).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.editAssignment).getAttribute("disabled") == "true";
+            } else return false;
+        });
+    }
+
+    async isAssignToMeDisabled(): Promise<boolean> {
+        return await $(this.selectors.assignToMe).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.assignToMe).getAttribute("disabled") == "true";
+            } else return false;
+        });
     }
 }
 

@@ -79,7 +79,7 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "temp",
@@ -144,7 +144,7 @@ export const SAVE_EXISTING_AND_NEW_CASE_DYNAMIC_DATA_DEFINITION = {
     "status": 0,
     "processName": null,
     "processDocumentDefinitionId": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "casePetramco1",
@@ -169,7 +169,7 @@ export const GLOBAL_DYNAMIC_DATA_CASE_TEMPLATE = {
     "status": 0,
     "processName": null,
     "processDocumentDefinitionId": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "GlobalField1",
@@ -194,7 +194,7 @@ export const GLOBAL_TASK_TEMPLATE = {
     "status": 0,
     "processName": null,
     "processDocumentDefinitionId": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "GlobalTaskField1",
@@ -219,7 +219,7 @@ export const DYNAMIC_DATA_FOR_TASK_TEMPLATE = {
     "status": 0,
     "processName": null,
     "processDocumentDefinitionId": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "ddfield1",
@@ -529,7 +529,7 @@ export const CASE_TEMPLATE_REQUESTER_DYNAMIC_FIELDS =
     "name": "case template",
     "templateId": "xalkdjasd",
     "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "temp",
@@ -1449,7 +1449,7 @@ export const hiddenField = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [{
         "name": "Field1OutsideDRDMV21415",
         "description": "Field1OutsideDRDMV21415",
@@ -1462,7 +1462,7 @@ export const hiddenField = {
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
         "hidden": true,
-        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "lineOfBusiness": "HumanResource"
     }
     ]
 };
@@ -1471,7 +1471,7 @@ export const ALL_DATA_TYPE = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [{
         "name": "requiredFieldTrue",
         "description": "requiredTrueFieldDescription",
@@ -1529,7 +1529,7 @@ export const DuplicateOFhiddenFieldDRDMV21418 = {
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
         "hidden": false,
-        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "lineOfBusiness": "HumanResource"
     }]
 };
 export const UnhiddenField = {
@@ -1550,7 +1550,7 @@ export const UnhiddenField = {
             "active": true,
             "type": "SIMPLE_FIELD",
             "hidden": false,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         }
     ],
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template"
@@ -1572,7 +1572,7 @@ export const RequiredHiddenDRDMV21451 = {
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
         "hidden": true,
-        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "lineOfBusiness": "HumanResource"
     }
     ]
 };
@@ -1593,7 +1593,7 @@ export const ConfidentialsHiddenDRDMV21452 = {
         "attachmentGroupId": null,
         "type": "SIMPLE_FIELD",
         "hidden": true,
-        "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+        "lineOfBusiness": "HumanResource"
     }
     ]
 };
@@ -1605,7 +1605,7 @@ export const CASE_TEMPLATE_WITH_REQUESTER = {
     "processName": null,
     "templateId": "",
     "id": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "GroupOne",
@@ -1726,7 +1726,7 @@ export const DynamicGroupContainsHiddenFieldDRDMV21416 = {
                     "attachmentGroupId": null,
                     "type": "SIMPLE_FIELD",
                     "hidden": true,
-                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+                    "lineOfBusiness": "HumanResource"
                 },
             ]
         }
@@ -1756,7 +1756,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": true,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1773,7 +1773,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": true,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1790,7 +1790,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": true,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1813,7 +1813,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": true,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1830,7 +1830,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": true,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1847,7 +1847,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": true,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1864,7 +1864,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": true,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1881,7 +1881,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": false,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1898,7 +1898,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": false,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1915,7 +1915,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": false,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1938,7 +1938,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": false,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1955,7 +1955,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": false,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1972,7 +1972,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": false,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         },
         {
             "id": "",
@@ -1989,7 +1989,7 @@ export const AllSourceAndTypeDRDMV21515 = {
             "attachmentGroupId": null,
             "type": "SIMPLE_FIELD",
             "hidden": false,
-            "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+            "lineOfBusiness": "HumanResource"
         }
     ],
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template"
@@ -2002,7 +2002,7 @@ export const DynamicGroupField = {
     "processName": null,
     "templateId": "",
     "id": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "GroupOne",
@@ -2092,7 +2092,7 @@ export const DynamicGroupFieldDRDMV13129Data1 = {
     "processName": null,
     "templateId": "",
     "id": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "GroupOne",
@@ -2149,7 +2149,7 @@ export const DynamicGroupFieldDRDMV13129Data2 = {
     "processName": null,
     "templateId": "",
     "id": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "GroupTwo",
@@ -2235,7 +2235,7 @@ export const DynamicGroupContainsConfidentialsFieldDRDMV15041 = {
                     "attachmentGroupId": null,
                     "type": "SIMPLE_FIELD",
                     "hidden": false,
-                    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+                    "lineOfBusiness": "HumanResource"
                 },
                 {
                     "name": "externalDate",
@@ -2357,7 +2357,7 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS_MANUAL =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "manualtempTextC",
@@ -2458,7 +2458,7 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS_EXTERNAL =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "externaltempTextC",
@@ -2559,7 +2559,7 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS_AUTOMATED =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "automatedtempTextC",
@@ -2663,7 +2663,7 @@ export const BULK_DYNAMIC_FIELDS_INSIDE_OUTSIDE_GROUP = {
     "processName": null,
     "templateId": "",
     "id": null,
-    "lineOfBusiness": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "GroupOne",

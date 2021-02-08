@@ -145,8 +145,7 @@ describe('Line of Business Permission Tests', () => {
         await apiHelper.createCaseTemplate(templateData);
         await apiHelper.apiLogin('tadmin');
         personData.userPermission = ["Case Business Analyst", "HR"]
-        let orgId = await coreApi.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = company;
         apiHelper.createLineOfBuisness(LineOfBuisness)
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         await browser.sleep(5000); // timeout requried to reflect data on UI
@@ -673,7 +672,7 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilityGrid.searchAndOpenHyperlink(emailID);
-            expect(await editEmailConfigPo.isDefaultCaseTemplatetoUsePresent(randomStr + 'templateName')).toBeFalsy();
+            expect(await editEmailConfigPo.getDefaultCaseTemplatetoUsePresent()).toBe(randomStr + 'templateName');
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown('templateName123' + randomStr)).toBeTruthy();
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
@@ -1017,7 +1016,7 @@ describe('Line of Business Permission Tests', () => {
             await editFlowsetConfigPo.setFlowset("edit Flowset" + randomStr);
             await editFlowsetConfigPo.setDescription("edit description" + randomStr);
             await expect(editFlowsetConfigPo.getStatusvalue()).toBe("Active");
-            await editFlowsetConfigPo.selectStatus("Draft");
+            await editFlowsetConfigPo.selectFlowsetConfigStatus("Draft");
             await editFlowsetConfigPo.clickSaveBtn();
         });
         it('[6230]: [Flowsets] Case Template creation with Flowset', async () => {

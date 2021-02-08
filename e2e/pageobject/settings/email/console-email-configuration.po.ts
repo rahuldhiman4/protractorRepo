@@ -3,7 +3,7 @@ import utilityGrid from '../../../utils/utility.grid';
 
 export class ConsoleEmailConfig {
     selectors = {
-        addNewEmailConfiguration: '[rx-view-component-id="703593bc-16dd-4763-a8d7-b55777b0b76d"] button',
+        addNewEmailConfiguration: '[rx-view-component-id="448192ab-a717-4563-b4f4-a9917f18ba31"] button',
         emailConfigGuid: '03f16f3f-02ff-45c8-86be-bead72dd39cb',
         deleteButton: '[rx-view-component-id="dc52b8fa-3d4b-4db6-a496-d2ffc1d269af"] button',
     }

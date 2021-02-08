@@ -13,17 +13,21 @@ import { CASE_REOPEN } from '../data/api/case/case.reopen.api';
 import { CASE_TEMPLATE_IDENTITY_UPDATE_PAYLOAD, CASE_TEMPLATE_PAYLOAD, CASE_TEMPLATE_STATUS_UPDATE_PAYLOAD } from '../data/api/case/case.template.data.api';
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
+import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
-import { MAILBOX_CONFIG, INCOMINGMAIL_DEFAULT, EMAIL_PROFILE, EMAIL_OUTGOING, UPDATE_EMAIL_PROFILE_ON_LOB } from '../data/api/email/email.configuration.data.api';
+import { EMAIL_OUTGOING, EMAIL_PROFILE, INCOMINGMAIL_DEFAULT, MAILBOX_CONFIG, UPDATE_EMAIL_PROFILE_ON_LOB } from '../data/api/email/email.configuration.data.api';
 import { NEW_PROCESS_LIB, PROCESS_FLOWSET_MAPPING } from '../data/api/flowset/create-process-lib';
+import { CREATE_BUSINESS_UNIT, UPDATE_BUSINESS_UNIT } from '../data/api/foundation/business.unit.api';
 import { ENABLE_USER, NEW_USER } from '../data/api/foundation/create-foundation-entity.api';
-import { UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP, DELETE_PERSON } from '../data/api/foundation/update-foundation-entity.data.api';
+import { CreateLOB, UpdateLOB } from '../data/api/foundation/lob.api';
+import { REGION, REGION_TIER } from '../data/api/foundation/region.api';
+import { DELETE_PERSON, UPDATE_ORGANIZATION, UPDATE_PERSON, UPDATE_SUPPORT_GROUP } from '../data/api/foundation/update-foundation-entity.data.api';
 import { FLAG_UNFLAG_KA } from '../data/api/knowledge/flag-unflag.data.api';
 import { KNOWLEDGE_APPROVAL_CONFIG, KNOWLEDGE_APPROVAL_FLOW_CONFIG } from '../data/api/knowledge/knowledge-approvals-config.api';
 import { KNOWLEDGE_ARTICLE_EXTERNAL_FLAG } from "../data/api/knowledge/knowledge-article-external.api";
 import { KNOWLEDGEARTICLE_HELPFULCOUNTER, KNOWLEDGEARTICLE_TEMPLATE } from '../data/api/knowledge/knowledge-article.template.api';
-import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGESET_PERMISSION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
+import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGE_SET } from '../data/api/knowledge/knowledge-set.data.api';
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import { ARTCILE_DUE_DATE, EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
@@ -32,7 +36,9 @@ import * as processes from '../data/api/shared-services/create-new-process.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
 import { AUTOMATED_CASE_STATUS_TRANSITION, ENABLE_DISABLE_PROCESS } from '../data/api/shared-services/process.data.api';
-import { BUSINESS_TIME_SEGMENT, BUSINESS_TIME_SHARED_ENTITY, CASE_MILESTONE, SERVICE_TARGET_GROUP, SERVICE_TARGET_PAYLOAD, TASK_MILESTONE, SERVICE_TARGET_GOALTYPE_PAYLOAD } from '../data/api/slm/serviceTarget.api';
+import { RELATIONSHIPS } from '../data/api/shared-services/relationship.api';
+import { BUSINESS_TIME_SEGMENT, BUSINESS_TIME_SHARED_ENTITY, CASE_MILESTONE, SERVICE_TARGET_GOALTYPE_PAYLOAD, SERVICE_TARGET_GROUP, SERVICE_TARGET_PAYLOAD, TASK_MILESTONE } from '../data/api/slm/serviceTarget.api';
+import { NOTES_TEMPLATE } from '../data/api/social/notes.template.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
 import { ADHOC_TASK_PAYLOAD, REGISTER_ADHOC_TASK, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
@@ -44,18 +50,13 @@ import { ICaseApprovalMapping, IKnowledgeApprovalMapping, ITaskApprovalMapping }
 import { ICaseAssignmentMapping, ICaseUpdate, ICreateCase, ICreateCaseDWP, IReadAccess, IUpdateCaseAccess } from '../data/interface/case.interface';
 import { ICognitiveDataSet, ICognitiveDataSetMapping } from '../data/interface/cognitive.interface';
 import { IFlowset, IFlowsetProcess, IFlowsetProcessMapping } from '../data/interface/flowset.interface';
-import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, IMenuItem, IPerson, ISupportGroup, ILOB } from '../data/interface/foundation.interface';
-import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IknowledgeSetPermissions, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
-import { IEmailConfig, INotificationEvent, INotificationTemplate, IEmailMailboxConfig } from '../data/interface/notification.interface';
-import { ICreateSVT, ICreateSVTGroup, ICreateSVTGoalType } from '../data/interface/svt.interface';
+import { IBusinessUnit, IDepartment, IDomainTag, IFoundationEntity, ILOB, IMenuItem, IPerson, ISupportGroup } from '../data/interface/foundation.interface';
+import { IDocumentLib, IDocumentTemplate, IKnowledgeArticles, IKnowledgeArticleTemplate, IKnowledgeSet, IUpdateKnowledgeArticle } from '../data/interface/knowledge.interface';
+import { IEmailConfig, IEmailMailboxConfig, INotificationEvent, INotificationTemplate } from '../data/interface/notification.interface';
+import { ICreateSVT, ICreateSVTGoalType, ICreateSVTGroup } from '../data/interface/svt.interface';
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
-import { NOTES_TEMPLATE } from '../data/api/social/notes.template.api';
-import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
-import { RELATIONSHIPS } from '../data/api/shared-services/relationship.api';
-import { UpdateLOB, CreateLOB } from '../data/api/foundation/lob.api';
-import { REGION, REGION_TIER } from '../data/api/foundation/region.api';
 
 let fs = require('fs');
 
@@ -536,7 +537,7 @@ class ApiHelper {
             }
             templateData.fieldInstances["450000291"] = caseTaskStatusConfiguration;
         }
-        
+
         let newCaseTemplate: AxiosResponse = await apiCoreUtil.createRecordInstance(templateData);
         console.log('Create Case Template API Status =============>', newCaseTemplate.status);
         const caseTemplateDetails = await axios.get(
@@ -882,7 +883,7 @@ class ApiHelper {
     async createBusinessUnit(data: IBusinessUnit): Promise<string> {
         let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(data.orgName);
         if (businessUnitGuid == null) {
-            let businessUnitDataFile = await require('../data/api/foundation/business.unit.api.json');
+            let businessUnitDataFile = cloneDeep(CREATE_BUSINESS_UNIT);
             let businessData = await businessUnitDataFile.NewBusinessUnit;
             businessData.fieldInstances[1000000010].value = data.orgName;
             businessData.fieldInstances[304411161].value = data.relatedOrgId ? data.relatedOrgId : businessData.fieldInstances[304411161].value;
@@ -1023,7 +1024,7 @@ class ApiHelper {
             let recordDisplayId: string = userDetails.data.displayId;
 
             let updateUser = cloneDeep(ENABLE_USER);
-            data.company ? updateUser.fieldInstances[536870913].value = await apiCoreUtil.getOrganizationGuid(data.company) : updateUser.fieldInstances[536870913].value;
+            data.company ? updateUser.fieldInstances[536870913].value = data.company : updateUser.fieldInstances[536870913].value;
             updateUser.displayId = recordDisplayId;
             updateUser.id = recordGUID;
             if (userStatus == 'Inactive') {
@@ -1041,15 +1042,13 @@ class ApiHelper {
 
     async associatePersonToCompany(userId: string, company: string): Promise<boolean> {
         let userGuid = await apiCoreUtil.getPersonGuid(userId);
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
-        let response = await apiCoreUtil.associateFoundationElements("Agent Supports Primary Organization", userGuid, companyGuid);
+        let response = await apiCoreUtil.associateFoundationElements("Agent Supports Primary Organization", userGuid, company);
         return response.status == 204;
     }
 
     async disassociatePersonFromCompany(userId: string, company: string): Promise<boolean> {
         let userGuid = await apiCoreUtil.getPersonGuid(userId);
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
-        let response = await apiCoreUtil.disassociateFoundationElements("com.bmc.arsys.rx.foundation:Agent Supports Primary Organization", userGuid, companyGuid);
+        let response = await apiCoreUtil.disassociateFoundationElements("com.bmc.arsys.rx.foundation:Agent Supports Primary Organization", userGuid, company);
         return response.status == 204;
     }
 
@@ -1071,9 +1070,8 @@ class ApiHelper {
     }
 
     async associateCategoryToOrganization(category: string, organization: string): Promise<boolean> {
-        let organizationGuid = await apiCoreUtil.getOrganizationGuid(organization);
         let categoryGuid = await apiCoreUtil.getCategoryGuid(category);
-        let response = await apiCoreUtil.associateFoundationElements("Organization Uses Categorization", organizationGuid, categoryGuid);
+        let response = await apiCoreUtil.associateFoundationElements("Organization Uses Categorization", organization, categoryGuid);
         return response.status == 204;
     }
 
@@ -1358,11 +1356,11 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
-            knowledgeArticleData.fieldInstances[1000000001].value = data.company ? data.company: knowledgeArticleData.fieldInstances[1000000001].value;
+            knowledgeArticleData.fieldInstances[1000000001].value = data.company ? data.company : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
             knowledgeArticleData.fieldInstances[200000007].value = data.siteGroup;
-            // knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
+            knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
             if (data.assignedCompany) {
                 let assignedCompanyData = {
                     "id": 450000157,
@@ -1446,10 +1444,10 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[301820700].value = data.knowledgeSet;
             knowledgeArticleData.fieldInstances[302300502].value = data.title;
             knowledgeArticleData.fieldInstances[302312187].value = data.templateId;
-            knowledgeArticleData.fieldInstances[1000000001].value = data.company ? await apiCoreUtil.getOrganizationGuid(data.company) : knowledgeArticleData.fieldInstances[1000000001].value;
+            knowledgeArticleData.fieldInstances[1000000001].value = data.company ? data.company : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
-            // knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
+            knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
             knowledgeArticleData.fieldInstances[200000007].value = data.siteGroup;
 
             if (data.assignedCompany) {
@@ -1618,7 +1616,7 @@ class ApiHelper {
         console.log('Disable Domain Tag API Status =============>', domainTagResponse.status);
         return domainTagResponse.status == 204;
     }
-    
+
     async createNewMenuItem(data: IMenuItem): Promise<IIDs> {
         let randomStr = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemData = cloneDeep(MENU_ITEM);
@@ -1662,7 +1660,7 @@ class ApiHelper {
     async setDefaultNotificationForUser(user: string, notificationType: string): Promise<void> {
         let personGuid: string = await apiCoreUtil.getPersonGuid(user);
         console.log(personGuid);
-        
+
         let notificationTypeFile = await require('../data/api/foundation/default.notification.user.api.json');
         let defaultNotificationData = await notificationTypeFile.NotificationSet;
         defaultNotificationData.id = personGuid;
@@ -1760,15 +1758,14 @@ class ApiHelper {
         newProcessConfig.fieldInstances[8]["value"] = data.description ? data.description : newProcessConfig.fieldInstances[8].value;
         newProcessConfig.fieldInstances[1000000001]["value"] = data.company ? data.company : newProcessConfig.fieldInstances[1000000001].value;
         newProcessConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : newProcessConfig.fieldInstances[450000420].value;
-        
-        let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
 
+        let newProcessLibConfRecord: AxiosResponse = await apiCoreUtil.createRecordInstance(newProcessConfig);
         console.log('Create New Process Lib Config API Status =============>', newProcessLibConfRecord.status);
 
         const processLibConfRecord = await axios.get(
             newProcessLibConfRecord.headers.location
         );
-        console.log('New Process API Status =============>', processLibConfRecord.status);
+        console.log(`New Process API Status ${data.processName} =============>`, processLibConfRecord.status);
 
         return {
             id: processLibConfRecord.data.id,
@@ -1882,7 +1879,7 @@ class ApiHelper {
         return response.status;
     }
 
-    
+
     async createDocumentLibrary(docLibDetails: IDocumentLib, filePath: string): Promise<IIDs> {
         let documentLibRecordInstanceJson = cloneDeep(DOC_LIB_DRAFT);
         documentLibRecordInstanceJson.fieldInstances[302300502].value = docLibDetails.docLibTitle;
@@ -1893,11 +1890,11 @@ class ApiHelper {
         documentLibRecordInstanceJson.fieldInstances[260000001].value = docLibDetails.site ? docLibDetails.site : documentLibRecordInstanceJson.fieldInstances[260000001].value;
         documentLibRecordInstanceJson.fieldInstances[302301262].value = docLibDetails.keywordTag ? docLibDetails.keywordTag : documentLibRecordInstanceJson.fieldInstances[302301262].value;
         documentLibRecordInstanceJson.fieldInstances[450000153].value = docLibDetails.description ? docLibDetails.description : documentLibRecordInstanceJson.fieldInstances[450000153].value;
-        documentLibRecordInstanceJson.fieldInstances[450000381].value = docLibDetails.businessUnit ? docLibDetails.businessUnit: documentLibRecordInstanceJson.fieldInstances[450000381].value;
-        documentLibRecordInstanceJson.fieldInstances[1000000063].value = docLibDetails.category1 ? docLibDetails.category1: documentLibRecordInstanceJson.fieldInstances[1000000063].value;
-        documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? docLibDetails.category2: documentLibRecordInstanceJson.fieldInstances[1000000064].value;
-        documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? docLibDetails.category3: documentLibRecordInstanceJson.fieldInstances[1000000065].value;
-        documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? docLibDetails.category4: documentLibRecordInstanceJson.fieldInstances[450000167].value;
+        documentLibRecordInstanceJson.fieldInstances[450000381].value = docLibDetails.businessUnit ? docLibDetails.businessUnit : documentLibRecordInstanceJson.fieldInstances[450000381].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000063].value = docLibDetails.category1 ? docLibDetails.category1 : documentLibRecordInstanceJson.fieldInstances[1000000063].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000064].value = docLibDetails.category2 ? docLibDetails.category2 : documentLibRecordInstanceJson.fieldInstances[1000000064].value;
+        documentLibRecordInstanceJson.fieldInstances[1000000065].value = docLibDetails.category3 ? docLibDetails.category3 : documentLibRecordInstanceJson.fieldInstances[1000000065].value;
+        documentLibRecordInstanceJson.fieldInstances[450000167].value = docLibDetails.category4 ? docLibDetails.category4 : documentLibRecordInstanceJson.fieldInstances[450000167].value;
         documentLibRecordInstanceJson.fieldInstances[450000411].value = docLibDetails.lineOfBusiness ? await constants.LOB[docLibDetails.lineOfBusiness] : documentLibRecordInstanceJson.fieldInstances[450000411].value;
         let data = {
             recordInstance: documentLibRecordInstanceJson,
@@ -1985,7 +1982,7 @@ class ApiHelper {
         knowledgeSetTemplateData.knowledgeSet = data.knowledgeSetTitle ? data.knowledgeSetTitle : knowledgeSetTemplateData.templateDescription;
         knowledgeSetTemplateData.status = data.status ? await constants.ArticleTemplateStatus[data.status] : knowledgeSetTemplateData.status;
         knowledgeSetTemplateData.knowledgeSetId = await apiCoreUtil.getKnowledgeSetGuid(data.knowledgeSetTitle);
-        // knowledgeSetTemplateData.lobId = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeSetTemplateData.lobId;
+        knowledgeSetTemplateData.lobId = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeSetTemplateData.lobId;
         const articleTemplateResponse = await axios.post(
             articleTemplateUri,
             knowledgeSetTemplateData
@@ -2080,10 +2077,9 @@ class ApiHelper {
             }
             case "Organization": {
                 recordName = 'com.bmc.arsys.rx.foundation:Primary Organization';
-                recordGUID = await apiCoreUtil.getOrganizationGuid(entityName);
                 if (data.abbreviation) {
                     jsonBody = cloneDeep(UPDATE_ORGANIZATION);
-                    jsonBody.id = recordGUID;
+                    jsonBody.id = entityName;
                     let updateOrganizationPayload = {
                         "id": "1000000071",
                         "value": data.abbreviation
@@ -2238,7 +2234,7 @@ class ApiHelper {
     async addTaskToCase(taskData: any, caseGuid: string): Promise<AxiosResponse> {
         let taskCreationFromTemplate = cloneDeep(TASK_CREATION_FROM_TEMPLATE);
         let templateName = await apiCoreUtil.getTaskTemplateGuid(taskData.templateName);
-        taskCreationFromTemplate.processInputValues["Case Company"] = await apiCoreUtil.getOrganizationGuid(taskData.company);
+        taskCreationFromTemplate.processInputValues["Case Company"] = taskData.company;
         taskCreationFromTemplate.processInputValues["Case ID"] = caseGuid;
         taskCreationFromTemplate.processInputValues["Requester ID"] = await apiCoreUtil.getPersonGuid(taskData.requesterId);
         taskCreationFromTemplate.processInputValues["Selected Templates"] = "[{\"379\":\"" + templateName + "\"}]";
@@ -2707,7 +2703,6 @@ class ApiHelper {
     }
 
     async deleteCommonConfig(configName: string, company: string, guidParamName?: string): Promise<boolean> {
-        let companyGuid = await apiCoreUtil.getOrganizationGuid(company);
         const appConfigDataUri = "api/rx/application/admin-settings/local/component-griddata/Configuration Values/";
         let headerConfig = {
             headers: {
@@ -2720,7 +2715,7 @@ class ApiHelper {
         );
         console.log('Get ApplicationConfig API Details  =============>', allAppConfig.status);
         let entityObj: any = allAppConfig.data.rows.filter(function (obj: string[]) {
-            return obj["Expression"] === companyGuid;
+            return obj["Expression"] === company;
         });
         if (!guidParamName) guidParamName = 'ownerKeyValue1';
         let appConfigRecordGuid = entityObj.length >= 1 ? entityObj[0][guidParamName] || null : null;
@@ -3069,7 +3064,7 @@ class ApiHelper {
         dataSetMappingPayload.fieldInstances[450000154].value = cognitiveDataSetMapping.confidenceLevelAgent;
         dataSetMappingPayload.fieldInstances[450000155].value = cognitiveDataSetMapping.confidenceLevelAutomatic;
         dataSetMappingPayload.fieldInstances[450000156].value = cognitiveDataSetMapping.enable ? "1" : "0";
-        dataSetMappingPayload.fieldInstances[450000157].value = await apiCoreUtil.getOrganizationGuid(cognitiveDataSetMapping.company);
+        dataSetMappingPayload.fieldInstances[450000157].value = cognitiveDataSetMapping.company;
         dataSetMappingPayload.fieldInstances[450000158].value = await apiCoreUtil.getCognitiveDataSetGuid(cognitiveDataSetMapping.dataset);
 
         const createCognitiveDataSetMappingResponse = await apiCoreUtil.createRecordInstance(dataSetMappingPayload);
@@ -3283,6 +3278,25 @@ class ApiHelper {
         console.log('Create Region Tier API Status =============>', regionTierResponse.status);
         await apiCoreUtil.associateFoundationElements('Region to Site', responseData.id, '723de966290232b2da35cb2d9d0562acfc1b1b93983bf518c2edda8f6eea9ae7246362254728de6b4aebea56dc6acaa5f9ca1d552e3ebb4afc1354ff01c53c4c');
         return regionResponse.status == 201 && regionTierResponse.status == 201;
+    }
+
+    async disassociateDomainTagFromBU(buName: string, domainTagName): Promise<boolean> {
+        let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(buName);
+        let updateBUPayLoad = cloneDeep(UPDATE_BUSINESS_UNIT);
+        console.log(updateBUPayLoad);
+        const updateBU: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.arsys.rx.foundation:Business Unit", businessUnitGuid, updateBUPayLoad)
+        return updateBU.status == 204;
+    }
+
+    async associateDomainTagFromBU(buName: string, domainTagName): Promise<boolean> {
+        let businessUnitGuid = await apiCoreUtil.getBusinessUnitGuid(buName);
+        let updateBUPayLoad = cloneDeep(UPDATE_BUSINESS_UNIT);
+        let domainTag = await apiCoreUtil.getDomainTagGuid(domainTagName);
+        console.log(domainTag);
+
+        updateBUPayLoad.fieldInstances[304417331].value = domainTag;
+        const updateBU: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.arsys.rx.foundation:Business Unit", businessUnitGuid, updateBUPayLoad)
+        return updateBU.status == 204;
     }
 }
 

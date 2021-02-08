@@ -7,7 +7,7 @@ export class Utility {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         dropdownBox: '.dropdown-toggle',
-        dropDownInput: 'input.form-control',
+        dropDownInput: '.dropdown_select__search input.form-control',
         dropDownNoneOpt: '.dropdown-item span',
         dropDownOption: '.dropdown-item',
         dialogMessageTitle: '.modal-content .modal-title, .modal-content .d-modal__title',
@@ -52,10 +52,10 @@ export class Utility {
             }
             case DropDownType.Label: {
                 await browser.wait(this.EC.or(async () => {
-                    let count = await $$('.dropdown.dropdown_select').count();
+                    let count = await $$('adapt-rx-select').count();
                     return count >= 1;
                 }), 3000);
-                const dropDown: ElementFinder[] = await $$('.dropdown.dropdown_select');
+                const dropDown: ElementFinder[] = await $$('adapt-rx-select');
                 for (let i: number = 0; i < dropDown.length; i++) {
                     await dropDown[i].$('.form-control-label').isPresent().then(async (result) => {
                         if (result) {
@@ -63,7 +63,7 @@ export class Utility {
                             if (dropDownLabelText === dropDownIdentifier) {
                                 await dropDown[i].$('button').click();
                                 await dropDown[i].$('input').sendKeys(dropDownValue);
-                                await element(by.cssContainingText('[role="option"] span', dropDownValue)).click();
+                                await element(by.cssContainingText('[role="option"] div', dropDownValue)).click();
                             }
                         }
                     });
@@ -154,7 +154,7 @@ export class Utility {
     }
 
     async isAllDropDownValuesMatches(dropDownIdentifier: string | ElementFinder, dropDownValueArr: string[], inputType?: DropDownType, dropDownSearchValue?: string): Promise<boolean> {
-        let arr: string[] =await this.getAllDropDownValues(dropDownIdentifier,inputType,dropDownSearchValue);
+        let arr: string[] = await this.getAllDropDownValues(dropDownIdentifier, inputType, dropDownSearchValue);
         arr.sort();
         dropDownValueArr = dropDownValueArr.sort();
         return arr.length === dropDownValueArr.length && arr.every(
@@ -668,6 +668,22 @@ export class Utility {
             arr[i] = ab;
         }
         return arr;
+    }
+
+    // for process popup component
+    async searchAndSelectProcessInSelectProcessPopup(processName: string): Promise<void> {
+        await $('.dropdown-menu [rx-id="search-button"]').click();
+        await $('.dropdown-menu adapt-rx-textfield input').sendKeys(processName);
+        await $(`[title*="${processName}"]`).click();
+    }
+
+    // for process popup component
+    async isProcessPresentInSelectProcessPopup(processName: string): Promise<boolean> {
+        await $('.dropdown-menu [rx-id="search-button"]').click();
+        await $('.dropdown-menu adapt-rx-textfield input').sendKeys(processName);
+        let values = await $$('.dropdown-menu button.dropdown-item').count();
+        if (values >= 1) return true;
+        else return false;
     }
 }
 

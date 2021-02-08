@@ -14,7 +14,7 @@ class NavigationPage {
         closeHambergerMenu: 'button.close.close-inverse',
         panelHeadingOfSetting: '.a-tree__no-matches',
         adaptIconTiles: 'button.d-icon-tiles',
-        TileSearchInput: 'input.adapt-search-field',
+        TileSearchInput: 'div.input-group-sm .adapt-rx-search__expandable-block input',
         TileSearchResult: 'button.a-dropdown__link',
     }
 
@@ -225,13 +225,14 @@ class NavigationPage {
     async gotoSettingsPage(): Promise<void> {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await $(this.selectors.settingsButton).click();
-        await $('button.d-icon-angle_right').click();// workaroud until Platform drop 6
-        await $('button.d-icon-angle_right').click();// workaroud until Platform drop 6
     }
 
     async gotoSettingsMenuItem(pathStr: string, expectedTitle: string): Promise<string> {
         const menuItems: Array<string> = pathStr.split('--');
-        if($(".is-flip").isPresent()) await $(".a-tree__filter button").click();
+        if (await $(".is-flip").isPresent()) {
+            await $(".adapt-rx-search__input").sendKeys("collapse");
+            await $(".d-icon-cross_adapt").click();
+        }
         for (let i = 0; i < menuItems.length; i++) {
             let submenuItemLocator = await $$('.a-tree__content');
             if (i < menuItems.length - 1) {

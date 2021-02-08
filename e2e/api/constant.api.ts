@@ -142,10 +142,11 @@ export enum ProcessFlowsetMappingStatus {
     Active = 10
 }
 
+// this enum needs to be removed once code is stable
 export enum LOB {
-    "Human Resource" = "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
-    "Facilities" = "AGGADGG8ECDC0AQ7BR1ZQ6D6IRXB4E",
-    "Finance" = "AGGADGG8ECDC0AQ7BR1OQ6D6I7XB2O",
+    "Human Resource" = "HumanResource",
+    "Facilities" = "Facilities",
+    "Finance" = "Finance",
     "Kingston HR" = "AGGADGG8ECDC0AQ84B56Q75O9WWIP3",
     "Oracle HR" = "AGGADGG8ECDC0AQ84B5NQ75OKDWIPX",
     "Kingston Legal" = "AGGADGG8ECDC0AQ84BQUQ75OV0W4BJ",

@@ -21,27 +21,6 @@ describe('Email Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('tadmin');
-
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -103,7 +82,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setSubject(subject);
             await createEmailTemplatePo.setBody(body);
             await createEmailTemplatePo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName1)).toBeTruthy('Duplicate Template Error messsage missing.');
+            expect(await utilityCommon.isPopUpMessagePresent('Template Already exist with given name:' + templateName1)).toBeTruthy('Duplicate Template Error messsage missing.');
             await utilityCommon.closePopUpMessage();
             await createEmailTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -163,7 +142,7 @@ describe('Email Template', () => {
 
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -176,7 +155,7 @@ describe('Email Template', () => {
 
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -370,7 +349,7 @@ describe('Email Template', () => {
 
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -383,7 +362,7 @@ describe('Email Template', () => {
 
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');

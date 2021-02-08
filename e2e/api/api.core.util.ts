@@ -141,15 +141,6 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
-
-    async getOrganizationGuid(orgName: string): Promise<string> {
-        let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Primary Organization");
-        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[1000000010] === orgName;
-        });
-        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
-    }
-
     async getSupportGroupGuid(supportGroupName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.arsys.rx.foundation:Support Group");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
@@ -343,6 +334,7 @@ class ApiCoreUtil {
             "api/rx/application/process/processdefinition",
             body
         );
+        console.log("New Process Core API Status =============>", newProcess.status);
         return newGuid;
     }
 
@@ -414,7 +406,7 @@ class ApiCoreUtil {
         });
         return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
-    
+
     async getKnowledgeSetGuid(knowledgeSetTitle: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.knowledge:Knowledge Set");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {

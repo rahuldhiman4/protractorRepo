@@ -44,7 +44,7 @@ export const SERVICE_TARGET_PAYLOAD = {
     },
     "450000420": {
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      "value": "HumanResource"
     },
     "490000400": {
       "id": 490000400,
@@ -147,7 +147,7 @@ export const SERVICE_TARGET_GROUP = {
     },
     "450000420": {​​​​
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA"
+      "value": "HumanResource"
     }​​​​,
     "1000000001": {
       "id": 1000000001,
@@ -240,7 +240,7 @@ export const SERVICE_TARGET_GOALTYPE_PAYLOAD = {
     },
     "450000420": {
       "id": 450000420,
-      "value": "AGGADGG8ECDC0AQ7AIVFQ6BXRYS1ZA",
+      "value": "HumanResource",
     }
   }
 };

@@ -12,34 +12,13 @@ import editFlowset from '../../pageobject/settings/manage-flowset/edit-flowset-c
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-let userData1, userData2 = undefined;
 
 describe('Create Flowset', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('tadmin');
-
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
     });
 
     afterAll(async () => {
@@ -51,8 +30,6 @@ describe('Create Flowset', () => {
     it('[5642,5568]: [Flowsets] Create new flowset configuration', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let drpDownStatus: string[] = ['Draft', 'Active', 'Inactive'];
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
         await expect(consoleFlowset.isAddFlowsetButtonDisplayed()).toBeTruthy("Add flowset is disabled");
         await consoleFlowset.clickOnAddFlowset();
 
@@ -76,10 +53,11 @@ describe('Create Flowset', () => {
         await createFlowset.selectStatus("Active");
         await createFlowset.clickSaveButton();
         await expect(editFlowset.getComapanyValue()).toBe('Petramco');
+        await editFlowset.clickCancelFlowsetBtn();
     });
 
     //ankagraw
-    it('[5638]: [Flowsets] Edit/Delete Flowsets', async () => {
+    it('[5638,5641]: [Flowsets] Edit/Delete Flowsets', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         //API call to create the flowset
         await apiHelper.apiLogin('qkatawazi');
@@ -88,60 +66,57 @@ describe('Create Flowset', () => {
         flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
         await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
+        // await navigationPage.gotoSettingsPage();
+        // await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
         await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
+        await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy(" Flowset is not present ");
+        await expect(consoleFlowset.isDecriptionPresentOnGrid('Test Flowset name description')).toBeTruthy(" description is not present ");
+        await expect(consoleFlowset.isFlowsetPresentOnGrid("FlowsetHasNoName")).toBeFalsy(" Flowset is present ");
+
         await editFlowset.setFlowset("edit Flowset" + randomStr);
         await editFlowset.setDescription("edit description" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Active");
-        await editFlowset.selectStatus("Draft");
+        await editFlowset.selectFlowsetConfigStatus("Draft");
         await editFlowset.clickSaveBtn();
         await consoleFlowset.searchAndSelectFlowset("edit Flowset" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Draft");
-    });
-
-    //ankagraw
-    it('[5641]: [Flowsets] Search Flowsets on Console', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
-        //API call to create the flowset
-        await apiHelper.apiLogin('qkatawazi');
-        let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
-        flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
-        await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
-
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-        await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy(" Flowset is not present ")
-        await expect(consoleFlowset.isDecriptionPresentOnGrid('Test Flowset name description')).toBeTruthy(" description is not present ")
-        await expect(consoleFlowset.isFlowsetPresentOnGrid("FlowsetHasNoName")).toBeFalsy(" Flowset is present ")
+        await editFlowset.clickCancelFlowsetBtn();
     });
 
     //ankagraw
     describe('[5326,5296,5328,5322]: Flowset Configuration with Process Mapping for Initialization function', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let processLibConfData, processLibConfData1, processLibConfDataFacilities, processLibConfDataFacilities1;
-        let processAliasNameCaseHR = "case process HR" + randomStr;
-        let processAliasNameSocialHR = "social process HR" + randomStr;
-        let processAliasNameCaseFacilities = "case process Facilities" + randomStr;
-        let processAliasNameSocialFacilities = "social process Facilities" + randomStr;
+        let processAliasNameCaseHR = randomStr + "CaseprocessHR";
+        let processAliasNameSocialHR = randomStr + "SocialprocessHR";
+        let processAliasNameCaseFacilities = randomStr + "CaseprocessFacilities";
+        let processAliasNameSocialFacilities = randomStr + "SocialProcessFacilities";
         let flowsetMandatoryFieldsData;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            let case_management = CASE_MANAGEMENT_LIB_PROCESS;
-            let case_Management_Process = case_management.name + randomStr;
-            case_management.name = case_Management_Process;
-            await apiCoreUtil.createProcess(case_management);
+            let case_management_HR = cloneDeep(CASE_MANAGEMENT_LIB_PROCESS);
+            let case_Management_Process_HR = case_management_HR.name + processAliasNameCaseHR;
+            case_management_HR.name = case_Management_Process_HR;
+            await apiCoreUtil.createProcess(case_management_HR);
 
-            let social_Service = SOCIAL_SERVICE_PROCESS;
-            let social_Service_Process = social_Service.name + randomStr;
-            social_Service.name = social_Service_Process;
-            await apiCoreUtil.createProcess(social_Service);
+            let social_Service_HR = cloneDeep(SOCIAL_SERVICE_PROCESS);
+            let social_Service_Process_HR = social_Service_HR.name + processAliasNameSocialHR;
+            social_Service_HR.name = social_Service_Process_HR;
+            await apiCoreUtil.createProcess(social_Service_HR);
 
-            await apiHelper.apiLogin('qkatawazi');
+            let case_management_Facility = cloneDeep(CASE_MANAGEMENT_LIB_PROCESS);
+            let case_Management_Process_Facility = case_management_Facility.name + processAliasNameCaseFacilities;
+            case_management_Facility.name = case_Management_Process_Facility;
+            await apiCoreUtil.createProcess(case_management_Facility);
+
+            let social_Service_Facility = cloneDeep(SOCIAL_SERVICE_PROCESS);
+            let social_Service_Process_Facility = social_Service_Facility.name + processAliasNameSocialFacilities;
+            social_Service_Facility.name = social_Service_Process_Facility;
+            await apiCoreUtil.createProcess(social_Service_Facility);
+
             processLibConfData = {
                 applicationServicesLib: "com.bmc.dsm.case-lib",
-                processName: case_Management_Process,
+                processName: case_Management_Process_HR,
                 processAliasName: processAliasNameCaseHR,
                 company: "Petramco",
                 description: `First Descritpion${randomStr}`,
@@ -150,7 +125,7 @@ describe('Create Flowset', () => {
             }
             processLibConfData1 = {
                 applicationServicesLib: "com.bmc.dsm.social-lib",
-                processName: social_Service_Process,
+                processName: social_Service_Process_HR,
                 processAliasName: processAliasNameSocialHR,
                 company: "Petramco",
                 description: `Second description ${randomStr}`,
@@ -160,7 +135,7 @@ describe('Create Flowset', () => {
 
             processLibConfDataFacilities = {
                 applicationServicesLib: "com.bmc.dsm.case-lib",
-                processName: case_Management_Process,
+                processName: case_Management_Process_Facility,
                 processAliasName: processAliasNameCaseFacilities,
                 company: "Petramco",
                 description: `First Descritpion${randomStr}`,
@@ -169,7 +144,7 @@ describe('Create Flowset', () => {
             }
             processLibConfDataFacilities1 = {
                 applicationServicesLib: "com.bmc.dsm.social-lib",
-                processName: social_Service_Process,
+                processName: social_Service_Process_Facility,
                 processAliasName: processAliasNameSocialFacilities,
                 company: "Petramco",
                 description: `Second description ${randomStr}`,
@@ -177,10 +152,10 @@ describe('Create Flowset', () => {
                 lineOfBusiness: "Facilities"
             }
 
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createProcessLibConfig(processLibConfData);
             await apiHelper.createProcessLibConfig(processLibConfData1);
             //API call to create the flowset
-            await apiHelper.apiLogin('qkatawazi');
             flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
             await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
@@ -195,24 +170,21 @@ describe('Create Flowset', () => {
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
             await editFlowset.clickOnAddNewMappingBtn();
-            await editFlowset.clickOnSelectProcessDropDown();
 
             //validation of registred process filteration as per LOB
-            expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameCaseFacilities)).toBeFalsy();
-            expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameSocialFacilities)).toBeFalsy();
-            expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameCaseHR)).toBeTruthy();
-            expect(await editFlowset.isProcessNameOptionPresentInDropDown(processAliasNameSocialHR)).toBeTruthy();
-            await utilityCommon.closeAllBlades();
+            expect(await editFlowset.isProcessPresent(processAliasNameCaseFacilities)).toBeFalsy(); // present
+            expect(await editFlowset.isProcessPresent(processAliasNameSocialFacilities)).toBeFalsy(); // present
+            expect(await editFlowset.isProcessPresent(processAliasNameCaseHR)).toBeTruthy(); // present
+            expect(await editFlowset.isProcessPresent(processAliasNameSocialHR)).toBeTruthy(); // present
 
-            await editFlowset.clickOnAddNewMappingBtn();
-            await editFlowset.selectProcessName(processAliasNameCaseHR);
-            await editFlowset.selectStatus("Active");
+            await editFlowset.selectProcess(processAliasNameCaseHR);
+            await editFlowset.selectProcessMapingStatus("Active");
             await editFlowset.clickSaveBtnOnProcessMapping();
             await expect(editFlowset.searchProcessMappingName(processAliasNameCaseHR)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
             await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid");
             await editFlowset.clickOnAddNewMappingBtn();
             await editFlowset.selectFunction('Assignment');
-            await editFlowset.selectProcessName(processAliasNameSocialHR);
+            await editFlowset.selectProcess(processAliasNameSocialHR);
             await editFlowset.clickSaveBtnOnProcessMapping();
             await expect(editFlowset.searchProcessMappingName(processAliasNameSocialHR)).toBeTruthy(`Second Process${randomStr}` + "Processing mapping not visible");
             await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid");
@@ -232,6 +204,10 @@ describe('Create Flowset', () => {
             let processName1 = 'com.bmc.dsm.case-lib:Case - Initialization';
             await apiHelper.deleteFlowsetProcessLibConfig(processName1);
             await apiHelper.deleteFlowsetProcessLibConfig(processName);
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -276,7 +252,7 @@ describe('Create Flowset', () => {
 
         it('[6278]: Verify if flowset is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('cbarton');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -290,7 +266,7 @@ describe('Create Flowset', () => {
 
         it('[6278]: Verify if flowset is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -334,13 +310,14 @@ describe('Create Flowset', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
         });
     });
 
     //ankagraw
     describe('[5640]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let availableValues: string[] = ['Company', 'Description', 'Display ID', 'Flowset Name', 'ID', 'Status'];
 
         it('[5640]: [Flowsets] Flowsets Console verification', async () => {
@@ -351,8 +328,6 @@ describe('Create Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
             await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await consoleFlowset.addColumn(["ID", 'Display ID']);
             await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
             await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
@@ -399,7 +374,7 @@ describe('Create Flowset', () => {
 
         it('[5640]: Verify if flowset is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('cbarton');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -410,7 +385,7 @@ describe('Create Flowset', () => {
 
         it('[5640]: Verify if flowset is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -422,11 +397,12 @@ describe('Create Flowset', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
         });
 
 
     });
-
 
     //ankagraw
     describe('[5639]: [Flowsets] Filter menu verification on Define Flowsets Console	', () => {
@@ -444,8 +420,6 @@ describe('Create Flowset', () => {
         });
 
         it('[5639]: [Flowsets] Filter menu verification on Define Flowsets Console	', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await consoleFlowset.addColumn(["ID", 'Display ID']);
             await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
 

@@ -63,6 +63,8 @@ class ViewTask {
         contactPersonName: '[rx-view-component-id="811367b2-5b83-402a-b44f-9c9ca668fee8"] .person-name .person-link',
         inprogressErrorMsg: '[rx-view-component-id="a1072f99-4036-4e2e-8e62-e72b2ba22344"] p',
         statusDropdown: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] button',
+        editAssignment: '.edit-button button',
+        assignToMe: '.assign-to-me button'
     }
 
     async clickShowMoreTaskDescription(): Promise<void> {
@@ -464,6 +466,22 @@ class ViewTask {
             if(result) return await element(by.cssContainingText('[class="d-textfield ng-star-inserted"] label', fieldName)).isDisplayed();
             else return false;
         })
+    }
+  
+    async isEditAssignmentDisabled(): Promise<boolean> {
+        return await $(this.selectors.editAssignment).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.editAssignment).getAttribute("disabled") == "true";
+            } else return false;
+        });
+    }
+
+    async isAssignToMeDisabled(): Promise<boolean> {
+        return await $(this.selectors.assignToMe).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.assignToMe).getAttribute("disabled") == "true";
+            } else return false;
+        });
     }
 }
 

@@ -155,8 +155,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         let suppGrpData = supportGrpDataFile['SuppGrpData2002'];
         // let personData = personDataFile['PersonData2002'];
         let domainTag = await apiHelper.createDomainTag(domainTagData);
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         departmentData.relatedOrgId = businessUnitId;
         await browser.sleep(5000); //waiting for data to be reflected on UI
@@ -854,7 +853,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         }
 
         await apiHelper.apiLogin('tadmin');
-        await foundationData2002('Psilon');
+        //await foundationData2002('Psilon');
 
         await apiHelper.apiLogin('gderuno');
         await apiHelper.createKnowledgeSet(knowledgeSetData);

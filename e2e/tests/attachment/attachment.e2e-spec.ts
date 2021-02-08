@@ -58,18 +58,20 @@ describe("Attachment", () => {
 
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteAllEmailConfiguration();
-        await apiHelper.createEmailBox('incoming');
-        let response1 = await apiHelper.createEmailBox('outgoing');
-        await apiHelper.createEmailProfile(response1.id);
-        await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
-        await apiHelper.createEmailConfiguration(emailConfig);
+        // find reason why following needed then uncomment
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.deleteAllEmailConfiguration();
+        // await apiHelper.createEmailBox('incoming');
+        // let response1 = await apiHelper.createEmailBox('outgoing');
+        // await apiHelper.createEmailProfile(response1.id);
+        // await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+        // await apiHelper.createEmailConfiguration(emailConfig);
     });
 
     afterAll(async () => {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteAllEmailConfiguration();
+        // find reason why following needed then uncomment
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.deleteAllEmailConfiguration();
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -83,13 +85,12 @@ describe("Attachment", () => {
         await createCasePo.clickSaveCaseButton();
         await casePreviewPo.clickGoToCaseButton();
         await viewCasePo.clickAttachmentsLink();
-
         expect(await attachmentBladePo.isDownloadButtonDisplayed()).toBeTruthy('Download button is missing');
         expect(await attachmentBladePo.isCloseButtonDisplayed()).toBeTruthy('Close button is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Attachments')).toBeTruthy('Attachment column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Attached to')).toBeTruthy('Attached to column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Media type')).toBeTruthy('Media type  column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Created date')).toBeTruthy('Created date column header is missing');
         await attachmentBladePo.clickCloseButton();
     });
 
@@ -161,7 +162,7 @@ describe("Attachment", () => {
         await activityTabPo.clickOnPostButton();
         expect(await activityTabPo.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('Attached file name is missing');
         await viewCasePo.clickAttachmentsLink();
-        expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Attached to')).toBeTruthy('Attached to column header is missing');
         expect(await (await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfPdf')).toBeTruthy('Attachment file name is missing');
         expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfPdf.pdf')).toBeTruthy('File is deleted sucessfully');
         // 5076
@@ -523,10 +524,10 @@ describe("Attachment", () => {
         await viewCasePo.clickAttachmentsLink();
         expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg.jpg')).toBeTruthy('File is delete sucessfully');
         await attachmentBladePo.searchAndSelectCheckBox('bwfJpg');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Attachments ')).toBe('Attachments', 'Attachment column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Attached to ')).toBe('Attached to', 'Attached to column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Media type ')).toBe('Media type', 'Media type  column header is missing');
-        expect(await attachmentBladePo.getTextOfColumnHeader('Created date ')).toBe('Created date', 'Created date column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Attachments')).toBeTruthy('Attachment column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Attached to')).toBeTruthy('Attached to column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Media type')).toBeTruthy('Media type  column header is missing');
+        expect(await attachmentBladePo.isColumnHeaderPresent('Created date')).toBeTruthy('Created date column header is missing');
         expect((await attachmentBladePo.getGridColumnValues('Attachments')).includes('bwfJpg')).toBeTruthy('Attachment file name is missing');
         expect((await attachmentBladePo.getGridColumnValues('Attached to')).includes('Case')).toBeTruthy('Attach to column value is missing');
         expect((await attachmentBladePo.getGridColumnValues('Media type')).includes('image/jpeg')).toBeTruthy('Media type column value is missing');

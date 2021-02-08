@@ -50,8 +50,7 @@ describe('Case Bulk Operation', () => {
         await apiHelper.createNewUser(personData);
         await apiHelper.deleteApprovalMapping(caseModule, 'Bulk Operation Mapping');
         await apiHelper.associatePersonToCompany(personData.userId, petramcoStr);
-        orgId = await apiCoreUtil.getOrganizationGuid(petramcoStr);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = petramcoStr;
         await apiHelper.setDefaultNotificationForUser("qtao", "Alert");
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         await browser.sleep(3000); // timeout requried to reflect data on UI

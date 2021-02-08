@@ -298,16 +298,6 @@ describe('Login and create case from API', () => {
         console.log("Records deleted...", deleted);
     });
 
-    it('Get organization guid', async () => {
-        await apiHelper.apiLogin('qkatawazi');
-        let org1 = 'Petramco';
-        let org2 = '- Global -';
-        let orgGuid1 = await apiCoreUtil.getOrganizationGuid(org1);
-        console.log("Org1 GUID...", org1, " ", orgGuid1);
-        let orgGuid2 = await apiCoreUtil.getOrganizationGuid(org2);
-        console.log("Org2 GUID...", org2, " ", orgGuid2);
-    });
-
     it('create process lib config', async () => {
         await apiHelper.apiLogin('qkatawazi');
 

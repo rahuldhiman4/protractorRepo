@@ -77,8 +77,7 @@ describe('Copy Case Template', () => {
         departmentData = departmentDataFile['DepartmentData'];
         suppGrpData = supportGrpDataFile['SuppGrpData'];
         await apiHelper.createNewUser(personData);
-        let orgId = await apiCoreUtil.getOrganizationGuid(company);
-        businessData.relatedOrgId = orgId;
+        businessData.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
         await browser.sleep(3000); // timeout requried to reflect data on UI
         departmentData.relatedOrgId = businessUnitId;
