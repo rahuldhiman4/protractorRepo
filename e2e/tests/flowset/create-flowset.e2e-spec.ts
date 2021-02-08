@@ -76,7 +76,7 @@ describe('Create Flowset', () => {
         await editFlowset.setFlowset("edit Flowset" + randomStr);
         await editFlowset.setDescription("edit description" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Active");
-        await editFlowset.selectStatus("Draft");
+        await editFlowset.selectFlowsetConfigStatus("Draft");
         await editFlowset.clickSaveBtn();
         await consoleFlowset.searchAndSelectFlowset("edit Flowset" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Draft");
@@ -178,7 +178,7 @@ describe('Create Flowset', () => {
             expect(await editFlowset.isProcessPresent(processAliasNameSocialHR)).toBeTruthy(); // present
 
             await editFlowset.selectProcess(processAliasNameCaseHR);
-            await editFlowset.selectStatus("Active");
+            await editFlowset.selectProcessMapingStatus("Active");
             await editFlowset.clickSaveBtnOnProcessMapping();
             await expect(editFlowset.searchProcessMappingName(processAliasNameCaseHR)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
             await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid");
@@ -306,13 +306,14 @@ describe('Create Flowset', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
         });
     });
 
     //ankagraw
     describe('[5640]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let availableValues: string[] = ['Company', 'Description', 'Display ID', 'Flowset Name', 'ID', 'Status'];
 
         it('[5640]: [Flowsets] Flowsets Console verification', async () => {
@@ -323,8 +324,6 @@ describe('Create Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
             await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await consoleFlowset.addColumn(["ID", 'Display ID']);
             await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
             await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
@@ -394,11 +393,12 @@ describe('Create Flowset', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
         });
 
 
     });
-
 
     //ankagraw
     describe('[5639]: [Flowsets] Filter menu verification on Define Flowsets Console	', () => {
@@ -416,8 +416,6 @@ describe('Create Flowset', () => {
         });
 
         it('[5639]: [Flowsets] Filter menu verification on Define Flowsets Console	', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await consoleFlowset.addColumn(["ID", 'Display ID']);
             await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
 
