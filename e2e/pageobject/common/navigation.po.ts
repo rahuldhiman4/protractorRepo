@@ -88,11 +88,6 @@ class NavigationPage {
     }
 
     async gotoCaseConsole(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -110,11 +105,6 @@ class NavigationPage {
     }
 
     async gotoKnowledgeConsole(consoleFromKA?: boolean): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (consoleFromKA) {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -140,11 +130,6 @@ class NavigationPage {
     }
 
     async gotoTaskConsole(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -162,11 +147,6 @@ class NavigationPage {
     }
 
     async gotoCreateCase(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -184,11 +164,6 @@ class NavigationPage {
     }
 
     async gotoQuickCase(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -202,11 +177,6 @@ class NavigationPage {
     }
 
     async gotoSearch(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -220,11 +190,6 @@ class NavigationPage {
     }
 
     async gotoCreateKnowledge(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -242,11 +207,6 @@ class NavigationPage {
     }
 
     async gotoPersonProfile(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         if (await this.isHambergerIconPresent()) {
             await $(this.selectors.hamburgerIcon).click();
@@ -263,11 +223,6 @@ class NavigationPage {
     }
 
     async gotoSettingsPage(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await $(this.selectors.settingsButton).click();
     }
@@ -318,12 +273,6 @@ class NavigationPage {
     }
 
     async signOut(): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         try {
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();
@@ -345,11 +294,6 @@ class NavigationPage {
     }
 
     async switchToApplication(applicationName: string): Promise<void> {
-        await $(this.selectors.settingsButton).isPresent().then(async (present) => {
-            if (present) return await $(this.selectors.settingsButton).isDisplayed();
-            else return false;
-        });
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Cases');
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await $(this.selectors.adaptIconTiles).click();
         await $(this.selectors.TileSearchInput).clear();
