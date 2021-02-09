@@ -1,5 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
+import editCasetemplatePo from '../settings/case-management/edit-casetemplate.po';
+import editTasktemplatePo from '../settings/task-management/edit-tasktemplate.po';
 
 class NavigationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -275,15 +277,23 @@ class NavigationPage {
     async signOut(): Promise<void> {
         let title = await browser.getTitle();
         if (title == 'Templates - Settings - Business Workflows') {
-            await element(by.cssContainingText('rx-action-button span', 'Cancel')).isPresent().then(async (cancelButton) => {
-                if (cancelButton) {
-                    await element(by.cssContainingText('rx-action-button span', 'Cancel')).click();
+
+            await $(editCasetemplatePo.selectors.cancelButton).isPresent().then(async (cancelBtn) => {
+                if (cancelBtn) {
+                    await $(editCasetemplatePo.selectors.cancelButton).click();
+                    await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+                }
+            });
+
+            await $(editTasktemplatePo.selectors.cancelButton).isPresent().then(async (cancelBtn) => {
+                if (cancelBtn) {
+                    await $(editTasktemplatePo.selectors.cancelButton).click();
                     await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
                 }
             });
 
             await $('.d-icon-left-undo').isPresent().then(async (backButton) => {
-                if (backButton) await $('.d-icon-left-undo').click();
+                if (backButton) return await $('.d-icon-left-undo').click();
             });
         }
 

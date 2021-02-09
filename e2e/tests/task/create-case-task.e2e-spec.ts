@@ -1437,7 +1437,7 @@ describe('Create Case Task', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 1');
+            expect(await viewCasePage.getAssignedGroupValue()).toBe('US Support 1');
             expect(await viewCasePage.getAssigneeText()).toBe('None', 'Assignee name is missing');
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();

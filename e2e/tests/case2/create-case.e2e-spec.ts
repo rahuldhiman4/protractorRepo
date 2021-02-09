@@ -445,7 +445,7 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.getAssignedGroupText()).toBe('US Support 3');
+            expect(await viewCasePage.getAssignedGroupValue()).toBe('US Support 3');
             expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
         });
 
@@ -741,7 +741,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.getAssignedGroupText()).toBe('Workforce Administration');
+            expect(await viewCasePage.getAssignedGroupValue()).toBe('Workforce Administration');
             await updateStatusBladePo.changeCaseStatus('In Progress');
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
