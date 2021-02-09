@@ -252,7 +252,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Bonus');
-            expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 1");
+            expect(await viewCasePage.getAssigneeHierarchy()).toBe("AU Support 1");
             expect(await viewCasePage.getAssigneeText()).toBe("RA3 Liu");
         });
         it('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
@@ -1155,7 +1155,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Bonus');
-            expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 1");
+            expect(await viewCasePage.getAssigneeHierarchy()).toBe("AU Support 1");
             expect(await viewCasePage.getAssigneeText()).toBe("RA3 Liu");
         });
         it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
@@ -1211,7 +1211,7 @@ describe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Bonus');
-            expect(await viewCasePage.getAssignedGroupText()).toBe("AU Support 1");
+            expect(await viewCasePage.getAssigneeHierarchy()).toBe("AU Support 1");
             expect(await viewCasePage.getAssigneeText()).toBe("RA3 Liu");
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');

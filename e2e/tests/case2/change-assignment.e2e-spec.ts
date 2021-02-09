@@ -93,7 +93,7 @@ describe("Change Assignment", () => {
             await changeAssignmentPage.setDropDownValue('Assignee', 'Adam Pavlik');
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toContain('US Support 3');
+            expect(await viewCasePo.getAssigneeHierarchy()).toContain('US Support 3');
             expect(await viewCasePo.getAssigneeText()).toBe('Adam Pavlik');
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();

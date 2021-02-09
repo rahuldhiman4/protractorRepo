@@ -545,7 +545,7 @@ describe("Quick Case", () => {
             expect(await viewCasePo.getCategoryTier2Value()).toBe('Compensation', "Category is not displaying");
             expect(await viewCasePo.getCategoryTier3Value()).toBe('Bonus', "Category is not displaying");
             expect(await viewCasePo.getCaseStatusValue()).toBe('In Progress', "Status is not displaying");
-            expect(await viewCasePo.getAssignedGroupText()).toBe('US Support 3');
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe('US Support 3');
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
             expect(await viewCasePo.getCaseTemplateText()).toBe(caseTemplateData.templateName);
             expect(await activityPo.isTextPresentInActivityLog("created the case")).toBeTruthy("Text is not present in activiy tab1");

@@ -5,10 +5,10 @@ class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        categoryTier1Value: '[rx-view-component-id="636d53eb-5cf3-4fbd-9af4-e258cf3424c2"] .read-only-content',
-        categoryTier2Value: '[rx-view-component-id="7beae951-8345-4f97-9cac-48933083928f"] .read-only-content',
-        categoryTier3Value: '[rx-view-component-id="68d56b74-b9ad-444e-8dfc-ddec1e16897f"] .read-only-content',
-        categoryTier4Value: '[rx-view-component-id="aa75da42-eeb4-4a6f-946b-74d5316b7641"] .read-only-content',
+        categoryTier1Value: '[rx-view-component-id="59769557-4b17-4a1a-952f-63e9418fb7ff"] .read-only-content',
+        categoryTier2Value: '[rx-view-component-id="0aa422df-d89a-40ac-8956-c4f5480b2e36"] .read-only-content',
+        categoryTier3Value: '[rx-view-component-id="f59cd305-9f35-4d39-891e-8824a97724e2"] .read-only-content',
+        categoryTier4Value: '[rx-view-component-id="7f7f2d24-1f78-427e-b972-f99e55f1d070"] .read-only-content',
         reOpenCase: '[rx-view-component-id="2d51cf41-f176-4e20-bc48-f2741bcbbcb0"] button',
         stopWatching: '[rx-view-component-id="a62c849f-5bb0-480f-9811-50def59d82d0"] button',
         statusChange: '[rx-view-component-id="48bbcbbf-564c-4d46-8dc2-1e7670c187ff"] .status-transition',
@@ -19,13 +19,13 @@ class ViewCasePage {
         requesterName: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-main a',
         requesterPhoneNo: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .person-phone-link',
         requesterEmail: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .bwf-button-link',
-        contactEmail: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .bwf-button-link',
+        contactEmail: '[rx-view-component-id="81d4a02e-dbed-4d6d-a298-2d68cfaeb91a"] .bwf-button-link',
         contactPersonDrpDwn: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .d-icon-angle_down',
         contactPersonName: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-main a',
         contactPersonContact: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .person-phone-link',
         contactPersonEmail: '[rx-view-component-id="b28c2da7-08e2-4dfd-bfcd-f836483e625b"] .bwf-button-link',
         descriptionText: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] label+div',
-        assigneeText: '[rx-view-component-id="dfe65f6f-7aea-476c-8042-f3aa34e3fb04"] .person-link',
+        assigneeText: '[rx-view-component-id="13635426-50b0-4b53-8026-a1682ab656e8"] .person-link',
         assignedGroupText: '[rx-view-component-id="66c1bbab-901d-42ed-b5e6-a04cb54d559f"] .read-only-content',
         departmentText: '[rx-view-component-id="795da3b4-6442-4b07-b6e1-7ce7c9987352"] .read-only-content',
         businessUnitText: '[rx-view-component-id="f14326b0-0c70-4827-8a02-95e82527409a"] .read-only-content',
@@ -72,7 +72,7 @@ class ViewCasePage {
         flowset: '[rx-view-component-id="73fb70b0-2992-4dc5-b7ed-3d3d13cc4d6b"] .read-only-content',
         lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .read-only-content',
         recommendedCaseGuid: '[rx-view-component-id="1bd34505-c98c-4046-a129-5d3c09e87955"]',
-        assigneeHierachy: '.read-only-hierachy div.read-only-content',
+        assigneeHierarchy: '.read-only-hierachy div.read-only-content',
         editAssignment: '.edit-button button',
         assignToMe: '.assign-to-me button'
     }
@@ -132,7 +132,7 @@ class ViewCasePage {
     }
 
     async getResolutionDescription(): Promise<string> {
-        return await (await $(this.selectors.resolutionDescriptionValue).getText()).trim();
+        return (await $(this.selectors.resolutionDescriptionValue).getText()).trim();
     }
 
     async isCaseReopenLinkPresent(): Promise<boolean> {
@@ -322,8 +322,8 @@ class ViewCasePage {
         }
     }
 
-    async getAssignedGroupText(): Promise<string> {
-        return await $(this.selectors.assigneeHierachy).getText();
+    async getAssigneeHierarchy(): Promise<string> {
+        return await $(this.selectors.assigneeHierarchy).getText();
     }
 
     async getDepartmentText(): Promise<string> {
@@ -335,7 +335,8 @@ class ViewCasePage {
     }
 
     async getAssignedCompanyText(): Promise<string> {
-        return await $(this.selectors.assignedCompanyText).getText();
+        let hirearchy = await this.getAssigneeHierarchy();
+        return (hirearchy.split('>')[0]).trim();
     }
 
     async isTextPresent(textValue: string): Promise<boolean> {
@@ -609,7 +610,7 @@ class ViewCasePage {
     async clickFirstRecommendedCases(): Promise<void> {
         await $(this.selectors.recommendedCaseGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
-    
+
     async isEditAssignmenetDisabled(): Promise<boolean> {
         return await $(this.selectors.editAssignment).isPresent().then(async (result) => {
             if (result) {

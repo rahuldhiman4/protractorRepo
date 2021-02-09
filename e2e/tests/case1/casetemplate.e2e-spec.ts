@@ -27,15 +27,9 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Template', () => {
-    let userData = undefined;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await apiHelper.apiLogin('tadmin');
-    });
-
-    afterEach(async () => {
-        await navigationPage.gotoCaseConsole();
     });
 
     afterAll(async () => {
@@ -55,8 +49,8 @@ describe('Case Template', () => {
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
         await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
-        await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
-        await createCaseTemplate.setIdentityValidationValue(ALL_FIELD.identityValidation)
+        await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
+        await createCaseTemplate.setIdentityValidationValue(ALL_FIELD.identityValidation);
         await createCaseTemplate.clickSaveCaseTemplate();
         expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
         expect(await viewCaseTemplate.getIdentityValdationValue()).toContain(ALL_FIELD.identityValidation);
@@ -75,8 +69,8 @@ describe('Case Template', () => {
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
         await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
-        await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
-        await createCaseTemplate.setIdentityValidationValue(ALL_FIELD.identityValidation)
+        await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
+        await createCaseTemplate.setIdentityValidationValue(ALL_FIELD.identityValidation);
         await createCaseTemplate.clickSaveCaseTemplate();
         expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
         expect(await viewCaseTemplate.getIdentityValdationValue()).toContain(ALL_FIELD.identityValidation);
@@ -104,8 +98,8 @@ describe('Case Template', () => {
             await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
             await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
             await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
-            await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
-            await createCaseTemplate.setIdentityValidationValue('Enforced')
+            await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
+            await createCaseTemplate.setIdentityValidationValue('Enforced');
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
             expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('Enforced');
@@ -179,8 +173,8 @@ describe('Case Template', () => {
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
         await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
-        await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
-        await createCaseTemplate.setIdentityValidationValue('None')
+        await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
+        await createCaseTemplate.setIdentityValidationValue('None');
         await createCaseTemplate.clickSaveCaseTemplate();
         expect(await viewCaseTemplate.getCaseTemplateNameValue()).toContain(ALL_FIELD.templateName);
         expect(await viewCaseTemplate.getIdentityValdationValue()).toContain('None');
@@ -275,7 +269,7 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
         await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
         await editCasetemplatePo.clickEditCaseTemplate();
-        await editCasetemplatePo.clearCaseSummary();
+        await editCasetemplatePo.clearCaseSummary(); // defect cleared via protractor can still show error
         await editCasetemplatePo.clickSaveCaseTemplate();
         expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
         await editCasetemplatePo.changeCaseSummary('Updated Summary');
@@ -1019,7 +1013,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
             expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
             expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
-            expect(await viewCasePo.getAssignedGroupText()).toBe('US Support 3');
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe('US Support 3');
             await viewCasePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
@@ -1092,22 +1086,9 @@ describe('Case Template', () => {
 
     describe('[4936,4944]: Case Template access when owner group from different company is applied', async () => {
         let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
-        beforeAll(async () => {
-            userData = {
-                "firstName": "Multiple",
-                "lastName": "Company",
-                "userId": "nosg",
-                "emailId": "nosg@petramco.com",
-                "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
-            }
-            await apiHelper.createNewUser(userData);
-            await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-            await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
-            await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
-        });
         it('[4936,4944]: Checking change case template button for In Progress', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -1283,7 +1264,7 @@ describe('Case Template', () => {
     it('[4942]:Case Template submitter from different company than owner group company can edit the template', async () => {
         try {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
@@ -1454,7 +1435,7 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template1 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe("US Support 3");
             expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
         });
         it('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
@@ -1466,7 +1447,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName1);
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe("US Support 3");
             expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
@@ -1475,7 +1456,7 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template2 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Workforce Administration');
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe('Workforce Administration');
             expect(await viewCasePo.getBusinessUnitText()).toBe('HR Support');
         });
         it('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
@@ -1487,7 +1468,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName2);
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Workforce Administration');
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe('Workforce Administration');
             expect(await viewCasePo.getBusinessUnitText()).toBe('HR Support');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
@@ -1496,7 +1477,7 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template3 should be applied assignee, as none assignement method
             expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
-            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe("US Support 3");
             expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
         });
         it('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
@@ -1508,7 +1489,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName3);
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
-            expect(await viewCasePo.getAssignedGroupText()).toBe("US Support 3");
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe("US Support 3");
             expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
@@ -1517,7 +1498,7 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template2 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Workforce Administration');
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe('Workforce Administration');
             expect(await viewCasePo.getBusinessUnitText()).toBe('HR Support');
         });
         afterAll(async () => {

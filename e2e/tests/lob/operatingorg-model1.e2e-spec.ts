@@ -577,7 +577,7 @@ describe('Operating Orgnization Data Model Tests', () => {
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Phones');
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Cellular Phones');
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Service');
-            expect(await viewCasePage.getAssignedGroupText()).toBe("Pantry Service");
+            expect(await viewCasePage.getAssigneeHierarchy()).toBe("Pantry Service");
             expect(await viewCasePage.getAssigneeText()).toBe("Qing Yuan");
         });
         it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {

@@ -382,7 +382,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier1("Employee Relations");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe("AU Support 2");
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe("AU Support 2");
         });
     });
 
@@ -421,7 +421,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier2("Compensation");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe("Psilon Support Group2");
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe("Psilon Support Group2");
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -610,7 +610,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.clickSaveCaseButton();
             await utilityCommon.closePopUpMessage();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData.orgName, "Support Group Not Populated");
             expect(await viewCasePo.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
             expect(await viewCasePo.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
             expect(await viewCasePo.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
@@ -844,7 +844,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier1("Employee Relations");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Psilon Support Group1');
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe('Psilon Support Group1');
             expect(await viewCasePo.getAssigneeText()).toBe('Glit Deruno');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.associatePersonToCompany(userData1.userId, "Phylum");
@@ -860,7 +860,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier1("Employee Relations");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe('Psilon Support Group1');
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe('Psilon Support Group1');
             expect(await viewCasePo.getAssigneeText()).toBe('Glit Deruno');
         });
         afterAll(async () => {
@@ -1107,7 +1107,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier1("Employee Relations");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
         });
         it('[5418]:[Assignment Mapping] Categories partial match', async () => {
@@ -1125,7 +1125,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier2("Compensation");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
         });
         it('[5418]:[Assignment Mapping] Categories partial match', async () => {
@@ -1144,7 +1144,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier3("Bonus");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
         });
         afterAll(async () => {
@@ -1223,7 +1223,7 @@ describe("Create Case Assignment Mapping", () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
         });
         afterAll(async () => {
@@ -1435,7 +1435,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier3("Furniture");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData5.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData5.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn8 phylumln8");
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Anna');
@@ -1446,7 +1446,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.setPriority("High");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData3.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData3.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn6 phylumln6");
         });
         it('[6324,6323]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
@@ -1459,7 +1459,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.setPriority("Low");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData1.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData1.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Anna');
@@ -1467,7 +1467,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.setPriority("Low");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData1.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData1.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
         });
         it('[6324,6323]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
@@ -1478,7 +1478,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier1("Employee Relations");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData1.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData1.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Anna');
@@ -1487,7 +1487,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier1("Facilities");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData1.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData1.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
         });
         it('[6324,6323]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
@@ -1499,7 +1499,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.setPriority("Medium");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData1.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData1.orgName);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Anna');
             await createCasePage.setSummary('Summary8');
@@ -1507,7 +1507,7 @@ describe("Create Case Assignment Mapping", () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData6.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData6.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn9 phylumln9");
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Anna');
@@ -1516,7 +1516,7 @@ describe("Create Case Assignment Mapping", () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData1.templateName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData1.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData1.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
         });
         it('[6324,6323]:[Assignment Mapping] Applying Assignment Mappings to cases with partial match', async () => {
@@ -1528,7 +1528,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier2("Kitchen");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData2.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData2.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn5 phylumln5");
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Anna');
@@ -1539,7 +1539,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectCategoryTier3("Lights");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupText()).toBe(suppGrpData1.orgName);
+            expect(await viewCasePo.getAssigneeHierarchy()).toBe(suppGrpData1.orgName);
             expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
         });
         afterAll(async () => {

@@ -297,7 +297,7 @@ describe('Case Bulk Operation', () => {
                 expect(await viewCasePage.getBusinessUnitText()).toBe(businessData.orgName, `Business unit details are not matching for ${caseId[i]}`);
                 expect(await viewCasePage.getDepartmentText()).toBe(departmentData.orgName, `Department details are not matching for ${caseId[i]}`);
                 expect(await viewCasePage.getAssignedCompanyText()).toBe(petramcoStr);
-                expect(await viewCasePage.getAssignedGroupText()).toBe(suppGrpData.orgName, `Assigned Group details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getAssigneeHierarchy()).toBe(suppGrpData.orgName, `Assigned Group details are not matching for ${caseId[i]}`);
                 expect(await viewCasePage.getAssigneeText()).toBe(`${personData.firstName} ${personData.lastName}`, `Assignee details are not matching for ${caseId[i]}`);
                 await navigationPage.gotoCaseConsole();
             }
@@ -336,7 +336,7 @@ describe('Case Bulk Operation', () => {
                 expect(await viewCasePage.isTextPresent('BulkOperationBusinessUnit')).toBeFalsy("BulkOperationBusinessUnit is present");
                 expect(await viewCasePage.isTextPresent('BulkOperationDepartment')).toBeFalsy("BulkOperationDepartment is present");
                 expect(await viewCasePage.getAssignedCompanyText()).toBe('Petramco');
-                expect(await viewCasePage.getAssignedGroupText()).toBe(usSupportGroup3Str);
+                expect(await viewCasePage.getAssigneeHierarchy()).toBe(usSupportGroup3Str);
                 expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
                 await navigationPage.gotoCaseConsole();
             }
