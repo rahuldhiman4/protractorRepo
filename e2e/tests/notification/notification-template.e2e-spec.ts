@@ -232,7 +232,7 @@ describe("Notification Template", () => {
 
         it('[4589]: Verify notification event validation wrt same LOB ', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName(notificationEventHRGlobal);
             await createNotificationEventPage.setCompanyValue('Petramco');
@@ -326,7 +326,7 @@ describe("Notification Template", () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName(notificationEventHRGlobal);
             await createNotificationEventPage.setCompanyValue('Petramco');
@@ -531,7 +531,7 @@ describe("Notification Template", () => {
 
     it('[4356]: Verify OOB Notification Event and Template for Email based Approval', async () => {
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
         await utilityGrid.clearFilter();
         await utilityGrid.addFilter('Company', '- Global -', 'text');
         await utilityGrid.searchRecord('Email Based Approval');

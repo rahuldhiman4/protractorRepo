@@ -18,36 +18,10 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Document Library', () => {
-    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-    const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-    const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let userData, userData1, userData2 = undefined;
+    
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('tadmin');
-        await foundationData('Petramco');
-
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities","Document Manager"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -55,28 +29,11 @@ describe('Document Library', () => {
         await navigationPage.signOut();
     });
 
-    async function foundationData(company: string) {
-        await apiHelper.apiLogin('tadmin');
-        let businessData = businessDataFile['BusinessUnitData'];
-        let departmentData = departmentDataFile['DepartmentData'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData'];
-        let personData = personDataFile['PersonData'];
-        businessData.relatedOrgId = company;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.createNewUser(personData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company)
-    }
-
     //kgaikwad
-    it('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
+    describe('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await navigationPage.gotoCaseConsole();
+        it('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await createDocumentLibraryPo.openAddNewDocumentBlade();
@@ -91,6 +48,8 @@ describe('Document Library', () => {
         await editDocumentLibraryPo.selectStatus('Published');
         await editDocumentLibraryPo.clickOnSaveButton();
         await utilityCommon.closePopUpMessage();
+    });
+        it('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
         expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
         await editDocumentLibraryPo.selectStatus('Draft');
@@ -106,6 +65,7 @@ describe('Document Library', () => {
         await utilityCommon.closePopUpMessage();
         expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
     });
+});
 
     //kgaikwad
     describe('[4911,4925,4924]: Verify Delete button on document', async () => {
@@ -173,10 +133,8 @@ describe('Document Library', () => {
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to Case Manager user having access to multiple LOB', async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.updateFoundationEntity('Person', 'caseMngrMultiLOB', { functionalRole: "Document Manager" });
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -188,7 +146,7 @@ describe('Document Library', () => {
 
         it('[4911,4925,4924]: Verify if document library is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -203,7 +161,6 @@ describe('Document Library', () => {
            
         });
     });
-
 
     //kgaikwad
     it('[4893]: Verify Document Managment Grid Console', async () => {

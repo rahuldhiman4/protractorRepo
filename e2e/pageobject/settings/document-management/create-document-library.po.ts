@@ -2,6 +2,7 @@ import { resolve } from "path";
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 import utilityGrid from '../../../utils/utility.grid';
+import { DropDownType } from '../../../utils/constants';
 
 
 
@@ -176,10 +177,10 @@ class DocumentLibraryPage {
     }
 
     async selectBusinessUnit(buisnessUnit: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.buisnessUnit, buisnessUnit);
+        await utilityCommon.selectDropDown("Support Organization", buisnessUnit,DropDownType.Label);
     }
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.ownerGroupFieldGuid, ownerGroupName);
+        await utilityCommon.selectDropDown("Owner Group", ownerGroupName,DropDownType.Label);
     }
 
     async clickOnSaveButton(): Promise<void> {
