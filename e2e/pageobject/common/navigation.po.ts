@@ -275,15 +275,15 @@ class NavigationPage {
     async signOut(): Promise<void> {
         let title = await browser.getTitle();
         if (title == 'Templates - Settings - Business Workflows') {
-            await $('.d-icon-left-undo').isPresent().then(async (backButton) => {
-                if (backButton) await $('.d-icon-left-undo').click();
-            });
-
             await element(by.cssContainingText('rx-action-button span', 'Cancel')).isPresent().then(async (cancelButton) => {
                 if (cancelButton) {
                     await element(by.cssContainingText('rx-action-button span', 'Cancel')).click();
                     await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
                 }
+            });
+
+            await $('.d-icon-left-undo').isPresent().then(async (backButton) => {
+                if (backButton) await $('.d-icon-left-undo').click();
             });
         }
 

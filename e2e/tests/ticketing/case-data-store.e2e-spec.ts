@@ -469,6 +469,7 @@ describe('Case Data Store', () => {
             for (let i = 0; i < dynamicFields.length; i++) {
                 expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
             }
+            await previewCaseTemplateCasesPo.clickOnBackButton();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
