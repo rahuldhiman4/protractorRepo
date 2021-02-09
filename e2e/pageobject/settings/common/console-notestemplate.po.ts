@@ -37,7 +37,7 @@ class ConsoleNotesTemplate {
 
     async clickOnDeleteButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
-        await $(this.selectors.deleteButton).click();
+        await utilityGrid.clickOnDeleteButton();
     }
 
     async isTemplatePresentOnGrid(templateNameValue): Promise<boolean> {

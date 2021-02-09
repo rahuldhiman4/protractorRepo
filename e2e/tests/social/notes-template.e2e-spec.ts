@@ -65,37 +65,6 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping(caseModule);
-        userData = {
-            "firstName": "Petramco",
-            "lastName": "SGUser1",
-            "userId": "22653User",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource"]
-        }
-        await apiHelper.createNewUser(userData);
-        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData.userId, "US Support 3");
-
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -182,7 +151,7 @@ describe('Notes template', () => {
 
         it('[4372]: Verify case notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -194,7 +163,7 @@ describe('Notes template', () => {
 
         it('[4372]: Verify case notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -219,6 +188,7 @@ describe('Notes template', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
@@ -272,7 +242,7 @@ describe('Notes template', () => {
 
         it('[4361]: Verify people notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -284,7 +254,7 @@ describe('Notes template', () => {
 
         it('[4361]: Verify people notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -312,7 +282,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
-
     });
 
     //ptidke
@@ -363,7 +332,7 @@ describe('Notes template', () => {
 
         it('[4362]: Verify task notes template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -375,7 +344,7 @@ describe('Notes template', () => {
 
         it('[4362]: Verify task notes template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -452,7 +421,7 @@ describe('Notes template', () => {
 
         it('[4287]: Verify Knowledge Article Notes Template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -475,7 +444,7 @@ describe('Notes template', () => {
 
         it('[4287]: Verify Knowledge Article Notes Template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -546,7 +515,7 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             caseNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(caseNotesTemplate);
-            await editNotetemplate.changeLanguageValue('Italian (Italy)');
+            await editNotetemplate.changeLanguageValue('German (Germany)');
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -556,7 +525,7 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             peopleNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(peopleNotesTemplate);
-            await editNotetemplate.changeLanguageValue('Italian (Italy)');
+            await editNotetemplate.changeLanguageValue('German (Germany)');
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.')
             await editNotetemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -566,7 +535,7 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             taskNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(taskNotesTemplate);
-            await editNotetemplate.changeLanguageValue('Italian (Italy)');
+            await editNotetemplate.changeLanguageValue('German (Germany)');
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -576,7 +545,7 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
             knowledgeNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(knowledgeNotesTemplate);
-            await editNotetemplate.changeLanguageValue('Italian (Italy)');
+            await editNotetemplate.changeLanguageValue('German (Germany)');
             expect(await editNotetemplate.getLocaleNotPresentMessage()).toContain('Please add the required localized message.');
             await editNotetemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -705,6 +674,7 @@ describe('Notes template', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         });
@@ -715,7 +685,7 @@ describe('Notes template', () => {
         let newCase, notesTemplateName, notesTemplateName1, notesTemplateBody, notesTemplateBody1, notesTemplateName2, notesTemplateBody2, notesTemplateName3, notesTemplateBody3;
         beforeAll(async () => {
             //task template 1
-            await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('qkatawazi');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let tempNotesTemplateData1 = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
             notesTemplateName = tempNotesTemplateData1.templateName + randomStr;
@@ -758,8 +728,9 @@ describe('Notes template', () => {
             newCase = await apiHelper.createCase(caseData);
         });
 
-        it('[4346]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
+        it('[4351]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName);
@@ -770,7 +741,7 @@ describe('Notes template', () => {
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInNote(notesTemplateBody1)).toBeTruthy();
         });
-        it('[4346]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
+        it('[4351]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName2);
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInNote(notesTemplateBody2)).toBeTruthy();

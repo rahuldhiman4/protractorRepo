@@ -48,7 +48,7 @@ export const BWF_PAGE_TITLES = {
             CATEGORIZATION: 'Categorization - Settings - Business Workflows',
             TEMPLATE: 'Template - Settings - Business Workflows',
         },
-        NOTES_TEMPLATES: 'Note Template - Settings - Business Workflows',
+        NOTES_TEMPLATES: 'Notes Template - Settings - Business Workflows',
         READ_ACCESS: 'Read Access - Settings - Business Workflows',
         STATUS_CONFIGURATION: 'Status Configuration - Settings - Business Workflows',
         TEMPLATES: 'Templates - Settings - Business Workflows'
@@ -67,7 +67,7 @@ export const BWF_PAGE_TITLES = {
         ARTICLE_TEMPLATE_STYLE: 'Article Template Style - Settings - Business Workflows',
         ARTICLE_TEMPLATES: 'Article Templates - Settings - Business Workflows',
         KNOWLEDGE_SETS: 'Knowledge Sets - Settings - Business Workflows',
-        NOTES_TEMPLATES: 'Notes Templates - Settings - Business Workflows',
+        NOTES_TEMPLATES: 'Notes Template - Settings - Business Workflows',
         STATUS_CONFIGURATION: 'Status Configuration - Settings - Business Workflows',
     },
     LINE_OF_BUSINESS: {
@@ -83,7 +83,7 @@ export const BWF_PAGE_TITLES = {
         MANAGE_TEMPLATES: 'Manage Templates - Settings - Business Workflows',
     },
     PEOPLE: {
-        NOTES_TEMPLATES: 'Notes Templates - Settings - Business Workflows',
+        NOTES_TEMPLATES: 'Notes Template - Settings - Business Workflows',
     },
     RELATIONSHIPS: {
         CASE_TO_CASE: 'Case to Case - Settings - Business Workflows',
