@@ -273,6 +273,20 @@ class NavigationPage {
     }
 
     async signOut(): Promise<void> {
+        let title = await browser.getTitle();
+        if (title == 'Templates - Settings - Business Workflows') {
+            await $('.d-icon-left-undo').isPresent().then(async (backButton) => {
+                if (backButton) await $('.d-icon-left-undo').click();
+            });
+
+            await element(by.cssContainingText('rx-action-button span', 'Cancel')).isPresent().then(async (cancelButton) => {
+                if (cancelButton) {
+                    await element(by.cssContainingText('rx-action-button span', 'Cancel')).click();
+                    await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+                }
+            });
+        }
+
         try {
             if (await this.isHambergerIconPresent()) {
                 await $(this.selectors.hamburgerIcon).click();
@@ -319,7 +333,7 @@ class NavigationPage {
             return await element(by.buttonText('My Profile')).isPresent().then(async (result) => {
                 if (result) return await element(by.buttonText('My Profile')).isDisplayed();
                 else return false;
-            })
+            });
         }
         else {
             await $(this.selectors.profileMenu).click();
