@@ -593,6 +593,16 @@ describe('Case Data Store', () => {
         await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
         await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news19' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri19' + randomStr);
+        await dynamicFieldsPo.selectFieldValueType('ATTACHMENT');
+        await dynamicFieldsPo.selectInfromationSource('Agent');
+        await dynamicFieldsPo.clickOnDynamicField();
+        await dynamicFieldsPo.setFieldName('news18' + randomStr);
+        await dynamicFieldsPo.setDescriptionName('newDescri18' + randomStr);
+        await dynamicFieldsPo.selectFieldValueType('BOOLEAN');
+        await dynamicFieldsPo.selectInfromationSource('Task Assignee');
+        await dynamicFieldsPo.clickOnDynamicField();
         await dynamicFieldsPo.setFieldName('news16' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri16' + randomStr);
         await dynamicFieldsPo.selectFieldValueType('DATE');
@@ -602,16 +612,6 @@ describe('Case Data Store', () => {
         await dynamicFieldsPo.setDescriptionName('newDescri17' + randomStr);
         await dynamicFieldsPo.selectFieldValueType('NUMBER');
         await dynamicFieldsPo.selectInfromationSource('System');
-        await dynamicFieldsPo.clickOnDynamicField();
-        await dynamicFieldsPo.setFieldName('news18' + randomStr);
-        await dynamicFieldsPo.setDescriptionName('newDescri18' + randomStr);
-        await dynamicFieldsPo.selectFieldValueType('BOOLEAN');
-        await dynamicFieldsPo.selectInfromationSource('Task Assignee');
-        await dynamicFieldsPo.clickOnDynamicField();
-        await dynamicFieldsPo.setFieldName('news19' + randomStr);
-        await dynamicFieldsPo.setDescriptionName('newDescri19' + randomStr);
-        await dynamicFieldsPo.selectFieldValueType('ATTACHMENT');
-        await dynamicFieldsPo.selectInfromationSource('Agent');
         await dynamicFieldsPo.clickOnDynamicField();
         await dynamicFieldsPo.setFieldName('news20' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri20' + randomStr);
@@ -1060,8 +1060,6 @@ describe('Case Data Store', () => {
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
             let arr: string[] = ['temp', 'temp1', 'temp2', 'temp3', 'temp4', 'temp5', 'attachment1', 'attachment2', 'attachment3']
             await viewCasetemplatePo.clickBackArrowBtn();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(activeTemplateName);
             for (let i = 0; i < arr.length; i++) {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('Group Not found');
@@ -1070,8 +1068,8 @@ describe('Case Data Store', () => {
             await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4868]: Create and Verify Dynamic Fields On Case Template  ', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            
+            
             await utilityGrid.searchAndOpenHyperlink(draftTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link not present');
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();

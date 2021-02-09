@@ -914,7 +914,7 @@ describe('Conditional Task', () => {
             await createCaseTemplatePage.setTemplateName('Copied Case template name' + randomStr);
 
             await createCaseTemplatePage.setOwnerCompanyValue('Psilon');
-            await createCaseTemplatePage.setBusinessUnitDropdownValue('Psilon Support Org1');
+            await createCaseTemplatePage.setOwnerOrgDropdownValue('Psilon Support Org1');
             await createCaseTemplatePage.setOwnerGroupDropdownValue('Psilon Support Group1');
             await createCaseTemplatePage.clickOnClearAssignmentButton();
             await createCaseTemplatePage.clickSaveCaseTemplate();

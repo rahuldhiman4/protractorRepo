@@ -1030,7 +1030,7 @@ describe('Line of Business Permission Tests', () => {
             await createCasetemplatePo.setCaseSummary(ALL_FIELD.templateSummary);
             await createCasetemplatePo.setPriorityValue(ALL_FIELD.casePriority);
             await createCasetemplatePo.setOwnerCompanyValue('Petramco')
-            await createCasetemplatePo.setBusinessUnitDropdownValue('Facilities Support');
+            await createCasetemplatePo.setOwnerOrgDropdownValue('Facilities Support');
             await createCasetemplatePo.setOwnerGroupDropdownValue('Facilities');
             await createCasetemplatePo.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
             let flowsetValues: string[] = [flowsetName2, flowsetName3];

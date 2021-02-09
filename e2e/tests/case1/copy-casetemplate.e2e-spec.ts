@@ -391,13 +391,13 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setCompanyName("Psilon");
             await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org2");
+            await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org2");
             await createCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group2");
             await createCaseTemplate.clickSaveCaseTemplate();
             await editCaseTemplate.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
@@ -623,7 +623,7 @@ describe('Copy Case Template', () => {
             await changeAssignmentOldPage.selectAssignee('Glit Deruno');
             await changeAssignmentOldPage.clickOnAssignButton();
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
@@ -654,7 +654,7 @@ describe('Copy Case Template', () => {
             await copyCaseTemplate.setTemplateName("copycaseTemplateForOtherCompany");
             await copyCaseTemplate.setCompanyName('Psilon');
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
             expect(await utilityCommon.isPopupMsgsMatches(['ERROR (222112): The selected Assignee does not have access to Psilon. Please select a different Assignee or contact System Administrator to grant access.'])).toBeTruthy('Message of permission denined for group access remove not displayed');
@@ -745,7 +745,7 @@ describe('Copy Case Template', () => {
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await createCaseTemplate.clickOnChangeAssignmentButton();
             await changeAssignmentOldPage.selectCompany('Psilon');
@@ -857,7 +857,7 @@ describe('Copy Case Template', () => {
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await createCaseTemplate.clickOnChangeAssignmentButton();
             await changeAssignmentOldPage.selectCompany('Psilon');
@@ -939,7 +939,7 @@ describe('Copy Case Template', () => {
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setBusinessUnitDropdownValue("Psilon Support Org1");
+            await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await createCaseTemplate.clickOnChangeAssignmentButton();
             await changeAssignmentOldPage.selectCompany('Psilon');
@@ -1015,7 +1015,7 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await createCaseTemplate.setTemplateName('caseTemplateName1' + randomStr);
             await createCaseTemplate.setOwnerCompanyValue('Petramco');
-            await createCaseTemplate.setBusinessUnitDropdownValue('United States Support');
+            await createCaseTemplate.setOwnerOrgDropdownValue('United States Support');
             await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await viewCasetemplatePo.getCategoryTier4()).toBe(caseTemplateData.categoryTier4);

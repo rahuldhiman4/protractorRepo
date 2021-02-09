@@ -9,7 +9,7 @@ class CaseEditPage {
         editLink: '.edit-link',
         changeCaseTemplate: '[rx-view-component-id="f6cc5a13-26cd-4412-ae4e-6c6cc5e21908"] button',
         selectCaseTemplate: '[rx-view-component-id="702fa086-4ddb-4741-b2cf-f16e22a49826"] button',
-        assignToMe: '[rx-view-component-id="094f8581-1f5f-4e45-ad67-fd92d81c8e94"] button',
+        assignToMe: 'button.d-icon-left-user_plus',
         changeAssignment: '[rx-view-component-id="459e6f41-abd3-4726-8dc2-25bab758877f"] button',
         saveCaseButton: '[rx-view-component-id="518308c0-34ea-4e75-a3a8-b4b07fc91de9"] button',
         summary: '[rx-view-component-id="244ffab2-bf04-4769-a5ac-c2a1f430e393"] input',

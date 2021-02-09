@@ -27,7 +27,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Template', () => {
-    let userData = undefined, userData1 = undefined, userData2 = undefined;
+    let userData = undefined;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -53,7 +53,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(ALL_FIELD.company);
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
-        await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
+        await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
         await createCaseTemplate.setIdentityValidationValue(ALL_FIELD.identityValidation)
@@ -73,7 +73,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(ALL_FIELD.company);
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
-        await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
+        await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
         await createCaseTemplate.setIdentityValidationValue(ALL_FIELD.identityValidation)
@@ -102,7 +102,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCompanyName(ALL_FIELD.company);
             await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
             await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
-            await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
+            await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
             await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
             await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
             await createCaseTemplate.setIdentityValidationValue('Enforced')
@@ -137,11 +137,11 @@ describe('Case Template', () => {
             // verify categ1, BU and SG as per LOB
             await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.caseCategoryTier1Guid, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
-            await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.businessUnitDropdown, ['Facilities', 'Facilities Support']);
+            await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.ownerOrgDropdown, ['Facilities', 'Facilities Support']);
             await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
-            await createCaseTemplate.setBusinessUnitDropdownValue('Facilities Support');
+            await createCaseTemplate.setOwnerOrgDropdownValue('Facilities Support');
             await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.ownerGroupDropdown, ['Facilities', 'Pantry Service']);
-            await createCaseTemplate.setBusinessUnitDropdownValue('Facilities Support');
+            await createCaseTemplate.setOwnerOrgDropdownValue('Facilities Support');
             await createCaseTemplate.setOwnerGroupDropdownValue('Facilities');
             await createCaseTemplate.clickOnChangeAssignmentButton();
             await changeAssignmentOldBladePo.selectCompany(ALL_FIELD.ownerCompany);
@@ -177,7 +177,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(ALL_FIELD.company);
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
-        await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
+        await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus)
         await createCaseTemplate.setIdentityValidationValue('None')
@@ -214,7 +214,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
         await createCaseTemplate.setAssignmentMethodValue('None');
         expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain('None');
-        await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
+        await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setAssignmentMethodValue("Round");
         expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain("Round Robin");
@@ -240,7 +240,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
         expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain('None');
-        await createCaseTemplate.setBusinessUnitDropdownValue(ALL_FIELD.ownerBusinessUnit);
+        await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
         await createCaseTemplate.clickSaveCaseTemplate();
@@ -250,7 +250,7 @@ describe('Case Template', () => {
         await viewCaseTemplate.clickBackArrowBtn();
     });
 
-    //ptidke 
+    //ptidke
     it('[6303]: [Edit Case Template] Template metadata edit', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -710,7 +710,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCaseSummary(caseTemplateCompany + ' summary');
             await createCaseTemplate.setPriorityValue('High');
             await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
-            await createCaseTemplate.setBusinessUnitDropdownValue('United States Support');
+            await createCaseTemplate.setOwnerOrgDropdownValue('United States Support');
             await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -724,7 +724,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCaseSummary(caseTemplateGlobal + ' summary');
             await createCaseTemplate.setPriorityValue('Low');
             await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
-            await createCaseTemplate.setBusinessUnitDropdownValue('United States Support');
+            await createCaseTemplate.setOwnerOrgDropdownValue('United States Support');
             await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active')
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -1116,7 +1116,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setPriorityValue('Low');
             await createCaseTemplate.setOwnerCompanyValue('Petramco');
-            await createCaseTemplate.setBusinessUnitDropdownValue("United States Support");
+            await createCaseTemplate.setOwnerOrgDropdownValue("United States Support");
             await createCaseTemplate.setOwnerGroupDropdownValue("US Support 3");
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft');
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -1293,7 +1293,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCompanyName('Phylum');
             await createCaseTemplate.setPriorityValue('Low');
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setBusinessUnitDropdownValue('Psilon Support Org1');
+            await createCaseTemplate.setOwnerOrgDropdownValue('Psilon Support Org1');
             await createCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
             await createCaseTemplate.clickSaveCaseTemplate();
