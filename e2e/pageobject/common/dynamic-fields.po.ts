@@ -41,15 +41,15 @@ class DynamicField {
     }
 
     async isDynamicFieldDisplayed(): Promise<boolean> {
-        return await $(this.selectors.dynamicField).isDisplayed();
+        return await $$(this.selectors.dynamicField).first().isDisplayed();
     }
 
     async clickOnAddDynamicGroup(): Promise<void> {
-        await $$(this.selectors.dynamicField).get(2).click();
+        await $$(this.selectors.dynamicField).last().click();
     }
 
     async isAddDynamicGroupDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.dynamicField).get(2).isDisplayed();
+        return await $$(this.selectors.dynamicField).last().isDisplayed();
     }
 
     async clickOnDownArrow(): Promise<void> {
