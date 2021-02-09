@@ -565,7 +565,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
             expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
             expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
-            expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+            expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
         });
         it('[6405]: Applying a Template to a Case with qdu', async () => {
             await navigationPage.gotoCreateCase();
@@ -692,7 +692,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
             expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
             expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
-            expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+            expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
         });
 
         it('[6315]: [Case Template] Configuring an Assignment Mapping for Human Resource Line of Business', async () => {
@@ -916,7 +916,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
             expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
             expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
-            expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+            expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
             await viewCasePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
@@ -1011,9 +1011,9 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier1Value()).toBe("Employee Relations");
             expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
             expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
-            expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+            expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
             expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
-            expect(await viewCasePo.getAssigneeHierarchy()).toBe('US Support 3');
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('US Support 3');
             await viewCasePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
@@ -1435,7 +1435,7 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template1 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssigneeHierarchy()).toBe("US Support 3");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe("US Support 3");
             expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
         });
         it('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
@@ -1447,7 +1447,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName1);
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssigneeHierarchy()).toBe("US Support 3");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe("US Support 3");
             expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
@@ -1456,7 +1456,7 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template2 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssigneeHierarchy()).toBe('Workforce Administration');
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('Workforce Administration');
             expect(await viewCasePo.getBusinessUnitText()).toBe('HR Support');
         });
         it('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
@@ -1468,7 +1468,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName2);
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssigneeHierarchy()).toBe('Workforce Administration');
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('Workforce Administration');
             expect(await viewCasePo.getBusinessUnitText()).toBe('HR Support');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
@@ -1477,7 +1477,7 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template3 should be applied assignee, as none assignement method
             expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
-            expect(await viewCasePo.getAssigneeHierarchy()).toBe("US Support 3");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe("US Support 3");
             expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
         });
         it('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
@@ -1489,7 +1489,7 @@ describe('Case Template', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName3);
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
-            expect(await viewCasePo.getAssigneeHierarchy()).toBe("US Support 3");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe("US Support 3");
             expect(await viewCasePo.getBusinessUnitText()).toBe("United States Support");
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
@@ -1498,7 +1498,7 @@ describe('Case Template', () => {
             await utilityCommon.closePopUpMessage();
             // verify support Group w.r.t template2 should be applied any assignee, as round robin assignement method
             expect(await viewCasePo.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewCasePo.getAssigneeHierarchy()).toBe('Workforce Administration');
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('Workforce Administration');
             expect(await viewCasePo.getBusinessUnitText()).toBe('HR Support');
         });
         afterAll(async () => {

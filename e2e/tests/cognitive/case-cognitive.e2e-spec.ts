@@ -394,7 +394,7 @@ describe('Case Cognitive', () => {
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getPriorityValue()).toBe('Critical');
             expect(await viewCasePo.getCategoryTier1Value()).toBe('-');
-            expect(await viewCasePo.getAssignedCompanyText()).toBe('Petramco');
+            expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
             expect(await viewCasePo.getCaseSummary()).toBe('Employee asked requested');
         });
         it('[5438,5440,5437,5410]:[Cognitive] - Auto Categorization button validation on Case Create screen', async () => {

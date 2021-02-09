@@ -158,7 +158,7 @@ describe('Ericsson Data Model Tests', () => {
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Applications');
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Help Desk');
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Incident');
-            expect(await viewCasePage.getAssigneeHierarchy()).toBe("US Support 2");
+            expect(await viewCasePage.getAssignedGroupValue()).toBe("US Support 2");
             expect(await viewCasePage.getAssigneeText()).toBe("Rudner Rita");
         });
         it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {

@@ -326,6 +326,11 @@ class ViewCasePage {
         return await $(this.selectors.assigneeHierarchy).getText();
     }
 
+    async getAssignedGroupValue(): Promise<string> {
+        let hirearchy = await this.getAssigneeHierarchy();
+        return (hirearchy.split('>')[2]).trim();
+    }
+
     async getDepartmentText(): Promise<string> {
         return await $(this.selectors.departmentText).getText();
     }
@@ -334,7 +339,7 @@ class ViewCasePage {
         return await $(this.selectors.businessUnitText).getText();
     }
 
-    async getAssignedCompanyText(): Promise<string> {
+    async getAssignedCompanyValue(): Promise<string> {
         let hirearchy = await this.getAssigneeHierarchy();
         return (hirearchy.split('>')[0]).trim();
     }

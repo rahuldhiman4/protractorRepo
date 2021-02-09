@@ -228,7 +228,7 @@ describe('Ericsson Model Test Extended', () => {
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Bonus');
-            expect(await viewCasePage.getAssigneeHierarchy()).toBe("US Support 2");
+            expect(await viewCasePage.getAssignedGroupValue()).toBe("US Support 2");
             expect(await viewCasePage.getAssigneeText()).toBe("Rudner Rita");
         });
         it('[60194]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
@@ -268,7 +268,7 @@ describe('Ericsson Model Test Extended', () => {
             expect(await viewCasePage.getCategoryTier1Value()).toBe('Fixed Assets');
             expect(await viewCasePage.getCategoryTier2Value()).toBe('Impairment');
             expect(await viewCasePage.getCategoryTier3Value()).toBe('Bonus');
-            expect(await viewCasePage.getAssigneeHierarchy()).toBe("Old Asset Management");
+            expect(await viewCasePage.getAssignedGroupValue()).toBe("Old Asset Management");
             expect(await viewCasePage.getAssigneeText()).toBe("Tynan Kenneth");
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('tkenneth');

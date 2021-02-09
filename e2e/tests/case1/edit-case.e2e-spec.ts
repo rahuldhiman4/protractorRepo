@@ -125,7 +125,7 @@ describe('Edit Case', () => {
         await changeAssignmentPage.setDropDownValue('SupportOrg', 'Australia Support');
         await changeAssignmentPage.setDropDownValue('AssignedGroup', 'AU Support 1');
         await editCasePage.clickSaveCase();
-        expect(await viewCasePage.getAssigneeHierarchy()).toContain('AU Support 1');
+        expect(await viewCasePage.getAssignedGroupValue()).toBe('AU Support 1');
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getAllTaskActivity('AU Support 1')).toBe('AU Support 1');
         await viewCasePage.clickEditCaseButton();
@@ -133,7 +133,7 @@ describe('Edit Case', () => {
         await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
         await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
         await editCasePage.clickSaveCase();
-        expect(await viewCasePage.getAssigneeHierarchy()).toContain('US Support 3');
+        expect(await viewCasePage.getAssignedGroupValue()).toBe('US Support 3');
         await viewCasePage.clickEditCaseButton();
         await changeAssignmentPage.clickAssignToMeBtn();
         await editCasePage.clickSaveCase();
