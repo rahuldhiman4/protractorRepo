@@ -6,7 +6,7 @@ class EditKnowledgeArticleTemplate {
     selectors = {
         sectionTitle: 'div.card-block input',
         cancelButton: 'div.modal-footer .btn-secondary',
-        lobValue: '[title="Line of Business"] .pull-left'
+        lobValue: '[aria-label="Line of Business"] .rx-select__search-button-title'
     }
 
     async getSectionTitleValue(sectionTitle: string): Promise<boolean> {

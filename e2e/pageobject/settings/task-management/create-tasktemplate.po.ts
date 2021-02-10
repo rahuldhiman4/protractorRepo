@@ -11,7 +11,7 @@ class CreateTaskTemplatePage {
         taskSummaryGuid: 'c19d336e-7339-4970-b69a-100108d672fd',
         taskCompny: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
         taskPriority: '1b9c265f-e618-4f0a-9b21-55dbb78e0cd1',
-        label: 'df2fba00-56d2-412c-ac22-b2990fcd4337',
+        label: '3f5aeaec-5b37-49a2-ad51-b2f5910612ec',
         taskCategoryDrpDown1: 'e1a7b701-6e1e-45b0-a2ba-f83e1a954045',
         taskCategoryDrpDown2: 'f0dcc3ef-9842-4e3c-bd32-7278885496f3',
         taskCategoryDrpDown3: 'f3673351-44ed-476a-a53c-0e0f13475981',

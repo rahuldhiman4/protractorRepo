@@ -131,30 +131,35 @@ describe('Knowledge Article', () => {
         });
     });
     //fail- due to foundation data
-    it('[3903]: On Edit KA, Change Assignment blade should process properly ', async () => {
-        let businessData = businessDataFile['BusinessUnitData'];
-        let departmentData = departmentDataFile['DepartmentData'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData'];
-        let personData = personDataFile['PersonData'];
-        let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-        let knowledgeData = knowledgeDataFile['3903'];
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-        await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await previewKnowledgePo.clickGoToArticleButton();
-        expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await changeAssignmentBlade.setDropDownValue('Company', knowledgeData.Company);
-        await changeAssignmentBlade.setDropDownValue('SupportOrg', businessData.orgName);
-        await changeAssignmentBlade.setDropDownValue('AssignedGroup', suppGrpData.orgName);
-        await changeAssignmentBlade.setDropDownValue('Assignee', personData.firstName);
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        let assigneeFullName = personData.firstName + " " + personData.lastName;
-        expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe(assigneeFullName);
-        expect(await editKnowledgePage.getKnowledgeMetaDataValue('Support Group')).toBe(suppGrpData.orgName);
+    describe('[3903]: On Edit KA, Change Assignment blade should process properly ', async () => {
+        it('[3903]: On Edit KA, Change Assignment blade should process properly ', async () => {
+            let businessData = businessDataFile['BusinessUnitData'];
+            let departmentData = departmentDataFile['DepartmentData'];
+            let suppGrpData = supportGrpDataFile['SuppGrpData'];
+            let personData = personDataFile['PersonData'];
+            let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+            let knowledgeData = knowledgeDataFile['3903'];
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await changeAssignmentBlade.setDropDownValue('Company', knowledgeData.Company);
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', businessData.orgName);
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', suppGrpData.orgName);
+            await changeAssignmentBlade.setDropDownValue('Assignee', personData.firstName);
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            let assigneeFullName = personData.firstName + " " + personData.lastName;
+            expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe(assigneeFullName);
+            expect(await editKnowledgePage.getKnowledgeMetaDataValue('Support Group')).toBe(suppGrpData.orgName);
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     it('[3902]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
@@ -197,7 +202,7 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.clickCancelStatusBtn();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
-//fail- due to foundation data
+    //fail- due to foundation data
     it('[3852]: On Create KA, Change Assignment blade should process properly', async () => {
         await navigationPage.signOut();
         await loginPage.login('peter');
@@ -233,40 +238,45 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
-//failing due to foundation data
-    it('[3853]: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
-        try {
-            let businessData2 = businessDataFile['BusinessUnitData19501'];
-            let departmentData2 = departmentDataFile['DepartmentData19501'];
-            let suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
-            let personData = personDataFile['PersonData'];  //This person is associated to 2 given support grps as created is beforeall method
-            let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
-            let knowledgeData = knowledgeDataFile['3853'];
-            await navigationPage.signOut();
-            await loginPage.login(personData.userId + "@petramco.com", 'Password_1234');
-            await navigationPage.gotoCreateKnowledge();
-            await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
-            await createKnowledgePage.clickOnUseSelectedTemplateButton();
-            await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
-            expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Company')).toBeTruthy('Assign Field is enabled');
-            expect(await createKnowledgePage.isAssignmentFieldDisabled('Business Unit')).toBeTruthy('Assign Field is enabled');
-            expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Group')).toBeTruthy('Assign Field is enabled');
-            expect(await createKnowledgePage.isAssignedToFieldDisabled('Assigned To')).toBeTruthy('Assign Field is enabled');
-            await createKnowledgePage.clickAssignToMeButton();
-            let assignedGroupList: string[] = await changeAssignmentBlade.getAllDropDownValues("AssignedGroup")
-            expect(assignedGroupList.length).toBeGreaterThanOrEqual(2);
-            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'UI-SupportGroup-19501');
-            await createKnowledgePage.clickOnSaveKnowledgeButton();
-            await previewKnowledgePo.clickGoToArticleButton();
-        }
-        catch (error) {
-            throw error;
-        }
-        finally {
-            await navigationPage.signOut();
-            await loginPage.login('peter');
-        }
+    //failing due to foundation data
+    describe('[3853]: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
+        it('[3853]: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
+            try {
+                let businessData2 = businessDataFile['BusinessUnitData19501'];
+                let departmentData2 = departmentDataFile['DepartmentData19501'];
+                let suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
+                let personData = personDataFile['PersonData'];  //This person is associated to 2 given support grps as created is beforeall method
+                let knowledgeDataFile = require("../../data/ui/knowledge/knowledgeArticle.ui.json")
+                let knowledgeData = knowledgeDataFile['3853'];
+                await navigationPage.signOut();
+                await loginPage.login(personData.userId + "@petramco.com", 'Password_1234');
+                await navigationPage.gotoCreateKnowledge();
+                await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
+                await createKnowledgePage.clickOnUseSelectedTemplateButton();
+                await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
+                await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+                expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Company')).toBeTruthy('Assign Field is enabled');
+                expect(await createKnowledgePage.isAssignmentFieldDisabled('Business Unit')).toBeTruthy('Assign Field is enabled');
+                expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Group')).toBeTruthy('Assign Field is enabled');
+                expect(await createKnowledgePage.isAssignedToFieldDisabled('Assigned To')).toBeTruthy('Assign Field is enabled');
+                await createKnowledgePage.clickAssignToMeButton();
+                let assignedGroupList: string[] = await changeAssignmentBlade.getAllDropDownValues("AssignedGroup")
+                expect(assignedGroupList.length).toBeGreaterThanOrEqual(2);
+                await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'UI-SupportGroup-19501');
+                await createKnowledgePage.clickOnSaveKnowledgeButton();
+                await previewKnowledgePo.clickGoToArticleButton();
+            }
+            catch (error) {
+                throw error;
+            }
+            finally {
+                await navigationPage.signOut();
+                await loginPage.login('peter');
+            }
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     it('[6380,6390]: [KM-BWF integration] [Knowledge Article] Mandatory fields of the Create Knowledge Article view', async () => {
@@ -324,7 +334,7 @@ describe('Knowledge Article', () => {
             let columnName: string[] = ["Review Status"];
             await knowledgeArticlesConsolePo.addColumnOnGrid(knowledgeGridColumnFields)
             await utilityGrid.addFilter('Review Status', 'Pending Review', 'checkbox');
-            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId); 
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             expect(await viewKnowledgeArticlePo.isReviewMessageDisplayed('Knowledge Article is in Review')).toBeTruthy('article review not set');
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             expect(await reviewCommentsPo.isCancelButtonDisplay()).toBeTruthy('Cancel button not present');
@@ -723,6 +733,7 @@ describe('Knowledge Article', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('peter');
         });

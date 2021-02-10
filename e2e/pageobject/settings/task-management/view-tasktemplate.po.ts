@@ -318,7 +318,7 @@ class ViewTaskTemplate {
     }
 
     async clickBackArrowBtn(): Promise<void> {
-        await $(this.selectors.backArrowButton).click();
+        await $$(this.selectors.backArrowButton).last().click();
     }
 
     async getLobValue(): Promise<string> {
