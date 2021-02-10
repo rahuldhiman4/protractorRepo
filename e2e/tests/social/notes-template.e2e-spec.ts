@@ -1,3 +1,4 @@
+import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
@@ -65,6 +66,7 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
+        await utilityGrid.selectLineOfBusiness('Human Resource');
     });
 
     afterAll(async () => {
@@ -191,6 +193,7 @@ describe('Notes template', () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -281,6 +284,7 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -371,6 +375,7 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
 
     });
@@ -980,6 +985,7 @@ describe('Notes template', () => {
             await apiHelper.addTaskToCase(externalTaskData1, caseResponse2.id);
 
             await apiHelper.updateCaseStatus(caseResponse1.id, 'InProgress');
+            await apiHelper.updateCaseStatus(caseResponse2.id, 'InProgress');
         });
 
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
@@ -995,6 +1001,12 @@ describe('Notes template', () => {
             expect(await notesTemplateUsage.isTemplatePresent(notesTemplatePsilonlData.templateName)).toBeFalsy();//Notes Template of Psilon not visible
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
+
+            await viewTaskPo.clickOnChangeStatus();
+            await viewTaskPo.changeTaskStatus('Completed');
+            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.clickSaveStatus();
+
         });
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
@@ -1054,7 +1066,6 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickOnCancelBtn();
             await activityTabPo.clickOnCancelButton();
         });
-
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
@@ -1088,6 +1099,12 @@ describe('Notes template', () => {
             await activityTabPo.addActivityNote('ManualTemplateData');
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog('ManualTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
+            //Change Task status
+            await viewTaskPo.clickOnChangeStatus();
+            await viewTaskPo.changeTaskStatus('Completed');
+            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.clickSaveStatus();
+
         });
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
@@ -1105,6 +1122,12 @@ describe('Notes template', () => {
             await activityTabPo.addActivityNote('ExternalTemplateData');
             await activityTabPo.clickOnPostButton();
             expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
+            //Change task status
+            await viewTaskPo.clickOnChangeStatus();
+            await viewTaskPo.changeTaskStatus('Completed');
+            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.clickSaveStatus();
+
         });
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
@@ -1135,6 +1158,7 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -1147,6 +1171,7 @@ describe('Notes template', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNotesTemplate("Knowledge", tempNotesTemplateData);
         //create Knowledge
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         await navigationPage.gotoCreateKnowledge();
         expect(await browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');
@@ -1213,10 +1238,12 @@ describe('Notes template', () => {
         });
 
         it('[4373]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.clearFilter();
-            await consoleNotesTemplatePo.addColumns(['Label', 'ID']);
+            let columnNameArray:string[] =['Label', 'ID'];
+            await consoleNotesTemplatePo.addColumns(columnNameArray);
             await utilityGrid.searchRecord(notesTemplateInactiveData.templateName);
             expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(1);
             templateGuid = await consoleNotesTemplatePo.getGuidValue();
@@ -1421,6 +1448,7 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
