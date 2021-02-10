@@ -107,7 +107,7 @@ class CaseWatchlistBlade {
     }
 
     async selectTwoCases(caseId1: string, caseId2: string): Promise<void>{
-        await this.sortDescendingByCaseId();
+        await utilityGrid.sortGridColumn('Case ID', 'descending', this.selectors.guid);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId1, this.selectors.guid);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId2, this.selectors.guid);
     }
@@ -186,7 +186,7 @@ class CaseWatchlistBlade {
 async sortDescendingByCaseId(): Promise<void>{
     let headerText = await $$('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .at-header-data-cell');
     for(let i:number=0; i<(await headerText.length); i++){
-        let columnName = await headerText[i].$('.c-header-name');
+        let columnName = await headerText[i].$('.c-header__separator');
         if(await columnName.getText()=='Case ID'){
             await headerText[i].$('adapt-table-header-cell-menu').click();
             break;
