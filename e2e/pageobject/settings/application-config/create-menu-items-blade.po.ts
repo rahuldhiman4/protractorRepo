@@ -6,8 +6,8 @@ class CreateNewMenuOptionPage {
 
     selectors = {
         menuOptionLink: '[rx-view-component-id="306a51e0-cb89-45db-9270-c40b4ec3b149"] button',
-        menuNameDropDown: '[rx-view-component-id="da9b9818-7b4c-43ec-9c4b-41e0cda49b8d"] button',
-        menuNameDropDownGuid: "da9b9818-7b4c-43ec-9c4b-41e0cda49b8d",
+        menuNameDropDown: '[rx-view-component-id="56199a5a-344f-4b2a-85ac-2a60c6ab1882"] button',
+        menuNameDropDownGuid: "56199a5a-344f-4b2a-85ac-2a60c6ab1882",
         menuOptionId: '[rx-view-component-id="d40aa6f2-090d-4641-9779-ae724673575c"]',
         menuOption: 'input',
         statusDropDown: '[rx-view-component-id="a548d907-8c6b-46ab-bc83-88a5310e04b7"] button',

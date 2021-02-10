@@ -5,13 +5,13 @@ class StatusConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        editLifeCycleButton: 'button.btn-edit-status-transition',
-        localizeButton: '.status-name_label button',
-        newStatusInput: '.default-locale-title input',
+        editLifeCycleButton: 'button.font-weight-bold',
+        localizeButton: 'button.btn-localize',
+        newStatusInput: '.modal input',
         statusAddModalBtns: '.modal-content .status-settings_button-bar button',
-        settingPanelButtons: '.status-settings_button-bar .action-button',
+        settingPanelButtons: '.footer button[adapt-button]',
         localizedBtn: '.rx-template-editor-text-fields .d-icon-field_text_mapmarker',
-        localizeMenuButtons: '.status-settings_button-bar button',
+        localizeMenuButtons: '.modal button[adapt-button]',
         status: '.v-line',
         deleteButton: '.d-button_action-clear',
         backButton: '.ac-btn-cancel-status-transition',
@@ -171,6 +171,7 @@ class StatusConfigPage {
 
     async clickEditLifeCycleLink(): Promise<void> {
         await $(this.selectors.editLifeCycleButton).click();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     }
 
     async renameExistingStatus(newStatus: string): Promise<void> {
@@ -218,8 +219,8 @@ class StatusConfigPage {
             await browser.actions().mouseMove($(`path[data-label="${status1}--${status2}"]`)).perform();
             await $(`[data-tool-name="add-new-status"][model-id="${modelId}"]`).click();
             await $(this.selectors.localizeButton).click();
-            await $(this.selectors.newStatusInput).clear();
-            await $(this.selectors.newStatusInput).sendKeys(newStatus);
+            await $$(this.selectors.newStatusInput).first().clear();
+            await $(this.selectors.newStatusInput).first().sendKeys(newStatus);
             await $$(this.selectors.localizeMenuButtons).first().click();
             await this.saveSetting();
         }

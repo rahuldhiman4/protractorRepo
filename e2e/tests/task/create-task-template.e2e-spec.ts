@@ -32,35 +32,12 @@ describe('Create Task Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await foundationData12111("Petramco");
     });
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
-
-    async function foundationData12111(company: string) {
-        const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-        const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
-        const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-        const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        await apiHelper.apiLogin('tadmin');
-        businessData = businessDataFile['BusinessUnitData12111'];
-        departmentData = departmentDataFile['DepartmentData12111'];
-        suppGrpData = supportGrpDataFile['SuppGrpData12111'];
-        personData = personDataFile['PersonData12111'];
-        await apiHelper.createNewUser(personData);
-        await browser.sleep(15000); //New user is created above, waiting for its backend access preperation
-        businessData.relatedOrgId = company;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData);
-        departmentData.relatedOrgId = businessUnitId;
-        let depId = await apiHelper.createDepartment(departmentData);
-        suppGrpData.relatedOrgId = depId;
-        await apiHelper.createSupportGroup(suppGrpData);
-        await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
-        await apiHelper.associatePersonToCompany(personData.userId, company);
-    }
 
     //ankagraw
     describe('[5796,5795]: [Task Template] Task Template Create view (UI verification)', async () => {
@@ -128,7 +105,8 @@ describe('Create Task Template', () => {
         await viewTaskTemplate.clickOnEditLink();
         await editTaskTemplate.selectTaskCompany('Petramco');
         await editTaskTemplate.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Company marked for Global usage cannot be modified.')).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Company marked for Global usage cannot be modified.',2)).toBeTruthy();
+        await utilityCommon.closePopUpMessage()
         await editTaskTemplate.clickOnCancelButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await viewTaskTemplate.clickBackArrowBtn();
@@ -260,16 +238,12 @@ describe('Create Task Template', () => {
             await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[5801]: Created task template and change the status of it', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
             taskTemplateId = await viewTaskTemplate.getTaskTemplateId();
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
             await editTaskTemplate.clickOnSaveMetadata();
             await viewTaskTemplate.clickBackArrowBtn();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Inactive');
@@ -491,7 +465,7 @@ describe('Create Task Template', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent('Assigned')).toBeTruthy('Assigned not present');
-            expect(await utilityGrid.isGridRecordPresent('In Progress')).toBeTruthy('In Progress not present');
+            expect(await utilityGrid.isGridRecordPresent('InProgress')).toBeTruthy('In Progress not present');
             expect(await utilityGrid.isGridRecordPresent('Pending')).toBeTruthy('Pending not present');
             expect(await utilityGrid.isGridRecordPresent('Completed')).toBeTruthy('Completed not present');
             expect(await utilityGrid.isGridRecordPresent('Canceled')).toBeTruthy('Canceled not present');
@@ -645,15 +619,14 @@ describe('Create Task Template', () => {
             await createCaseTemplate.setCompanyName("Petramco");
             await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
             await createCaseTemplate.setOwnerCompanyValue("Petramco");
-            await createCaseTemplate.setOwnerOrgDropdownValue(businessData.orgName);
-            await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
-            await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
+            await createCaseTemplate.setOwnerOrgDropdownValue('United States Support');
+            await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
             await createCaseTemplate.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             expect(await viewCaseTemplate.getOwnerCompanyValue()).toBe("Petramco");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
-            expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+            expect(await viewCaseTemplate.getOwnerGroupValue()).toBe('US Support 3');
+            expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe('United States Support');
+            await viewCaseTemplate.clickBackArrowBtn();
         });
         it('[4987,4988,4989]: Create Manual Task template', async () => {
             //Manual task Template
@@ -664,14 +637,13 @@ describe('Create Task Template', () => {
             await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
-            await taskTemplate.selectBuisnessUnit(businessData.orgName);
-            await taskTemplate.selectDepartment(departmentData.orgName);
-            await taskTemplate.selectOwnerGroup(suppGrpData.orgName)
+            await taskTemplate.selectBuisnessUnit('United States Support');
+            await taskTemplate.selectOwnerGroup('US Support 3');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe('Petramco');
-            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
-            expect(await viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe('US Support 3');
+            expect(await viewTaskTemplate.getBuisnessunitValue()).toBe('United States Support');
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 

@@ -243,7 +243,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilityGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.searchAndSelectGridRecord(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
@@ -261,7 +261,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilityGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.searchAndSelectGridRecord(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
@@ -279,7 +279,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
         expect(await notesTemplateConsole.isAddNotesTemplateBtnDisplayed()).toBeFalsy("Add notes template button is enabled");
-        await utilityGrid.clickCheckBoxOfValueInGrid(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
+        await utilityGrid.searchAndSelectGridRecord(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await notesTemplateConsole.isDeleteNotesTemplateBtnDisplayed()).toBeFalsy("Delete notes template button is enabled");
         await utilityGrid.searchAndOpenHyperlink(NOTES_TEMPLATE_MANDATORY_FIELD.templateName);
         expect(await editNotesTemplateConfig.isStatusFieldDisabled()).toBeTruthy("Status field is enabled");
@@ -575,6 +575,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editCaseTemplatePage.isTemplateStatusDisabled()).toBeTruthy('Template status field is enabled');
         expect(await editCaseTemplatePage.isSaveMetadataBtnEnabled()).toBeFalsy('Save metadata button is enabled');
         await editCaseTemplatePage.clickOnCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await viewCasetemplatePo.clickBackArrowBtn();
     });
 

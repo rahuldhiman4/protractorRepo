@@ -23,7 +23,7 @@ class ViewCaseTemplate {
         categoryTier4: '[rx-view-component-id="8a790c6a-3401-44f6-afc3-eb43a67a55b1"] .read-only-content',
         priority: '.selection-field',
         labelvalue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .read-only-content',
-        buisnessUnitvalue: '[rx-view-component-id="e916c10e-a726-425c-9d7f-a39e1f43f1e4"] .read-only-content',
+        buisnessUnitvalue: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .read-only-content',
         departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .read-only-content',
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName: '[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span',

@@ -48,7 +48,7 @@ export const BWF_PAGE_TITLES = {
             CATEGORIZATION: 'Categorization - Settings - Business Workflows',
             TEMPLATE: 'Template - Settings - Business Workflows',
         },
-        NOTES_TEMPLATES: 'Note Template - Settings - Business Workflows',
+        NOTES_TEMPLATES: 'Notes Template - Settings - Business Workflows',
         READ_ACCESS: 'Read Access - Settings - Business Workflows',
         STATUS_CONFIGURATION: 'Status Configuration - Settings - Business Workflows',
         TEMPLATES: 'Templates - Settings - Business Workflows'
