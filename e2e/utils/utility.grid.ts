@@ -32,7 +32,8 @@ export class GridOperations {
         editPresetFilterSaveButton: '.advanced-filter__editing-footer .btn-primary',
         savePresetInput: '.advanced-filter-name-editor__input',
         saveOrCancelPresetFilterButton: 'button.custom-action-btn__right',
-        lineOfBusinessDropDown: 'button[btn-type="tertiary"]'
+        lineOfBusinessDropDown: 'button[btn-type="tertiary"]',
+        deleteButton: '.d-icon-left-trash'
     }
 
     async selectAllCheckBox() {
@@ -703,5 +704,11 @@ export class GridOperations {
         await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
     }
 
+    async deleteGridRecord(gridRecord:string, guid?: string): Promise<void> {
+        let deleteButtonLocator: string = this.selectors.deleteButton;
+        if (guid) deleteButtonLocator = `[rx-view-component-id="${guid}"] ${this.selectors.deleteButton}`;
+        await this.searchAndSelectGridRecord(gridRecord,guid);
+        await $(deleteButtonLocator).click();
+    }
 }
 export default new GridOperations();

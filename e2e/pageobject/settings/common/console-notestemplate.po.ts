@@ -5,7 +5,7 @@ class ConsoleNotesTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         notesTemplate: '.d-icon-left-plus',
-        gridGuid: '34edf229-ec94-4ae3-9083-6ab5b6441e5d',
+        gridGuid: '25aff7c5-2405-4d61-8a4f-8db53b033c31',
         deleteButton: '.d-icon-left-cross',
         searchTextBox: '.adapt-search-triggerable input',
         searchButton: '.adapt-search-triggerable .input-group-append',
@@ -33,11 +33,6 @@ class ConsoleNotesTemplate {
 
     async searchAndClickOnNotesTemplate(templateName: string): Promise<void> {
         await utilityGrid.searchAndOpenHyperlink(templateName);
-    }
-
-    async clickOnDeleteButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.deleteButton)));
-        await $(this.selectors.deleteButton).click();
     }
 
     async isTemplatePresentOnGrid(templateNameValue): Promise<boolean> {
