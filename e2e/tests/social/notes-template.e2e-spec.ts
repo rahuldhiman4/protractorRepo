@@ -99,8 +99,7 @@ describe('Notes template', () => {
         expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
         await editNotetemplate.clickOnCancelButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-        await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
-        await consoleNotesTemplatePo.clickOnDeleteButton();
+        await utilityGrid.deleteGridRecord(templateName);
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         expect(await utilityCommon.isPopupMsgsMatches(['Record deleted successfully.'])).toBeTruthy('Record deleted successfully. pop up message missing');
     });
@@ -183,8 +182,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
             await editNotetemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
-            await consoleNotesTemplatePo.clickOnDeleteButton();
+            await utilityGrid.deleteGridRecord(templateName);
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
@@ -275,8 +273,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
             await editNotetemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
-            await consoleNotesTemplatePo.clickOnDeleteButton();
+            await utilityGrid.deleteGridRecord(templateName);
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
@@ -366,8 +363,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
             await editNotetemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
-            await consoleNotesTemplatePo.clickOnDeleteButton();
+            await utilityGrid.deleteGridRecord(templateName);
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
@@ -471,8 +467,7 @@ describe('Notes template', () => {
             expect(await editNotetemplate.getBodyValue()).toContain(updateBody);
             await editNotetemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await consoleNotesTemplatePo.searchAndClickNotesTemplateCheckBox(templateName);
-            await consoleNotesTemplatePo.clickOnDeleteButton();
+            await utilityGrid.deleteGridRecord(templateName);
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Record deleted successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
@@ -481,7 +476,6 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login("elizabeth");
         });
-
     });
 
     //ptidke

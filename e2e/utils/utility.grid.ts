@@ -703,11 +703,12 @@ export class GridOperations {
         await $(guidID + this.selectors.lineOfBusinessDropDown).click();
         await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
     }
-    
-    async clickOnDeleteButton(guid?: string): Promise<void> {
-        let guidID: string = "";
-        if (guid) guidID = `[rx-view-component-id="${guid}"] `;
-        await $(guidID + this.selectors.deleteButton).click();
+
+    async deleteGridRecord(gridRecord:string, guid?: string): Promise<void> {
+        let deleteButtonLocator: string = this.selectors.deleteButton;
+        if (guid) deleteButtonLocator = `[rx-view-component-id="${guid}"] ${this.selectors.deleteButton}`;
+        await this.searchAndSelectGridRecord(gridRecord,guid);
+        await $(deleteButtonLocator).click();
     }
 }
 export default new GridOperations();
