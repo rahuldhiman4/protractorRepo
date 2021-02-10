@@ -35,61 +35,67 @@ describe('Knowledge Article Template', () => {
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         expect(await utilityGrid.isGridRecordPresent('template1062' + randomStr)).toBeFalsy('Record should not be created');
     });
- 
-    it('[6360]: [Create Mode] Unable to create the duplicate template', async () => {
-        let templateName = 'Template Name DRDMV_1088';
-        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let knowledgeSetData = {
-            knowledgeSetTitle: 'KASetPetramco' + randomStr,
-            knowledgeSetDesc: 'KAPetramco_Desc' + randomStr,
-            company: 'Petramco'
-        }
-        //Creating an Article Template from API
-        let knowledgeArticleTemplateData = {
-            templateName: templateName,
-            sectionTitle: "articleSection",
-            // lineOfBusiness: "Human Resource",
-            knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
-        }
-        await apiHelper.apiLogin('jbarnes');
-        await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
 
-        await navigationPage.signOut();
-        await loginPage.login('jbarnes');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.ARTICLE_TEMPLATES);
-        //Creating the Article Template with same name and set from UI
-        await utilityGrid.selectLineOfBusiness('Human Resource');
-        await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-        await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
-        await createKnowledgeArticleTemplatePo.clickOnAddSection();
-        await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
-        await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('ERROR (222061): Template already exists.')).toBeTruthy();
-        await utilityCommon.closePopUpMessage();
-        await createKnowledgeArticleTemplatePo.clickCancelBtn();
-        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+    describe('[6360]: [Create Mode] Unable to create the duplicate template', () => {
+        it('[6360]: [Create Mode] Unable to create the duplicate template', async () => {
+            let templateName = 'Template Name DRDMV_1088';
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let knowledgeSetData = {
+                knowledgeSetTitle: 'KASetPetramco' + randomStr,
+                knowledgeSetDesc: 'KAPetramco_Desc' + randomStr,
+                company: 'Petramco'
+            }
+            //Creating an Article Template from API
+            let knowledgeArticleTemplateData = {
+                templateName: templateName,
+                sectionTitle: "articleSection",
+                // lineOfBusiness: "Human Resource",
+                knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
+            }
+            await apiHelper.apiLogin('jbarnes');
+            await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
 
-        //Creating the Article Template with same name but different LOB
-        await utilityGrid.selectLineOfBusiness('Facilities');
-        await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
-        await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
-        await createKnowledgeArticleTemplatePo.clickOnAddSection();
-        await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
-        // verify LOB is on create screen
-        expect(await createKnowledgeArticleTemplatePo.getLobValue()).toBe("Facilities");
-        await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent(`Knowledge Template : ${templateName} has been successfully created`)).toBeTruthy();
-        // verify LOB is on edit screen
-        await utilityGrid.searchAndOpenHyperlink(templateName);
-        expect(await editKnowledgeTemplatePo.getLobValue()).toBe("Facilities");
-        await editKnowledgeTemplatePo.clickOnCancelButton();
-        await utilityGrid.selectLineOfBusiness('Human Resource');
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.ARTICLE_TEMPLATES);
+            //Creating the Article Template with same name and set from UI
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
+            await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
+            await createKnowledgeArticleTemplatePo.clickOnAddSection();
+            await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
+            await createKnowledgeArticleTemplatePo.clickOnSaveButton();
+            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222061): Template already exists.')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
+            await createKnowledgeArticleTemplatePo.clickCancelBtn();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+
+            //Creating the Article Template with same name but different LOB
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
+            await createKnowledgeArticleTemplatePo.setTemplateName(templateName);
+            await createKnowledgeArticleTemplatePo.clickOnAddSection();
+            await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
+            // verify LOB is on create screen
+            expect(await createKnowledgeArticleTemplatePo.getLobValue()).toBe("Facilities");
+            await createKnowledgeArticleTemplatePo.clickOnSaveButton();
+            expect(await utilityCommon.isPopUpMessagePresent(`Knowledge Template : ${templateName} has been successfully created`)).toBeTruthy();
+            // verify LOB is on edit screen
+            await utilityGrid.searchAndOpenHyperlink(templateName);
+            expect(await editKnowledgeTemplatePo.getLobValue()).toBe("Facilities");
+            await editKnowledgeTemplatePo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     describe('[6435,6372,6342]: [Create Mode] Create a template for Knowledge article', () => {
         beforeAll(async () => {
-           await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('tadmin');
             let knowledgeSetData = {
                 knowledgeSetTitle: 'Knowledge Set Petramco Title',
                 knowledgeSetDesc: 'Knowledge Set Petramco_Desc',
