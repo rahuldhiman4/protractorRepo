@@ -93,8 +93,8 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[4596,4198,4586]: Verify My Profile Console', async () => {
-        // await navigationPage.gotoCaseConsole();
-        // await navigationPage.gotoPersonProfile();
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoPersonProfile();
         expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
         expect(await personProfile.getJobTitle()).toBe('HR Business Analyst', 'Job tite does not match');
         expect(await personProfile.getCorporateID()).toBe('200003', 'Corporate Id does not match');
@@ -117,7 +117,7 @@ describe('Person Profile test', () => {
         await relatedTabPage.addRelatedPerson();
         await addRelatedPopupPage.addPerson('Qianru Tao', 'Related to');
         await relatedTabPage.clickRelatedPersonName('Qianru Tao');
-        await browser.sleep(10000); 
+        await browser.sleep(3000); //Takes time to redirect to person profile on new tab
         try {
             await utilityCommon.switchToNewTab(1);
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Related to')).toBeTruthy('Related to is not available');
