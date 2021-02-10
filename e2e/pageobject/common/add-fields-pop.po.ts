@@ -4,8 +4,8 @@ class AddField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         fieldVariable: '.rx-data-dictionary-item-value',
-        parentFields: '.rx-tree-node-parent',
-        okButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_primary',
+        parentFields: '.modal-body .a-tree__content',
+        okButtonOnEditor: '.modal-footer .btn-primary',
         cancelButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_secondary',
         addField: '.rx-expression-editor-dictionary h5',
         groupName: '.rx-data-dictionary-item div'
@@ -76,9 +76,26 @@ class AddField {
         return await element(by.cssContainingText(this.selectors.parentFields, caseTemplateValue)).isPresent();
     }
     async setValueOfField(fromTree: string, value: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.parentFields, fromTree)).click();
-        let fieldValue = await element(by.cssContainingText(this.selectors.fieldVariable, value));
-        await browser.actions().mouseMove(fieldValue).doubleClick().perform();
+        let countParent = await $$('.modal-body .a-tree__label span span').count();
+        for (let i =0; i<countParent; i++){
+            let getTextofparent = await $$('.modal-body .a-tree__label span span').get(i).getText();
+            console.log('getTextofparent>>>>>',getTextofparent);
+            if (getTextofparent == fromTree){
+              await $$('.modal-body .a-tree__toggle').get(i).click();  
+              await browser.sleep(3000);//Added becoz of slownees open the parent tree
+              break;
+            }
+        }
+
+        let countChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').count();
+        for (let i =0; i<countChild; i++){
+            let getTextofChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').get(i).getText();
+            console.log('getTextofparent>>>>>',getTextofChild);
+            if (getTextofChild == value){
+              await $$('.modal-body .ui-tree-selectable .d-icon-plus_circle').get(i).click();  
+              break;
+            }
+        }
     }
 
     async clickOnOkButtonOfEditor(): Promise<void> {
