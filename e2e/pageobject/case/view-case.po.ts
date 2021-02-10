@@ -216,14 +216,14 @@ class ViewCasePage {
     }
 
     async clickEditCaseButton(): Promise<void> {
-        await utilityCommon.scrollToElement($(this.selectors.editLink));
+        //await utilityCommon.scrollToElement($(this.selectors.editLink));
         await $(this.selectors.editLink).click();
     }
 
     async clickAddTaskButton(): Promise<void> {
         await $(this.selectors.addTaskButton).isPresent().then(async (link) => {
             if (link) {
-                await utilityCommon.scrollToElement($(this.selectors.addTaskButton));
+                //await utilityCommon.scrollToElement($(this.selectors.addTaskButton));
                 await $(this.selectors.addTaskButton).click();
             } else console.log('Add Task button not found');
         });
@@ -235,7 +235,7 @@ class ViewCasePage {
     }
 
     async openTaskCard(taskCardNumber: number): Promise<void> {
-        await utilityCommon.scrollToElement($(this.selectors.taskCardArrow));
+        //await utilityCommon.scrollToElement($(this.selectors.taskCardArrow));
         await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();
     }
 
@@ -305,7 +305,7 @@ class ViewCasePage {
     }
 
     async clickAttachmentsLink(): Promise<void> {
-        await utilityCommon.scrollToElement($(this.selectors.attachmentsLink));
+        //await utilityCommon.scrollToElement($(this.selectors.attachmentsLink));
         await $(this.selectors.attachmentsLink).click();
     }
 

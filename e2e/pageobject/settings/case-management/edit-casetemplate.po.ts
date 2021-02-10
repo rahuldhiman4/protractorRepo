@@ -362,7 +362,7 @@ class EditCaseTemplate {
     async clickOnFlowsetDropDown(): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="12abf0f1-146b-4c94-bd9b-d7a55200153d"]`);
         const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-        await utilityCommon.scrollToElement(dropDownBoxElement);
+        //await utilityCommon.scrollToElement(dropDownBoxElement);
         await dropDownBoxElement.click();
     }
 
