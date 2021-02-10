@@ -1,5 +1,5 @@
 import { ICaseTemplateUI } from '../../../data/interface/template.interface';
-import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by } from "protractor";
+import { $, $$, browser, protractor, ProtractorExpectedConditions, element, by, ElementFinder } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 
 class EditCaseTemplate {
@@ -77,8 +77,9 @@ class EditCaseTemplate {
     }
 
     async clickOnCancelButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        await $(this.selectors.cancelButton).click();
+        let cancelButton = await $(this.selectors.cancelButton);
+        await utilityCommon.scrollToElement(cancelButton);
+        await cancelButton.click();
     }
 
     async clickOnMangeDyanmicLink(): Promise<void> {
@@ -327,7 +328,7 @@ class EditCaseTemplate {
 
     async isCopyTemplateBtnDisplayed(): Promise<boolean> {
         return await $(this.selectors.copyTemplate).isPresent().then(async (result) => {
-            if (result) return await  $(this.selectors.copyTemplate).isDisplayed();
+            if (result) return await $(this.selectors.copyTemplate).isDisplayed();
             else return false;
         });
     }

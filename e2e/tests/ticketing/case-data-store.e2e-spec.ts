@@ -1019,7 +1019,7 @@ describe('Case Data Store', () => {
     });
 
     //ptidke
-    describe('[4868]: [Dynamic Data] Verify Dynamic Field On Case Template Edit view UI', async () => {
+    fdescribe('[4868]: [Dynamic Data] Verify Dynamic Field On Case Template Edit view UI', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, inactiveTemplateName, draftTemplateName, activeTemplateName;
         let caseTemplateName = randomStr + 'caseTemplateDRDMV13112';
@@ -1069,8 +1069,6 @@ describe('Case Data Store', () => {
             await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4868]: Create and Verify Dynamic Fields On Case Template  ', async () => {
-            
-            
             await utilityGrid.searchAndOpenHyperlink(draftTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link not present');
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
