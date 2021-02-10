@@ -72,6 +72,8 @@ describe('Menu Item', () => {
         await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
         await createMenuItems.clickOnMenuOptionLink();
         await createMenuItems.selectMenuNameDropDown('Resolution Code');
+        await createMenuItems.clickOnCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 
     //kgaikwad
@@ -102,21 +104,23 @@ describe('Menu Item', () => {
             await createMenuItems.selectStatusDropDown('Active');
             await createMenuItems.selectAvailableOnUiToggleButton(true);
             await createMenuItems.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Label with same name already exists. Select a different name.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label1);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Label with same name already exists. Select a different name.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await createMenuItems.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
             await localizeValuePopPo.setLocalizeValue(label2);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Label with same name already exists. Select a different name.')).toBeTruthy();
+            await createMenuItems.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[4290]: create same name record in same LOB', async () => {
             //create same name record in same LOB
@@ -131,7 +135,8 @@ describe('Menu Item', () => {
             await localizeValuePopPo.setLocalizeValue(label);
             await localizeValuePopPo.clickOnSaveButton();
             await createMenuItems.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222176): The Label already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Label with same name already exists. Select a different name.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             await createMenuItems.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -522,6 +527,7 @@ describe('Menu Item', () => {
             await createCasetemplatePo.setPriorityValue('Low');
             await createCasetemplatePo.setLabelValue(labelActive1);
             await createCasetemplatePo.clickSaveCaseTemplate();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
 
         it('[4277]: Verify Label With Create Task Template', async () => {
@@ -536,6 +542,7 @@ describe('Menu Item', () => {
             await createTasktemplatePo.selectCompanyByName('Petramco')
             await createTasktemplatePo.selectLabel(labelActive1);
             await createTasktemplatePo.clickOnSaveTaskTemplate();
+            await viewTasktemplatePo.clickBackArrowBtn();
         });
 
         it('[4277]: Verify Label With Create Assignment Mapping', async () => {
@@ -551,6 +558,7 @@ describe('Menu Item', () => {
             await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
             await createAssignmentsConfigPo.setLabel(labelActive1);
             await createAssignmentsConfigPo.clickonSaveButton();
+
         });
 
         it('[4277]: Verify Label With Case Read Access', async () => {

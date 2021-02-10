@@ -16,33 +16,9 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Copy Task Template', () => {
-    let twoCompanyUser, userData13548;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        // user for 4737
-        userData13548 = {
-            "firstName": "Fname13548",
-            "lastName": "Lname13548",
-            "userId": "4737",
-            "emailId": "4737@petramco.com",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData13548);
-        await apiHelper.associatePersonToCompany(userData13548.userId, "Petramco");
-        // Petramco and Psilon user
-        twoCompanyUser = {
-            "firstName": "CopyTask",
-            "lastName": "Psilon",
-            "userId": "copytask",
-            "emailId": "copytask@petramco.com",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        await apiHelper.createNewUser(twoCompanyUser);
-        await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Psilon");
-        await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "US Support 1");
     });
 
     afterAll(async () => {
@@ -82,6 +58,8 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityCommon.closePopUpMessage();
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4570]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
             await navigationPage.signOut();
@@ -96,9 +74,11 @@ describe('Copy Task Template', () => {
             }
             await apiHelper.apiLogin('qtao');
             let newCase = await apiHelper.createCase(caseData);
+            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
+            let taskId = await manageTask.getTaskDisplayId();
             await manageTask.clickCloseButton();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
@@ -106,7 +86,7 @@ describe('Copy Task Template', () => {
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.searchAndOpenHyperlink(templateData.templateSummary);
+            await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
         });
         afterAll(async () => {
@@ -135,7 +115,7 @@ describe('Copy Task Template', () => {
         });
         it('[4737]: Create a Copy of Task template where Submitter do not belong to any Support Groups', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData13548.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -145,6 +125,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
+            await viewTaskTemplate.clickBackArrowBtn();
             await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
@@ -201,7 +182,7 @@ describe('Copy Task Template', () => {
         });
         it('[4566,4715]: User having Petramco and Psilon access', async () => {
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -251,7 +232,7 @@ describe('Copy Task Template', () => {
                 "templateName": 'DRDMV14217Automationtask' + randomStr,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -263,7 +244,7 @@ describe('Copy Task Template', () => {
         });
         it('[4567,4636]: Copy of Automated task template created across company and no new Process is created', async () => {
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
@@ -280,7 +261,7 @@ describe('Copy Task Template', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
-            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + templateData.processName);
+            expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + templateData.processName);
             await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
@@ -402,7 +383,7 @@ describe('Copy Task Template', () => {
                 "templateName": `${randomStr}AutomatedTaskTemplateActive`,
                 "templateSummary": `${randomStr}AutomatedTaskTemplateActive`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'DRDMV14221Process' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
