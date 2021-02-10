@@ -235,7 +235,7 @@ class ViewCasePage {
     }
 
     async openTaskCard(taskCardNumber: number): Promise<void> {
-        //await utilityCommon.scrollToElement($(this.selectors.taskCardArrow));
+        await utilityCommon.scrollToElement($(this.selectors.taskCardArrow));
         await $$(this.selectors.taskCardArrow).get(taskCardNumber - 1).click();
     }
 

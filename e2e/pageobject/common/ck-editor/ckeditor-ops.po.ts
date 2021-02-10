@@ -40,7 +40,7 @@ class CKEditor {
         await $(cke_editor).isPresent().then(async (result) => {
             if (result) {
                 await browser.wait(this.EC.elementToBeClickable($(ckeTextArea)), 3000).then(async () => {
-                    //await utilityCommon.scrollToElement($(ckeTextArea));
+                    await utilityCommon.scrollToElement($(ckeTextArea));
                     await $(ckeTextArea).click();
                     await $(ckeTextArea).sendKeys(Key.HOME + Key.END + Key.ENTER + Key.ENTER);
                 });
