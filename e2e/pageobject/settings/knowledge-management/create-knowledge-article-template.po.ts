@@ -15,7 +15,7 @@ class CreateKATemplate {
         upArrowCollapse: '.tab-caret',
         downArrowExpand: '.tab-caret',
         expandCollapseAllBtn: '.editor-button-toggle button',
-        lobValue: '[title="Line of Business"] .pull-left',
+        lobValue: '[aria-label="Line of Business"] .rx-select__search-button-title',
         field: 'label.form-control-label span'
     }
 

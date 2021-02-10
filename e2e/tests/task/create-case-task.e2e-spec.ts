@@ -136,7 +136,6 @@ describe('Create Case Task', () => {
         });
         it('[5559,5565,6425,6386]: Create manual task template', async () => {
             //Automated task Template with Required Data
-            await navigationPage.gotoCaseConsole();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
@@ -149,11 +148,10 @@ describe('Create Case Task', () => {
             await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
+            await viewTasktemplatePo.clickBackArrowBtn();
         });
         it('[5559,5565,6425,6386]: Create manual task template', async () => {
             //Automation Task template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
             await taskTemplate.setTemplateName(automationTaskTemplateWithallField);
             await taskTemplate.setTaskSummary(automationTaskSummaryWithallField);
@@ -170,7 +168,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
-            await utilityCommon.closePopUpMessage();
+            await viewTasktemplatePo.clickBackArrowBtn();
         });
         it('[5559,5565,6425,6386]: Create case and add tasks on it task template', async () => {
             //case create
@@ -191,7 +189,6 @@ describe('Create Case Task', () => {
             expect(await manageTask.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
         });
         it('[5559,5565,6425,6386]: Validate manual task', async () => {
-
             await manageTask.clickTaskLink(automationTaskSummaryWithallField);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data2 ${randomStr}`);
@@ -258,7 +255,7 @@ describe('Create Case Task', () => {
                 "templateName": randomStr + 'AutomatedTaskTemplateActive',
                 "templateSummary": randomStr + 'AutomatedTaskTemplateActive',
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -269,7 +266,7 @@ describe('Create Case Task', () => {
                 "templateName": randomStr + 'AutomatedTaskTemplateInActive',
                 "templateSummary": randomStr + 'AutomatedTaskTemplateInActive',
                 "templateStatus": "Inactive",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 2 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -280,7 +277,7 @@ describe('Create Case Task', () => {
                 "templateName": randomStr + 'AutomatedTaskTemplateDraft',
                 "templateSummary": randomStr + 'AutomatedTaskTemplateDraft',
                 "templateStatus": "Draft",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 3 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -790,7 +787,7 @@ describe('Create Case Task', () => {
                 "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
-                "processBundle": "com.petramco.human-resource",
+                "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
