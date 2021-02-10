@@ -1069,8 +1069,6 @@ describe('Case Data Store', () => {
             await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4868]: Create and Verify Dynamic Fields On Case Template  ', async () => {
-            
-            
             await utilityGrid.searchAndOpenHyperlink(draftTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link not present');
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
