@@ -150,6 +150,7 @@ describe('Knowledge Article Validation', () => {
             await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(displayID);
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
         });
 
@@ -178,6 +179,7 @@ describe('Knowledge Article Validation', () => {
             await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
         });
 
@@ -206,6 +208,7 @@ describe('Knowledge Article Validation', () => {
             await navigationPage.gotoKnowledgeConsole(true);
             await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
         });
 
@@ -237,6 +240,7 @@ describe('Knowledge Article Validation', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         });
@@ -295,6 +299,7 @@ describe('Knowledge Article Validation', () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();  // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not Set');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
@@ -316,6 +321,7 @@ describe('Knowledge Article Validation', () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status Not set');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
         });
 
@@ -340,6 +346,7 @@ describe('Knowledge Article Validation', () => {
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh(); // Refresh needed to reflect status changes.
             expect(await editKnowledgePage.getStatusValue()).toContain('Canceled', 'Status not set');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
@@ -481,7 +488,7 @@ describe('Knowledge Article Validation', () => {
             await loginPage.login('peter');
         });
     });
-    
+
     it('[6373]:[Create Mode] Removing sections with the Remove button', async () => {
         try {
             await navigationPage.signOut();
@@ -505,6 +512,8 @@ describe('Knowledge Article Validation', () => {
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
             await utilityGrid.searchAndOpenHyperlink('template1064' + randomStr);
             expect(await editKnowledgeArticleTemplatePo.getSectionTitleValue('First' + randomStr)).toBeFalsy('removed section is Present');
+            await editKnowledgeArticleTemplatePo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         }
         catch (e) {
             throw e;
@@ -513,7 +522,7 @@ describe('Knowledge Article Validation', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         }
     });
-    
+
     it('[5991]: KA Console - Article Navigation', async () => {
         let knowledgeTitile = 'knowledge2444' + randomStr;
         await apiHelper.apiLogin('peter');
@@ -532,7 +541,7 @@ describe('Knowledge Article Validation', () => {
         expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit link is not displaying');
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
-    
+
     it('[5681]: [Knowledge]-Assigning current user as the Assignee of an article', async () => {
         let knowledgeTitile = 'knowledge5193' + randomStr;
         await apiHelper.apiLogin(knowledgeCoachUser);
@@ -559,13 +568,13 @@ describe('Knowledge Article Validation', () => {
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
         let assignedGroupList: string[] = await changeAssignmentBladePo.getAllDropDownValues("AssignedGroup")
         expect(assignedGroupList.length).toBe(1);
-        expect(await changeAssignmentBladePo.getDropDownValue("Assignee")).toContain('Kane Williamson');
+        expect(await changeAssignmentBladePo.getDropDownValue("Assignee")).toContain('Kyle Mills');
         expect(await changeAssignmentBladePo.getDropDownValue("Company")).toContain('Petramco');
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Kane Williamson');
+        await editKnowledgePage.cancelKnowledgeMedataDataChanges();
+        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Kyle Mills');
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
-    
+
     it('[5680]: [Knowledge]-Assigning the article using Assignment component', async () => {
         let knowledgeTitile = 'knowledge5195' + randomStr;
         await apiHelper.apiLogin(knowledgeCoachUser);
@@ -596,12 +605,11 @@ describe('Knowledge Article Validation', () => {
         await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
         await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
         await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-        await changeAssignmentBladePo.clickOnAssignButton();
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
         expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
-    
+
     it('[5684]: Click on thumbs up and thumbs down', async () => {
         let knowledgeTitile = 'knowledge5158' + randomStr;
         await apiHelper.apiLogin('peter');
@@ -636,8 +644,9 @@ describe('Knowledge Article Validation', () => {
         await viewKnowledgeArticlePo.clickOnTab('Information');
         await viewKnowledgeArticlePo.clickOnKAUsefulYesButton();
         expect(await viewKnowledgeArticlePo.getPercentageValue() == percentage).toBeFalsy('Percentage are equal to previous');
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();    
     });
-   
+
     it('[5683]: [Knowledge]- Click on thumps down and enable the flag option.', async () => {
         let knowledgeTitile = 'knowledge5162' + randomStr;
         await apiHelper.apiLogin(knowledgeCoachUser);
@@ -671,8 +680,9 @@ describe('Knowledge Article Validation', () => {
         await activityTabPo.clickOnRefreshButton();
         expect(await activityTabPo.getFirstPostContent()).toContain('Kane Williamson flagged the article', 'content not displaying on Activity');
         expect(await activityTabPo.getFirstPostContent()).toContain(knowledgeTitile, 'content not displaying on Activity');
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
-    
+
     describe('[4645]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', () => {
         it('[4645]: Navigate an Article from Knowledge Create->Preview Knowledge Article->Article Full view', async () => {
             await navigationPage.signOut();
@@ -685,26 +695,24 @@ describe('Knowledge Article Validation', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
             await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
             await createKnowledgePage.selectKnowledgeSet('HR');
-            await createKnowledgePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
             await createKnowledgePage.selectCategoryTier2Option('Compensation');
             await createKnowledgePage.selectCategoryTier3Option('Bonus');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('full view of article is not displayed');
         });
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
         });
     });
-    
+
     describe('[5682]: Unflag the article', async () => {
         let knowledgeArticleData, knowledgeArticleDataSecond;
         let knowledgeTitile = 'knowledge5192' + randomStr;
@@ -795,7 +803,7 @@ describe('Knowledge Article Validation', () => {
             await loginPage.login('peter');
         });
     });
-    
+
     it('[6075]: [Knowledge Article] Changing the template for the article', async () => {
         try {
             let knowledgeTitile = 'knowledgeCoachUser1784' + randomStr;
@@ -838,7 +846,7 @@ describe('Knowledge Article Validation', () => {
             await loginPage.login('peter');
         }
     });
-   
+
     it('[6398]:[Edit Knowledge Article] Modify knowledge article by removing all optional data on edit article view', async () => {
         await apiHelper.apiLogin(knowledgeCoachUser);
         let articleData = {
@@ -927,7 +935,7 @@ describe('Knowledge Article Validation', () => {
         expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfXml')).toBeTruthy();
         expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfWord1')).toBeTruthy();
         expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('demo')).toBeTruthy();
-    }); 
+    });
 
     it('[5783]:CK Editor - Should be able to upload image using url', async () => {
         let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";

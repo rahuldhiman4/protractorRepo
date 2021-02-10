@@ -14,7 +14,7 @@ class EditCaseTemplate {
         cancelButton: '[rx-view-component-id="a68b0e71-032d-4ecf-9d12-e0cd49f4b652"] button',
         templateStatusReadOnly: '[rx-view-component-id="88cf66ca-8be6-46b2-93e0-52890187dffb"] button',
         companyDropDown: '39db6cc5-79ae-4934-a4bc-74765278fcda',
-        flowset: '2fe19a48-630b-4380-8b17-cbff70023a89',
+        flowset: 'da30d0cb-0adb-4145-8954-7a43cebe415c',
         resolveCaseOnLastTaskCompletion: 'e4956197-0230-4272-8fc4-87358bd084bf',
         casePriority: 'c933ab70-9004-4347-9537-3ae65ec633b9',
         caseStatusGuid: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
@@ -224,7 +224,6 @@ class EditCaseTemplate {
     }
 
     async clearCaseSummary(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.caseSummary)));
         await $(this.selectors.caseSummary).clear();
     }
 

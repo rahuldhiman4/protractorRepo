@@ -14,7 +14,7 @@ class ViewCaseTemplate {
         templateName: '[rx-view-component-id="08a1650a-ac21-405a-8362-ddd780425a75"] span',
         caseTemplateId: '.text-field',
         CaseCompanyvalue: '[rx-view-component-id="39db6cc5-79ae-4934-a4bc-74765278fcda"] .read-only-content',
-        flowsetValue: '[rx-view-component-id="2fe19a48-630b-4380-8b17-cbff70023a89"] .read-only-content',
+        flowsetValue: '[rx-view-component-id="da30d0cb-0adb-4145-8954-7a43cebe415c"] .read-only-content',
         editButton: '[rx-view-component-id="672c4706-9ce0-46be-9a3a-a639ded79b23"] .justify-content-end button',
         ownerGroup: '[rx-view-component-id="80799a06-c36d-4638-819a-2633a42a89e1"] .read-only-content',
         ownerCompany: '[rx-view-component-id="5c445c06-0bdc-4995-a226-05da344dcf30"] .read-only-content',
@@ -23,7 +23,7 @@ class ViewCaseTemplate {
         categoryTier4: '[rx-view-component-id="8a790c6a-3401-44f6-afc3-eb43a67a55b1"] .read-only-content',
         priority: '.selection-field',
         labelvalue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .read-only-content',
-        buisnessUnitvalue: '[rx-view-component-id="e916c10e-a726-425c-9d7f-a39e1f43f1e4"] .read-only-content',
+        buisnessUnitvalue: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .read-only-content',
         departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .read-only-content',
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName: '[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span',
@@ -134,7 +134,6 @@ class ViewCaseTemplate {
     }
 
     async getFlowsetValue(): Promise<string> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.flowsetValue)));
         return await $(this.selectors.flowsetValue).getText();
     }
 

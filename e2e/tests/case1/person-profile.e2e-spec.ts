@@ -1,5 +1,4 @@
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from "../../api/api.helper";
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
@@ -19,11 +18,10 @@ describe('Person Profile test', () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let businessData, departmentData, suppGrpData, personData, orgId;
+    let businessData, departmentData, suppGrpData, personData;
 
     beforeAll(async () => {
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.updateFoundationEntity('Person', 'Elizabeth', { vipStatus: 'Yes' });
         await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
         await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
         await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
@@ -898,7 +896,7 @@ describe('Person Profile test', () => {
         }
 
         beforeAll(async () => {
-            await foundationDataCreation();
+            //await foundationDataCreation();
             await apiHelper.apiLogin('qtao');
             caseResponse = await apiHelper.createCase(caseData);
             await apiHelper.apiLogin('qtao');

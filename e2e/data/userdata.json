@@ -167,15 +167,15 @@
 		"userName": "ncage",
 		"userPassword": "Password_1234"
 	},
-	"rwillie":{
+	"rwillie": {
 		"userName": "rwillie",
 		"userPassword": "Password_1234"
 	},
-	"sbruce":{
+	"sbruce": {
 		"userName": "sbruce",
 		"userPassword": "Password_1234"
 	},
-	"ttristan":{
+	"ttristan": {
 		"userName": "ttristan",
 		"userPassword": "Password_1234"
 	},
@@ -193,6 +193,14 @@
 	},
 	"ajoshi": {
 		"userName": "ajoshi",
+		"userPassword": "Password_1234"
+	},
+	"mcarney": {
+		"userName": "mcarney",
+		"userPassword": "Password_1234"
+	},
+	"morwenna": {
+		"userName": "Morwenna",
 		"userPassword": "Password_1234"
 	}
 }

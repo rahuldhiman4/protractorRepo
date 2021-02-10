@@ -11,60 +11,59 @@ import utilityGrid from "../../utils/utility.grid";
 
 describe('Case Console Preset Filter', () => {
 
-    const userId1 = "idphylum1@petramco.com";
-    const caseModule = 'Case';
+    const userId1 = "mcarney";
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
 
         //Create the Phylum users
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.deleteApprovalMapping(caseModule);
-        const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        let personData1 = personDataFile['PhylumCaseAgent1'];
-        await apiHelper.createNewUser(personData1);
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.deleteApprovalMapping(caseModule);
+        // const personDataFile = require('../../data/ui/foundation/person.ui.json');
+        // let personData1 = personDataFile['PhylumCaseAgent1'];
+        // await apiHelper.createNewUser(personData1);
+        // await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
+        // await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
 
-        let personData2 = personDataFile['PhylumCaseAgent2'];
-        await apiHelper.createNewUser(personData2);
-        await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData2.userId, 'Phylum');
+        // let personData2 = personDataFile['PhylumCaseAgent2'];
+        // await apiHelper.createNewUser(personData2);
+        // await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phylum Support Group1');
+        // await apiHelper.associatePersonToCompany(personData2.userId, 'Phylum');
 
-        let personData3 = personDataFile['PhylumCaseAgent3'];
-        await apiHelper.createNewUser(personData3);
-        await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData3.userId, 'Phylum');
+        // let personData3 = personDataFile['PhylumCaseAgent3'];
+        // await apiHelper.createNewUser(personData3);
+        // await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phylum Support Group1');
+        // await apiHelper.associatePersonToCompany(personData3.userId, 'Phylum');
 
-        //Takes time to reflect created user data. So, hard wait is required here
-        await browser.sleep(5000);
-        await loginPage.login(userId1, 'Password_1234');
+        // //Takes time to reflect created user data. So, hard wait is required here
+        // await browser.sleep(5000);
+        await loginPage.login(userId1);
 
         // Create the new status Configurations
         // Hard wait to reflect the Phylum Company in Case status config's Company Dropdown
-        await browser.sleep(6000);
+        //await browser.sleep(6000);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
-        await statusConfig.setCompanyDropdown('Phylum', 'case');
+        await statusConfig.setCompanyDropdown('Ericsson HR', 'case');
         await statusConfig.clickEditLifeCycleLink();
         await statusConfig.addCustomStatus('Resolved', 'Closed', 'AfterResolved');
         await statusConfig.addCustomStatus('In Progress', 'Resolved', 'BeforeResolved');
 
         //Set the user2 to VIP Requester
-        await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'Yes' });
+        //await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'Yes' });
         await navigationPage.gotoCaseConsole();
     });
 
     afterAll(async () => {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'No' });
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.updateFoundationEntity('Person', 'idphylum2', { vipStatus: 'No' });
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
     it('[3687]: Validate the My Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1);
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_NONVIP_DRDMV_20843_1);
         caseId.push(response1.displayId);
 
@@ -135,7 +134,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[3683]: Validate the VIP Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1);
 
         let response1 = await apiHelper.createCase(caseData.NEW_VIP_DRDMV_20850_1);
         caseId.push(response1.displayId);
@@ -198,7 +197,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[3680]: Validate the All Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1)
 
         let response1 = await apiHelper.createCase(caseData.NEW_NONVIP_DRDMV_20874_1);
         caseId.push(response1.displayId);
@@ -259,7 +258,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[3679]: Validate the High Priority Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1);
 
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_LOWPRIORITY_DRDMV_20875_1);
         caseId.push(response1.displayId);
@@ -326,7 +325,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[3677]: Validate the Critical Priority Open Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1);
 
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_LOWPRIORITY_DRDMV_20878_1);
         caseId.push(response1.displayId);
@@ -394,7 +393,7 @@ describe('Case Console Preset Filter', () => {
 
     it('[3676]: Validate the All Unassigned Cases filter after applying and removing the filter', async () => {
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1);
 
         let response1 = await apiHelper.createCase(caseData.RESOLVED_ASSIGNEDTOLOGGEDINUSER_DRDMV_20879_1);
         caseId.push(response1.displayId);
@@ -425,7 +424,7 @@ describe('Case Console Preset Filter', () => {
     describe('[3674]: Validate the All Open Breached Cases filter after applying and removing the filter', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
-            await apiHelper.apiLogin(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_ASSIGNED);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_INPROGRESS);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_PENDING);
@@ -481,7 +480,7 @@ describe('Case Console Preset Filter', () => {
     describe('[3508]: Validate the My Open Breached Cases filter after applying and removing the filter', () => {
         let caseId: string[] = [];
         beforeAll(async () => {
-            await apiHelper.apiLogin(userId1, "Password_1234");
+            await apiHelper.apiLogin(userId1);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_NEW);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_ASSIGNED);
             await apiHelper.createSVT(caseData.SERVICE_TARGET_INPROGRESS);
@@ -548,7 +547,7 @@ describe('Case Console Preset Filter', () => {
     it('[3675]: Validate the All Cases In Last 1 month filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1);
 
         let response1 = await apiHelper.createCase(caseData.ASSIGNED_NONVIP_DRDMV_20843_5);
         caseId.push(response1.displayId);
@@ -606,7 +605,7 @@ describe('Case Console Preset Filter', () => {
     it('[3662]: Validate the All Cases In Last 3 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1);
 
         let response1 = await apiHelper.createCase(caseData.RESOLVED_ASSIGNEDTOANOTHERUSER_DRDMV_20879_3);
         caseId.push(response1.displayId);
@@ -653,7 +652,7 @@ describe('Case Console Preset Filter', () => {
     it('[3530]: Validate the All Cases In Last 6 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
         let caseId: string[] = [];
-        await apiHelper.apiLogin(userId1, "Password_1234");
+        await apiHelper.apiLogin(userId1);
 
         let response1 = await apiHelper.createCase(caseData.RESOLVED_ASSIGNEDTOANOTHERUSER_DRDMV_20879_3);
         caseId.push(response1.displayId);

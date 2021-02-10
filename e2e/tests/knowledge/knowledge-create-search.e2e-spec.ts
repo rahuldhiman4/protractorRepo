@@ -195,50 +195,54 @@ describe('Knowledge Create Search', () => {
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
-    it('[5858,4934]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
-        await navigationPage.signOut();
-        await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToApplication(knowledgeManagementApp);
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate('Reference');
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
-        await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
-        await createKnowledgePage.selectKnowledgeSet('HR');
-        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
-        await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
-        await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-        await createKnowledgePage.selectCategoryTier1Option('Total Rewards');
-        await createKnowledgePage.selectCategoryTier2Option('Leave');
-        await createKnowledgePage.selectCategoryTier3Option('PTO');
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await previewKnowledgePo.clickGoToArticleButton();
-        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
-        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Leave');
-        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('PTO');
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.removeCategoryTier1();
-        await editKnowledgePage.removeCategoryTier2();
-        await editKnowledgePage.removeCategoryTier3();
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        await utilityCommon.closePopUpMessage();
-        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('-');
-        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('-');
-        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('-');
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.setCategoryTier1('Employee Relations');
-        await editKnowledgePage.setCategoryTier2('Compensation');
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        await utilityCommon.closePopUpMessage();
-        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
-        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.setCategoryTier1('Total Rewards');
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        await utilityCommon.closePopUpMessage();
-        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+    describe('[5858,4934]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
+        it('[5858,4934]:[Knowledge Article] Adding one or two or three level operational categorization while creating knowledge articles_Tier1, Tier2 & Tier3', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
+            await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
+            await createKnowledgePage.selectCategoryTier1Option('Total Rewards');
+            await createKnowledgePage.selectCategoryTier2Option('Leave');
+            await createKnowledgePage.selectCategoryTier3Option('PTO');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await previewKnowledgePo.clickGoToArticleButton();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
+            expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Leave');
+            expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('PTO');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.removeCategoryTier1();
+            await editKnowledgePage.removeCategoryTier2();
+            await editKnowledgePage.removeCategoryTier3();
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('-');
+            expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('-');
+            expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('-');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.setCategoryTier1('Employee Relations');
+            await editKnowledgePage.setCategoryTier2('Compensation');
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.setCategoryTier1('Total Rewards');
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
+        });
+        afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
     });
 
     it('[5987]:KA Console - Search Article by name, keywords', async () => {
@@ -422,135 +426,9 @@ describe('Knowledge Create Search', () => {
             await editKnowledgePage.removeAttachment();
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             expect(await viewKnowledgeArticlePo.isAttachedFileNamePresent('bwfJpg')).toBeFalsy();
+        });
+        afterAll(async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
-    });
-
-    describe('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
-        let articleData, knowledgeSetTitle = undefined, title = "3627 KnowledgeArticle" + randomStr, knowledgeArticleGUID, knowledgeArticleData;
-        beforeAll(async () => {
-            await apiHelper.apiLogin('elizabeth');
-            let knowledgeSetData = {
-                "knowledgeSetTitle": "Knowledge Set Petramco",
-                "knowledgeSetDesc": "Knowledge Description Petramco",
-                "company": "Petramco"
-            }
-            let knowledgeApprovalFlowData = {
-                "flowName": "Preset Filter",
-                "approver": "KMills",
-                "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421} AND 'Operational Category Tier 2' =${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.a1390bbfc100bd7ad0fbe10210092865d8d968ff75c6fc7c68cc9b3cb727b6b9d0fff90f7a2f85aeb5d0d7903ac2b08002e172bfec02e807e4a863dce4716dea.304405421}"
-            }
-            let knowledgeApprovalMappingData = {
-                "mappingName": "Approval Config Name",
-                "company": "Petramco",
-                "publishApproval": "PublishApproval",
-                "requestCancelation": "CancelApproval",
-                "retireApproval": "RetireApproval"
-            }
-            //Create Knowledge Configuraton
-            const randomStr = [...Array(2)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            knowledgeSetTitle = knowledgeSetData.knowledgeSetTitle + randomStr;
-            knowledgeSetData.knowledgeSetTitle = knowledgeSetTitle;
-            await apiHelper.createKnowledgeSet(knowledgeSetData);
-            let approvalConfigGlobalTitle = knowledgeApprovalFlowData.flowName + randomStr;
-            knowledgeApprovalFlowData.flowName = approvalConfigGlobalTitle;
-            await apiHelper.createApprovalFlow(knowledgeApprovalFlowData, knowledgeModule);
-            await apiHelper.createApprovalMapping(knowledgeModule, knowledgeApprovalMappingData);
-            articleData = {
-                "knowledgeSet": "HR",
-                "title": "3627KnowledgeArticle_" + randomStr,
-                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
-                "categoryTier1": "Applications",
-                "categoryTier2": "Help Desk",
-                "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 2",
-                "assignee": "KMills"
-            }
-            // Create article in in progress status
-            articleData.title = title + "_" + "In Progress";
-            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-            knowledgeArticleGUID = knowledgeArticleData.id;
-        });
-        it('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
-            await apiHelper.apiLogin('elizabeth');
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, "Draft")).toBeTruthy("Article with Draft status not updated.");
-            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleGUID, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
-            await navigationPage.signOut();
-            await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeTruthy();
-            await viewKnowledgeArticlePo.clickOnRejectLink();
-            await navigationPage.signOut();
-            await loginPage.login('elizabeth');
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Draft", 'Status is not updated');
-            await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Request Cancelation', 'Status Not set');
-        });
-        it('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Reject")).toBeTruthy();
-            await viewKnowledgeArticlePo.clickOnRejectLink();
-            await navigationPage.signOut();
-            await loginPage.login('elizabeth');
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Draft", 'Status is not updated');
-            await editKnowledgePage.setKnowledgeStatus('Publish Approval');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Publish Approval', 'Status Not set');
-        });
-        it('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeTruthy();
-            await viewKnowledgeArticlePo.clickOnApproveLink();
-            await navigationPage.signOut();
-            await loginPage.login('elizabeth');
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Published", 'Status is not updated');
-            await editKnowledgePage.setKnowledgeStatus('Retire Approval');
-            expect(await editKnowledgePage.getStatusValue()).toContain('Retire Approval', 'Status Not set');
-        });
-        it('[3627]:UI- Knowledge Article functioning for  Approval phases such as Publish, Retire and Cancel', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.isApprovalButtonsPresent("Approve")).toBeTruthy();
-            await viewKnowledgeArticlePo.clickOnApproveLink();
-            await navigationPage.signOut();
-            await loginPage.login('elizabeth');
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
-            await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.getStatusValue()).toBe("Retired", 'Status is not updated');
-        });
-        afterAll(async () => {
-            await apiHelper.apiLogin('elizabeth');
-            apiHelper.deleteApprovalMapping(knowledgeModule);
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -942,8 +820,9 @@ describe('Knowledge Create Search', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('qkatawazi');    
         });
     });
 
@@ -1136,6 +1015,7 @@ describe('Knowledge Create Search', () => {
             expect(await knowledgeArticlesConsolePo.getSelectedGridRecordValue('Flagged')).toBe("Yes", 'Filter Flagged is missing in column');
         });
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
@@ -1185,6 +1065,7 @@ describe('Knowledge Create Search', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe('GB Support 2');
         });
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
@@ -1325,6 +1206,7 @@ describe('Knowledge Create Search', () => {
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Peter Kahn', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('peter');
             await navigationPage.switchToApplication(knowledgeManagementApp);
@@ -1336,6 +1218,8 @@ describe('Knowledge Create Search', () => {
             await accessTabPo.clickCloseKnowledgeAccessBlade();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
@@ -1445,6 +1329,7 @@ describe('Knowledge Create Search', () => {
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(1);
         });
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
