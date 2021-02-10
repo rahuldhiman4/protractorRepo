@@ -42,12 +42,12 @@ describe('Case Watchlist', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(qfengStr);
-        await utilityGrid.clearFilter();
-        await utilityGrid.sortGridColumn('Case ID', 'desc');
-        await apiHelper.apiLogin("tadmin");
-        await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
-        await apiHelper.setDefaultNotificationForUser(qfengStr, "Alert");
-        await apiHelper.setDefaultNotificationForUser(qtaoStr, "Alert");
+        // await utilityGrid.clearFilter();
+        // await utilityGrid.sortGridColumn('Case ID', 'desc');
+        // await apiHelper.apiLogin("tadmin");
+        // await apiHelper.setDefaultNotificationForUser(qannisStr, "Alert");
+        // await apiHelper.setDefaultNotificationForUser(qfengStr, "Alert");
+        // await apiHelper.setDefaultNotificationForUser(qtaoStr, "Alert");
     });
 
     afterAll(async () => {
