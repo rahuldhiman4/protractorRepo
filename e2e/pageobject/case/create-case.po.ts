@@ -297,7 +297,7 @@ class CreateCasePage {
     }
 
     async clickOnAutoCategorize(): Promise<void> {
-        await utilityCommon.scrollToElement($(this.selectors.autoCategorize));
+        //await utilityCommon.scrollToElement($(this.selectors.autoCategorize));
         await $(this.selectors.autoCategorize).isEnabled().then(async (result) => {
             if (result) await $(this.selectors.autoCategorize).click();
         });

@@ -45,7 +45,7 @@ class StatusConfigPage {
 
     async saveSetting(): Promise<void> {
         await browser.sleep(2000); // Wait To Load the Setting Panel Buttons.
-        await utilityCommon.scrollToElement(await $$(this.selectors.settingPanelButtons).first());
+        //await utilityCommon.scrollToElement(await $$(this.selectors.settingPanelButtons).first());
         await $$(this.selectors.settingPanelButtons).first().click();
     }
 
