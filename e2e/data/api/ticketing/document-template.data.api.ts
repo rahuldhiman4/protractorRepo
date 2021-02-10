@@ -9,6 +9,6 @@ export const DOCUMENT_TEMPLATE = {
       "Template Name": "Sample Template name7",
       "Module": "Cases",
       "Company": null,
-      // "Line of Business": "HumanResource",
+      "Line of Business": "HumanResource",
     }
   }

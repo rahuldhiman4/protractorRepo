@@ -86,12 +86,12 @@ class EditApprovalMapping {
                 break;
             }
         }
-        let locator = `[rx-view-component-id="${dropDownGuid}"] .ui-select-toggle`;
+        let locator = `[rx-view-component-id="${dropDownGuid}"] button`;
         return await $(locator).getAttribute("disabled") == "true" ? true : false;
     }
 
     async isCasesCreatedWithoutTemplateToggleDisabled(): Promise<boolean> {
-        let locator: string = `[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"] rx-boolean`;
+        let locator: string = `[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"] rx-boolean button`;
         return await $(locator).getAttribute("disabled") == "true" ? true : false;
     }
 

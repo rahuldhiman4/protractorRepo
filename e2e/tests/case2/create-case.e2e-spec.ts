@@ -235,10 +235,10 @@ describe("Create Case", () => {
             expect(await createCasePage.isSelectCaseTemplateButtonEnabled()).toBeFalsy("Select Case template is Disabled");
             expect(await createCasePage.isClearTemplateButtonEnabled()).toBeFalsy("Clear Template is Disabled");
             expect(await createCasePage.isAutocategorizationEnabled()).toBeFalsy("Autocategorization is Disabled");
-            expect(await createCasePage.isAssignedCompanyReadOnly()).toBeTruthy("Assigned Company read only");
-            expect(await createCasePage.isBusinessUnitReadOnly()).toBeTruthy("BuisnessUnit read only");
-            expect(await createCasePage.isAssignedGroupReadOnly()).toBeTruthy("Assigned group read only");
-            expect(await createCasePage.isAssigneeReadOnly()).toBeTruthy("Assignee read only");
+            expect(await changeAssignmentBladePo.isFieldDisabled('Company')).toBeTruthy("Assigned Company read only");
+            expect(await changeAssignmentBladePo.isFieldDisabled('SupportOrg')).toBeTruthy("BuisnessUnit read only");
+            expect(await changeAssignmentBladePo.isFieldDisabled('AssignedGroup')).toBeTruthy("Assigned group read only");
+            expect(await changeAssignmentBladePo.isFieldDisabled('Assignee')).toBeTruthy("Assignee read only");
             expect(await createCasePage.isAttachmentButtonDisplayed()).toBeTruthy("Attachment button not displayed");
             expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enables");
             expect(await createCasePage.isPriorityRequiredTextPresent()).toBeTruthy("required text absent in Priority");
@@ -251,7 +251,7 @@ describe("Create Case", () => {
             await createCasePage.selectCategoryTier2('Social');
             await createCasePage.selectCategoryTier3('Chatter');
             await createCasePage.addDescriptionAttachment(['../../data/ui/attachment/demo.txt']);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentBladePo.clickAssignToMeBtn();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getCaseSummary()).toBe(caseSummary);
@@ -434,19 +434,19 @@ describe("Create Case", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             expect(await createCasePage.getCompany()).toBe('Petramco');
-            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Select');
             await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Kyle Kohri');
-            await createCasePage.clickAssignToMeButton();
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qadim Katawazi');
+            await changeAssignmentBladePo.clickAssignToMeBtn();
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qiao Feng');
             await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getAssignedGroupValue()).toBe('US Support 3');
-            expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
+            expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
         });
 
         afterAll(async () => {

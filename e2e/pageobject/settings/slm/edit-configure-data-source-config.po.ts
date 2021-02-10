@@ -10,7 +10,7 @@ class EditDataSourceConfigurationPage {
         fieldNameLabel: '[rx-view-definition-guid="a223e02e-83fb-42d9-8ea4-a11488eab4a5"] .form-control-label span',
         showAdvancedSettingsLink: 'button[aria-label="Show Advanced Settings"]',
         buildExpressionBtn: 'button[aria-label="Build Expression"]',
-        associationName: `//*[contains(@class,'form-control-label')]//span[1]`,
+        associationName: 'button[aria-label="Association Name"]',
         saveButton: '[rx-view-component-id="9f9e345e-b1d9-41d5-b4da-3a0a437ed179"] button',
         closeButton: '[rx-view-component-id="f4e0420d-d6c6-4ebd-b68e-7eaf897bb3aa"] button',
         fieldValues: `//*[contains(@class,'form-control-label')]//span[1]`,
@@ -37,7 +37,7 @@ class EditDataSourceConfigurationPage {
     }
 
     async isAssociationNameDisabled(): Promise<boolean> {
-        return await element(by.model(this.selectors.associationName)).getAttribute("disabled") == "true";
+        return await $(this.selectors.associationName).getAttribute("disabled") == "true";
     }
 
     async isSaveBtnDisabled(): Promise<boolean> {
