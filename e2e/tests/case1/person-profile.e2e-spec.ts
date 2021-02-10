@@ -68,7 +68,7 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[4585]: Verify Profile picture of Managar-Logged in user on My Profile page', async () => {
-        expect(await personProfile.isPersonManagerImageDisplayed()).toBeFalsy("Person Manager image is not displayed");
+        expect(await personProfile.isPersonManagerImageDisplayed()).toBeTruthy("Person Manager image is not displayed");
     });
 
     //asahitya
@@ -106,7 +106,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.getContactNumber()).toBe("1 925 5553456", "Phone number mismatch");
         expect(await personProfile.getEmail()).toBe("elizabeth@bwflabs.localdomain", "Email mismatch");
         expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States ", "Site mismatch");
-        expect(await personProfile.isPersonProfileImageDisplayed()).toBeFalsy("Person Profile image is not displayed");
+        expect(await personProfile.isPersonProfileImageDisplayed()).toBeTruthy("Person Profile image is not displayed");
         await personProfile.clickOnTab("Requested Cases");
         await personProfile.clickOnTab("Assigned Cases");
         await personProfile.clickOnTab("Support Groups");
