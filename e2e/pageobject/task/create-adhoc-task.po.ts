@@ -25,13 +25,12 @@ class CreateAdhocTaskTemplatePage {
         status: '[rx-view-component-id="5c6f476e-c95c-4b24-b202-b4029c94ec02"] .dropdown-toggle',
         attachmentLink: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] [type=button]',
         attachmentLimitWarning: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .bwf-attachment-limit-warning',
-        assignCompany: '[rx-view-component-id="359f0c65-e48c-458d-8f14-3c2fc85c5cf6"] .dropdown-toggle',
         buisnessUnit: '[rx-view-component-id="d290526a-893e-40c8-bbce-0a8e30c934c0"] .dropdown-toggle',
         assignee: '[rx-view-component-id="58085538-2875-4bf0-a880-f977bdeb842a"] .dropdown-toggle',
         department: '[rx-view-component-id="0cfce715-9fa8-4f61-b670-5aff2b0540f3"] .dropdown-toggle',
         assignedGroup: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .dropdown-toggle',
         taskSummaryRequiredText: '76b6b259-a085-4d9f-91ac-8c5cbb2bc725',
-        assignedCompanyRequiredText: '359f0c65-e48c-458d-8f14-3c2fc85c5cf6',
+        assignedCompanyGuid: '0d11a862-c378-49cc-bda8-2d6efbd2beeb',
         assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
         attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
         description: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"]',
@@ -149,11 +148,7 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async getStatusAttribute(): Promise<string> {
-        return await $(this.selectors.status).getAttribute('disabled');
-    }
-
-    async getAssignCompanyAttribute(): Promise<string> {
-        return await $(this.selectors.assignCompany).getAttribute('class');
+        return await $(this.selectors.status).getAttribute('aria-disabled');
     }
 
     async getBuisnessUnitAttribute(): Promise<string> {
@@ -185,7 +180,7 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.assignedCompanyRequiredText);
+        return await utilityCommon.isRequiredTagToField(this.selectors.assignedCompanyGuid);
     }
 
     async isAssignedGroupRequiredTextPresent(): Promise<boolean> {

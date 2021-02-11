@@ -6,7 +6,8 @@
 5. Open clonned folder in the IDE
 6. Open new terminal in the IDE
 7. npm install (to install required modules)
-8. npm run e2e-protractor (to start execution)
+8. npm run webdriver-update
+9. npm run e2e-protractor (to start execution)
 
 # Bwfa
 

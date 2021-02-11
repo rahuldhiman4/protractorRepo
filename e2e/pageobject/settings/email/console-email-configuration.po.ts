@@ -37,7 +37,7 @@ export class ConsoleEmailConfig {
     }
 
     async searchAndSelectCheckbox(value:string): Promise<void> {
-        await utilityGrid.clickCheckBoxOfValueInGrid(value);
+        await utilityGrid.searchAndSelectGridRecord(value);
     }
     
     async searchValueOnGrid(value:string): Promise<void> {
