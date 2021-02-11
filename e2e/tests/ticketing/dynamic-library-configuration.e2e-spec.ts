@@ -68,7 +68,7 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
             await createDynamicFieldLibraryConfigPo.setFieldValueType('NUMBER');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12423): Dynamic field with same name and line of business already exists.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Dynamic field with same name and line of business already exists.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await createDynamicFieldLibraryConfigPo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -90,7 +90,6 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicFieldLibraryConfigPo.setInformationSourceValueType('Agent');
             await createDynamicFieldLibraryConfigPo.setFieldValueType('TEXT');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });
 
@@ -107,12 +106,14 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
-            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential"];
-            let header: string[] = ["InformationSource", "Confidential"]
+            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential","Created Date","ID","Modified By","Modified Date"];
+            let header: string[] = ["InformationSource", "Confidential","Created Date","ID","Modified By","Modified Date"];
             //field Text type    
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();
             await dynamicFieldLibraryConfigConsolePo.addColumnOnGrid(header);
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(updatedHeaders)).toBeTruthy();
+            await dynamicFieldLibraryConfigConsolePo.removeColumnOnGrid(header);
+            expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();
             expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Description")).toBeTruthy("ascending");
             expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedDescending("Field Description")).toBeTruthy("descending");
             expect(await dynamicFieldLibraryConfigConsolePo.isRequestedColumnSortedAscending("Field Name")).toBeTruthy("ascending");
@@ -203,7 +204,7 @@ describe('Dynamic Library Configuration', () => {
             await utilityGrid.addFilter("InformationSource", "Requester", "checkbox");
             expect(await utilityGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Confidential", "False", "checkbox");
+            await utilityGrid.addFilter("Confidential", "False", "radioButton");
             expect(await utilityGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
             await utilityGrid.clearFilter();
         });

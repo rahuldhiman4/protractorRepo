@@ -40,7 +40,7 @@ class EditTaskTemplate {
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {
-        return await $(this.selectors.taskTypeValueDisabled).getAttribute('disabled') == 'true' ? true : false;
+        return await $(this.selectors.taskTypeValueDisabled).getAttribute('aria-disabled') == 'true' ? true : false;
     }
 
     async isProcessNameDisabled(): Promise<boolean> {

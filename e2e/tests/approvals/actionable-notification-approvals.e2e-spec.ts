@@ -248,7 +248,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    fit('[4152]: Check out of the box notification-"Hold Template" is actionable for type Alert', async () => {
+    it('[4152]: Check out of the box notification-"Hold Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
