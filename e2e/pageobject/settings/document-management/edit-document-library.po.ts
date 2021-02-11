@@ -54,7 +54,8 @@ class EditDocumentLibraryPage {
         readAccessDropDownValue: '.options-box .options li',
         assignmentDropDownList: '.rx-assignment_modal_filters .rx-assignment-select',
         descriptionField: '[rx-view-component-id="407cbfa2-3ee5-457c-913f-53d561e3be8c"] textarea',
-        lobValue: '[rx-view-component-id="274abed1-8498-4e92-b83b-bce68788f333"] .pull-left'
+        lobValue: '[rx-view-component-id="274abed1-8498-4e92-b83b-bce68788f333"] .pull-left',
+        docLibEditButton: '[rx-view-component-id="a1b9759b-8b91-4839-b181-b94fa6933324"] button',
     }
     async setCategoryTier1(value: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.categoryTier1Guid, value);

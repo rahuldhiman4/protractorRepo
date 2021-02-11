@@ -21,6 +21,11 @@ describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qtao');
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.addRelationShip('Target', 'Target', 'Case to Subject Employees');
+        await apiHelper.addRelationShip('Inspector', 'Inspector', 'Case to Subject Employees');
+        await apiHelper.addRelationShip('Victim', 'Victim', 'Case to Subject Employees');
+        await apiHelper.addRelationShip('Witness', 'Witness', 'Case to Subject Employees');
     });
 
     afterAll(async () => {
@@ -197,6 +202,10 @@ describe('Case And Employee Relationship', () => {
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.isCasePresent(caseId3)).toBeFalsy();
         });
+        
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //asahitya
@@ -275,6 +284,10 @@ describe('Case And Employee Relationship', () => {
             await navigationPage.gotoPersonProfile();
             expect(await relatedTabPage.isRelatedPersonPresent("Brain Adams")).toBeFalsy("Brain Adams is still related to Person Profile");
             expect(await relatedTabPage.isRemoveRelatedPersonIconEnabled("Qiang Du")).toBeFalsy("Cross icon is enabled");
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
