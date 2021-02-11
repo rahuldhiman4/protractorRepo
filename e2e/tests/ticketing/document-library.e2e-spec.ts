@@ -1,5 +1,4 @@
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -13,11 +12,10 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import viewDocumentLibraryPo from '../../pageobject/settings/document-management/view-document-library.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import viewDocumentLibraryPo from '../../pageobject/settings/document-management/view-document-library.po';
-
 describe('Document Library', () => {
 
     beforeAll(async () => {
@@ -52,8 +50,7 @@ describe('Document Library', () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
-            await documentLibraryConsolePo.searchAndSelectDocument(titleRandVal);
-            await documentLibraryConsolePo.deleteDocument();
+            await utilityGrid.deleteGridRecord(titleRandVal);
             expect(await utilityCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the document?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Published documents cannot be deleted')).toBeTruthy('Document deleted message not valid');
@@ -63,8 +60,7 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            await documentLibraryConsolePo.searchAndSelectDocument(titleRandVal);
-            await documentLibraryConsolePo.deleteDocument();
+            await utilityGrid.deleteGridRecord(titleRandVal);
             expect(await utilityCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the document?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Document deleted successfully.')).toBeTruthy('Document deleted message not valid');
@@ -92,7 +88,7 @@ describe('Document Library', () => {
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
             await documentLibraryConsolePo.searchAndSelectDocument(titleRandVal);
-            expect(await documentLibraryConsolePo.isDeleteButtonEnabled()).toBeTruthy();
+            expect(await utilityGrid.isDeleteButtonEnabled()).toBeTruthy();
             await documentLibraryConsolePo.unselectCheckBox();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await viewDocumentLibraryPo.clickOnEditDocument();
@@ -101,8 +97,7 @@ describe('Document Library', () => {
             await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
-            await documentLibraryConsolePo.searchAndSelectDocument(titleRandVal);
-            await documentLibraryConsolePo.deleteDocument();
+            await utilityGrid.deleteGridRecord(titleRandVal);
             expect(await utilityCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the document?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Published documents cannot be deleted')).toBeTruthy('Document deleted message not valid');
@@ -176,8 +171,8 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match 1');
-        let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3","Category Tier 4", "GUID", "Region"];
-        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified", "Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4","GUID", "Region"];
+        let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4", "GUID", "Region"];
+        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified", "Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4", "GUID", "Region"];
         await documentLibraryConsolePo.addColumnOnGrid(columns2);
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns3)).toBeTruthy('column headers does not match 2');
         await documentLibraryConsolePo.removeColumnOnGrid(columns2);
@@ -223,7 +218,7 @@ describe('Document Library', () => {
             expect(await editDocumentLibraryPo.isOwnerGroupDropDownDisabled()).toBeTruthy('OwnerGroup Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isShareExternallyToogleButtonDisabled()).toBeTruthy('Share Externally Toogle Button field is enabled');
             expect(await editDocumentLibraryPo.isStatusDropDownDisabled()).toBeFalsy('Status Drop Down field is disabled');
-          //  expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
+            expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier1Disabled()).toBeTruthy('Category Tire1 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier2Disabled()).toBeTruthy('Category Tire2 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier3Disabled()).toBeTruthy('Category Tire3 field is enabled');
@@ -541,6 +536,7 @@ describe('Document Library', () => {
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'Published Status is missing';
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.setTitle("update" + titleRandVal);
             await editDocumentLibraryPo.selectStatus("Published");
             let systemDate: string = await new Date().toLocaleTimeString()
@@ -651,6 +647,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectBusinessUnit('HR Support');
             await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
             await editDocumentLibraryPo.clickOnSaveButton();
@@ -663,6 +660,7 @@ describe('Document Library', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectBusinessUnit('Australia Support');
             //await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.selectOwnerGroup('AU Support 3');
@@ -673,6 +671,7 @@ describe('Document Library', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
