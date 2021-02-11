@@ -15,23 +15,10 @@ import utilityGrid from '../../utils/utility.grid';
 
 describe('Preset Filter Funcational Verification', () => {
     let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    let caseAgentuserData;
     let caseAgentUserId = "caseAgent1" + randomStr1;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-
-        // Create User and assigned Document Manager Permission to agent
-        await apiHelper.apiLogin('tadmin');
-        caseAgentuserData = {
-            "firstName": "caseAgent2",
-            "lastName": "user2",
-            "userId": caseAgentUserId,
-            "userPermission": ["Case Agent", "Document Manager", "Human Resource"]
-        }
-        await apiHelper.createNewUser(caseAgentuserData);
-        await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, 'US Support 3');
     });
 
     afterAll(async () => {
@@ -54,11 +41,11 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Test case for DRDMV23413" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": caseAgentUserId
             }
 
-            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await apiHelper.apiLogin('qgeorge');
             newCase = await apiHelper.createCase(caseData1);
 
             let articleData = {
@@ -67,7 +54,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United States Support",
-                "assigneeSupportGroup": "US Support 3",
+                "assigneeSupportGroup": "US Support 2",
                 "assignee": caseAgentUserId
             }
             articleData.title = knowledgeTitle;
@@ -75,7 +62,7 @@ describe('Preset Filter Funcational Verification', () => {
 
             // login in with created user.
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await loginPage.login('qgeorge');
         });
 
         it('[12086]: Verify default preset filter on case console', async () => {
@@ -109,7 +96,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
         it('[12086]: Verify retain same case filter after logout and login in', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await loginPage.login('qgeorge');
             expect(await utilityGrid.isAppliedFilterMatches(['My Open Cases'])).toBeTruthy('My Open Cases is missing');
 
             await utilityGrid.searchRecord(newCase.displayId);
@@ -131,7 +118,7 @@ describe('Preset Filter Funcational Verification', () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await loginPage.login('qgeorge');
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Tasks is missing');
 
@@ -163,7 +150,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Test case for DRDMV23413" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -227,7 +214,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Summary DRDMV23485" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -240,7 +227,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United States Support",
-                "assigneeSupportGroup": "US Support 3",
+                "assigneeSupportGroup": "US Support 2",
                 "assignee": "qkatawazi"
             }
             articleData.title = knowledgeTitle;
@@ -396,7 +383,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Test case for DRDMV23489" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -459,7 +446,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Test case for DRDMV23490" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -529,7 +516,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Test case for DRDMV23490" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -541,7 +528,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United States Support",
-                "assigneeSupportGroup": "US Support 3",
+                "assigneeSupportGroup": "US Support 2",
                 "assignee": "qkatawazi"
             }
             articleData.title = knowledgeTitle;
@@ -857,7 +844,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Test case for DRDMV23490" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -913,7 +900,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Test case for DRDMV23498" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');
@@ -926,7 +913,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United States Support",
-                "assigneeSupportGroup": "US Support 3",
+                "assigneeSupportGroup": "US Support 2",
                 "assignee": "qkatawazi"
             }
             articleData.title = knowledgeTitle;
@@ -940,16 +927,16 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.saveFilter(filtername1);
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco'])).toBeTruthy('Applied filter is missing');
             await utilityGrid.updateCustomPresetFilter('Assignee', 'Qadim Katawazi', 'default', filtername1);
-            await utilityGrid.updateCustomPresetFilter('Assigned Group', 'US Support 3', 'default', filtername1);
+            await utilityGrid.updateCustomPresetFilter('Assigned Group', 'US Support 2', 'default', filtername1);
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername1);
 
-            expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Assignee: Qadim Katawazi', `Assigned Group: US Support 3`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
+            expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Assignee: Qadim Katawazi', `Assigned Group: US Support 2`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.isGridColumnSorted('Case ID', 'desc')).toBeTruthy('Column not sorted on case console page');
 
             let caseId1 = await utilityGrid.getFirstGridRecordColumnValue('Case ID');
             await navigationPage.gotoTaskConsole();
             await navigationPage.gotoCaseConsole();
-            expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Assignee: Qadim Katawazi', `Assigned Group: US Support 3`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
+            expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Assignee: Qadim Katawazi', `Assigned Group: US Support 2`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
 
             let caseId2 = await utilityGrid.getFirstGridRecordColumnValue('Case ID');
             expect(caseId1).toBe(caseId2);
@@ -976,15 +963,15 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.isAppliedFilterMatches(['Status: Staged'])).toBeTruthy('Applied filter is missing');
 
             await utilityGrid.updateCustomPresetFilter('Assignee', 'Qadim Katawazi', 'default', filtername1);
-            await utilityGrid.updateCustomPresetFilter('Assigned Group', 'US Support 3', 'default', filtername1);
+            await utilityGrid.updateCustomPresetFilter('Assigned Group', 'US Support 2', 'default', filtername1);
             await utilityGrid.updateCustomPresetFilter('Task Type', 'Manual', 'checkbox', filtername1);
 
-            expect(await utilityGrid.isAppliedFilterMatches(['Assignee: Qadim Katawazi', `Assigned Group: US Support 3`, 'Status: Staged', 'Task Type: Manual'])).toBeTruthy('Applied filter is missing');
+            expect(await utilityGrid.isAppliedFilterMatches(['Assignee: Qadim Katawazi', `Assigned Group: US Support 2`, 'Status: Staged', 'Task Type: Manual'])).toBeTruthy('Applied filter is missing');
             expect(await utilityGrid.isGridColumnSorted('Task ID', 'desc')).toBeTruthy('Column not sorted on case console page');
             let taskId1 = await utilityGrid.getFirstGridRecordColumnValue('Task ID');
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoTaskConsole();
-            expect(await utilityGrid.isAppliedFilterMatches(['Assignee: Qadim Katawazi', 'Assigned Group: US Support 3', 'Status: Staged', 'Task Type: Manual'])).toBeTruthy('Applied filter is missing');
+            expect(await utilityGrid.isAppliedFilterMatches(['Assignee: Qadim Katawazi', 'Assigned Group: US Support 2', 'Status: Staged', 'Task Type: Manual'])).toBeTruthy('Applied filter is missing');
 
             let taskId2 = await utilityGrid.getFirstGridRecordColumnValue('Task ID');
             expect(taskId1).toBe(taskId2);
@@ -1032,7 +1019,7 @@ describe('Preset Filter Funcational Verification', () => {
                 "Summary": "Summary DRDMV23506" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('qkatawazi');

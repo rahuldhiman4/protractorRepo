@@ -1,17 +1,16 @@
 import { browser } from "protractor";
-import apiHelper from '../../api/api.helper';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
-import loginPage from "../../pageobject/common/login.po";
-import utilityCommon from '../../utils/utility.common';
-import navigationPage from "../../pageobject/common/navigation.po";
 import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
+import loginPage from "../../pageobject/common/login.po";
+import navigationPage from "../../pageobject/common/navigation.po";
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import utilityCommon from '../../utils/utility.common';
 
 describe('Application Configuration', () => {
     beforeAll(async () => {
 
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-   });
+    });
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
@@ -19,30 +18,9 @@ describe('Application Configuration', () => {
     });
 
     describe('[3428] : [Common Config] - Only Operating, Service Provider, Customer type of Primary organizations and global company should be returned in company field', () => {
-        let userData;
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-
-            userData = {
-                "firstName": "Case BA User - 3428",
-                "lastName": "3428",
-                "userId": "22773User",
-                "emailId": "3428_User@petramco.com",
-                "userPermission": ["Case Business Analyst", "Foundation Read", "Human Resource"]
-            }
-            await apiHelper.createNewUser(userData);
-            await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-            await apiHelper.associatePersonToCompany(userData.userId, "Amazon");
-            await apiHelper.associatePersonToCompany(userData.userId, "Alienware");
-            await apiHelper.associatePersonToCompany(userData.userId, "Phyto");
-            await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
-            await apiHelper.associatePersonToCompany(userData.userId, "BMCOpsMonitoring");
-            await apiHelper.associatePersonToCompany(userData.userId, "Google");
-        });
-
         it('[3428]:[Common Config] - Only Operating, Service Provider, Customer type of Primary organizations and global company should be returned in company field', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId+'@petramco.com', 'Password_1234');
+            await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.COMMON_CONFIGURATION);
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
@@ -55,7 +33,6 @@ describe('Application Configuration', () => {
             await applicationConfigPo.clickAddConfigurationValue();
             expect(await utilityCommon.isAllDropDownValuesMatches('Company', ['- Global -', 'Petramco', 'Phyto', 'Phylum', 'BMCOpsMonitoring'])).toBeTruthy();
             await applicationConfigPo.clickCancelButton();
-            
         });
     });
-})
+});

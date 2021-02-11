@@ -27,22 +27,10 @@ describe('Document Library Consume UI', () => {
     let filePath3 = 'e2e/data/ui/attachment/bwfJpg1.jpg';
     let filePath4 = 'e2e/data/ui/attachment/bwfJpg2.jpg';
     let filePath5 = 'e2e/data/ui/attachment/bwfXlsx.xlsx';
-    let caseAgentuserData;
-
+    
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        // Create User and assigned Document Manager Permission to agent
-        await apiHelper.apiLogin('tadmin');
-        caseAgentuserData = {
-            "firstName": "caseAgent2",
-            "lastName": "user2",
-            "userId": 'caseagentbwf',
-            "userPermission": ["Case Agent", "Document Manager", "Human Resource"]
-        }
-        await apiHelper.createNewUser(caseAgentuserData);
-        await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, 'US Support 3');
     });
 
     afterAll(async () => {
@@ -58,7 +46,7 @@ describe('Document Library Consume UI', () => {
                 docLibTitle: 'drdmv13539_document',
                 company: 'Petramco',
                 businessUnit: 'United States Support',
-                ownerGroup: 'US Support 3',
+                ownerGroup: 'US Support 2',
             }
             let caseData =
             {
@@ -66,7 +54,7 @@ describe('Document Library Consume UI', () => {
                 "Summary": "Test case for 5515RandVal" + summary,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
+                "Support Group": "US Support 2",
                 "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('tadmin');
@@ -129,13 +117,13 @@ describe('Document Library Consume UI', () => {
                 "docLibTitle": "drdmv13533_publish_document1",
                 "company": "Petramco",
                 "Business Unit": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 2",
             }
             publishDocLibData2 = {
                 "docLibTitle": "drdmv13533_publish_document2",
                 "company": "Petramco",
                 "Business Unit": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 2",
             }
             caseData =
                 {
@@ -143,7 +131,7 @@ describe('Document Library Consume UI', () => {
                     "Summary": "Test case for 5515RandVal" + summary,
                     "Assigned Company": "Petramco",
                     "Business Unit": "United States Support",
-                    "Support Group": "US Support 3",
+                    "Support Group": "US Support 2",
                     "Assignee": "qkatawazi"
                 }
             await apiHelper.apiLogin('qkatawazi');
@@ -204,7 +192,7 @@ describe('Document Library Consume UI', () => {
                 "docLibTitle": "drdmv13524_publish_document3",
                 "company": "Petramco",
                 "Business Unit": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 2",
             }
 
             caseTemplateData = {
@@ -213,9 +201,9 @@ describe('Document Library Consume UI', () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "assignee": caseAgentuserData.userId,
+                "assignee": 'qgeorge',
                 "businessUnit": "United States Support",//New
-                "supportGroup": "US Support 3"
+                "supportGroup": "US Support 2"
             }
 
             taskTemplateDataSet = {
@@ -223,12 +211,12 @@ describe('Document Library Consume UI', () => {
                 "templateSummary": 'taskSummaryYesResolved' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
-                "assignee": caseAgentuserData.userId,
+                "assignee": 'qgeorge',
                 "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
+                "supportGroup": "US Support 2",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 3"
+                "ownerGroup": "US Support 2"
             }
 
             await apiHelper.apiLogin('tadmin');
@@ -248,12 +236,12 @@ describe('Document Library Consume UI', () => {
                     "docLibTitle": publish[i],
                     "company": "Petramco",
                     "Business Unit": "United States Support",
-                    "ownerGroup": "US Support 3",
+                    "ownerGroup": "US Support 2",
                 }
 
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId + '@petramco.com', "Password_1234");
+                await apiHelper.apiLogin('qgeorge');
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -262,16 +250,16 @@ describe('Document Library Consume UI', () => {
                 "docLibTitle": "drdmv13524_draft_document",
                 "company": "Petramco",
                 "Business Unit": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 2",
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await apiHelper.apiLogin('qgeorge');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
         it('[4753]: Create a case and click task link ', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await loginPage.login('qgeorge');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -335,7 +323,7 @@ describe('Document Library Consume UI', () => {
                 "docLibTitle": "drdmv13524_publish_document3",
                 "company": "Petramco",
                 "Business Unit": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 2",
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocLibData.docLibTitle);
@@ -348,12 +336,12 @@ describe('Document Library Consume UI', () => {
                     "docLibTitle": publish[i],
                     "company": "Petramco",
                     "Business Unit": "United States Support",
-                    "ownerGroup": "US Support 3",
+                    "ownerGroup": "US Support 2",
                     "shareExternally": true,
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin(caseAgentuserData.userId + '@petramco.com', "Password_1234");
+                await apiHelper.apiLogin('qgeorge');
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -362,7 +350,7 @@ describe('Document Library Consume UI', () => {
                 docLibTitle: 'drdmv13507_draft_document',
                 "company": "Petramco",
                 "Business Unit": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 2",
                 "shareExternally": true,
             }
             await apiHelper.apiLogin('tadmin');
@@ -371,12 +359,12 @@ describe('Document Library Consume UI', () => {
             let response = await apiHelper.createEmailBox('outgoing');
             await apiHelper.createEmailProfile(response.id);
             await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
-            await apiHelper.apiLogin(caseAgentuserData.userId + '@petramco.com', "Password_1234");
+            await apiHelper.apiLogin('qgeorge');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
         it('[4770]: Create a case and add click on email', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + '@petramco.com', "Password_1234");
+            await loginPage.login('qgeorge');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -541,20 +529,20 @@ describe('Document Library Consume UI', () => {
                 "docLibTitle": "drdmv13449_publish_document3",
                 "company": "Petramco",
                 "Business Unit": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 2",
             }
             draftDocLibData = {
                 "docLibTitle": "drdmv13449_draft_document",
                 "company": "Petramco",
                 "Business Unit": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 2",
             }
             for (let i = 0; i < publish.length; i++) {
                 let publishDocLibData1 = {
                     "docLibTitle": publish[i],
                     "company": "Petramco",
                     "Business Unit": "United States Support",
-                    "ownerGroup": "US Support 3",
+                    "ownerGroup": "US Support 2",
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
@@ -576,7 +564,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[4800]: Create a case and add task on it', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + '@petramco.com', "Password_1234");
+            await loginPage.login('qgeorge');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -637,20 +625,20 @@ describe('Document Library Consume UI', () => {
                 docLibTitle: 'drdmv13480_publish_document3',
                 company: 'Petramco',
                 businessUnit: 'United States Support',
-                ownerGroup: 'US Support 3',
+                ownerGroup: 'US Support 2',
             }
             draftDocLibData = {
                 docLibTitle: 'drdmv13480_draft_document',
                 company: 'Petramco',
                 businessUnit: 'United States Support',
-                ownerGroup: 'US Support 3',
+                ownerGroup: 'US Support 2',
             }
             for (let i = 0; i < publish.length; i++) {
                 let publishDocLibData1 = {
                     docLibTitle: publish[i],
                     company: 'Petramco',
                     businessUnit: 'United States Support',
-                    ownerGroup: 'US Support 3',
+                    ownerGroup: 'US Support 2',
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
@@ -675,7 +663,7 @@ describe('Document Library Consume UI', () => {
         });
         it('[4783]: Create a case ', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await loginPage.login('qgeorge');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(randomStr);
@@ -758,7 +746,7 @@ describe('Document Library Consume UI', () => {
                 let getFilePath1 = files1[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 // await apiHelper.apiLogin('qheroux');
-                await apiHelper.giveReadAccessToDocLib(docLib, "US Support 3");
+                await apiHelper.giveReadAccessToDocLib(docLib, "US Support 2");
                 await apiHelper.publishDocumentLibrary(docLib);
             }
             await apiHelper.apiLogin('tadmin');
@@ -848,7 +836,7 @@ describe('Document Library Consume UI', () => {
                     docLibTitle: publish[i],
                     company: 'Petramco',
                     businessUnit: 'United States Support',
-                    ownerGroup: 'US Support 3',
+                    ownerGroup: 'US Support 2',
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);

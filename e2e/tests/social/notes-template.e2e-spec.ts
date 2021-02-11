@@ -60,7 +60,7 @@ let justifyAlignText = "this is text Justify align";
 let strikeThroughText = "this is text strikeThrough";
 let imageSource, imageSource1, imageSource2;
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
-let userData, userData1 = undefined, userData2;
+
 describe('Notes template', () => {
     beforeAll(async () => {
         const caseModule = 'Case';
@@ -1455,20 +1455,7 @@ describe('Notes template', () => {
         let psilonCaseResponse = undefined;
 
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            userData1 = {
-                "firstName": "Multiple Companies",
-                "lastName": "Access",
-                "userId": "4298_User",
-                "emailId": "4298_User@petramco.com",
-                "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
-            }
-            await apiHelper.createNewUser(userData1);
-            await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-            await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
-            await browser.sleep(15000); //Hard Wait to reflect the new person
-
-            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('qheroux');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let petramcoNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
             petramcoTemplateName = petramcoNotesTemplateData.templateName + randomStr + 'Petramco';
@@ -1510,7 +1497,7 @@ describe('Notes template', () => {
 
         it('[4298]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qheroux');
             await utilityGrid.searchAndOpenHyperlink(petramcoCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
