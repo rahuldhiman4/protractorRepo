@@ -33,7 +33,7 @@ import consoleReadAcess from '../../pageobject/settings/case-management/read-acc
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import createDocumentLibraryPo from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
-import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import viewDocumentLibraryPo from '../../pageobject/settings/document-management/view-document-library.po';
 import serviceTargetConfig from '../../pageobject/settings/slm/service-target-blade.po';
 import slmExpressionBuilder from '../../pageobject/settings/slm/slm-expressionbuilder.pop.po';
 import selectTaskTemplate from "../../pageobject/settings/task-management/console-tasktemplate.po";
@@ -698,7 +698,7 @@ describe("Attachment", () => {
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityGrid.searchRecord(title);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(title);
-            expect(await editDocumentLibraryPo.getCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
+            expect(await viewDocumentLibraryPo.getCategoryTier4()).toBe(categName4, 'FailureMsg8: CategoryTier4 is displayed');
         });
 
         it('[4428]: Verify Category Tier 4 With Knowledge Article ', async () => {
