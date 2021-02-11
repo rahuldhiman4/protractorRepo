@@ -46,19 +46,9 @@ describe('Create Adhoc task', () => {
         await manageTask.clickAddAdhocTaskButton();
         expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
         expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
-        expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy("company");
-        expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy("assigned group");
 
         expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
         expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy("status");
-        expect(await adhoctaskTemplate.getAssignCompanyAttribute()).toContain("disabled");
-        expect(await adhoctaskTemplate.getBuisnessUnitAttribute()).toContain("disabled");
-        expect(await adhoctaskTemplate.getAssigneeAttribute()).toBeTruthy("AssigneeAttr");
-        expect(await adhoctaskTemplate.getDepartmentAttribute()).toContain("disabled");
-        expect(await adhoctaskTemplate.getAssignedGroupAttribute()).toContain("disabled");
-        expect(await adhoctaskTemplate.getchangeAssignmentButtonText()).toBeTruthy("changeAssignmentBu");
-        expect(await adhoctaskTemplate.isAssignToMeButtonDisplayd()).toBeTruthy("isAssignToMeButto");
-        expect(await adhoctaskTemplate.ischangeAssignmentButtonDisplayed()).toBeTruthy("ischangeAssignmentButt");
         await adhoctaskTemplate.setSummary(summary);
         await adhoctaskTemplate.setDescription("Description");
         await adhoctaskTemplate.selectPriority('High');
@@ -119,7 +109,6 @@ describe('Create Adhoc task', () => {
             expect(await viewTask.isCategoryTier3ValueDisplayed()).toBeTruthy();
             expect(await viewTask.isAssigneeNameDisplayed()).toBeTruthy();
             expect(await viewTask.isAssignCompanyDisplayed()).toBeTruthy();
-            expect(await viewTask.isAssignGroupTextDisplayed()).toBeTruthy();
             expect(await viewTask.clickOnTab('Activity')); // validation to check activity tab is present
             await viewTask.clickOnViewCase();
             expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);

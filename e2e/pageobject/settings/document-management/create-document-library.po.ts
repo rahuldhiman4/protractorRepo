@@ -24,7 +24,6 @@ class DocumentLibraryPage {
         companyField: '[rx-view-component-id="cc6775d9-040f-4fde-bddf-7ab2334d6881"]',
         selectOptionList: 'ul.ui-select-choices',
         ownerGroupField: '[rx-view-component-id="c44f53f6-3ffc-42f7-b958-1ef65cee75e6"]',
-        documentGrid: '[rx-view-component-id="5d1f94a9-693e-4dbf-896f-3b9689f95a42"]',
         gridRow: '.ui-grid-row',
         gridSearchText: 'input[rx-id="search-text-input"]',
         gridCell: '.ui-grid-cell',

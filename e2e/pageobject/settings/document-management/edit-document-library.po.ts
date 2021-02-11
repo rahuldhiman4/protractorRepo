@@ -11,13 +11,12 @@ class EditDocumentLibraryPage {
         statusGuid: '0a8b7179-dd0a-47f9-8515-7c7aceda3118',
         status: '[rx-view-component-id="0a8b7179-dd0a-47f9-8515-7c7aceda3118"] button',
         saveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
-        deleteButton: '[rx-view-component-id="6e44c878-cc4a-4de1-8626-c786b5d309d7"] button',
+        deleteButton: '.bwf-attachment-viewer .d-icon-cross',
         cancelButton: '[rx-view-component-id="61a48596-d3c0-462d-825b-4d6172e351b3"] button',
         deleteDocWarningMsg: '[rx-view-component-id="c652354a-1524-4235-b1db-6b397fc9699a"] span',
         deleteDocWarningMsgYesButton: '[rx-view-component-id="e40ad54c-ad9a-480a-aa63-a8b399caf20e"] button',
         attachmentField: '[rx-view-component-id="8cfc0c35-081a-40cb-ae85-527045bede0c"] button',
         bussinessUnit: '[rx-view-component-id="86e2e239-6f18-416b-b3e4-3a1a60155443"] .btn',
-        department: '[rx-view-component-id="04c57da2-5942-407c-9f87-5670a08ab18e"] .btn-default',
         shareExternallyToggleButton: '[rx-view-component-id="422e33d2-be19-42f7-985b-af73daf4d87f"] button',
         shareExternallyToggleButtonGuid: '422e33d2-be19-42f7-985b-af73daf4d87f',
         keywords: '[rx-view-component-id="3d940c59-00f7-477a-915b-b1e7fc8a91f6"] .adapt-mt-item',
@@ -264,11 +263,6 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.bussinessUnit).getAttribute('disabled') == 'true';
     }
 
-    async isDepartmentDropDownDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
-        return await $(this.selectors.department).getAttribute('disabled') == 'true';
-    }
-
     async isOwnerGroupDropDownDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.ownerGroup)));
         return await $(this.selectors.ownerGroup).getAttribute('disabled') == 'true';
@@ -402,11 +396,6 @@ class EditDocumentLibraryPage {
     async isBussinessUnitDropDownDisplayed(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.bussinessUnit)));
         return await $(this.selectors.bussinessUnit).isDisplayed();
-    }
-
-    async isDepartmentDropDownDisplayed(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.department)));
-        return await $(this.selectors.department).isDisplayed();
     }
 
     async isOwnerGroupDropDownDisplayed(): Promise<boolean> {

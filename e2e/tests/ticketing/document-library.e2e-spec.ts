@@ -16,9 +16,10 @@ import editDocumentLibraryPo from '../../pageobject/settings/document-management
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import viewDocumentLibraryPo from '../../pageobject/settings/document-management/view-document-library.po';
 
 describe('Document Library', () => {
-    
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -34,38 +35,43 @@ describe('Document Library', () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
-        await createDocumentLibraryPo.openAddNewDocumentBlade();
-        await createDocumentLibraryPo.addAttachment(filePath);
-        await createDocumentLibraryPo.setTitle(titleRandVal);
-        await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('United States Support');
-        await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
-        await createDocumentLibraryPo.clickOnSaveButton();
-        await utilityCommon.closePopUpMessage();
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await editDocumentLibraryPo.selectStatus('Published');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        await utilityCommon.closePopUpMessage();
-    });
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
+            await createDocumentLibraryPo.openAddNewDocumentBlade();
+            await createDocumentLibraryPo.addAttachment(filePath);
+            await createDocumentLibraryPo.setTitle(titleRandVal);
+            await createDocumentLibraryPo.selectCompany('Petramco');
+            await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+            await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
+            await createDocumentLibraryPo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
+            await editDocumentLibraryPo.selectStatus('Published');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
+        });
         it('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is not enabled');
-        await editDocumentLibraryPo.selectStatus('Draft');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        await utilityCommon.closePopUpMessage();
-        await utilityGrid.clearFilter();
-        await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeTruthy('Delete buttton is not enabled');
-        await editDocumentLibraryPo.clickOnDeleteButton();
-        expect(await editDocumentLibraryPo.getDeleteWarningMsgText('Are you sure you want to delete the document?')).toBe('Are you sure you want to delete the document?'), 'Warning Message of Delete button is missing';
-        await editDocumentLibraryPo.clickOnYesButtonOfDeleteWarningMsg();
-        expect(await utilityCommon.isPopUpMessagePresent('Document deleted successfully.')).toBeTruthy('Document deleted message not valid');
-        await utilityCommon.closePopUpMessage();
-        expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
+            await documentLibraryConsolePo.searchAndSelectDocument(titleRandVal);
+            await documentLibraryConsolePo.deleteDocument();
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the document?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            expect(await utilityCommon.isPopUpMessagePresent('Published documents cannot be deleted')).toBeTruthy('Document deleted message not valid');
+            await documentLibraryConsolePo.unselectCheckBox();
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
+            await editDocumentLibraryPo.selectStatus('Draft');
+            await editDocumentLibraryPo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
+            await documentLibraryConsolePo.searchAndSelectDocument(titleRandVal);
+            await documentLibraryConsolePo.deleteDocument();
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the document?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            expect(await utilityCommon.isPopUpMessagePresent('Document deleted successfully.')).toBeTruthy('Document deleted message not valid');
+            await utilityCommon.closePopUpMessage();
+            expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
+        });
     });
-});
 
     //kgaikwad
     describe('[4911,4925,4924]: Verify Delete button on document', async () => {
@@ -85,20 +91,25 @@ describe('Document Library', () => {
             await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'status is not in draft status';
+            await documentLibraryConsolePo.searchAndSelectDocument(titleRandVal);
+            expect(await documentLibraryConsolePo.isDeleteButtonEnabled()).toBeTruthy();
+            await documentLibraryConsolePo.unselectCheckBox();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-            expect(await editDocumentLibraryPo.isDeleteButtonEnabled).toBeTruthy('Delete Button is not enabled');
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
-            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-            expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete buttton is enabled');
+            await documentLibraryConsolePo.searchAndSelectDocument(titleRandVal);
+            await documentLibraryConsolePo.deleteDocument();
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the document?');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            expect(await utilityCommon.isPopUpMessagePresent('Published documents cannot be deleted')).toBeTruthy('Document deleted message not valid');
+            await documentLibraryConsolePo.unselectCheckBox();
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to same LOB Case Manager', async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.updateFoundationEntity('Person', 'qdu', { functionalRole: "Document Manager" });
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -107,16 +118,12 @@ describe('Document Library', () => {
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to different LOB Case BA', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB case document library is not visible to different LOB case BA');
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to different LOB Case Manager', async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.updateFoundationEntity('Person', 'Frieda', { functionalRole: "Document Manager" });
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
@@ -155,10 +162,11 @@ describe('Document Library', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document libraryssssss is not visible to case BA with multiple LOB access');
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-           
+
         });
     });
 
@@ -168,8 +176,8 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified"];
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns1)).toBeTruthy('column headers does not match 1');
-        let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
-        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified", "Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "GUID", "Region"];
+        let columns2: string[] = ["Author", "Category Tier 1", "Category Tier 2", "Category Tier 3","Category Tier 4", "GUID", "Region"];
+        let columns3: string[] = ["Title", "Status", "Owner Group", "Company", "Last Modified", "Author", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4","GUID", "Region"];
         await documentLibraryConsolePo.addColumnOnGrid(columns2);
         expect(await documentLibraryConsolePo.areGridColumnHeaderMatches(columns3)).toBeTruthy('column headers does not match 2');
         await documentLibraryConsolePo.removeColumnOnGrid(columns2);
@@ -197,6 +205,7 @@ describe('Document Library', () => {
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Owner Group')).toBe('Compensation and Benefits'), 'Owner Group is missing';
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Company')).toBe('Petramco'), 'Company is missing';
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -206,32 +215,31 @@ describe('Document Library', () => {
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'Published Status is missing';
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             expect(await editDocumentLibraryPo.isAttachmentFieldDisabled()).toBeTruthy('Attachment field is enabled');
             expect(await editDocumentLibraryPo.isTitleTextBoxDisabled()).toBeTruthy('TitleTextBox field is enabled');
             expect(await editDocumentLibraryPo.isCompanyDropDownDisabled()).toBeTruthy('Company Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isBussinessUnitDropDownDisabled()).toBeTruthy('Bussiness Unit Drop Down field is enabled');
-            expect(await editDocumentLibraryPo.isDepartmentDropDownDisabled()).toBeTruthy('Department Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isOwnerGroupDropDownDisabled()).toBeTruthy('OwnerGroup Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isShareExternallyToogleButtonDisabled()).toBeTruthy('Share Externally Toogle Button field is enabled');
             expect(await editDocumentLibraryPo.isStatusDropDownDisabled()).toBeFalsy('Status Drop Down field is disabled');
-            expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
+          //  expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier1Disabled()).toBeTruthy('Category Tire1 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier2Disabled()).toBeTruthy('Category Tire2 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier3Disabled()).toBeTruthy('Category Tire3 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier4Disabled()).toBeTruthy('Category Tire4 field is enabled');
             expect(await editDocumentLibraryPo.isRegionDropDownDisabled()).toBeTruthy('Region Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isSiteDropDownDisabled()).toBeTruthy('Site Drop Down field is enabled');
-            await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
+            await editDocumentLibraryPo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewDocumentLibraryPo.clickOnEditReadAccess();
             expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeFalsy('Support Group Access Group Button is enabled');
             expect(await editDocumentLibraryPo.isAddCompanyDropDownDisabled()).toBeTruthy('Add Compnay Drop Down is enabled');
             expect(await editDocumentLibraryPo.isAddCompanyAddButtonDisabled()).toBeTruthy('Add Company Add Button is enabled');
             expect(await editDocumentLibraryPo.isAddBussinessUnitDropDownDisabled()).toBeTruthy('Add Bussiness Unit Drop Down is enabled');
             expect(await editDocumentLibraryPo.isAddBussinessUnitAddButtonDisabled()).toBeTruthy('Add Bussiness Unit Add Button is enabled');
-            expect(await editDocumentLibraryPo.isAddSupportDepartmentDropDownDisabled()).toBeTruthy('Add Support Department Drop Down is enabled');
-            expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisabled()).toBeTruthy('Add Support Department Add Button button is enabled');
             expect(await editDocumentLibraryPo.isaddSupportGroupDropDownDisabled()).toBeTruthy('add Support Group Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisabled()).toBeTruthy('Add Support Department Add Button is enabled');
-            expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete button is enabled');
             expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');  //defect https://jira.bmc.com/browse/DRDMV-21604
         });
     });
@@ -251,7 +259,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilityCommon.closePopUpMessage();
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        expect(await editDocumentLibraryPo.isDeleteButtonDisplayed()).toBeTruthy('Delete button is not displayed');
+        await viewDocumentLibraryPo.clickOnEditDocument();
         expect(await editDocumentLibraryPo.isSaveButtonDisplayed()).toBeTruthy('Save button is not displayed');
         expect(await editDocumentLibraryPo.isCancelButtonDisplayed()).toBeTruthy('Cancel button is not displayed');
 
@@ -260,7 +268,6 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isTitleTextBoxDisplayed()).toBeTruthy('Title Text Box is not displayed');
         expect(await editDocumentLibraryPo.isCompanyDropDownDisplayed()).toBeTruthy('Company Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isBussinessUnitDropDownDisplayed()).toBeTruthy('Bussiness Unit Drop Down is not displayed');
-        expect(await editDocumentLibraryPo.isDepartmentDropDownDisplayed()).toBeTruthy('Department Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isOwnerGroupDropDownDisplayed()).toBeTruthy('Owner Group Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isStatusDropDownDisplayed()).toBeTruthy('Status Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isShareExternallyToogleButtonDisplayed()).toBeTruthy('Share Externally Toggle Button is not displayed');
@@ -380,6 +387,7 @@ describe('Document Library', () => {
         });
         it('[4915]: Verify Support Group Level Read access of Document	', async () => {
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
             await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
             await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('Australia Support');
@@ -399,11 +407,11 @@ describe('Document Library', () => {
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft'), 'Published Status is missing';
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             expect(await editDocumentLibraryPo.isAttachmentFieldDisabled()).toBeTruthy('Attachment field is enabled');
             expect(await editDocumentLibraryPo.isTitleTextBoxDisabled()).toBeTruthy('TitleTextBox field is enabled');
             expect(await editDocumentLibraryPo.isCompanyDropDownDisabled()).toBeTruthy('Company Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isBussinessUnitDropDownDisabled()).toBeTruthy('Bussiness Unit Drop Down field is enabled');
-            expect(await editDocumentLibraryPo.isDepartmentDropDownDisabled()).toBeTruthy('Department Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isOwnerGroupDropDownDisabled()).toBeTruthy('OwnerGroup Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isShareExternallyToogleButtonDisabled()).toBeTruthy('Share Externally Toogle Button field is enabled');
             expect(await editDocumentLibraryPo.isStatusDropDownDisabled()).toBeTruthy('Status Drop Down field is disabled');
@@ -471,6 +479,7 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal, 'Title is missing');
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft', 'Draft Status is missing');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+        await viewDocumentLibraryPo.clickOnEditDocument();
         await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
         await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
         await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
@@ -502,7 +511,6 @@ describe('Document Library', () => {
         await documentLibraryConsolePo.isGridColumnSorted('Status', 'descending');
         await documentLibraryConsolePo.isGridColumnSorted('Owner Group', 'descending');
         await documentLibraryConsolePo.isGridColumnSorted('Company', 'descending');
-
     });
 
     //kgaikwad 

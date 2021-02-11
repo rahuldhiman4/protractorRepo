@@ -18,10 +18,9 @@ import utilityGrid from '../../utils/utility.grid';
 let userData1, userData2 = undefined;
 
 describe('Email Configuration', () => {
-    let offlineSupportGroup, emailID = "bmctemptestemail@gmail.com";
+    let emailID = "bmctemptestemail@gmail.com";
     let facilitiesEmailID = "bwfqa2019@gmail.com"
-    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
+   
     let incomingEmail = {
         'mailBoxName': 'testEmail@gmail.com'
     }
@@ -66,8 +65,8 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             let emailHeaders: string[] = ["Email IDs", "Company", "Status"];
-            let add: string[] = ["Company ID", "Display ID", "ID"];
-            let newEmailHeaders: string[] = ["Email IDs", "Company", "Company ID", "Status", "Display ID", "ID"];
+            let add: string[] = ["Created By","Created Date", "Display ID", "ID","Modified By","Modified Date"];
+            let newEmailHeaders: string[] = ["Email IDs", "Company", "Status","Created By","Created Date", "Display ID", "ID","Modified By","Modified Date"];
             expect(await consoleEmailConfig.coloumnHeaderMatches(emailHeaders)).toBeTruthy();
             await consoleEmailConfig.addHeader(add);
             expect(await consoleEmailConfig.coloumnHeaderMatches(newEmailHeaders)).toBeTruthy();
