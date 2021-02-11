@@ -23,20 +23,17 @@ describe("Actionable Notification Approval", () => {
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        await utilityGrid.clearFilter();
-        await utilityGrid.addFilter('Company', '- Global -', 'text');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
-        await apiHelper.setDefaultNotificationForUser('qdu', "Alert");
-        await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
+        // await utilityGrid.clearFilter();
+        // await utilityGrid.addFilter('Company', '- Global -', 'text');
+        // await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        // await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
+        // await apiHelper.setDefaultNotificationForUser('qdu', "Alert");
+        // await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
 
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData = {
             "templateName": 'caseTemplateName' + randomStr,
             "templateSummary": 'caseTemplateSummary' + randomStr,
-            "categoryTier1": 'Failure',
-            "categoryTier2": 'Computer',
-            "categoryTier3": 'Memory',
             "casePriority": "Low",
             "templateStatus": "Active",
             "company": "Petramco",
@@ -68,7 +65,7 @@ describe("Actionable Notification Approval", () => {
         let approvalFlowData = {
             "flowName": `Bulk Operation ${randomStr}`,
             "approver": "qkatawazi",
-            "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.3191c35b400e44f4d4713ae358a43839d9bc9871fcabf0457ea0e73b477a86ab9f90c3f495aa7868bf1bb98b3077c6af56e114c89234f179071b03d05665ec32.304405421}"
+            "qualification": "'Priority' = \"Low\"",
         }
         await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
 
@@ -79,8 +76,8 @@ describe("Actionable Notification Approval", () => {
             "Case Template ID": caseTemplateDisplayId
         }
 
-        await apiHelper.apiLogin('sasadmin');
-        await apiHelper.enableActionableNotificationSetting();
+        // await apiHelper.apiLogin('sasadmin');
+        // await apiHelper.enableActionableNotificationSetting();
     });
 
     afterAll(async () => {
@@ -107,7 +104,8 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been sent for approval.');
@@ -138,8 +136,9 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
+            await utilityCommon.closeAllBlades();
 
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been approved');
@@ -169,8 +168,8 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Approval for Case ${response.displayId} has been canceled.`)
@@ -200,8 +199,8 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been rejected.');
@@ -231,6 +230,7 @@ describe("Actionable Notification Approval", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -248,7 +248,7 @@ describe("Actionable Notification Approval", () => {
     });
 
     //asahitya
-    it('[4152]: Check out of the box notification-"Hold Template" is actionable for type Alert', async () => {
+    fit('[4152]: Check out of the box notification-"Hold Template" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData);
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
@@ -267,8 +267,9 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
+            await utilityCommon.closeAllBlades();
 
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Approval for Case ${response.displayId} has been put on hold.`);
@@ -298,7 +299,8 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`An approver has requested for additional information about Case ${response.displayId}.`);
@@ -330,7 +332,8 @@ describe("Actionable Notification Approval", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(requestSecondaryStr)).toBeTruthy(requestSecondaryStr + ' is not clickable');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); //After Refresh notifications are getting displayed
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Additional information about Case ${response.displayId} has been provided.`);

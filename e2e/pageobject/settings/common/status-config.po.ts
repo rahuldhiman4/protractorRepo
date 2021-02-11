@@ -220,7 +220,7 @@ class StatusConfigPage {
             await $(`[data-tool-name="add-new-status"][model-id="${modelId}"]`).click();
             await $(this.selectors.localizeButton).click();
             await $$(this.selectors.newStatusInput).first().clear();
-            await $(this.selectors.newStatusInput).first().sendKeys(newStatus);
+            await $$(this.selectors.newStatusInput).first().sendKeys(newStatus);
             await $$(this.selectors.localizeMenuButtons).first().click();
             await this.saveSetting();
         }

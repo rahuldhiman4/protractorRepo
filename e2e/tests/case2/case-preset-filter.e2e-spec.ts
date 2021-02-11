@@ -44,7 +44,7 @@ describe('Case Console Preset Filter', () => {
         //await browser.sleep(6000);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
-        await statusConfig.setCompanyDropdown('Ericsson HR', 'case');
+        await statusConfig.setCompanyDropdown('Phylum', 'case');
         await statusConfig.clickEditLifeCycleLink();
         await statusConfig.addCustomStatus('Resolved', 'Closed', 'AfterResolved');
         await statusConfig.addCustomStatus('In Progress', 'Resolved', 'BeforeResolved');

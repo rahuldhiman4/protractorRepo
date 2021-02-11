@@ -102,7 +102,7 @@ class CaseWatchlistBlade {
     }
 
     async selectCase(caseId: string): Promise<void> {
-        await this.sortDescendingByCaseId();
+        await utilityGrid.sortGridColumn('Case ID', 'descending', this.selectors.guid);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId, this.selectors.guid);
     }
 
@@ -170,7 +170,7 @@ class CaseWatchlistBlade {
     }
 
     async openCase(caseId: string): Promise<void> {
-        await this.sortDescendingByCaseId();
+        await utilityGrid.sortGridColumn('Case ID', 'descending', this.selectors.guid);
         let locator = await element(by.cssContainingText(this.selectors.caseLinks, caseId));
         await locator.click();
     }
