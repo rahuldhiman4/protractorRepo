@@ -64,6 +64,8 @@ describe('Menu Item', () => {
         await createMenuItems.selectStatusDropDown('Inactive');
         await createMenuItems.selectStatusDropDown('Deprecated');
         expect(await createMenuItems.isToggleButtonDisplayed()).toBeTruthy('Toggle Button is missing');
+        await createMenuItems.clickOnCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 
     //kgaikwad

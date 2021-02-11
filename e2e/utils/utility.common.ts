@@ -8,7 +8,7 @@ export class Utility {
     selectors = {
         dropdownBox: '.dropdown-toggle',
         dropDownInput: '.dropdown_select__search input.form-control',
-        dropDownNoneOpt: '.dropdown-item span',
+        dropDownNoneOpt: '.px-3 i',
         dropDownOption: '.dropdown-item',
         dialogMessageTitle: '.modal-content .modal-title, .modal-content .d-modal__title',
         dialogMessageText: '.modal-content .modal-body, .modal-content .d-modal__content-item',

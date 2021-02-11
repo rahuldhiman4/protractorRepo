@@ -248,7 +248,7 @@ describe('Email Acknowledgment Template', () => {
             await editAcknowledgmentTemplatePo.selectStatusDropDown('Active');
             expect(await editAcknowledgmentTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize message button is missing');
             await editAcknowledgmentTemplatePo.selectlocaleDropDown('English (United States)');
-            let arr: string[] = ["Danish (Denmark)", "Dutch (Netherlands)", "English (United States)", "French (France)", "German (Germany)", "Italian (Italy)", "Portuguese (Brazil)", "Spanish (International Sort)", "Swedish (Sweden)"]
+            let arr: string[] = ["None","English (United States)", "German (Germany)", "Spanish (International Sort)","French (France)",  "Italian (Italy)", "Portuguese (Brazil)", "Swedish (Sweden)",, "Dutch (Netherlands)","Danish (Denmark)"];
             expect(await editAcknowledgmentTemplatePo.isLocaleDropDownValueDisplayed(arr)).toBeTruthy('Values not displayed in locale drop down');
 
             await editAcknowledgmentTemplatePo.clickOnGridSearchIcon();

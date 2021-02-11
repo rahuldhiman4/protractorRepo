@@ -837,7 +837,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
-            await utilityCommon.closeAllBlades();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();

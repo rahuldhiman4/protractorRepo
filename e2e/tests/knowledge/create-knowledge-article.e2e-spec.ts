@@ -116,8 +116,6 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.isReviewerDepartmentfieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await editKnowledgePage.isReviewerGrpFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
             expect(await editKnowledgePage.isReviewerFieldDisbaledOnStatusChangeBlade()).toBeTruthy();
-            expect(await statusBladeKnowledgeArticlePo.isChangeReviewerButtonPresent()).toBeTruthy();
-            expect(await editKnowledgePage.isAssignToMeReviewerBladePresent()).toBeTruthy();
             await changeAssignmentBlade.setDropDownValue('Company', knowledgeData.Company);
             await changeAssignmentBlade.setDropDownValue('SupportOrg', businessData.orgName);
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', suppGrpData.orgName);
@@ -320,7 +318,7 @@ describe('Knowledge Article', () => {
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills"
             }
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);

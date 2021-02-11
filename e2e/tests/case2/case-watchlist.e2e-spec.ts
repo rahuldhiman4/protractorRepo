@@ -286,7 +286,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -318,7 +317,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, "Peter Kahn");
             await editCase.clickSaveCase();
         });
@@ -334,6 +332,7 @@ describe('Case Watchlist', () => {
             await notificationAlerts.clickOnNotificationIcon();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(qfengStr);
         });
@@ -415,7 +414,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -433,7 +431,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
 
@@ -638,7 +635,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -722,7 +718,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
 
@@ -771,7 +766,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -783,7 +777,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.setStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -938,7 +931,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -957,7 +949,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.setStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -1034,7 +1025,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -1056,7 +1046,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -1131,7 +1120,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -1153,7 +1141,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -1197,7 +1184,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
         });
@@ -1207,7 +1193,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.setStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, australiaSupportStr, auSupport1Str, kasiaOstlunStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -1274,7 +1259,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeCaseStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, elizabethPetersStr);
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
@@ -1294,7 +1278,6 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.setStatusReason(customerResponseStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await editCase.clickChangeAssignmentButton();
             await changeAssignment.setAssignee(petramcoStr, hrSupportStr, compensationAndBenefitsStr, "Peter Kahn");
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();

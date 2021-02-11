@@ -66,7 +66,7 @@ describe('Knowledge Article Template', () => {
             await createKnowledgeArticleTemplatePo.clickOnAddSection();
             await createKnowledgeArticleTemplatePo.setSectionTitle('Section Title');
             await createKnowledgeArticleTemplatePo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222061): Template already exists.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Template already exists.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await createKnowledgeArticleTemplatePo.clickCancelBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
