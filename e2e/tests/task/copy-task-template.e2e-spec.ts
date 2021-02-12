@@ -262,10 +262,10 @@ describe('Copy Task Template', () => {
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + templateData.processName);
-            await viewTaskTemplate.clickBackArrowBtn();
-            await viewTaskTemplate.clickBackArrowBtn();//remove this line after defect fix
         });
         afterAll(async () => {
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();//remove this line after defect fix
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -568,8 +568,9 @@ describe('Copy Task Template', () => {
             await dynamicField.setFieldName(dynamicFieldName2);
             await dynamicField.setDescriptionName(dynamicFieldDescription2);
             await dynamicField.clickSaveButton();
-            await utilityCommon.closePopUpMessage();// is it defect no warning message
             expect(await viewTaskTemplate.isDynamicFieldPresent(dynamicFieldDescription2)).toBeTruthy(`${dynamicFieldDescription2} dynamic field not present`);
+        });
+        afterAll(async () => {
             await viewTaskTemplate.clickBackArrowBtn();
             await viewTaskTemplate.clickBackArrowBtn();
         });

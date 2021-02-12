@@ -10,8 +10,6 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let userData1, userData2 = undefined;
-
 describe("Case Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
     const companyStr = "Company";
@@ -23,47 +21,12 @@ describe("Case Approval Mapping Tests", () => {
     const statusMappingErrorStr = "Error";
     const approvalTriggerMsg = "Approval process starts when the case has above status.";
     const approvalMappingMsg = "Mapping the result of the approval process to the case status.";
-    const approvalStatusMappingLabel = "Status mapping:";
+    const approvalStatusMappingLabel = "Status mapping";
     let caseModule = 'Case';
-
-    let twoCompanyUser;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        // Petramco and Psilon user
-        twoCompanyUser = {
-            "firstName": "CopyTask",
-            "lastName": "Psilon",
-            "userId": "copytask",
-            "emailId": "copytask@petramco.com",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        await apiHelper.apiLogin("tadmin");
-        await apiHelper.createNewUser(twoCompanyUser);
-        await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(twoCompanyUser.userId, "Psilon");
-        await apiHelper.associatePersonToSupportGroup(twoCompanyUser.userId, "US Support 3");
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {
@@ -108,7 +71,7 @@ describe("Case Approval Mapping Tests", () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
 
             //Verify no. of fields displayed on Add Approval Mapping screen
             expect(await createApprovalMappingPage.isApprovalMappingFieldDisplayed(approvalMappingNameStr)).toBeTruthy();
@@ -124,7 +87,7 @@ describe("Case Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isApprovalMappingNameFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isCompanyFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isFlowsetFieldMandatory()).toBeFalsy();
-            expect(await createApprovalMappingPage.isStatusTriggerFieldMandatory()).toBeTruthy();
+            expect(await createApprovalMappingPage.isStatusTriggerFieldMandatory()).toBeTruthy(); //defect
             expect(await createApprovalMappingPage.isStatusMappingApprovedFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isStatusMappingNoApproverFoundFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isStatusMappingRejectedFieldMandatory()).toBeTruthy();
@@ -225,6 +188,7 @@ describe("Case Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
@@ -271,7 +235,8 @@ describe("Case Approval Mapping Tests", () => {
 
         it('[5197,5190,5196,5195]: Verify if case approval mappings are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            // HR and Facilities CaseManager
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -286,7 +251,8 @@ describe("Case Approval Mapping Tests", () => {
 
         it('[5197,5190,5196,5195]: Verify if case approval mappings are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            // HR and Facilities CaseBA
+            await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -299,6 +265,7 @@ describe("Case Approval Mapping Tests", () => {
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case BA with multiple LOB access');
         });
+
         it('[5197,5190,5196,5195]: Verify if case approval mappings are accessible to Case BA user having access to multiple LOB', async () => {
             await utilityGrid.searchAndOpenHyperlink(approvalMappingName);
             await editApprovalMappingPage.setApprovalMappingName(approvalMappingName + "_updated");
@@ -310,6 +277,8 @@ describe("Case Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
         });
     });
 
@@ -382,7 +351,7 @@ describe("Case Approval Mapping Tests", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -495,7 +464,8 @@ describe("Case Approval Mapping Tests", () => {
         it('[5193,6267]: Case approval mapping access Case BA', async () => {
             let newApprovalName = "Test2 " + approvalMappingName;
             await navigationPage.signOut();
-            await loginPage.login(twoCompanyUser.userId + "@petramco.com", 'Password_1234');
+            // Petramco and Psilon CaseBA
+            await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.searchAndOpenHyperlink(approvalMappingName);

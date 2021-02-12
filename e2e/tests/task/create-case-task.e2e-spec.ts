@@ -23,7 +23,6 @@ import consoleTask from "../../pageobject/task/console-task.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import editTask from "../../pageobject/task/edit-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
-import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
@@ -89,15 +88,15 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
 
             //Add Manual task and Automation Task in Case
-            await manageTask.addTaskFromTaskTemplate(manualTaskTemplateData.templateSummary);
-            await manageTask.addTaskFromTaskTemplate(autoTaskTemplateData.templateSummary);
-            await manageTask.waitUntilNumberOfTaskLinkAppear(2);
-            expect(await manageTask.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
-            expect(await manageTask.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTaskTemplateData.templateSummary);
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(2);
+            expect(await manageTaskBladePo.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
+            expect(await manageTaskBladePo.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
         });
         it('[5552,5560]: Update Task Type field for any task', async () => {
             //validate Manual Template
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
             await viewTask.clickOnEditTask();
             expect(await editTask.getTaskTypeValue()).toBe('Manual');
             expect(await editTask.getTaskTypeValueAttribute('class')).toContain("disabled");
@@ -181,15 +180,15 @@ describe('Create Case Task', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(autmationTaskTemplateWithRequiredData);
-            await manageTask.addTaskFromTaskTemplate(automationTaskTemplateWithallField);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autmationTaskTemplateWithRequiredData);
+            await manageTaskBladePo.addTaskFromTaskTemplate(automationTaskTemplateWithallField);
 
             //Add Automation Task templates in Case
-            expect(await manageTask.isTaskLinkPresent(autmationTaskSummaryWithRequiredData)).toBeTruthy(autmationTaskTemplateWithRequiredData + ' Task is not added to case');
-            expect(await manageTask.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
+            expect(await manageTaskBladePo.isTaskLinkPresent(autmationTaskSummaryWithRequiredData)).toBeTruthy(autmationTaskTemplateWithRequiredData + ' Task is not added to case');
+            expect(await manageTaskBladePo.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
         });
         it('[5559,5565,6425,6386]: Validate manual task', async () => {
-            await manageTask.clickTaskLink(automationTaskSummaryWithallField);
+            await manageTaskBladePo.clickTaskLink(automationTaskSummaryWithallField);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
@@ -542,8 +541,8 @@ describe('Create Case Task', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(automationTaskSummary);
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(automationTaskSummary);
+            await manageTaskBladePo.clickCloseButton();
         });
         it('[5558]: Verify the task status', async () => {
             await viewCasePage.clickOnRefreshTaskList();
@@ -552,7 +551,7 @@ describe('Create Case Task', () => {
             //validate Automation Template With Required Field
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(automationTaskSummary);
+            await manageTaskBladePo.clickTaskLink(automationTaskSummary);
             await viewTask.clickOnChangeStatus();
             await viewTask.clickOnUpdateStatusDrpdown();
             expect(await viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
@@ -649,7 +648,7 @@ describe('Create Case Task', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddTaskFromTemplateButton();
+            await manageTaskBladePo.clickAddTaskFromTemplateButton();
             await utilityGrid.clearFilter();
         });
         it('[5564,5570]: Verify the console of select task template', async () => {
@@ -658,10 +657,10 @@ describe('Create Case Task', () => {
             expect(await utilityGrid.isGridColumnSorted('Display ID', 'descending')).toBeTruthy('Descendigly not sorted');
             await utilityGrid.removeGridColumn(['Display ID']);
             await utilityGrid.addFilter('Task Type', 'Manual', "checkbox");
-            expect(await manageTask.getFilterValue('Manual')).toBeTruthy();
+            expect(await manageTaskBladePo.getFilterValue('Manual')).toBeTruthy();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Task Type', 'Automated', 'checkbox');
-            expect(await manageTask.getFilterValue('Automated')).toBeTruthy();
+            expect(await manageTaskBladePo.getFilterValue('Automated')).toBeTruthy();
             await utilityGrid.clearFilter();
         });
         afterAll(async () => {
@@ -868,8 +867,8 @@ describe('Create Case Task', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await viewCasePage.clickAddTaskButton();
-        await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
-        await manageTask.clickCloseButton();
+        await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
+        await manageTaskBladePo.clickCloseButton();
         await viewCasePage.clickOnRefreshTaskList();
         await updateStatusBladePo.changeCaseStatus('Pending');
         await updateStatusBladePo.setStatusReason('Customer Response');
@@ -922,32 +921,32 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`FirstAutomatedTaskTemplateActive ${randomStr}`);
-            await manageTask.addTaskFromTaskTemplate(`SecondAutomatedTaskTemplateActive1 ${randomStr}`);
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(`FirstAutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(`SecondAutomatedTaskTemplateActive1 ${randomStr}`);
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
         it('[5555,5556]: Verify first task on it', async () => {
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             expect(await viewTask.getStatusReason()).toBe("Successful")
             await viewTask.clickOnViewCase();
         });
         it('[5555,5556]: Verify second task on it', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
     });
@@ -999,23 +998,23 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(templateData1.templateName);
-            await manageTask.addTaskFromTaskTemplate(templateData2.templateName);
-            await manageTask.addTaskFromTaskTemplate(templateData3.templateName);
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData1.templateName);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData2.templateName);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData3.templateName);
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
         });
         it('[5561]: Verify primary status of task', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(templateData1.templateSummary);
+            await manageTaskBladePo.clickTaskLink(templateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(templateData2.templateSummary);
+            await manageTaskBladePo.clickTaskLink(templateData2.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(templateData3.templateSummary);
+            await manageTaskBladePo.clickTaskLink(templateData3.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
@@ -1024,7 +1023,7 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(templateData1.templateSummary);
+            await manageTaskBladePo.clickTaskLink(templateData1.templateSummary);
             await viewTask.clickOnChangeStatus();
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.changeTaskStatus('Completed');
@@ -1035,11 +1034,11 @@ describe('Create Case Task', () => {
         });
         it('[5561]: verify second and third status of task', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(templateData2.templateSummary);
+            await manageTaskBladePo.clickTaskLink(templateData2.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink(templateData3.templateSummary);
+            await manageTaskBladePo.clickTaskLink(templateData3.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
         afterAll(async () => {
@@ -1148,11 +1147,11 @@ describe('Create Case Task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
         it('[5563,5562]: Create Assigned status case and assign task on it', async () => {
@@ -1166,11 +1165,11 @@ describe('Create Case Task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
         it('[5563,5562]: Create InProgress status case and assign task on it', async () => {
@@ -1180,11 +1179,11 @@ describe('Create Case Task', () => {
             await caseConsolePage.searchAndOpenCase(inProgress);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
         it('[5563,5562]: Create Pending status case and assign task on it', async () => {
@@ -1194,11 +1193,11 @@ describe('Create Case Task', () => {
             await caseConsolePage.searchAndOpenCase(pending);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
         it('[5563,5562]: Create resolved status case and assign task on it', async () => {
@@ -1307,8 +1306,8 @@ describe('Create Case Task', () => {
         });
         it('[5784,5672]: [Task Status] Task Status change from Completed', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
+            await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
@@ -1403,7 +1402,7 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
             //Adhoc task validation
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddAdhocTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary("Summary1" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
@@ -1413,7 +1412,7 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
-            await manageTask.clickTaskLink("Summary1" + randomStr);
+            await manageTaskBladePo.clickTaskLink("Summary1" + randomStr);
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 3');
             expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
         });
@@ -1437,7 +1436,7 @@ describe('Create Case Task', () => {
             expect(await viewCasePage.getAssignedGroupValue()).toBe('US Support 1');
             expect(await viewCasePage.getAssigneeText()).toBe('None', 'Assignee name is missing');
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddAdhocTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary("Summary2" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
@@ -1447,7 +1446,7 @@ describe('Create Case Task', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
-            await manageTask.clickTaskLink("Summary2" + randomStr);
+            await manageTaskBladePo.clickTaskLink("Summary2" + randomStr);
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
             expect(await viewTask.getAssigneeText()).toBe('None', 'None assignee Text is missing');
         });
@@ -1534,7 +1533,7 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
             //Adhoc task validation
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddAdhocTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
             expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
@@ -1549,13 +1548,13 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
-            await manageTask.clickCloseButton();
+            await manageTaskBladePo.clickCloseButton();
         });
         it('[6088]: [Edit Task] Update summary, status, description and assignment', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink("Summary" + randomStr);
+            await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             await viewTask.clickOnEditTask();
             expect(await editTask.isFieldsDisplyed('Assignment Section')).toBeTruthy();
             expect(await editTask.isRequesterNameDisplayed('Qianru Tao')).toBeTruthy();
@@ -1590,7 +1589,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickTaskLink("Summary" + randomStr);
+            await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             expect((await viewTask.getDescriptionValue()).trim()).toBe("Description");
             expect(await viewTask.getCategoryTier1Value()).toBe(casetemplatePetramco.categoryTier1);
             expect(await viewTask.getCategoryTier2Value()).toBe(casetemplatePetramco.categoryTier2);
@@ -1648,10 +1647,10 @@ describe('Create Case Task', () => {
             await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             await viewCasePage.clickAddTaskButton();
-            await manageTask.clickAddAdhocTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary("AdHocSummary" + randomStr);
             await adhoctaskTemplate.clickSaveAdhoctask();
-            await manageTask.clickTaskLink("AdHocSummary" + randomStr);
+            await manageTaskBladePo.clickTaskLink("AdHocSummary" + randomStr);
             await expect(viewTask.getRequesterName()).toBe('Qianru Tao');
             await expect(viewTask.getContactPersonName()).toBe('Elizabeth Peters');
             expect(await viewTask.getAssignedGroupText()).toBe('US Support 2');
@@ -1706,6 +1705,6 @@ describe('Create Case Task', () => {
             await loginPage.login('qkatawazi');
         });
     });
-//12124 test case is not valid after 21.02
-   
+    //12124 test case is not valid after 21.02
+
 });
