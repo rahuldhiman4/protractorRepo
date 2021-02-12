@@ -17,7 +17,7 @@ class CreateAcknowledgmentTemplateBlade {
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
         lineOfBusiness: '[rx-view-component-id="c4638c50-356f-4aa6-8e22-7392e1efd6c9"] button',
         locale: '[rx-view-component-id="0d297e32-1ea0-4b91-8d3c-7195cc7e0cc7"] button',
-        lobValue: '[rx-view-component-id="c4638c50-356f-4aa6-8e22-7392e1efd6c9"] button'
+        lobValue: '[rx-view-component-id="c4638c50-356f-4aa6-8e22-7392e1efd6c9"] button div'
     }
 
     async setTemplateName(templateName: string): Promise<void> {
@@ -81,7 +81,7 @@ class CreateAcknowledgmentTemplateBlade {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getAttribute('placeholder');
+        return await $(this.selectors.lobValue).getText();
     }
 }
 
