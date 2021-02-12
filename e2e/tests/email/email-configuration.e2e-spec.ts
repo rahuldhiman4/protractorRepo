@@ -144,7 +144,7 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
             await createEmailConfigPo.setDescription("test");
             await createEmailConfigPo.clickSave();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy("Error message absent");
             await createEmailConfigPo.clickCancel();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -625,13 +625,13 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');
             await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
-            expect(await utilityCommon.isPopUpMessagePresent("Template is already in use hence it can not be deleted.")).toBeTruthy("ERROR (10014)");
+            expect(await utilityCommon.isPopUpMessagePresent("Template is already in use hence it can not be deleted.")).toBeTruthy("ERROR : Template is already in use hence it can not be deleted.");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate('Case Closed Ack Template');
             await editAcknowledgmentTemplatePo.selectStatusDropDown('Inactive');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent("The Acknowledgement template is in use, so status cannot be changed")).toBeTruthy("ERROR (10006)");
+            expect(await utilityCommon.isPopUpMessagePresent("The Acknowledgement template is in use, so status cannot be changed")).toBeTruthy("The Acknowledgement template is in use, so status cannot be changed");
             await editAcknowledgmentTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

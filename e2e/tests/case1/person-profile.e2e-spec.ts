@@ -992,7 +992,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(caseToCaseReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             // verify error
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
             // expect(await relationshipsConfigsPage.isRelationshipPresent(caseToCaseRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -1021,7 +1021,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(caseToPersonReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             // verify error
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
             //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToPersonRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -1050,7 +1050,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(personToPersonReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             // verify error
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
             //expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');

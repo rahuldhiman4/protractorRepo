@@ -252,7 +252,7 @@ describe('Line of Business Permission Tests', () => {
             await defineLobCreate.setUseAsDefaultValue(false);
             await defineLobCreate.selectEmailOutgoingProfile('Email Profile for Outgoing');
             await defineLobCreate.saveLob();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Line of Business with the given name already exists. Select a different name.')).toBeTruthy('Error message is not matching');
+            expect(await utilityCommon.isPopUpMessagePresent('Line of Business with the given name already exists. Select a different name.')).toBeTruthy('Error message is not matching');
             await utilityCommon.closeAllBlades();
 
             let guid = await consoleDefineLob.getColumnValueOfRecord('Domain ID', lobName);
@@ -922,7 +922,7 @@ describe('Line of Business Permission Tests', () => {
             await automatedStatusTransitionConsolePo.clickAddAutomatedStatusTransitionBtn();
             await utilityCommon.isAllDropDownValuesMatches(automatedStatusTransitionCreatePage.selectors.categoryTier1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(tempData);
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Automated Status Configuration with same name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Automated Status Configuration with same name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await automatedStatusTransitionCreatePage.clickCancelBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

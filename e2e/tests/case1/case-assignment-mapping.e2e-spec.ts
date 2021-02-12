@@ -224,7 +224,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setBusinessUnit("Australia Support");
             await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
             await assignmentConfigCreatePage.clickonSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222099): The Assignment Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The Assignment Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await assignmentConfigCreatePage.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
@@ -1421,7 +1421,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig(assignmentData.assignmentMappingName);
             await editAssignmentsConfigPo.setDefaultToggleButton(true);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Only one default record is allowed for a company. Please change the default flag and save the record.')).toBeTruthy('Message Not Present');
+            expect(await utilityCommon.isPopUpMessagePresent('Only one default record is allowed for a company. Please change the default flag and save the record.')).toBeTruthy('Message Not Present');
             await editAssignmentsConfigPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });

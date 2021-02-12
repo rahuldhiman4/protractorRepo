@@ -643,16 +643,16 @@ describe('Menu Item', () => {
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeLabelValue(labelInactive);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasetemplatePo.changeLabelValue(labelDeprecated);
             await editCasetemplatePo.clickSaveCaseTemplate();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasetemplatePo.changeLabelValue(labelActive2);
             await editCasetemplatePo.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeLabelValue(labelActive1);
             await editCasetemplatePo.clickSaveCaseTemplate();
-          //  expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+          //  expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Inactive, deprecated label With Edit Task Template', async () => {
@@ -662,11 +662,11 @@ describe('Menu Item', () => {
             await viewTasktemplatePo.clickOnEditLink();
             await editTasktemplatePo.selectLabel(labelInactive);
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editTasktemplatePo.selectLabel(labelDeprecated);
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Label With Edit Task Template', async () => {
@@ -675,7 +675,7 @@ describe('Menu Item', () => {
             await viewTasktemplatePo.clickOnEditLink();
             await editTasktemplatePo.selectLabel(labelActive1);
             await editTasktemplatePo.clickOnSaveButton();
-            //expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            //expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Label With Edit Assignment Mapping', async () => {
@@ -685,11 +685,11 @@ describe('Menu Item', () => {
 
             await editAssignmentsConfigPo.setLabel(labelInactive);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editAssignmentsConfigPo.setLabel(labelDeprecated);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editAssignmentsConfigPo.setLabel(labelActive2);
             await editAssignmentsConfigPo.clickonSaveButton();
@@ -697,7 +697,7 @@ describe('Menu Item', () => {
             await assignmentsConfigConsolePo.searchAndClickOnAssignmentConfig(title);
             await editAssignmentsConfigPo.setLabel(labelActive1);
             await editAssignmentsConfigPo.clickonSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Label With Edit Case Read Access', async () => {
@@ -707,18 +707,18 @@ describe('Menu Item', () => {
 
             await editReadAccessConfigPo.setLabel(labelInactive);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editReadAccessConfigPo.setLabel(labelDeprecated);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
 
             await editReadAccessConfigPo.setLabel(labelActive2);
             await editReadAccessConfigPo.clickOnSave();
             await consoleReadAcess.searchAndOpenReadAccess(title);
             await editReadAccessConfigPo.setLabel(labelActive1);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222171): The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
     });
 });

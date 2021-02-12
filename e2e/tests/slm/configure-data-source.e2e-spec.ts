@@ -197,7 +197,7 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'Company');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (306): Value does not fall within the limits specified for the field (Field ID - com.bmc.dsm.slm-lib:Config Data Source <300520600>, Maximum length - 50)')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Value does not fall within the limits specified for the field (Field ID - com.bmc.dsm.slm-lib:Config Data Source <300520600>, Maximum length - 50)')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceAlphaNumeric);
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeTruthy('Dynamic End Time Field is enabled on Create Data Source Config screen');
