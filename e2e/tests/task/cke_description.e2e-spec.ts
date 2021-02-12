@@ -1,3 +1,4 @@
+import { create } from "lodash";
 import { browser } from "protractor";
 import { ALL_FIELD } from '../../data/ui/case/casetemplate.data.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
@@ -58,7 +59,7 @@ let imageSource;
 describe('CKE Description', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qtao');
+        await loginPage.login('qkatawazi');
     });
 
     afterAll(async () => {
@@ -197,14 +198,13 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isFormatedTextDisplayed(formatText, "h2")).toBeTruthy();
             await ckeditorValidationPo.clickLinkInCKE('www.google.com');
             await browser.waitForAngularEnabled(false);
-            await utilityCommon.switchToNewTab(2);
+            await utilityCommon.switchToNewTab(1);
             expect(await ckeditorValidationPo.isTitleDisplayed('Google')).toBeTruthy();
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[3528,3527,3523,3517,3520,3518] Verify detail on COPY case template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await viewCaseTemplate.clickBackArrowBtn();
             await utilityGrid.searchAndSelectGridRecord(caseTemplateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             //verify detail on copy case template screen
@@ -235,10 +235,15 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('youtube')).toBeTruthy('Link Text not present');
         });
         it('[3528,3527,3523,3517,3520,3518] Verify case description on case if we change case template from template1 to template2', async () => {
-            await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qdu');
-            await quickCasePo.selectCaseTemplate(caseTemplateName);
-            await quickCasePo.createCaseButton();
+            await viewCaseTemplate.clickBackArrowBtn();
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qdu');
+            await createCasePo.setSummary('SummaryCKE');
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
+
             //Case Preview
             await casePreviewPo.clickOnShowMoreDescription();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy('google link');
@@ -277,10 +282,12 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
         });
         it('[3528,3527,3523,3517,3520,3518] Verify case description field on Case Template Preview', async () => {
-            await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qdu');
-            await quickCasePo.selectCaseTemplate(caseTemplateName);
-            await quickCasePo.clickOnCaseTemplate(caseTemplateName);
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qdu');
+            await createCasePo.setSummary('SummaryCKE');
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.clickOnAllTemplateTab();
+            await selectCasetemplateBladePo.searchAndOpenCaseTemplate(caseTemplateName)
             await previewCaseTemplateCasesPo.clickShowMoreDescriptionLink();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
             expect(await ckeditorValidationPo.isUnderLineTextDisplayed(underLineText)).toBeTruthy();
@@ -299,8 +306,10 @@ describe('CKE Description', () => {
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await previewCaseTemplateCasesPo.clickOnBackButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[3528,3527,3523,3517,3520,3518] Verify case description with login Case Manger', async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -318,12 +327,13 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             await ckeditorValidationPo.clickLinkInCKE('www.google.com');
             await browser.waitForAngularEnabled(false);
-            await utilityCommon.switchToNewTab(2);
+            await utilityCommon.switchToNewTab(1);
             expect(await ckeditorValidationPo.isTitleDisplayed('Google')).toBeTruthy();
             await browser.waitForAngularEnabled(true);
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -458,8 +468,7 @@ describe('CKE Description', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         it('[3526,3525,3524,3516] Verify detail on COPY task template', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await viewTasktemplatePo.clickBackArrowBtn();
             await utilityGrid.searchAndOpenHyperlink('taskTemplateNameDRDMV22091' + randomString);
             await viewTasktemplatePo.clickOnCopyTemplate();
             //verify detail on copy task template screen
@@ -487,10 +496,10 @@ describe('CKE Description', () => {
             expect(await viewTasktemplatePo.isLinkDisplayedInCKE('http://www.youtube.com')).toBeTruthy('Link Text not present');
         });
         it('[3526,3525,3524,3516] Verify task description on task template preview', async () => {
-            await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qdu');
-            await quickCasePo.setCaseSummary('quick case 22091');
-            await quickCasePo.createCaseButton();
+            await navigationPage.gotoCreateCase();
+            await createCasePo.setSummary('SummaryCKE');
+            await createCasePo.clickAssignToMeButton();
+            await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddTaskFromTemplateButton();
@@ -555,12 +564,12 @@ describe('CKE Description', () => {
             expect(await viewTasktemplatePo.getColorFontStyleOfText("text-align: center;")).toContain(centerAlignText);
             await ckeditorValidationPo.clickLinkInCKE('www.google.com');
             await browser.waitForAngularEnabled(false);
-            await utilityCommon.switchToNewTab(2);
+            await utilityCommon.switchToNewTab(1);
             expect(await ckeditorValidationPo.isTitleDisplayed('Google')).toBeTruthy();
             await browser.waitForAngularEnabled(true);
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
