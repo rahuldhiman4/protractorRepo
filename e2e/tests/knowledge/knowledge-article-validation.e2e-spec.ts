@@ -568,9 +568,10 @@ describe('Knowledge Article Validation', () => {
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             let assignedGroupList: string[] = await changeAssignmentBladePo.getAllDropDownValues("AssignedGroup")
-            expect(assignedGroupList.length).toBe(1);
-            expect(await changeAssignmentBladePo.getDropDownValue("Assignee")).toContain('Kyle Mills');
             expect(await changeAssignmentBladePo.getDropDownValue("Company")).toContain('Petramco');
+            expect(await changeAssignmentBladePo.getDropDownValue("SupportOrg")).toContain('United Kingdom Support');
+            expect(await changeAssignmentBladePo.getDropDownValue("AssignedGroup")).toContain('GB Support 2');
+            expect(await changeAssignmentBladePo.getDropDownValue("Assignee")).toContain('Kyle Mills');
             await editKnowledgePage.cancelKnowledgeMedataDataChanges();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Kyle Mills');
