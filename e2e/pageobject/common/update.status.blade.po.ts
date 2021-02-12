@@ -7,7 +7,7 @@ class UpdateStatus {
     selectors = {
         caseStatusDropDownGuid: '3c8d9278-fc1f-430c-b866-cdc9d217318b',
         taskStatusDropDownGuid: '8b4cef48-0a4c-4ec1-bc4c-cce47179c964',
-        caseStatusReasonDropDownGuid: 'e43fa7f2-66fc-4ac5-bf75-6b94da5e5318',
+        caseStatusReasonDropDownGuid: 'c3fd187c-ecc8-4cab-a321-b73c381e4a0e',
         caseStatusReasonRequired: '[rx-view-component-id="e43fa7f2-66fc-4ac5-bf75-6b94da5e5318"] .form-control-label',
         taskStatusReasonDropDownGuid: 'baf69b56-c37b-4a0b-9e68-f18558738ebb',
         caseStatusReasonDropDown: '[rx-view-component-id="7128b36c-5d4f-4333-8ee4-2a5163258a45"] button',

@@ -61,7 +61,7 @@ describe('Case Status Change', () => {
             expect(await viewCasePage.isEditLinkDisplay()).toBeFalsy('edit link should not display');
             await editCasePage.clickOnCancelCaseButton();
             await viewCasePage.clickOnStatus();
-            let statuses: string[] = ["New", "Assigned", "In Progress", "Pending", "Canceled", ""];
+            let statuses: string[] = ["New", "Assigned", "In Progress", "Pending", "Canceled"];
             expect(await updateStatusBladePo.allStatusOptionsPresent(statuses)).toBeTruthy('Status does not match On view case');
             await updateStatusBladePo.clickCancelButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
@@ -93,7 +93,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId2);
             expect(await viewCasePage.getTextOfStatus()).toBe(statusNew);
             await updateStatusBladePo.changeCaseStatus(statusCanceled);
-            let cancelStatusReasons: string[] = ['None', 'Approval Rejected', 'Customer Canceled', ""];
+            let cancelStatusReasons: string[] = ['None', 'Approval Rejected', 'Customer Canceled'];
             expect(await updateStatusBladePo.allStatusReasonOptionsPresent(cancelStatusReasons)).toBeTruthy('Cancel status reason options mismatch');
             await updateStatusBladePo.clickOnstatusReason();
             await updateStatusBladePo.setStatusReason('Customer Canceled');
@@ -115,7 +115,7 @@ describe('Case Status Change', () => {
             await caseConsole.searchAndOpenCase(caseId3);
             expect(await viewCasePage.getTextOfStatus()).toBe(statusNew), 'status should be new of status';
             await updateStatusBladePo.changeCaseStatus(statusPending);
-            let pendingStatusReasons: string[] = ['None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party', ""];
+            let pendingStatusReasons: string[] = ['None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
             expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
             await updateStatusBladePo.clickOnstatusReason();
             await updateStatusBladePo.setStatusReason('Approval');
@@ -224,7 +224,7 @@ describe('Case Status Change', () => {
         let manualSummary = 'manual' + randomStr;
         let newCase1, newCase2, newCase3;
         let caseId1: string, caseId2: string, caseId3: string;
-        let statusOptions: string[] = ["", "In Progress", "Pending", "Resolved", "Canceled"];
+        let statusOptions: string[] = ["In Progress", "Pending", "Resolved", "Canceled"];
         beforeAll(async () => {
             let caseData1 =
             {
@@ -328,7 +328,7 @@ describe('Case Status Change', () => {
         let summary4 = randomStr + "Summary 4";
         let newCase1, newCase2, newCase3, newCase4;
         let caseId1: string, caseId2: string, caseId3: string, caseId4: string;
-        let statusOptions: string[] = ["", "Resolved", "Assigned", "In Progress", "Pending", "Closed"];
+        let statusOptions: string[] = ["Resolved", "Assigned", "In Progress", "Pending", "Closed"];
         beforeAll(async () => {
             let caseData1 =
             {
@@ -512,8 +512,6 @@ describe('Case Status Change', () => {
             await editCasePage.setCaseSummary(summary1 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
-            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
-            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -527,8 +525,6 @@ describe('Case Status Change', () => {
             await editCasePage.setCaseSummary(summary2 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
-            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
-            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -542,8 +538,6 @@ describe('Case Status Change', () => {
             await editCasePage.setCaseSummary(summary3 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
-            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
-            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickOnAssignToMe();
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
@@ -558,8 +552,6 @@ describe('Case Status Change', () => {
             await editCasePage.setCaseSummary(summary4 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
-            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
-            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clickOnAssignToMe();
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
@@ -579,7 +571,7 @@ describe('Case Status Change', () => {
         let summary5 = randomStr + "Summary 5";
         let newCase1, newCase2, newCase3, newCase4, newCase5;
         let caseId1: string, caseId2: string, caseId3: string, caseId4: string, caseId5: string;
-        let statusOptions: string[] = ["", "Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed", "Approval Rejected"];
+        let statusOptions: string[] = ["Pending", "Assigned", "In Progress", "Resolved", "Canceled", "Closed", "Approval Rejected"];
         beforeAll(async () => {
             let caseData1 =
             {
@@ -815,7 +807,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusPending);
-        let pendingStatusReasons: string[] = ['', 'None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
+        let pendingStatusReasons: string[] = ['None', 'Approval', 'Customer Response', 'Error', 'Required Fields Are Missing', 'Third Party'];
         expect(await updateStatusBladePo.allStatusReasonOptionsPresent(pendingStatusReasons)).toBeTruthy('Pending status reason options mismatch');
         await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Approval');
@@ -833,7 +825,7 @@ describe('Case Status Change', () => {
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
         await updateStatusBladePo.changeCaseStatus(statusResolved);
-        let resolvedStatusReasons: string[] = ['', 'None', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
+        let resolvedStatusReasons: string[] = ['None', 'Auto Resolved', 'Customer Follow-Up Required', 'No Further Action Required'];
         await expect(await updateStatusBladePo.allStatusReasonOptionsPresent(resolvedStatusReasons)).toBeTruthy('Resolved status reason options mismatch');
         await updateStatusBladePo.clickOnstatusReason();
         await updateStatusBladePo.setStatusReason('Auto Resolved');
