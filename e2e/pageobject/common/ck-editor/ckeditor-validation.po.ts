@@ -397,11 +397,11 @@ class CKEValidation {
 
     async getColorFontStyleOfText(value: string, guid?: string): Promise<string> {
         let alignColorFontStyle;
-        await $(`div[style="${value}"]`).isPresent().then(async (result) => {
+        await $(`div.contents [style="${value}"]`).isPresent().then(async (result) => {
             if (result) {
-                alignColorFontStyle = `div[style="${value}"]`;
+                alignColorFontStyle = `div.contents [style="${value}"]`;
             }else {
-                alignColorFontStyle = `span[style="${value}"]`;
+                alignColorFontStyle = `[style="${value}"]`;
             }
         });
 

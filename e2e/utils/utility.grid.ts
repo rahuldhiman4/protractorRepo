@@ -114,12 +114,10 @@ export class GridOperations {
         let gridGuid: string = '';
         if (guid) { gridGuid = `[rx-view-component-id="${guid}"] `; }
         let rowLocator = await $$(gridGuid + this.selectors.gridRows);
-
         for (let i: number = 0; i < await rowLocator.length; i++) {
-            let tempRowLocator = await $$(gridGuid + this.selectors.gridRows).get(i);
-            let linkText: string = await tempRowLocator.$(this.selectors.gridRowHyperLinks).getText();
+            let linkText: string = await $$(gridGuid + this.selectors.gridRows).get(i).$(this.selectors.gridRowHyperLinks).getText();
             if (linkText.trim() == value) {
-                await tempRowLocator.$(this.selectors.gridCheckbox).click();
+                await $$(gridGuid + this.selectors.gridRows).get(i).$(this.selectors.gridCheckbox).click();
                 break;
             }
         }
