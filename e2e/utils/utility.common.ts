@@ -273,7 +273,7 @@ export class Utility {
       if required tag is present as text in dom, pass guid
       and if required tag is present is hidden from dom, pass Locator
     */
-    async isRequiredTagPresent(identifier: string | ElementFinder): Promise<boolean> {
+    async isRequiredTagPresent(identifier: string | ElementFinder, type?: string): Promise<boolean> {
         let isRequired: boolean = false;
         if (typeof identifier === 'string') {
             isRequired = await $(`[rx-view-component-id="${identifier}"] .form-control-required`).isPresent();
@@ -286,9 +286,20 @@ export class Utility {
             });
         }
         else {
-            let nameElement = identifier;
-            let value: string = await this.getTextFromAfterTag(nameElement);
-            isRequired = value.includes('required');
+            if (type) {                             //taking Element as parameter need to get text from Element
+                let nameElement = identifier;
+                isRequired = await nameElement.isPresent().then(async (result) => {
+                    if (result) {
+                        let value = await nameElement.getText();
+                        return value.includes('required');
+                    } else return false;
+                });
+            }
+            else {                                  //taking Element as parameter and getting required text from inner attribute
+                let nameElement = identifier;
+                let value: string = await this.getTextFromAfterTag(nameElement);
+                isRequired = value.includes('required');
+            }
         }
         return isRequired;
     }

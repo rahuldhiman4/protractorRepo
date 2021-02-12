@@ -14,9 +14,9 @@ import utilityGrid from '../../utils/utility.grid';
 let caseBAUser = 'qkatawazi';
 
 describe('Data Source Configuration Tests', () => {
-    const dataSourceConsoleHeading = 'Service Target Data Source Configuration';
+    const dataSourceConsoleHeading = 'Data Source Configuration';
     const dataSourceConsoleDesc = 'Create/update a data source for flexibility to calculate service targets differently for each record.';
-    const createdataSourceConfigHeading = 'Add Service Target Data Source Configuration';
+    const createdataSourceConfigHeading = 'Create Data Source Configuration';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -39,7 +39,7 @@ describe('Data Source Configuration Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.CONFIGURE_DATA_SOURCE);
             expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleHeading()).toBe(dataSourceConsoleHeading);
-            // expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleDescription()).toBe(dataSourceConsoleDesc);
+            // // expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleDescription()).toBe(dataSourceConsoleDesc);
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
             // await browser.sleep(2000);  // added hard wait to load Add Data Source Blade
             expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
@@ -53,10 +53,11 @@ describe('Data Source Configuration Tests', () => {
             expect(await createConfigureDataSourceConfigPo.getAddDataSourceConfigurationHeading()).toBe(createdataSourceConfigHeading);
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
             await createConfigureDataSourceConfigPo.clickCancelButton();
-            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('No');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Innovation Studio');
-            expect(await utilityCommon.isPopUpMessagePresent('No Record Definition exists for the selected Application Name Innovation Studio')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await utilityCommon.isPopupMsgsMatches(['No Record Definition exists for the selected Application Name com.bmc.arsys.rx.innovationstudio'])).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            await utilityCommon.closePopUpMessage();
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeTruthy('Save button is found enabled.');
 
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
@@ -76,7 +77,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await createConfigureDataSourceConfigPo.isDataSourceFieldRequired('Dynamic Goal Time Field')).toBeFalsy('Dynamic Goal Time Field field is marked as required field');
             expect(await createConfigureDataSourceConfigPo.isDataSourceFieldRequired('Category Field')).toBeFalsy('Category Field field is marked as required field');
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeTruthy('Dynamic End Time Field is enabled on Create Data Source Config screen');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval Mapping Field - Company');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval Mapping Field - Label');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Create Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Edit Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Group Primary');
