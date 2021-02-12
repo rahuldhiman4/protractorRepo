@@ -262,10 +262,10 @@ describe('Copy Task Template', () => {
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + templateData.processName);
-            await viewTaskTemplate.clickBackArrowBtn();
-            await viewTaskTemplate.clickBackArrowBtn();//remove this line after defect fix
         });
         afterAll(async () => {
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();//remove this line after defect fix
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
