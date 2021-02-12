@@ -22,14 +22,15 @@ describe('Person Profile test', () => {
     let businessData, departmentData, suppGrpData, personData, orgId;
 
     beforeAll(async () => {
-        await apiHelper.apiLogin('elizabeth');
-        await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
-        await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
-        await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
         await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');
         await utilityGrid.selectLineOfBusiness('Human Resource');
         await navigationPage.gotoPersonProfile();
+
+        // await apiHelper.apiLogin('elizabeth');
+        // await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
+        // await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
+        // await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
     });
 
     afterAll(async () => {
@@ -38,7 +39,7 @@ describe('Person Profile test', () => {
     });
 
     async function foundationDataCreation() {
-        //Create Foundation data
+        // Create Foundation data
         businessData = businessDataFile['BusinessUnitData_BulkOperation'];
         departmentData = departmentDataFile['DepartmentData_BulkOperation'];
         suppGrpData = supportGrpDataFile['SuppGrpData_BulkOperation'];
@@ -77,21 +78,23 @@ describe('Person Profile test', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['4584']);
         let caseDisplayId = response.displayId;
-        await personProfile.clickOnTab("Requested Cases");
+        await personProfile.clickOnTab("Requested Cases ");
         expect(await personProfile.isCasePresentOnRequestedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
     //asahitya
     it('[4583]: Verify cases visible in Assiged cases tab of My profile page are according to permissions of logged in user', async () => {
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoPersonProfile();
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['4583']);
         let caseDisplayId = response.displayId;
-        await personProfile.clickOnTab("Assigned Cases");
+        await personProfile.clickOnTab("Assigned Cases ");
         expect(await personProfile.isCasePresentOnAssignedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
-    //asahitya
+    //asahitya (person profile img not displayed)
     it('[4596,4198,4586]: Verify My Profile Console', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoPersonProfile();
