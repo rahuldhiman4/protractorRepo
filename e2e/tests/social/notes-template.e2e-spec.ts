@@ -561,7 +561,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setBody("This is new notes template");
             await createNotesTemplate.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${caseNotesTemplate}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template with the given name already exists:${caseNotesTemplate}`)).toBeTruthy("Error message absent");
             await createNotesTemplate.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -574,7 +574,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setBody("This is new notes template");
             await createNotesTemplate.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${peopleNotesTemplate}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template with the given name already exists:${peopleNotesTemplate}`)).toBeTruthy("Error message absent");
             await createNotesTemplate.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -587,7 +587,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setBody("This is new notes template");
             await createNotesTemplate.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${taskNotesTemplate}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template with the given name already exists:${taskNotesTemplate}`)).toBeTruthy("Error message absent");
             await createNotesTemplate.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -600,7 +600,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setBody("This is new notes template");
             await createNotesTemplate.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${knowledgeNotesTemplate}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template with the given name already exists:${knowledgeNotesTemplate}`)).toBeTruthy("Error message absent");
             await createNotesTemplate.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

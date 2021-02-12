@@ -300,7 +300,7 @@ describe('Create Task Template', () => {
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await taskTemplate.clickOnCancelTaskTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

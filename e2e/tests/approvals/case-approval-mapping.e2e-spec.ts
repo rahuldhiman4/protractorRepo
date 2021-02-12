@@ -400,7 +400,7 @@ describe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Invalid error message');
+            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Invalid error message');
         });
         it('[5193,6267]: [Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status', async () => {
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
@@ -424,7 +424,7 @@ describe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await editApprovalMappingPage.selectStatusMappingError('New');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Invalid error message');
+            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Invalid error message');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
@@ -584,7 +584,7 @@ describe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222099): The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy("Error message absent");
             await createApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });

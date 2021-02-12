@@ -79,7 +79,7 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.setDescription(documentDescription);
             await createDocumentTemplatePo.setDocumentBody(documentBody);
             await createDocumentTemplatePo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (2220154): Template Already exist with given name:${documentName}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template Already exist with given name:${documentName}`)).toBeTruthy("Error message absent");
             await createDocumentTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

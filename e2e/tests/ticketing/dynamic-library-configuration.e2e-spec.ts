@@ -873,7 +873,7 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
             await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12423): Dynamic group with same name and line of business already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Dynamic group with same name and line of business already exists.')).toBeTruthy("Error message absent");
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

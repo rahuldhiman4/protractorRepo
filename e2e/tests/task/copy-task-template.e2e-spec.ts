@@ -256,7 +256,7 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectOwnerBusinessUnit('United States Support');
             await copyTemplatePage.selectOwnerGroup('US Support 3');
             await copyTemplatePage.clickSaveCopytemplate();// Failing due to defect (turned improvement DRDMV-21097)
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (902): Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy(); // ERROR (902): Duplicate process name
+            expect(await utilityCommon.isPopUpMessagePresent(`Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy('Duplicate process name');
             await copyTemplatePage.clickCancelCopytemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewTaskTemplate.clickBackArrowBtn();
