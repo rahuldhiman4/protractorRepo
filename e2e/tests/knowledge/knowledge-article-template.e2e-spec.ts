@@ -90,6 +90,8 @@ describe('Knowledge Article Template', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('kWilliamson');
         });
     });
 
@@ -117,8 +119,6 @@ describe('Knowledge Article Template', () => {
         });
 
         it('[6435,6372,6342]: Create templates for Knowledge article', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('kWilliamson');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Article Templates', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.ARTICLE_TEMPLATES);
             await consoleKnowledgeTemplatePo.clickCreateNewKATemplate();
@@ -211,7 +211,10 @@ describe('Knowledge Article Template', () => {
             expect(await utilityGrid.isGridRecordPresent('Article Title KCS')).toBeTruthy('Article1 is not present');
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent('Article Title 619')).toBeTruthy('Article2 is not present');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         })
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
     });
 });
