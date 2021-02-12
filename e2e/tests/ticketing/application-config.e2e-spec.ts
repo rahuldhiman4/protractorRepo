@@ -7,9 +7,8 @@ import utilityCommon from '../../utils/utility.common';
 
 describe('Application Configuration', () => {
     beforeAll(async () => {
-
         await browser.get(BWF_BASE_URL);
-        await loginPage.login("elizabeth");
+        await loginPage.login('morwenna');
     });
 
     afterAll(async () => {
@@ -19,8 +18,6 @@ describe('Application Configuration', () => {
 
     describe('[3428] : [Common Config] - Only Operating, Service Provider, Customer type of Primary organizations and global company should be returned in company field', () => {
         it('[3428]:[Common Config] - Only Operating, Service Provider, Customer type of Primary organizations and global company should be returned in company field', async () => {
-            await navigationPage.signOut();
-            await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.COMMON_CONFIGURATION);
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');

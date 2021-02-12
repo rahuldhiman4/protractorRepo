@@ -46,7 +46,7 @@ let siteFieldVal1 = "Mexico City";
 let knowledgeManagementApp = "Knowledge Management";
 let companyStr = "Petramco";
 let hrSupportStr = "HR Support";
-let ownerSupportGroup = "US Support 2";
+let ownerSupportGroup = "Compensation and Benefits";
 let documentLibraryColumnHeader = "Title";
 let applyBtn = "Apply";
 let documentLibraryStr = "Document Library ";
@@ -424,8 +424,29 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     });
 
     describe('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', () => {
+        let caseAgentuserData = {
+            "firstName": "caseAgent",
+            "lastName": "user",
+            "userId": "caseAgent",
+            "userPermission": ["Case Agent","Foundation Read","Document Manager","Human Resource"]
+        }
+        let caseManageruserData = {
+            "firstName": "caseManager",
+            "lastName": "user",
+            "userId": "caseManager",
+            "userPermission": ["Case Manager","Foundation Read","Document Manager","Human Resource"]
+        }
         let title = `Document_${new Date().valueOf()}`;
         let title1 = `Document1_${new Date().valueOf()}`;
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createNewUser(caseAgentuserData);
+            await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
+
+            await apiHelper.createNewUser(caseManageruserData);
+            await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
+        });
+
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Create a document library
             await navigationPage.gotoSettingsPage();
@@ -451,7 +472,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Manager
-            await loginPage.login('qdu');
+            await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
             //Create a document library
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
@@ -476,7 +497,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Agent
-            await loginPage.login('qgeorge');
+            await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
             //Create a document library
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
@@ -509,6 +530,28 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     describe('[3831]:Verify the search functionality of Document library console for Region', () => {
         let regionFields: string[] = ["Region"];
         let emptyStr = undefined;
+        let caseAgentuserData = {
+            "firstName": "caseAgent",
+            "lastName": "user",
+            "userId": "caseAgent",
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager","Human Resource"]
+        }
+        let caseManageruserData = {
+            "firstName": "caseManager",
+            "lastName": "user",
+            "userId": "caseManager",
+            "userPermission": ["Case Manager", "Foundation Read", "Document Manager","Human Resource"]
+        }
+
+        beforeAll(async () => {
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.createNewUser(caseAgentuserData);
+            await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
+            await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, ownerSupportGroup);
+            await apiHelper.createNewUser(caseManageruserData);
+            await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
+            await apiHelper.associatePersonToSupportGroup(caseManageruserData.userId, ownerSupportGroup);
+        });
 
         it('[3831]:Verify the search functionality of Document library console for Region', async () => {
             //*Create a document library
@@ -538,7 +581,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 
         it('[3831]:Verify the search functionality of Document library console for Region', async () => {
             //Login with Case Manager
-            await loginPage.login('qdu');
+            await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
@@ -550,7 +593,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.signOut();
 
             //Login with Case Agent
-            await loginPage.login('qgeorge');
+            await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);

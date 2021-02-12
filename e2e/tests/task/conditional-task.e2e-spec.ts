@@ -1,25 +1,38 @@
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import createCasePage from '../../pageobject/case/create-case.po';
-import quickCasePage from '../../pageobject/case/quick-case.po';
-import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
-import editCaseTemplatePage from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import previewCaseTemplatePage from '../../pageobject/settings/case-management/preview-case-template.po';
-import viewCaseTemplatePage from '../../pageobject/settings/case-management/view-casetemplate.po';
-import taskTemplateConsolePage from '../../pageobject/settings/task-management/console-tasktemplate.po';
-import { default as previewTaskTemplatePo, default as taskTemplatePreview } from '../../pageobject/settings/task-management/preview-task-template.po';
-import processEditorPage from '../../pageobject/ticketing/process-editor.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import viewCaseTemplatePage from '../../pageobject/settings/case-management/view-casetemplate.po';
+import processEditorPage from '../../pageobject/ticketing/process-editor.po';
+import editCaseTemplatePage from '../../pageobject/settings/case-management/edit-casetemplate.po';
+import taskTemplatePreview from '../../pageobject/settings/task-management/preview-task-template.po';
 import utilityCommon from '../../utils/utility.common';
+import createCasePage from '../../pageobject/case/create-case.po';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import previewCaseTemplatePage from '../../pageobject/settings/case-management/preview-case-template.po';
+import quickCasePage from '../../pageobject/case/quick-case.po';
+import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
+import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
+import taskTemplateConsolePage from '../../pageobject/settings/task-management/console-tasktemplate.po';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Conditional Task', () => {
-
+    let userData;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
+        //Create new user with Psilon and Petramco access
+        await apiHelper.apiLogin('tadmin');
+        userData = {
+            "firstName": "Multiple Company",
+            "lastName": "Access",
+            "userId": "4542_User",
+            "emailId": "4542_User@petramco.com",
+            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
+        }
+        await apiHelper.createNewUser(userData);
+        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
+        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
         await loginPage.login('qkatawazi');
     });
 
@@ -399,7 +412,7 @@ describe('Conditional Task', () => {
         let globalCaseTemplateData, petramcoCaseTemplateData, psilonCaseTemplateData
 
         beforeAll(async () => {
-            await apiHelper.apiLogin('qheroux');
+            await apiHelper.apiLogin(userData.userId + '@petramco.com', 'Password_1234');
 
             //Create Manual Global Draft task
             globalDraftTask = {
@@ -642,7 +655,7 @@ describe('Conditional Task', () => {
 
         it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qheroux');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
 
@@ -737,7 +750,7 @@ describe('Conditional Task', () => {
         let globalDraftCaseTemplateData, petramcoDraftCaseTemplateData, petramcoInactiveCaseTemplateData, petramcoActiveCaseTemplateData, psilonDraftCaseTemplateData;
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLogin('qheroux');
+            await apiHelper.apiLogin(userData.userId + '@petramco.com', 'Password_1234');
 
             //Create Global Case Template with Draft status
             globalDraftCaseTemplateData = {
@@ -807,7 +820,7 @@ describe('Conditional Task', () => {
 
         it('[4543]: [Task] - Opened Template process when clicking on Add Task Template from Case Template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qheroux');
+            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -892,7 +905,7 @@ describe('Conditional Task', () => {
 
         it('[4497]: [Task] Copy Case Template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qheroux');
+             await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(caseTemplatePetramcoData.templateName);
