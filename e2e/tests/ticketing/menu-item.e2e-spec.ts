@@ -161,6 +161,8 @@ describe('Menu Item', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes')
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
