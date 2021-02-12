@@ -14,12 +14,12 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import composeMailPo from '../../pageobject/email/compose-mail.po';
 import documentLibraryConsolePo from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPo from '../../pageobject/settings/document-management/edit-document-library.po';
+import viewDocumentLibraryPo from '../../pageobject/settings/document-management/view-document-library.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import utilityGrid from '../../utils/utility.grid';
 
 describe('Document Library Consume UI', () => {
     let filePath1 = 'e2e/data/ui/attachment/bwfJpg.jpg';
@@ -99,6 +99,7 @@ describe('Document Library Consume UI', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publishDocData.docLibTitle);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
             await apiHelper.apiLogin('tadmin');

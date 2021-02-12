@@ -379,7 +379,7 @@ class EditKnowledgePage {
     }
 
     async removeRegionValue(): Promise<void> {
-        await utilityCommon.clearDropDown('6c3548bc-bd52-4da6-b365-f546ca7bd744', 'Clear');
+        await utilityCommon.clearDropDown('c46cafd9-8481-4ffc-812d-3f6ba1308e66', 'None');
     }
     async isValuePresentInDropdown(DropDownName: string, value: string): Promise<boolean> {
         let guid;

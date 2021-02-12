@@ -241,7 +241,6 @@ describe('Email Acknowledgment Template', () => {
         });
         it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             // 5121
-            await utilityGrid.clearFilter();
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate(templateName);
             expect(await editAcknowledgmentTemplatePo.isModuleNameDisabled()).toBeTruthy('Module Name is enabled');
             expect(await editAcknowledgmentTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
@@ -249,7 +248,7 @@ describe('Email Acknowledgment Template', () => {
             await editAcknowledgmentTemplatePo.selectStatusDropDown('Active');
             expect(await editAcknowledgmentTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize message button is missing');
             await editAcknowledgmentTemplatePo.selectlocaleDropDown('English (United States)');
-            let arr: string[] = ["Danish (Denmark)", "Dutch (Netherlands)", "English (United States)", "French (France)", "German (Germany)", "Italian (Italy)", "Portuguese (Brazil)", "Spanish (International Sort)", "Swedish (Sweden)"]
+            let arr: string[] = ["None","English (United States)", "German (Germany)", "Spanish (International Sort)","French (France)",  "Italian (Italy)", "Portuguese (Brazil)", "Swedish (Sweden)",, "Dutch (Netherlands)","Danish (Denmark)"];
             expect(await editAcknowledgmentTemplatePo.isLocaleDropDownValueDisplayed(arr)).toBeTruthy('Values not displayed in locale drop down');
 
             await editAcknowledgmentTemplatePo.clickOnGridSearchIcon();
@@ -264,10 +263,11 @@ describe('Email Acknowledgment Template', () => {
             await editAcknowledgmentTemplatePo.clickOnGridEditButton();
             await editAcknowledgmentTemplatePo.updateEditMessageTextBladeSubject(subject2);
             await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
+            await editAcknowledgmentTemplatePo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            await consoleAcknowledgmentTemplatePo.searchOnGridConsole('body');
+            await editAcknowledgmentTemplatePo.searchOnGridConsole('body');
             expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
-            await consoleAcknowledgmentTemplatePo.searchOnGridConsole('subject');
+            await editAcknowledgmentTemplatePo.searchOnGridConsole('subject');
             expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
         });
@@ -332,7 +332,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
 
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName4)).toBeTruthy('Duplicate private template name error message is missing');
+            expect(await utilityCommon.isPopUpMessagePresent('Template Already exist with given name:' + templateName4)).toBeTruthy('Duplicate private template name error message is missing');
             await utilityCommon.closePopUpMessage();
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -359,7 +359,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
 
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222108): Template Already exist with given name:' + templateName5)).toBeTruthy('Duplicate private template name error message is missing');
+            expect(await utilityCommon.isPopUpMessagePresent('Template Already exist with given name:' + templateName5)).toBeTruthy('Duplicate private template name error message is missing');
             await utilityCommon.closePopUpMessage();
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -377,7 +377,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setDescription(description);
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222108): Template Already exist with given name:${templateName4}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template Already exist with given name:${templateName4}`)).toBeTruthy("Error message absent");
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

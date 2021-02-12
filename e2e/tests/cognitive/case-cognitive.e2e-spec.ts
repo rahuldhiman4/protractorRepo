@@ -599,14 +599,14 @@ describe('Case Cognitive', () => {
             expect(await consoleCognitivePo.isRecordPresentOnCategorization("Add Mapping Group " + randomStr)).toBeTruthy();
             await utilityGrid.clearSearchBox();
             await utilityGrid.clearFilter();
-            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "asc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "desc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "asc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "desc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "asc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "desc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "asc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "desc")).toBeTruthy();
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "ascending")).toBeTruthy('Mapping Name asending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Name", "descending")).toBeTruthy('Mapping Name descending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "ascending")).toBeTruthy('Company asending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Company", "descending")).toBeTruthy('Company descending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "ascending")).toBeTruthy('Data Set Name asending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Data Set Name", "descending")).toBeTruthy('Data Set Name descending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "ascending")).toBeTruthy('Mapping Type asending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnCategorization("Mapping Type", "descending")).toBeTruthy('Mapping Type descending not present');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -690,11 +690,11 @@ describe('Case Cognitive', () => {
             await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
             await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveTemplateMappingPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await createCognitiveTemplateMappingPo.clickEnabledMapping(false);
             await createCognitiveTemplateMappingPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await createCognitiveTemplateMappingPo.selectCompany("Psilon");
             await createCognitiveTemplateMappingPo.clickSaveButton();
@@ -707,7 +707,7 @@ describe('Case Cognitive', () => {
             await createCognitiveTemplateMappingPo.setConfidentialsLevelOfCategorization("20");
             await createCognitiveTemplateMappingPo.setConfidentialsLevelByAgent("10");
             await createCognitiveTemplateMappingPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (382): The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await createCognitiveTemplateMappingPo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -731,14 +731,15 @@ describe('Case Cognitive', () => {
             await utilityGrid.addFilter("Mapping Status", "False", "radioButton");
             expect(await consoleCognitivePo.isRecordPresentOnTemplate("Add Mapping Group " + randomStr)).toBeTruthy();
             await utilityGrid.clearFilter();
-            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Name", "asc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Name", "desc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Company", "asc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Company", "desc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Data Set Name", "asc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Data Set Name", "desc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Type", "asc")).toBeTruthy();
-            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Type", "desc")).toBeTruthy();
+
+            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Name", "ascending")).toBeTruthy('Mapping Name asending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Name", "descending")).toBeTruthy('Mapping Name descending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Company", "ascending")).toBeTruthy('Company asending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Company", "descending")).toBeTruthy('Company descending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Data Set Name", "ascending")).toBeTruthy('Data Set Name asending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Data Set Name", "descending")).toBeTruthy('Data Set Name descending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Type", "ascending")).toBeTruthy('Mapping Type asending not present');
+            expect(await consoleCognitivePo.isColumnSortedOnTemplate("Mapping Type", "descending")).toBeTruthy('Mapping Type descending not present');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();

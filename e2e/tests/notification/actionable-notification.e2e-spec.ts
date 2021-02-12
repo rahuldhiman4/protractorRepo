@@ -23,6 +23,8 @@ import assignmentBladePO from '../../pageobject/common/change-assignment.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
+import caseConsole from '../../pageobject/case/case-console.po';
+import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
 
 const caseData = require('../../data/ui/case/case.ui.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
@@ -35,16 +37,16 @@ describe("Actionable Notifications", () => {
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        await utilityGrid.addFilter('Company', '- Global -', 'text');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.setDefaultNotificationForUser('qtao', "Alert");
-        await apiHelper.setDefaultNotificationForUser('Fritz', "Alert");
-        await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
-        await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
-        await apiHelper.setDefaultNotificationForUser('khardison', 'Alert');
-        await apiHelper.apiLogin('sasadmin');
-        await apiHelper.enableActionableNotificationSetting();
+        // await utilityGrid.addFilter('Company', '- Global -', 'text');
+        // await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.setDefaultNotificationForUser('qtao', "Alert");
+        // await apiHelper.setDefaultNotificationForUser('Fritz', "Alert");
+        // await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
+        // await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
+        // await apiHelper.setDefaultNotificationForUser('khardison', 'Alert');
+        // await apiHelper.apiLogin('sasadmin');
+        // await apiHelper.enableActionableNotificationSetting();
     });
 
     afterAll(async () => {
@@ -59,7 +61,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.updateCaseStatus(response.id, 'Resolved', 'Customer Follow-Up Required');
         await apiHelper.reopenCase(response.id);
 
-        await navigationPage.gotoSettingsPage();
+        //await navigationPage.gotoSettingsPage();
         try {
             await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink('Case Reopened');
@@ -70,8 +72,8 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
-
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await utilityCommon.refresh(); // required to get alert notification
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Qiao Feng has reopened ${response.displayId}`);
@@ -86,6 +88,7 @@ describe("Actionable Notifications", () => {
     it('[4200]: Check out of the box notification-Case Agent "Assignment" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
+        await apiHelper.changeCaseAssignment(response.id, 'United States Support', 'US Support 1', 'qtao');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilityGrid.searchAndOpenHyperlink('Case Agent Assignment');
@@ -96,10 +99,11 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('qtao');
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(response.displayId + ' has been assigned to you.');
             await utilityCommon.switchToNewTab(1);
@@ -109,6 +113,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -119,6 +124,7 @@ describe("Actionable Notifications", () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithoutAssignee']);
         await apiHelper.updateCaseStatus(response.id, 'Assigned');
+        await apiHelper.changeCaseAssignment(response.id, 'United States Support', 'US Support 1');
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
@@ -130,10 +136,11 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('qtao');
             await notificationPo.clickOnNotificationIcon();
             expect(await notificationPo.isAlertPresent(`Qianru Tao changed the status of ${response.displayId} to Assigned`)).toBeFalsy('Status Change notification is available');
             await notificationPo.clickActionableLink(response.displayId + ' has been assigned to your group.');
@@ -144,6 +151,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -165,6 +173,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -178,6 +187,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -187,8 +197,17 @@ describe("Actionable Notifications", () => {
     it('[4171]: Check out of the box notification-"Case Watchlist - Assignment Change" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
-        await apiHelper.addCaseToWatchlistAllEvents(response.id);
-        await apiHelper.changeCaseAssignment(response.id, 'Facilities Support', 'Facilities', 'Fritz');
+        await navigationPage.signOut();
+        await loginPage.login('qfeng');
+        await utilityGrid.searchRecord('Actionable Notification ');
+        await utilityGrid.clickCheckBoxOfValueInGrid(response.displayId);
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent('Case Assignment Changes');
+        await caseWatchlist.saveEvents();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+        await apiHelper.apiLogin('qfeng');
+        await apiHelper.changeCaseAssignment(response.id, 'United States Support', 'US Support 3', 'nisha');
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
@@ -200,12 +219,13 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink(response.displayId + ' has been assigned to you');
+            await notificationPo.clickActionableLink(`Watchlist Alert: ${response.displayId} assigned to Nisha Sharma by Qiao Feng.`);
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(response.displayId);
         }
@@ -213,6 +233,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -222,7 +243,15 @@ describe("Actionable Notifications", () => {
     it('[4168]: Check out of the box notification-"Case Watchlist - Status Change" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
-        await apiHelper.addCaseToWatchlistAllEvents(response.id);
+        await navigationPage.signOut();
+        await loginPage.login('qfeng');
+        await utilityGrid.searchRecord('Actionable Notification ');
+        await utilityGrid.clickCheckBoxOfValueInGrid(response.displayId);
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent('Case Status Changes');
+        await caseWatchlist.saveEvents();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
         await apiHelper.updateCaseStatus(response.id, 'InProgress');
 
         await navigationPage.gotoSettingsPage();
@@ -235,12 +264,13 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await notificationPo.clickOnNotificationIcon();
-            await notificationPo.clickActionableLink(response.displayId + ' has been assigned to you');
+            await notificationPo.clickActionableLink(`Watchlist Alert: ${response.displayId} Marked: In Progress by Qiao Feng.`);
             await utilityCommon.switchToNewTab(1);
             expect(await viewCasePage.getCaseID()).toBe(response.displayId);
         }
@@ -248,6 +278,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -256,10 +287,16 @@ describe("Actionable Notifications", () => {
     it('[4170]: Check out of the box notification-"Case Watchlist - Group Assignment Change " is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
-        let caseId = response.displayId;
-        await apiHelper.apiLogin('qfeng');
-        await apiHelper.addCaseToWatchlistAllEvents(response.id);
-        await apiHelper.apiLogin('qtao');
+        await navigationPage.signOut();
+        await loginPage.login('qfeng');
+        await utilityGrid.searchRecord('Actionable Notification ');
+        await utilityGrid.clickCheckBoxOfValueInGrid(response.displayId);
+        await caseConsole.clickOnAddToWatchlist();
+        await caseWatchlist.addWatchlistEvent('Case Group Assignment Changes');
+        await caseWatchlist.saveEvents();
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
+        await apiHelper.apiLogin('qkatawazi');
         await apiHelper.changeCaseAssignment(response.id, 'United States Support', 'US Support 2');
 
         await navigationPage.gotoSettingsPage();
@@ -272,6 +309,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -285,6 +323,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -296,8 +335,8 @@ describe("Actionable Notifications", () => {
             "taskName": "DRDMV-16976",
             "company": "Petramco",
             "businessUnit": "United States Support",
-            "supportGroup": "US Support 1",
-            "assignee": "qtao",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
         }
 
         await apiHelper.apiLogin('qfeng');
@@ -315,10 +354,12 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qkatawazi');
+            await utilityCommon.closePopUpMessage();
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`${response2.displayId} has been assigned to you.`);
             await utilityCommon.switchToNewTab(1);
@@ -328,6 +369,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -338,8 +380,8 @@ describe("Actionable Notifications", () => {
             "taskName": "4184",
             "company": "Petramco",
             "businessUnit": "United States Support",
-            "supportGroup": "US Support 1",
-            "assignee": "qtao",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
         }
 
         await apiHelper.apiLogin('qfeng');
@@ -358,10 +400,11 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qkatawazi');
             await notificationPo.clickOnNotificationIcon();
             await notificationPo.clickActionableLink(`Qiao Feng changed status of ${response2.displayId} to In Progress`);
             await utilityCommon.switchToNewTab(1);
@@ -371,6 +414,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -392,6 +436,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -405,6 +450,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -438,6 +484,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -451,6 +498,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -482,6 +530,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -495,6 +544,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -517,6 +567,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -530,6 +581,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -563,6 +615,7 @@ describe("Actionable Notifications", () => {
         await notificationTemplateEditPage.clickOnEmailTab();
         await notificationTemplateEditPage.openEmailBodyEditMessageText();
         expect(await notificationTemplateEditPage.isFieldClickable('Parent_DisplayID')).toBeTruthy('Parent_DisplayID is not clickable');
+        await utilityCommon.closeAllBlades();
 
         try {
             await navigationPage.signOut();
@@ -576,6 +629,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -640,7 +694,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.openAlertEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
             await notificationTemplateEditPage.cancelAlertMessageText();
-                    await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
@@ -658,7 +712,6 @@ describe("Actionable Notifications", () => {
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
             await notificationTemplateEditPage.cancelEmailBodyBlade();
 
-           // await utilCommon.closeBladeOnSettings();
             await utilityCommon.closeAllBlades();
             await utilityGrid.searchAndOpenHyperlink('Article Review Overdue');
             await notificationTemplateEditPage.openAlertEditMessageText();
@@ -669,6 +722,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Content ID')).toBeTruthy('Content ID is not clickable');
             await notificationTemplateEditPage.cancelEmailBodyBlade();
+            await utilityCommon.closeAllBlades();
         });
 
         it('[4191,4187,4189]: Check out of the box notification-"Article Reviewer assignment" is actionable for type Alert', async () => {
@@ -695,6 +749,7 @@ describe("Actionable Notifications", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
@@ -746,6 +801,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Email');
+            await utilityCommon.closeAllBlades();
             await browser.sleep(120000); //Wait to miss the SLM Goals
         });
 
@@ -759,6 +815,7 @@ describe("Actionable Notifications", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
@@ -822,6 +879,7 @@ describe("Actionable Notifications", () => {
             await notificationTemplateEditPage.clickOnEmailTab();
             await notificationTemplateEditPage.openEmailBodyEditMessageText();
             expect(await notificationTemplateEditPage.isFieldClickable('Display ID')).toBeTruthy('Display ID is not clickable on Email');
+            await utilityCommon.closeAllBlades();
             await browser.sleep(90000); //Wait to miss the SLM Goals
         });
 
@@ -836,6 +894,7 @@ describe("Actionable Notifications", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
@@ -883,7 +942,7 @@ describe("Actionable Notifications", () => {
             await createNotificationTemplatePage.setTemplateName('Actionable Notification');
             await createNotificationTemplatePage.selectModuleName('Cases');
             await createNotificationTemplatePage.setDescription('Actionable Notification Template'),
-            await createNotificationTemplatePage.selectEvent('Actionable Notification Event');
+                await createNotificationTemplatePage.selectEvent('Actionable Notification Event');
             await editNotificationTemplatePage.clickRecipientsCheckbox('Assignee', 'TO');
             await createNotificationTemplatePage.setAlertMessage('Actionable Alert check for Case ID: ');
             await createNotificationTemplatePage.clickOnInsertFieldOfAlert();

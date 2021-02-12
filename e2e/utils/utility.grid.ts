@@ -33,7 +33,7 @@ export class GridOperations {
         savePresetInput: '.advanced-filter-name-editor__input',
         saveOrCancelPresetFilterButton: 'button.custom-action-btn__right',
         lineOfBusinessDropDown: 'button[btn-type="tertiary"]',
-        deleteButton: '.d-icon-left-trash'
+        deleteButton: 'button span'
     }
 
     async selectAllCheckBox() {
@@ -708,7 +708,13 @@ export class GridOperations {
         let deleteButtonLocator: string = this.selectors.deleteButton;
         if (guid) deleteButtonLocator = `[rx-view-component-id="${guid}"] ${this.selectors.deleteButton}`;
         await this.searchAndSelectGridRecord(gridRecord,guid);
-        await $(deleteButtonLocator).click();
+        await element(by.cssContainingText(deleteButtonLocator, 'Delete')).click();
+    }
+
+    async isDeleteButtonEnabled(guid?: string): Promise<boolean> {
+        let deleteButtonLocator: string = this.selectors.deleteButton;
+        if (guid) deleteButtonLocator = `[rx-view-component-id="${guid}"] ${this.selectors.deleteButton}`;
+        return await $(deleteButtonLocator).isEnabled();
     }
 }
 export default new GridOperations();

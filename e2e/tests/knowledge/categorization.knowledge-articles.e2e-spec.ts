@@ -1,5 +1,4 @@
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
@@ -19,6 +18,7 @@ import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-ar
 import createDocumentLibraryPage from '../../pageobject/settings/document-management/create-document-library.po';
 import documentLibraryConsolePage from '../../pageobject/settings/document-management/document-library-console.po';
 import editDocumentLibraryPage from '../../pageobject/settings/document-management/edit-document-library.po';
+import viewDocumentLibraryPo from '../../pageobject/settings/document-management/view-document-library.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
@@ -773,6 +773,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createDocumentLibraryPage.selectCategoryTier3(categoryTier3FieldVal);
             await createDocumentLibraryPage.saveNewDocument();
             await documentLibraryConsolePage.searchAndOpenDocumentLibrary(title);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPage.clickOnSaveButton();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
@@ -836,7 +837,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await resources.clickOnAdvancedSearchFiltersButton(applyBtn);
             await resources.clickOnAdvancedSearchSettingsIconToClose();
             await expect(await resources.getAdvancedSearchResultForParticularSection(title)).toEqual(title);
-            await utilityCommon.closeAllBlades();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();

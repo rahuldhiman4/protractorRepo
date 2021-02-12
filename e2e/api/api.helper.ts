@@ -2351,7 +2351,7 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.case-lib:Case";
                     approvalFlow = cloneDeep(CASE_APPROVAL_FLOW);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U[:]' + data.approver;
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
                     break;
                 }

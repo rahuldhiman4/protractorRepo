@@ -12,10 +12,10 @@ class ViewTask {
         updateStatusDropDown: '[rx-view-component-id="8b4cef48-0a4c-4ec1-bc4c-cce47179c964"] button',
         taskTypeValue: '[rx-view-component-id="057f2521-313b-40c9-be56-829827512abf"] .read-only-content',
         editButton: '[rx-view-component-id="14e8cc41-ae6a-41e1-8932-850fbeec57d0"] .justify-content-end button[btn-type="tertiary"]',
-        categoryTier1Value: '[rx-view-component-id="d65d1a03-7f77-494c-97d7-bd12e5a8c60e"] .read-only-content',
-        categoryTier2Value: '[rx-view-component-id="49d231d9-ee81-4d7c-90af-d7ca785a32d4"] .read-only-content',
-        categoryTier3Value: '[rx-view-component-id="c8858fb5-5b21-4e0d-a947-c0130a72b51a"] .read-only-content',
-        categoryTier4Value: '[rx-view-component-id="ff1636f8-4efe-4447-9c04-f32799904f2b"] .read-only-content',
+        categoryTier1Value: '[rx-view-component-id="4591e595-2d43-4218-9245-9d4de0adbc48"] .read-only-content',
+        categoryTier2Value: '[rx-view-component-id="caeb4c73-8107-4a5c-a966-7628469e48fc"] .read-only-content',
+        categoryTier3Value: '[rx-view-component-id="291c9c82-e9b3-4b3c-bb1f-4e23d11ff39e"] .read-only-content',
+        categoryTier4Value: '[rx-view-component-id="9130bb4f-acd8-4a36-bf99-7fd38469b3fc"] .read-only-content',
         labelValue: '[rx-view-component-id="75acc4ad-2ffe-4cbc-8fa2-efc227b7d7c9"] .read-only-content',
         descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .collapse-block div [style="position: relative;"]',
         processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] .read-only-content',
@@ -32,9 +32,9 @@ class ViewTask {
         requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-name .person-link',
         requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-phone-link',
         requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .bwf-person-email button',
-        assigneeName: '[rx-view-component-id="1801d8c6-4997-4253-b716-809b39909598"] .person-main p',
+        assigneeName: '[rx-view-component-id="691c7524-167e-434b-acac-c11571c53409"] .person-main a',
         assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] label',
-        assignCompany: '[rx-view-component-id="5cb6b3e9-1f3b-412f-a757-fb9c2a462e32"] label',
+        assignCompany: '[rx-view-component-id="691c7524-167e-434b-acac-c11571c53409"] .read-only-content',
         taskStatusGuid: 'aea81ee2-85d9-4bb6-adb4-08c29028d45d',
         attachmentName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
         showMoreLessAttachmentLink: 'bwf-attachment-viewer button.ng-star-inserted span',
@@ -208,7 +208,14 @@ class ViewTask {
     }
 
     async isAssignCompanyDisplayed(): Promise<boolean> {
-        return await $(this.selectors.assignCompany).isDisplayed();
+        return await $(this.selectors.assignCompany).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.assignCompany).isDisplayed();
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
     }
 
     async isAssignGroupTextDisplayed(): Promise<boolean> {

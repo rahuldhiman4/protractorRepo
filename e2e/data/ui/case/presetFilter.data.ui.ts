@@ -7,8 +7,7 @@ export const ASSIGNED_NONVIP_DRDMV_20843_1 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "mcarney",
-    "Status": "2000",
-    "Line of Business": "Facilities"
+    "Status": "2000"
 };
 
 export const PENDING_NONVIP_DRDMV_20843_2 = {
@@ -19,8 +18,7 @@ export const PENDING_NONVIP_DRDMV_20843_2 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "mcarney",
-    "Status": "4000",
-    "Line of Business": "Facilities"
+    "Status": "4000"
 };
 
 export const INPROGRESS_NONVIP_DRDMV_20843_3 = {
@@ -31,8 +29,7 @@ export const INPROGRESS_NONVIP_DRDMV_20843_3 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "mcarney",
-    "Status": "3000",
-    "Line of Business": "Facilities"
+    "Status": "3000"
 };
 
 export const ASSIGNED_VIP_DRDMV_20843_4 = {
@@ -43,8 +40,7 @@ export const ASSIGNED_VIP_DRDMV_20843_4 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "mcarney",
-    "Status": "2000",
-    "Line of Business": "Facilities"
+    "Status": "2000"
 };
 
 export const ASSIGNED_NONVIP_DRDMV_20843_5 = {
@@ -54,8 +50,7 @@ export const ASSIGNED_NONVIP_DRDMV_20843_5 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Status": "2000",
-    "Line of Business": "Facilities"
+    "Status": "2000"
 };
 
 export const PENDING_NONVIP_DRDMV_20843_6 = {
@@ -66,8 +61,7 @@ export const PENDING_NONVIP_DRDMV_20843_6 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "jmilano",
-    "Status": "4000",
-    "Line of Business": "Facilities"
+    "Status": "4000"
 };
 
 export const BEFORERESOLVED_NONVIP_DRDMV_20843_7 = {
@@ -78,8 +72,7 @@ export const BEFORERESOLVED_NONVIP_DRDMV_20843_7 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "mcarney",
-    "Status": "3500",
-    "Line of Business": "Facilities"
+    "Status": "3500"
 };
 
 export const AFTERRESOLVED_NONVIP_DRDMV_20843_8 = {
@@ -90,8 +83,7 @@ export const AFTERRESOLVED_NONVIP_DRDMV_20843_8 = {
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Assignee": "mcarney",
-    "Status": "5500",
-    "Line of Business": "Facilities"
+    "Status": "5500"
 };
 
 
@@ -103,8 +95,7 @@ export const NEW_VIP_DRDMV_20850_1 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Status": "1000",
-    "Line of Business": "Finance"
+    "Status": "1000"
 };
 export const NEW_VIP = {
     "Description": "3683-1-Desc",
@@ -123,9 +114,8 @@ export const ASSIGNED_VIP_DRDMV_20850_2 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
-    "Status": "2000",
-    "Line of Business": "Finance"
+    "Assignee": "jmilano",
+    "Status": "2000"
 };
 
 export const INPROGRESS_VIP_DRDMV_20850_3 = {
@@ -135,9 +125,8 @@ export const INPROGRESS_VIP_DRDMV_20850_3 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
-    "Status": "3000",
-    "Line of Business": "Finance"
+    "Assignee": "mcarney",
+    "Status": "3000"
 };
 
 export const PENDING_VIP_DRDMV_20850_4 = {
@@ -147,9 +136,8 @@ export const PENDING_VIP_DRDMV_20850_4 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
-    "Status": "4000",
-    "Line of Business": "Finance"
+    "Assignee": "jmilano",
+    "Status": "4000"
 };
 
 export const BEFORERESOLVED_VIP_DRDMV_20850_5 = {
@@ -159,9 +147,8 @@ export const BEFORERESOLVED_VIP_DRDMV_20850_5 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
-    "Status": "3500",
-    "Line of Business": "Finance"
+    "Assignee": "jmilano",
+    "Status": "3500"
 };
 
 export const AFTERRESOLVED_NONVIP_DRDMV_20850_6 = {
@@ -171,203 +158,187 @@ export const AFTERRESOLVED_NONVIP_DRDMV_20850_6 = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
-    "Status": "5500",
-    "Line of Business": "Finance"
+    "Assignee": "mcarney",
+    "Status": "5500"
 };
 
 //Test Data for 3680
 export const NEW_NONVIP_DRDMV_20874_1 = {
     "Description": "3680-1-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3680-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Status": "1000",
-    "Line of Business": "Finance"
+    "Status": "1000"
 };
 
 //Test Data for 3679
 export const ASSIGNED_LOWPRIORITY_DRDMV_20875_1 = {
     "Description": "3679-1-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "2000",
-    "Priority": "4000",
-    "Line of Business": "Finance"
+    "Priority": "4000"
 };
 
 export const ASSIGNED_MEDIIUMPRIORITY_DRDMV_20875_2 = {
     "Description": "3679-2-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "2000",
-    "Priority": "3000",
-    "Line of Business": "Finance"
+    "Priority": "3000"
 };
 
 export const ASSIGNED_CRITICALPRIORITY_DRDMV_20875_3 = {
     "Description": "3679-3-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "2000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const ASSIGNED_HIGHPRIORITY_DRDMV_20875_4 = {
     "Description": "3679-1-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "2000",
-    "Priority": "2000",
-    "Line of Business": "Finance"
+    "Priority": "2000"
 };
 
 export const NEW_HIGHPRIORITY_DRDMV_20875_5 = {
     "Description": "3679-5-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Status": "1000",
-    "Priority": "2000",
-    "Line of Business": "Finance"
+    "Priority": "2000"
 };
 
 export const INPROGRESS_HIGHPRIORITY_DRDMV_20875_6 = {
     "Description": "3679-6-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "3000",
-    "Priority": "2000",
-    "Line of Business": "Finance"
+    "Priority": "2000"
 };
 
 export const PENDING_HIGHPRIORITY_DRDMV_20875_7 = {
     "Description": "3679-7-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "4000",
-    "Priority": "2000",
-    "Line of Business": "Finance"
+    "Priority": "2000"
 };
 
 export const BEFORERESOLVED_HIGHPRIORITY_DRDMV_20875_8 = {
     "Description": "3679-8-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "3500",
-    "Priority": "2000",
-    "Line of Business": "Finance"
+    "Priority": "2000"
 };
 
 export const AFTERRESOLVED_HIGHPRIORITY_DRDMV_20875_9 = {
     "Description": "3679-8-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "5500",
-    "Priority": "2000",
-    "Line of Business": "Finance"
+    "Priority": "2000"
 };
 
 //Test Data for 3677
 export const ASSIGNED_LOWPRIORITY_DRDMV_20878_1 = {
     "Description": "3677-1-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3677-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "2000",
-    "Priority": "4000",
-    "Line of Business": "Finance"
+    "Priority": "4000"
 };
 
 export const ASSIGNED_MEDIIUMPRIORITY_DRDMV_20878_2 = {
     "Description": "3677-2-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3677-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "2000",
-    "Priority": "3000",
-    "Line of Business": "Finance"
+    "Priority": "3000"
 };
 
 export const ASSIGNED_CRITICALPRIORITY_DRDMV_20878_3 = {
     "Description": "3677-3-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3677-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "2000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const ASSIGNED_HIGHPRIORITY_DRDMV_20878_4 = {
     "Description": "3677-4-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3677-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "2000",
-    "Priority": "2000",
-    "Line of Business": "Finance"
+    "Priority": "2000"
 };
 
 export const NEW_CRITICALPRIORITY_DRDMV_20878_5 = {
     "Description": "3679-5-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
     "Status": "1000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 export const NEW_PRESET_CRITICALPRIORITY = {
     "Description": "3679-5-Desc",
@@ -382,90 +353,83 @@ export const NEW_PRESET_CRITICALPRIORITY = {
 
 export const INPROGRESS_CRITICALPRIORITY_DRDMV_20878_6 = {
     "Description": "3677-6-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3677-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "3000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const PENDING_CRITICALPRIORITY_DRDMV_20878_7 = {
     "Description": "3677-7-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3677-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "4000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const BEFORERESOLVED_CRITICALPRIORITY_DRDMV_20878_8 = {
     "Description": "3677-8-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3677-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "3500",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const AFTERRESOLVED_CRITCIALPRIORITY_DRDMV_20878_9 = {
     "Description": "3677-8-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3679-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "5500",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 //Test Data for 3676
 export const RESOLVED_ASSIGNEDTOLOGGEDINUSER_DRDMV_20879_1 = {
     "Description": "3676-1-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3676-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
-    "Status": "5000",
-    "Line of Business": "Finance"
+    "Assignee": "mcarney",
+    "Status": "5000"
 };
 
 export const ASSIGNED_ASSIGNEDTOGROUP_DRDMV_20879_2 = {
     "Description": "3676-2-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3676-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Status": "2000",
-    "Line of Business": "Finance"
+    "Status": "2000"
 };
 
 export const RESOLVED_ASSIGNEDTOANOTHERUSER_DRDMV_20879_3 = {
     "Description": "3676-3-Desc",
-    "Requester": "idphylum3",
+    "Requester": "jmilano",
     "Summary": "3676-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
-    "Status": "5000",
-    "Line of Business": "Finance"
+    "Assignee": "jmilano",
+    "Status": "5000"
 };
 
 //Test Data for 3674
@@ -590,8 +554,7 @@ export const ASSIGNED_CRITICAL = {
     "Support Group": "Phylum Support Group1",
     "Assignee": "idphylumHR3",
     "Status": "2000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 export const PRESET_CRITICAL = {
     "Description": "3679-6-Desc",
@@ -612,10 +575,9 @@ export const ASSIGNED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
+    "Assignee": "mcarney",
     "Status": "2000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const NEW_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
@@ -625,8 +587,7 @@ export const NEW_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const INPROGRESS_CRITICAL = {
@@ -636,10 +597,9 @@ export const INPROGRESS_CRITICAL = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "3000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const INPROGRESS_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
@@ -649,10 +609,9 @@ export const INPROGRESS_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
+    "Assignee": "mcarney",
     "Status": "3000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const PENDING_CRITICAL = {
@@ -662,10 +621,9 @@ export const PENDING_CRITICAL = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "4000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const PENDING_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
@@ -675,10 +633,9 @@ export const PENDING_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
+    "Assignee": "mcarney",
     "Status": "4000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const RESOLVED_CRITICAL = {
@@ -688,10 +645,9 @@ export const RESOLVED_CRITICAL = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "5000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const RESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
@@ -701,10 +657,9 @@ export const RESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
+    "Assignee": "mcarney",
     "Status": "5000",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const BEFORERESOLVED_CRITICAL = {
@@ -714,10 +669,9 @@ export const BEFORERESOLVED_CRITICAL = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "3500",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const BEFORERESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
@@ -727,10 +681,9 @@ export const BEFORERESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
+    "Assignee": "mcarney",
     "Status": "3500",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const AFTERRESOLVED_CRITICAL = {
@@ -740,10 +693,9 @@ export const AFTERRESOLVED_CRITICAL = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum3",
+    "Assignee": "jmilano",
     "Status": "5500",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const AFTERRESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
@@ -753,10 +705,9 @@ export const AFTERRESOLVED_CRITICAL_ASSIGNEDTOLOGGEDINUSER = {
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
     "Support Group": "Phylum Support Group1",
-    "Assignee": "idphylum1",
+    "Assignee": "mcarney",
     "Status": "5500",
-    "Priority": "1000",
-    "Line of Business": "Finance"
+    "Priority": "1000"
 };
 
 export const TASK_DATA_ASSIGNEDTOLOGGEDINUSER = {

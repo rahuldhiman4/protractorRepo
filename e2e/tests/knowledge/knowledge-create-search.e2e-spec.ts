@@ -278,41 +278,46 @@ describe('Knowledge Create Search', () => {
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
-    it('[5949]:Create KA - with only required and with all fields populating', async () => {
-        await navigationPage.signOut();
-        await loginPage.login(knowledgeCoachUser);
-        await navigationPage.switchToApplication(knowledgeManagementApp);
-        await navigationPage.gotoCreateKnowledge();
-        await createKnowledgePage.clickOnTemplate('Reference');
-        await createKnowledgePage.clickOnUseSelectedTemplateButton();
-        await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
-        await createKnowledgePage.selectKnowledgeSet('HR');
-        await createKnowledgePage.clickOnSaveKnowledgeButton();
-        await utilityCommon.closePopUpMessage();
-        await previewKnowledgePo.clickGoToArticleButton();
-        expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe('Knowledge' + randomStr);
-        expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
-        await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await editKnowledgePage.selectRegionDropDownOption('EMEA');
-        await editKnowledgePage.setCategoryTier1('Employee Relations');
-        await editKnowledgePage.setCategoryTier2('Compensation');
-        await editKnowledgePage.setCategoryTier3('Bonus');
-        await editKnowledgePage.selectSiteGroupDropDownOption('Human Resources');
-        await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
-        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
-        await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
-        await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-        await editKnowledgePage.saveKnowledgeMedataDataChanges();
-        await utilityCommon.closePopUpMessage();
-        expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
-        expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
-        expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Bonus');
-        expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
-        expect(await viewKnowledgeArticlePo.getSiteGroupValue()).toBe('Human Resources');
-        expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
-        expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+    describe('[5949]:Create KA - with only required and with all fields populating', async () => {
+        it('[5949]:Create KA - with only required and with all fields populating', async () => {
+            await navigationPage.signOut();
+            await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await navigationPage.gotoCreateKnowledge();
+            await createKnowledgePage.clickOnTemplate('Reference');
+            await createKnowledgePage.clickOnUseSelectedTemplateButton();
+            await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
+            await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await utilityCommon.closePopUpMessage();
+            await previewKnowledgePo.clickGoToArticleButton();
+            expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe('Knowledge' + randomStr);
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
+            await editKnowledgePage.selectRegionDropDownOption('EMEA');
+            await editKnowledgePage.setCategoryTier1('Employee Relations');
+            await editKnowledgePage.setCategoryTier2('Compensation');
+            await editKnowledgePage.setCategoryTier3('Bonus');
+            await editKnowledgePage.selectSiteGroupDropDownOption('Human Resources');
+            await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
+            await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
+            expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Bonus');
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
+            expect(await viewKnowledgeArticlePo.getSiteGroupValue()).toBe('Human Resources');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
+            expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
+        afterAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
     });
 
     it('[6341]:ArticleCreation_User assign knowledge article to a specific support group', async () => {
@@ -822,7 +827,7 @@ describe('Knowledge Create Search', () => {
             await utilityCommon.closeAllBlades();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');    
+            await loginPage.login('qkatawazi');
         });
     });
 
