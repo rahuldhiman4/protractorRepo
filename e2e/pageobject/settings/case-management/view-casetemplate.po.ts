@@ -217,6 +217,7 @@ class ViewCaseTemplate {
 
     async clickTaskFlowBtn(): Promise<void> {
         await $(this.selectors.taskFlowButton).click();
+        await browser.wait(this.EC.visibilityOf(await $('rx-runtime-view-modal')), 10000);
     }
 
     async clickBackArrowBtn(): Promise<void> {

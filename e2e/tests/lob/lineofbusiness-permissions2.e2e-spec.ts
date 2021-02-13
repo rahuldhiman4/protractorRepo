@@ -144,7 +144,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.setNewTrustedEmail("*@*");
             await editEmailConfigPo.selectMappedRequesterDropDown("Al Allbrook");
             await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('WARNING (222342): *@* enables case creation for emails sent from any email ID.')).toBeTruthy("Popup message doesn't match");
+            expect(await utilityCommon.isPopUpMessagePresent('*@* enables case creation for emails sent from any email ID.')).toBeTruthy("Popup message doesn't match");
 
             await editEmailConfigPo.clickAddTrustedEmailBtn();
             await editEmailConfigPo.setNewTrustedEmail("testingCheck@gmail.com");
