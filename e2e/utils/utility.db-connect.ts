@@ -6,8 +6,8 @@ export class DBConnect {
 
     async dbConnect(username?: string, password?: string): Promise<any> {
         let connectionString = undefined;
-        username && password ? connectionString = `postgres://${username}:${password}@` + await this.getServerName() + ":5432/petramco":
-        connectionString= "postgres://postgres:bmcAdm1n@" + await this.getServerName() + ":5432/petramco";
+        username && password ? connectionString = `postgres://${username}:${password}@` + await this.getServerName() + ":5432/ARSystem":
+        connectionString= "postgres://postgres:postgres@" + await this.getServerName() + ":5432/ARSystem";
         let pgClient = await new Client(connectionString);
         await pgClient.connect();
         return pgClient;

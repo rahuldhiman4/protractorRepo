@@ -145,7 +145,7 @@ class StatusConfigPage {
         let companyGuid: string = undefined;
         switch (page) {
             case "task": {
-                companyGuid = '6f415311-8708-4f63-9d1a-b373bad77377';
+                companyGuid = '5acc7fed-e1de-4130-8b95-cf2ad2097947';
                 break;
             }
             case "case": {
@@ -153,7 +153,7 @@ class StatusConfigPage {
                 break;
             }
             case "knowledge": {
-                companyGuid = '9244f298-b811-47f1-98f4-455761459dc9';
+                companyGuid = '9dfb4eea-5edf-4a18-920f-84d7990ca11b';
                 break;
             }
             default: {
