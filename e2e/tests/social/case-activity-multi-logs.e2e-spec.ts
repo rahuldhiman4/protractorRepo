@@ -1,26 +1,23 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import caseConsolePo from '../../pageobject/case/case-console.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import accessTabPo from '../../pageobject/common/access-tab.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
+import composeMailPo from '../../pageobject/email/compose-mail.po';
+import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
+import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
-import approvalConsolePage from "../../pageobject/approval/approvals-console.po";
-import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
-import utilityGrid from '../../utils/utility.grid';
-import editCasePo from '../../pageobject/case/edit-case.po';
-import composeMailPo from '../../pageobject/email/compose-mail.po';
-import accessTabPo from '../../pageobject/common/access-tab.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 
 describe('Case Activity Multi Logs', () => {
 
@@ -166,7 +163,7 @@ describe('Case Activity Multi Logs', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
-            
+
             // Create Manual / External Task Template
             let taskTemplateData = {
                 "templateName": "DRDMV16755TemplateName" + randomStr,
@@ -185,11 +182,11 @@ describe('Case Activity Multi Logs', () => {
             taskTemplateData.templateName = 'DRDMV16756ExternalTaskTemplateName' + randomStr;
             externalTemplateSummary = taskTemplateData.templateSummary = 'DRDMV16756ExternalTaskTemplateSummary' + randomStr;
             await apiHelper.createExternalTaskTemplate(taskTemplateData);
-            
+
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "DRDMV16755TC"+randomStr,
+                "Summary": "DRDMV16755TC" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
@@ -457,6 +454,9 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg: Text is missing in activity log');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 

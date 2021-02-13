@@ -1,20 +1,20 @@
+import { browser } from 'protractor';
 import apiHelper from "../../api/api.helper";
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import { default as activityTabPage } from '../../pageobject/social/activity-tab.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
-import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
-import { browser } from 'protractor';
 
 describe('Case Activity CKE Styling', () => {
 
@@ -90,7 +90,7 @@ describe('Case Activity CKE Styling', () => {
                 "Assignee": "qdu"
             }
             newCase = await apiHelper.createCase(caseData);
-            
+
 
             // Create knowledge Article task template
             let articleData = {
@@ -159,7 +159,7 @@ describe('Case Activity CKE Styling', () => {
             //set color
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
             await ckeditorOpsPo.setNumberList(['PlusOne']);
@@ -236,7 +236,7 @@ describe('Case Activity CKE Styling', () => {
             //set color
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
             await ckeditorOpsPo.setNumberList(['PlusOne']);
@@ -312,7 +312,7 @@ describe('Case Activity CKE Styling', () => {
             //set color
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
             await ckeditorOpsPo.setNumberList(['PlusOne']);
@@ -388,7 +388,7 @@ describe('Case Activity CKE Styling', () => {
             //set color
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
             await ckeditorOpsPo.setNumberList(['PlusOne']);
@@ -472,7 +472,7 @@ describe('Case Activity CKE Styling', () => {
             //set color
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
             await ckeditorOpsPo.setNumberList(['PlusOne']);
@@ -550,7 +550,7 @@ describe('Case Activity CKE Styling', () => {
             //set color
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
             await ckeditorOpsPo.setNumberList(['PlusOne']);
@@ -627,7 +627,7 @@ describe('Case Activity CKE Styling', () => {
             //set color
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPage.clearActivityNote();
             //checking number list
             await ckeditorOpsPo.setNumberList(['PlusOne']);
@@ -654,11 +654,6 @@ describe('Case Activity CKE Styling', () => {
             await activityTabPage.clickOnCancelButton();
             await activityTabPage.clickActivityNoteTextBox();
             expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toBe('');
-        });
-
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 });
