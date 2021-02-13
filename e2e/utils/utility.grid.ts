@@ -163,7 +163,7 @@ export class GridOperations {
             if (result) {
                 await $(filterPresetBtn).click();
                 await $$(clearBtn).first().click();
-                await $(filterPresetBtn).click(); //Need to update once defect DRDMV-24648 is resolved
+                await $(refreshIcon).click();
                 let hiddentFilter2 = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
                 if (hiddentFilter2 == true) {
                     await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();
