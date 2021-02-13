@@ -2360,7 +2360,7 @@ class ApiHelper {
                     approvalFlowRecordDefinition = "com.bmc.dsm.knowledge:Knowledge Article Template";
                     approvalFlow = cloneDeep(KNOWLEDGE_APPROVAL_FLOW_CONFIG);
                     approvalFlow.approvalFlowConfigurationList[0].flowName = data.flowName;
-                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U:' + data.approver;
+                    approvalFlow.approvalFlowConfigurationList[0].approvers = 'U[:]' + data.approver;
                     approvalFlow.approvalFlowConfigurationList[0].qualification = data.qualification;
                     break;
                 }
@@ -2887,6 +2887,7 @@ class ApiHelper {
                 knowledgeApprovalConfig.fieldInstances[1000000001].value = approvalData.company;
                 knowledgeApprovalConfig.fieldInstances[1000001437].value = approvalData.mappingName;
                 knowledgeApprovalConfig.fieldInstances[302300500].value = constants.Knowledge[approvalData.publishApproval];
+                knowledgeApprovalConfig.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeApprovalConfig.fieldInstances[450000420].value;
                 if (approvalData.requestCancelation) {
                     knowledgeApprovalConfig.fieldInstances[302300500].value = knowledgeApprovalConfig.fieldInstances[302300500].value + ';' + constants.Knowledge[approvalData.requestCancelation];
                 }
