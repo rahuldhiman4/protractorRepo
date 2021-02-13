@@ -161,7 +161,7 @@ describe('Menu Item', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes')
+            await utilityCommon.closeAllBlades();
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -172,8 +172,10 @@ describe('Menu Item', () => {
     describe('[4305,4304]: Verify Multiple records with same name', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = 'label' + randomStr;
+        let labelActive1 = 'labelActive1' + randomStr;
         let sourcesActive = 'Email';
         let resolutionCode = 'resolutionCode' + randomStr;
+        let resolutionCodeActiveOnUIData = 'resolutionCodeActiveOnUIData' + randomStr;
         it('[4305,4304]: [Menu Items] - Create Menu Item', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
@@ -210,9 +212,8 @@ describe('Menu Item', () => {
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(label);
+            await localizeValuePopPo.setLocalizeValue(labelActive1);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilityCommon.closePopUpMessage();
             let statusDropDown2: string[] = ["Deprecated", "Inactive", "Active"];
             expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown2)).toBeTruthy('wrong column headers');
             await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);
@@ -225,9 +226,8 @@ describe('Menu Item', () => {
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
             await localizeValuePopPo.clearValueTextBox();
-            await localizeValuePopPo.setLocalizeValue(resolutionCode);
+            await localizeValuePopPo.setLocalizeValue(resolutionCodeActiveOnUIData);
             await localizeValuePopPo.clickOnSaveButton();
-            await utilityCommon.closePopUpMessage();
             let statusDropDown3: string[] = ["Deprecated", "Inactive", "Active"];
             expect(await editMenuItemsConfigPo.isStatusDropDownValuesMatch(statusDropDown3)).toBeTruthy('wrong column headers');
             await editMenuItemsConfigPo.selectAvailableOnUIToggleButton(true);

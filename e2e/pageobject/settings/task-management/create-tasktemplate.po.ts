@@ -25,18 +25,16 @@ class CreateTaskTemplatePage {
         ownerGroup: 'e5794ca0-c022-475f-95e3-132221b19e3b',
         saveButton: '[rx-view-component-id="5001f6ea-4438-4485-bdd2-c952a12a1a34"] button',
         cancelButton: '[rx-view-component-id="3f760e5f-70e9-4fbf-8b05-cd7d460f8818"] button',
-        processBundleIdDrpDownForExistingProcessGuid: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
+        processBundleIdDrpDownForExistingProcessGuid: '71e09acc-0077-4e55-9c24-7f6bdc90ce5d',
         toggleBox: '0ef8534e-a8bf-40c3-bdc1-a91edde177c4',
         toggleBoxRequiredText: '[rx-view-component-id="0ef8534e-a8bf-40c3-bdc1-a91edde177c4"] label',
         newProcessName: '[rx-view-component-id="eefdf45b-47af-48cb-8c8b-a82c73f7d5a4"] input',
         searchProcess: '.d-icon-search',
-        setInputdataInProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] input',
-        selectNameInProcess: '.rx-definition-picker__instance-name mark',
+        setInputdataInProcess: '[rx-view-component-id="71e09acc-0077-4e55-9c24-7f6bdc90ce5d"] button',
         addTaskTemplateTitle: '[rx-view-component-id="e564f60e-d84f-41fc-b130-998cdc60eca4"] span',
         templateMetadataTitle: '[rx-view-component-id="24bd49d8-5ca3-451a-86a1-eb26b687e801"] span',
-        processBundleIdRequiredTxt: '5f30b3d4-caa2-4c28-8af6-cebf094bc2e8',
         newprocessGuid: 'eefdf45b-47af-48cb-8c8b-a82c73f7d5a4',
-        lobValue: '[rx-view-component-id="0edb7a40-d165-475b-88e9-fa0d5ec5feb0"] .pull-left'
+        lobValue: '[rx-view-component-id="3296cf04-1abb-4c81-8fef-35a83e5a14f9"] input'
     }
 
     async setTemplateName(inputValue: string): Promise<void> {
@@ -128,7 +126,8 @@ class CreateTaskTemplatePage {
 
     async setExistingProcessName(processName: string): Promise<void> {
         await utilityCommon.selectToggleButton(this.selectors.toggleBox, false);
-        await utilityCommon.selectDropDown(this.selectors.processBundleIdDrpDownForExistingProcessGuid,processName);
+        await $(this.selectors.setInputdataInProcess).click();
+        await utilityCommon.searchAndSelectProcessInSelectProcessPopup(processName);
     }
 
     async setcreateNewProcess(processName: boolean): Promise<void> {
@@ -162,12 +161,19 @@ class CreateTaskTemplatePage {
         return await utilityCommon.isRequiredTagToField(this.selectors.toggleBox);
     }
 
-    async isProcessBundleIdRequiredText(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.processBundleIdRequiredTxt);
-    }
-
     async isNewProcessNameRequiredText(): Promise<boolean> {
         return await utilityCommon.isRequiredTagToField(this.selectors.newprocessGuid);
+    }
+
+    async isNewProcessNamePresent(): Promise<boolean> {
+        return await $(this.selectors.newProcessName).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.newProcessName).isDisplayed();
+            } else {
+                console.log("dynamic data not present");
+                return false;
+            }
+        });
     }
 
     async isTaskDescriptionTitlePresent(value: string): Promise<boolean> {

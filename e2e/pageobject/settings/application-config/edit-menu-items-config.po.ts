@@ -13,7 +13,7 @@ class MenuItemsConfigEditPage {
         localizeLink: '[rx-view-component-id="7db36dc7-3a4a-4be7-877a-cb44d4c39ecd"] .d-icon-left-pencil',
         statusDropDownGuid: '42deb4bb-67da-4350-b92a-60b620d9d271',
         toggleButtonGuid: 'd2fb228a-e6ca-4906-8b60-80537b45d75f',
-        sourceDisableMessage: '[rx-view-component-id="ecfcd0c5-121a-47c0-ba8f-4e97c8c40483"] span',
+        sourceDisableMessage: '[rx-view-component-id="ecfcd0c5-121a-47c0-ba8f-4e97c8c40483"] p',
         lobValue: '[rx-view-component-id="7878abb1-a138-4721-9717-14641148a87d"] .pull-left'
     }
 
