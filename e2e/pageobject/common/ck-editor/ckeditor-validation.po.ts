@@ -42,14 +42,24 @@ class CKEValidation {
     async getTableCellAlignText(alignValue: string, guid?: string): Promise<string> {
         let locator = `table td[style="${alignValue}"]`;
         if (guid) locator = `[rx-view-component-id="${guid}"] table td[style="${alignValue}"]`;
-        return await $(locator).getText();
+        let elementCount = await $$(locator).count();
+        let elementText = "";
+        for (let i: number = 0; i < elementCount; i++) {
+            elementText += await $$(locator).get(i).getText();
+        }
+        return elementText;
     }
 
     async isFormatedTextDisplayed(value: string, tagName: string, guid?: string): Promise<boolean> {
         let descriptionView = `${this.selectors.descriptionView} ${tagName}`;
         if (guid) descriptionView = `[rx-view-component-id="${guid}"] ${this.selectors.descriptionView} ${tagName}`;
-        let text = await $(descriptionView).getText();
-        return text.includes(value);
+
+        let elementCount = await $$(descriptionView).count();
+        let elementText = "";
+        for (let i: number = 0; i < elementCount; i++) {
+            elementText += await $$(descriptionView).get(i).getText();
+        }
+        return elementText.includes(value);
     }
 
     async clickLinkInCKE(linkValue: string, guid?: string): Promise<void> {
@@ -77,13 +87,17 @@ class CKEValidation {
     async isImageDisplayed(value: string, guid?: string): Promise<boolean> {
         let imageView = `${this.selectors.descriptionView} img[src="${value}"]`;
         if (guid) imageView = `[rx-view-component-id="${guid}"] ${this.selectors.descriptionView} img[src="${value}"]`;
-        return await $(imageView).isDisplayed();
+        let elementCount = await $$(imageView).count();
+        for (let i: number = 0; i < elementCount; i++) {
+            if (await $$(imageView).get(i).isDisplayed()) return true;
+        }
+        return false;
     }
 
     async isColorTextDisplayed(value: string, guid?: string): Promise<boolean> {
         let isColorText = `${this.selectors.descriptionView} span[style="${value}"]`;
         if (guid) isColorText = `[rx-view-component-id="${guid}"] ${this.selectors.descriptionView} span[style="${value}"]`;
-        return await $(isColorText).isDisplayed();
+        return await $$(isColorText).last().isDisplayed();
     }
 
     async isLinkDisplayedInCKE(value: string, guid?: string): Promise<boolean> {
@@ -207,7 +221,7 @@ class CKEValidation {
         }
     }
 
-    async isColorTextDisplayedInCkEditorTextArea(bodyText: string, colorValue?: string, colorTextElement?: ElementFinder,): Promise<boolean> {
+    async isColorTextDisplayedInCkEditorTextArea(bodyText: string, colorValue?: string, colorTextElement?: ElementFinder, ): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
         if (!colorTextElement) colorTextElement = await $(`.cke_enable_context_menu span[style="${colorValue}"]`);
         if (framePresent == true) {
@@ -271,7 +285,7 @@ class CKEValidation {
 
     async isTextRightAlignInCkEditorTextArea(bodyText: string, rightAlignTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
-        if (!rightAlignTextElement) rightAlignTextElement = await $(this.selectors.rightAlignText);
+        if (!rightAlignTextElement) rightAlignTextElement = await $$(this.selectors.rightAlignText).last();
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());
@@ -400,12 +414,12 @@ class CKEValidation {
         await $(`div.contents [style="${value}"]`).isPresent().then(async (result) => {
             if (result) {
                 alignColorFontStyle = `div.contents [style="${value}"]`;
-            }else {
+            } else {
                 alignColorFontStyle = `[style="${value}"]`;
             }
         });
 
-        if (guid) alignColorFontStyle = `[rx-view-component-id="${guid}"] div[style="${value}"]`;
+        if (guid) alignColorFontStyle = `[rx-view-component-id="${guid}"] [style="${value}"]`;
         let framePresent = await $(this.selectors.frame).isPresent();
         let elementText: string;
         let styleElementCount = (await $$(alignColorFontStyle)).length;

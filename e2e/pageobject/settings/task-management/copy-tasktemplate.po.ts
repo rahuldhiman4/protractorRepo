@@ -1,4 +1,4 @@
-import { $, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../../pageobject/common/ck-editor/ckeditor-validation.po';
 import utilityCommon from "../../../utils/utility.common";
 
@@ -94,7 +94,7 @@ class Copytaskpage {
     }
 
     async isTextRightAlignInCkEditorTextArea(rightAlignText: string): Promise<boolean> {
-        let rightAlignLocator: ElementFinder = await $(this.selectors.rightAlignLocator);
+        let rightAlignLocator: ElementFinder = await $$(this.selectors.rightAlignLocator).last();
         return await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText, rightAlignLocator);
     }
 
