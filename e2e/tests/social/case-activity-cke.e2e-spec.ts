@@ -3,13 +3,15 @@ import apiHelper from "../../api/api.helper";
 import { NOTES_TEMPLATE_KNOWLEDGE_ARTICLE, NOTES_TEMPLATE_MANDATORY_FIELD, NOTES_TEMPLATE_PEOPLE, NOTES_TEMPLATE_TASK } from '../../data/ui/Social/notesTemplate.api';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
+import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import linkPropertiesPo from '../../pageobject/common/ck-editor/link-properties.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import knowledgeArticlesConsolePo from '../../pageobject/knowledge/knowledge-articles-console.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import { default as activityTabPage } from '../../pageobject/social/activity-tab.po';
+import activityTabPage from '../../pageobject/social/activity-tab.po';
 import notesTemplateUsage from '../../pageobject/social/note-template-usage.po';
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
@@ -17,8 +19,6 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
-import ckeditorOpsPo from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 
 describe('Case Activity CKE', () => {
 
@@ -121,7 +121,7 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
         });
-        
+
         it('[3580]: Verify Comment Posted In Activity For Case', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
@@ -170,7 +170,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickActivityNoteTextBox();
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
@@ -252,7 +252,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickActivityNoteTextBox();
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
@@ -336,7 +336,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickActivityNoteTextBox();
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
@@ -419,7 +419,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickActivityNoteTextBox();
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
@@ -510,7 +510,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickActivityNoteTextBox();
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
@@ -595,7 +595,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickActivityNoteTextBox();
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
@@ -635,7 +635,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
         });
-        
+
         it('[3580]: Verify Comment Posted In Activity For Person Profile', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText);
             await activityTabPage.clearActivityNote();
@@ -684,7 +684,7 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickActivityNoteTextBox();
             await ckeditorOpsPo.selectColor('Strong Red');
             await activityTabPage.addActivityNote(addNoteBodyText);
-            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText,'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
+            expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(addNoteBodyText, 'color:#c0392b;')).toBeTruthy('FailureMsg Color Text is missing in Ck Editor');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isColorTextDisplayedInActivity('color:#c0392b;', addNoteBodyText, 1)).toBeTruthy('FailureMsg Color Text is missing in Activity');
             //checking number list
@@ -715,6 +715,7 @@ describe('Case Activity CKE', () => {
             expect(await activityTabPage.isAttachedFileNameDisplayed('bwfPdf.pdf')).toBeTruthy('FailureMsg Image missing in activity tab');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -929,10 +930,5 @@ describe('Case Activity CKE', () => {
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateKnowledgeData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
     });
-
 });

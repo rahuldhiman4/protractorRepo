@@ -1,4 +1,3 @@
-import changeAssignmentBladePo from "../../pageobject/common/change-assignment.po";
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import { ITaskTemplate } from '../../data/interface/template.interface';
@@ -29,9 +28,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Activity', () => {
-
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -980,11 +977,11 @@ describe('Case Activity', () => {
         let caseData;
 
         beforeAll(async () => {
- 
+
             // Create Case
             caseData = {
                 "Requester": "qdu",
-                "Summary": "DRDMV16589TC"+randomString,
+                "Summary": "DRDMV16589TC" + randomString,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 2",
@@ -993,7 +990,7 @@ describe('Case Activity', () => {
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
-            
+
             // Create Task Template
             manualTaskTemplateData = {
                 "templateName": "4250_task template" + summary,
@@ -1092,10 +1089,10 @@ describe('Case Activity', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickOnTab('Case Access');
             //Read Access Agent
-            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access','Case');
-            await accessTabPo.selectAgent('qstrong','Agent');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
+            await accessTabPo.selectAgent('qstrong', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong','Read')).toBeTruthy('Failuer:Quin Strong Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Read')).toBeTruthy('Failuer:Quin Strong Agent Name is missing');
             //Login with Read Permission User
             await navigationPage.signOut();
             await loginPage.login('qstrong');
@@ -1137,7 +1134,7 @@ describe('Case Activity', () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         beforeAll(async () => {
-        // Create Case
+            // Create Case
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "4010_TC" + summary,
@@ -1444,77 +1441,71 @@ describe('Case Activity', () => {
             KADetails = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(KADetails.id, "SMEReview", "KMills", "GB Support 2", "Petramco")).toBeTruthy("Article with SME Review status not updated.");
-    });
-    it('[4220]: Create Flag/UnFlag Activity Log', async () => {
-        await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
-        await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
-        await viewKnowledgeArticlePo.clickOnFlagButton();
-        await flagUnflagKnowledgePo.setTextInTellUsMore(flag);
-        await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
+        });
+        it('[4220]: Create Flag/UnFlag Activity Log', async () => {
+            await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
+            await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
+            await viewKnowledgeArticlePo.clickOnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(flag);
+            await flagUnflagKnowledgePo.clickOnFlageButtonOnBlade();
 
-        await utilityCommon.closePopUpMessage();
-        await viewKnowledgeArticlePo.clickOnUnFlagButton();
-        await flagUnflagKnowledgePo.setTextInTellUsMore(unFlag);
-        await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
-        await utilityCommon.closePopUpMessage();
-    });
-    it('[4220]: Create Feedback Activity Log', async () => {
-        await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
-        await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(feedback);
-        await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
-    });
-    it('[4220]: Create Review Activity Log', async () => {
-        await utilityCommon.closePopUpMessage();
-        await viewKnowledgeArticlePo.clickReviewPendingLink();
-        await reviewCommentsPo.setTextInTellUsMore(reviewPending);
-        await reviewCommentsPo.clickApprovedButton();
-        await utilityCommon.closePopUpMessage();
-        await utilityCommon.closePopUpMessage();
-    });
-    it('[4220]: Create Commnet Activity Log', async () => {
-        await viewKnowledgeArticlePo.clickOnTab('Activity');
-        await activityTabPage.addActivityNote(addNoteBodyText);
-        await activityTabPage.clickOnPostButton();
-    });
-    it('[4220]: Verify Flag/Unflag In Activity', async () => {
-        // verify flag in activity
-        await expect(await activityTabPage.isLogIconDisplayedInActivity('flag', 5)).toBeTruthy('FailureMsg: Note pencil icon is missing')
-        await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills flagged the article', 5));
-        await expect(await activityTabPage.isBodyDisplayedInActivity(flag, 5)).toBeTruthy('FailureMsg: Kyle Mills flagged the article is missing');
-        await expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeTruthy('FailureMsg1: LockIcon is missing');
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickOnUnFlagButton();
+            await flagUnflagKnowledgePo.setTextInTellUsMore(unFlag);
+            await flagUnflagKnowledgePo.clickOnUnFlageButtonOnBlade();
+            await utilityCommon.closePopUpMessage();
+        });
+        it('[4220]: Create Feedback Activity Log', async () => {
+            await viewKnowledgeArticlePo.clickOnKAUsefulNoButton();
+            await feedbackBladeKnowledgeArticlePo.setTextInTellUsMore(feedback);
+            await feedbackBladeKnowledgeArticlePo.clickOnSaveButtonOnFeedBack();
+        });
+        it('[4220]: Create Review Activity Log', async () => {
+            await utilityCommon.closePopUpMessage();
+            await viewKnowledgeArticlePo.clickReviewPendingLink();
+            await reviewCommentsPo.setTextInTellUsMore(reviewPending);
+            await reviewCommentsPo.clickApprovedButton();
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closePopUpMessage();
+        });
+        it('[4220]: Create Commnet Activity Log', async () => {
+            await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await activityTabPage.addActivityNote(addNoteBodyText);
+            await activityTabPage.clickOnPostButton();
+        });
+        it('[4220]: Verify Flag/Unflag In Activity', async () => {
+            // verify flag in activity
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('flag', 5)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills flagged the article', 5));
+            await expect(await activityTabPage.isBodyDisplayedInActivity(flag, 5)).toBeTruthy('FailureMsg: Kyle Mills flagged the article is missing');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(5)).toBeTruthy('FailureMsg1: LockIcon is missing');
 
-        // verify unflag in activity
-        await expect(await activityTabPage.isLogIconDisplayedInActivity('unflag', 4)).toBeTruthy('FailureMsg: Note pencil icon is missing')
-        await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills unflagged the article', 4));
-        await expect(await activityTabPage.isBodyDisplayedInActivity(unFlag, 4)).toBeTruthy('FailureMsg: Kyle Mills unflagged the article is missing');
-        await expect(await activityTabPage.isLockIconDisplayedInActivity(4)).toBeTruthy('FailureMsg1: LockIcon is missing');
-    });
-    it('[4220]: Verify Feedback In Activity', async () => {
-        // verify feedback in activity
-        await expect(await activityTabPage.isLogIconDisplayedInActivity('comments', 3)).toBeTruthy('FailureMsg: Note pencil icon is missing')
-        await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills has provided the feedback for the article', 3));
-        await expect(await activityTabPage.isBodyDisplayedInActivity(feedback, 3)).toBeTruthy('FailureMsg: Kyle Mills has provided the feedback for the article is missing');
-        await expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg1: LockIcon is missing');
-    });
-    it('[4220]: Verify Feedback In Activity', async () => {
-        // verify Review in activity
-        await expect(await activityTabPage.isLogIconDisplayedInActivity('pencil', 2)).toBeTruthy('FailureMsg: Note pencil icon is missing')
-        await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills reviewed this article and provided this comment', 2));
-        await expect(await activityTabPage.isBodyDisplayedInActivity(reviewPending, 2)).toBeTruthy('FailureMsg: Kyle Mills reviewed this article and provided this comment is missing');
-        await expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg1: LockIcon is missing');
-    });
-    it('[4220]: Verify Add Note Actvity In Activity Log', async () => {
-        // Verify KA comment
-        await expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg: Note pencil icon is missing')
-        await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills added a note', 1));
-        await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg: Kyle Mills added a note');
-        await expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg1: LockIcon is missing');
+            // verify unflag in activity
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('unflag', 4)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills unflagged the article', 4));
+            await expect(await activityTabPage.isBodyDisplayedInActivity(unFlag, 4)).toBeTruthy('FailureMsg: Kyle Mills unflagged the article is missing');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(4)).toBeTruthy('FailureMsg1: LockIcon is missing');
+        });
+        it('[4220]: Verify Feedback In Activity', async () => {
+            // verify feedback in activity
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('comments', 3)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills has provided the feedback for the article', 3));
+            await expect(await activityTabPage.isBodyDisplayedInActivity(feedback, 3)).toBeTruthy('FailureMsg: Kyle Mills has provided the feedback for the article is missing');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg1: LockIcon is missing');
+        });
+        it('[4220]: Verify Feedback In Activity', async () => {
+            // verify Review in activity
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('pencil', 2)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills reviewed this article and provided this comment', 2));
+            await expect(await activityTabPage.isBodyDisplayedInActivity(reviewPending, 2)).toBeTruthy('FailureMsg: Kyle Mills reviewed this article and provided this comment is missing');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg1: LockIcon is missing');
+        });
+        it('[4220]: Verify Add Note Actvity In Activity Log', async () => {
+            // Verify KA comment
+            await expect(await activityTabPage.isLogIconDisplayedInActivity('note_pencil', 1)).toBeTruthy('FailureMsg: Note pencil icon is missing')
+            await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills added a note', 1));
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg: Kyle Mills added a note');
+            await expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg1: LockIcon is missing');
+        });
     });
 });
-});
-
-
-
-
-
-
