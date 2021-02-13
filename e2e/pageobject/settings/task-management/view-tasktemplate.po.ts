@@ -55,7 +55,7 @@ class ViewTaskTemplate {
     }
 
     async getDynamicFieldTitle(): Promise<string> {
-        return await $(this.selectors.dynamicFieldTitle).getText();
+        return await $$(this.selectors.dynamicFieldTitle).last().getText();
     }
 
     async isGroupDisplayed(groupName: string): Promise<boolean> {
@@ -89,35 +89,35 @@ class ViewTaskTemplate {
     }
 
     async getOwnerCompanyValue(): Promise<string> {
-        return await $(this.selectors.ownerCompanyValue).getText();
+        return await $$(this.selectors.ownerCompanyValue).last().getText();
     }
 
     async getBuisnessunitValue(): Promise<string> {
-        return await $(this.selectors.buisnessunitValue).getText();
+        return await $$(this.selectors.buisnessunitValue).last().getText();
     }
 
     async getDepartmentValue(): Promise<string> {
-        return await $(this.selectors.departmentValue).getText();
+        return await $$(this.selectors.departmentValue).last().getText();
     }
 
     async getLabelValue(): Promise<string> {
-        return await $(this.selectors.label).getText();
+        return await $$(this.selectors.label).last().getText();
     }
 
     async getOwnerGroupValue(): Promise<string> {
-        return await $(this.selectors.ownerGroupValue).getText();
+        return await $$(this.selectors.ownerGroupValue).last().getText();
     }
 
     async getProcessNameValue(): Promise<string> {
-        return await $(this.selectors.processnameValue).getText();
+        return await $$(this.selectors.processnameValue).last().getText();
     }
 
     async getTemplateName(): Promise<string> {
-        return await $(this.selectors.templateName).getText();
+        return await $$(this.selectors.templateName).last().getText();
     }
 
     async getTemplateStatus(): Promise<string> {
-        return await $(this.selectors.templateStatus).getText();
+        return await $$(this.selectors.templateStatus).last().getText();
     }
 
     async clickOnCopyTemplate(): Promise<void> {
@@ -144,39 +144,39 @@ class ViewTaskTemplate {
     }
 
     async getSummaryValue(): Promise<string> {
-        return await $(this.selectors.summaryValue).getText();
+        return await $$(this.selectors.summaryValue).last().getText();
     }
 
     async getTaskTypeValue(): Promise<string> {
-        return await $(this.selectors.taskTypeValue).getText();
+        return await $$(this.selectors.taskTypeValue).last().getText();
     }
 
     async getTaskDescriptionNameValue(): Promise<string> {
-        return await $(this.selectors.taskDescriptionValue).getText();
+        return await $$(this.selectors.taskDescriptionValue).last().getText();
     }
 
     async getTaskCompanyNameValue(): Promise<string> {
-        return await $(this.selectors.taskCompanyValue).getText();
+        return await $$(this.selectors.taskCompanyValue).last().getText();
     }
 
     async getTaskTemplateId(): Promise<string> {
-        return await $(this.selectors.taskTemplateId).getText();
+        return await $$(this.selectors.taskTemplateId).last().getText();
     }
 
     async getCategoryTier1Value(): Promise<string> {
-        return await $(this.selectors.categoryTier1Value).getText();
+        return await $$(this.selectors.categoryTier1Value).last().getText();
     }
 
     async getCategoryTier2Value(): Promise<string> {
-        return await $(this.selectors.categoryTier2Value).getText();
+        return await $$(this.selectors.categoryTier2Value).last().getText();
     }
 
     async getCategoryTier3Value(): Promise<string> {
-        return await $(this.selectors.categoryTier3Value).getText();
+        return await $$(this.selectors.categoryTier3Value).last().getText();
     }
 
     async getCategoryTier4Value(): Promise<string> {
-        return await $(this.selectors.categoryTier4Value).getText();
+        return await $$(this.selectors.categoryTier4Value).last().getText();
     }
 
     async isTaskSummaryTitlePresent(input: string): Promise<boolean> {
@@ -318,7 +318,10 @@ class ViewTaskTemplate {
     }
 
     async clickBackArrowBtn(): Promise<void> {
-        await $$(this.selectors.backArrowButton).last().click();
+        let backArrow = await $$(this.selectors.backArrowButton).count();
+        for (let i = 0; i < backArrow; i++) {
+            await $$(this.selectors.backArrowButton).last().click();
+        }
     }
 
     async getLobValue(): Promise<string> {

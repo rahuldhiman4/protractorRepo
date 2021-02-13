@@ -88,6 +88,7 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.clickOnSaveTaskTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityCommon.closePopUpMessage();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4820]: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {
             await navigationPage.gotoSettingsPage();
@@ -99,6 +100,8 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isEditProcessLinkDisplayed()).toBeFalsy(" Edit link is displayed");
             expect(await editTaskTemplate.getTaskTypeValueAttribute('disabled')).toBeTruthy(" Attribute value is disabled");
             expect(await editTaskTemplate.isManageProcessLinkDisplayed()).toBeTruthy(" Manage process link present");
+            await editTaskTemplate.clickOnCancelButton();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4820]: create same name record in same LOB', async () => {
             //create same name record in same LOB
@@ -150,10 +153,10 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automatedTaskTemplate1);
             expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
-            await viewTaskTemplate.clickBackArrowBtn();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await viewTaskTemplate.clickBackArrowBtn();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -437,6 +440,7 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskTemplate.clickOnEditMetaData();
             await editTaskTemplate.selectTemplateStatus("Active");
             await editTaskTemplate.clickOnSaveMetadata();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[3607,3613]: Validate dynamic field is visible', async () => {
             await navigationPage.gotoCaseConsole();
@@ -545,6 +549,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
@@ -573,6 +578,7 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskTemplate.clickOnEditMetaData();
             await editTaskTemplate.selectTemplateStatus("Active");
             await editTaskTemplate.clickOnSaveMetadata();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[3622,3611]: Validate dynamic field is visible', async () => {
             await navigationPage.gotoCaseConsole();
@@ -910,6 +916,8 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isDynamicFieldPresent("externalTime")).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent("externalAttachment1")).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent("dynamicList")).toBeTruthy();
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
@@ -946,6 +954,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary("test the 4852");
+            await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
@@ -1032,6 +1041,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group1')).toBeFalsy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group2')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup2')).toBeTruthy();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -1064,6 +1074,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTemplate2);
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
+            await viewTaskTemplate.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTemplate1);
@@ -1087,6 +1098,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group1')).toBeFalsy();
             expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group2')).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent('FieldGroup2')).toBeTruthy();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
