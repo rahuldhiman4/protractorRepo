@@ -117,6 +117,9 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnFilterClearButton();
             expect(await activityTabPage.isfilterPresent()).toBeFalsy('filter displayed');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //kgaikwad
@@ -201,6 +204,9 @@ describe('Case Activity', () => {
 
             await activityTabPage.addAuthorOnFilter('Elizabeth Jeffries');
             await activityTabPage.clickOnFilterApplyButton();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -741,7 +747,6 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.clickOnFilterClearButton();
             await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
-
         });
     });
 
@@ -823,7 +828,7 @@ describe('Case Activity', () => {
             // View Case Page
             await viewTaskPo.clickOnViewCase();
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
-            await activityTabPage.clickOnHyperlinkFromActivity(2, caseIdText);
+            await activityTabPage.clickOnHyperlink(caseIdText);
             // From Case > Activity > Click on Task ID from Task comment
             await activityTabPage.clickOnHyperlinkFromActivity(1, taskId);
             // Verification Open Task > Click on Person Name from Activity
@@ -937,7 +942,7 @@ describe('Case Activity', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "Elizabeth Peters"
+                "Assignee": "qfeng"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
@@ -951,15 +956,16 @@ describe('Case Activity', () => {
         });
         it('[4255]: Login In With Assignee User and Verify View Count ', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
-            await expect(await activityTabPage.getCaseViewCount('Elizabeth Peters viewed the case.')).toEqual(1);
+            await expect(await activityTabPage.getCaseViewCount('Qiao Feng viewed the case.')).toEqual(1);
             await navigationPage.gotoPersonProfile();
             await expect(await personProfilePo.getCaseViewCount('Viewed the ' + caseId)).toEqual(1);
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1056,7 +1062,6 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
     });
 
     //kgaikwad
@@ -1125,7 +1130,6 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
     });
 
     //kgaikwad
@@ -1505,10 +1509,6 @@ describe('Case Activity', () => {
         await expect(await activityTabPage.isTitleTextDisplayedInActivity('Kyle Mills added a note', 1));
         await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText, 1)).toBeTruthy('FailureMsg: Kyle Mills added a note');
         await expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg1: LockIcon is missing');
-    });
-    afterAll(async () => {
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
     });
 });
 });

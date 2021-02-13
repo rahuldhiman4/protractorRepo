@@ -402,7 +402,14 @@ class ViewTask {
     }
 
     async isAssignmentSectionDisplayed(): Promise<boolean> {
-        return await $(this.selectors.assignmentSection).isDisplayed();
+        return await $(this.selectors.assignmentSection).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.assignmentSection).isDisplayed();
+            } else {
+                console.log("Assignment not present");
+                return false;
+            }
+        });
     }
 
     async isShowApproversBannerDisplayed(): Promise<boolean> {
