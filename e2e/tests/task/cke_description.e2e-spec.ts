@@ -276,6 +276,7 @@ describe('CKE Description', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(copyCasetemplate);
+            await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
             await viewCasePo.clickDescriptionShowMore();
             expect(await viewCasePo.getCaseTemplateText()).toContain(copyCasetemplate);
@@ -462,7 +463,7 @@ describe('CKE Description', () => {
             expect(await viewTasktemplatePo.getTableCellAlignText("text-align: center;")).toContain(randomString);
             await ckeditorValidationPo.clickLinkInCKE('www.google.com');
             await browser.waitForAngularEnabled(false);
-            await utilityCommon.switchToNewTab(2);
+            await utilityCommon.switchToNewTab(1);
             expect(await ckeditorValidationPo.isTitleDisplayed('Google')).toBeTruthy();
             await browser.waitForAngularEnabled(true);
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
@@ -492,11 +493,15 @@ describe('CKE Description', () => {
             await linkPropertiesPo.clickOnOkBtn();
             expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('youtube')).toBeTruthy('Link Text not ipresent');
             await copyTasktemplatePo.clickSaveCopytemplate();
-            await copyTasktemplatePo.clickShowMoreDescriptionLink();
+            await viewTasktemplatePo.clickBackArrowBtn();
+            await utilityGrid.searchAndOpenHyperlink(randomString);
+            await viewTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isLinkDisplayedInCKE('http://www.youtube.com')).toBeTruthy('Link Text not present');
         });
         it('[3526,3525,3524,3516] Verify task description on task template preview', async () => {
+            await viewTasktemplatePo.clickBackArrowBtn();
             await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qdu');
             await createCasePo.setSummary('SummaryCKE');
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
