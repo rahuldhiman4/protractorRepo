@@ -22,7 +22,7 @@ class EditAcknowledgementTemplate {
         newLocalizeMessageEmailMessageSubject: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
         newLocalizeMessageEmailMessageLocalizeDropDownGuid: '1389f79d-65df-4090-9bd5-76bd2981a775',
         saveButton: '.rx-action-button_primary .btn-primary',
-        cancelButton: '.rx-button-bar-action-buttons__inner .d-button_secondary',
+        cancelButton: '[rx-view-component-id="8fe0e727-14ac-4773-ba4d-03835070e907"] button',
         gridGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
         msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] span.radio__label',
         editPencilButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-left-pencil',

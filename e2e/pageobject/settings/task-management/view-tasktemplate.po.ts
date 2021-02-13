@@ -74,7 +74,7 @@ class ViewTaskTemplate {
     }
 
     async clickOnManageDynamicFieldLink(): Promise<void> {
-        await $(this.selectors.manageDynamicField).click();
+        await $$(this.selectors.manageDynamicField).last().click();
     }
 
     async isManageDynamicFieldLinkDisplayed(): Promise<boolean> {

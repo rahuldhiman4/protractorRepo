@@ -409,7 +409,7 @@ describe('Copy Case Template', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(copyCaseTemplateName);
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            expect(await utilityCommon.isPopUpMessagePresent('You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is non editable");
@@ -449,7 +449,7 @@ describe('Copy Case Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(copytaskTemplateName);
             await viewTaskTemplatePo.clickOnManageDynamicFieldLink();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
+            expect(await utilityCommon.isPopUpMessagePresent('You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilityCommon.closePopUpMessage();
             await viewTaskTemplatePo.clickOnEditLink();
             expect(await editTasktemplatePo.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is editable");
@@ -657,7 +657,7 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
             await copyCaseTemplate.clickSaveCaseTemplate();
-            expect(await utilityCommon.isPopupMsgsMatches(['ERROR (222112): The selected Assignee does not have access to Psilon. Please select a different Assignee or contact System Administrator to grant access.'])).toBeTruthy('Message of permission denined for group access remove not displayed');
+            expect(await utilityCommon.isPopupMsgsMatches(['The selected Assignee does not have access to Psilon. Please select a different Assignee or contact System Administrator to grant access.'])).toBeTruthy('Message of permission denined for group access remove not displayed');
             await utilityCommon.closePopUpMessage();
             await copyCaseTemplate.clickCancelCaseTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");

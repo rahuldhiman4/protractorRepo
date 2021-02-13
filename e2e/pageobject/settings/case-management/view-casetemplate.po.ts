@@ -36,7 +36,7 @@ class ViewCaseTemplate {
         categoryTier3: '[rx-view-component-id="a0243fb4-35cd-457b-a517-210a5e3e330d"] .read-only-content',
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
         taskBoxname: 'div.content',
-        showMoreDescriptionLink: '.rx-description-textarea-read button.more',
+        showMoreDescriptionLink: '.bwf-expand button.btn',
         taskFlowButton: '[rx-view-component-id="3b142f9f-078c-4a9f-9215-0cc3ec054244"] button',
         backArrowButton: '[rx-view-component-id="8abb8018-cca7-49a2-b610-023c2bae63cc"] button',
         taskBoxLocator: '.rotatable',

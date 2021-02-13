@@ -113,7 +113,7 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.selectCompanyByName('Petramco');
             await createTaskTemplate.setNewProcessName('Process' + randomStr);
             await createTaskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await createTaskTemplate.clickOnCancelTaskTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

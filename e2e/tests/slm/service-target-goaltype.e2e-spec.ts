@@ -150,7 +150,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222179): A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createGoalType.clickCloseGoalTypeButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             //on update verification is not possible since goal type name field is disabled on edit.
@@ -208,7 +208,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222179): A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 

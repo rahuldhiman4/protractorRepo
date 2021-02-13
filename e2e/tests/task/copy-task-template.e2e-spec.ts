@@ -256,15 +256,16 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectOwnerBusinessUnit('United States Support');
             await copyTemplatePage.selectOwnerGroup('US Support 3');
             await copyTemplatePage.clickSaveCopytemplate();// Failing due to defect (turned improvement DRDMV-21097)
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (902): Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy(); // ERROR (902): Duplicate process name
+            expect(await utilityCommon.isPopUpMessagePresent(`Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy('Duplicate process name');
             await copyTemplatePage.clickCancelCopytemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + templateData.processName);
-            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();//remove this line after defect fix
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -567,8 +568,9 @@ describe('Copy Task Template', () => {
             await dynamicField.setFieldName(dynamicFieldName2);
             await dynamicField.setDescriptionName(dynamicFieldDescription2);
             await dynamicField.clickSaveButton();
-            await utilityCommon.closePopUpMessage();// is it defect no warning message
             expect(await viewTaskTemplate.isDynamicFieldPresent(dynamicFieldDescription2)).toBeTruthy(`${dynamicFieldDescription2} dynamic field not present`);
+        });
+        afterAll(async () => {
             await viewTaskTemplate.clickBackArrowBtn();
             await viewTaskTemplate.clickBackArrowBtn();
         });

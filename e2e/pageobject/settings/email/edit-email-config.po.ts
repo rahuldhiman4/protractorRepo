@@ -2,6 +2,7 @@ import { $, $$, by, element, browser, ProtractorExpectedConditions, By } from 'p
 import utilityCommon from '../../../utils/utility.common';
 import utilityGrid from '../../../utils/utility.grid';
 import { protractor } from 'protractor/built/ptor';
+import { DropDownType } from '../../../utils/constants';
 
 export class EditEmailConfig {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -22,7 +23,7 @@ export class EditEmailConfig {
         closedAssociatePublicExclusionSubjects: '[rx-view-component-id="71177700-7a94-435f-b594-24ae7bc4e22b"] button',
         acknowledgementTemplateEditButton: '[rx-view-component-id="dd7a7212-432d-4c79-a33b-b7cc8abf787e"] button',
         saveAcknowledgementTemplate: '[rx-view-component-id="ae1f4f53-445e-4d4c-b6b9-13acc691b4b8"] button',
-        cancelAcknowledgementTemplate: '[rx-view-component-id="e163832a-f819-43f0-af68-87aa1d5c671a"] button',
+        cancelAcknowledgementTemplate: '[rx-view-component-id="e915b0ae-e0c2-44c8-9ab6-f0977c850d1c"] button',
         acknowledgementTemplateGuid: 'a5437a3a-3a11-4e07-8829-9cee403dca61',
         ticketTypeAcknowledgementTemplate: '[rx-view-component-id="5f00dfc8-9dc0-4521-befd-30f4d6d51ac5"] input',
         operationTypeAcknowledgementTemplate: '[rx-view-component-id="2353e82d-57fd-428b-acc6-7080c1561914"] input',
@@ -48,21 +49,21 @@ export class EditEmailConfig {
         newTrustedEmailSaveBtn: '[rx-view-component-id="c0dcdafe-6d39-4c38-b26c-38ec48b9450f"] button',
         newTrustedEmailCancelBtn: '[rx-view-component-id="c8d38843-d953-4bdd-9913-b6210ee1daa4"] button',
         newTrustedEmailMappedRequesterGuid: '5021ef29-9cae-4538-bf9b-2907936a8c78',
-        newTrustedEmailMappedRequesterInputBox: '[rx-view-component-id="5021ef29-9cae-4538-bf9b-2907936a8c78"] button',
+        newTrustedEmailMappedRequesterInputBox: '[rx-view-component-id="5021ef29-9cae-4538-bf9b-2907936a8c78"] input',
         addBlockedEmail: '[rx-view-component-id="d7309e2b-06c2-46a6-85e0-8b8f83159f9a"] button',
         blockedEmailConsoleGuid: '8b8901bb-9678-4a27-80db-61d441aa8f13',
         createEmailTemplateLink: '[rx-view-component-id="010a2bf3-5b2d-4c72-9c33-fa26d3be6b78"] button',
         saveBlockedemail: '[rx-view-component-id="a5da25a9-a60f-4096-8655-9f3c0ed0190c"] button',
         deleteBlockedEmail: '[rx-view-component-id="30acf26f-75dd-4730-93ba-cce285732b54"] button',
-        inputFieldAcknowledgementTemplate: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] input[type="search"]',
-        acknowledgementTemplateList: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] .ui-select-choices-row-inner *',
+        inputFieldAcknowledgementTemplate: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] input',
+        acknowledgementTemplateList: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] button',
         trustedEmailConsoleGuid: '46526dc0-07f0-4dc6-abd3-80651dabd24f',
         editTrustedEmailButtonOnTrustedEmail: '[rx-view-component-id="c9e5d798-e0b2-49b2-89d8-5875209b29a6"] button',
         removeTrustedEmailButtonOnTrustedEmail: '[rx-view-component-id="d406d183-268a-4003-9b11-ceafd30ece44"] button',
         editTrustedEmailSaveButton: '[rx-view-component-id="39083019-c851-43f6-bcab-e6d9d59ac83d"]  button',
         editTrustedEmailCancelButton: '[rx-view-component-id="43790bdf-8e59-47d1-9b11-8577140da637"]  button',
         setEmailidOnEditTrusted: '[rx-view-component-id="ac869aba-620e-42a5-af4d-5ed1bd580a6e"] input',
-        dropDownOption: '[rx-view-component-id="5021ef29-9cae-4538-bf9b-2907936a8c78"].ui-select-choices-row-inner *',
+        dropDownOption: '[rx-view-component-id="5021ef29-9cae-4538-bf9b-2907936a8c78"] button',
         description: '[rx-view-component-id="9d3c4cbf-faa9-4f65-834f-474b7c5c2a12"] input',
         emailIdNewBlockEmailId: '[rx-view-component-id="3b86d9d1-26a0-4fe1-8d36-57993ddeb25c"] input',
         lobValue: '[rx-view-component-id="61e76625-685a-41b7-9c41-fd7698a71570"] .pull-left'
@@ -141,16 +142,26 @@ export class EditEmailConfig {
     }
 
     async isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
-        let loc=await $$('[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] .bwf-association-list').get(0);
+        let loc = await $$('[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] .bwf-association-list').get(0);
         if (searchvalue) {
-            return  await loc.element(by.cssContainingText('.list-item', searchvalue)).isPresent().then(async (link) => {
+            return await loc.element(by.cssContainingText('.list-item', searchvalue)).isPresent().then(async (link) => {
                 if (link) {
                     return await loc.element(by.cssContainingText('.list-item', searchvalue)).isDisplayed();
                 } else return false;
             });
         } else
-        return await loc.element(by.cssContainingText('.list-item', searchvalue)).count() < 1 ? false : true;
+            return await loc.element(by.cssContainingText('.list-item', searchvalue)).count() < 1 ? false : true;
     }
+
+    async isListAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(): Promise<boolean> {
+        let loc = await $$('[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] .bwf-association-list').get(0);
+        return await loc.$('.list-item').isPresent().then(async (link) => {
+            if (link) {
+                return await loc.$('.list-item').isDisplayed();
+            } else return false;
+        });
+    }
+
 
     async searchAssociatedEntitiesToBeRemoveAssociation(searchvalue: string): Promise<void> {
         await $$(this.selectors.searchAssociatedEntitiesToBeRemoveTextBox).last().clear();
@@ -158,15 +169,24 @@ export class EditEmailConfig {
     }
 
     async isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(searchvalue?: string): Promise<boolean> {
-        let loc=await $$('[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] .bwf-association-list').get(1);
+        let loc = await $$('[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] .bwf-association-list').get(1);
         if (searchvalue) {
-            return  await loc.element(by.cssContainingText('.list-item', searchvalue)).isPresent().then(async (link) => {
+            return await loc.element(by.cssContainingText('.list-item', searchvalue)).isPresent().then(async (link) => {
                 if (link) {
                     return await loc.element(by.cssContainingText('.list-item', searchvalue)).isDisplayed();
                 } else return false;
             });
         } else
-        return await loc.element(by.cssContainingText('.list-item', searchvalue)).count() < 1 ? false : true;
+            return await loc.element(by.cssContainingText('.list-item', searchvalue)).count() < 1 ? false : true;
+    }
+
+    async isListAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent(): Promise<boolean> {
+        let loc = await $$('[rx-view-component-id="c6983ae5-50e0-4400-bd7b-0e8f590a931f"] .bwf-association-list').get(1);
+        return await loc.$('.list-item').isPresent().then(async (link) => {
+            if (link) {
+                return await loc.$('.list-item').isDisplayed();
+            } else return false;
+        });
     }
 
     async clickSupportGroup(): Promise<void> {
@@ -174,7 +194,7 @@ export class EditEmailConfig {
     }
 
     async selectAcknowledgementTemplate(template: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.acknowledgementTemplateGuid, template);
+        await utilityCommon.selectDropDown("Acknowledgment Template",template,DropDownType.Label);
     }
 
     async selectBusinessUnitInAssociatedSupportGroupTab(template: string): Promise<void> {
@@ -192,6 +212,7 @@ export class EditEmailConfig {
     async clickCancelAcknowledgementTemplate(): Promise<void> {
         await $(this.selectors.cancelAcknowledgementTemplate).click();
     }
+    
 
     async clickNewExclusiveSubjectsButton(): Promise<void> {
         await $(this.selectors.newExclusiveSubjects).click();
@@ -250,7 +271,7 @@ export class EditEmailConfig {
     }
 
     async clearDefaultCaseTemplateToUseField(): Promise<void> {
-                await $(this.selectors.defaultCaseTemplateToUse).click();
+        await $(this.selectors.defaultCaseTemplateToUse).click();
     }
 
     async getDefaultCaseTemplatetoUsePresent(): Promise<string> {
@@ -269,10 +290,10 @@ export class EditEmailConfig {
     }
 
     async isAcknowledgementPresentInDropDown(template: string): Promise<boolean> {
+        await $(this.selectors.acknowledgementTemplateList).click();
         await $(this.selectors.inputFieldAcknowledgementTemplate).clear();
         await $(this.selectors.inputFieldAcknowledgementTemplate).sendKeys(template);
-        let count = await $$(this.selectors.acknowledgementTemplateList).count();
-        if (count >= 1) { return true; } else { return false; }
+        return await element(by.cssContainingText(this.selectors.acknowledgementTemplateList,template)).isDisplayed();
     }
     async isAddNewRuleBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.newExclusiveSubjects).isEnabled();
@@ -343,14 +364,11 @@ export class EditEmailConfig {
     }
 
     async isValuePresentInDropDown(value: string): Promise<boolean> {
-        await $(this.selectors.newTrustedEmailMappedRequesterInputBox).clear();
+        await $(this.selectors.dropDownOption).click();
         await $(this.selectors.newTrustedEmailMappedRequesterInputBox).sendKeys(value);
-        let values = await $$(this.selectors.dropDownOption).count();
-        if (values >= 1) { return true; } else { return false; }
-    }
-
-    async clearNewTrustedEmailMappedRequesterInputBox(): Promise<void> {
-        await $(this.selectors.newTrustedEmailMappedRequesterInputBox).clear();
+       let result=  await element(by.cssContainingText(this.selectors.dropDownOption,value)).isDisplayed();
+       await $(this.selectors.dropDownOption).click();
+       return result;
     }
 
     async isBlockedEmailBtnEnabled(): Promise<boolean> {
@@ -375,7 +393,7 @@ export class EditEmailConfig {
     }
 
     async selectAndClickCheckboxOnBlockedEmail(value: string): Promise<void> {
-        await utilityGrid.clickCheckBoxOfValueInGrid(value, this.selectors.blockedEmailConsoleGuid);
+        await utilityGrid.searchAndSelectGridRecord(value, this.selectors.blockedEmailConsoleGuid);
     }
 
     async isRecordPresentonBlockedEmail(value: string): Promise<boolean> {
@@ -384,7 +402,7 @@ export class EditEmailConfig {
 
 
     async selectAndClickCheckboxOnTrustedEmail(value: string): Promise<void> {
-        await utilityGrid.clickCheckBoxOfValueInGrid(value, this.selectors.trustedEmailConsoleGuid);
+        await utilityGrid.searchAndSelectGridRecord(value, this.selectors.trustedEmailConsoleGuid);
     }
 
     async isRecordPresentonTrustedEmail(value: string): Promise<boolean> {

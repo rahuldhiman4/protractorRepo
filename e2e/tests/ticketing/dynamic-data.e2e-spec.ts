@@ -1098,7 +1098,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setFieldName('news' + randomStr);
         await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
+        expect(await utilityCommon.isPopUpMessagePresent('Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
         await utilityCommon.closePopUpMessage();
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
@@ -1111,7 +1111,7 @@ describe('Dynamic data', () => {
         await dynamicFieldsPo.setFieldName('newName' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
         await dynamicFieldsPo.clickSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('ERROR (970): Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
+        expect(await utilityCommon.isPopUpMessagePresent('Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
         await utilityCommon.closePopUpMessage();
         await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
         await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);

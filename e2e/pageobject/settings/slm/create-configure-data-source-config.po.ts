@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import { DropDownType } from '../../../utils/constants';
 import utilityCommon from '../../../utils/utility.common';
 
@@ -18,6 +18,7 @@ class CreateDataSourceConfigurationPage {
         dropdownBox: 'div.form-group div.dropdown button',
         dropDownInput: 'input.adapt-rx-search__input',
         dropDownOption: 'button div.rx-select__option-content',
+        selectDropdown: '[rx-view-component-id="80a8ade0-5e29-4d4f-b0e2-7d301b1b5c30"] .dropdown .btn-secondary'
     }
 
     async getAddDataSourceConfigurationHeading(): Promise<string> {
@@ -25,12 +26,91 @@ class CreateDataSourceConfigurationPage {
     }
 
     async isDataSourceFieldRequired(fieldName: string): Promise<boolean> {
-        let fieldNameRequiredTag = await element(by.cssContainingText(this.selectors.fieldNameLabel, fieldName));
-        return await utilityCommon.isRequiredTagToField(fieldNameRequiredTag);
-    }
+        let fieldLocator:ElementFinder = undefined;
+        let locator = await $$('[rx-view-component-id="80a8ade0-5e29-4d4f-b0e2-7d301b1b5c30"] .form-control-label .form-control-required');
+        switch (fieldName) {
+            case "Display Name": {
+                fieldLocator = locator[0];
+                break;
+            }
+            case "Application Name": {
+                fieldLocator = locator[1];
+                break;
+            }
+            case "Record Definition Name": {
+                fieldLocator = locator[2];
+                break;
+            }
+            case "Company Field": {
+                fieldLocator = locator[3];
+                break;
+            }
+            default: {
+                console.log(fieldName, ' is not a valid parameter');
+                return false;
+            }
+        }
+        return await utilityCommon.isRequiredTagPresent(fieldLocator, 'hello');
+}
 
     async selectDataSourceFieldOption(fieldName: string, fieldOption: string): Promise<void> {
-        await utilityCommon.selectDropDown(fieldName, fieldOption, DropDownType.Label);
+        let fieldLocator:ElementFinder = undefined;
+        let locator = await $$('[rx-view-component-id="80a8ade0-5e29-4d4f-b0e2-7d301b1b5c30"] .dropdown .btn-secondary');
+        switch (fieldName) {
+            case "Application Name": {
+                fieldLocator = locator[0];
+                break;
+            }
+            case "Record Definition Name": {
+                fieldLocator = locator[1];
+                break;
+            }
+            case "Company Field": {
+                fieldLocator = locator[2];
+                break;
+            }
+            case "Association Name": {
+                fieldLocator = locator[3];
+                break;
+            }
+            case "Create Qualification View": {
+                fieldLocator = locator[4];
+                break;
+            }
+            case "Edit Qualification View": {
+                fieldLocator = locator[5];
+                break;
+            }
+            case "Assigned Group": {
+                fieldLocator = locator[6];
+                break;
+            }
+            case "Dynamic Business Entity": {
+                fieldLocator = locator[7];
+                break;
+            }
+            case "Dynamic Start Time Field": {
+                fieldLocator = locator[8];
+                break;
+            }
+            case "Dynamic End Time Field": {
+                fieldLocator = locator[9];
+                break;
+            }
+            case "Dynamic Goal Time Field": {
+                fieldLocator = locator[10];
+                break;
+            }
+            case "Category Field": {
+                fieldLocator = locator[11];
+                break;
+            }
+            default: {
+                console.log(fieldName, ' is not a valid parameter');
+                break;
+            }
+        }
+        await utilityCommon.selectDropDown(fieldLocator, fieldOption, DropDownType.WebElement);
     }
 
     async clickDataSourceLink(dataSourceLink: string): Promise<void> {
@@ -56,7 +136,7 @@ class CreateDataSourceConfigurationPage {
     }
 
     async isDatSourceAdvancedFieldsDisabled(fieldName: string): Promise<boolean> {
-        let fldsCount = await element(by.xpath(this.selectors.fieldValues)).count();
+        let fldsCount = await element.all(by.xpath(this.selectors.fieldValues)).count();
         for (let i = 0; i < fldsCount; i++) {
             let elem = await $$(this.selectors.fieldValues).get(i);
             if (await elem.getAttribute("disabled") == fieldName) {

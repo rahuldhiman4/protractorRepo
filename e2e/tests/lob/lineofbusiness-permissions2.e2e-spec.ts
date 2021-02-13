@@ -56,7 +56,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await createEmailConfigPo.selectStatus("Active");
             await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
             await createEmailConfigPo.clickSave();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
             await createEmailConfigPo.clickCancel();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -85,7 +85,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await createEmailConfigPo.selectStatus("Active");
             await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
             await createEmailConfigPo.clickSave();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy();
             await createEmailConfigPo.clickCancel();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -155,7 +155,7 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.setNewTrustedEmail("testingCheck@gmail.com");
             await editEmailConfigPo.selectMappedRequesterDropDown("Adam Warlock");
             await editEmailConfigPo.clickNewTrustedEmailSaveBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222323): Mapping for same email address or domain already exists.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Mapping for same email address or domain already exists.')).toBeTruthy();
             await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
@@ -163,11 +163,11 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.clickEditTrustedEmailButtonOnTrustedEmail();
             await editEmailConfigPo.setEmailOnEditTrustedEmail("Test");
             await editEmailConfigPo.clickEditTrustedEmailSaveButtonOnTrustedEmail();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid Trusted Email')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Please enter valid Trusted Email')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await editEmailConfigPo.setEmailOnEditTrustedEmail("Test");
             await editEmailConfigPo.clickEditTrustedEmailSaveButtonOnTrustedEmail();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid Trusted Email')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Please enter valid Trusted Email')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
         });
         it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
@@ -189,13 +189,13 @@ describe('Line of Business Permissions Tests Extended', () => {
             await editEmailConfigPo.clickOnNewBlockedEmailBtn();
             await editEmailConfigPo.setEmailOnBlockedNewEmail("testingCheck@gmail.com");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222323): Mapping for same email address or domain already exists.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Mapping for same email address or domain already exists.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
         });
         it('[3952]: Verify Case BA can configure to allow all external users in trusted domain and Blocked email', async () => {
             await editEmailConfigPo.setEmailOnBlockedNewEmail("*@*");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222345): Please enter valid email address')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Please enter valid email address')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await editEmailConfigPo.setEmailOnBlockedNewEmail("testing123@acc.com");
             await editEmailConfigPo.clickOnSaveBlockedEmailBtn();

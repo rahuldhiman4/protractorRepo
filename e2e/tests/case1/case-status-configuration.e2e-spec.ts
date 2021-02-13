@@ -538,7 +538,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            expect(await utilityCommon.isPopUpMessagePresent("ERROR (10000): Tasks with this status are present")).toBeTruthy("ERROR (10000): Tasks with this status are present");
+            expect(await utilityCommon.isPopUpMessagePresent("Tasks with this status are present")).toBeTruthy("Tasks with this status are present");
         });
 
         it('[4608]:Delete non mandatory and custom status', async () => {
@@ -595,7 +595,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            expect(await utilityCommon.isPopUpMessagePresent("ERROR (10000): Cases with this status are present.")).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent("Cases with this status are present.")).toBeTruthy();
 
         });
         it('[4608]:Delete non mandatory and custom status', async () => {
@@ -647,7 +647,7 @@ describe('Case Status Configuration', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            expect(await utilityCommon.isPopUpMessagePresent("ERROR (10000): Knowledge articles with this status are present.")).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent("Knowledge articles with this status are present.")).toBeTruthy();
         });
         it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoKnowledgeConsole();

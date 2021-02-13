@@ -6,7 +6,7 @@ class ChangeAssignmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         changeAssignmentComponent: 'bwf-change-assignment button',
-        assignButton: '.modal-footer .btn-primary',
+        assignButton: 'rx-runtime-view-modal button.btn-primary',
         searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
         assignee: '.person__info .name',
         knowledgeReviewGuid: 'b56b4649-9f86-4ba9-a8a5-56d9c000cc89',
@@ -193,7 +193,7 @@ class ChangeAssignmentBlade {
     async setAssigneeOnBlade(company: string, bu: string, group: string, assignee: string): Promise<void> {
         await this.setDropDownValue('Company', company);
         await this.setDropDownValue('SupportOrg', bu);
-        await this.setDropDownValue('AssignedGroup', group);
+        //await this.setDropDownValue('AssignedGroup', group);
         await this.setDropDownValue('Assignee', assignee);
         await this.clickOnAssignButton();
     }

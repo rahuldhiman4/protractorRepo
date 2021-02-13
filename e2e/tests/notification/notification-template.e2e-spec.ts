@@ -318,7 +318,7 @@ describe("Notification Template", () => {
             await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
             await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
             await createNotificationTemplatePage.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy("record saved successful message is not displayed.");
+            expect(await utilityCommon.isPopUpMessagePresent('A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy("record saved successful message is not displayed.");
             await utilityCommon.closeAllBlades();
         });
 
@@ -496,7 +496,7 @@ describe("Notification Template", () => {
             await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Sample Subject text');
             await createNotificationTemplatePage.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
