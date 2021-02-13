@@ -109,6 +109,7 @@ class UpdateStatus {
 
     async clickSaveStatus(expectedStatus?: string): Promise<void> {
         await $(this.selectors.saveUpdateStatus).click();
+        await utilityCommon.refresh(); // Defect: status is changed its not automatically reflected on view
         if (expectedStatus)
             await browser.wait(this.EC.visibilityOf(element(by.cssContainingText(this.selectors.statusChange, expectedStatus))), 3000);
     }
