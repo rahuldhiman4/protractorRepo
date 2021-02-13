@@ -66,7 +66,7 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-        await utilityGrid.selectLineOfBusiness('Human Resource');
+        
     });
 
     afterAll(async () => {
@@ -191,7 +191,6 @@ describe('Notes template', () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -281,7 +280,6 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -371,7 +369,6 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
 
     });
@@ -729,7 +726,6 @@ describe('Notes template', () => {
 
         it('[4351]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName);
@@ -1152,7 +1148,6 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -1165,7 +1160,6 @@ describe('Notes template', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNotesTemplate("Knowledge", tempNotesTemplateData);
         //create Knowledge
-        await utilityGrid.selectLineOfBusiness('Human Resource');
         await navigationPage.gotoCreateKnowledge();
         expect(await browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');
@@ -1232,7 +1226,6 @@ describe('Notes template', () => {
         });
 
         it('[4373]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.clearFilter();
@@ -1442,7 +1435,6 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
