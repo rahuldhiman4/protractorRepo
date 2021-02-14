@@ -17,7 +17,7 @@ class createNotesTemplate {
         companyDD: '[rx-view-component-id="8072a3c4-6972-4760-86be-d5526dac8c8d"] button',
         languageDD: '[rx-view-component-id="951065ca-a003-4465-aed5-9623a689fd4f"] button',
         fieldValueInBody:'[rx-view-component-id="55da6dac-fe85-435e-9937-5b917d4b7971"] .cke_wysiwyg_div span',
-        lobValue: '[rx-view-component-id="8ff2fad8-1b60-49eb-8664-618ae54d359e"] .pull-left'
+        lobValue: '[rx-view-component-id="efe5a0b6-8fd5-4677-9048-0cdb8a6e661e"] .rx-select__search-button-title'
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
