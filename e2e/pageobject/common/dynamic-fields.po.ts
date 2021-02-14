@@ -22,7 +22,7 @@ class DynamicField {
         groupDescription: 'textarea.form-control',
         target: '[class="group-fields-area flex"]',
         src: '.column-pill-icon',
-        downArrow: '.parent-collapse .d-icon-angle_down',
+        downArrow: 'span.d-icon-angle_down',
         upArrow: '.right-header-block .d-icon-angle_up',
         searchField: '.bwf-dynamic-field-group .adapt-search-field',
         deleteButton: '.d-icon-right-cross',
