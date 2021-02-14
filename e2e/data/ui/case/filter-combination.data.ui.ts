@@ -36,9 +36,9 @@ export const Case_Assigned_FILTER_4 = {
     "Requester": "kmills",
     "Summary": "DRDMV-caseFilterCombination_4",
     "Assigned Company": "Petramco",
-    "Business Unit": " Australia Support",
+    "Business Unit": "Australia Support",
     "Support Group": "AU Support 3",
-    "Assignee": "KWilliamson",
+    "Assignee": "qliu",
     "Status": "2000"
 };
 export const Case_New_FILTER_5 = {

@@ -8,7 +8,6 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from "../../pageobject/case/view-case.po";
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
-import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
 import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -36,6 +35,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 let userData1 = undefined, userData2;
 
 describe('Dynamic Hidden Data', () => {
@@ -82,7 +82,7 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.setTaskDescription('Description in manual task');
             await createTaskTemplate.selectCompanyByName('Petramco');
             await createTaskTemplate.setExistingProcessName('A Failing Process');
-            expect(await createTaskTemplate.isProcessTitlePresent("New Process Name")).toBeFalsy("New Process Title Present");
+            expect(await createTaskTemplate.isNewProcessNamePresent()).toBeFalsy("New Process Title Present");
             await createTaskTemplate.selectBuisnessUnit('United States Support');
             await createTaskTemplate.selectOwnerGroup('US Support 3');
             await createTaskTemplate.clickOnSaveTaskTemplate();
@@ -117,6 +117,7 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.setNewProcessName('Process' + randomStr);
             await createTaskTemplate.clickOnSaveTaskTemplate();
             expect(await utilityCommon.isPopUpMessagePresent('The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             await createTaskTemplate.clickOnCancelTaskTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -130,22 +131,20 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.selectCompanyByName('Petramco');
 
             // verify categ1, BU and SG as per LOB
-            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card'])).toBeTruthy("Category 1");
             await createTaskTemplate.selectOwnerCompany('Petramco');
-            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support'])).toBeTruthy('SupportOrg');
             await createTaskTemplate.selectOwnerCompany('Petramco');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
-            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service'])).toBeTruthy('Owner Group');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
             await createTaskTemplate.selectOwnerGroup('Facilities');
-            await createTaskTemplate.clickOnAssignment();
-            await changeAssignmentOldBladePo.selectCompany('Petramco');
-            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Business Unit', ['Facilities', 'Facilities Support']);
-            await changeAssignmentOldBladePo.selectCompany('Petramco');
-            await changeAssignmentOldBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Support Group', ['Facilities', 'Pantry Service']);
-            await changeAssignmentOldBladePo.clickOnCancelButton();
-            // verify LOB is there
+            await changeAssignmentPo.setDropDownValue("Company",'Petramco');
+            expect(await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support'])).toBeTruthy('SupportOrg');
+            await changeAssignmentPo.setDropDownValue("Company",'Petramco');
+            await changeAssignmentPo.setDropDownValue("SupportOrg",'Facilities Support');
+            expect( await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])).toBeTruthy('AssignedGroup');
+           // verify LOB is there
             expect(await createTaskTemplate.getLobValue()).toBe("Facilities");
             await createTaskTemplate.clickOnSaveTaskTemplate();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
@@ -155,6 +154,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await viewTaskTemplate.clickBackArrowBtn();
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.signOut();

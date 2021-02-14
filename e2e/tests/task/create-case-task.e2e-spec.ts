@@ -120,7 +120,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    // categ2 not populated
     describe('[5559,5565,6425,6386]: Automatic Task data validation once Task is created', async () => {
         let menuItem, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
@@ -355,7 +355,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    // categ2 not populated
     describe('[5015,5014,5020,4997]: [ Task ] - Verify Associated menu for Task will show global configuration values as well', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
@@ -416,7 +416,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    // categ2 not populated
     describe('[4941]: Task Template submitter from different company of owner group can edit the template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = randomStr + 'Manual task';
