@@ -1,5 +1,7 @@
 import { resolve } from "path";
 import { $, $$, By, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
+import { DropDownType } from '../../utils/constants';
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -8,8 +10,8 @@ class DynamicField {
         fieldDescription: '.textfield-padding-transition',
         saveButton: 'button[btn-type="primary"]',
         cancelButton: '.modal-footer button[btn-type="secondary"]',
-        fieldValueType: '.col-md-6 .dropdown',
-        informationSource: '.col-md-6 .dropdown',
+        fieldValueType: '.col-md-6 .dropdown button',
+        informationSource: '.col-md-6 .dropdown button',
         enabledHiddenField: '[class="mt-4 ng-star-inserted"] button[aria-label="True"]',
         disabledhiddenField: '[class="mt-4 ng-star-inserted"] button[aria-label="False"]',
         enabledRequiredField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="True"]',
@@ -120,9 +122,10 @@ class DynamicField {
     }
 
     async selectFieldValueType(dataType: string): Promise<void> {
-        let size = await $$(this.selectors.fieldValueType).count();
-        await $$(this.selectors.fieldValueType).get(size - 2).click();
-        await element(by.cssContainingText(this.selectors.dropdownvalue, dataType)).click();
+         let size = await $$(this.selectors.fieldValueType).count();
+        // await $$(this.selectors.fieldValueType).get(size - 2).click();
+        // await element(by.cssContainingText(this.selectors.dropdownvalue, dataType)).click();
+        await utilityCommon.selectDropDown($$(this.selectors.fieldValueType).get(size - 2),dataType,DropDownType.WebElement);
     }
 
     async selectInfromationSource(sourceValue: string): Promise<void> {

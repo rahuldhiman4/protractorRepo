@@ -603,6 +603,7 @@ describe('Notes template', () => {
         });
         it('[4299]: Case Notes template create same name record in different LOB', async () => {
             //create same name record in different LOB
+            await utilityCommon.closePopUpMessage();
             await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(caseNotesTemplate);
@@ -757,11 +758,19 @@ describe('Notes template', () => {
             tempNotesTemplateData.body = tempNotesTemplateData.body + randomStr;
             let caseData1 = {
                 "Requester": "qdu",
-                "Summary": "Testing case creation with minimal input data"
+                "Summary": "Testing case creation with minimal input data",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 3",
+                "Assignee": "qheroux",
             };
             let caseData2 = {
                 "Requester": "qtao",
-                "Summary": "Testing case creation with minimal input data"
+                "Summary": "Testing case creation with minimal input data",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 3",
+                "Assignee": "qheroux",
             };
             // create People notes template
             await apiHelper.apiLogin('elizabeth');
@@ -777,6 +786,7 @@ describe('Notes template', () => {
             await loginPage.login('qheroux');
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePage.clickRequsterName();
+            await browser.sleep(3000); // Wait unilt profile page gets open
             await utilityCommon.switchToNewTab(1);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);
             await activityTabPo.clickOnPostButton();
@@ -793,6 +803,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isTextPresentInActivityLog(tempNotesTemplateData.body)).toBeTruthy();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qheroux');
         });
@@ -1146,6 +1157,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
@@ -1401,6 +1413,7 @@ describe('Notes template', () => {
             await addRelatedPopupPage.addPerson('Qiang Du', 'Manager');
             await relatedTabPage.clickRelatedPersonName('Qiang Du');
             await utilityCommon.switchToNewTab(1);
+            await browser.sleep(3000); //Wait untile redirect to  person profile page
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
         });
