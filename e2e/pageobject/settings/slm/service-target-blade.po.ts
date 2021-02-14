@@ -1,20 +1,20 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, ElementFinder } from "protractor";
-import SlmExpressionBuilder from './slm-expressionbuilder.pop.po';
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
+import SlmExpressionBuilder from './slm-expressionbuilder.pop.po';
 
 class ServiceTargetConfig {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         serviceTargetBlade: '[rx-view-definition-guid="b33e03d8-128d-4c42-8a5e-93d67bebd0b7"]',
-        createServiceTargetButton: '[rx-view-component-id="8985f5e9-f984-43d1-b6cd-ce780f64a71b"] button',
-        svtTitle: '[rx-view-component-id="2fe41278-97db-4bd9-a723-72e9d6356920"] input',
-        selectCompanyDD: '[rx-view-component-id="dcbb867a-fba4-437b-81e4-bf1ec7568350"] button',
+        createServiceTargetButton: '[rx-view-component-id="5a771a32-973d-4c3f-a90a-280c36890dea"] button',
+        svtTitle: '[rx-view-component-id="36abb115-44c8-4089-a7c4-18e6835758fc"] input',
+        companyGuid: '64642abd-53f9-472c-8c22-906355edc22d',
         selectGoalType: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button',
-        selectDataSourceDD: '[rx-view-component-id="57908aad-eb55-43da-bb24-3255f0ce8c59"] button',
+        dataSourceGuid: 'a2780b54-1b51-48e7-a9ae-f387e87b55a5',
         svtDescriptionField: '[rx-view-component-id="5425c08c-4806-4f23-8a28-4c436309d773"] input',
         goalTypeSelectedValue: `//*[@rx-view-definition-guid="b33e03d8-128d-4c42-8a5e-93d67bebd0b7"]//*[contains(@class,'form-control-label')]//span`,
         dropDownOption: 'button.dropdown-item',
-        buildExpressionLink: '[rx-view-component-id="1f691b31-30f7-4feb-b4f2-8972a616f2fe"] button',
+        buildExpressionLink: '[rx-view-component-id="70687d3e-2539-4474-a64b-1fa115440fd5"] button',
         timer: 'input.adapt-counter-input',
         segments: '.adapt-accordion .card',
         segmentsArrow: '.adapt-accordion .card .tab-caret',
@@ -57,10 +57,8 @@ class ServiceTargetConfig {
         await $(this.selectors.createServiceTargetButton).click();
         //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.svtTitle))));
         await element(by.model(this.selectors.svtTitle)).sendKeys(svtTitleStr);
-        await $(this.selectors.selectCompanyDD).click();
-        await element(by.cssContainingText(this.selectors.dropDownOption, company)).click();
-        await $(this.selectors.selectDataSourceDD).click();
-        await element(by.cssContainingText(this.selectors.dropDownOption, dataSource)).click();
+        await this.selectCompany(company);
+        await this.selectDataSource(dataSource);
         await $$(this.selectors.buildExpressionLink).first().click();
     }
 
@@ -69,13 +67,11 @@ class ServiceTargetConfig {
     }
 
     async selectCompany(company: string): Promise<void> {
-        await $(this.selectors.selectCompanyDD).click();
-        await element(by.cssContainingText(this.selectors.dropDownOption, company)).click();
+        await utilityCommon.selectDropDown(this.selectors.companyGuid, company);
     }
 
     async selectDataSource(dataSource: string): Promise<void> {
-        await $(this.selectors.selectDataSourceDD).click();
-        await element(by.cssContainingText(this.selectors.dropDownOption, dataSource)).click();
+        await utilityCommon.selectDropDown(this.selectors.dataSourceGuid, dataSource);
     }
 
     async clickBuildExpressionLink(): Promise<void> {
@@ -241,7 +237,7 @@ class ServiceTargetConfig {
 
     async isMeasurementCheckboxDisabled(checkboxLabel: string): Promise<boolean> {
         let chkBox = $$('.d-checkbox__label span');
-        let chkBoxVal =  $$('.d-checkbox__label input');
+        let chkBoxVal = $$('.d-checkbox__label input');
         let cnt: number = 0;
         for (let i: number = 1; i <= (await chkBox).length; i++) {
             let val = await chkBox.get(i).getText();
@@ -303,24 +299,24 @@ class ServiceTargetConfig {
         await $$(this.selectors.segmentsArrow).last().click();
     }
 
-    async clickAddNewMileStoneBtn():Promise<void>{
+    async clickAddNewMileStoneBtn(): Promise<void> {
         await $(this.selectors.addNewMileStoneBtn).click();
     }
 
-    async clickOnGoalTypeDropDown():Promise<void>{
+    async clickOnGoalTypeDropDown(): Promise<void> {
         await $(this.selectors.selectGoalType).click();
     }
 
-    async clearGoalTypeDropDownOption():Promise<void>{
+    async clearGoalTypeDropDownOption(): Promise<void> {
         await $(this.selectors.goalTypeDropDownInput).clear();
     }
 
     async isGoalTypeOptionPresentInDropDown(goalType: string): Promise<boolean> {
         await $(this.selectors.goalTypeDropDownInput).clear();
         await $(this.selectors.goalTypeDropDownInput).sendKeys(goalType);
-        let values= await $$(this.selectors.dropDownOption).count();
+        let values = await $$(this.selectors.dropDownOption).count();
         if (values >= 1) { return true; } else { return false; }
-    } 
+    }
 
 
 

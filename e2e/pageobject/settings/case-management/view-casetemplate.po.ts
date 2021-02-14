@@ -22,7 +22,7 @@ class ViewCaseTemplate {
         resolveCaseOnLastTaskCompletion: '[rx-view-component-id="e4956197-0230-4272-8fc4-87358bd084bf"] .read-only-content',
         categoryTier4: '[rx-view-component-id="8a790c6a-3401-44f6-afc3-eb43a67a55b1"] .read-only-content',
         priority: '.selection-field',
-        labelvalue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .read-only-content',
+        labelvalue: '[rx-view-component-id="33e2d3dd-d813-4d35-8d1a-c8307b23d3e3"] .read-only-content',
         buisnessUnitvalue: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .read-only-content',
         departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .read-only-content',
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',

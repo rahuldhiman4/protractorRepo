@@ -17,8 +17,8 @@ class ReadAccessConfigEditPage {
         supportGroupGuid: '3a1b5bb1-5d8e-460c-adc4-df2871e03f64',
         businessUnitGuid: 'bbc67a21-674b-4a0a-baf8-5c39e1c0f995',
         categoryTier4Guid: '236c2bd3-b189-4531-8791-f06319a3a312',
-        labelValue: '[rx-view-component-id="692fed6d-f2b5-4f72-8f4e-d7e7ec192cfb"] .dropdown-toggle',
-        labelGuid: '692fed6d-f2b5-4f72-8f4e-d7e7ec192cfb',
+        labelValue: '[rx-view-component-id="41784500-6e79-465a-9cb9-6fd4038c53e8"] .dropdown-toggle',
+        labelGuid: '41784500-6e79-465a-9cb9-6fd4038c53e8',
         lobValue: '[rx-view-component-id="fa35a8a4-bcb2-4617-ba34-11361be50488"] .pull-left'
     }
 

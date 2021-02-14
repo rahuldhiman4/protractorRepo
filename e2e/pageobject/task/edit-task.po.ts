@@ -38,9 +38,9 @@ class EditTask {
         assignedCompanyRequiredText: 'f1c5abf8-7093-4d14-9f51-f4ba888c6607',
         assignedGroupRequiredText: '60b50604-dfc9-42ef-9688-1db148b00809',
         taskTypeRequiredText: '057f2521-313b-40c9-be56-829827512abf',
-        taskLabel: '[rx-view-component-id="75acc4ad-2ffe-4cbc-8fa2-efc227b7d7c9"] .btn-secondary',
+        taskLabel: '[rx-view-component-id="db352c84-3f9f-4209-aa3c-426fcc118305"] .btn-secondary',
         errorMsgOnDynamicFiled: '.form-control-feedback strong',
-        labelGuid: '75acc4ad-2ffe-4cbc-8fa2-efc227b7d7c9'
+        labelGuid: 'db352c84-3f9f-4209-aa3c-426fcc118305'
     }
 
     async isAutomatedTaskTypeDisabled(): Promise<boolean> {

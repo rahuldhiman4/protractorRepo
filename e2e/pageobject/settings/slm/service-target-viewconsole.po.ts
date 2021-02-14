@@ -5,7 +5,7 @@ class ServiceTargetViewConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         serviceTargetSearchInput: '[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] input[type="search"]',
-        createServiceTargetButton: '[rx-view-component-id="8985f5e9-f984-43d1-b6cd-ce780f64a71b"] button',
+        createServiceTargetButton: '[rx-view-component-id="5a771a32-973d-4c3f-a90a-280c36890dea"] button',
         refreshIcon: '[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] .d-icon-refresh',
         filterIcon: '[rx-view-component-id="1e73ee06-4772-4770-9e25-e5eba4722fb0"] .d-icon-left-filter',
         filterItems: '.advanced-filter__tab-content .form-control-feedback',

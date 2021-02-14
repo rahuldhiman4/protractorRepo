@@ -400,9 +400,6 @@ describe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             expect(consoleFlowsetConfigPo.isAddFlowsetButtonEnabled()).toBeFalsy();
 
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            expect(consoleFlowsetConfigPo.isAddFlowsetButtonEnabled()).toBeFalsy();
-
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             expect(await notificationTempGridPage.isAddNotificationTemplateBtnEnabled()).toBeFalsy();
 
@@ -507,9 +504,6 @@ describe('Line of Business Permission Tests', () => {
 
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             expect(consoleFlowsetConfigPo.isAddFlowsetButtonEnabled()).toBeTruthy("Add flowset is disabled");
-
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            expect(consoleFlowsetConfigPo.isAddFlowsetButtonEnabled()).toBeTruthy();
 
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             expect(await notificationTempGridPage.isAddNotificationTemplateBtnEnabled()).toBeTruthy();

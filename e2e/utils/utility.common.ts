@@ -7,7 +7,6 @@ export class Utility {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         dropdownBox: '.dropdown-toggle',
-        dropDownInput: '.dropdown_select__search input.form-control',
         dropDownNoneOpt: '.px-3 i',
         dropDownOption: '.dropdown-item',
         dialogMessageTitle: '.modal-content .modal-title, .modal-content .d-modal__title',
@@ -94,15 +93,19 @@ export class Utility {
             }
             default: {
                 const dropDown = await $(`[rx-view-component-id="${dropDownIdentifier}"]`);
-                const dropDownInputElement: ElementFinder = await dropDown.$(this.selectors.dropDownInput);
+                const dropDownInputElement: ElementFinder = await dropDown.$('input');
                 //await this.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus
                 await dropDown.$(this.selectors.dropdownBox).click();
                 console.log(`Selecting dropdown value: ${dropDownValue}`);
                 let isSearchPresent: boolean = await dropDownInputElement.isPresent();
                 if (isSearchPresent) await dropDownInputElement.sendKeys(dropDownValue);
+                // to click on "Load More"
+                // await dropDown.$('.adapt-build-in-loader').isPresent().then(async (isLoadMore: boolean) => {
+                //     if (isLoadMore) await dropDown.$('.adapt-build-in-loader').click();
+                // });
                 let optionCss: string = `[rx-view-component-id="${dropDownIdentifier}"] .dropdown-item`;
                 let option = await element(by.cssContainingText(optionCss, dropDownValue));
-                await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async function () {
+                await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async () => {
                     await option.click();
                 });
                 break;
@@ -134,19 +137,21 @@ export class Utility {
     }
 
     async isValuePresentInDropDown(guid: string | ElementFinder, value: string): Promise<boolean> {
-        let count;
-        let dropDownBoxElement: ElementFinder = undefined;
+        let count: number;
         if (typeof guid === 'string') {
             const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-            dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
-            const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
-            await dropDownBoxElement.click();
-            await dropDownInputElement.sendKeys(value);
-            count = await dropDown.$$(this.selectors.dropDownOption).count();
-            await dropDownBoxElement.click();
+            const dropDownInputElement: ElementFinder = await dropDown.$('input');
+            //await this.scrollToElement(await dropDown.$(this.selectors.dropdownBox)); //required to bring dropdown search in focus
+            await dropDown.$(this.selectors.dropdownBox).click();
+            console.log(`Finding dropdown value: ${value}`);
+            let isSearchPresent: boolean = await dropDownInputElement.isPresent();
+            if (isSearchPresent) await dropDownInputElement.sendKeys(value);
+            let optionCss: string = `[rx-view-component-id="${guid}"] .dropdown-item`;
+            count = await dropDown.$$(optionCss).count();
+            await dropDown.$(this.selectors.dropdownBox).click();
         } else {
             await guid.click();
-            await $$(this.selectors.dropDownInput).last().sendKeys(value);
+            await $$('input').last().sendKeys(value);
             count = await $$(this.selectors.dropDownOption).count();
             await guid.click();
         }
@@ -637,7 +642,7 @@ export class Utility {
 
     async selectNthDropDown(guid: string, value: string, n: number): Promise<void> {
         const dropDown = await $(`[rx-view-component-id="${guid}"]`);
-        const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+        const dropDownInputElement = await dropDown.$('input');
         await dropDown.$(this.selectors.dropdownBox).click();
         await dropDownInputElement.sendKeys(value);
         let optionCss: string = `[rx-view-component-id="${guid}"] .ui-select-choices-row-inner *`;
@@ -662,7 +667,7 @@ export class Utility {
                 const dropDown = await $(`[title="${dropDownIdentifier}"],[aria-label="${dropDownIdentifier}"]`);
                 const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
                 await dropDownBoxElement.click();
-                const dropDownInputElement = await dropDown.$(this.selectors.dropDownInput);
+                const dropDownInputElement = await dropDown.$('input');
                 if (dropDownSearchValue) await dropDownInputElement.sendKeys(dropDownSearchValue);
                 drpDwnvalue = await $$(this.selectors.dropDownOption).count(); // drpDwnvalue = await $$('.ui-select-choices-row-inner *').count();
                 break;

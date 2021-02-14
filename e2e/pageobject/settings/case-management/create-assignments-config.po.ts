@@ -15,7 +15,7 @@ class AssignmentConfigCreatePage {
         catTier3DrpDwn: 'a8d52e5f-d8fd-4554-a805-23a60bf8bb26',
         catTier4DrpDwn: 'a8d52e5f-d8fd-4554-a805-23a60bf8bb26',
         priorityDrpDwn: '790dfab1-2353-4b06-909d-741ebbc896d5',
-        labelDrpDwn: 'ae22985a-f9b8-451b-ac89-c9df8e1f222e',
+        labelDrpDwn: 'e96e5a26-840f-483e-b62a-797f13fb386c',
         regionDrpDwn: 'f2083fbb-ee65-4c20-8958-dfb2979f3b56',
         siteDrpDwn: 'ee0a257d-5577-494b-a286-d553fbf18e44',
         defaultToggle: '[rx-view-component-id="d52b16e7-3cd4-4ef1-a31b-922eac1007c1"] .d-icon-circle_slash_o',
