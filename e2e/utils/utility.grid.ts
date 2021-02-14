@@ -30,7 +30,7 @@ export class GridOperations {
         filterValue: '[class="filter-tags__tag-text"]',
         filterName: '.radio__item span',
         editPresetFilterSaveButton: '.advanced-filter__editing-footer .btn-primary',
-        savePresetInput: '.advanced-filter-name-editor__input',
+        savePresetInput: 'input[placeholder="Enter preset name"]',
         saveOrCancelPresetFilterButton: 'button.custom-action-btn__right',
         lineOfBusinessDropDown: 'button[btn-type="tertiary"]',
         deleteButton: 'button span'
