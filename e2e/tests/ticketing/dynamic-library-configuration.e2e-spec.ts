@@ -363,7 +363,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await viewTasktemplatePo.isDynamicFieldPresent('Field ATTACHMENT' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('Field DATE_TIME' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('Field TIME' + randomStr)).toBeTruthy();
-
+            await viewTasktemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateData.templateName);
@@ -433,6 +433,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field TIME' + randomStr)).toBeTruthy();
         });
         afterAll(async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await utilityCommon.closeAllBlades();
         });
     });
