@@ -115,7 +115,7 @@ describe('Create Process in Flowset', () => {
     })
 
     //asahitya
-    describe('[5317]: Initialization process execution for case origin Agent', () => {
+    xdescribe('[5317]: Initialization process execution for case origin Agent', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[5317]: Initialization process execution for case origin Agent', async () => {
             //Create a Process
@@ -123,7 +123,7 @@ describe('Create Process in Flowset', () => {
             let processName = `Agent Origin ${randomStr}`
             await apiHelper.createProcess(processName, 'AGENT_ORIGIN');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
+//            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
 
             //Register Process

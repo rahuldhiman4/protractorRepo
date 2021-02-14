@@ -543,7 +543,7 @@ describe('Menu Item', () => {
             expect(await createTasktemplatePo.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await createTasktemplatePo.selectTaskPriority('Low');
             expect(await createTasktemplatePo.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
-            await createTasktemplatePo.selectCompanyByName('Petramco')
+            await createTasktemplatePo.selectCompanyByName('Petramco');
             await createTasktemplatePo.selectLabel(labelActive1);
             await createTasktemplatePo.clickOnSaveTaskTemplate();
             await viewTasktemplatePo.clickBackArrowBtn();
@@ -562,7 +562,6 @@ describe('Menu Item', () => {
             await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
             await createAssignmentsConfigPo.setLabel(labelActive1);
             await createAssignmentsConfigPo.clickonSaveButton();
-
         });
 
         it('[4277]: Verify Label With Case Read Access', async () => {
@@ -583,8 +582,8 @@ describe('Menu Item', () => {
         it('[4277]: Verify Label With Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Label', '=', 'LABEL', labelActive1);
+            //await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management'); let this it block fail until SVT refactor
+            //await SlmExpressionBuilder.selectExpressionQualification('Label', '=', 'LABEL', labelActive1);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
         });
 

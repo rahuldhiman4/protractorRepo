@@ -22,7 +22,7 @@ class CreateCaseTemplate {
         casePriority: '98327bc1-9ada-48f9-ab88-9787ddecd409',
         caseStatus: '6b1d1112-129e-4c27-82b2-2248f12dc09a',
         statusReason: 'b6a6fc24-c3e7-4565-b2d2-848dd4a6747b',
-        label: '2e5123d3-c442-4146-b941-0591e9c156bc',
+        label: '8bd6ba65-515d-4968-ba4d-e04f535ecfcc',
         caseCategoryTier1Guid: '83fbf8aa-8cf3-4672-94b5-b569f978b880',
         caseCategoryTier1: '[rx-view-component-id="83fbf8aa-8cf3-4672-94b5-b569f978b880"], [rx-view-component-id="c8ce4fd2-d864-4544-baf7-4b27b59c12c3"]',
         caseCategoryTier2: '60c2bb3a-6278-4056-a400-3c3816f4084d',

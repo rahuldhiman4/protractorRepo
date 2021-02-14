@@ -17,8 +17,8 @@ class AssignmentConfigEditPage {
         categoryTier2Guid: '9df40e9c-d285-4dfd-9fb3-a7500fa996b0',
         categoryTier3Guid: '97db4cf9-62d6-4237-918c-04dff857eb9e',
         categoryTier4Guid: 'ac87041f-3b96-497a-b314-d540908378df',
-        labelValue: '[rx-view-component-id="bb4291cc-a7f9-4116-8bf9-b3f52e0731d0"] .dropdown-toggle',
-        labelGuid: 'bb4291cc-a7f9-4116-8bf9-b3f52e0731d0',
+        labelValue: '[rx-view-component-id="42098f05-304f-4c07-b5c1-4d12e1f9c717"] .dropdown-toggle',
+        labelGuid: '42098f05-304f-4c07-b5c1-4d12e1f9c717',
         lobValue: '[rx-view-component-id="168c91ba-ee0e-4f79-8287-a6859be12778"] .pull-left'
     }
 
