@@ -261,6 +261,9 @@ describe('Dynamic Library Configuration', () => {
             await editDynamicFieldLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     describe('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
