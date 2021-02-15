@@ -298,25 +298,29 @@ describe('Dynamic Library Configuration', () => {
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
-            await dynamicFieldsPage.setFieldName('Field Name' + randomStr);
-            await dynamicFieldsPage.setDescriptionName('ABCDEFGHIJKLMNOPQRSTUVWZYZ' + randomStr);
-            await dynamicFieldsPage.selectInfromationSource("Requester");
+            await dynamicFieldsPage.setFieldName('Field TIME' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field TIME' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('TIME');
             await dynamicFieldsPage.clickSaveButton();
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
-            await dynamicFieldsPage.setFieldName('Field Number' + randomStr);
-            await dynamicFieldsPage.setDescriptionName('1234567890' + randomStr);
-            await dynamicFieldsPage.selectFieldValueType('NUMBER');
-            await dynamicFieldsPage.selectInfromationSource("Task Assignee");
+            await dynamicFieldsPage.setFieldName('Field DATE_TIME' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field DATE_TIME' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('DATE_TIME');
+            await dynamicFieldsPage.clickSaveButton();
+            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
+            await dynamicFieldsPage.clickOnDynamicField();
+            await dynamicFieldsPage.setFieldName('Field ATTACHMENT' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('Field ATTACHMENT' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('ATTACHMENT');
             await dynamicFieldsPage.clickSaveButton();
         });
         it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
-            await dynamicFieldsPage.setFieldName('Field Date' + randomStr);
-            await dynamicFieldsPage.setDescriptionName('12345ABCDE' + randomStr);
-            await dynamicFieldsPage.selectFieldValueType('DATE');
-            await dynamicFieldsPage.selectInfromationSource("System");
+            await dynamicFieldsPage.setFieldName('Field LIST' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('123 Test_1' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('LIST');
             await dynamicFieldsPage.clickSaveButton();
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
@@ -327,30 +331,26 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.clickSaveButton();
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
-            await dynamicFieldsPage.setFieldName('Field LIST' + randomStr);
-            await dynamicFieldsPage.setDescriptionName('123 Test_1' + randomStr);
-            await dynamicFieldsPage.selectFieldValueType('LIST');
+            await dynamicFieldsPage.setFieldName('Field Date' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('12345ABCDE' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('DATE');
+            await dynamicFieldsPage.selectInfromationSource("System");
             await dynamicFieldsPage.clickSaveButton();
         });
 
         it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
-            await dynamicFieldsPage.setFieldName('Field ATTACHMENT' + randomStr);
-            await dynamicFieldsPage.setDescriptionName('Field ATTACHMENT' + randomStr);
-            await dynamicFieldsPage.selectFieldValueType('ATTACHMENT');
+            await dynamicFieldsPage.setFieldName('Field Name' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('ABCDEFGHIJKLMNOPQRSTUVWZYZ' + randomStr);
+            await dynamicFieldsPage.selectInfromationSource("Requester");
             await dynamicFieldsPage.clickSaveButton();
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
-            await dynamicFieldsPage.setFieldName('Field DATE_TIME' + randomStr);
-            await dynamicFieldsPage.setDescriptionName('Field DATE_TIME' + randomStr);
-            await dynamicFieldsPage.selectFieldValueType('DATE_TIME');
-            await dynamicFieldsPage.clickSaveButton();
-            await viewTasktemplatePo.clickOnManageDynamicFieldLink();
-            await dynamicFieldsPage.clickOnDynamicField();
-            await dynamicFieldsPage.setFieldName('Field TIME' + randomStr);
-            await dynamicFieldsPage.setDescriptionName('Field TIME' + randomStr);
-            await dynamicFieldsPage.selectFieldValueType('TIME');
+            await dynamicFieldsPage.setFieldName('Field Number' + randomStr);
+            await dynamicFieldsPage.setDescriptionName('1234567890' + randomStr);
+            await dynamicFieldsPage.selectFieldValueType('NUMBER');
+            await dynamicFieldsPage.selectInfromationSource("Task Assignee");
             await dynamicFieldsPage.clickSaveButton();
         });
 
@@ -433,8 +433,8 @@ describe('Dynamic Library Configuration', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field TIME' + randomStr)).toBeTruthy();
         });
         afterAll(async () => {
-            await viewCasetemplatePo.clickBackArrowBtn();
             await utilityCommon.closeAllBlades();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
