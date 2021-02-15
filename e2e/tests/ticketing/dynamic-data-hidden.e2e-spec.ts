@@ -36,7 +36,6 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
-let userData1 = undefined, userData2;
 
 describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
@@ -139,12 +138,12 @@ describe('Dynamic Hidden Data', () => {
             expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service'])).toBeTruthy('Owner Group');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
             await createTaskTemplate.selectOwnerGroup('Facilities');
-            await changeAssignmentPo.setDropDownValue("Company",'Petramco');
+            await changeAssignmentPo.setDropDownValue("Company", 'Petramco');
             expect(await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support'])).toBeTruthy('SupportOrg');
-            await changeAssignmentPo.setDropDownValue("Company",'Petramco');
-            await changeAssignmentPo.setDropDownValue("SupportOrg",'Facilities Support');
-            expect( await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])).toBeTruthy('AssignedGroup');
-           // verify LOB is there
+            await changeAssignmentPo.setDropDownValue("Company", 'Petramco');
+            await changeAssignmentPo.setDropDownValue("SupportOrg", 'Facilities Support');
+            expect(await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])).toBeTruthy('AssignedGroup');
+            // verify LOB is there
             expect(await createTaskTemplate.getLobValue()).toBe("Facilities");
             await createTaskTemplate.clickOnSaveTaskTemplate();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
@@ -154,11 +153,12 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await viewTaskTemplate.clickBackArrowBtn();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await navigationPage.signOut();
+            await loginPage.login('jbarnes');
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('qkatawazi');           
         });
     });
 
@@ -288,7 +288,7 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.changeCaseStatus("Resolved");
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451",1)).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451", 1)).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -312,7 +312,7 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.changeCaseStatus("Resolved");
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451",1)).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451", 1)).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -764,7 +764,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3609]: Validate dynamic field ', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
-           let caseid =  await viewCasePo.getCaseID();
+            let caseid = await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
             await manageTaskBladePo.clickCloseButton();
