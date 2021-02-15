@@ -289,7 +289,7 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await browser.sleep(2000);
             await updateStatusBladePo.clickSaveStatus();
-            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451")).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451",1)).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -313,7 +313,7 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.changeCaseStatus("Resolved");
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451")).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451",1)).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
