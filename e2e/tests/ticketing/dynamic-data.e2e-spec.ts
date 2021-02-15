@@ -432,6 +432,9 @@ describe('Dynamic data', () => {
             await createNotestemplatePo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     describe('[4721]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
@@ -785,9 +788,9 @@ describe('Dynamic data', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await updateStatusBladePo.changeCaseStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
-            await viewCasePo.clickAddTaskButton();
         });
         it('[4825]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
+            await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             //verify dynamic field on external task
             expect(await viewTaskPo.getDynamicFieldName('theExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('theExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
@@ -838,7 +841,7 @@ describe('Dynamic data', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_DYNAMIC_FIELDS');
         });

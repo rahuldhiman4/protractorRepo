@@ -76,7 +76,6 @@ export const BWF_PAGE_TITLES = {
     },
     MANAGE_FLOWSETS: {
         DEFINE_FLOWSETS: 'Define Flowsets - Settings - Business Workflows',
-        PROCESS_LIBRARY: 'Process Library - Settings - Business Workflows',
     },
     NOTIFICATION_CONFIGURATION: {
         MANAGE_EVENTS: 'Manage Events - Settings - Business Workflows',

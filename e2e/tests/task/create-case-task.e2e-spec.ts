@@ -421,7 +421,7 @@ describe('Create Case Task', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = randomStr + 'Manual task';
         let TaskSummary = randomStr + 'Summary';
-        let userData, description = 'description' + randomStr;
+        let description = 'description' + randomStr;
 
         beforeAll(async () => {
         });
@@ -466,12 +466,12 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    // owner group permission not honored in template
     describe('[4935]: Task Template access when owner group from different company is applied', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manualtask' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
-        let userData, description = 'description' + randomStr;
+        let description = 'description' + randomStr;
         beforeAll(async () => {
             let templateData1 = {
                 "templateName": TaskTemplate,
@@ -479,8 +479,8 @@ describe('Create Case Task', () => {
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerBusinessUnit": "Canada Support",
+                "ownerGroup": "CA Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData1);
@@ -505,14 +505,19 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnSaveButton();
             expect(await viewTasktemplatePo.getTaskDescriptionNameValue()).toBe(description, "Unable to find the description");
         });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     //ankagraw
     describe('[5558]: [Automatic Task] - Automated Task Status transition validation', async () => {
-        let automationTaskTemplate = 'Automatic task' + Math.floor(Math.random() * 1000000);
-        let automationTaskSummary = 'Summary' + Math.floor(Math.random() * 1000000);
-        let createCase = 'Create Case task' + Math.floor(Math.random() * 1000000);
-        let processName = 'process' + Math.floor(Math.random() * 1000000);
+        let randomStr = Math.floor(Math.random() * 1000000);
+        let automationTaskTemplate = 'Automatic task' + randomStr;
+        let automationTaskSummary = 'Summary' + randomStr;
+        let createCase = 'Create Case task' + randomStr;
+        let processName = 'process' + randomStr;
         let status: string[] = ["Completed", "Canceled", "Closed"];
         beforeAll(async () => {
             let templateData = {
@@ -553,8 +558,7 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(automationTaskSummary);
             await viewTask.clickOnChangeStatus();
-            await viewTask.clickOnUpdateStatusDrpdown();
-            expect(await viewTask.allTaskOptionsPresent(status)).toBeTruthy("Staus Not Found");
+            expect(await updateStatusBladePo.allStatusOptionsPresent(status)).toBeTruthy("Staus Not Found");
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Closed');
@@ -673,8 +677,8 @@ describe('Create Case Task', () => {
     //ankagraw
     describe('[5984]: [Permissions] Settings menu for Case Functional Roles', async () => {
         let caseManagementList: string[] = ['Case Management', 'Approvals', 'Assignments', 'Automated Status Transition', 'Notes Template', 'Read Access', 'Status Configuration', 'Templates'];
-        let manageFlowsetList: string[] = ['Manage Flowsets', 'Define Flowsets', 'Process Library'];
-        let serviceLevelManagementList: string[] = ['Service Level Management', 'Business Time Segment', 'Business Time Shared Entity', 'Configure Data Source', 'Goal Type', 'Service Target', 'Service Target Group'];
+        let manageFlowsetList: string[] = ['Manage Flowsets', 'Define Flowsets'];
+        let serviceLevelManagementList: string[] = ['Service Level Management', 'Configure Data Source', 'Goal Type', 'Service Target', 'Service Target Group'];
         let taskManagementList: string[] = ['Task Management', 'Approvals', 'Notes Template', 'Status Configuration', 'Templates'];
         let emailtList: string[] = ['Email', 'Acknowledgment Templates', 'Configuration', 'Templates'];
         let notificationConfigurationList: string[] = ['Notification Configuration', 'Manage Events', 'Manage Templates'];
@@ -691,11 +695,11 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            expect(await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList)).toBeTruthy();
-            expect(await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList)).toBeTruthy();
-            expect(await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList)).toBeTruthy();
-            expect(await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList)).toBeTruthy();
-            expect(await navigationPage.isSettingMenuPresent('Knowledge Management')).toBeFalsy();
+            expect(await navigationPage.isSettingSubMenusMatches("Case Management", caseManagementList)).toBeTruthy("Case Management");
+            expect(await navigationPage.isSettingSubMenusMatches("Manage Flowsets", manageFlowsetList)).toBeTruthy("Manage Flowsets");
+            expect(await navigationPage.isSettingSubMenusMatches("Service Level Management", serviceLevelManagementList)).toBeTruthy("Service Level Management");
+            expect(await navigationPage.isSettingSubMenusMatches("Task Management", taskManagementList)).toBeTruthy("Task Management");
+            expect(await navigationPage.isSettingMenuPresent('Knowledge Management')).toBeFalsy('Knowledge Management');
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
@@ -776,7 +780,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    // Extra error message on create case page
     describe('[5544]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'caseTemplateName';
@@ -844,7 +848,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw.. fixed??
     it('[5554]: [Automatic Task] - When Case is Cancelled while there are Automatic Tasks which are in Staged, Assigned, Resolved, Closed state', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
@@ -941,7 +945,7 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
-            expect(await viewTask.getStatusReason()).toBe("Successful")
+            expect(await viewTask.getStatusReason()).toBe("Successful");
             await viewTask.clickOnViewCase();
         });
         it('[5555,5556]: Verify second task on it', async () => {
@@ -951,7 +955,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw..not fixed
     describe('[5561]: [Automatic task] - Task Activation based on its sequence no.', async () => {
         let templateData1, templateData2, templateData3, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -1222,6 +1226,7 @@ describe('Create Case Task', () => {
         });
     });
 
+    // need to discuss this observation
     describe('[5784,5672]: [Task Status] Task Status change from Completed', async () => {
         let templateData3, casetemplatePetramco, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let statusDropdown1: string[] = ["Completed", "Canceled", "Closed"];
@@ -1369,6 +1374,7 @@ describe('Create Case Task', () => {
         });
     });
 
+    //ankagraw..not fixed
     describe('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco;
@@ -1456,6 +1462,7 @@ describe('Create Case Task', () => {
         });
     });
 
+    //ankagraw..not fixed
     describe('[6088]: [Edit Task] Update summary, status, description and assignment', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
@@ -1706,5 +1713,4 @@ describe('Create Case Task', () => {
         });
     });
     //12124 test case is not valid after 21.02
-
 });

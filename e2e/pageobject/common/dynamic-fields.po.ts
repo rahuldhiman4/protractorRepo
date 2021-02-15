@@ -1,5 +1,7 @@
 import { resolve } from "path";
 import { $, $$, By, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
+import { DropDownType } from '../../utils/constants';
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -120,9 +122,10 @@ class DynamicField {
     }
 
     async selectFieldValueType(dataType: string): Promise<void> {
-        let size = await $$(this.selectors.fieldValueType).count();
-        await $$(this.selectors.fieldValueType).get(size - 2).click();
-        await element(by.cssContainingText(this.selectors.dropdownvalue, dataType)).click();
+         let size = await $$(this.selectors.fieldValueType).count();
+        // await $$(this.selectors.fieldValueType).get(size - 2).click();
+        // await element(by.cssContainingText(this.selectors.dropdownvalue, dataType)).click();
+        await utilityCommon.selectDropDown($$(this.selectors.fieldValueType).get(size - 2),dataType,DropDownType.WebElement);
     }
 
     async selectInfromationSource(sourceValue: string): Promise<void> {

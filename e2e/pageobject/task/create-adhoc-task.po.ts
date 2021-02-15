@@ -13,7 +13,7 @@ class CreateAdhocTaskTemplatePage {
         descriptionGuid: '84ebb434-1cf8-4363-94d2-c77d9c9e2f68',
         taskSummary: '[rx-view-component-id="76b6b259-a085-4d9f-91ac-8c5cbb2bc725"] input',
         priority: 'fe14bbd7-3b72-4e88-b224-b58d3a0eb132',
-        label: 'd4403fa5-e28c-47b8-814a-faa325653929',
+        label: '4fa18764-42fe-415a-a0b5-b5529428932f',
         categoryTier1: 'd4ef7224-b54b-48bb-b180-103a1f8e0086',
         categoryTier2: 'cf0b83a7-b47d-4947-9046-2c63674c841e',
         categoryTier3: '50e1c4ab-7ce2-4f8a-bf08-0f172eec713f',
