@@ -64,7 +64,7 @@ class ViewTask {
         inprogressErrorMsg: '[rx-view-component-id="a1072f99-4036-4e2e-8e62-e72b2ba22344"] p',
         statusDropdown: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] button',
         editAssignment: '.edit-button button',
-        assignToMe: '.assign-to-me button'
+        assignToMe: '.assign-to-me button',
     }
 
     async clickShowMoreTaskDescription(): Promise<void> {
@@ -347,25 +347,8 @@ class ViewTask {
         return null;
     }
 
-    async getAssignedGroupText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupValue)), 6000);
-        return await $(this.selectors.assignedGroupValue).getText();
-    }
-
     async getAssigneeText(): Promise<string> {
         return await $(this.selectors.assigneeName).getText();
-    }
-
-    async getDepartmentText(): Promise<string> {
-        return await $(this.selectors.departmentValue).getText();
-    }
-
-    async getBusinessUnitText(): Promise<string> {
-        return await $(this.selectors.businessUnitValue).getText();
-    }
-
-    async getAssignedCompanyText(): Promise<string> {
-        return await $(this.selectors.assignedCompanyValue).getText();
     }
 
     async isDynamicFieldPresent(fieldName: string): Promise<boolean> {

@@ -400,7 +400,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup");
@@ -425,7 +425,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
@@ -463,7 +463,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup");
@@ -488,7 +488,7 @@ describe('Create Adhoc task', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
