@@ -157,6 +157,7 @@ class CreateCasePage {
     }
 
     async selectRequester(requester: string): Promise<void> {
+        await $(this.selectors.requesterInput).clear();
         await $(this.selectors.requesterInput).sendKeys(requester);
         await $$(this.selectors.requesters).first().click();
     }
