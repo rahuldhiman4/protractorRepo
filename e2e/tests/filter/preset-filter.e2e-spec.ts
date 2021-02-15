@@ -16,22 +16,9 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Preset Filter Funcational Verification', () => {
     let randomStr1 = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let caseAgentuserData;
-    let caseAgentUserId = "caseAgent1" + randomStr1;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-
-        // Create User and assigned Document Manager Permission to agent
-        await apiHelper.apiLogin('tadmin');
-        caseAgentuserData = {
-            "firstName": "caseAgent2",
-            "lastName": "user2",
-            "userId": caseAgentUserId,
-            "userPermission": ["Case Agent", "Document Manager", "Human Resource"]
-        }
-        await apiHelper.createNewUser(caseAgentuserData);
-        await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, 'US Support 3');
     });
 
     afterAll(async () => {
@@ -55,10 +42,10 @@ describe('Preset Filter Funcational Verification', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": caseAgentUserId
+                "Assignee": "qfeng" 
             }
 
-            await apiHelper.apiLogin(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await apiHelper.apiLogin('qfeng'); 
             newCase = await apiHelper.createCase(caseData1);
 
             let articleData = {
@@ -68,14 +55,24 @@ describe('Preset Filter Funcational Verification', () => {
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United States Support",
                 "assigneeSupportGroup": "US Support 3",
-                "assignee": caseAgentUserId
+                "assignee": "qfeng"  //"assignee": caseAgentUserId
             }
             articleData.title = knowledgeTitle;
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
 
             // login in with created user.
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await loginPage.login('qfeng'); 
+        });
+        it('[12086]: Goto Case console and clear filter from case task and knowledge', async () => {
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.clearFilter();
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await navigationPage.signOut();
+            await loginPage.login('qfeng'); 
         });
 
         it('[12086]: Verify default preset filter on case console', async () => {
@@ -109,7 +106,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
         it('[12086]: Verify retain same case filter after logout and login in', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await loginPage.login('qfeng'); 
             expect(await utilityGrid.isAppliedFilterMatches(['My Open Cases'])).toBeTruthy('My Open Cases is missing');
 
             await utilityGrid.searchRecord(newCase.displayId);
@@ -131,7 +128,7 @@ describe('Preset Filter Funcational Verification', () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + "@petramco.com", "Password_1234");
+            await loginPage.login('qfeng'); 
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isAppliedFilterMatches(['My Open Articles'])).toBeTruthy('My Open Tasks is missing');
 
@@ -467,6 +464,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[12080]: Verify that users can create shared Preset filters and Custom Preset filters with the same name.', async () => {
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.deleteCustomPresetFilter('My Open Cases');
             await utilityGrid.applyPresetFilter('My Open Cases');
@@ -491,7 +489,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.saveFilter(filtername1);
 
             await utilityGrid.addFilter('Assignee', 'Qadim Katawazi', 'default');
-            await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
+            await utilityGrid.addFilter('Case ID\n(1 selected)', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername2);
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername2, "filterNew");
             await utilityGrid.updateCustomPresetFilter('Summary', `Test case for DRDMV23490${randomStr}`, 'default', "filterNew");
@@ -549,12 +547,13 @@ describe('Preset Filter Funcational Verification', () => {
         });
 
         it('[12079]: Verify all the Captions and Dynamic filters available on Case Console', async () => {
+            await navigationPage.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
             await utilityGrid.clickOnFilterButton();
 
-            await utilityGrid.clickOnFilterTab('Filters');
+            await utilityGrid.clickOnFilterTab('Available ');
 
             expect(await caseConsolePo.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
             expect(await utilityGrid.isAppliedFilterInputBoxDisplayedOnPresetFilter).toBeTruthy(`AppliedFilterInputBox is missing`);
@@ -584,7 +583,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr1.includes('Summary')).toBeTruthy(`Summary is missing`);
             expect(dynamicFilterArr1.includes('Target Date')).toBeTruthy(`Target Date is missing`);
 
-            await utilityGrid.clickOnFilterTab('Saved filters');
+            await utilityGrid.clickOnFilterTab('Saved');
             expect(await caseConsolePo.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
             expect(await caseConsolePo.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
 
@@ -602,7 +601,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.isPresetFilterNameDisplayed('All Cases  In Last 6 months')).toBeTruthy(`All Cases  In Last 6 months is missing`);
 
             await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Saved filters');
+            await utilityGrid.clickOnFilterTab('Saved');
             await utilityGrid.clickEditPresetFilterButton(filtername1);
 
             expect(await utilityGrid.isRequiredLabelDisplayedOnEditFilter('Filter name(required)')).toBeTruthy('Filter name label is missing');
@@ -663,7 +662,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.saveFilter(filtername1);
             await utilityGrid.clickOnFilterButton();
 
-            await utilityGrid.clickOnFilterTab('Filters');
+            await utilityGrid.clickOnFilterTab('Available ');
             expect(await taskConsolePo.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
             expect(await utilityGrid.isAppliedFilterInputBoxDisplayedOnPresetFilter).toBeTruthy(`AppliedFilterInputBox is missing`);
 
@@ -688,7 +687,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr1.includes('Task ID')).toBeTruthy(`Task ID is missing`);
             expect(dynamicFilterArr1.includes('Task Type')).toBeTruthy(`Task Type is missing`);
 
-            await utilityGrid.clickOnFilterTab('Saved filters');
+            await utilityGrid.clickOnFilterTab('Saved');
             expect(await taskConsolePo.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
             expect(await taskConsolePo.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
 
@@ -705,7 +704,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.isPresetFilterNameDisplayed('All Tasks In Last 6 months')).toBeTruthy(`All Tasks In Last 6 months is missing`);
 
             await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Saved filters');
+            await utilityGrid.clickOnFilterTab('Saved');
             await utilityGrid.clickEditPresetFilterButton(filtername1);
 
             expect(await utilityGrid.isRequiredLabelDisplayedOnEditFilter('Filter name(required)')).toBeTruthy('Filter name label is missing');
@@ -753,7 +752,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.saveFilter(filtername1);
             await utilityGrid.clickOnFilterButton();
 
-            await utilityGrid.clickOnFilterTab('Filters');
+            await utilityGrid.clickOnFilterTab('Available ');
 
             expect(await knowledgeConsolePo.isFieldLabelDisplayed('Applied filters')).toBeTruthy('Applied filter label is missing');
             expect(await utilityGrid.isAppliedFilterInputBoxDisplayedOnPresetFilter).toBeTruthy(`AppliedFilterInputBox is missing`);
@@ -784,7 +783,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr1.includes('Title')).toBeTruthy(`Title is missing`);
             expect(dynamicFilterArr1.includes('Version')).toBeTruthy(`Version is missing`);
 
-            await utilityGrid.clickOnFilterTab('Saved filters');
+            await utilityGrid.clickOnFilterTab('Saved');
             expect(await knowledgeConsolePo.isFieldLabelDisplayed('Created by me')).toBeTruthy('Created by me label is missing');
             expect(await knowledgeConsolePo.isFieldLabelDisplayed('Shared with me')).toBeTruthy('Shared with me label is missing');
 
@@ -797,7 +796,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(await utilityGrid.isPresetFilterNameDisplayed('All Articles In Last 6 months')).toBeTruthy(`All Articles In Last 6 months is missing`);
 
             await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Saved filters');
+            await utilityGrid.clickOnFilterTab('Saved');
             await utilityGrid.clickEditPresetFilterButton(filtername1);
 
             expect(await utilityGrid.isRequiredLabelDisplayedOnEditFilter('Filter name(required)')).toBeTruthy('Filter name label is missing');
@@ -843,7 +842,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
     });
 
-    //kgaikwad
+    //kgaikwad (with keep blank required field filter gets saved and not shows validatoin)
     describe('[12072]: Verify mandatary fields with verify validation on edit custom fields', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
@@ -870,19 +869,18 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.addFilter('Case ID', newCase.displayId, "default");
             await utilityGrid.saveFilter(filtername1);
             await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Saved filters');
+            await utilityGrid.clickOnFilterTab('Saved');
             await utilityGrid.clickEditPresetFilterButton(filtername1);
 
             expect(await utilityGrid.isRequiredLabelDisplayedOnEditFilter('Filter name(required)')).toBeTruthy('Filter name label is missing');
             expect(await utilityGrid.isRequiredLabelDisplayedOnEditFilter('Applied filters(required)')).toBeTruthy('Applied filters label is missing');
 
             await utilityGrid.clearFilterNameOnEditPresetFilter();
-            await utilityGrid.removeFilterValue('Case ID', newCase.displayId);
-
+            await utilityGrid.clickEditFilterSaveButton();
+            await utilityGrid.removeFilterValue('Case ID\n(1 selected)', newCase.displayId);
             expect(await utilityGrid.IsEditPresetFilterSaveButtonEnabled()).toBeFalsy('Preset filters save buton is enabled');
             expect(await utilityGrid.isValidationMessageDisplayedOnEditPresetFilter('Filter name is required')).toBeTruthy('Filter name is required validation message missing');
-            expect(await utilityGrid.isValidationMessageDisplayedOnEditPresetFilter('Please fill out this field: Required')).toBeTruthy('Required: Please fill out this field validation message missing');
-
+            expect(await utilityGrid.isValidationMessageDisplayedOnEditPresetFilter('Required: Please fill out this field')).toBeTruthy('Required: Please fill out this field validation message missing');
             await utilityGrid.clickBackButtonOnEditCustomPresetFilter();
             await utilityGrid.clickRefreshIcon();
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername1, filtername2);
@@ -944,7 +942,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.updateCustomPresetFilter('Requester', 'Qiang Du', 'default', filtername1);
 
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Assignee: Qadim Katawazi', `Assigned Group: US Support 3`, 'Requester: Qiang Du'])).toBeTruthy('Applied filter is missing');
-            expect(await utilityGrid.isGridColumnSorted('Case ID', 'desc')).toBeTruthy('Column not sorted on case console page');
+            expect(await utilityGrid.isGridColumnSorted('Case ID', 'descending')).toBeTruthy('Column not sorted on case console page');
 
             let caseId1 = await utilityGrid.getFirstGridRecordColumnValue('Case ID');
             await navigationPage.gotoTaskConsole();
@@ -953,7 +951,7 @@ describe('Preset Filter Funcational Verification', () => {
 
             let caseId2 = await utilityGrid.getFirstGridRecordColumnValue('Case ID');
             expect(caseId1).toBe(caseId2);
-            expect(await utilityGrid.isGridColumnSorted('Case ID', 'desc')).toBeTruthy('Column not sorted on case console page');
+            expect(await utilityGrid.isGridColumnSorted('Case ID', 'descending')).toBeTruthy('Column not sorted on case console page');
         });
 
         it('[12070]: Add adhoc task', async () => {
@@ -980,7 +978,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.updateCustomPresetFilter('Task Type', 'Manual', 'checkbox', filtername1);
 
             expect(await utilityGrid.isAppliedFilterMatches(['Assignee: Qadim Katawazi', `Assigned Group: US Support 3`, 'Status: Staged', 'Task Type: Manual'])).toBeTruthy('Applied filter is missing');
-            expect(await utilityGrid.isGridColumnSorted('Task ID', 'desc')).toBeTruthy('Column not sorted on case console page');
+            expect(await utilityGrid.isGridColumnSorted('Task ID', 'descending')).toBeTruthy('Column not sorted on case console page');
             let taskId1 = await utilityGrid.getFirstGridRecordColumnValue('Task ID');
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoTaskConsole();
@@ -988,7 +986,7 @@ describe('Preset Filter Funcational Verification', () => {
 
             let taskId2 = await utilityGrid.getFirstGridRecordColumnValue('Task ID');
             expect(taskId1).toBe(taskId2);
-            expect(await utilityGrid.isGridColumnSorted('Task ID', 'desc')).toBeTruthy('Column not sorted on case console page');
+            expect(await utilityGrid.isGridColumnSorted('Task ID', 'descending')).toBeTruthy('Column not sorted on case console page');
         });
 
         it('[12070]: Verify that Applied Custom Preset filter and sorting is retained when the user navigates back to Knowledge Article Console from any other page', async () => {
@@ -1004,7 +1002,7 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.updateCustomPresetFilter('Template Name', 'Reference', 'default', filtername1);
 
             expect(await utilityGrid.isAppliedFilterMatches(['Company: Petramco', 'Knowledge Set: HR', 'Status: In Progress', 'Template Name: Reference'])).toBeTruthy('Applied filter is missing');
-            expect(await utilityGrid.isGridColumnSorted('Article ID', 'desc')).toBeTruthy('Column not sorted on case console page');
+            expect(await utilityGrid.isGridColumnSorted('Article ID', 'descending')).toBeTruthy('Column not sorted on case console page');
             let taskId1 = await utilityGrid.getFirstGridRecordColumnValue('Article ID');
             await navigationPage.gotoTaskConsole();
             await navigationPage.gotoKnowledgeConsole();
@@ -1012,7 +1010,7 @@ describe('Preset Filter Funcational Verification', () => {
 
             let taskId2 = await utilityGrid.getFirstGridRecordColumnValue('Article ID');
             expect(taskId1).toBe(taskId2);
-            expect(await utilityGrid.isGridColumnSorted('Article ID', 'desc')).toBeTruthy('Column not sorted on case console page');
+            expect(await utilityGrid.isGridColumnSorted('Article ID', 'descending')).toBeTruthy('Column not sorted on case console page');
         });
         afterAll(async () => {
             await utilityGrid.clearFilter();
@@ -1046,12 +1044,12 @@ describe('Preset Filter Funcational Verification', () => {
             await utilityGrid.saveFilter(filtername1);
             expect(await utilityGrid.isAppliedFilterMatches([`Case ID: ${newCase.displayId}`])).toBeTruthy('Applied filter is missing');
             await utilityGrid.clickOnFilterButton();
-            await utilityGrid.clickOnFilterTab('Filters');
+            await utilityGrid.clickOnFilterTab('Available ');
 
             let dynamicFilterArr1: string[] = await utilityGrid.getAllDynamicFilterName();
             expect(dynamicFilterArr1.includes('Case ID')).toBeTruthy(`Case ID is missing`);
             expect(dynamicFilterArr1.includes('Article ID')).toBeFalsy(`Article ID is displayed`);
-            await utilityGrid.clickOnFilterTab('Saved filters');
+            await utilityGrid.clickOnFilterTab('Saved');
             await utilityGrid.clickEditPresetFilterButton(filtername1);
             let dynamicFilterArr2: string[] = await utilityGrid.getAllDynamicFilterName();
             expect(dynamicFilterArr2.includes('Case ID')).toBeTruthy(`Case ID is missing`);
