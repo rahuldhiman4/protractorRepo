@@ -1419,8 +1419,8 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickTaskLink("Summary1" + randomStr);
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 3');
-            expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 3');
+            expect(await changeAssignmentBladePo.getAssigneeValue()).toBe('Qadim Katawazi');
         });
         it('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
@@ -1430,7 +1430,7 @@ describe('Create Case Task', () => {
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiao Feng');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             expect(await viewTask.getAssigneeText()).toBe('Qiao Feng');
             await viewTask.clickOnViewCase();
         });
@@ -1453,8 +1453,8 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickTaskLink("Summary2" + randomStr);
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 1');
-            expect(await viewTask.getAssigneeText()).toBe('None', 'None assignee Text is missing');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentBladePo.getAssigneeValue()).toBe('None', 'None assignee Text is missing');
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -1602,8 +1602,8 @@ describe('Create Case Task', () => {
             expect(await viewTask.getCategoryTier2Value()).toBe(casetemplatePetramco.categoryTier2);
             expect(await viewTask.getCategoryTier3Value()).toBe(casetemplatePetramco.categoryTier3);
             expect(await viewTask.getTaskSummaryValue()).toBe('Summary' + randomStr);
-            expect(await viewTask.getAssignedGroupText()).toBe(casetemplatePetramco.ownerGroup);
-            expect(await viewTask.getAssigneeText()).toBe('Qadim Katawazi');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe(casetemplatePetramco.ownerGroup);
+            expect(await changeAssignmentBladePo.getAssigneeValue()).toBe('Qadim Katawazi');
         });
         it('[6088]: [Edit Task] Update summary, status, description and assignment', async () => {
             await viewTask.clickOnEditTask();
@@ -1632,8 +1632,8 @@ describe('Create Case Task', () => {
             expect(await viewTask.getCategoryTier2Value()).toBe('Finance');
             expect(await viewTask.getCategoryTier3Value()).toBe('Reporting');
             expect(await viewTask.getTaskSummaryValue()).toBe('UpdatedSummary' + randomStr);
-            expect(await viewTask.getAssignedGroupText()).toBe('Workforce Administration');
-            expect(await viewTask.getAssigneeText()).toBe('Peter Kahn');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('Workforce Administration');
+            expect(await changeAssignmentBladePo.getAssigneeValue()).toBe('Peter Kahn');
             await viewTask.clickOnViewCase();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
@@ -1660,8 +1660,8 @@ describe('Create Case Task', () => {
             await manageTaskBladePo.clickTaskLink("AdHocSummary" + randomStr);
             await expect(viewTask.getRequesterName()).toBe('Qianru Tao');
             await expect(viewTask.getContactPersonName()).toBe('Elizabeth Peters');
-            expect(await viewTask.getAssignedGroupText()).toBe('US Support 2');
-            expect(await viewTask.getAssigneeText()).toBe('Qiao Feng');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 2');
+            expect(await changeAssignmentBladePo.getAssigneeValue()).toBe('Qiao Feng');
             await viewTask.clickOnEmailAddress('qtao@petramco.com');
             await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -1686,8 +1686,8 @@ describe('Create Case Task', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe(templateData.supportGroup);
-            expect(await viewTask.getAssigneeText()).toBe('None', 'None assignee Text is missing');
+            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe(templateData.supportGroup);
+            expect(await changeAssignmentBladePo.getAssigneeValue()).toBe('None', 'None assignee Text is missing');
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('In Progress');
             expect(await viewTask.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this task status.  Please select an assignee. ');
