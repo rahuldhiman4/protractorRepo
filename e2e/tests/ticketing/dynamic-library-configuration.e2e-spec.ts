@@ -10,8 +10,11 @@ import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-field-library-config.po';
+import createDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-group-library-config.po';
 import dynamicFieldLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-field-library-config-console.po';
+import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-group-library-config-console.po';
 import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
+import editDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-group-library-config.po';
 import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import editCasetemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
 import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
@@ -22,9 +25,6 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import createDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/create-dynamic-group-library-config.po';
-import dynamicGroupLibraryConfigConsolePo from '../../pageobject/settings/application-config/dynamic-group-library-config-console.po';
-import editDynamicGroupLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-group-library-config.po';
 import utilityGrid from '../../utils/utility.grid';
 
 
@@ -100,14 +100,15 @@ describe('Dynamic Library Configuration', () => {
 
     });
 
+    // adapt issue select dropdown with space
     describe('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
-            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential","Created Date","ID","Modified By","Modified Date"];
-            let header: string[] = ["InformationSource", "Confidential","Created Date","ID","Modified By","Modified Date"];
+            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential", "Created Date", "ID", "Modified By", "Modified Date"];
+            let header: string[] = ["InformationSource", "Confidential", "Created Date", "ID", "Modified By", "Modified Date"];
             //field Text type    
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();
             await dynamicFieldLibraryConfigConsolePo.addColumnOnGrid(header);
@@ -209,7 +210,7 @@ describe('Dynamic Library Configuration', () => {
             await utilityGrid.clearFilter();
         });
         it('[4875,4876,4872]: [Dynamic Data] - Add all type of fields in Field Library', async () => {
-            await utilityGrid.searchAndOpenHyperlink('ABCDEFGHIJKLMNOPQRSTUVWXYZ' + randomString );
+            await utilityGrid.searchAndOpenHyperlink('ABCDEFGHIJKLMNOPQRSTUVWXYZ' + randomString);
             expect(await editDynamicFieldLibraryConfigPo.isFieldNameAttribute("readOnly")).toBeTruthy();
             expect(await editDynamicFieldLibraryConfigPo.isFieldValueTypeAttribute("aria-disabled")).toBeTruthy();
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
@@ -337,7 +338,6 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.selectInfromationSource("System");
             await dynamicFieldsPage.clickSaveButton();
         });
-
         it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicFieldsPage.clickOnDynamicField();
@@ -353,7 +353,6 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.selectInfromationSource("Task Assignee");
             await dynamicFieldsPage.clickSaveButton();
         });
-
         it('[4874]: [-ve] [Dynamic Data] - Add fields with different format of field names (ID)', async () => {
             expect(await viewTasktemplatePo.isDynamicFieldPresent('ABCDEFGHIJKLMNOPQRSTUVWZYZ' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('1234567890' + randomStr)).toBeTruthy();
@@ -801,8 +800,8 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicGroupLibraryConfigPo.setDynamicGroupName(dynamicGrpText);
             await createDynamicGroupLibraryConfigPo.clickOnDisplayLabelocalizedLink();
             await createDynamicGroupLibraryConfigPo.setLocalizedValue(dynamicGrpDisplayLabel);
-             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
-             expect(await createDynamicGroupLibraryConfigPo.getDynamicGroupWarningMessage()).toBe(dynamicGroupWarningText);
+            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
+            expect(await createDynamicGroupLibraryConfigPo.getDynamicGroupWarningMessage()).toBe(dynamicGroupWarningText);
 
             await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
             await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
@@ -820,7 +819,7 @@ describe('Dynamic Library Configuration', () => {
 
             await editDynamicGroupLibraryConfigPo.setStatusValue('Inactive');
             await editDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
-            await editDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText+"updated");
+            await editDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText + "updated");
             await editDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
             await editDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');

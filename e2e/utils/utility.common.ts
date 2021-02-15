@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 import { DropDownType } from './constants';
-import { async } from 'q';
 
 const fs = require('fs');
 
@@ -47,6 +46,7 @@ export class Utility {
                     await dropDownIdentifier.click();
                     let option = await element(by.cssContainingText(this.selectors.dropDownChoice, dropDownValue));
                     try {
+                        await this.scrollToElement(option);
                         await option.click();
                     } catch (ex) {
                         console.log(`Dropdown option not present: ${dropDownValue}`, ex);

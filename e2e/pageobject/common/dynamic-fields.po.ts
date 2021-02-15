@@ -122,15 +122,14 @@ class DynamicField {
     }
 
     async selectFieldValueType(dataType: string): Promise<void> {
-         let size = await $$(this.selectors.fieldValueType).count();
+        let size = await $$(this.selectors.fieldValueType).count();
         // await $$(this.selectors.fieldValueType).get(size - 2).click();
         // await element(by.cssContainingText(this.selectors.dropdownvalue, dataType)).click();
-        await utilityCommon.selectDropDown($$(this.selectors.fieldValueType).get(size - 2),dataType,DropDownType.WebElement);
+        await utilityCommon.selectDropDown($$(this.selectors.fieldValueType).get(size - 2), dataType, DropDownType.WebElement);
     }
 
     async selectInfromationSource(sourceValue: string): Promise<void> {
-        await $$(this.selectors.informationSource).last().click();
-        await element(by.cssContainingText(this.selectors.dropdownvalue, sourceValue)).click();
+        await utilityCommon.selectDropDown($$(this.selectors.informationSource).last(), sourceValue, DropDownType.WebElement);
     }
 
     async clickEnabledRequiredRadioButton(): Promise<void> {
