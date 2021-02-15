@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 import { DropDownType } from './constants';
+import { async } from 'q';
 
 const fs = require('fs');
 
@@ -45,7 +46,12 @@ export class Utility {
                 if (!(typeof dropDownIdentifier === 'string')) {
                     await dropDownIdentifier.click();
                     let option = await element(by.cssContainingText(this.selectors.dropDownChoice, dropDownValue));
-                    await option.click();
+                    try {
+                        await option.click();
+                    } catch (ex) {
+                        console.log(`Dropdown option not present: ${dropDownValue}`, ex);
+                        await dropDownIdentifier.click();
+                    }
                 }
                 break;
             }
@@ -62,7 +68,12 @@ export class Utility {
                             if (dropDownLabelText === dropDownIdentifier) {
                                 await dropDown[i].$('button').click();
                                 await dropDown[i].$('input').sendKeys(dropDownValue);
-                                await element(by.cssContainingText('[role="option"] div', dropDownValue)).click();
+                                try {
+                                    await element(by.cssContainingText('[role="option"] div', dropDownValue)).click();
+                                } catch (ex) {
+                                    console.log(`Dropdown option not present: ${dropDownValue}`, ex);
+                                    await dropDown[i].$('button').click();
+                                }
                             }
                         }
                     });
@@ -82,10 +93,15 @@ export class Utility {
                             if (dropDownLabelText === dropDownIdentifier) {
                                 await dropDown[i].$('.d-icon-angle_down').click();
                                 await dropDown[i].$('input').sendKeys(dropDownValue);
-                                await element(by.cssContainingText("li[ng-repeat*='option']", dropDownValue)).isPresent().then(async () => {
-                                    await browser.sleep(1000); // Wait For Drop Down Values Are Loaded And Ready To Select Value.
-                                    await element(by.cssContainingText(".is-open li[ng-repeat*='option']", dropDownValue)).click();
-                                });
+                                try {
+                                    await element(by.cssContainingText("li[ng-repeat*='option']", dropDownValue)).isPresent().then(async () => {
+                                        await browser.sleep(1000); // Wait For Drop Down Values Are Loaded And Ready To Select Value.
+                                        await element(by.cssContainingText(".is-open li[ng-repeat*='option']", dropDownValue)).click();
+                                    });
+                                } catch (ex) {
+                                    console.log(`Dropdown option not present: ${dropDownValue}`, ex);
+                                    await dropDown[i].$('.d-icon-angle_down').click();
+                                }
                             }
                         }
                     });
@@ -105,9 +121,14 @@ export class Utility {
                 // });
                 let optionCss: string = `[rx-view-component-id="${dropDownIdentifier}"] .dropdown-item`;
                 let option = await element(by.cssContainingText(optionCss, dropDownValue));
-                await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async () => {
-                    await option.click();
-                });
+                try {
+                    await browser.wait(this.EC.elementToBeClickable(option), 3000).then(async () => {
+                        await option.click();
+                    });
+                } catch (ex) {
+                    console.log(`Dropdown option not present: ${dropDownValue}`, ex);
+                    await dropDown.$(this.selectors.dropdownBox).click();
+                }
                 break;
             }
         }
@@ -447,8 +468,9 @@ export class Utility {
         if (actualNumberOfPopups) {
             let count = 0;
             let i = 0;
-            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 5000);
-            arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
+            await browser.wait(this.EC.visibilityOf($(this.selectors.popUpMsgLocator)), 5000).then(async () => {
+                arr[i] = await $$(this.selectors.popUpMsgLocator).first().getText();
+            });
             let prevVal = arr[0];
             if (await browser.wait(this.EC.or(async () => {
                 count = await $$(this.selectors.popUpMsgLocator).count();

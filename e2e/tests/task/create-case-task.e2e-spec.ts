@@ -466,7 +466,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    // owner group permission not honoured in template
+    // owner group permission not honored in template
     describe('[4935]: Task Template access when owner group from different company is applied', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manualtask' + randomStr;
@@ -848,7 +848,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw.. fixed??
     it('[5554]: [Automatic Task] - When Case is Cancelled while there are Automatic Tasks which are in Staged, Assigned, Resolved, Closed state', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
@@ -955,7 +955,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw..not fixed
     describe('[5561]: [Automatic task] - Task Activation based on its sequence no.', async () => {
         let templateData1, templateData2, templateData3, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -1374,6 +1374,7 @@ describe('Create Case Task', () => {
         });
     });
 
+    //ankagraw..not fixed
     describe('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco;
@@ -1461,6 +1462,7 @@ describe('Create Case Task', () => {
         });
     });
 
+    //ankagraw..not fixed
     describe('[6088]: [Edit Task] Update summary, status, description and assignment', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;

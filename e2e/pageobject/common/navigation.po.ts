@@ -1,6 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import editCasetemplatePo from '../settings/case-management/edit-casetemplate.po';
+import createTasktemplatePo from '../settings/task-management/create-tasktemplate.po';
 import editTasktemplatePo from '../settings/task-management/edit-tasktemplate.po';
 
 class NavigationPage {
@@ -294,6 +295,13 @@ class NavigationPage {
 
             await $('.d-icon-left-undo').isPresent().then(async (backButton) => {
                 if (backButton) return await $('.d-icon-left-undo').click();
+            });
+
+            await $(createTasktemplatePo.selectors.cancelButton).isPresent().then(async (cancelBtn) => {
+                if (cancelBtn) {
+                    await $(createTasktemplatePo.selectors.cancelButton).click();
+                    await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+                }
             });
         }
 
