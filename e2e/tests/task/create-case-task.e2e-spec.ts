@@ -356,7 +356,7 @@ describe('Create Case Task', () => {
     });
 
     // categ2 not populated
-    fdescribe('[5015,5014,5020,4997]: [ Task ] - Verify Associated menu for Task will show global configuration values as well', async () => {
+    describe('[5015,5014,5020,4997]: [ Task ] - Verify Associated menu for Task will show global configuration values as well', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
@@ -417,7 +417,7 @@ describe('Create Case Task', () => {
     });
 
     // categ2 not populated
-    fdescribe('[4941]: Task Template submitter from different company of owner group can edit the template', async () => {
+    describe('[4941]: Task Template submitter from different company of owner group can edit the template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = randomStr + 'Manual task';
         let TaskSummary = randomStr + 'Summary';
@@ -467,7 +467,7 @@ describe('Create Case Task', () => {
     });
 
     // owner group permission not honored in template
-    fdescribe('[4935]: Task Template access when owner group from different company is applied', async () => {
+    describe('[4935]: Task Template access when owner group from different company is applied', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let TaskTemplate = 'Manualtask' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
@@ -512,7 +512,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    fdescribe('[5558]: [Automatic Task] - Automated Task Status transition validation', async () => {
+    describe('[5558]: [Automatic Task] - Automated Task Status transition validation', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         let automationTaskTemplate = 'Automatic task' + randomStr;
         let automationTaskSummary = 'Summary' + randomStr;
