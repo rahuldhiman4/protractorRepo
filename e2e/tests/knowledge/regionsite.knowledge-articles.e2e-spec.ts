@@ -455,7 +455,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
-            await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
+            await createDocumentLibraryPage.selectSupportOrg(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
@@ -480,7 +480,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title1);
             await createDocumentLibraryPage.selectCompany(companyStr);
-            await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
+            await createDocumentLibraryPage.selectSupportOrg(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
@@ -506,7 +506,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             let title2 = `Document2_${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title2);
             await createDocumentLibraryPage.selectCompany(companyStr);
-            await createDocumentLibraryPage.selectBusinessUnit(hrSupportStr);
+            await createDocumentLibraryPage.selectSupportOrg(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
@@ -562,7 +562,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             let title = `Document-${new Date().valueOf()}`;
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
-            await createDocumentLibraryPage.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPage.selectSupportOrg('HR Support');
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
@@ -628,7 +628,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
-            await createDocumentLibraryPage.selectBusinessUnit('Facilities Support');
+            await createDocumentLibraryPage.selectSupportOrg('Facilities Support');
             await createDocumentLibraryPage.selectOwnerGroup('Facilities');
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);

@@ -16,7 +16,7 @@ class DocumentLibraryPage {
         attachmentField: '[rx-view-component-id="d9a66a3a-d637-45d7-bb1c-bd60a50c5914"] input',
         attachmentGuid: 'd9a66a3a-d637-45d7-bb1c-bd60a50c5914',
         companyFieldGuid: 'cc6775d9-040f-4fde-bddf-7ab2334d6881',
-        businessUnitFieldGuid: '3b6ebf9c-13f1-4924-8740-3f720ae8335a',
+        businessUnitFieldGuid: '732fbb60-8861-484e-a233-817231bf510d',
         ownerGroupFieldGuid: 'c44f53f6-3ffc-42f7-b958-1ef65cee75e6',
         deleteButton: '[rx-view-component-id="6e44c878-cc4a-4de1-8626-c786b5d309d7"] button',
         saveButton: '[rx-view-component-id="2ddf1845-1e5a-48f9-b6fd-1497f9be0daf"] button',
@@ -48,6 +48,7 @@ class DocumentLibraryPage {
         cancelGuid: '00107b90-bb31-4776-a855-44fea128a0de',
         cancelButton: '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button',
         lobValue: '[rx-view-component-id="b7ce46f7-92b4-4847-901f-a6d8f4e4fef9"] .pull-left',
+        lob: '[rx-view-component-id="af6075c8-2249-4c8a-938d-2cb4e08d48c4"] button div',
         siteGroupGuid: '4f23d28f-846e-4451-ab41-4582dd3c44e1'
     }
 
@@ -174,7 +175,7 @@ class DocumentLibraryPage {
         await utilityCommon.selectDropDown(this.selectors.companyFieldGuid, companyName);
     }
 
-    async selectBusinessUnit(buisnessUnit: string): Promise<void> {
+    async selectSupportOrg(buisnessUnit: string): Promise<void> {
         await utilityCommon.selectDropDown("Support Organization", buisnessUnit,DropDownType.Label);
     }
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
@@ -268,7 +269,7 @@ class DocumentLibraryPage {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(this.selectors.lob).getText();
     }
 }
 
