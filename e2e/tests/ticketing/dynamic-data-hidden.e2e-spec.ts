@@ -8,7 +8,6 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from "../../pageobject/case/view-case.po";
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
-import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
 import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
@@ -36,7 +35,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-let userData1 = undefined, userData2;
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
@@ -82,12 +81,13 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.setTaskDescription('Description in manual task');
             await createTaskTemplate.selectCompanyByName('Petramco');
             await createTaskTemplate.setExistingProcessName('A Failing Process');
-            expect(await createTaskTemplate.isProcessTitlePresent("New Process Name")).toBeFalsy("New Process Title Present");
+            expect(await createTaskTemplate.isNewProcessNamePresent()).toBeFalsy("New Process Title Present");
             await createTaskTemplate.selectBuisnessUnit('United States Support');
             await createTaskTemplate.selectOwnerGroup('US Support 3');
             await createTaskTemplate.clickOnSaveTaskTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityCommon.closePopUpMessage();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4820]: [Dynamic Data] [UI] - Automated Task Template UI on create and on Edit', async () => {
             await navigationPage.gotoSettingsPage();
@@ -99,6 +99,8 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isEditProcessLinkDisplayed()).toBeFalsy(" Edit link is displayed");
             expect(await editTaskTemplate.getTaskTypeValueAttribute('disabled')).toBeTruthy(" Attribute value is disabled");
             expect(await editTaskTemplate.isManageProcessLinkDisplayed()).toBeTruthy(" Manage process link present");
+            await editTaskTemplate.clickOnCancelButton();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4820]: create same name record in same LOB', async () => {
             //create same name record in same LOB
@@ -113,7 +115,8 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.selectCompanyByName('Petramco');
             await createTaskTemplate.setNewProcessName('Process' + randomStr);
             await createTaskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (12734): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             await createTaskTemplate.clickOnCancelTaskTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -127,21 +130,19 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.selectCompanyByName('Petramco');
 
             // verify categ1, BU and SG as per LOB
-            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card'])).toBeTruthy("Category 1");
             await createTaskTemplate.selectOwnerCompany('Petramco');
-            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support'])).toBeTruthy('SupportOrg');
             await createTaskTemplate.selectOwnerCompany('Petramco');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
-            await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service'])).toBeTruthy('Owner Group');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
             await createTaskTemplate.selectOwnerGroup('Facilities');
-            await createTaskTemplate.clickOnAssignment();
-            await changeAssignmentOldBladePo.selectCompany('Petramco');
-            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Business Unit', ['Facilities', 'Facilities Support']);
-            await changeAssignmentOldBladePo.selectCompany('Petramco');
-            await changeAssignmentOldBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Support Group', ['Facilities', 'Pantry Service']);
-            await changeAssignmentOldBladePo.clickOnCancelButton();
+            await changeAssignmentPo.setDropDownValue("Company", 'Petramco');
+            expect(await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support'])).toBeTruthy('SupportOrg');
+            await changeAssignmentPo.setDropDownValue("Company", 'Petramco');
+            await changeAssignmentPo.setDropDownValue("SupportOrg", 'Facilities Support');
+            expect(await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])).toBeTruthy('AssignedGroup');
             // verify LOB is there
             expect(await createTaskTemplate.getLobValue()).toBe("Facilities");
             await createTaskTemplate.clickOnSaveTaskTemplate();
@@ -150,12 +151,14 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automatedTaskTemplate1);
             expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
-            await viewTaskTemplate.clickBackArrowBtn();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('jbarnes');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');           
         });
     });
 
@@ -229,6 +232,7 @@ describe('Dynamic Hidden Data', () => {
         await dynamicGroupLibraryConfigConsolePo.clickAddDynamicGroupButton();
         await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
         expect(await createDynamicGroupLibraryConfigPo.verifyTitle("Hidden")).toBeFalsy();
+        await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupCancelButton();
     });
 
     //ankagraw
@@ -271,7 +275,7 @@ describe('Dynamic Hidden Data', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await viewCasePo.getCaseID()
+            await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
@@ -283,9 +287,8 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeCaseStatus("Resolved");
             await updateStatusBladePo.setStatusReason('Auto Resolved');
-            await browser.sleep(2000);
             await updateStatusBladePo.clickSaveStatus();
-            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451")).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451", 1)).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -309,7 +312,7 @@ describe('Dynamic Hidden Data', () => {
             await updateStatusBladePo.changeCaseStatus("Resolved");
             await updateStatusBladePo.setStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451")).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451", 1)).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -357,7 +360,7 @@ describe('Dynamic Hidden Data', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await viewCasePo.getCaseID()
+            await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
             await browser.sleep(2000);
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
@@ -437,6 +440,7 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskTemplate.clickOnEditMetaData();
             await editTaskTemplate.selectTemplateStatus("Active");
             await editTaskTemplate.clickOnSaveMetadata();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[3607,3613]: Validate dynamic field is visible', async () => {
             await navigationPage.gotoCaseConsole();
@@ -545,6 +549,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
@@ -573,6 +578,7 @@ describe('Dynamic Hidden Data', () => {
             await viewTaskTemplate.clickOnEditMetaData();
             await editTaskTemplate.selectTemplateStatus("Active");
             await editTaskTemplate.clickOnSaveMetadata();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[3622,3611]: Validate dynamic field is visible', async () => {
             await navigationPage.gotoCaseConsole();
@@ -758,7 +764,7 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3609]: Validate dynamic field ', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21415')).toBeTruthy();
-           let caseid =  await viewCasePo.getCaseID();
+            let caseid = await viewCasePo.getCaseID();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(`manualTaskTemplate1 ${randomStr}`);
             await manageTaskBladePo.clickCloseButton();
@@ -910,6 +916,8 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isDynamicFieldPresent("externalTime")).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent("externalAttachment1")).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent("dynamicList")).toBeTruthy();
+            await viewTaskTemplate.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
@@ -946,6 +954,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary("test the 4852");
+            await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
@@ -954,7 +963,6 @@ describe('Dynamic Hidden Data', () => {
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate1);
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
-            await viewCasePo.clickOnGroupName('GroupOne');
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('externalNumber')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('externalDate')).toBeTruthy();
@@ -1011,7 +1019,6 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);
-            await viewCasePo.clickOnGroupName('GroupOne');
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group1')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group2')).toBeTruthy();
@@ -1032,6 +1039,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group1')).toBeFalsy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field2Group2')).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('FieldGroup2')).toBeTruthy();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -1064,6 +1072,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTemplate2);
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
+            await viewTaskTemplate.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(manualTemplate1);
@@ -1087,6 +1096,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group1')).toBeFalsy();
             expect(await viewTaskTemplate.isDynamicFieldPresent('Field2Group2')).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent('FieldGroup2')).toBeTruthy();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 

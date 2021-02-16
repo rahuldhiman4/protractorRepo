@@ -30,7 +30,7 @@ export class GridOperations {
         filterValue: '[class="filter-tags__tag-text"]',
         filterName: '.radio__item span',
         editPresetFilterSaveButton: '.advanced-filter__editing-footer .btn-primary',
-        savePresetInput: '.advanced-filter-name-editor__input',
+        savePresetInput: 'input[placeholder="Enter preset name"]',
         saveOrCancelPresetFilterButton: 'button.custom-action-btn__right',
         lineOfBusinessDropDown: 'button[btn-type="tertiary"]',
         deleteButton: 'button span'
@@ -114,12 +114,10 @@ export class GridOperations {
         let gridGuid: string = '';
         if (guid) { gridGuid = `[rx-view-component-id="${guid}"] `; }
         let rowLocator = await $$(gridGuid + this.selectors.gridRows);
-
         for (let i: number = 0; i < await rowLocator.length; i++) {
-            let tempRowLocator = await $$(gridGuid + this.selectors.gridRows).get(i);
-            let linkText: string = await tempRowLocator.$(this.selectors.gridRowHyperLinks).getText();
+            let linkText: string = await $$(gridGuid + this.selectors.gridRows).get(i).$(this.selectors.gridRowHyperLinks).getText();
             if (linkText.trim() == value) {
-                await tempRowLocator.$(this.selectors.gridCheckbox).click();
+                await $$(gridGuid + this.selectors.gridRows).get(i).$(this.selectors.gridCheckbox).click();
                 break;
             }
         }
@@ -165,7 +163,7 @@ export class GridOperations {
             if (result) {
                 await $(filterPresetBtn).click();
                 await $$(clearBtn).first().click();
-                await $(filterPresetBtn).click(); //Need to update once defect DRDMV-24648 is resolved
+                await $(refreshIcon).click();
                 let hiddentFilter2 = await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').isPresent();
                 if (hiddentFilter2 == true) {
                     await $('.adapt-table-toolbar-hidden-items-dropdown .d-icon-ellipsis').click();

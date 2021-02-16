@@ -17,28 +17,21 @@ describe('Task Console Preset Filter', () => {
     const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
     const suppGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
 
-
+    const userId = 'mcarney';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
-        await foundationData('Phylum');
+        //await foundationData('Phylum');
+        await loginPage.login(userId);
 
-        await loginPage.login('idphylumHR1@petramco.com', 'Password_1234');
-        await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
-
-       // Create the new status Configurations
-        browser.sleep(6000); //New user is created above, waiting for its backend access preperation
-        try {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfig.setCompanyDropdown('Phylum', 'task');
-            await statusConfig.clickEditLifeCycleLink();
-            await statusConfig.addCustomStatus('Completed', 'Closed', 'AfterCompleted');
-            await statusConfig.addCustomStatus('In Progress', 'Completed', 'BeforeCompleted');
-        }
-        catch (ex) { throw ex; }
-        finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
+        // Create the new status Configurations
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
+        await statusConfig.setCompanyDropdown('Phylum', 'task');
+        await statusConfig.clickEditLifeCycleLink();
+        await statusConfig.addCustomStatus('Completed', 'Closed', 'AfterCompleted');
+        await statusConfig.addCustomStatus('In Progress', 'Completed', 'BeforeCompleted');
         await navigationPage.gotoTaskConsole();
 
     });
@@ -48,7 +41,7 @@ describe('Task Console Preset Filter', () => {
     });
 
     async function foundationData(company: string) {
-       
+
         let businessData = businessDataFile["PhylumBusinessUnitHRData"];
         businessData.relatedOrgId = company;
         let businessUnitId = await apiHelper.createBusinessUnit(businessData);
@@ -82,7 +75,7 @@ describe('Task Console Preset Filter', () => {
     describe('[3673]: Validate the My Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[3673]: Task Data creation with different status', async () => {
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             taskData.FAILED_TASK_TEMPLATE.templateName = taskData.FAILED_TASK_TEMPLATE.templateName + randomString;
             await apiHelper.createAutomatedTaskTemplate(taskData.FAILED_TASK_TEMPLATE).catch(() => {
                 console.log('Issue while creating the Failed Task Template');
@@ -151,7 +144,7 @@ describe('Task Console Preset Filter', () => {
             let response16 = await apiHelper.addTaskToCase(create_task_from_task_template, response15.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push((await apiHelper.getCreatedTaskIds(response16)).displayId);
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             await apiHelper.updateCaseStatus(response15.id, 'InProgress');
 
             //Creating the task 10 and updating it to After Completed state
@@ -199,7 +192,7 @@ describe('Task Console Preset Filter', () => {
     describe('[3672]: Validate the All Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[3672]: Task Data creation with different status', async () => {
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
 
             //Creating the task 1 and updating it to In Progress state
             let response1 = await apiHelper.createCase(taskData.PRESET_CRITICAL);
@@ -264,7 +257,7 @@ describe('Task Console Preset Filter', () => {
             let response16 = await apiHelper.addTaskToCase(create_task_from_task_template, response15.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push((await apiHelper.getCreatedTaskIds(response16)).displayId);
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             await apiHelper.updateCaseStatus(response15.id, 'InProgress');
 
             //Creating the task 10 and updating it to After Completed state
@@ -300,7 +293,7 @@ describe('Task Console Preset Filter', () => {
     describe('[3671]: Validate the High Priority Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[3671]: Task data creation with different status 1', async () => {
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
 
             //Create Low Priority and Assigned status Task
             let response1 = await apiHelper.createCase(taskData.PRESET_CRITICAL);
@@ -353,7 +346,7 @@ describe('Task Console Preset Filter', () => {
             let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push((await apiHelper.getCreatedTaskIds(response14)).displayId);
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
         });
         it('[3671]: Task data creation with different status 2', async () => {
@@ -423,7 +416,7 @@ describe('Task Console Preset Filter', () => {
     describe('[3670]: Validate the Critical Priority Open Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[3670]: Task data creation with different status 1', async () => {
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
 
             //Create Low Priority and Assigned status Task
             let response1 = await apiHelper.createCase(taskData.PRESET_CRITICAL);
@@ -478,7 +471,7 @@ describe('Task Console Preset Filter', () => {
             let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push((await apiHelper.getCreatedTaskIds(response14)).displayId);
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
         });
         it('[3670]: Task data creation with different status 1', async () => {
@@ -546,7 +539,7 @@ describe('Task Console Preset Filter', () => {
     });
 
     it('[3669]: Validate the All Unassigned Tasks filter after applying and removing the filter', async () => {
-        await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+        await apiHelper.apiLogin(userId);
         let taskId: string[] = [];
 
         //Creating the task 1 with assignee as logged in user
@@ -590,7 +583,7 @@ describe('Task Console Preset Filter', () => {
     describe('[3667]: Validate the All Open Breached Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[3667]: Create SVT data and task data', async () => {
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_ASSIGNED_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_INPROGRESS_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_PENDING_TASK);
@@ -631,7 +624,7 @@ describe('Task Console Preset Filter', () => {
             let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push(await (await apiHelper.getCreatedTaskIds(response14)).displayId);
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
 
             let response1 = await apiHelper.createCase(taskData.PRESET_CRITICAL);
@@ -691,7 +684,7 @@ describe('Task Console Preset Filter', () => {
     describe('[3465]: Validate the My Open Breached Tasks filter after applying and removing the filter', () => {
         let taskId: string[] = [];
         it('[3465]: Create SVT data and task data', async () => {
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_NEW_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_ASSIGNED_TASK);
             await apiHelper.createSVT(taskData.SERVICE_TARGET_INPROGRESS_TASK);
@@ -737,7 +730,7 @@ describe('Task Console Preset Filter', () => {
             let response14 = await apiHelper.addTaskToCase(create_task_from_task_template, response13.id);
             await apiHelper.apiLogin('tadmin');
             taskId.push(await (await apiHelper.getCreatedTaskIds(response14)).displayId);
-            await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin(userId);
             await apiHelper.updateCaseStatus(response13.id, 'InProgress');
 
             let response1 = await apiHelper.createCase(taskData.PRESET_CRITICAL);
@@ -795,7 +788,7 @@ describe('Task Console Preset Filter', () => {
 
     it('[3661]: Validate the All Tasks In Last 1 month filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+        await apiHelper.apiLogin(userId);
         let taskId: string[] = [];
 
         //Creating the task with Staged status and update the creation date below 1 month
@@ -863,7 +856,7 @@ describe('Task Console Preset Filter', () => {
 
     it('[3668]: Validate the All Tasks In Last 3 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+        await apiHelper.apiLogin(userId);
         let taskId: string[] = [];
 
         //Creating the task with the creation date below 1 month
@@ -915,7 +908,7 @@ describe('Task Console Preset Filter', () => {
 
     it('[3529]: Validate the All Tasks In Last 6 months filter after applying and removing the filter', async () => {
         let dbConnectVar = await dbConnectObj.dbConnect();
-        await apiHelper.apiLogin('idphylumHR1@petramco.com', 'Password_1234');
+        await apiHelper.apiLogin(userId);
         let taskId: string[] = [];
 
         //Creating the task with the creation date below 1 month

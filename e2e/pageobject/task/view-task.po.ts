@@ -16,7 +16,7 @@ class ViewTask {
         categoryTier2Value: '[rx-view-component-id="caeb4c73-8107-4a5c-a966-7628469e48fc"] .read-only-content',
         categoryTier3Value: '[rx-view-component-id="291c9c82-e9b3-4b3c-bb1f-4e23d11ff39e"] .read-only-content',
         categoryTier4Value: '[rx-view-component-id="9130bb4f-acd8-4a36-bf99-7fd38469b3fc"] .read-only-content',
-        labelValue: '[rx-view-component-id="75acc4ad-2ffe-4cbc-8fa2-efc227b7d7c9"] .read-only-content',
+        labelValue: '[rx-view-component-id="db352c84-3f9f-4209-aa3c-426fcc118305"] .read-only-content',
         descriptionValue: '[rx-view-component-id="6053a7e8-5194-420b-965a-1c3bfe3ad0a1"] .collapse-block div [style="position: relative;"]',
         processnameValue: '[rx-view-component-id="7260c238-9e41-4d31-90de-2d46443117b4"] .read-only-content',
         statusReason: '[rx-view-component-id="7cdf9e18-c230-4098-8872-ddce9f005373"] .read-only-content',
@@ -64,7 +64,7 @@ class ViewTask {
         inprogressErrorMsg: '[rx-view-component-id="a1072f99-4036-4e2e-8e62-e72b2ba22344"] p',
         statusDropdown: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] button',
         editAssignment: '.edit-button button',
-        assignToMe: '.assign-to-me button'
+        assignToMe: '.assign-to-me button',
     }
 
     async clickShowMoreTaskDescription(): Promise<void> {
@@ -95,20 +95,6 @@ class ViewTask {
         await $(this.selectors.requesterMail).click();
     }
 
-    async allTaskOptionsPresent(data: string[]): Promise<boolean> {
-        let arr: string[] = [];
-        let drpDwnvalue: number = await $$(this.selectors.dropDownOption).count();
-        for (let i = 0; i < drpDwnvalue; i++) {
-            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
-            arr[i] = ab;
-        }
-        arr = arr.sort();
-        data = data.sort();
-        return arr.length === data.length && arr.every(
-            (value, index) => (value === data[index])
-        );
-    }
-
     async clickOnChangeStatus(): Promise<void> {
         await $(this.selectors.taskStatus).click();
     }
@@ -119,11 +105,6 @@ class ViewTask {
 
     async getUpdateTaskStatusDrpdownValue(no: number): Promise<string> {
         return await $$(this.selectors.allStatus).get(no).getText();
-    }
-
-
-    async clickOnUpdateStatusDrpdown(): Promise<void> {
-        await $(this.selectors.updateStatusDropDown).click();
     }
 
     async clickOnEditTask(): Promise<void> {
@@ -366,25 +347,8 @@ class ViewTask {
         return null;
     }
 
-    async getAssignedGroupText(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.assignedGroupValue)), 6000);
-        return await $(this.selectors.assignedGroupValue).getText();
-    }
-
     async getAssigneeText(): Promise<string> {
         return await $(this.selectors.assigneeName).getText();
-    }
-
-    async getDepartmentText(): Promise<string> {
-        return await $(this.selectors.departmentValue).getText();
-    }
-
-    async getBusinessUnitText(): Promise<string> {
-        return await $(this.selectors.businessUnitValue).getText();
-    }
-
-    async getAssignedCompanyText(): Promise<string> {
-        return await $(this.selectors.assignedCompanyValue).getText();
     }
 
     async isDynamicFieldPresent(fieldName: string): Promise<boolean> {
@@ -402,7 +366,14 @@ class ViewTask {
     }
 
     async isAssignmentSectionDisplayed(): Promise<boolean> {
-        return await $(this.selectors.assignmentSection).isDisplayed();
+        return await $(this.selectors.assignmentSection).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.assignmentSection).isDisplayed();
+            } else {
+                console.log("Assignment not present");
+                return false;
+            }
+        });
     }
 
     async isShowApproversBannerDisplayed(): Promise<boolean> {

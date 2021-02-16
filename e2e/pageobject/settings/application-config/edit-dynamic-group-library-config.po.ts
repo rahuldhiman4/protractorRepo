@@ -18,13 +18,13 @@ class CreateDynamicGroupLibrary {
         localizedValueCancelBtn: 'button[rx-id="cancel-button"]',
         dynamicGroupWarningMsg: 'div.alert-warning div',
         status: '76eaa168-a4fb-4687-a838-280983d01700',
-        dynamicFieldNameInput: '.d-textfield_required input',
-        dynamicFieldDescriptionInput: '.d-textfield_required input[id="adapt-textfield-2_input"]',
+        dynamicFieldNameInput: '.bwf-dynamic-field-data input',
+        dynamicFieldDescriptionInput: '.bwf-dynamic-field-data input',
         dynamicGroupSaveBtn: '[rx-view-component-id="1dd1a2a9-28fb-47b5-9941-f73063e860d7"] button',
         dynamicGroupCancelBtn: '[rx-view-component-id="c0d7ec27-1a72-4943-b487-87f7559fff95"] button',
-        lineOfBusinessInput: '[rx-view-component-id="e5ab571f-f66e-47e6-b5bf-eb9fc333c58e"] .ui-select-match-text',
+        lineOfBusinessInput: '[rx-view-component-id="ba22c840-211a-46e9-9d22-b87c2f45a64d"] input',
         statusValue: '[rx-view-component-id="76eaa168-a4fb-4687-a838-280983d01700"] button',
-        dynamicFields: '.card-header .left-header-block',
+        dynamicFields: 'bwf-dynamic-field-simple .left-block',
     }
 
     async verifyTitle(value: string): Promise<boolean> {
@@ -49,16 +49,15 @@ class CreateDynamicGroupLibrary {
         await $(this.selectors.dynamicGroupNameInput).sendKeys(dynamicGrpName);
     }
 
-    async setDynamicFieldName(dynamicFieldName: string, position?: number): Promise<void> {
-        let count = 0;
-        if(position) count=(position*2)-2;
-        await $$(this.selectors.dynamicFieldNameInput).get(count).sendKeys(dynamicFieldName);
+    async setDynamicFieldName(dynamicFieldName: string): Promise<void> {
+        let size = await $$(this.selectors.dynamicFieldNameInput).count();
+        await $$(this.selectors.dynamicFieldNameInput).get(size - 2).clear();
+        await $$(this.selectors.dynamicFieldNameInput).get(size - 2).sendKeys(dynamicFieldName);
     }
 
-    async setDynamicFieldDesc(dynamicFieldDesc: string, position?: number): Promise<void> {
-        let count = 1;
-        if(position) count=(position*2)-1;
-        await $$(this.selectors.dynamicFieldNameInput).get(count).sendKeys(dynamicFieldDesc);
+    async setDynamicFieldDesc(dynamicFieldDesc: string): Promise<void> {
+        await $$(this.selectors.dynamicFieldNameInput).last().clear();
+        await $$(this.selectors.dynamicFieldNameInput).last().sendKeys(dynamicFieldDesc);
     }
 
     async clickOnDisplayLabelocalizedLink(): Promise<void> {

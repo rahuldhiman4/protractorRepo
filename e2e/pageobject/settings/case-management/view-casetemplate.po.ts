@@ -22,7 +22,7 @@ class ViewCaseTemplate {
         resolveCaseOnLastTaskCompletion: '[rx-view-component-id="e4956197-0230-4272-8fc4-87358bd084bf"] .read-only-content',
         categoryTier4: '[rx-view-component-id="8a790c6a-3401-44f6-afc3-eb43a67a55b1"] .read-only-content',
         priority: '.selection-field',
-        labelvalue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .read-only-content',
+        labelvalue: '[rx-view-component-id="33e2d3dd-d813-4d35-8d1a-c8307b23d3e3"] .read-only-content',
         buisnessUnitvalue: '[rx-view-component-id="40817c2b-387f-4859-82e9-0a3251cdc7dc"] .read-only-content',
         departmentValue: '[rx-view-component-id="d5d0c773-b825-4be7-b357-4ed4eb73ee8d"] .read-only-content',
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
@@ -36,7 +36,7 @@ class ViewCaseTemplate {
         categoryTier3: '[rx-view-component-id="a0243fb4-35cd-457b-a517-210a5e3e330d"] .read-only-content',
         oneTask: '[rx-view-component-id="36ca22f7-98f8-423a-bf39-28361ef29eeb"] .rotatable path',
         taskBoxname: 'div.content',
-        showMoreDescriptionLink: '.rx-description-textarea-read button.more',
+        showMoreDescriptionLink: '.bwf-expand button.btn',
         taskFlowButton: '[rx-view-component-id="3b142f9f-078c-4a9f-9215-0cc3ec054244"] button',
         backArrowButton: '[rx-view-component-id="8abb8018-cca7-49a2-b610-023c2bae63cc"] button',
         taskBoxLocator: '.rotatable',
@@ -217,6 +217,7 @@ class ViewCaseTemplate {
 
     async clickTaskFlowBtn(): Promise<void> {
         await $(this.selectors.taskFlowButton).click();
+        await browser.wait(this.EC.visibilityOf(await $('rx-runtime-view-modal')), 10000);
     }
 
     async clickBackArrowBtn(): Promise<void> {

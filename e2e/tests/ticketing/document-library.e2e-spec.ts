@@ -81,8 +81,8 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('United States Support');
-            await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
+            await createDocumentLibraryPo.selectBusinessUnit('India Support');
+            await createDocumentLibraryPo.selectOwnerGroup('IN Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -113,11 +113,14 @@ describe('Document Library', () => {
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to different LOB Case BA', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB case document library is not visible to different LOB case BA');
         });
 
+        // we don't have Case Manager of facilities with Document Manager role
         it('[4911,4925,4924]: Verify if document library is accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
@@ -143,7 +146,6 @@ describe('Document Library', () => {
             expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to case manager with multiple LOB access');
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is visible to case manager with multiple LOB access');
-
         });
 
         it('[4911,4925,4924]: Verify if document library is accessible to Case BA user having access to multiple LOB', async () => {
@@ -218,7 +220,7 @@ describe('Document Library', () => {
             expect(await editDocumentLibraryPo.isOwnerGroupDropDownDisabled()).toBeTruthy('OwnerGroup Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isShareExternallyToogleButtonDisabled()).toBeTruthy('Share Externally Toogle Button field is enabled');
             expect(await editDocumentLibraryPo.isStatusDropDownDisabled()).toBeFalsy('Status Drop Down field is disabled');
-            expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
+             expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier1Disabled()).toBeTruthy('Category Tire1 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier2Disabled()).toBeTruthy('Category Tire2 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier3Disabled()).toBeTruthy('Category Tire3 field is enabled');
@@ -228,14 +230,14 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewDocumentLibraryPo.clickOnEditReadAccess();
-            expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeFalsy('Support Group Access Group Button is enabled');
-            expect(await editDocumentLibraryPo.isAddCompanyDropDownDisabled()).toBeTruthy('Add Compnay Drop Down is enabled');
-            expect(await editDocumentLibraryPo.isAddCompanyAddButtonDisabled()).toBeTruthy('Add Company Add Button is enabled');
-            expect(await editDocumentLibraryPo.isAddBussinessUnitDropDownDisabled()).toBeTruthy('Add Bussiness Unit Drop Down is enabled');
-            expect(await editDocumentLibraryPo.isAddBussinessUnitAddButtonDisabled()).toBeTruthy('Add Bussiness Unit Add Button is enabled');
-            expect(await editDocumentLibraryPo.isaddSupportGroupDropDownDisabled()).toBeTruthy('add Support Group Drop Down field is enabled');
-            expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisabled()).toBeTruthy('Add Support Department Add Button is enabled');
-            expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');  //defect https://jira.bmc.com/browse/DRDMV-21604
+            expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeTruthy('Support Group Access Group Button is enabled');
+            await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed();
+            expect(await editDocumentLibraryPo.isAddCompanyDropDownDisplayed()).toBeTruthy('Read Access Company Disabled ');
+        });
+        afterAll(async () => {
+            await editDocumentLibraryPo.clickOnReadAccessCancelButton();
+            await viewDocumentLibraryPo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
     });
 
@@ -274,18 +276,6 @@ describe('Document Library', () => {
         expect(await editDocumentLibraryPo.isCategoryTier4Displayed()).toBeTruthy('CategoryTier4 Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isRegionDropDownDisplayed()).toBeTruthy('Region Drop Down is not displayed');
         expect(await editDocumentLibraryPo.isSiteDropDownDisplayed()).toBeTruthy('Site Drop Down is not displayed');
-
-        await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-        expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeTruthy('Support Group Access Group Button is not displayed');
-        expect(await editDocumentLibraryPo.isAddCompanyDropDownDisplayed()).toBeTruthy('Add Company Drop Down is not displayed');
-        expect(await editDocumentLibraryPo.isAddCompanyAddButtonDisplayed()).toBeTruthy('Add Company Add Button is not displayed');
-        expect(await editDocumentLibraryPo.isAddBussinessUnitDropDownDisplayed()).toBeTruthy('Add Bussiness Unit Drop Down is not displayed');
-        expect(await editDocumentLibraryPo.isAddBussinessUnitAddButtonDisplayed()).toBeTruthy('Add Bussiness Unit Add Button is not displayed');
-        expect(await editDocumentLibraryPo.isAddSupportDepartmentDropDownDisplayed()).toBeTruthy('Add Support Department Drop Down is not displayed');
-        expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisplayed()).toBeTruthy('Add Support Department Add Button is not displayed');
-        expect(await editDocumentLibraryPo.isAddSupportGroupDropDownDisplayed()).toBeTruthy('Add Support Group Drop Down is not displayed');
-        expect(await editDocumentLibraryPo.isAddSupportDepartmentAddButtonDisplayed()).toBeTruthy('Add Support Department Add Button Drop Down is not displayed');
         let dropDownValues: string[] = ["Published", "Draft"];
         expect(await editDocumentLibraryPo.isStatusDropDownvalueMatches(dropDownValues)).toBeTruthy('Values of status drop down is not matches');
         await editDocumentLibraryPo.clickOnCancelButton();
@@ -293,7 +283,7 @@ describe('Document Library', () => {
         let column: string[] = ["Author"];
         await documentLibraryConsolePo.addColumnOnGrid(column);
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
-        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('caseBA MultiLOB', 'Author is not displayed');
+        expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Author')).toBe('jbarnes', 'Author is not displayed');
         await documentLibraryConsolePo.removeColumnOnGrid(column);
     });
 
@@ -330,6 +320,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");// there will not be error message
+            await utilityCommon.closeAllBlades();
         });
         it('[4884]: create same name record in different LOB', async () => {
             //create same name record in different LOB
@@ -351,8 +342,11 @@ describe('Document Library', () => {
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // verify LOB on edit page
             await utilityGrid.searchAndOpenHyperlink(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditDocument();
             expect(await editDocumentLibraryPo.getLobValue()).toBe("Facilities");
             await editDocumentLibraryPo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewDocumentLibraryPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await browser.sleep(2000); // required to see LOB dropdown, else it fails
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -382,16 +376,14 @@ describe('Document Library', () => {
         });
         it('[4915]: Verify Support Group Level Read access of Document	', async () => {
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-            await viewDocumentLibraryPo.clickOnEditDocument();
-            await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('Australia Support');
+            await viewDocumentLibraryPo.clickOnEditReadAccess();
+            await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed();
+            await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
             await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('AU Support 3');
             await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
-            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
-            await editDocumentLibraryPo.clickOnCancelButton();
+            await editDocumentLibraryPo.clickOnReadAccessCancelButton();
+            await viewDocumentLibraryPo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4915]: Verify Support Group Level Read access of Document	', async () => {
             await navigationPage.signOut();
@@ -417,39 +409,11 @@ describe('Document Library', () => {
             expect(await editDocumentLibraryPo.isRegionDropDownDisabled()).toBeTruthy('Region Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isSiteDropDownDisabled()).toBeTruthy('Site Drop Down field is enabled');
             await editDocumentLibraryPo.updateKeywordField(titleRandVal);
-            await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-            expect(await editDocumentLibraryPo.isDeleteButtonEnabled()).toBeFalsy('Delete button is enabled');
-            expect(await editDocumentLibraryPo.isSaveButtonEnabled()).toBeFalsy('save button is enabled');
-        });
-        it('[4915]: Verify Support Group Level Read access of Document	', async () => {
-            await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-            await editDocumentLibraryPo.closeGroupAccessTag('AU Support 3');
-            expect(await editDocumentLibraryPo.isRemoveGroupAccessWarningMessageDisplayed('Are you sure you want to remove access to "AU Support 3"?')).toBeTruthy('Remove Group List Warning Message Missing');
-            await editDocumentLibraryPo.clickOnRemoveGroupWarningMsgYesButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Google');
-            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Company');
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('Australia Support');
-            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Business Unit');
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
-        });
-        it('[4915]: Verify Support Group Level Read access of Document	', async () => {
-            await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('UI-BusinessUnit');
-            await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
-            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Department');
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
-            await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
-            await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('HR Support');
-            await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Employee Relations');
-            await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222095): You do not have permission to perform this operation. Please contact your system administrator.')).toBeTruthy('Message of permission denined for group access remove not displayed');
-            await editDocumentLibraryPo.clickOnCancelButton();
+            await viewDocumentLibraryPo.clickOnEditReadAccess();
+            expect(await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed()).toBeFalsy();
+            await editDocumentLibraryPo.clickOnReadAccessCancelButton();
+            await viewDocumentLibraryPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await documentLibraryConsolePo.searchOnGridConsole(titleRandVal)
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -474,14 +438,20 @@ describe('Document Library', () => {
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal, 'Title is missing');
         expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft', 'Draft Status is missing');
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
-        await viewDocumentLibraryPo.clickOnEditDocument();
-        await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
+        await viewDocumentLibraryPo.clickOnEditReadAccess();
+        await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed();
         await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
-        await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('United States Support');
+        await browser.sleep(2000);
+        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('US Support 3');
+        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
+        await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
+        await browser.sleep(2000);
         await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('US Support 3');
         await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
         expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed(' The group already exists in the access list. To modify the access permissions, remove the group from the access list and add it again.')).toBeTruthy();
+        await editDocumentLibraryPo.clickOnReadAccessCancelButton();
+        await viewDocumentLibraryPo.clickOnCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 
     it('[4890,4928]: Verify Sort on Document Managment Console', async () => {
@@ -573,14 +543,14 @@ describe('Document Library', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         await documentLibraryConsolePo.searchAndOpenDocumentLibrary(draftDocLibData.docLibTitle);
-        await editDocumentLibraryPo.clickOnAdditionalDetailsOrReadAccessTab('Read Access');
-        await editDocumentLibraryPo.clickOnSupportGroupAccessButton();
+        await viewDocumentLibraryPo.clickOnEditReadAccess();
+        await editDocumentLibraryPo.isSupportGroupAccessButtonDisplayed();
         await editDocumentLibraryPo.selectAddCompanyDropDownOfReadAccess('Petramco');
-        await editDocumentLibraryPo.selectAddBusinessUnitDropDownOfReadAccess('UI-BusinessUnit');
-        await editDocumentLibraryPo.selectAddSupportDepartmentDropDownOfReadAccess('UI-Department');
-        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('UI-SupportGroup');
-        await editDocumentLibraryPo.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+        await editDocumentLibraryPo.selectAddSupportGroupDropDownOfReadAccess('Compensation and Benefits');
+        await editDocumentLibraryPo.clickOnReadAccessAddButton('Add Support Group');
+        await editDocumentLibraryPo.clickOnReadAccessCancelButton();
+        await viewDocumentLibraryPo.clickOnCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 
     //apdeshmu
@@ -613,7 +583,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent("ERROR (525): The file type is not supported. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
+            expect(await utilityCommon.isPopUpMessagePresent("The file type is not supported. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
         });
     });
 
@@ -631,6 +601,8 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         expect(await createDocumentLibraryPo.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
         expect(await createDocumentLibraryPo.getMessageText()).toBe('The maximum number of attachments allowed is 1');
+        await createDocumentLibraryPo.clickCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 
     describe('[4912]: Verify that Document access on multiple change in assignments of support group.', async () => {
@@ -648,8 +620,8 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await viewDocumentLibraryPo.clickOnEditDocument();
-            await editDocumentLibraryPo.selectBusinessUnit('HR Support');
-            await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
+            await editDocumentLibraryPo.selectBusinessUnit('Latin America Support');
+            await editDocumentLibraryPo.selectOwnerGroup('LA Support 3');
             await editDocumentLibraryPo.clickOnSaveButton();
             //This validation is alredy covered at 4882 hence commented
             //expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
@@ -705,8 +677,7 @@ describe('Document Library', () => {
         expect(await createDocumentLibraryPo.titleTextPresent('Title')).toBeTruthy("Title text not present");
         expect(await createDocumentLibraryPo.descriptionTextPresent('Description')).toBeTruthy("Description text not present");
         expect(await createDocumentLibraryPo.companyTextPresent('Company')).toBeTruthy("Company text not present");
-        expect(await createDocumentLibraryPo.departmentTextPresent('Department')).toBeTruthy("Department text not present");
-        expect(await createDocumentLibraryPo.buisnessUnitTextPresent('Business Unit')).toBeTruthy("Business Unit text not present");
+        expect(await createDocumentLibraryPo.buisnessUnitTextPresent('Support Organization')).toBeTruthy("Business Unit text not present");
         expect(await createDocumentLibraryPo.OwnerGroupTextPresent('Owner Group')).toBeTruthy("Owner Group text not present");
         expect(await createDocumentLibraryPo.keyWordTextPresent('Keywords')).toBeTruthy("Keywords text not present");
         expect(await createDocumentLibraryPo.categoryTier1TextPresent('Category Tier 1')).toBeTruthy("Category Tier 1 text not present");
@@ -726,8 +697,9 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.selectCategoryTier1("Applications");
         await createDocumentLibraryPo.selectCategoryTier2('Social');
         await createDocumentLibraryPo.selectCategoryTier3('Chatter');
-        await createDocumentLibraryPo.selectRegion('Australia');
-        await createDocumentLibraryPo.selectSite('Canberra');
+        await createDocumentLibraryPo.selectRegion('Europe');
+        await createDocumentLibraryPo.selectSiteGroup('Sales');
+        await createDocumentLibraryPo.selectSite('Athens');
         expect(await createDocumentLibraryPo.siteTextPresent('Site')).toBeTruthy("Site text not present");
     });
 
@@ -766,6 +738,7 @@ describe('Document Library', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
+
     //kgaikwad
     it('[4885]: Verify Knowledge Users will not be able to view document Managment link', async () => {
         try {

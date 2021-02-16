@@ -5,24 +5,24 @@ class CreateDynamicGroupLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        title: 'fieldset .dp-header',
+        title: '[class="dp-title"]',
         addDynamicField: 'div[class="bwf-dynamic-field-group"] button[btn-type="tertiary"]',
         dynamicGroupName: '59bbcd1b-82ef-46ec-844b-277246baa5ea',
         displayLabel: '1e0ad22a-8692-48ca-b625-ac2ce600b8e8',
-        lineOfBusiness: 'a07f69a6-9b62-446f-8e1c-c48b45e03a11',
+        lineOfBusiness: '41734528-2218-4e7c-8f98-2033f578d492',
         dynamicGroupNameInput: '[rx-view-component-id="59bbcd1b-82ef-46ec-844b-277246baa5ea"] input',
         displayLabelLink: '[rx-view-component-id="1e0ad22a-8692-48ca-b625-ac2ce600b8e8"] button',
         displayLabelField: '[rx-view-component-id="1e0ad22a-8692-48ca-b625-ac2ce600b8e8"] input',
         localizedValueInput: '.modal-content input[aria-label="Value for default locale"]',
         localizedValueSaveBtn: 'button[rx-id="save-button"]',
         localizedValueCancelBtn: 'button[rx-id="cancel-button"]',
-        dynamicGroupWarningMsg: 'div.alert-warning div',
+        dynamicGroupWarningMsg: '.alert-warning',
         status: 'd17e9d98-3760-4c7f-b0d9-9ae40a3cab72',
-        dynamicFieldNameInput: '.d-textfield_required input[id="adapt-textfield-0_input"]',
-        dynamicFieldDescriptionInput: '.d-textfield_required input[id="adapt-textfield-2_input"]',
+        dynamicFieldNameInput: 'bwf-dynamic-field-data input.textfield-padding-transition',
+        dynamicFieldDescriptionInput: 'bwf-dynamic-field-data input.textfield-padding-transition',
         dynamicGroupSaveBtn: '[rx-view-component-id="063a9878-3e83-4e00-84a8-793bde3fc704"] button',
         dynamicGroupCancelBtn: '[rx-view-component-id="eeaf8414-aa18-4217-889b-020c2e6b385d"] button',
-        expandDynamicField: 'span.pl-4'
+        expandDynamicField: 'span.d-icon-angle_down'
     }
 
     async verifyTitle(value: string): Promise<boolean> {
@@ -59,13 +59,13 @@ class CreateDynamicGroupLibrary {
     }
 
     async setDynamicFieldName(dynamicFieldName: string): Promise<void> {
-        await $(this.selectors.dynamicFieldNameInput).clear();
-        await $(this.selectors.dynamicFieldNameInput).sendKeys(dynamicFieldName);
+        await $$(this.selectors.dynamicFieldNameInput).first().clear();
+        await $$(this.selectors.dynamicFieldNameInput).first().sendKeys(dynamicFieldName);
     }
 
     async setDynamicFieldDesc(dynamicFieldDesc: string): Promise<void> {
-        await $(this.selectors.dynamicFieldDescriptionInput).clear();
-        await $(this.selectors.dynamicFieldDescriptionInput).sendKeys(dynamicFieldDesc);
+        await $$(this.selectors.dynamicFieldDescriptionInput).last().clear();
+        await $$(this.selectors.dynamicFieldDescriptionInput).last().sendKeys(dynamicFieldDesc);
     }
 
     async clickOnDisplayLabelocalizedLink(): Promise<void> {

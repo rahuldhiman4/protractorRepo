@@ -13,7 +13,7 @@ class CreateDocumentTemplate {
         saveButton: '[rx-view-component-id="01906a54-d879-427b-a057-a5c5d4834487"] button',
         cancelButton: '[rx-view-component-id="cfab43d9-cdba-4bec-99f3-6aefdf9fae9d"] button',
         pageHeader: '.dp-title',
-        insertFieldLinkOnDocumentBody: 'a[id="cke_47"]',
+        insertFieldLinkOnDocumentBody: '[class="cke_button_icon cke_button__rtfexpressioneditor_icon"]',
         clickImageButton: '[class="cke_button_icon cke_button__image_icon"]',
         dynamicField: '[class="cke_contents cke_reset"] span',
         lobValue: '[rx-view-component-id="bdee70fc-d43c-4b44-9422-c344d62676c7"] .pull-left'

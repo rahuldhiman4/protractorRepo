@@ -1,6 +1,7 @@
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../../utils/utility.grid';
 import utilityCommon from '../../../utils/utility.common';
+import { DropDownType } from "../../../utils/constants";
 
 class NotificationTemplateGridPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -45,9 +46,7 @@ class NotificationTemplateGridPage {
     }
 
     async setCompanyDropDownValPresentInCopyTempWindow(company: string) {
-        await $(this.selectors.companyDropDownCopyTempWindow).click();
-        await $('.d-icon-search .form-control').sendKeys(company);
-        await $$(this.selectors.companyDropDownValueCopyTempWindow).get(1).click();
+        await utilityCommon.selectDropDown(await $(this.selectors.companyDropDownCopyTempWindow), company, DropDownType.WebElement);
     }
 
     async clearCompanyDropDownValPresentInCopyTempWindow() {

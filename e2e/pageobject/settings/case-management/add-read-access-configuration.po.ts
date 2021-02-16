@@ -25,7 +25,7 @@ class AddReadAccessConfigurationPage {
       categoryTier2Guid: '0bdb722f-3fcd-48d4-b10c-29712ed2cd86',
       categoryTier3Guid: '78f414cd-19df-4457-a2dc-cf226371eac3',
       categoryTier4Guid: '899d8ac7-85a0-4337-8435-da69fd1b81ac',
-      labelGuid: '219e631c-3046-4584-837c-727d6d22838f',
+      labelGuid: '628735ec-4f31-4b7e-acac-07c920a7bec3',
       lobValue: '[rx-view-component-id="9d7f8351-9da7-471f-8f9c-ed37919fdbc9"] .pull-left'
    }
 

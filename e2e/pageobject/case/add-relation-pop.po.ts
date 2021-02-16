@@ -10,7 +10,7 @@ class AddRelationshipPage {
     }
 
     async searchAndSelectPerson(personName: string): Promise<void> {
-        await utilityGrid.searchAndSelectGridRecord(personName, '55206483-aa9d-4625-a38b-2c02c33e98ff').catch(async (error) => {
+        await utilityGrid.searchAndSelectGridRecord(personName, 'ca7ffc57-f937-439f-bcc7-6cdf03a9465f').catch(async (error) => {
             if (error) await utilityGrid.searchAndSelectGridRecord(personName, '55206483-aa9d-4625-a38b-2c02c33e98ff');
         });
     };

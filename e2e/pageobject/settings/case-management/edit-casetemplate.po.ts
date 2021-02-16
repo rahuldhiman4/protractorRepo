@@ -19,7 +19,7 @@ class EditCaseTemplate {
         casePriority: 'c933ab70-9004-4347-9537-3ae65ec633b9',
         caseStatusGuid: '5289a531-7138-4e4f-afdc-ee3f67a2aa64',
         statusReason: 'cfde7589-436d-4835-aab8-f5d71e04f91a',
-        label: '06d4ad28-b48e-493a-b6b3-925fea737576',
+        label: '33e2d3dd-d813-4d35-8d1a-c8307b23d3e3',
         caseCategoryTier1: 'ad1a72f6-a588-428f-a99e-6a2e8baf12ff',
         caseCategoryTier2: 'c80b1e58-3854-45bd-9553-5c6e0bb334d8',
         caseCategoryTier3: 'a0243fb4-35cd-457b-a517-210a5e3e330d',
@@ -56,7 +56,7 @@ class EditCaseTemplate {
         manageDynamicField: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] button',
         dynamicFieldsName: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] span',
         caseStatus: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] button',
-        labelValue: '[rx-view-component-id="06d4ad28-b48e-493a-b6b3-925fea737576"] .dropdown-toggle',
+        labelValue: '[rx-view-component-id="33e2d3dd-d813-4d35-8d1a-c8307b23d3e3"] .dropdown-toggle',
         dropdownBox: '.dropdown-toggle',
 
     }

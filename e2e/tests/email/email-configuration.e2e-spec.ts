@@ -144,7 +144,7 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.selectIncomingMailBoxName(incomingEmail.mailBoxName);
             await createEmailConfigPo.setDescription("test");
             await createEmailConfigPo.clickSave();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy("Error message absent");
             await createEmailConfigPo.clickCancel();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -428,6 +428,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
         });
         it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.cancelEditEmailConfig();
             await utilityGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
@@ -439,6 +440,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.cancelEditEmailConfig();
         });
         it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
@@ -467,6 +469,8 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.searchAvailableEntitiesToBeAssociated("Out Of Office");
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -507,6 +511,8 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Private" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
@@ -540,6 +546,7 @@ describe('Email Configuration', () => {
         });
         it('[5180,5179]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
@@ -554,6 +561,8 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             await editEmailConfigPo.searchAssociatedEntitiesToBeRemoveAssociation("Global" + randomStr);
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
@@ -604,8 +613,8 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateName')).toBeTruthy();
             await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
-            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeFalsy("AvailableExclusionsSubject");
-            expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeTruthy("AssociatedExclusionsSubject");
+            expect(await editEmailConfigPo.isListAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeFalsy("AvailableExclusionsSubject");
+            expect(await editEmailConfigPo.isListAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeTruthy("AssociatedExclusionsSubject");
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             expect(await editEmailConfigPo.isRecordPresentInAcknowledgementTemplateGrid('Case Closed Ack Template')).toBeTruthy("'Case Closed Ack Template' record not present");
@@ -616,13 +625,13 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');
             await consoleAcknowledgmentTemplatePo.clickOnDeleteButton();
-            expect(await utilityCommon.isPopUpMessagePresent("ERROR (10000): Template is already in use hence it can not be deleted.")).toBeTruthy("ERROR (10014)");
+            expect(await utilityCommon.isPopUpMessagePresent("Template is already in use hence it can not be deleted.")).toBeTruthy("ERROR : Template is already in use hence it can not be deleted.");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.searchAndOpenAcknowledgmentTemplate('Case Closed Ack Template');
             await editAcknowledgmentTemplatePo.selectStatusDropDown('Inactive');
             await editAcknowledgmentTemplatePo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent("ERROR (10006): The Acknowledgement template is in use, so status cannot be changed")).toBeTruthy("ERROR (10006)");
+            expect(await utilityCommon.isPopUpMessagePresent("The Acknowledgement template is in use, so status cannot be changed")).toBeTruthy("The Acknowledgement template is in use, so status cannot be changed");
             await editAcknowledgmentTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -631,7 +640,6 @@ describe('Email Configuration', () => {
     describe('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
         let templateData, randomStr = Math.floor(Math.random() * 1000000);
         it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
-
             templateData = {
                 "templateName": 'GlobalCaseTemplateName' + randomStr,
                 "templateSummary": 'GlobalCaseTemplateSummary' + randomStr,
@@ -680,8 +688,13 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('companytemplateName' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('companytemplateName' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await editEmailConfigPo.cancelEditEmailConfig();
         });
 
@@ -757,20 +770,28 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('companytemplateName' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('companytemplateName' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown(templateData.templateName)).toBeTruthy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await editEmailConfigPo.cancelEditEmailConfig();
         });
 
         it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilityGrid.searchAndOpenHyperlink(emailID);
             await editEmailConfigPo.selectTab("Acknowledgment Templates");
             await editEmailConfigPo.searchAndClickCheckboxOnAcknowledgementTemplateGrid("Closed");
             await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
-            expect(await editEmailConfigPo.isAcknowledgementDropDownPresent('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesGlobalAckTemplate' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await editEmailConfigPo.clickAcknowledgementTemplateEditButton();
             expect(await editEmailConfigPo.isAcknowledgementPresentInDropDown('FacilitiesAckTemplate' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.clickCancelAcknowledgementTemplate();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await editEmailConfigPo.cancelEditEmailConfig();
         });
 
@@ -814,11 +835,13 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isNewTrustedEmailRequiredTextPresent()).toBeTruthy();
             await editEmailConfigPo.setNewTrustedEmail(trustedMail);
             expect(await editEmailConfigPo.isNewTrustedEmailSaveBtnDisabled()).toBeTruthy();
-            expect(await editEmailConfigPo.isMappedRequesterDropDownPresent("Barney")).toBeFalsy();
-            expect(await editEmailConfigPo.isValuePresentInDropDown("Thorn")).toBeFalsy();
-            expect(await editEmailConfigPo.isValuePresentInDropDown("Ochoa")).toBeFalsy();
+            expect(await editEmailConfigPo.isValuePresentInDropDown("Barney")).toBeFalsy();
             await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton('No');
+            expect(await editEmailConfigPo.isValuePresentInDropDown("Thorn")).toBeFalsy();
+            await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('No');
+            expect(await editEmailConfigPo.isValuePresentInDropDown("Ochoa")).toBeFalsy();
             await editEmailConfigPo.clickNewTrustedEmailCancelBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

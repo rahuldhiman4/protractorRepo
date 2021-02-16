@@ -282,7 +282,7 @@ describe('Create Flowset', () => {
             await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
             await editFlowset.setFlowset(flowsetWithGlobalFieldsData.flowsetName);
             await editFlowset.clickSaveBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222175): Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editFlowset.clickCancelFlowsetBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await consoleFlowset.clickOnAddFlowset();
@@ -291,7 +291,7 @@ describe('Create Flowset', () => {
             await createFlowset.setDescription("description" + randomStr);
             await createFlowset.selectStatus("Active");
             await createFlowset.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222175): Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createFlowset.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });

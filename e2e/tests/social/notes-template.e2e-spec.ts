@@ -66,7 +66,7 @@ describe('Notes template', () => {
         const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-        await utilityGrid.selectLineOfBusiness('Human Resource');
+        
     });
 
     afterAll(async () => {
@@ -191,7 +191,6 @@ describe('Notes template', () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -281,7 +280,6 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -371,7 +369,6 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
 
     });
@@ -561,7 +558,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setBody("This is new notes template");
             await createNotesTemplate.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${caseNotesTemplate}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template with the given name already exists:${caseNotesTemplate}`)).toBeTruthy("Error message absent");
             await createNotesTemplate.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -574,7 +571,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setBody("This is new notes template");
             await createNotesTemplate.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${peopleNotesTemplate}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template with the given name already exists:${peopleNotesTemplate}`)).toBeTruthy("Error message absent");
             await createNotesTemplate.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -587,7 +584,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setBody("This is new notes template");
             await createNotesTemplate.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${taskNotesTemplate}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template with the given name already exists:${taskNotesTemplate}`)).toBeTruthy("Error message absent");
             await createNotesTemplate.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -600,12 +597,13 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setBody("This is new notes template");
             await createNotesTemplate.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (222106): Template with the given name already exists:${knowledgeNotesTemplate}`)).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent(`Template with the given name already exists:${knowledgeNotesTemplate}`)).toBeTruthy("Error message absent");
             await createNotesTemplate.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4299]: Case Notes template create same name record in different LOB', async () => {
             //create same name record in different LOB
+            await utilityCommon.closePopUpMessage();
             await utilityGrid.selectLineOfBusiness('Facilities');
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(caseNotesTemplate);
@@ -729,7 +727,6 @@ describe('Notes template', () => {
 
         it('[4351]: [Run Time] Verify that case BA is able to consume more than one Enabled case notes templates on case (one at a time can post)', async () => {
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateName);
@@ -761,11 +758,19 @@ describe('Notes template', () => {
             tempNotesTemplateData.body = tempNotesTemplateData.body + randomStr;
             let caseData1 = {
                 "Requester": "qdu",
-                "Summary": "Testing case creation with minimal input data"
+                "Summary": "Testing case creation with minimal input data",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 3",
+                "Assignee": "qheroux",
             };
             let caseData2 = {
                 "Requester": "qtao",
-                "Summary": "Testing case creation with minimal input data"
+                "Summary": "Testing case creation with minimal input data",
+                "Assigned Company": "Petramco",
+                "Business Unit": "Canada Support",
+                "Support Group": "CA Support 3",
+                "Assignee": "qheroux",
             };
             // create People notes template
             await apiHelper.apiLogin('elizabeth');
@@ -781,6 +786,7 @@ describe('Notes template', () => {
             await loginPage.login('qheroux');
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePage.clickRequsterName();
+            await browser.sleep(3000); // Wait unilt profile page gets open
             await utilityCommon.switchToNewTab(1);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);
             await activityTabPo.clickOnPostButton();
@@ -797,6 +803,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isTextPresentInActivityLog(tempNotesTemplateData.body)).toBeTruthy();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qheroux');
         });
@@ -1150,9 +1157,9 @@ describe('Notes template', () => {
             expect(await activityTabPo.isTextPresentInActivityLog('ExternalTemplateData' + tempNotesTemplateData.body)).toBeTruthy();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 
@@ -1165,7 +1172,6 @@ describe('Notes template', () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNotesTemplate("Knowledge", tempNotesTemplateData);
         //create Knowledge
-        await utilityGrid.selectLineOfBusiness('Human Resource');
         await navigationPage.gotoCreateKnowledge();
         expect(await browser.getTitle()).toBe('Knowledge Article Templates Preview - Business Workflows');
         await createKnowlegePo.clickOnTemplate('Reference');
@@ -1232,7 +1238,6 @@ describe('Notes template', () => {
         });
 
         it('[4373]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.clearFilter();
@@ -1408,6 +1413,7 @@ describe('Notes template', () => {
             await addRelatedPopupPage.addPerson('Qiang Du', 'Manager');
             await relatedTabPage.clickRelatedPersonName('Qiang Du');
             await utilityCommon.switchToNewTab(1);
+            await browser.sleep(3000); //Wait untile redirect to  person profile page
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
         });
@@ -1442,7 +1448,6 @@ describe('Notes template', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
     });
 

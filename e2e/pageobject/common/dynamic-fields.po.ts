@@ -1,5 +1,7 @@
 import { resolve } from "path";
 import { $, $$, By, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../utils/utility.common';
+import { DropDownType } from '../../utils/constants';
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
@@ -8,8 +10,8 @@ class DynamicField {
         fieldDescription: '.textfield-padding-transition',
         saveButton: 'button[btn-type="primary"]',
         cancelButton: '.modal-footer button[btn-type="secondary"]',
-        fieldValueType: '.col-md-6 .dropdown',
-        informationSource: '.col-md-6 .dropdown',
+        fieldValueType: '.col-md-6 .dropdown button',
+        informationSource: '.col-md-6 .dropdown button',
         enabledHiddenField: '[class="mt-4 ng-star-inserted"] button[aria-label="True"]',
         disabledhiddenField: '[class="mt-4 ng-star-inserted"] button[aria-label="False"]',
         enabledRequiredField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="True"]',
@@ -18,11 +20,11 @@ class DynamicField {
         disabledConfidentialsField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="False"]',
         enabledPublishInLibrary: '[class="d-textfield_required ng-star-inserted"] button[aria-label="True"]',
         allHeaders: 'div[id="selected-field-group-list"] .form-control-label',
-        groupName: '.textfield-padding-transition',
+        groupName: 'bwf-add-dynamic-group-data .textfield-padding-transition',
         groupDescription: 'textarea.form-control',
         target: '[class="group-fields-area flex"]',
         src: '.column-pill-icon',
-        downArrow: '.d-icon-angle_down',
+        downArrow: 'span.d-icon-angle_down',
         upArrow: '.right-header-block .d-icon-angle_up',
         searchField: '.bwf-dynamic-field-group .adapt-search-field',
         deleteButton: '.d-icon-right-cross',
@@ -121,13 +123,13 @@ class DynamicField {
 
     async selectFieldValueType(dataType: string): Promise<void> {
         let size = await $$(this.selectors.fieldValueType).count();
-        await $$(this.selectors.fieldValueType).get(size - 2).click();
-        await element(by.cssContainingText(this.selectors.dropdownvalue, dataType)).click();
+        // await $$(this.selectors.fieldValueType).get(size - 2).click();
+        // await element(by.cssContainingText(this.selectors.dropdownvalue, dataType)).click();
+        await utilityCommon.selectDropDown($$(this.selectors.fieldValueType).get(size - 2), dataType, DropDownType.WebElement);
     }
 
     async selectInfromationSource(sourceValue: string): Promise<void> {
-        await $$(this.selectors.informationSource).last().click();
-        await element(by.cssContainingText(this.selectors.dropdownvalue, sourceValue)).click();
+        await utilityCommon.selectDropDown($$(this.selectors.informationSource).last(), sourceValue, DropDownType.WebElement);
     }
 
     async clickEnabledRequiredRadioButton(): Promise<void> {

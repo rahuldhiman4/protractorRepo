@@ -223,8 +223,7 @@ class ActivityTabPage {
     }
 
     async clickOnHyperlink(value: string): Promise<void> {
-        let locator = `.activity .email-body a[href='${value}']`;
-        await $(locator).click();
+        await element(by.cssContainingText('.activity__wrapper a', value)).click();
     }
 
     async getTextOfTD(tabValue: string): Promise<string> {

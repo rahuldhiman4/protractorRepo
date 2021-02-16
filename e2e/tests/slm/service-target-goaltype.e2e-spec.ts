@@ -21,27 +21,29 @@ describe('Service Level Management - Goal Type Tests', () => {
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(caseBAUser);
         await apiHelper.deleteApprovalMapping(caseModule);
-        await apiHelper.apiLogin('tadmin');
+        //await apiHelper.apiLogin('tadmin');
 
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+        //Instead of it use jbarnes 
+        // userData1 = { 
+        //     "firstName": "caseBA",
+        //     "lastName": "MultiLOB",
+        //     "userId": "caseBAMultiLOB",
+        //     "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        // }
+        // await apiHelper.createNewUser(userData1);
+        // await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        // await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
 
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
+        //Instead of it use qyuan
+        // userData2 = { 
+        //     "firstName": "caseMngr",
+        //     "lastName": "MultiLOB",
+        //     "userId": "caseMngrMultiLOB",
+        //     "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
+        // }
+        // await apiHelper.createNewUser(userData2);
+        // await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        // await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
 
     });
 
@@ -74,16 +76,17 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await editGoalType.isStatusFieldRequired()).toBeTruthy('Status field is marked as optional.');
             expect(await editGoalType.getGoalTypeFieldValue()).toBe('Request-Based');
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Active');
-            await editGoalType.selectGoalTypeStatus('InActive');
+            await editGoalType.selectGoalTypeStatus('Inactive');
             expect(await editGoalType.isSaveButtonDisabled()).toBeFalsy('Save button is disabled.');
             await editGoalType.clickCloseGoalTypeButton();
             expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.clickOnApplicationWarningYesNoButton('No');
             expect(await editGoalType.isGoalTypeFieldDisabled()).toBeTruthy('Goal Type field is enabled.');
             await editGoalType.clickSaveGoalTypeButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilityGrid.searchAndOpenHyperlink(goalTypeTitle);
-            expect(await editGoalType.getStatusDropDownFieldValue()).toBe('InActive');
+            expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Inactive');
+            await utilityCommon.closeAllBlades();
         });
 
         it('[6039]: Verify if SVT Goal Type is accessible to same LOB Case Manager', async () => {
@@ -120,7 +123,7 @@ describe('Service Level Management - Goal Type Tests', () => {
 
         it('[6039]: Verify if SVT Goal Type is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -131,7 +134,7 @@ describe('Service Level Management - Goal Type Tests', () => {
 
         it('[6039]: Verify if SVT Goal Type is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -150,7 +153,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222179): A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createGoalType.clickCloseGoalTypeButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             //on update verification is not possible since goal type name field is disabled on edit.
@@ -166,6 +169,7 @@ describe('Service Level Management - Goal Type Tests', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -193,7 +197,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await editGoalType.isSaveButtonDisabled()).toBeTruthy('Save button is enabled.');
             expect(await editGoalType.getGoalTypeFieldValue()).toBe('Request-Based');
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Active');
-            await editGoalType.selectGoalTypeStatus('InActive');
+            await editGoalType.selectGoalTypeStatus('Inactive');
             await editGoalType.clickCloseGoalTypeButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
@@ -208,7 +212,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222179): A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 
@@ -224,21 +228,21 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             expect(await createGoalType.isGoalTypeDisabled()).toBeTruthy('Goal Type field is enabled.');
-            await createGoalType.selectGoalTypeStatus('InActive');
+            await createGoalType.selectGoalTypeStatus('Inactive');
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[6037]: Update Goal Type and Verify the details', async () => {
             await goalTypeConsole.addColumns(goalTypeColumns);
             await goalTypeConsole.searchOnGridConsole(goalTypeTitle);
-            let goalTypeGUID = await goalTypeConsole.getGoalTypeGUID();
+            let goalTypeGUID = await utilityGrid.getFirstGridRecordColumnValue('GUID');
             await utilityGrid.clearFilter();
             await utilityGrid.clearSearchBox();
-            expect(await goalTypeConsole.isGridColumnSorted('Goal Type Name', 'asc')).toBeTruthy('Goal Type Name Column is not sorted in ascending order');
-            expect(await goalTypeConsole.isGridColumnSorted('Goal Type Name', 'desc')).toBeTruthy('Goal Type Name Column is not sorted in descending order');
+            expect(await goalTypeConsole.isGridColumnSorted('Goal Type Name', 'ascending')).toBeTruthy('Goal Type Name Column is not sorted in ascending order');
+            expect(await goalTypeConsole.isGridColumnSorted('Goal Type Name', 'descending')).toBeTruthy('Goal Type Name Column is not sorted in descending order');
             await goalTypeConsole.clickRefreshIcon();
-            expect(await goalTypeConsole.isGridColumnSorted('Goal Type', 'asc')).toBeTruthy('Goal Type Column is not sorted in ascending order');
-            expect(await goalTypeConsole.isGridColumnSorted('Goal Type', 'desc')).toBeTruthy('Goal Type Column is not sorted in descending order');
+            expect(await goalTypeConsole.isGridColumnSorted('Goal Type', 'ascending')).toBeTruthy('Goal Type Column is not sorted in ascending order');
+            expect(await goalTypeConsole.isGridColumnSorted('Goal Type', 'descending')).toBeTruthy('Goal Type Column is not sorted in descending order');
             // These steps need to confirm as status column is not working on sort order
 
             // await goalTypeConsole.clickRefreshIcon();
@@ -261,22 +265,22 @@ describe('Service Level Management - Goal Type Tests', () => {
             await utilityGrid.clearSearchBox();
             await goalTypeConsole.clickRefreshIcon();
             await utilityGrid.addFilter('Goal Type Name', goalTypeTitle, 'text', goalTypeConsoleGUID);
-            expect(await goalTypeConsole.isFilteredRecordDisplayed()).toBeTruthy('Goal Type Name record is not searched.');
+            expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('Goal Type Name record is not searched.');
 
             await utilityGrid.clearFilter();
             await goalTypeConsole.clickRefreshIcon();
-            await utilityGrid.addFilter('Status', 'InActive', 'checkbox', goalTypeConsoleGUID);
-            expect(await goalTypeConsole.isFilteredRecordDisplayed()).toBeTruthy('Goal Type Name record is not searched.');
+            await utilityGrid.addFilter('Status', 'Inactive', 'checkbox', goalTypeConsoleGUID);
+            expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('Goal Type Status record is not searched.');
 
             await utilityGrid.clearFilter();
             await goalTypeConsole.clickRefreshIcon();
             await utilityGrid.addFilter('GUID', goalTypeGUID, 'text', goalTypeConsoleGUID);
-            expect(await goalTypeConsole.isFilteredRecordDisplayed()).toBeTruthy('Goal Type Name record is not searched.');
+            expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('Goal Type GUID record is not searched.');
 
             await utilityGrid.clearFilter();
             await goalTypeConsole.clickRefreshIcon();
-            await goalTypeConsole.addGoalTypeFilter('Goal Type', 'Request-Based', 'checkbox', goalTypeConsoleGUID);
-            expect(await goalTypeConsole.isFilteredRecordDisplayed()).toBeTruthy('Goal Type record is not searched.');
+            await utilityGrid.addFilter('Goal Type', 'Request-Based', 'checkbox');
+            expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('Goal Type record is not searched.');
 
         });
     });

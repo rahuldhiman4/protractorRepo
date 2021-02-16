@@ -595,7 +595,7 @@ describe("Task Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingError('Canceled');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await createApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
 
@@ -618,7 +618,7 @@ describe("Task Approval Mapping Tests", () => {
             await editApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_update");
             await editApprovalMappingPage.selectStatusMappingApproved('Completed');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });

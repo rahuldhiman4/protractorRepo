@@ -6,10 +6,12 @@ class ChangeAssignmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         changeAssignmentComponent: 'bwf-change-assignment button',
-        assignButton: '.modal-footer .btn-primary',
+        assignButton: 'rx-runtime-view-modal button.btn-primary',
         searchAsignee: '[class="search-input"] .adapt-search-field-wrapper input',
         assignee: '.person__info .name',
         knowledgeReviewGuid: 'b56b4649-9f86-4ba9-a8a5-56d9c000cc89',
+        assigneeHierarchy: '.read-only-hierachy div.read-only-content',
+        assigneeValue: '.assignment-read-only .person-main a'
     }
 
     async isDropDownDisplayed(dropDownName: string, guid?: string): Promise<boolean> {
@@ -154,6 +156,35 @@ class ChangeAssignmentBlade {
         return await utilityCommon.isValuePresentInDropDown(dropDownElement, dropDownValue);
     }
 
+    async isAllValuePresentInDropDown(dropDownName: string, dropDownValueArr: string[], guid?: string): Promise<boolean> {
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        let dropDownElement: ElementFinder;
+        switch (dropDownName) {
+            case "Company": {
+                dropDownElement = await $$(locator).get(0);
+                break;
+            }
+            case "SupportOrg": {
+                dropDownElement = await $$(locator).get(1);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(locator).get(2);
+                break;
+            }
+            case "Assignee": {
+                dropDownElement = await $$(locator).get(3);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+        return await utilityCommon.isAllDropDownValuesMatches(dropDownElement, dropDownValueArr);
+    }
+
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {
         return await $('.checkbox__input').isSelected();
     }
@@ -193,7 +224,7 @@ class ChangeAssignmentBlade {
     async setAssigneeOnBlade(company: string, bu: string, group: string, assignee: string): Promise<void> {
         await this.setDropDownValue('Company', company);
         await this.setDropDownValue('SupportOrg', bu);
-        await this.setDropDownValue('AssignedGroup', group);
+        //await this.setDropDownValue('AssignedGroup', group);
         await this.setDropDownValue('Assignee', assignee);
         await this.clickOnAssignButton();
     }
@@ -252,6 +283,64 @@ class ChangeAssignmentBlade {
             }
         }
         return utilityCommon.getAllDropDownValues(dropDownElement, DropDownType.WebElement);
+    }
+
+    async isFullHierarchyPresent(dropDownName: string, OrgValue: string, hierarchyName: string, guid?: string): Promise<boolean> {
+        let dropDownElement: ElementFinder;
+        let locator = this.selectors.changeAssignmentComponent;
+        if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        switch (dropDownName) {
+            case "Company": {
+                dropDownElement = await $$(locator).get(0);
+                break;
+            }
+            case "SupportOrg": {
+                dropDownElement = await $$(locator).get(1);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(locator).get(2);
+                break;
+            }
+            case "Assignee": {
+                dropDownElement = await $$(locator).get(3);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+
+        await dropDownElement.click();
+        await $$('input').last().sendKeys(OrgValue);
+        return await element(by.cssContainingText('.dropdown-item', hierarchyName)).isPresent().then(async (result) => {
+            if(result) return await element(by.cssContainingText('.dropdown-item', hierarchyName)).isDisplayed();
+            else return false;
+        });
+    }
+
+    async getAssigneeHierarchy(): Promise<string> {
+        return await $(this.selectors.assigneeHierarchy).getText();
+    }
+
+    async getSupportOrgText(): Promise<string> {
+        let hirearchy = await this.getAssigneeHierarchy();
+        return (hirearchy.split('>')[1]).trim();
+    }
+
+    async getAssignedCompanyText(): Promise<string> {
+        let hirearchy = await this.getAssigneeHierarchy();
+        return (hirearchy.split('>')[0]).trim();
+    }
+
+    async getAssignedGroupText(): Promise<string> {
+        let hirearchy = await this.getAssigneeHierarchy();
+        return (hirearchy.split('>')[2]).trim();
+    }
+
+    async getAssigneeValue(): Promise<string> {
+        return await $(this.selectors.assigneeValue).getText();
     }
 }
 

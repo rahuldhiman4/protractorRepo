@@ -22,14 +22,19 @@ describe('Person Profile test', () => {
     let businessData, departmentData, suppGrpData, personData, orgId;
 
     beforeAll(async () => {
-        await apiHelper.apiLogin('elizabeth');
+        // await apiHelper.apiLogin('elizabeth');
         // await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
         // await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
         // await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
         await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');
-        await utilityGrid.selectLineOfBusiness('Human Resource');
+
         await navigationPage.gotoPersonProfile();
+
+        // await apiHelper.apiLogin('elizabeth');
+        // await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
+        // await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
+        // await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
     });
 
     afterAll(async () => {
@@ -38,7 +43,7 @@ describe('Person Profile test', () => {
     });
 
     async function foundationDataCreation() {
-        //Create Foundation data
+        // Create Foundation data
         businessData = businessDataFile['BusinessUnitData_BulkOperation'];
         departmentData = departmentDataFile['DepartmentData_BulkOperation'];
         suppGrpData = supportGrpDataFile['SuppGrpData_BulkOperation'];
@@ -77,17 +82,19 @@ describe('Person Profile test', () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['4584']);
         let caseDisplayId = response.displayId;
-        await personProfile.clickOnTab("Requested Cases");
+        await personProfile.clickOnTab("Requested Cases ");
         expect(await personProfile.isCasePresentOnRequestedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
     //asahitya
     it('[4583]: Verify cases visible in Assiged cases tab of My profile page are according to permissions of logged in user', async () => {
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoPersonProfile();
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         let response = await apiHelper.createCase(caseData['4583']);
         let caseDisplayId = response.displayId;
-        await personProfile.clickOnTab("Assigned Cases");
+        await personProfile.clickOnTab("Assigned Cases ");
         expect(await personProfile.isCasePresentOnAssignedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
@@ -157,6 +164,7 @@ describe('Person Profile test', () => {
         await viewCasePage.clickAssigneeLink();
         try {
             await utilityCommon.switchToNewTab(1);
+            await browser.sleep(3000); //Takes time to redirect to person profile on new tab
             expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
             expect(await personProfile.getJobTitle()).toBe('RA3', 'Job tite does not match');
             expect(await personProfile.getCorporateID()).toBe('PET00000521', 'Corporate Id does not match');
@@ -175,19 +183,20 @@ describe('Person Profile test', () => {
             await personProfile.clickOnTab("Related Cases");
             await personProfile.clickOnTab("Related Persons");
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qing Yuan', 'Guardian');
-            await relatedTabPage.clickRelatedPersonName('Qing Yuan');
+            await addRelatedPopupPage.addPerson('Qianru Tao', 'Guardian');
+            await relatedTabPage.clickRelatedPersonName('Qianru Tao');
+            await browser.sleep(3000); //Takes time to redirect to person profile on new tab
             await utilityCommon.switchToNewTab(2);
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qiang Du', 'Manager')).toBeTruthy();
 
             await utilityCommon.switchToNewTab(1);
-            await relatedTabPage.removeRelatedPerson('Qing Yuan');
+            await relatedTabPage.removeRelatedPerson('Qianru Tao');
         }
         catch (ex) { throw ex; }
         finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
         try {
             await navigationPage.signOut();
-            await loginPage.login('qyuan');
+            await loginPage.login('qtao');
             await navigationPage.gotoPersonProfile();
             expect(await relatedTabPage.isRelatedPersonPresent('Qiao Feng')).toBeFalsy('Qiao Feng is available in Related tab');
         }
@@ -200,11 +209,12 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[4201]: Person profile display for person from activity/history tab', async () => {
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         await apiHelper.apiLogin('elizabeth');
 
         let caseData = {
             "Requester": "qyuan",
-            "Summary": "Test case for 4202",
+            "Summary": "Test case for 4201",
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
@@ -217,7 +227,7 @@ describe('Person Profile test', () => {
         await activityTabPage.addPersonInActivityNote('Qiao Feng');
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qiao Feng');
-
+        await browser.sleep(3000); //Takes time to redirect to person profile on new tab 
         expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
         expect(await personProfile.getJobTitle()).toBe('RA3', 'Job tite does not match');
         expect(await personProfile.getCorporateID()).toBe('PET00000521', 'Corporate Id does not match');
@@ -289,12 +299,13 @@ describe('Person Profile test', () => {
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await viewCasePage.clickContactPersonName();
             await utilityCommon.switchToNewTab(1);
+            await browser.sleep(3000); //Takes time to redirect to person profile on new tab
             expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
             expect(await personProfile.getJobTitle()).toBe('CE3', 'Job tite does not match');
             expect(await personProfile.getCorporateID()).toBe('PET00000239', 'Corporate Id does not match');
             expect(await personProfile.getEmployeeTypeValue()).toBe('Office-Based Employee', 'Employee Type value does not match');
             expect(await personProfile.getLoginID()).toBe('apavlik', 'Login Id does not match');
-            expect(await personProfile.getFunctionalRoles()).toContain('_');
+            expect(await personProfile.getFunctionalRoles()).toContain('-');
             expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
             expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
             expect(await personProfile.getContactNumber()).toContain("1 925 469-4006", "Phone number mismatch");
@@ -312,6 +323,7 @@ describe('Person Profile test', () => {
             await addRelatedPopupPage.addPerson('Qianru Tao', 'Former Manager');
             await relatedTabPage.clickRelatedPersonName('Qianru Tao');
             await utilityCommon.switchToNewTab(2);
+            await browser.sleep(3000); //Takes time to redirect to person profile on new tab
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Adam Pavlik', 'Former Reportee')).toBeTruthy('Relation does not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
@@ -341,6 +353,7 @@ describe('Person Profile test', () => {
             await utilityCommon.switchToNewTab(2);
             await browser.sleep(3000); //Hard wait to load new page
             await relatedTabPage.removeRelatedPerson('Adam Pavlik');
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoPersonProfile();
@@ -348,10 +361,7 @@ describe('Person Profile test', () => {
         });
 
         it('[4203]: Person profile display for Contact', async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.updateFoundationEntity('Person', 'qfeng', { vipStatus: 'Yes' });
             await apiHelper.apiLogin('elizabeth');
-
             let caseData = {
                 "Requester": "araisin",
                 "Summary": "Test case for 4202",
@@ -369,6 +379,7 @@ describe('Person Profile test', () => {
             await viewCasePage.clickContactPersonName();
 
             await utilityCommon.switchToNewTab(1);
+            await browser.sleep(5000); //Takes time to redirect to person profile on new tab
             expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
             expect(await personProfile.getJobTitle()).toBe('RA3', 'Job tite does not match');
             expect(await personProfile.getCorporateID()).toBe('PET00000521', 'Corporate Id does not match');
@@ -390,75 +401,88 @@ describe('Person Profile test', () => {
             await addRelatedPopupPage.addPerson('Peter Kahn', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Peter Kahn');
             await utilityCommon.switchToNewTab(2);
+            await browser.sleep(5000); //Takes time to redirect to person profile on new tab
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qiao Feng', 'Child')).toBeTruthy('Relation is not matching');
             await utilityCommon.switchToNewTab(1);
             await relatedTabPage.removeRelatedPerson('Peter Kahn');
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
             await navigationPage.signOut();
             await loginPage.login('peter');
             await navigationPage.gotoPersonProfile();
             expect(await relatedTabPage.isRelatedPersonPresent('Qiao Feng')).toBeFalsy('Qiao Feng is available in Related tab');
-
         });
     });
 
     //asahitya
-    it('[4595]: Verify navigation to Managers Profile from My Profile->Assigned Manager', async () => {
-        await navigationPage.signOut();
-        await loginPage.login('peter');
+    describe('[4595]: Verify navigation to Managers Profile from My Profile->Assigned Manager', () => {
+        beforeAll(async () => {
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+        });
+        it('[4595]: Verify navigation to Managers Profile from My Profile->Assigned Manager', async () => {
         await navigationPage.gotoPersonProfile();
+        await browser.sleep(3000);//loading profile page
         await personProfile.clickOnManagerLink();
         await utilityCommon.switchToNewTab(1);
         await browser.sleep(3000);//loading profile page
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
-        expect(await personProfile.getContactNumber()).toBe("1 213 5559393", "Phone number mismatch");
-        expect(await personProfile.getEmail()).toBe("hannah.haas@petramco.com", "Email mismatch");
-        expect(await personProfile.getSite()).toBe("Aichi\n4-6-23 Meieki, Nakamura-ku, Nagoya-shi, Aichi, Aichi, 450-0002, Japan ");
+        expect(await personProfile.getContactNumber()).toBe("1 512 343-1920", "Phone number mismatch");
+        expect(await personProfile.getEmail()).toBe("qfeng@petramco.com", "Email mismatch");
+        expect(await personProfile.getSite()).toBe("Austin\n10431 Morado Circle\nAvalon Building 5, Austin, Texas, 78759, United States ");
+
         await personProfile.clickOnTab("Requested Cases");
         await personProfile.clickOnTab("Assigned Cases");
         await personProfile.clickOnTab("Support Groups");
         await personProfile.clickOnTab("Related Cases");
         await personProfile.clickOnTab("Related Persons");
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+        });
     });
 
     //asahitya
-    it('[4127]: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', async () => {
-        try {
+    describe('[4127]: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', () => {
+        it('[4127]: Check agent can view the notes of other agents Person profile in agent work history tab for which he is submitter of the note', async () => {
             await personProfile.clickOnManagerLink();
+            await browser.sleep(3000); //wait for load person profile
             await utilityCommon.switchToNewTab(1);
             await activityTabPage.addActivityNote("4127");
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote("4127")).toBeTruthy("Activity notes is missing");
-        }
-        catch (ex) { throw ex; }
-        finally {
+        afterAll(async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        }
+        });
+        });
     });
 
     //asahitya
-    it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
-        await navigationPage.gotoPersonProfile();
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
-        await relatedTabPage.clickRelatedPersonName('Qiang Du');
-        await utilityCommon.switchToNewTab(1);
-        await activityTabPage.addActivityNote("4128");
-        await activityTabPage.clickOnPostButton();
-        await utilityCommon.closePopUpMessage();
-        await activityTabPage.clickOnRefreshButton();
-        expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on qdu's activity");
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-        await activityTabPage.clickOnRefreshButton();
-        expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on his own activity");
-        try {
+    describe('[4128]: Check agent can view notes to own Person profile in agent work history tab', () => {
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+        it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
+            await navigationPage.gotoPersonProfile();
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
+            await relatedTabPage.clickRelatedPersonName('Qiang Du');
+            await utilityCommon.switchToNewTab(1);
+            await activityTabPage.addActivityNote("4128");
+            await activityTabPage.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
+            await activityTabPage.clickOnRefreshButton();
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on qdu's activity");
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await activityTabPage.clickOnRefreshButton();
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on his own activity");
+        });
+        it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.signOut();
             await loginPage.login("qdu");
             await navigationPage.gotoPersonProfile();
             expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Qiang Du cannot see post on his own activity");
-
+        });
+        it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
             await navigationPage.gotoPersonProfile();
@@ -468,20 +492,17 @@ describe('Person Profile test', () => {
             await relatedTabPage.clickRelatedPersonName('Qiang Du');
             await utilityCommon.switchToNewTab(1);
             expect(await activityTabPage.isTextPresentInNote("4128")).toBeFalsy("Qadim can see post on qdu's activity");
-        }
-        catch (e) {
-            throw e;
-        }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login("elizabeth");
-        }
+            await loginPage.login('elizabeth');
+        });
     });
 
     //asahitya
     it('[4594]: Verify Requested Cases tab of My Profile console', async () => {
         await navigationPage.gotoPersonProfile();
-        await personProfile.clickOnTab("Requested Cases");
+        await personProfile.clickOnTab("Requested Cases ");
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         for (let i: number = 0; i < 4; i++) {
@@ -490,14 +511,14 @@ describe('Person Profile test', () => {
             await apiHelper.createCase(caseData['4584']);
         }
 
-        //Verifying default column matching
-        let defaultRequestedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Created Date", "Support Group", "Assignee"];
+        // Verifying default column matching
+        let defaultRequestedCaseColumns: string[] = ["Case ID", "Priority", "Status", "Summary", "Created Date", "Assignee"];
         expect(await personProfile.areRequestedCaseColumnMatches(defaultRequestedCaseColumns)).toBeTruthy("Default Requested columns are not matching");
 
         //Verifying all columns
-        let allRequestedCaseColumns: string[] = ["Assigned Business Unit", "Assigned Company", "Assigned Department", "Assignee ID", "Assignee Login Name", "Flowset", "ID", "Label", "Modified Date", "Region", "Site", "Source", "Status Value"];
+        let allRequestedCaseColumns: string[] = ["Assignee ID", "Assignee Login Name", "Assignee ID","Flowset", "ID", "Label", "Modified Date", "Source", "Status Value"];
         await personProfile.addRequestedCaseGridColumn(allRequestedCaseColumns);
-        let expectedAllColumns: string[] = ["Assigned Business Unit", "Assigned Company", "Assigned Department", "Assignee ID", "Assignee Login Name", "Flowset", "ID", "Label", "Modified Date", "Region", "Site", "Source", "Status Value", "Case ID", "Priority", "Status", "Summary", "Created Date", "Support Group", "Assignee"];
+        let expectedAllColumns: string[] = ["Assignee", "Assignee ID", "Assignee Login Name", "Case ID", "Created Date", "Flowset", "ID", "Label", "Modified Date", "Priority", "Source", "Status", "Status Value", "Summary"];
         expect(await personProfile.areRequestedCaseColumnMatches(expectedAllColumns)).toBeTruthy("All Requested columns are not matching");
         await personProfile.removeRequestedCaseGridColumn(allRequestedCaseColumns);
 
@@ -507,7 +528,9 @@ describe('Person Profile test', () => {
 
     //asahitya
     it('[4593]: Verify Assigned Cases tab of My Profile console', async () => {
-        await personProfile.clickOnTab("Assigned Cases");
+        await navigationPage.gotoCaseConsole();
+        await navigationPage.gotoPersonProfile();
+        await personProfile.clickOnTab("Assigned Cases ");
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
         for (let i: number = 0; i < 4; i++) {
@@ -523,14 +546,14 @@ describe('Person Profile test', () => {
         //Verifying all columns
         let allAssignedCaseColumns: string[] = ["Assignee Login Name", "Company", "ID", "Label", "Region", "Request ID", "Site", "Source", "Status Value", "Support Group"];
         await personProfile.addAssignedCaseGridColumn(allAssignedCaseColumns);
-        let expectedAllColumns: string[] = ["Assignee Login Name", "Company", "ID", "Label", "Region", "Request ID", "Site", "Source", "Status Value", "Support Group", "Case ID", "Priority", "Status", "Summary", "Requester", "Modified Date"];
+        let expectedAllColumns: string[] = ["Assignee Login Name", "Case ID", "ID", "Label", "Modified Date", "Priority", "Request ID", "Requester", "Source", "Status", "Status Value", "Summary"];
         expect(await personProfile.areAssignedCaseColumnMatches(expectedAllColumns)).toBeTruthy("All Assigned columns are not matching");
         await personProfile.removeAssignedCaseGridColumn(allAssignedCaseColumns);
 
         //Verify sorting
         expect(await personProfile.isAssignedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
     });//, 160 * 1000);
-    
+
     describe('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', () => {
         it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
             await apiHelper.apiLogin('tadmin');
@@ -620,7 +643,7 @@ describe('Person Profile test', () => {
             await loginPage.login('elizabeth');
         });
     });
-    // (will fix later not quick fix)
+    
     describe('[4197]: Configuration - person-to-person relationship', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4197]: Configuration - person-to-person relationship', async () => {
@@ -705,20 +728,18 @@ describe('Person Profile test', () => {
             await addRelatedPopupPage.searchAndSelectPerson('Qing Yuan');
             await addRelatedPopupPage.clickNextButton();
             expect(await addRelatedPopupPage.isRelationshipPresentInDropdown(`4573 Rname Deprecated ${randomStr}`)).toBeFalsy();
-            await utilityCommon.closeAllBlades();
+            
         });
         afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await utilityCommon.closeAllBlades();
         });
     });
 
     //asahitya
     describe('[4206]: Person profile display for requester', () => {
-        afterAll(async () => {
+        beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
 
         it('[4206]: Person profile display for requester', async () => {
@@ -780,7 +801,6 @@ describe('Person Profile test', () => {
             await loginPage.login('elizabeth');
             
             await apiHelper.apiLogin('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
 
             let caseData = {
                 "Requester": "qnorton",
@@ -830,15 +850,20 @@ describe('Person Profile test', () => {
             await navigationPage.gotoPersonProfile();
             expect(await relatedTabPage.isRelatedPersonPresent('Quinn Norton')).toBeFalsy('Quinn Norton is available in Related tab');
         });
+        afterAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+        });
+
     });
-    
+
     describe('[59946]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', () => {
         let caseResponse;
         let caseData = {
             "Status": "2000",
             "Assigned Company": "Petramco",
             "Description": "DRDMV16799 Desc",
-            "Requester": "idPersonBO",
+            "Requester": "qkatawazi",
             "Summary": "DRDMV16799 Summary",
             "Business Unit": "United States Support",
             "Support Group": "US Support 3",
@@ -901,41 +926,37 @@ describe('Person Profile test', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
             await viewCasePage.clickOnTaskLink('Name DRDMV16799');
             await viewTaskPage.clickOnRequesterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-
             await viewCasePage.clickOnTaskLink('Name DRDMV16799');
             await viewTaskPage.clickOnRequesterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-
             await viewCasePage.clickOnTaskLink('Name DRDMV16799');
             await viewTaskPage.clickOnRequesterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
@@ -945,7 +966,7 @@ describe('Person Profile test', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
             await navigationPage.signOut();
@@ -953,7 +974,7 @@ describe('Person Profile test', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
 
             await navigationPage.signOut();
@@ -961,14 +982,13 @@ describe('Person Profile test', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
-            expect(await personProfile.getCompany()).toBe('Petramco > United States Support, BulkOperationBusinessUnit, BulkOperationDepartment', 'Organization details not match');
+            expect(await personProfile.getCompany()).toBe('Petramco > Human Resources > Benefits', 'Organization details not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-
         });
     });
 
@@ -992,7 +1012,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(caseToCaseReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             // verify error
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
             // expect(await relationshipsConfigsPage.isRelationshipPresent(caseToCaseRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -1021,7 +1041,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(caseToPersonReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             // verify error
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
             //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToPersonRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -1050,7 +1070,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(personToPersonReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             // verify error
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): Relationship Type already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
             //expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');

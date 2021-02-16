@@ -3,7 +3,6 @@ import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import { flowsetGlobalFields, flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
-import { CASE_MANAGEMENT_LIB_PROCESS, SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import previewCasePage from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
@@ -19,7 +18,6 @@ import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flows
 import createFlowsetPage from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
 import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
 import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
-import editFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/edit-register-process-config.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
@@ -117,7 +115,7 @@ describe('Create Process in Flowset', () => {
     })
 
     //asahitya
-    describe('[5317]: Initialization process execution for case origin Agent', () => {
+    xdescribe('[5317]: Initialization process execution for case origin Agent', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[5317]: Initialization process execution for case origin Agent', async () => {
             //Create a Process
@@ -125,7 +123,7 @@ describe('Create Process in Flowset', () => {
             let processName = `Agent Origin ${randomStr}`
             await apiHelper.createProcess(processName, 'AGENT_ORIGIN');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
+//            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
 
             //Register Process

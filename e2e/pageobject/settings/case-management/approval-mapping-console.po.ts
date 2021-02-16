@@ -46,7 +46,7 @@ class ApprovalMappingConsole {
         await utilityGrid.removeGridColumn(columnName,this.selectors.gridGUID)
     }
     async areGridColumnMatches(data: string[]): Promise<boolean>{
-        return await utilityGrid.areColumnHeaderMatches(data,this.selectors.gridGUID,);
+        return await utilityGrid.areColumnHeaderMatches(data,this.selectors.gridGUID);
     }
     async isColumnSorted(value: string, sortType: string): Promise<boolean> {
         return await utilityGrid.isGridColumnSorted(value, sortType, this.selectors.gridGUID)

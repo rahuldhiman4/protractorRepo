@@ -47,7 +47,8 @@ class DocumentLibraryPage {
         keyWordGuid: 'afdfcbdf-13c4-45ec-8870-f53a0bf32bac',
         cancelGuid: '00107b90-bb31-4776-a855-44fea128a0de',
         cancelButton: '[rx-view-component-id="00107b90-bb31-4776-a855-44fea128a0de"] button',
-        lobValue: '[rx-view-component-id="b7ce46f7-92b4-4847-901f-a6d8f4e4fef9"] .pull-left'
+        lobValue: '[rx-view-component-id="b7ce46f7-92b4-4847-901f-a6d8f4e4fef9"] .pull-left',
+        siteGroupGuid: '4f23d28f-846e-4451-ab41-4582dd3c44e1'
     }
 
     async addAttachment(fileToUpload: string): Promise<void> {
@@ -76,9 +77,7 @@ class DocumentLibraryPage {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.companyFieldGuid, textValue);
     }
 
-    async departmentTextPresent(textValue: string): Promise<boolean> {
-        return await utilityCommon.isFieldLabelDisplayed(this.selectors.departmentGuid, textValue);
-    }
+    
 
     async buisnessUnitTextPresent(textValue: string): Promise<boolean> {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.buisnessUnit, textValue);
@@ -236,6 +235,10 @@ class DocumentLibraryPage {
 
     async selectSite(siteValue: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.site, siteValue);
+    }
+
+    async selectSiteGroup(siteValue: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.siteGroupGuid, siteValue);
     }
 
     async selectStatus(statusValue: string): Promise<void> {

@@ -117,7 +117,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCompanyName(ALL_FIELD.company);
             await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
             await createCaseTemplate.clickSaveCaseTemplate();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await createCaseTemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });

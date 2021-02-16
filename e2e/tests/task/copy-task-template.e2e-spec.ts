@@ -59,7 +59,6 @@ describe('Copy Task Template', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityCommon.closePopUpMessage();
             await viewTaskTemplate.clickBackArrowBtn();
-            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4570]: Create a Copy an Automated Task template by using existing Process for it, Check Execution', async () => {
             await navigationPage.signOut();
@@ -95,6 +94,7 @@ describe('Copy Task Template', () => {
         });
     });
 
+    // qliu belongs to SG - need test data
     describe('[4737]: Create Copy of Task template Submitter not from any Support Group', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData;
@@ -126,7 +126,6 @@ describe('Copy Task Template', () => {
             expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await viewTaskTemplate.clickBackArrowBtn();
-            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -134,6 +133,7 @@ describe('Copy Task Template', () => {
         });
     });
 
+    // categ not reflected on view taks page, null.human-resource
     describe('[4566,4715]: Automated Task template copy created across company', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData;
@@ -178,7 +178,6 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Bonus');
             await viewTaskTemplate.clickBackArrowBtn();
-            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4566,4715]: User having Petramco and Psilon access', async () => {
             await navigationPage.signOut();
@@ -196,7 +195,6 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.petramco.human-resource:' + taskProcess1);
-            await viewTaskTemplate.clickBackArrowBtn();
             await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4566,4715]: Login through only Petramco User', async () => {
@@ -224,6 +222,7 @@ describe('Copy Task Template', () => {
         });
     });
 
+    // Duplicate process name error absent
     describe('[4567,4636]: Copy of Automated task template created across company and no new Process is created', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
@@ -256,15 +255,15 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.selectOwnerBusinessUnit('United States Support');
             await copyTemplatePage.selectOwnerGroup('US Support 3');
             await copyTemplatePage.clickSaveCopytemplate();// Failing due to defect (turned improvement DRDMV-21097)
-            expect(await utilityCommon.isPopUpMessagePresent(`ERROR (902): Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy(); // ERROR (902): Duplicate process name
+            expect(await utilityCommon.isPopUpMessagePresent(`Duplicate process name ${templateData.processBundle}:${templateData.processName}`, 2)).toBeTruthy('Duplicate process name error absent');
             await copyTemplatePage.clickCancelCopytemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(templateData.templateName);
             expect(await viewTaskTemplate.getProcessNameValue()).toBe('com.bmc.dsm.case-lib:' + templateData.processName);
-            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
+            await viewTaskTemplate.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -311,6 +310,7 @@ describe('Copy Task Template', () => {
         });
     });
 
+    // when case status is changed its not automatically reflected on case view 
     describe('[4569]: Create Copy of an automated Task and check execution', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, newCase;
@@ -354,7 +354,6 @@ describe('Copy Task Template', () => {
             await copyTemplatePage.clickSaveCopytemplate();
             await utilityCommon.closePopUpMessage();
             await viewTaskTemplate.clickBackArrowBtn();
-            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4569]: Create Copy of an automated Task and check execution', async () => {
             await navigationPage.gotoCaseConsole();
@@ -366,7 +365,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await updateStatusBladePo.changeCaseStatus("In Progress");
-            await updateStatusBladePo.clickSaveStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus('In Progress'); // when case status is changed its not automatically reflected on case view
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -374,7 +373,8 @@ describe('Copy Task Template', () => {
         });
     });
 
-    describe('[4563]: Copy Automated template with same process Name and different field data', () => {
+    // there is no edit process link on automated task
+    describe('[4563]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedTaskTemplate = randomStr + 'DRDMV14221UpdatedTask';
         let templateData;
@@ -409,15 +409,16 @@ describe('Copy Task Template', () => {
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(updatedTaskTemplate);
             await viewTaskTemplate.clickOnEditProcessLink();
-            expect(await utilityCommon.isPopUpMessagePresent(`WARNING (222062): Updates to dynamic fields or process affect the templates using the selected process :${templateData.templateSummary}`)).toBeTruthy("Popup message doesn't match");
+            expect(await utilityCommon.isPopUpMessagePresent(`Updates to dynamic fields or process affect the templates using the selected process :${templateData.templateSummary}`)).toBeTruthy("Popup message doesn't match");
             await utilityCommon.closePopUpMessage();
-            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
+            await viewTaskTemplate.clickBackArrowBtn();
             await navigationPage.gotoCaseConsole();
         });
     });
 
+    // categ not reflected on view taks page
     describe('[4714,4734]: Fields copied while creating copy of External Task template', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
@@ -456,11 +457,13 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Bonus');
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("US Support 3");
-            await viewTaskTemplate.clickBackArrowBtn();
+        });
+        afterAll(async () => {
             await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
+    // categ not reflected on view taks page
     it('[4738,4716]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -504,11 +507,10 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getBuisnessunitValue()).toBe('HR Support');
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("Workforce Administration");
-            await viewTaskTemplate.clickBackArrowBtn();
-            await viewTaskTemplate.clickBackArrowBtn();
         } catch (e) {
             throw e;
         } finally {
+            await viewTaskTemplate.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         }
@@ -567,9 +569,9 @@ describe('Copy Task Template', () => {
             await dynamicField.setFieldName(dynamicFieldName2);
             await dynamicField.setDescriptionName(dynamicFieldDescription2);
             await dynamicField.clickSaveButton();
-            await utilityCommon.closePopUpMessage();// is it defect no warning message
             expect(await viewTaskTemplate.isDynamicFieldPresent(dynamicFieldDescription2)).toBeTruthy(`${dynamicFieldDescription2} dynamic field not present`);
-            await viewTaskTemplate.clickBackArrowBtn();
+        });
+        afterAll(async () => {
             await viewTaskTemplate.clickBackArrowBtn();
         });
     });

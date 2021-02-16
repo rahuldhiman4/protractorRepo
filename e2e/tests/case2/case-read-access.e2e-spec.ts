@@ -215,7 +215,7 @@ describe("Case Read Access", () => {
             await addReadAccess.selectBusinessUnit('Australia Support');
             await addReadAccess.selectSupportGroup('AU Support 1');
             await addReadAccess.clickOnSave();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (10000): The Access Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The Access Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await addReadAccess.clickOnCancel();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });

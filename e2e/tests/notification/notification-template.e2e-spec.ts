@@ -123,7 +123,7 @@ describe("Notification Template", () => {
 
         it('[3898]: Verify if copied notification templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -137,6 +137,9 @@ describe("Notification Template", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteEmailOrNotificationTemplate(notificationTemplateName);
         });
@@ -318,7 +321,7 @@ describe("Notification Template", () => {
             await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
             await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
             await createNotificationTemplatePage.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy("record saved successful message is not displayed.");
+            expect(await utilityCommon.isPopUpMessagePresent('A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy("record saved successful message is not displayed.");
             await utilityCommon.closeAllBlades();
         });
 
@@ -496,7 +499,7 @@ describe("Notification Template", () => {
             await createNotificationTemplatePage.clickOnEmailTab();
             await createNotificationTemplatePage.setSubject('Sample Subject text');
             await createNotificationTemplatePage.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('ERROR (222107): A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
