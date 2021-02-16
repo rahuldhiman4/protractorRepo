@@ -208,7 +208,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + '1', caseTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + '1'} case title summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
 
@@ -219,7 +219,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 4, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 5, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 6, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[5], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[6], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
 
@@ -307,7 +307,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + '1', caseTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + '1'} case title summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
 
@@ -321,7 +321,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 4, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 5, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 6, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[5], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[6], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
 
@@ -358,7 +358,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + '1', caseTemplateModule)).toBeTruthy(`FailtoBeTruthyureMsg5: ${templateName + '1'} case title summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
 
@@ -372,7 +372,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 4, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 5, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 6, caseTemplateModule)).toBeTruthy(`FailureMsg5: ${summary2} case Template2 summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[5], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId2[6], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
 
@@ -390,7 +390,7 @@ describe('Global Search Template', () => {
         it('[4295]: Verify non acess case Template with petramco and global company', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
-            
+
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary1);
             expect(await searchPo.isModuleTitleDisplayed(summary1, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is displayed');
@@ -458,7 +458,7 @@ describe('Global Search Template', () => {
 
         it('[4295]: Verify case template record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Case Template');
@@ -476,7 +476,7 @@ describe('Global Search Template', () => {
 
         it('[4295]: Verify case template record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Case Template');
@@ -569,7 +569,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 4, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 4} task Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 5, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 5} task Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 6, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 6} task Template2 summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[5], taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId1[1]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[6], taskTemplateModule)).toBeTruthy(`FailureMsg7: ${taskTemplateDisplayId1[2]} task id  is missing`);
 
@@ -650,7 +650,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 4, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 4} task Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 5, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 5} task Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 6, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 6} task Template2 summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[5], taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId1[1]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[6], taskTemplateModule)).toBeTruthy(`FailureMsg7: ${taskTemplateDisplayId1[2]} task id  is missing`);
 
@@ -689,7 +689,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 4, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 4} task Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 5, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 5} task Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 6, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 6} task Template2 summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[5], taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId1[1]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[6], taskTemplateModule)).toBeTruthy(`FailureMsg7: ${taskTemplateDisplayId1[2]} task id  is missing`);
 
@@ -775,7 +775,7 @@ describe('Global Search Template', () => {
 
         it('[4294]: Verify task template record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Task Template');
@@ -793,7 +793,7 @@ describe('Global Search Template', () => {
 
         it('[4294]: Verify task template record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Task Template');
@@ -810,17 +810,18 @@ describe('Global Search Template', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi')
         });
     });
 
     //kgaikwad
-    describe('[4293]: Global search with only Document Category', async () => {
+    xdescribe('[4293]: Global search with only Document Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch3.jpg';
         let attachmentFilePath2 = 'e2e/data/ui/search/globalsearch5.json';
-        
+
         let docName1 = '1docNameDRDMV16123' + randomStr;
         let docName2 = '2docNameDRDMV16123' + randomStr;
         let keywordStr = '1keywordDRDMV16123' + randomStr;
@@ -838,11 +839,11 @@ describe('Global Search Template', () => {
 
             //  Create Document with Draft
             await createDraftDocumentLibrary(docName2, attachmentFilePath);
-            
+
             // Non maching Document 
             let nonMatchingKeyword = '2keywordDRDMV16123' + randomStr;
             await createPublishDocumentLibrary(nonMatchingDocName, attachmentFilePath2, nonMatchingKeyword);
-            
+
             // Non access Document
             await apiHelper.apiLogin('elizabeth');
             await createPublishDocumentLibrary(nonAccessDocName, attachmentFilePath2);
@@ -886,7 +887,7 @@ describe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 3)).toBeTruthy(`FailureMsg5: ${docName1} 3 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 4)).toBeTruthy(`FailureMsg6: ${docName1} 4 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 5)).toBeTruthy(`FailureMsg7: ${docName1} 5 Document is missing`);
-            
+
             await searchPo.clickOnLeftPannelRecord(docName1, documentModule);
         });
 
@@ -1076,7 +1077,7 @@ describe('Global Search Template', () => {
 
         it('[4293]: Verify document library record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await utilityGrid.selectLineOfBusiness('Facilities');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
@@ -1088,7 +1089,7 @@ describe('Global Search Template', () => {
 
         it('[4293]: Verify document library record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('jbarnes');
             await utilityGrid.selectLineOfBusiness('Facilities');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
@@ -1097,12 +1098,5 @@ describe('Global Search Template', () => {
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (0)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeFalsy(`FailureMsg4: ${docName1} 1 Document is searched for different Line of business.`);
         });
-
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
     });
 });
-
-

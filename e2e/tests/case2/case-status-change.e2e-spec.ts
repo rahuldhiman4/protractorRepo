@@ -165,7 +165,7 @@ describe('Case Status Change', () => {
             expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
             await utilityCommon.closePopUpMessage();
             await editCasePage.setCaseSummary('pendingAC');
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed for Priority');
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed for Priority');
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
         });
@@ -513,7 +513,7 @@ describe('Case Status Change', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary1 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -526,7 +526,7 @@ describe('Case Status Change', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary2 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -539,7 +539,7 @@ describe('Case Status Change', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary3 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             await editCasePage.clickOnAssignToMe();
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
@@ -553,7 +553,7 @@ describe('Case Status Change', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary4 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             await editCasePage.clickOnAssignToMe();
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
@@ -760,7 +760,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
         expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
@@ -865,7 +865,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
         expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
@@ -898,7 +898,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
         expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');

@@ -386,11 +386,5 @@ describe('Case Status Verification', () => {
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg12: Text is missing');
         });
-
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
-        });
     });
-
 });

@@ -21,7 +21,7 @@ describe("Task Approval Mapping Tests", () => {
     const approvalMappingMsg = "Mapping the result of the approval process to the task status.";
     const approvalStatusMappingLabel = "Status mapping:";
     let taskModule = 'Task';
-    let userData, userData1, userData2 = undefined;
+    let userData, userData2 = undefined;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -38,16 +38,6 @@ describe("Task Approval Mapping Tests", () => {
         await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData.userId, "US Support 3");
 
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
         userData2 = {
             "firstName": "caseMngr",
             "lastName": "MultiLOB",
@@ -57,7 +47,6 @@ describe("Task Approval Mapping Tests", () => {
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {
@@ -554,7 +543,7 @@ describe("Task Approval Mapping Tests", () => {
 
         it('[3592,3514]: Verify Task Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -741,8 +730,6 @@ describe("Task Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 }); 

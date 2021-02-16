@@ -214,6 +214,7 @@ describe('Dynamic Hidden Data', () => {
             await editTaskPo.clickOnCancelButton();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
