@@ -33,7 +33,7 @@ describe("Task Approval UI Validations", () => {
         await navigationPage.signOut();
     });
 
-    fdescribe('[3591]:[Task Approval] - Case General Approval - One Must Sign', () => {
+    describe('[3591]:[Task Approval] - Case General Approval - One Must Sign', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Task One Must Approval Flow' + randomStr;
         let caseData = undefined;
