@@ -39,7 +39,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+            await createDocumentLibraryPo.selectSupportOrg('United States Support');
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -81,7 +81,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('India Support');
+            await createDocumentLibraryPo.selectSupportOrg('India Support');
             await createDocumentLibraryPo.selectOwnerGroup('IN Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -192,7 +192,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectSupportOrg('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -251,7 +251,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+        await createDocumentLibraryPo.selectSupportOrg('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilityCommon.closePopUpMessage();
@@ -298,7 +298,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectSupportOrg('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             await navigationPage.gotoKnowledgeConsole();
@@ -316,7 +316,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectSupportOrg('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");// there will not be error message
@@ -332,9 +332,10 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectCompany('Petramco');
             await utilityCommon.isAllDropDownValuesMatches(createDocumentLibraryPo.selectors.businessUnitFieldGuid, ['Facilities', 'Facilities Support']);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('Facilities Support');
+            //Adapt issue workaround change input  Facilities Support to Facilities
+            await createDocumentLibraryPo.selectSupportOrg('Facilities');//defect
             await utilityCommon.isAllDropDownValuesMatches(createDocumentLibraryPo.selectors.ownerGroupFieldGuid, ['Facilities', 'Pantry Service']);
-            await createDocumentLibraryPo.selectBusinessUnit('Facilities Support');
+            await createDocumentLibraryPo.selectSupportOrg('Facilities');//defect
             await createDocumentLibraryPo.selectOwnerGroup('Facilities');
             // verify LOB on create page
             expect(await createDocumentLibraryPo.getLobValue()).toBe("Facilities");
@@ -369,7 +370,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+            await createDocumentLibraryPo.selectSupportOrg('United States Support');
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -431,7 +432,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+        await createDocumentLibraryPo.selectSupportOrg('United States Support');
         await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
         await createDocumentLibraryPo.clickOnSaveButton();
         await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -468,7 +469,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.addAttachment(filePath);
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+        await createDocumentLibraryPo.selectSupportOrg('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.clickOnSaveButton();
         await utilityCommon.closePopUpMessage();
@@ -496,7 +497,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectSupportOrg('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -567,7 +568,7 @@ describe('Document Library', () => {
             for (let i: number = 0; i < fileName1.length; i++) {
                 await createDocumentLibraryPo.setTitle(titleRandVal);
                 await createDocumentLibraryPo.selectCompany('Petramco');
-                await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+                await createDocumentLibraryPo.selectSupportOrg('HR Support');
                 await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
                 await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
                 await createDocumentLibraryPo.clickOnSaveButton();
@@ -579,7 +580,7 @@ describe('Document Library', () => {
         it('[4923]: Verify document creation with Nonsupported and Supported attachment types', async () => {
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectSupportOrg('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.clickOnSaveButton();
@@ -596,7 +597,7 @@ describe('Document Library', () => {
         await createDocumentLibraryPo.openAddNewDocumentBlade();
         await createDocumentLibraryPo.setTitle(titleRandVal);
         await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+        await createDocumentLibraryPo.selectSupportOrg('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
         await createDocumentLibraryPo.addAttachment(filePath);
         expect(await createDocumentLibraryPo.isAttachmentButtonEnabled()).toBeFalsy('Attachment button is enabled');
@@ -615,7 +616,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('United States Support');
+            await createDocumentLibraryPo.selectSupportOrg('United States Support');
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
@@ -692,7 +693,7 @@ describe('Document Library', () => {
         expect(await createDocumentLibraryPo.isDeleteButtonDisplayed()).toBeFalsy("delete button is Displayed");
 
         await createDocumentLibraryPo.selectCompany('Petramco');
-        await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+        await createDocumentLibraryPo.selectSupportOrg('HR Support');
         await createDocumentLibraryPo.selectOwnerGroup("Compensation and Benefits");
         await createDocumentLibraryPo.selectCategoryTier1("Applications");
         await createDocumentLibraryPo.selectCategoryTier2('Social');
@@ -714,7 +715,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('HR Support');
+            await createDocumentLibraryPo.selectSupportOrg('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();

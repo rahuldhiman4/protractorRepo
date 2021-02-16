@@ -766,7 +766,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title);
             await createDocumentLibraryPage.selectCompany(companyStr);
-            await createDocumentLibraryPage.selectBusinessUnit('United States Support');
+            await createDocumentLibraryPage.selectSupportOrg('United States Support');
             await createDocumentLibraryPage.selectOwnerGroup('US Support 1');
             await createDocumentLibraryPage.selectCategoryTier1(categoryTier1FieldVal);
             await createDocumentLibraryPage.selectCategoryTier2(categoryTier2FieldVal);
