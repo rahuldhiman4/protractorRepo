@@ -1,8 +1,8 @@
-import { browser } from "protractor";
+import { browser, $ } from "protractor";
 import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
 describe('Application Configuration', () => {
@@ -23,12 +23,12 @@ describe('Application Configuration', () => {
             await applicationConfigPo.clickApplicationConfiguration('DATE_TIME_FORMAT');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('DATE_TIME_FORMAT');
             await applicationConfigPo.clickAddConfigurationValue();
-            expect(await utilityCommon.isAllDropDownValuesMatches('Company', ['- Global -', 'Petramco', 'Phyto', 'Phylum', 'BMCOpsMonitoring'])).toBeTruthy();
+            expect(await utilityCommon.isAllDropDownValuesMatches(await $(applicationConfigPo.selectors.companyDropDown), ['- Global -', 'Petramco', 'Phylum', 'Psilon'],DropDownType.WebElement)).toBeTruthy();
             await applicationConfigPo.clickCancelButton();
             await applicationConfigPo.clickApplicationConfiguration('ADD_DWP_SURVEY_ON_CASE');
             expect(await applicationConfigPo.getconfigurationHeaderValue()).toContain('ADD_DWP_SURVEY_ON_CASE');
             await applicationConfigPo.clickAddConfigurationValue();
-            expect(await utilityCommon.isAllDropDownValuesMatches('Company', ['- Global -', 'Petramco', 'Phyto', 'Phylum', 'BMCOpsMonitoring'])).toBeTruthy();
+            expect(await utilityCommon.isAllDropDownValuesMatches(await $(applicationConfigPo.selectors.companyDropDown), ['- Global -', 'Petramco', 'Phylum', 'Psilon'],DropDownType.WebElement)).toBeTruthy();
             await applicationConfigPo.clickCancelButton();
         });
     });
