@@ -64,7 +64,7 @@ export const BWF_PAGE_TITLES = {
     },
     KNOWLEDGE_MANAGEMENT: {
         APPROVALS: 'Approvals - Settings - Business Workflows',
-        ARTICLE_TEMPLATE_STYLE: 'Article Template Style - Settings - Business Workflows',
+        ARTICLE_TEMPLATE_STYLE: 'Article Template Styles - Settings - Business Workflows',
         ARTICLE_TEMPLATES: 'Article Templates - Settings - Business Workflows',
         KNOWLEDGE_SETS: 'Knowledge Sets - Settings - Business Workflows',
         NOTES_TEMPLATES: 'Notes Template - Settings - Business Workflows',
