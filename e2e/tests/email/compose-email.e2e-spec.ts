@@ -97,7 +97,7 @@ describe("Compose Email", () => {
             await copyNotificationTemplatePo.setCompanyValue('Petramco');
             await copyNotificationTemplatePo.clickOnCreateCopyButton();
             await editNotificationTemplatePo.clickOnCancelButton();
-            await utilityGrid.clickCheckBoxOfValueInGrid('Case Status Change');
+            await consoleNotificationTemplatePo.UnselectGridValue();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Company", 'Petramco', "text");
             await utilityGrid.searchAndOpenHyperlink('Case Status Change');
@@ -766,6 +766,7 @@ describe("Compose Email", () => {
             await imagePropertiesPo.setInputBoxValue(uploadURL, imageUrlFieldIndex);
             await imagePropertiesPo.setInputBoxValue('200', imageWidthFieldIndex);
             await imagePropertiesPo.clickOnOkButton();
+           
             await composeMail.setEmailBody("Adding a Link: ");
             await composeMail.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
@@ -863,6 +864,7 @@ describe("Compose Email", () => {
             expect(await activityTabPo.isImageDisplayedInActivity(sourceValue2)).toBeTruthy('Image not displayed');
         });
         afterAll(async () => {
+            await imagePropertiesPo.clickOnCrossIcon()
             await utilityCommon.closeAllBlades();
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
