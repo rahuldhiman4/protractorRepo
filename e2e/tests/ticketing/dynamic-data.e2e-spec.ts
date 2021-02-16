@@ -36,12 +36,7 @@ describe('Dynamic data', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        let eventData = {
-            eventName: petramcoEventName,
-            company: 'Petramco'
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createNotificationEvent(eventData);
+
     });
 
     afterAll(async () => {
@@ -54,6 +49,12 @@ describe('Dynamic data', () => {
         let caseTemplateName = 'caseTemplate' + randomStr;
         let globalcaseTemplateName, globalTaskTemplateName, taskTemplateName, caseTemaplateSummary = 'caseTemplate' + randomStr;
         beforeAll(async () => {
+            let eventData = {
+                eventName: petramcoEventName,
+                company: 'Petramco'
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createNotificationEvent(eventData);
             let casetemplateData = {
                 "templateName": `${caseTemplateName}`,
                 "templateSummary": `${caseTemaplateSummary}`,
@@ -482,7 +483,7 @@ describe('Dynamic data', () => {
 
         it('[4721]: [Dynamic Data] [Attachment] - Case UI when it has Dynamic Fields including Attachment', async () => {
             // attach files in field 1
-            let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json','bwfWord1.rtf'];
+            let fileName1: string[] = ['articleStatus.png', 'bwfJpg.jpg', 'bwfJpg1.jpg', 'bwfJpg2.jpg', 'bwfJpg3.jpg', 'bwfJpg4.jpg', 'bwfJson1.json', 'bwfJson2.json', 'bwfJson3.json', 'bwfJson4.json', 'bwfJson5.json', 'bwfWord1.rtf'];
             let filesToUpload1 = fileName1.map((file) => { return `../../data/ui/attachment/${file}` });
             await editCasePo.addAttachment('attachment1', filesToUpload1);
             await browser.sleep(7000); // sleep added to wait until files gets uploaded
@@ -1071,7 +1072,8 @@ describe('Dynamic data', () => {
     });
 
     //ptidke
-    it('[4864]:[-ve] [Dynamic Data] - Add 2 or more new fields in Case Template with same Name (ID)', async () => {
+    describe('[4864]:[-ve] [Dynamic Data] - Add 2 or more new fields in Case Template with same Name (ID)', async () => {
+        it('[4864]:[-ve] [Dynamic Data] - Add 2 or more new fields in Case Template with same Name (ID)', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData = {
             "templateName": 'CaseTemplateName13116' + randomStr,
@@ -1122,6 +1124,12 @@ describe('Dynamic data', () => {
         await utilityCommon.closePopUpMessage();
         expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewUpdatedDescription' + randomStr)).toBeTruthy();
     });
+    afterAll(async () => {
+        await utilityCommon.closeAllBlades();
+        await viewCasetemplatePo.clickBackArrowBtn();
+    });
+
+});
 
     //ptidke
     describe('[4850,4857]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {

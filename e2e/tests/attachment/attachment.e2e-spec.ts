@@ -689,7 +689,7 @@ describe("Attachment", () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(title);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectBusinessUnit('Canada Support');
+            await createDocumentLibraryPo.selectSupportOrg('Canada Support');
             await createDocumentLibraryPo.selectOwnerGroup('CA Support 1');
             await createDocumentLibraryPo.selectCategoryTier1(categName1);
             await createDocumentLibraryPo.selectCategoryTier2(categName2);

@@ -261,5 +261,5 @@ describe('Knowledge article template style', () => {
             await loginPage.login('elizabeth');
         });
     });
-    
+
 });

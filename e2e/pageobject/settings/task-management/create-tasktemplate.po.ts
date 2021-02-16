@@ -1,5 +1,6 @@
 import utilityCommon from "../../../utils/utility.common";
-import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
+import { DropDownType } from "../../../utils/constants";
 
 class CreateTaskTemplatePage {
 
@@ -34,7 +35,8 @@ class CreateTaskTemplatePage {
         addTaskTemplateTitle: '[rx-view-component-id="e564f60e-d84f-41fc-b130-998cdc60eca4"] span',
         templateMetadataTitle: '[rx-view-component-id="24bd49d8-5ca3-451a-86a1-eb26b687e801"] span',
         newprocessGuid: 'eefdf45b-47af-48cb-8c8b-a82c73f7d5a4',
-        lobValue: '[rx-view-component-id="3296cf04-1abb-4c81-8fef-35a83e5a14f9"] input'
+        lobValue: '[rx-view-component-id="3296cf04-1abb-4c81-8fef-35a83e5a14f9"] input',
+        assignmentSection: '[rx-view-component-id="41e20cf7-c9ac-42f8-9407-bf51e6476397"] .rx-select__search-button-title'
     }
 
     async setTemplateName(inputValue: string): Promise<void> {
@@ -242,6 +244,7 @@ class CreateTaskTemplatePage {
     async getLobValue(): Promise<string> {
         return await $(this.selectors.lobValue).getText();
     }
+
 }
 
 export default new CreateTaskTemplatePage();
