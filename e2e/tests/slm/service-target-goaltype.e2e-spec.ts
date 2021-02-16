@@ -14,37 +14,12 @@ let caseBAUser = 'qkatawazi';
 describe('Service Level Management - Goal Type Tests', () => {
     const caseModule = 'Case';
     let goalTypeConsoleGUID: '781a6488-ff08-481b-86c7-7c78c577357b';
-    let userData, userData1, userData2 = undefined;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
         await apiHelper.apiLogin(caseBAUser);
         await apiHelper.deleteApprovalMapping(caseModule);
-        //await apiHelper.apiLogin('tadmin');
-
-        //Instead of it use jbarnes 
-        // userData1 = { 
-        //     "firstName": "caseBA",
-        //     "lastName": "MultiLOB",
-        //     "userId": "caseBAMultiLOB",
-        //     "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        // }
-        // await apiHelper.createNewUser(userData1);
-        // await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        // await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
-        //Instead of it use qyuan
-        // userData2 = { 
-        //     "firstName": "caseMngr",
-        //     "lastName": "MultiLOB",
-        //     "userId": "caseMngrMultiLOB",
-        //     "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        // }
-        // await apiHelper.createNewUser(userData2);
-        // await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        // await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {

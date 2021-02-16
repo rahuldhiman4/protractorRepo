@@ -396,7 +396,7 @@ describe('Multi Search Validation', () => {
 
         it('[4292]: Verify person record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');

@@ -14,7 +14,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 
-let userData1, userData2 = undefined;
+let userData2 = undefined;
 
 export interface IIDs {
     id: string;
@@ -50,17 +50,6 @@ describe('Global Search Category Validation', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
 
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "CA Support 1");
-
         userData2 = {
             "firstName": "caseMngr",
             "lastName": "MultiLOB",
@@ -70,7 +59,6 @@ describe('Global Search Category Validation', () => {
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "CA Support 1");
     });
 
     afterAll(async () => {
@@ -453,7 +441,7 @@ describe('Global Search Category Validation', () => {
 
         it('[4307]: Verify Cases are accessible to user belonging to multiple Line of business Case BA', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoSearch();
             await searchPo.selectCategoryDropDownValue(caseModule);
@@ -712,7 +700,7 @@ describe('Global Search Category Validation', () => {
 
         it('[4296]: Verify Tasks are accessible to user belonging to multiple Line of business Case BA', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSearch();
             await searchPo.selectCategoryDropDownValue(taskModule);
             await searchPo.searchRecord(summary);

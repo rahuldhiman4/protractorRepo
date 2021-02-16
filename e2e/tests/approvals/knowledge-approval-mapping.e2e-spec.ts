@@ -12,7 +12,7 @@ import editApprovalMappingKnowledgePo from "../../pageobject/settings/knowledge-
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-let userData1, userData2 = undefined;
+let userData2 = undefined;
 
 describe("Knowledge Approval Mapping Tests", () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -26,16 +26,6 @@ describe("Knowledge Approval Mapping Tests", () => {
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(knowledgeModule);
-
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
 
         userData2 = {
             "firstName": "caseMngr",
@@ -85,7 +75,7 @@ describe("Knowledge Approval Mapping Tests", () => {
 
         it('[3693]: Verify Knowledge Approval Mapping are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');

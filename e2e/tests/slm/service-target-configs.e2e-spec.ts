@@ -34,7 +34,7 @@ let goalTypeInactive, goalTypeActive, goalTypeFacilities, goalTypeFacilitiesInac
 
 describe('Service Target Configs', () => {
     const caseModule = 'Case';
-    let userData, userData1, userData2 = undefined;
+    let userData2 = undefined;
 
     beforeAll(async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -74,12 +74,6 @@ describe('Service Target Configs', () => {
         await apiHelper.createSVTGoalType(goalTypeFacilities);
         await apiHelper.createSVTGoalType(goalTypeFacilitiesInactive);
 
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["SLM User","SLM Viewer","SLM Administrator","Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
         userData2 = {
             "firstName": "caseMngr",
             "lastName": "MultiLOB",
@@ -87,11 +81,6 @@ describe('Service Target Configs', () => {
             "userPermission": ["SLM User","SLM Viewer","SLM Administrator","Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
         }
         await apiHelper.apiLogin('tadmin');
-
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
@@ -1029,7 +1018,7 @@ describe('Service Target Configs', () => {
 
         it('[5647]: Verify if SVT with milestone is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await utilityGrid.selectLineOfBusiness('Human Resource');

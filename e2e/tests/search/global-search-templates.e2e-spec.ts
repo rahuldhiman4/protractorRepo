@@ -476,7 +476,7 @@ describe('Global Search Template', () => {
 
         it('[4295]: Verify case template record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Case Template');
@@ -793,7 +793,7 @@ describe('Global Search Template', () => {
 
         it('[4294]: Verify task template record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Task Template');
@@ -1089,7 +1089,7 @@ describe('Global Search Template', () => {
 
         it('[4293]: Verify document library record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await utilityGrid.selectLineOfBusiness('Facilities');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
