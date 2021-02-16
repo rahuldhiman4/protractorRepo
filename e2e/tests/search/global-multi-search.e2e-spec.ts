@@ -2,10 +2,10 @@ import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import personProfilePo from '../../pageobject/common/person-profile.po';
 import searchPo from '../../pageobject/search/global-search.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import personProfilePo from '../../pageobject/common/person-profile.po';
 
 export interface IIDs {
     id: string;
@@ -188,7 +188,7 @@ describe('Multi Search Validation', () => {
             "lastName": lastName,
             "userId": loginId,
             "emailId": emailId,
-            "userPermission": ["Case Agent","Document Manager","Human Resource"]
+            "userPermission": ["Case Agent", "Document Manager", "Human Resource"]
         }
         if (company) {
             await apiHelper.createNewUser(caseAgentuserData);
@@ -197,7 +197,7 @@ describe('Multi Search Validation', () => {
             await apiHelper.createNewUser(caseAgentuserData, 'Inactive');
         }
     }
-  
+
     //kgaikwad
     describe('[4292]: Global search with only People Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -384,7 +384,7 @@ describe('Multi Search Validation', () => {
 
         it('[4292]: Verify person record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
@@ -396,7 +396,7 @@ describe('Multi Search Validation', () => {
 
         it('[4292]: Verify person record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com','Password_1234');
+            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
@@ -405,7 +405,7 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
         });
-        
+
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
@@ -700,12 +700,12 @@ describe('Multi Search Validation', () => {
 
             // Create Task
             taskDisplayId = await createTask(taskSummary, caseDetails.id, taskDescription);
-            
+
             // Create Case Template
-            caseTemplateDisplayId = await createCaseTemplate(caseTemplateName , caseTemplateSummary, 'Active', 'Petramco');
-            
+            caseTemplateDisplayId = await createCaseTemplate(caseTemplateName, caseTemplateSummary, 'Active', 'Petramco');
+
             // Create Task Template
-            taskTemplateDisplayId = await createTaskTemplate(taskTemplateName , 'Active', 'Petramco');
+            taskTemplateDisplayId = await createTaskTemplate(taskTemplateName, 'Active', 'Petramco');
 
             // Create Knowledge Article
             kaDisplayId = await createKnowledgeArticleWithPublish(knowledgeTitle);
@@ -730,7 +730,7 @@ describe('Multi Search Validation', () => {
 
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseSummary)).toBeTruthy('case summary is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(1, 'Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(1, 'Count of recent search is incorrect');
         });
 
         it('[4194]: Verify Recent With Case Descripiton', async () => {
@@ -744,14 +744,14 @@ describe('Multi Search Validation', () => {
 
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseDescription)).toBeTruthy('FailureMsg6: case description is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(caseDescription)).toBe(1, 'FailureMsg6: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(caseDescription)).toBe(1, 'FailureMsg6: Count of recent search is incorrect');
         });
 
         it('[4194]:  Check Duplicates Case Summary Are Displayed Only 1 Times', async () => {
             await searchPo.searchRecord(caseDescription);
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseDescription)).toBeTruthy('FailureMsg6: case description is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(caseDescription)).toBe(1, 'FailureMsg6: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(caseDescription)).toBe(1, 'FailureMsg6: Count of recent search is incorrect');
         });
 
         it('[4194]: Verify Task Summary Stored In Recent Search', async () => {
@@ -760,10 +760,10 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(taskSummary, 'Tasks (1)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskSummary, taskModule)).toBeTruthy(`FailureMsg5: ${taskSummary} Task summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId, taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
-        
+
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(taskSummary)).toBeTruthy('FailureMsg3: task summary is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(taskSummary)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(taskSummary)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
         it('[4194]: Verify Task Description Stored In Recent Search', async () => {
@@ -773,7 +773,7 @@ describe('Multi Search Validation', () => {
 
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(taskDescription)).toBeTruthy('FailureMsg3: taskDescription is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(taskDescription)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(taskDescription)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
         it('[4194]: Verify Case Template Name Stored In Recent Search', async () => {
@@ -783,7 +783,7 @@ describe('Multi Search Validation', () => {
 
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseTemplateName)).toBeTruthy('FailureMsg3: caseTemplateName is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(caseTemplateName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(caseTemplateName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
         it('[4194]: Verify Case Template Summary Stored In Recent Search', async () => {
@@ -793,7 +793,7 @@ describe('Multi Search Validation', () => {
 
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseTemplateSummary)).toBeTruthy('FailureMsg3: caseTemplateSummary is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(caseTemplateSummary)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(caseTemplateSummary)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
         it('[4194]: Verify Task Template Name Stored In Recent Search', async () => {
@@ -803,17 +803,17 @@ describe('Multi Search Validation', () => {
 
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(taskTemplateName)).toBeTruthy('FailureMsg3: taskTemplateName is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(taskTemplateName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(taskTemplateName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
         it('[4194]: Verify Knowledge Title Stored In Recent Search', async () => {
             await searchPo.searchRecord(knowledgeTitle);
             expect(await searchPo.isModuleTitleDisplayed(knowledgeTitle, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId, KAModule)).toBeTruthy(`FailureMsg4: ${kaDisplayId} Knowledge Article id  is missing`);
-        
+
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(knowledgeTitle)).toBeTruthy('FailureMsg3: knowledgeTitle is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(knowledgeTitle)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(knowledgeTitle)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
         });
 
         it('[4194]: Verify Document Name Stored In Recent Search', async () => {
@@ -823,106 +823,101 @@ describe('Multi Search Validation', () => {
 
             await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(documentName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(documentName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            expect(await searchPo.getCountOfRecentDropDownValue(documentName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
 
-        it('[4194]: Verify First Name Stored In Recent Search', async () => {
-            await searchPo.searchRecord(firstName);
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
-        
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.isRecentSearchesDropDownValueDisplayed(firstName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(firstName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
-        });
+            it('[4194]: Verify First Name Stored In Recent Search', async () => {
+                await searchPo.searchRecord(firstName);
+                expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
 
-        it('[4194]: Verify Last Name Stored In Recent Search', async () => {
-            await searchPo.searchRecord(lastName);
-            expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
-        
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.isRecentSearchesDropDownValueDisplayed(lastName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(lastName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
-        });
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(firstName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
+                expect(await searchPo.getCountOfRecentDropDownValue(firstName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            });
 
-        it('[4194]: Verify After aad 11th Record First Record Gets Hide Automatically', async () => {
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseSummary)).toBeFalsy('case summary is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(0, 'Count of recent search is incorrect');
+            it('[4194]: Verify Last Name Stored In Recent Search', async () => {
+                await searchPo.searchRecord(lastName);
+                expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
 
-        });
-     
-        it('[4194]: Verify Record Non Access Record But Still It Stoed In Recent Search', async () => {
-            await searchPo.searchRecord(nonAccessCaseSummary);
-            expect(await searchPo.isModuleTitleDisplayed(nonAccessCaseSummary, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(documentModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(lastName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
+                expect(await searchPo.getCountOfRecentDropDownValue(lastName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+            });
 
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.isRecentSearchesDropDownValueDisplayed(nonAccessCaseSummary)).toBeTruthy('FailureMsg64: nonAccessCaseSummary is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(nonAccessCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
-        });
+            it('[4194]: Verify After aad 11th Record First Record Gets Hide Automatically', async () => {
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseSummary)).toBeFalsy('case summary is missing from recent search')
+                expect(await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(0, 'Count of recent search is incorrect');
 
-        it('[4194]: Verify Record with Insensitive Record & Duplicate record', async () => {
-            await searchPo.searchRecord(inSensitiveCaseSummary);
-            expect(await searchPo.isModuleTitleDisplayed(inSensitiveCaseSummary, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
+            });
 
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.isRecentSearchesDropDownValueDisplayed(inSensitiveCaseSummary)).toBeTruthy('FailureMsg64: nonAccessCaseSummary is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(inSensitiveCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
-        });
+            it('[4194]: Verify Record Non Access Record But Still It Stoed In Recent Search', async () => {
+                await searchPo.searchRecord(nonAccessCaseSummary);
+                expect(await searchPo.isModuleTitleDisplayed(nonAccessCaseSummary, 'Cases (0)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
+                expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(documentModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
 
-        it('[4194]: Verify Insensitive Duplicate record', async () => {
-            await searchPo.searchRecord(inSensitiveCaseSummary);
-            expect(await searchPo.isModuleTitleDisplayed(inSensitiveCaseSummary, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(nonAccessCaseSummary)).toBeTruthy('FailureMsg64: nonAccessCaseSummary is missing from recent search')
+                expect(await searchPo.getCountOfRecentDropDownValue(nonAccessCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
+            });
 
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.isRecentSearchesDropDownValueDisplayed(inSensitiveCaseSummary)).toBeTruthy('FailureMsg64: nonAccessCaseSummary is missing from recent search')
-            expect (await searchPo.getCountOfRecentDropDownValue(inSensitiveCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
-        });
+            it('[4194]: Verify Record with Insensitive Record & Duplicate record', async () => {
+                await searchPo.searchRecord(inSensitiveCaseSummary);
+                expect(await searchPo.isModuleTitleDisplayed(inSensitiveCaseSummary, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
 
-        it('[4194]: Verify search functionality with dummy text ', async () => {
-            await searchPo.searchRecord(dummyText);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyText, KAModule)).toBeFalsy(`FailureMsg62: ${dummyText} dummyText  is displayed`);
-            expect(await searchPo.isModuleTitleDisplayed(dummyText, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg63: KA module title is missing');
-            expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
-        });
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(inSensitiveCaseSummary)).toBeTruthy('FailureMsg64: nonAccessCaseSummary is missing from recent search')
+                expect(await searchPo.getCountOfRecentDropDownValue(inSensitiveCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
+            });
 
-        it('[4194]: Select Record From Recent Search  ', async () => {
-            await searchPo.selectRecentSearchDropDownValue(firstName)
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
-        });
+            it('[4194]: Verify Insensitive Duplicate record', async () => {
+                await searchPo.searchRecord(inSensitiveCaseSummary);
+                expect(await searchPo.isModuleTitleDisplayed(inSensitiveCaseSummary, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg63: Document module title is missing');
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
 
-        it('[4194]: Verify Recent Search Is Displayed On Top  ', async () => {
-            await navigationPage.gotoSearch();
-            await searchPo.searchRecord('Record1');
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record1','FailureMsg64: Record1 is displayed on top');
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(inSensitiveCaseSummary)).toBeTruthy('FailureMsg64: nonAccessCaseSummary is missing from recent search')
+                expect(await searchPo.getCountOfRecentDropDownValue(inSensitiveCaseSummary)).toBe(1, 'FailureMsg64: Count of recent search is incorrect');
+            });
 
-            await searchPo.searchRecord('Record2');
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record2','FailureMsg65: Record1 is displayed on top');
-            expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record1','FailureMsg64: Record1 is displayed on 2 no');
+            it('[4194]: Verify search functionality with dummy text ', async () => {
+                await searchPo.searchRecord(dummyText);
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyText, KAModule)).toBeFalsy(`FailureMsg62: ${dummyText} dummyText  is displayed`);
+                expect(await searchPo.isModuleTitleDisplayed(dummyText, 'Knowledge Articles (0)', KAModule)).toBeTruthy('FailureMsg63: KA module title is missing');
+                expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(KAModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
+            });
 
-            await searchPo.searchRecord('Record3');
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record3','FailureMsg66: Record1 is displayed on top');
-            expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record2','FailureMsg65: Record1 is displayed on 2 no');
-            expect(await searchPo.getRecentSerachDropDownValue(3)).toBe('Record1','FailureMsg64: Record1 is displayed on 3 no');
-            
-            await searchPo.searchRecord('Record1');
-            await searchPo.clickOnRecentSearchDropDownButton();
-            expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record1','FailureMsg64: Record1 is displayed on top');
-            expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record3','FailureMsg66: Record1 is displayed on 2 no');
-            expect(await searchPo.getRecentSerachDropDownValue(3)).toBe('Record2','FailureMsg65: Record1 is displayed on 3 no');
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qtao');
+            it('[4194]: Select Record From Recent Search  ', async () => {
+                await searchPo.selectRecentSearchDropDownValue(firstName)
+                expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+            });
+
+            it('[4194]: Verify Recent Search Is Displayed On Top  ', async () => {
+                await navigationPage.gotoSearch();
+                await searchPo.searchRecord('Record1');
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record1', 'FailureMsg64: Record1 is displayed on top');
+
+                await searchPo.searchRecord('Record2');
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record2', 'FailureMsg65: Record1 is displayed on top');
+                expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record1', 'FailureMsg64: Record1 is displayed on 2 no');
+
+                await searchPo.searchRecord('Record3');
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record3', 'FailureMsg66: Record1 is displayed on top');
+                expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record2', 'FailureMsg65: Record1 is displayed on 2 no');
+                expect(await searchPo.getRecentSerachDropDownValue(3)).toBe('Record1', 'FailureMsg64: Record1 is displayed on 3 no');
+
+                await searchPo.searchRecord('Record1');
+                await searchPo.clickOnRecentSearchDropDownButton();
+                expect(await searchPo.getRecentSerachDropDownValue(1)).toBe('Record1', 'FailureMsg64: Record1 is displayed on top');
+                expect(await searchPo.getRecentSerachDropDownValue(2)).toBe('Record3', 'FailureMsg66: Record1 is displayed on 2 no');
+                expect(await searchPo.getRecentSerachDropDownValue(3)).toBe('Record2', 'FailureMsg65: Record1 is displayed on 3 no');
+            });
         });
     });
 });
-});
-

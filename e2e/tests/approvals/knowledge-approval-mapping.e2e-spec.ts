@@ -1,17 +1,17 @@
-import accessTabPo from "../../pageobject/common/access-tab.po";
-import knowledgeArticlesConsolePo from "../../pageobject/knowledge/knowledge-articles-console.po";
-import viewKnowledgeArticlePo from "../../pageobject/knowledge/view-knowledge-article.po";
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
+import accessTabPo from "../../pageobject/common/access-tab.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po';
+import knowledgeArticlesConsolePo from "../../pageobject/knowledge/knowledge-articles-console.po";
+import viewKnowledgeArticlePo from "../../pageobject/knowledge/view-knowledge-article.po";
 import approvalMappingConsoleKnowledgePo from "../../pageobject/settings/knowledge-management/approval-mapping-console.po";
 import createApprovalMappingKnowledgePo from "../../pageobject/settings/knowledge-management/create-approval-mapping.po";
 import editApprovalMappingKnowledgePo from "../../pageobject/settings/knowledge-management/edit-approval-mapping.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import editKnowledgePage from '../../pageobject/knowledge/edit-knowledge.po'
 let userData1, userData2 = undefined;
 
 describe("Knowledge Approval Mapping Tests", () => {
@@ -373,12 +373,9 @@ describe("Knowledge Approval Mapping Tests", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('elizabeth');
-            apiHelper.deleteApprovalMapping(knowledgeModule);
+            await apiHelper.deleteApprovalMapping(knowledgeModule);
             await utilityCommon.closeAllBlades();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
-
 });

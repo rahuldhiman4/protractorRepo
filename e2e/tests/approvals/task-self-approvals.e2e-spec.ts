@@ -17,7 +17,6 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-
 describe("Task Self Approval Tests", () => {
     const taskApprovalRecordDefinition = 'com.bmc.dsm.task-lib:Task';
     let taskModule = 'Task';
@@ -1029,8 +1028,6 @@ describe("Task Self Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
-}); 
+});

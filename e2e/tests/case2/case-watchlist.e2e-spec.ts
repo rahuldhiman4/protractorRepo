@@ -55,7 +55,7 @@ describe('Case Watchlist', () => {
         await navigationPage.signOut();
     });
 
-    it('[4382]: Verify that all the selected Cases are available in Watchlist modal', async () => {
+    fit('[4382]: Verify that all the selected Cases are available in Watchlist modal', async () => {
         try {
             await apiHelper.apiLogin(qtaoStr);
             let caseId: string[] = [];

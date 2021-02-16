@@ -1,19 +1,19 @@
-import { browser,protractor,$ } from "protractor";
+import { $, browser, protractor } from "protractor";
 import apiHelper from "../../api/api.helper";
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
+import personProfilePo from '../../pageobject/common/person-profile.po';
+import knowledgeArticlePreview from '../../pageobject/knowledge/preview-knowledge.po';
+import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import searchPo from '../../pageobject/search/global-search.po';
 import caseTemplatePreviewPo from '../../pageobject/settings/case-management/preview-case-template.po';
+import dateTimeSelectorPo from '../../pageobject/settings/common/date-time-selector.po';
 import previewDocumentLibraryPo from '../../pageobject/settings/document-management/doc-lib-preview.po';
 import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
+import taskPreviewPo from '../../pageobject/task/task-preview.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
-import casePreviewPo from '../../pageobject/case/case-preview.po';
-import taskPreviewPo from '../../pageobject/task/task-preview.po';
-import knowledgeArticlePreview from '../../pageobject/knowledge/preview-knowledge.po';
-import personProfilePo from '../../pageobject/common/person-profile.po';
-import dateTimeSelectorPo from '../../pageobject/settings/common/date-time-selector.po';
 import utilityGrid from '../../utils/utility.grid';
 
 export interface IIDs {
@@ -199,7 +199,7 @@ describe('Global Search All Category', () => {
             "lastName": lastName,
             "userId": loginId,
             "emailId": emailId,
-            "userPermission": ["Case Agent", "Document Manager","Human Resource"]
+            "userPermission": ["Case Agent", "Document Manager", "Human Resource"]
         }
         if (company) {
             await apiHelper.createNewUser(caseAgentuserData);
@@ -294,7 +294,7 @@ describe('Global Search All Category', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[0], caseModule)).toBeTruthy(`FailureMsg4: ${caseDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchForAll, caseModule)).toBeTruthy(`FailureMsg5: ${commonSearchForAll} case summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[2], caseModule)).toBeTruthy(`FailureMsg7: ${caseDisplayId1[2]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId1[3], caseModule)).toBeTruthy(`FailureMsg8: ${caseDisplayId1[3]} case id  is missing`);
@@ -329,14 +329,14 @@ describe('Global Search All Category', () => {
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
             expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
             expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg43: Assignee Name is missing');
-            expect(await casePreviewPo.getAssigneeDetails()).toContain('CA Support 1','FailureMsg44: Assigned Support Group Value is missing');
-            expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco','FailureMsg45: Assigned Company Value is missing');
+            expect(await casePreviewPo.getAssigneeDetails()).toContain('CA Support 1', 'FailureMsg44: Assigned Support Group Value is missing');
+            expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'FailureMsg45: Assigned Company Value is missing');
         });
 
         it('[4333]: Verify Task On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Tasks (5)', taskModule)).toBeTruthy('FailureMsg2: Task module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchForAll, taskModule)).toBeTruthy(`FailureMsg5: ${commonSearchForAll} Task summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[0], taskModule)).toBeTruthy(`FailureMsg4: ${taskDisplayId[0]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[1], taskModule)).toBeTruthy(`FailureMsg6: ${taskDisplayId[1]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskDisplayId[2], taskModule)).toBeTruthy(`FailureMsg7: ${taskDisplayId[2]} task id  is missing`);
@@ -374,7 +374,7 @@ describe('Global Search All Category', () => {
         it('[4333]: Verify Knowledge Article On Left Pannel', async () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchForAll, KAModule)).toBeTruthy(`FailureMsg5: ${commonSearchForAll} Knowledge Article summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, KAModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, KAModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[0], KAModule)).toBeTruthy(`FailureMsg4: ${kaDisplayId1[0]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[1], KAModule)).toBeTruthy(`FailureMsg6: ${kaDisplayId1[1]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId1[2], KAModule)).toBeTruthy(`FailureMsg7: ${kaDisplayId1[2]} Knowledge Article id  is missing`);
@@ -400,7 +400,7 @@ describe('Global Search All Category', () => {
             expect(await searchPo.isModuleTitleDisplayed(commonSearchForAll, 'Case Templates (3)', caseTemplateModule)).toBeTruthy('FailureMsg2: Case module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[1], caseTemplateModule)).toBeTruthy(`FailureMsg4: ${caseTemplateDisplayId1[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + '1', caseTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + '1'} case title summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, caseTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[2], caseTemplateModule)).toBeTruthy(`FailureMsg6: ${caseTemplateDisplayId1[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseTemplateDisplayId1[3], caseTemplateModule)).toBeTruthy(`FailureMsg7: ${caseTemplateDisplayId1[2]} case id  is missing`);
 
@@ -439,7 +439,7 @@ describe('Global Search All Category', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 4, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 4} task Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 5, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 5} task Template2 summary is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(templateName + 6, taskTemplateModule)).toBeTruthy(`FailureMsg5: ${templateName + 6} task Template2 summary is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule,)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, taskTemplateModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[5], taskTemplateModule)).toBeTruthy(`FailureMsg6: ${taskTemplateDisplayId2[5]} task id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(taskTemplateDisplayId2[6], taskTemplateModule)).toBeTruthy(`FailureMsg7: ${taskTemplateDisplayId2[6]} task id  is missing`);
 
@@ -592,16 +592,16 @@ describe('Global Search All Category', () => {
             // Create Case
             caseDetails = await createCase(caseSummary, caseDescription);
             caseDisplayId = caseDetails.displayId;
-            
+
             // Create Task
             taskDisplayId = await createTask(taskSummary, caseDetails.id, taskDescription);
-            
+
             // Create Case Template
             caseTemplateDisplayId = await createCaseTemplate(caseTemplateName, caseTemplateSummary, 'Active', 'Petramco');
-            
+
             // Create Task Template
             taskTemplateDisplayId = await createTaskTemplate(taskTemplateName, 'Active', 'Petramco');
-           
+
             // Create Knowledge Article
             kaDisplayId = await createKnowledgeArticleWithPublish(knowledgeTitle);
 
@@ -719,5 +719,3 @@ describe('Global Search All Category', () => {
         });
     });
 });
-
-

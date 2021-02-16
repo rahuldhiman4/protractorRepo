@@ -57,7 +57,6 @@ describe("Task Approval Mapping Tests", () => {
         await apiHelper.createNewUser(userData2);
         await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
         await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {
@@ -741,8 +740,6 @@ describe("Task Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 }); 

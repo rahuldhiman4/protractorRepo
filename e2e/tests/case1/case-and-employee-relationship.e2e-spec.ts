@@ -34,7 +34,7 @@ describe('Case And Employee Relationship', () => {
     });
 
     //asahitya
-    describe('[4285,4284,4286]: Add person with different relations', async () => {
+    fdescribe('[4285,4284,4286]: Add person with different relations', async () => {
         it('[4285,4284,4286]: Add person with different relations', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("Allen");

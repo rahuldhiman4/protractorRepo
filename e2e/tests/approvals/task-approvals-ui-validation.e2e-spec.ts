@@ -33,7 +33,7 @@ describe("Task Approval UI Validations", () => {
         await navigationPage.signOut();
     });
 
-    describe('[3591]:[Task Approval] - Case General Approval - One Must Sign', () => {
+    fdescribe('[3591]:[Task Approval] - Case General Approval - One Must Sign', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Task One Must Approval Flow' + randomStr;
         let caseData = undefined;
@@ -234,9 +234,6 @@ describe("Task Approval UI Validations", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
-
 });

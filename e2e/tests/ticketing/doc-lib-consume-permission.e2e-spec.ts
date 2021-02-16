@@ -43,7 +43,7 @@ describe('Document Library Consume Permission', () => {
         await navigationPage.signOut();
     });
 
-    describe('[4797]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
+    fdescribe('[4797]: Edit Case - Case manager attaches published document from document library who has write access to that document', async () => {
         let publish: string[] = ['drdmv13458_publish_document1', 'drdmv13458_publish_document2', 'drdmv13458_publish_document5'];
         let files1: string[] = [filePath1, filePath2, filePath5];
         let publishDocLibData2, draftDocLibData;

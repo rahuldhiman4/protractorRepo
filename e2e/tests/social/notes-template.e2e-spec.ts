@@ -313,7 +313,7 @@ describe('Notes template', () => {
 
         });
 
-        it('[4361]: Verify task notes template is accessible to different company user with same Line of business Case BA', async () => {
+        it('[4362]: Verify task notes template is accessible to different company user with same Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
