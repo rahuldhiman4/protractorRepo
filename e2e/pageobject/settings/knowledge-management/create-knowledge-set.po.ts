@@ -9,7 +9,7 @@ class CreateKnowledgeSet {
         companyDropdownGuid: 'ab5d399f-07b1-4235-9978-3e7dfbde55e9',
         description: '[rx-view-component-id="253246ad-fc91-4117-8c19-d317ead1da15"] textarea',
         createNewButton: '[rx-view-component-id="71ee090f-57ec-4ec5-a4f9-6670092f268e"] button',
-        applicationIdLabel: '[rx-view-component-id="0327a973-ee27-407e-aee6-27d5cf69672a"] div.adapt-select-label-wrapper span.form-control-label span',
+        applicationIdLabel: '[rx-view-component-id="0327a973-ee27-407e-aee6-27d5cf69672a"] adapt-rx-control-label span.form-control-label span',
         applicationBundleIdLabel: '[rx-view-component-id="5b84d9dd-feef-4436-a290-40f8ad22c836"] div.adapt-counter-label-wrapper span',
         createNewAppDescriptionLabel: '[rx-view-component-id="26170570-b9aa-4ec8-9d11-8aea2ec86b59"] div.adapt-counter-label-wrapper span',
         createNewAppDescriptionInput: '[rx-view-component-id="26170570-b9aa-4ec8-9d11-8aea2ec86b59"] input',

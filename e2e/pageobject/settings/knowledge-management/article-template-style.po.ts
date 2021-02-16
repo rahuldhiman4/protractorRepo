@@ -5,12 +5,12 @@ class ArticleTemplateStyle {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        knowledgeset: '.template-styles .knowledgeSetTitle',
-        templateName: '.templates',
-        templateStyle: '.ka-config__edit-item-label',
-        addNewStyle:'.icon-plus',
-        deleteButtonIcon:'.delete-btn-icon',
-        stylesName:'.create-ticket__item [ng-model="style.type"]',
+        knowledgeset: '.bwf-define_knowledge-styles .knowledgeSetTitle .d-icon-angle_down',
+        templateName: '.bwf-template-name',
+        templateStyle: '.bwf-ka-config__edit-template-sections .text-direction span',
+        addNewStyle:'.d-icon-plus',
+        deleteButtonIcon:'.card-title-text button',
+        stylesName:'.bwf-left-align [name="templateName"]',
         saveButton:'.ka-config__add-btn',
         styleNameRequired:'.label__text_required',
         cancelButton:'.action-panel__cancel-btn',
@@ -61,9 +61,9 @@ class ArticleTemplateStyle {
        }
 
     async isAddedStyleDeleted(styleName:string):Promise<boolean>{
-        return  await element.all(by.cssContainingText('.templateStyles',styleName)).first().isPresent(); 
+        return  await element.all(by.cssContainingText('.templateStyles',styleName)).first().isPresent();
     }
-    
+
     async setStyleName(values:string):Promise<void>{
        await $$(this.selectors.stylesName).last().sendKeys(values);
     }
