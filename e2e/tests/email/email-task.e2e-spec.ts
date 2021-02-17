@@ -653,6 +653,9 @@ describe('Email Task', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            //workaround for email template issue
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
     });
@@ -668,6 +671,7 @@ describe('Email Task', () => {
         expect(await editAcknowledgmentTemplatePo.getDescription()).toContain('Task Update Acknowledgement Template when task got updated via email');
         expect(await editAcknowledgmentTemplatePo.getBodyMessageValue()).toContain('<p>This is to acknowledge that the information provided by you for Task $1$ has been updated successfully.</p><p>HR Department</p>');
         expect(await editAcknowledgmentTemplatePo.getSubjectMessageValue()).toContain('Task $1$ :$450000029$ Successfully updated');
+        await editAcknowledgmentTemplatePo.clickOnCancelButton();
     });
 
     describe('[3846]: Email Templates option driven by Task assignee permission for case', async () => {
