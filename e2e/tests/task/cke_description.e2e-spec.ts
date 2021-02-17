@@ -1,4 +1,7 @@
-import { create } from "lodash";
+import copyTasktemplatePo from "../../pageobject/settings/task-management/copy-tasktemplate.po";
+import editTasktemplatePo from "../../pageobject/settings/task-management/edit-tasktemplate.po";
+import previewTaskTemplatePo from "../../pageobject/settings/task-management/preview-task-template.po";
+import viewTasktemplatePo from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import { browser } from "protractor";
 import { ALL_FIELD } from '../../data/ui/case/casetemplate.data.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
@@ -20,11 +23,7 @@ import editCasetemplatePo from '../../pageobject/settings/case-management/edit-c
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
 import consoleTasktemplatePo from '../../pageobject/settings/task-management/console-tasktemplate.po';
-import copyTasktemplatePo from "../../pageobject/settings/task-management/copy-tasktemplate.po";
 import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
-import editTasktemplatePo from "../../pageobject/settings/task-management/edit-tasktemplate.po";
-import previewTaskTemplatePo from "../../pageobject/settings/task-management/preview-task-template.po";
-import viewTasktemplatePo from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
@@ -581,7 +580,7 @@ describe('CKE Description', () => {
         });
     });
 
-    describe('[3522]:Verify case description field with CK editor functionality on Case', async () => {
+   describe('[3522]:Verify case description field with CK editor functionality on Case', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[3522] Create case bold , italic and underline with CKE', async () => {
             await navigationPage.gotoCreateCase();

@@ -149,8 +149,8 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
         await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
 
-        await utilityGrid.searchAndOpenHyperlink(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name);
-        await automatedStatusTransitionEditPage.selectEnableToggle(false);
+         await utilityGrid.searchAndOpenHyperlink(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name);
+         await automatedStatusTransitionEditPage.selectEnableToggle(false);
         await automatedStatusTransitionEditPage.saveConfiguration();
         expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name)).toBe('False');
 
@@ -159,7 +159,6 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionEditPage.saveConfiguration();
         expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name)).toBe('True');
     });
-
     it('[4108]: Duplicate detection - create new automatic case transition rule which has field values same as existing rule', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteAutomatedCaseStatusTransition();
@@ -188,7 +187,6 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setToStatusReason('No Further Action Required');
         await automatedStatusTransitionCreatePage.setChangeStatusAfter(days);
         await automatedStatusTransitionCreatePage.saveConfig();
-
         expect(await utilityCommon.isPopUpMessagePresent('Automated Status Configuration with same values already exists.')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         await automatedStatusTransitionCreatePage.clickCancelBtn();
@@ -206,25 +204,25 @@ describe('Automated Case Status Transition', () => {
 
         //Create the Automated status transition
         let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let days: any = Math.floor(Math.random() * 180) + 1;
+         let days: any = Math.floor(Math.random() * 180) + 1;
 
-        await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-        await automatedStatusTransitionCreatePage.setName(configName);
-        await automatedStatusTransitionCreatePage.setCompany('Petramco');
+         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+         await automatedStatusTransitionCreatePage.setName(configName);
+         await automatedStatusTransitionCreatePage.setCompany('Petramco');
         await automatedStatusTransitionCreatePage.setFromStatus('Resolved');
         await automatedStatusTransitionCreatePage.setToStatus('Closed');
         await automatedStatusTransitionCreatePage.setFromStatusReason('Customer Follow-Up Required');
         await automatedStatusTransitionCreatePage.setChangeStatusAfter(days);
-        await automatedStatusTransitionCreatePage.saveConfig();
+         await automatedStatusTransitionCreatePage.saveConfig();
 
-        //Update the case status to Resolved, update the modified date and run the Process
-        await apiHelper.apiLogin("qkatawazi");
+        // //Update the case status to Resolved, update the modified date and run the Process
+         await apiHelper.apiLogin("qkatawazi");
 
         await apiHelper.updateCaseStatus(newCase.id, "Resolved", "Customer Follow-Up Required");
         let updatecase = { "statusChangedDate": "2019-06-13T10:22:21.000Z" };
         await apiHelper.updateCase(newCase.id, updatecase);
-        await apiHelper.apiLogin("tadmin");
-        await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
+    
+        //await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         await apiHelper.runAutomatedCaseTransitionProcess();
 
         await navigationPage.gotoCaseConsole();
@@ -242,7 +240,6 @@ describe('Automated Case Status Transition', () => {
         let randomStr: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let days: any = Math.floor(Math.random() * 180) + 1;
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.associateCategoryToCategory('Bonus', 'Failure');
 
         let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
         let label = menuItemData.menuItemName + randomStr;
@@ -271,7 +268,7 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionCreatePage.setCategoryTier1Value('Employee Relations');
         await automatedStatusTransitionCreatePage.setCategoryTier2Value('Compensation');
         await automatedStatusTransitionCreatePage.setCategoryTier3Value('Bonus');
-        await automatedStatusTransitionCreatePage.setCategoryTier4Value('Failure');
+        await automatedStatusTransitionCreatePage.setCategoryTier4Value('Retention Bonus');
         await automatedStatusTransitionCreatePage.setLabelValue(label);
         await automatedStatusTransitionCreatePage.saveConfig();
     });
