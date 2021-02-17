@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
+import utilityCommon from '../../utils/utility.common';
 
 class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -185,12 +186,7 @@ class ComposeMail {
     }
 
     async getEmailBody(): Promise<string> {
-        await browser.switchTo().frame(await element(by.css('[rx-view-component-id="71d315a1-3466-4e25-85be-2ce9a69efcb4"] [role="textbox"]')).getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 3000);
-        let value = await $(this.selectors.emailBody).getText();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-        return value;
+      return utilityCommon.getCKEditorText(this.selectors.commonGuid);
     }
 
     async clickOnSendButton(): Promise<void> {

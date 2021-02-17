@@ -217,11 +217,11 @@ class EditCaseTemplate {
     }
 
     async setResolutionCodeRequired(value: boolean): Promise<void> {
-        await utilityCommon.selectToggleButton(this.selectors.resolutionCode, value)
+        await utilityCommon.switchSlider(this.selectors.resolutionCode, value)
     }
 
     async setResolutionDescriptionRequired(value: boolean): Promise<void> {
-        await utilityCommon.selectToggleButton(this.selectors.resolutionDescription, value)
+        await utilityCommon.switchSlider(this.selectors.resolutionDescription, value)
     }
 
     async clearCaseSummary(): Promise<void> {

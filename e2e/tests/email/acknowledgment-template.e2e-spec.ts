@@ -24,19 +24,24 @@ describe('Email Acknowledgment Template', () => {
     });
 
     //ankagraw
-    it('[5123]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
-        await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
-        expect(await createAcknowledgmentTemplatesPo.isTemplateNameRequired()).toBeTruthy();
-        expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
-        expect(await createAcknowledgmentTemplatesPo.isStatusRequired()).toBeTruthy();
-        expect(await createAcknowledgmentTemplatesPo.isSubjectRequired()).toBeTruthy();
-        expect(await createAcknowledgmentTemplatesPo.islineOfBusinessDisabled()).toBeTruthy();
-        expect(await createAcknowledgmentTemplatesPo.isLocaleDisabled()).toBeTruthy();
-        await createAcknowledgmentTemplatesPo.clickOnCancelButton();
-        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+    describe('[5123]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
+        it('[5123]: Acknowledgment Template : Acknowledgment Template creation UI validations', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
+            await consoleAcknowledgmentTemplatePo.clickOnAddAcknowlegeTemplateButton();
+            expect(await createAcknowledgmentTemplatesPo.isTemplateNameRequired()).toBeTruthy();
+            expect(await createAcknowledgmentTemplatesPo.isCompanyRequired()).toBeTruthy();
+            expect(await createAcknowledgmentTemplatesPo.isStatusRequired()).toBeTruthy();
+            expect(await createAcknowledgmentTemplatesPo.isSubjectRequired()).toBeTruthy();
+            expect(await createAcknowledgmentTemplatesPo.islineOfBusinessDisabled()).toBeTruthy();
+            expect(await createAcknowledgmentTemplatesPo.isLocaleDisabled()).toBeTruthy();
+        });
+        afterAll(async () => {
+            await createAcknowledgmentTemplatesPo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
     });
+
 
     //kgaikwad
     describe('[5124,5120,5117]: Acknowledgment Template : Acknowledgment Template creation', async () => {

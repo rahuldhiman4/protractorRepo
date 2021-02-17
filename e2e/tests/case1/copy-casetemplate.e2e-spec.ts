@@ -22,6 +22,7 @@ import viewTaskTemplatePo from "../../pageobject/settings/task-management/view-t
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentBlade from '../../pageobject/common/change-assignment.po';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -32,7 +33,7 @@ describe('Copy Case Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await createNewUsers();
+       // await createNewUsers();
     });
 
     afterAll(async () => {
@@ -102,8 +103,7 @@ describe('Copy Case Template', () => {
             casetemplateNew = await editCaseTemplate.getCaseTemplateID();
         });
         it('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
@@ -132,6 +132,7 @@ describe('Copy Case Template', () => {
             expect(copiedCasetemplateFromNew == casetemplateNew).toBeFalsy();
             expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplateAllFields.resolutionCode);
             expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -143,8 +144,7 @@ describe('Copy Case Template', () => {
             let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
             caseTemplateRequiredFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateRequiredFields);
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
         });
         it('[4739,4732]: Create a Copy of Case template', async () => {
@@ -172,21 +172,22 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueOfStatusReason()).toBe(caseTemplateRequiredFields.statusReason);
             expect(await copyCaseTemplate.getValueOfCaseDescription()).toContain(caseTemplateRequiredFields.templateDescription);
             expect(await copyCaseTemplate.getValueOfCaseSummary()).toBe(caseTemplateRequiredFields.templateSummary);
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndselectCaseTemplate(copyCaseTemplateName);
             expect(await consoleCasetemplatePo.getCaseTemplateNamePresentOnGrid(copyCaseTemplateName)).toBe(copyCaseTemplateName);
         });
     });
 
-    //ptidke
-    describe('[4736]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
+    //ptidke  //Need to Confirm with Pravin if this scenario is valid
+    xdescribe('[4736]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
         it('[4736]: Create a Copy of Case template where Submitter do not belong to any Support Groups ', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
             caseTemplateRequiredFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateRequiredFields);
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoSettingsPage();
@@ -216,6 +217,7 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.isOwnerCompanyEmpty()).toBeTruthy();
         });
         afterAll(async () => {
+            await 
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -228,6 +230,7 @@ describe('Copy Case Template', () => {
         let caseTemplateName: string = caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
         caseTemplateAllFields.templateName = caseTemplateName;
         await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateAllFields);
+        await viewCasetemplatePo.clickBackArrowBtn();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
         await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
@@ -240,6 +243,8 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Task templates similar to the associated task templates are added.');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('If no similar task templates are available, new task templates are automatically created.');
         expect(await copyCaseTemplate.getCopyCaseTemplateInstruction()).toContain('Assignment and ownership for new task templates are copied from new case template.');
+        await copyCaseTemplate.clickCancelCaseTemplate();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 
     it('[4703]: Create a Copy of Case template where Support Group belongs to Business Unit ', async () => {
@@ -273,41 +278,8 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getValueOfAssignee()).toBe('Qadim Katawazi');
         expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe('US Support 3');
         expect(await copyCaseTemplate.getValueOfBuisnessUnit()).toBe('United States Support');
-    });
-
-    describe('[4702]: Create a Copy of Case template where Support Group belongs to Department', async () => {
-        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName1 = "caseTemplateName" + randomStr;
-        beforeAll(async () => {
-            await foundationData("Petramco");
-        });
-        it('[4702]: Create a Copy of Case template where Support Group belongs to Department', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-            await createCaseTemplate.setTemplateName(caseTemplateName1);
-            await createCaseTemplate.setCompanyName("Petramco");
-            await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
-            await createCaseTemplate.setOwnerCompanyValue("Petramco");
-            await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
-            await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
-            await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
-            await changeAssignmentOldPage.selectAssignee('fnPerson lnPerson');
-            await changeAssignmentOldPage.clickOnAssignButton();
-            await createCaseTemplate.clickSaveCaseTemplate();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName1);
-            await consoleCasetemplatePo.clickOnCopyCaseTemplate();
-            let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
-            await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
-            expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
-            expect(await copyCaseTemplate.getValueOfAssignee()).toBe('fnPerson lnPerson');
-            expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(suppGrpData.orgName);
-            expect(await copyCaseTemplate.getValueOfBuisnessUnit()).toBe(businessData.orgName);
-            expect(await copyCaseTemplate.getValueOfDepartement()).toBe(departmentData.orgName);
-        });
+        await copyCaseTemplate.clickCancelCaseTemplate();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 
     describe('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
@@ -361,8 +333,7 @@ describe('Copy Case Template', () => {
             await editCaseTemplate.setResolutionCodeRequired(true);
             await editCaseTemplate.setResolutionDescriptionRequired(true);
             await editCaseTemplate.clickSaveCaseTemplate();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
@@ -373,6 +344,8 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
             await viewCasetemplatePo.clickOneTask();
             expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(taskTemplateDataSet.templateName);
+            await utilityCommon.closeAllBlades();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -538,6 +511,7 @@ describe('Copy Case Template', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri18' + randomStr)).toBeTruthy('field not present');
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri19' + randomStr)).toBeTruthy('field not present');
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri20' + randomStr)).toBeTruthy('field not present');
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -545,7 +519,7 @@ describe('Copy Case Template', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, newCaseTemplate, templateData, externaltemplateData, automatedtemplateData, copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
-            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('qheroux');
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
@@ -609,19 +583,17 @@ describe('Copy Case Template', () => {
         });
         it('[4627,4628]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
-            await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changeAssignmentOldPage.selectCompany('Psilon');
-            await changeAssignmentOldPage.selectBusinessUnit('Psilon Support Org1');
-            await changeAssignmentOldPage.selectSupportGroup('Psilon Support Group1');
-            await changeAssignmentOldPage.selectAssignee('Glit Deruno');
-            await changeAssignmentOldPage.clickOnAssignButton();
+            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
+            await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
@@ -641,6 +613,7 @@ describe('Copy Case Template', () => {
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
             expect(await previewTaskTemplateCasesPo.getAssigneeText()).toBe('Glit Deruno');
             await previewTaskTemplateCasesPo.clickOnBackButton();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4627,4628]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
             await navigationPage.gotoSettingsPage();
@@ -674,7 +647,7 @@ describe('Copy Case Template', () => {
         let caseTemplatePetramco, manualTemplateData, automatedTemplateData, externalTemplateData;
         let copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
         beforeAll(async () => {
-            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('qheroux');
             caseTemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
@@ -737,7 +710,7 @@ describe('Copy Case Template', () => {
         });
         it('[4625,4623]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplatePetramco.templateName);
@@ -747,12 +720,10 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changeAssignmentOldPage.selectCompany('Psilon');
-            await changeAssignmentOldPage.selectBusinessUnit('Psilon Support Org1');
-            await changeAssignmentOldPage.selectSupportGroup('Psilon Support Group1');
-            await changeAssignmentOldPage.selectAssignee('Glit Deruno');
-            await changeAssignmentOldPage.clickOnAssignButton();
+            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
+            await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(manualTemplateData.templateName);
@@ -766,6 +737,7 @@ describe('Copy Case Template', () => {
             await previewTaskTemplateCasesPo.clickOnBackButton();
         });
         it('[4625,4623]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchRecord('DRDMV13814' + randomStr);
@@ -786,7 +758,7 @@ describe('Copy Case Template', () => {
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         beforeAll(async () => {
-            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('qheroux');
             casetemplatePetramco = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateName' + randomStr,
@@ -849,7 +821,7 @@ describe('Copy Case Template', () => {
         });
         it('[4626]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
@@ -859,12 +831,10 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changeAssignmentOldPage.selectCompany('Psilon');
-            await changeAssignmentOldPage.selectBusinessUnit('Psilon Support Org1');
-            await changeAssignmentOldPage.selectSupportGroup('Psilon Support Group1');
-            await changeAssignmentOldPage.selectAssignee('Glit Deruno');
-            await changeAssignmentOldPage.clickOnAssignButton();
+            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
+            await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(templateData.templateName);
@@ -881,6 +851,7 @@ describe('Copy Case Template', () => {
             await previewTaskTemplateCasesPo.clickOnBackButton();
         });
         it('[4626]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchRecord('DRDMV13808' + randomStr);
@@ -924,14 +895,14 @@ describe('Copy Case Template', () => {
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3"
             }
-            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('qheroux');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, automatedTaskTemplate.displayId);
         });
         it('[4619]: Execution of Automated task for Copy Case Template when Company is changed while creating Copy of Case Template', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
@@ -941,18 +912,17 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changeAssignmentOldPage.selectCompany('Psilon');
-            await changeAssignmentOldPage.selectBusinessUnit('Psilon Support Org1');
-            await changeAssignmentOldPage.selectSupportGroup('Psilon Support Group1');
-            await changeAssignmentOldPage.selectAssignee('Glit Deruno');
-            await changeAssignmentOldPage.clickOnAssignButton();
+            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
+            await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnTaskBox(automatedtemplateData.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskSummary()).toBe(automatedtemplateData.templateSummary);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
             await previewTaskTemplateCasesPo.clickOnBackButton();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchRecord('DRDMV13847' + randomStr);
@@ -1020,6 +990,7 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await viewCasetemplatePo.getCategoryTier4()).toBe(caseTemplateData.categoryTier4);
             expect(await viewCasetemplatePo.getLabelValue()).toBe(label);
+            await viewCasetemplatePo.clickBackArrowBtn();
 
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);

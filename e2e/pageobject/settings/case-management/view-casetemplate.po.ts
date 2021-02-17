@@ -221,6 +221,7 @@ class ViewCaseTemplate {
     }
 
     async clickBackArrowBtn(): Promise<void> {
+        browser.wait(this.EC.elementToBeClickable(await $(this.selectors.backArrowButton)), 6000);
         await $(this.selectors.backArrowButton).click();
     }
 

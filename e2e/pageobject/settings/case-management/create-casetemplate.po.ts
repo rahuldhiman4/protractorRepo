@@ -6,6 +6,8 @@ import utilityCommon from '../../../utils/utility.common';
 import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
 import { flowsetMandatoryFields } from '../../../data/ui/flowset/flowset.ui';
 import { cloneDeep } from 'lodash';
+import { DropDownType } from '../../../utils/constants';
+import changeAssignmentBlade from '../../../pageobject/common/change-assignment.po';
 
 class CreateCaseTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -69,12 +71,7 @@ class CreateCaseTemplate {
     }
 
     async setCategoryTier1(tier1Value: string): Promise<void> {
-        let flowsetgetText = await $(this.selectors.flowsetVal).getText();
-        if (flowsetgetText == '') {
-            await utilityCommon.selectDropDown('08ebbf12-f517-46bb-a60c-e3996f133e37', tier1Value);
-        } else {
-            await utilityCommon.selectDropDown(await $(this.selectors.caseCategoryTier1), tier1Value);
-        }
+        await utilityCommon.selectDropDown('83fbf8aa-8cf3-4672-94b5-b569f978b880', tier1Value);
     }
 
     async isResolveCaseOnLastTaskCompletion(value: boolean): Promise<void> {
@@ -138,7 +135,7 @@ class CreateCaseTemplate {
     }
 
     async setTaskFailureConfigurationValue(taskFailureConfigurationValue: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.taskFailureConfiguration, taskFailureConfigurationValue);
+        await utilityCommon.selectDropDown(await $('[rx-view-component-id="317fe9a4-3ca7-4a55-a647-18163fd4a572"] button') , taskFailureConfigurationValue, DropDownType.WebElement);
     }
 
     async setOwnerOrgDropdownValue(ownerOrgValue: string): Promise<void> {
@@ -146,7 +143,7 @@ class CreateCaseTemplate {
     }
 
     async setAssignmentMethodValue(assignmentMethodValue: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.assignmentMethod, assignmentMethodValue);
+        await utilityCommon.selectDropDown(await $('[rx-view-component-id="1930b678-6f96-41a3-a127-a483fc8ffd26"] button'), assignmentMethodValue, DropDownType.WebElement);
     }
 
     async setOwnerGroupDropdownValue(ownerGroupValue: string): Promise<void> {
@@ -178,11 +175,11 @@ class CreateCaseTemplate {
     }
 
     async isResolutionCodeRequired(values: boolean): Promise<void> {
-        await utilityCommon.selectToggleButton(this.selectors.resolutionCode, values);
+        await utilityCommon.switchSlider(this.selectors.resolutionCode, values);
     }
 
     async isResolutionDescriptionRequired(values: boolean): Promise<void> {
-        await utilityCommon.selectToggleButton(this.selectors.resolutionDescription, values);
+        await utilityCommon.switchSlider(this.selectors.resolutionDescription, values);
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -233,10 +230,9 @@ class CreateCaseTemplate {
         await this.setAllowCaseReopenValue(caseTemplate.allowCaseReopen);
         await this.isResolutionCodeRequired(true);
         await this.isResolutionDescriptionRequired(true);
-        await changeAssignemetOldBlade.selectBusinessUnit(caseTemplate.businessUnit);
-        await changeAssignemetOldBlade.selectSupportGroup(caseTemplate.supportGroup);
-        await changeAssignemetOldBlade.selectAssignee(caseTemplate.assignee);
-        await changeAssignemetOldBlade.clickOnAssignButton();
+        await changeAssignmentBlade.setDropDownValue('SupportOrg', caseTemplate.businessUnit);
+        await changeAssignmentBlade.setDropDownValue('AssignedGroup', caseTemplate.supportGroup);
+        await changeAssignmentBlade.setDropDownValue('Assignee', caseTemplate.assignee);
         //        await browser.wait(this.EC.invisibilityOf($(changeAssignemetOldBlade.selectors.assignToMeCheckBox)));
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.changeAssignmentButton)));
         await this.clickSaveCaseTemplate();
