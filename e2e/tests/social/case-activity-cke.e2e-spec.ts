@@ -822,7 +822,7 @@ describe('Case Activity CKE', () => {
             // Create Case
             let caseData = {
                 "Requester": "qtao",
-                "Summary": "3582_TC",
+                "Summary": "3579_TC",
                 "Assigned Company": "Petramco",
                 "Business Unit": "Canada Support",
                 "Support Group": "CA Support 1",
