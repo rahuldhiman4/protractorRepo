@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
@@ -11,7 +10,6 @@ import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate
 import viewCasePo from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
-import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import assignmentConfigConsolePage from "../../pageobject/settings/case-management/assignments-config-console.po";
@@ -37,14 +35,13 @@ describe("Create Case Assignment Mapping", () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let userData = undefined, userData1 = undefined, userData2 = undefined;
     const userId1 = "idphylum4@petramco.com";
     let flowsetGlobalFieldsData = undefined;
     beforeAll(async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await foundationData("Petramco");
+        //await foundationData("Petramco");
         await apiHelper.apiLogin('qkatawazi');
         flowsetGlobalFieldsData = cloneDeep(flowsetGlobalFields);
         flowsetGlobalFieldsData.flowsetName = flowsetGlobalFieldsData.flowsetName = randomStr;
@@ -95,46 +92,14 @@ describe("Create Case Assignment Mapping", () => {
     }
 
     async function createNewUsers() {
-        userData = {
-            "firstName": "Multiple",
-            "lastName": "Company",
-            "userId": "nosg",
-            "emailId": "nosg@petramco.com",
-            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
-        }
-        userData1 = {
-            "firstName": "Petramco",
-            "lastName": "SGUser1",
-            "userId": "13550User1",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData);
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
-        await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
         let personData1 = personDataFile['PhylumCaseAgent1'];
         await apiHelper.createNewUser(personData1);
         await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
-        await apiHelper.associatePersonToCompany('gderuno', 'Petramco');
-        userData2 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     }
 
     afterAll(async () => {
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.disassociatePersonFromCompany('gderuno', 'Petramco');
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -155,6 +120,7 @@ describe("Create Case Assignment Mapping", () => {
     it('[6321]: Case Workspace table columns', async () => {
         let allCaseColumns: string[] = ["Assigned Group", "Assignee", "Assignee Login Name", "Case ID", "Case Site", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Company", "Created Date", "ID", "Label", "Modified By", "Modified Date", "Priority", "Region", "Request ID", "Requester", "SLM Status", "Source", "Status", "Status Value", "Summary", "Target Date"];
         let defaultCaseColumns: string[] = ["Case ID", "Request ID", "Priority", "Status", "Summary", "Assigned Group", "Assignee", "Requester", "Modified Date", "SLM Status"];
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester('apavlik');
         await createCasePage.setSummary('6321 summary');
@@ -180,14 +146,13 @@ describe("Create Case Assignment Mapping", () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
         await assignmentConfigConsolePage.clearFilter();
-        let defaultCaseAssignmentColumns: string[] = ["Assignment Name", "Case Priority", "Company", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Region", "Site", "Support Company", "Support Group", "Default Mapping"];
+        let defaultCaseAssignmentColumns: string[] = ["Assignment Name", "Company", "Category Tier 1", "Category Tier 2", "Support Company", "Support Group", "Default Mapping"];
         expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default columns are not matching");
-        let caseAssignmentLabelColumn: string[] = ["Label"];
-        await assignmentConfigConsolePage.addColumns(caseAssignmentLabelColumn);
-        defaultCaseAssignmentColumns.push("Label");
-        expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And new columns added are not matching");
-        await assignmentConfigConsolePage.removeColumns(caseAssignmentLabelColumn);
-        await defaultCaseAssignmentColumns.splice(defaultCaseAssignmentColumns.indexOf("Label"), 1);
+        let caseAssignmentRemainingColumns: string[] = ["Label", "Case Priority", "Category Tier 3", "Category Tier 4", "Flowset", "ID", "Modified By", "Region", "Site", "Site Group", "Support Organization"];
+        await assignmentConfigConsolePage.addColumns(caseAssignmentRemainingColumns);
+        let allColumns: string[] = ["Assignment Name", "Company", "Category Tier 1", "Category Tier 2", "Support Company", "Support Group", "Default Mapping", "Label", "Case Priority", "Category Tier 3", "Category Tier 4", "Flowset", "ID", "Modified By", "Region", "Site", "Site Group", "Support Organization"];
+        expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(allColumns)).toBeTruthy("Default And new columns added are not matching");
+        await assignmentConfigConsolePage.removeColumns(caseAssignmentRemainingColumns);
         expect(await assignmentConfigConsolePage.areCaseAssignmentGridColumnMatches(defaultCaseAssignmentColumns)).toBeTruthy("Default And remaining new columns are not matching");
     });
 
@@ -254,10 +219,11 @@ describe("Create Case Assignment Mapping", () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentMappingName);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentMappingName);
         });
     });
 
@@ -447,7 +413,7 @@ describe("Create Case Assignment Mapping", () => {
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
-            await createNewUsers();
+            //await createNewUsers();
             await apiHelper.createCaseTemplate(templateData);
         });
 
@@ -524,7 +490,7 @@ describe("Create Case Assignment Mapping", () => {
 
         it('[6319]: Verify if case assignment mapping is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -539,7 +505,7 @@ describe("Create Case Assignment Mapping", () => {
 
         it('[6319]: Verify if case assignment mapping is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -565,7 +531,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('caseBA MultiLOB', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('James Barnes', 'Write')).toBeTruthy('FailuerMsg1: Agent Name is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('AU Support 3', 'Write')).toBeTruthy('Support Group does not have write access');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(companyAssignmentMappingName);
@@ -580,11 +546,12 @@ describe("Create Case Assignment Mapping", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(globalAssignmentMappingName);
             await apiHelper.deleteReadAccessOrAssignmentMapping(facilitiesAssignmentMappingName);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
 
 
@@ -592,9 +559,9 @@ describe("Create Case Assignment Mapping", () => {
 
     describe('[5047,5046,5045,5044,5027]: Verify Company and Support Group selection hierarchy.', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let businessData = businessDataFile['BusinessUnitData11825'];
-        let departmentData = departmentDataFile['DepartmentData11825'];
-        let suppGrpData = supportGrpDataFile['SuppGrpData11825'];
+        let businessUnitUSSupport = 'United States Support';
+        let suppGrpUSSupport1 = 'US Support 1';
+        let assigneeQfeng = 'Qiao Feng';
         let summary = 'Adhoc task ' + randomStr;
 
         it('[5047,5046,5045,5044,5027]: Case Company and Support Group selection hierarchy', async () => {
@@ -602,18 +569,15 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("5047 Case Summary");
             await createCasePage.setPriority("Medium");
-            await createCasePage.clickChangeAssignmentButton();
-            await changeAssignmentPage.setDropDownValue('SupportOrg', businessData.orgName);
-            await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpData.orgName);
-            await changeAssignmentPage.setDropDownValue('Assignee', 'fnPerson11825 lnPerson11825');
-            await changeAssignmentPage.clickOnAssignButton();
+            await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
+            await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);
             await createCasePage.clickSaveCaseButton();
             await utilityCommon.closePopUpMessage();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupValue()).toBe(suppGrpData.orgName, "Support Group Not Populated");
-            expect(await viewCasePo.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
-            expect(await viewCasePo.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
-            expect(await viewCasePo.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe(suppGrpUSSupport1, "Support Group Not Populated");
+            expect(await viewCasePo.getAssigneeText()).toBe(assigneeQfeng, "assignee is not available");
+            expect(await viewCasePo.getBusinessUnitText()).toBe(businessUnitUSSupport, "Buisness Unit is not available");
             expect(await viewCasePo.getAssignedCompanyValue()).toBe("Petramco", "Company is not available");
         });
         it('[5047,5046,5045,5044,5027]: Task Company and Support Group selection hierarchy', async () => {
@@ -626,18 +590,15 @@ describe("Create Case Assignment Mapping", () => {
             await manageTaskPo.clickTaskLink(summary);
             await viewTask.clickOnEditTask();
             await editTaskPo.updateTaskSummary(summary + "new");
-            await editTaskPo.clickOnChangeAssignementButton();
-            await changeAssignmentPage.setDropDownValue('SupportOrg', businessData.orgName);
-            await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpData.orgName);
-            await changeAssignmentPage.setDropDownValue('Assignee', 'fnPerson11825 lnPerson11825');
-            await changeAssignmentPage.clickOnAssignButton();
+            await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
+            await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);
             await editTaskPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssignedGroupText()).toBe(suppGrpData.orgName, "Support Group Not Populated");
-            expect(await viewTask.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
-            expect(await viewTask.getBusinessUnitText()).toBe(businessData.orgName, "Buisness Unit is not available");
-            expect(await viewTask.getDepartmentText()).toBe(departmentData.orgName, "Department is not available");
-            expect(await viewTask.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
+            expect(await changeAssignmentPage.getAssignedGroupText()).toBe(suppGrpUSSupport1, "Support Group Not Populated");
+            expect(await changeAssignmentPage.getAssigneeValue()).toContain(assigneeQfeng, "assignee is not available");
+            expect(await changeAssignmentPage.getSupportOrgText()).toBe(businessUnitUSSupport, "Buisness Unit is not available");
+            expect(await changeAssignmentPage.getAssignedCompanyText()).toBe("Petramco", "Company is not available");
         });
         it('[5047,5046,5045,5044,5027]: Case Template Company and Support Group selection hierarchy', async () => {
             await navigationPage.gotoSettingsPage();
@@ -647,22 +608,16 @@ describe("Create Case Assignment Mapping", () => {
             await createCaseTemplate.setCompanyName("Petramco");
             await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
             await createCaseTemplate.setOwnerCompanyValue("Petramco");
-            await createCaseTemplate.setOwnerOrgDropdownValue(businessData.orgName);
-            await createCaseTemplate.setDepartmentDropdownValue(departmentData.orgName);
-            await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpData.orgName);
-            await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
-            await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
-            await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
-            await changeAssignmentOldPage.selectAssignee('fnPerson11825 lnPerson11825');
-            await changeAssignmentOldPage.clickOnAssignButton();
+            await createCaseTemplate.setOwnerOrgDropdownValue(businessUnitUSSupport);
+            await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpUSSupport1);
+            await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
+            await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);
             await createCaseTemplate.clickSaveCaseTemplate();
-            expect(await viewCaseTemplate.getAssigneeText()).toContain('fnPerson11825 lnPerson11825', "assignee is not available");
-            expect(await viewCaseTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
-            expect(await viewCaseTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
-            expect(await viewCaseTemplate.getBuisnessUnitValue()).toBe(businessData.orgName);
-            expect(await viewCaseTemplate.getDepartmentValue()).toBe(departmentData.orgName);
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            expect(await changeAssignmentPage.getAssigneeValue()).toContain(assigneeQfeng, "assignee is not available");
+            expect(await changeAssignmentPage.getSupportOrgText()).toBe(businessUnitUSSupport);
+            expect(await changeAssignmentPage.getAssignedGroupText()).toBe(suppGrpUSSupport1);
+            await viewCaseTemplate.clickBackArrowBtn();
         });
         it('[5047,5046,5045,5044,5027]: Verify Company and Support Group selection hierarchy.', async () => {
             await navigationPage.gotoSettingsPage();
@@ -673,21 +628,16 @@ describe("Create Case Assignment Mapping", () => {
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectOwnerCompany("Petramco");
-            await taskTemplate.selectBuisnessUnit(businessData.orgName);
-            await taskTemplate.selectDepartment(departmentData.orgName);
-            await taskTemplate.selectOwnerGroup(suppGrpData.orgName);
-            await taskTemplate.clickOnAssignment();
-            await changeAssignmentOldPage.selectBusinessUnit(businessData.orgName);
-            await changeAssignmentOldPage.selectDepartment(departmentData.orgName);
-            await changeAssignmentOldPage.selectSupportGroup(suppGrpData.orgName);
-            await changeAssignmentOldPage.selectAssignee('fnPerson11825 lnPerson11825');
-            await changeAssignmentOldPage.clickOnAssignButton();
+            await taskTemplate.selectBuisnessUnit(businessUnitUSSupport);
+            await taskTemplate.selectOwnerGroup(suppGrpUSSupport1);
+            await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
+            await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);
             await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await viewTaskTemplate.getAssigneeText()).toBe('fnPerson11825 lnPerson11825', "assignee is not available");
-            expect(viewTaskTemplate.getAssigneeBusinessUnitValue()).toBe(businessData.orgName);
-            expect(viewTaskTemplate.getAssigneeDepartmentValue()).toBe(departmentData.orgName);
-            expect(viewTaskTemplate.getBuisnessunitValue()).toBe(businessData.orgName);
-            expect(viewTaskTemplate.getDepartmentValue()).toBe(departmentData.orgName);
+            expect(await changeAssignmentPage.getAssigneeValue()).toBe(assigneeQfeng, "assignee is not available");
+            expect(changeAssignmentPage.getSupportOrgText()).toBe(businessUnitUSSupport);
+            expect(changeAssignmentPage.getAssignedGroupText()).toBe(suppGrpUSSupport1);
+            await viewTaskTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -801,7 +751,7 @@ describe("Create Case Assignment Mapping", () => {
         });
         it('[4444]:[Permissions] Location based assignment with multiple companies', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
@@ -846,12 +796,8 @@ describe("Create Case Assignment Mapping", () => {
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupValue()).toBe('Psilon Support Group1');
             expect(await viewCasePo.getAssigneeText()).toBe('Glit Deruno');
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.associatePersonToCompany(userData1.userId, "Phylum");
         });
         it('[4444]:[Permissions] Location based assignment with multiple companies', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("5418 Case Summary1");
@@ -866,6 +812,7 @@ describe("Create Case Assignment Mapping", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentMappingName);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

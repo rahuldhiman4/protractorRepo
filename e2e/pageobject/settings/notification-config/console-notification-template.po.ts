@@ -37,6 +37,10 @@ class NotificationTemplateGridPage {
         await $(this.selectors.copyTemplate).click();
     }
 
+    async UnselectGridValue() {
+        await $('.radio__label input').click();
+    }
+
     async getTitleCopyNotificationTemplateWindow(): Promise<String> {
         return $(this.selectors.copyTemplateWindow).getText();
     }

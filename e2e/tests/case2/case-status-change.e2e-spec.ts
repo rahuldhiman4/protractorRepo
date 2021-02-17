@@ -16,6 +16,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
+// #ashastra (isPriority required label test commented)
 describe('Case Status Change', () => {
     let statusNew: string = "New";
     let statusInProgress: string = "In Progress";
@@ -36,6 +37,7 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
     });
 
+    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     describe('[5981]: [Case Status] Case status change from New', async () => {
         let priority: string = "Medium";
         let summary: string = "Test case for 5981";
@@ -134,7 +136,7 @@ describe('Case Status Change', () => {
         });
     });
 
-    //kgaikwad
+    // #ashastra #complete (Timeout error affected, need to resolved update case status)
     describe('[6082,3498]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[6082,3498]: Checking change case template button for In Progress', async () => {
@@ -214,7 +216,7 @@ describe('Case Status Change', () => {
         });
     });
 
-    //ankagraw
+    // #ashastra #completed 
     describe('[6330]: [Case Status] Case status change from In Progress', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -319,7 +321,7 @@ describe('Case Status Change', () => {
         });
     });
 
-    //apdeshmu
+    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     describe('[6333]: [Case Status] Case status change from Resolved', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -389,33 +391,33 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Pending');
             expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
             await updateStatusBladePo.setStatusReason('Third Party');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Pending');
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
         });
         it('[6333]: Case status change from -In Progress', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('In Progress');
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
         });
         it('[6333]: Case status change from -Assigned', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await updateStatusBladePo.changeCaseStatus('Assigned');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Assigned');
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
         });
         it('[6333]: [Case Status] Case status change from Resolved', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId4);
             await updateStatusBladePo.changeCaseStatus('Closed');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Closed');
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
         });
     });
 
-    //apdeshmu
+    // #ashastra #completed (Quick case issue affected)
     describe('[6079]: [Case] Fields validation for case in Canceled status', async () => {
         let templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -561,7 +563,7 @@ describe('Case Status Change', () => {
         });
     });
 
-    //apdeshmu
+    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     describe('[6329]: [Case Status] Case status change from Pending', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -644,26 +646,26 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Resolved');
             expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
             await updateStatusBladePo.setStatusReason('Auto Resolved');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Resolved');
             await expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
         it('[6329]: Case status change from Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('In Progress');
             await expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
         });
         it('[6329]: Case status change from Pending', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await updateStatusBladePo.changeCaseStatus('Assigned');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Assigned');
             await expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId4);
             await updateStatusBladePo.changeCaseStatus('Closed');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Closed');
             await expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
         });
         it('[6329]: [Case Status] Case status change from Pending', async () => {
@@ -672,7 +674,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeCaseStatus('Canceled');
             expect(await updateStatusBladePo.isStatusReasonRequiredTextPresent()).toBeTruthy();
             await updateStatusBladePo.setStatusReason('Customer Canceled');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Canceled');
             await expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
         });
         afterAll(async () => {
@@ -680,7 +682,7 @@ describe('Case Status Change', () => {
         });
     });
 
-    //apdeshmu
+    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     describe('[5742]: [Status Blade] Case Status Blade view', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -739,7 +741,7 @@ describe('Case Status Change', () => {
         });
     });
 
-    //kgaikwad
+    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     it('[6080]: [Case] Fields validation for case in Resolved status', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteApprovalMapping(caseModule);
@@ -775,7 +777,7 @@ describe('Case Status Change', () => {
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });
 
-    //kgaikwad
+    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     it('[6332]: [Case Status] Case status change from Closed', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -796,7 +798,7 @@ describe('Case Status Change', () => {
         expect(await $(updateStatusBladePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
     });
 
-    //kgaikwad
+    // #ashastra #completed (Timeout error affected, need to resolved update case status && dropdown search issue with space)
     it('[6301]: [Case Status Reason] Status Reason change without status transition', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -832,7 +834,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.clickSaveStatus();
     });
 
-    //kgaikwad
+    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     it('[6307]: [Case Status] Case status change from Canceled', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -850,7 +852,7 @@ describe('Case Status Change', () => {
         expect(await $(updateStatusBladePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
     });
 
-    //kgaikwad
+    // #ashastra #completed
     it('[6083]: [Case] Fields validation for case in Assigned status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -880,7 +882,7 @@ describe('Case Status Change', () => {
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
     });
 
-    //kgaikwad
+    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     it('[6081]: [Case] Fields validation for case in Pending status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();

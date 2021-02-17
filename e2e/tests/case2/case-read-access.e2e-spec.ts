@@ -33,7 +33,7 @@ describe("Case Read Access", () => {
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
     let businessData1, departmentData1, suppGrpData1, businessData2, departmentData2, suppGrpData2;
-    let userData1 = undefined, userData2 = undefined;
+    let userData1, userData2 = undefined;
     beforeAll(async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);
@@ -45,17 +45,6 @@ describe("Case Read Access", () => {
         await apiHelper.createNewFlowset(flowsetGlobalFieldsData);
 
         await apiHelper.apiLogin('tadmin');
-
-        userData1 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
-
         userData2 = {
             "firstName": "caseMngr",
             "lastName": "MultiLOB",
@@ -404,7 +393,7 @@ describe("Case Read Access", () => {
 
         it('[5578,5606]: Verify if Case read access mapping is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPo.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilityGrid.selectLineOfBusiness('Human Resource');

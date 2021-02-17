@@ -10,7 +10,7 @@ class createNotificationTemplate {
         description: '[rx-view-component-id="f5b5ca51-f48e-478c-b3bd-9457909bb4c6"] textarea',
         eventDropDownGuid: '38aba7a1-c142-41f7-9017-d261971c2429',
         moduleName: 'af58911a-383b-4548-9a8a-1a228457d0b7',
-        alertInsertField: '.cke_button__expressioneditor',
+        alertInsertField: '[rx-view-component-id="3b8c6647-5b47-444f-941b-aaec38d4ea2e"] .cke_button__rtfexpressioneditor_icon',
         emailInsertField: 'id="cke_103"',
         fieldValueInAlertBody: '.cke_wysiwyg_div',
         fieldValueInEmailBody: '[id="cke_116_contents"] .cke_wysiwyg_div',

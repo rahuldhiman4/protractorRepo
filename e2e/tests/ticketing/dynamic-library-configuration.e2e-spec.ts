@@ -480,7 +480,7 @@ describe('Dynamic Library Configuration', () => {
             await editTaskPo.clickOnSaveButton();
         });
         it('[4834]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
-            expect(await viewTaskPo.getDynamicFieldValue('temp')).toBe('newtemp');
+            expect(await viewTaskPo.getDynamicFieldValue('temp')).toBe('newtemplistvalues');
             expect(await viewTaskPo.getDynamicFieldValue('temp1')).toBe('333');
             expect(await viewTaskPo.getDynamicFieldValue('temp2')).toContain('Jan 20, 2020');
             expect(await viewTaskPo.getDynamicFieldValue('temp4')).toContain('Jan 20, 2004 5:11 PM');

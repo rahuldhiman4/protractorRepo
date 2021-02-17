@@ -111,13 +111,14 @@ export class GridOperations {
     }
 
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
-        let gridGuid: string = '';
-        if (guid) { gridGuid = `[rx-view-component-id="${guid}"] `; }
-        let rowLocator = await $$(gridGuid + this.selectors.gridRows);
-        for (let i: number = 0; i < await rowLocator.length; i++) {
-            let linkText: string = await $$(gridGuid + this.selectors.gridRows).get(i).$(this.selectors.gridRowHyperLinks).getText();
+        let gridLocatorStr: string = this.selectors.gridRows;
+        if (guid) { gridLocatorStr = `[rx-view-component-id="${guid}"] ${this.selectors.gridRows}`; }
+        let rowLocator = await $$(gridLocatorStr);
+        for (let i: number = 0; i < rowLocator.length; i++) {
+            let row = await $$(gridLocatorStr).get(i);
+            let linkText = await row.$(this.selectors.gridRowHyperLinks).getText();
             if (linkText.trim() == value) {
-                await $$(gridGuid + this.selectors.gridRows).get(i).$(this.selectors.gridCheckbox).click();
+                await $$(gridLocatorStr).get(i).$(this.selectors.gridCheckbox).click();
                 break;
             }
         }
@@ -702,10 +703,10 @@ export class GridOperations {
         await element(by.cssContainingText('.lob-list .dropdown-item', value)).click();
     }
 
-    async deleteGridRecord(gridRecord:string, guid?: string): Promise<void> {
+    async deleteGridRecord(gridRecord: string, guid?: string): Promise<void> {
         let deleteButtonLocator: string = this.selectors.deleteButton;
         if (guid) deleteButtonLocator = `[rx-view-component-id="${guid}"] ${this.selectors.deleteButton}`;
-        await this.searchAndSelectGridRecord(gridRecord,guid);
+        await this.searchAndSelectGridRecord(gridRecord, guid);
         await element(by.cssContainingText(deleteButtonLocator, 'Delete')).click();
     }
 

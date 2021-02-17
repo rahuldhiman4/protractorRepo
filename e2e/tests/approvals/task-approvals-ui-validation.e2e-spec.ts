@@ -234,9 +234,6 @@ describe("Task Approval UI Validations", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
-
 });

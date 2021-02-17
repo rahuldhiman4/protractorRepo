@@ -12,7 +12,7 @@ class AssignmentConfigCreatePage {
         flowsetDrpDwn: '70c2a2c9-d0ed-4759-8717-0ff514a76e0e',
         catTier1DrpDwn: '1763b0d3-e319-4429-86df-641ad1e54714',
         catTier2DrpDwn: '1f5cd24b-7160-4fc5-aa6e-28e4ab066a61',
-        catTier3DrpDwn: 'a8d52e5f-d8fd-4554-a805-23a60bf8bb26',
+        catTier3DrpDwn: 'af5359b5-97bd-4621-a3fb-22b4d80f2c17',
         catTier4DrpDwn: 'a8d52e5f-d8fd-4554-a805-23a60bf8bb26',
         priorityDrpDwn: '790dfab1-2353-4b06-909d-741ebbc896d5',
         labelDrpDwn: 'e96e5a26-840f-483e-b62a-797f13fb386c',

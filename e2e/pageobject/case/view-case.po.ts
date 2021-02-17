@@ -336,7 +336,8 @@ class ViewCasePage {
     }
 
     async getBusinessUnitText(): Promise<string> {
-        return await $(this.selectors.businessUnitText).getText();
+        let hirearchy = await this.getAssigneeHierarchy();
+        return (hirearchy.split('>')[1]).trim();
     }
 
     async getAssignedCompanyValue(): Promise<string> {

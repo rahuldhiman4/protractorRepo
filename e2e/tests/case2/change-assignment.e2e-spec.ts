@@ -48,10 +48,12 @@ describe("Change Assignment", () => {
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
-        expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
+        expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Select');
         await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
-        expect(await changeAssignmentPage.isValuePresentInDropDown("SupportOrg", 'United States Support\nPetramco > United States Support')).toBeTruthy();
-        expect(await changeAssignmentPage.isValuePresentInDropDown("AssignedGroup", 'US Support 3\nPetramco > United States Support > US Support 3')).toBeTruthy();
+        expect(await changeAssignmentPage.isValuePresentInDropDown("SupportOrg", 'United States Support')).toBeTruthy('Support Org Name is not present');
+        expect(await changeAssignmentPage.isFullHierarchyPresent("SupportOrg", "United States Support", 'Petramco > United States Support')).toBeTruthy('Support Org Full hierarchy is not present');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("AssignedGroup", 'Petramco > United States Support > US Support 3')).toBeTruthy('Assigned Group Name is not present');
+        expect(await changeAssignmentPage.isFullHierarchyPresent("AssignedGroup", "US Support 3", 'Petramco > United States Support > US Support 3')).toBeTruthy('Assigned Group Full hierarchy is not present');
         await createCasePo.clickCancelButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await navigationPo.gotoCreateCase();
@@ -60,9 +62,9 @@ describe("Change Assignment", () => {
         await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
         await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
         let newArray: string = nth(await changeAssignmentPage.getAllDropDownValues("Assignee"), 1);
-        expect(await newArray.includes('Adam Pavlik')).toBeTruthy();
-        expect(await newArray.includes('apavlik@petramco.com')).toBeTruthy();
-        expect(await newArray.includes('Petramco > United States Support > US Support 3')).toBeTruthy();
+        expect(await newArray.includes('Adam Pavlik')).toBeTruthy('Adam Palvik Name is not available in Assignee');
+        expect(await newArray.includes('apavlik@petramco.com')).toBeTruthy('Adam Palvik Email is not available in Assignee');
+        expect(await newArray.includes('Petramco > United States Support > US Support 3')).toBeTruthy('Adam Palvik Full hierarchy is not available in Assignee');
     });
 
     //apurva

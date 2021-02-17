@@ -851,9 +851,6 @@ describe("Task Approval Tests", () => {
             await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
-
 }); 

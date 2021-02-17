@@ -8,6 +8,7 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
+import changeAssignmentBlade from '../../pageobject/common/change-assignment.po'
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -39,7 +40,7 @@ describe('Create Task Template', () => {
         await navigationPage.signOut();
     });
 
-    //ankagraw
+    //ankagraw- required loading slow defect
     describe('[5796,5795]: [Task Template] Task Template Create view (UI verification)', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         it('[5796,5795]: Create Manual Task template', async () => {
@@ -54,10 +55,10 @@ describe('Create Task Template', () => {
             expect(await taskTemplate.isOwnerComapnyRequiredText()).toBeTruthy('Owner Company Required text Not Present');
             expect(await taskTemplate.isOwnerGroupRequiredText()).toBeTruthy('Owner Group Required text Not Present');
             expect(await taskTemplate.isTaskDescriptionTitlePresent('Task Description')).toBeTruthy('Task Description not present');
-            expect(await taskTemplate.isTaskCategoryTier1TitlePresent('Category Tier 1')).toBeTruthy('Task Category Tier 1 not present');
-            expect(await taskTemplate.isTaskCategoryTier2TitlePresent('Category Tier 2')).toBeTruthy('Task Category Tier 2 not present');
-            expect(await taskTemplate.isTaskCategoryTier3TitlePresent('Category Tier 3')).toBeTruthy('Task Category Tier 3 not present');
-            expect(await taskTemplate.isTaskCategoryTier4TitlePresent('Category Tier 4')).toBeTruthy('Task Category Tier 4 not present');
+            expect(await taskTemplate.isTaskCategoryTier1TitlePresent('Task Category Tier 1')).toBeTruthy('Task Category Tier 1 not present');
+            expect(await taskTemplate.isTaskCategoryTier2TitlePresent('Task Category Tier 2')).toBeTruthy('Task Category Tier 2 not present');
+            expect(await taskTemplate.isTaskCategoryTier3TitlePresent('Task Category Tier 3')).toBeTruthy('Task Category Tier 3 not present');
+            expect(await taskTemplate.isTaskCategoryTier4TitlePresent('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 not present');
             await taskTemplate.setTemplateName("manualTaskTemplate" + randomStr);
             await taskTemplate.setTaskSummary("manualTaskSummary" + randomStr);
             await taskTemplate.setTaskDescription('Description in manual task');
@@ -71,10 +72,10 @@ describe('Create Task Template', () => {
             expect(await viewTaskTemplate.isTaskSummaryTitlePresent('Task Summary')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskTypeTitlePresent('Task Type')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskCompanyTitlePresent('Task Company')).toBeTruthy();
-            expect(await viewTaskTemplate.isTaskCategoryTier1TitlePresent('Category Tier 1')).toBeTruthy();
-            expect(await viewTaskTemplate.isTaskCategoryTier2TitlePresent('Category Tier 2')).toBeTruthy();
-            expect(await viewTaskTemplate.isTaskCategoryTier3TitlePresent('Category Tier 3')).toBeTruthy();
-            expect(await viewTaskTemplate.isTaskCategoryTier4TitlePresent('Category Tier 4')).toBeTruthy();
+            expect(await viewTaskTemplate.isTaskCategoryTier1TitlePresent('Task Category Tier 1')).toBeTruthy();
+            expect(await viewTaskTemplate.isTaskCategoryTier2TitlePresent('Task Category Tier 2')).toBeTruthy();
+            expect(await viewTaskTemplate.isTaskCategoryTier3TitlePresent('Task Category Tier 3')).toBeTruthy();
+            expect(await viewTaskTemplate.isTaskCategoryTier4TitlePresent('Task Category Tier 4')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskLabelTitlePresent('Label')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskDescriptionTitlePresent('Task Description')).toBeTruthy();
             expect(await viewTaskTemplate.isTemplateStatusTitlePresent('Status')).toBeTruthy();
@@ -83,10 +84,11 @@ describe('Create Task Template', () => {
             expect(await viewTaskTemplate.isAssigneeTitlePresent('Assignee')).toBeTruthy();
             expect(await viewTaskTemplate.isSupportGuidTitlePresent('Support Group')).toBeTruthy();
             expect(await viewTaskTemplate.isEditButtonPresent()).toBeTruthy();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
-    //ankagraw
+    //ankagraw-done 
     it('[4994,4995]: [Global Task Template] Update Task company to Global', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         //Manual task Template
@@ -105,47 +107,50 @@ describe('Create Task Template', () => {
         await viewTaskTemplate.clickOnEditLink();
         await editTaskTemplate.selectTaskCompany('Petramco');
         await editTaskTemplate.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Company marked for Global usage cannot be modified.',2)).toBeTruthy();
+        expect(await utilityCommon.isPopUpMessagePresent('Company marked for Global usage cannot be modified.', 2)).toBeTruthy();
         await utilityCommon.closePopUpMessage()
         await editTaskTemplate.clickOnCancelButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         await viewTaskTemplate.clickBackArrowBtn();
     });
 
-    //ankagraw
-    it('[4938]: Case BA other than task template owner group can NOT update the template', async () => {
-        try {
-            let randomStr = Math.floor(Math.random() * 1000000);
-            let templateData1 = {
-                "templateName": 'manualTaskTemplate' + randomStr,
-                "templateSummary": 'manualTaskSummary' + randomStr,
-                "templateStatus": "Active",
-                "taskCompany": 'Petramco',
-                "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 3"
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createManualTaskTemplate(templateData1);
+    //ankagraw- done
+    describe('[4938]: Case BA other than task template owner group can NOT update the template', async () => {
+        it('[4938]: Case BA other than task template owner group can NOT update the template', async () => {
+            try {
+                let randomStr = Math.floor(Math.random() * 1000000);
+                let templateData1 = {
+                    "templateName": 'manualTaskTemplate' + randomStr,
+                    "templateSummary": 'manualTaskSummary' + randomStr,
+                    "templateStatus": "Active",
+                    "taskCompany": 'Petramco',
+                    "ownerCompany": "Petramco",
+                    "ownerBusinessUnit": "United States Support",
+                    "ownerGroup": "US Support 3"
+                }
+                await apiHelper.apiLogin('qkatawazi');
+                await apiHelper.createManualTaskTemplate(templateData1);
 
-            await navigationPage.signOut();
-            await loginPage.login('qliu');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr);
-            await editTaskTemplate.clickOnEditMetadataLink();
-            expect(await editTaskTemplate.isTemplateStatusDisabled()).toBeTruthy("Template status is enabled");
-            await editTaskTemplate.clickOnCancelMetadataButton();
-            await viewTaskTemplate.clickBackArrowBtn();
-        } catch (error) {
-            throw error;
-        } finally {
+                await navigationPage.signOut();
+                await loginPage.login('qliu');
+                await navigationPage.gotoSettingsPage();
+                await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+                await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr);
+                await editTaskTemplate.clickOnEditMetadataLink();
+                expect(await editTaskTemplate.isTemplateStatusDisabled()).toBeTruthy("Template status is enabled");
+                await editTaskTemplate.clickOnCancelMetadataButton();
+                await viewTaskTemplate.clickBackArrowBtn();
+            } catch (error) {
+                throw error;
+            }
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
-        }
+        });
     });
 
-    //ankagraw
+    //ankagraw-done
     describe('[4939]: Case BA from task template owner group can update the template', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
@@ -181,7 +186,7 @@ describe('Create Task Template', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw-done
     it('[4943]: Task template submitter from same company of owner group can edit the task template', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         //Manual task Template
@@ -213,7 +218,7 @@ describe('Create Task Template', () => {
         await viewTaskTemplate.clickBackArrowBtn();
     });//, 220 * 1000);
 
-    //ankagraw
+    //ankagraw - issue
     describe('[5801]: [Task Template Console] Filter menu verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;
@@ -234,6 +239,10 @@ describe('Create Task Template', () => {
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
+            await changeAssignmentBlade.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'US Support 3');
+            await taskTemplate.selectTaskCategoryTier1('Employee Relations');
             await taskTemplate.clickOnSaveTaskTemplate();
             await viewTaskTemplate.clickBackArrowBtn();
         });
@@ -260,7 +269,7 @@ describe('Create Task Template', () => {
             await utilityGrid.clearFilter();
             await selectTaskTemplate.addColumn(addColoumn);
             await utilityGrid.addFilter("Support Group", 'US Support 3', 'text');
-            expect(await utilityGrid.isGridRecordPresent('US Support 3')).toBeTruthy('US Support 3 not present');
+            expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('US Support 3 support group template not present');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Modified Date", dateFormate + "-" + modifiedDateFormate, 'date');
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy(taskTemplateName);
@@ -269,18 +278,18 @@ describe('Create Task Template', () => {
             expect(await utilityGrid.isGridRecordPresent('Code of Conduct')).toBeTruthy('Code of Conduct not present');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Task Category Tier 1", 'Employee Relations', 'text');
-            expect(await utilityGrid.isGridRecordPresent('Employee Relations')).toBeTruthy('Employee Relations not present');
+            expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('Employee Relations not present');
         });
         it('[5801]: Apply Filter Options and verify remaining fields', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Template Status", 'Active', 'checkbox');
-            expect(await utilityGrid.isGridRecordPresent('Active')).toBeTruthy('Active not present');
+            expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy(taskTemplateName + 'Template is Active');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Template Status", 'Draft', 'checkbox');
-            expect(await utilityGrid.isGridRecordPresent('Draft')).toBeTruthy('Draft not present');
+            expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeFalsy(taskTemplateName + 'Template status is Draft');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Template Status", 'Inactive', 'checkbox');
-            expect(await utilityGrid.isGridRecordPresent('Inactive')).toBeTruthy('Inactive not present');
+            expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy(taskTemplateName + 'Template status is not Inactive');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Display ID", taskTemplateId, 'text');
             expect(await utilityGrid.isGridRecordPresent(taskTemplateId)).toBeTruthy(taskTemplateId + '  not present');
@@ -303,6 +312,7 @@ describe('Create Task Template', () => {
             expect(await utilityCommon.isPopUpMessagePresent('The Template Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await taskTemplate.clickOnCancelTaskTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.closePopUpMessage();
         });
         it('[5801]: create same name record in different LOB', async () => {
             //create same name record in different LOB
@@ -322,13 +332,11 @@ describe('Create Task Template', () => {
             await utilityCommon.isAllDropDownValuesMatches(taskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
             await taskTemplate.selectBuisnessUnit('Facilities Support');
             await taskTemplate.selectOwnerGroup('Facilities');
-            await taskTemplate.clickOnAssignment();
             await changeAssignmentOldBladePo.selectCompany('Petramco');
             await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Business Unit', ['Facilities', 'Facilities Support']);
             await changeAssignmentOldBladePo.selectCompany('Petramco');
             await changeAssignmentOldBladePo.selectBusinessUnit('Facilities Support');
             await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Support Group', ['Facilities', 'Pantry Service']);
-            await changeAssignmentOldBladePo.clickOnCancelButton();
             // verify LOB is there
             expect(await taskTemplate.getLobValue()).toBe("Facilities");
             await taskTemplate.clickOnSaveTaskTemplate();
@@ -341,12 +349,13 @@ describe('Create Task Template', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
     });
 
-    //ankagraw
+    //ankagraw-status reason
     describe('[5786,5787,5785,5775,5779]: [Task Status] Task Status change from Assigned', async () => {
         let randomStr = 'Manual task' + Math.floor(Math.random() * 1000000);
         //Manual task Template
@@ -471,8 +480,11 @@ describe('Create Task Template', () => {
             expect(await utilityGrid.isGridRecordPresent('Canceled')).toBeTruthy('Canceled not present');
             expect(await utilityGrid.isGridRecordPresent('Closed')).toBeTruthy('Closed not present');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
-
+    //status reason
     describe('[5675]: [Tasks] Tasks status when resolving the case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, tasktemp, tasktemp1, tasktemp2, manualTemplateData;
@@ -607,8 +619,11 @@ describe('Create Task Template', () => {
             expect(await viewCasePage.getCaseStatusValue()).toBe("Resolved");
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeFalsy();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
-
+//done
     describe('[4987,4988,4989]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
         let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
         it('[4987,4988,4989]: Create Case tempate template', async () => {
@@ -646,7 +661,7 @@ describe('Create Task Template', () => {
             await viewTaskTemplate.clickBackArrowBtn();
         });
     });
-
+//done
     describe('[5791]: [Task Workspace] Filter menu verification', async () => {
         let tempIdClosed, tempIdCanceled, tempIdCompleted, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium, tempIdHigh, tempIdCritical, exactDate;
@@ -746,7 +761,7 @@ describe('Create Task Template', () => {
             expect(priorityColumnValues[0] == 'Critical' == true).toBeTruthy("Critical not Displayed");
         });
         it('[5791]: Verify filter with status values', async () => {
-            await utilityGrid.searchRecord(''); // clear grid searchbox value
+            await utilityGrid.clearSearchBox();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", 'Assigned', "default");
             let statusColumnValues = await utilityGrid.getAllValuesFromColumn('Status');
