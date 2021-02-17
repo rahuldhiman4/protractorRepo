@@ -21,8 +21,8 @@ describe('Failed Task', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.setDefaultNotificationForUser('Franz', 'Alert');
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.setDefaultNotificationForUser('Franz', 'Alert');
     });
 
     afterAll(async () => {
@@ -30,7 +30,7 @@ describe('Failed Task', () => {
         await navigationPage.signOut();
     });
 
-    //asahitya
+    //asahitya- defect - DRDMV-25020
     describe('[5310]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, manualTaskTemplate, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseDisplayId;
@@ -134,7 +134,7 @@ describe('Failed Task', () => {
         });
     });
 
-    //asahitya
+    //asahitya- defect - DRDMV-25024
     describe('[5311]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, newCaseTemplate, manualTaskTemplateData, automatedTaskTemplateSummary1, automatedTaskTemplateSummary2, caseResponse, caseDisplayId;
@@ -219,9 +219,12 @@ describe('Failed Task', () => {
             await taskConsolePo.searchAndOpenTask(automatedTaskTemplateSummary1);
             expect(await taskViewPage.getTaskStatusValue()).toContain('Staged');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
-    //asahitya
+    //asahitya-done
     describe('[5329]: "ReRun"action of failed Automated task', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let automatedTaskTemplateData, caseResponse;
@@ -274,6 +277,7 @@ describe('Failed Task', () => {
             expect(await taskViewPage.getTaskStatusValue()).toBe('Failed');
             expect(await taskViewPage.getStatusReason()).toBe('Error');
             await taskViewPage.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await viewCasePage.getCaseStatusValue()).toBe('In Progress');
             await apiHelper.enableDisableProcess(`${automatedTaskTemplateData.processBundle}:${automatedTaskTemplateData.processName}`, true);
             await viewCasePage.openTaskCard(1);
@@ -293,53 +297,58 @@ describe('Failed Task', () => {
         });
     });
 
-    //asahitya
-    it('[5319]: Verify Manual Tasks can set to Failed Status', async () => {
-        const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        await apiHelper.apiLogin('qkatawazi');
-        let manualTaskTemplateData = {
-            "templateName": 'Manual task10031' + randomStr,
-            "templateSummary": 'Manual task10031' + randomStr,
-            "templateStatus": "Active",
-            "taskCompany": "Petramco",
-            "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "United States Support",
-            "ownerGroup": "US Support 3",
-            "businessUnit": "United States Support",
-            "supportGroup": "US Support 1",
-            "assignee": "qtao",
-        }
-        await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
+    //asahitya-defect DRDMV-25019
+    describe('[5319]: Verify Manual Tasks can set to Failed Status', () => {
+        it('[5319]: Verify Manual Tasks can set to Failed Status', async () => {
+            const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            await apiHelper.apiLogin('qkatawazi');
+            let manualTaskTemplateData = {
+                "templateName": 'Manual task10031' + randomStr,
+                "templateSummary": 'Manual task10031' + randomStr,
+                "templateStatus": "Active",
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 1",
+                "assignee": "qtao",
+            }
+            await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
-        const caseData = {
-            "Description": "5319 Desc",
-            "Requester": "qliu",
-            "Summary": "5319 Summary",
-            "Assigned Company": "Petramco",
-            "Business Unit": "United States Support",
-            "Support Group": "US Support 1",
-            "Assignee": "qtao"
-        }
-        let caseResponse = await apiHelper.createCase(caseData);
+            const caseData = {
+                "Description": "5319 Desc",
+                "Requester": "qliu",
+                "Summary": "5319 Summary",
+                "Assigned Company": "Petramco",
+                "Business Unit": "United States Support",
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
+            }
+            let caseResponse = await apiHelper.createCase(caseData);
 
-        const taskData = {
-            "company": "Petramco",
-            "requesterId": "qkatawazi",
-            "templateName": manualTaskTemplateData.templateSummary
-        }
-        await apiHelper.addTaskToCase(taskData, caseResponse.id);
-        await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
-        await navigationPage.gotoCaseConsole();
-        await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
-        await viewCasePage.clickOnTaskLink(manualTaskTemplateData.templateSummary);
-        await taskViewPage.clickOnChangeStatus();
-        await taskViewPage.changeTaskStatus('Completed');
-        await statusUpdateBladePo.setStatusReason('Failed');
-        await statusUpdateBladePo.clickSaveStatus();
-        expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            const taskData = {
+                "company": "Petramco",
+                "requesterId": "qkatawazi",
+                "templateName": manualTaskTemplateData.templateSummary
+            }
+            await apiHelper.addTaskToCase(taskData, caseResponse.id);
+            await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
+            await viewCasePage.clickOnTaskLink(manualTaskTemplateData.templateSummary);
+            await taskViewPage.clickOnChangeStatus();
+            await taskViewPage.changeTaskStatus('Completed');
+            await statusUpdateBladePo.setStatusReason('Failed');
+            await statusUpdateBladePo.clickSaveStatus();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
-    //asahitya
+    //asahitya-done
     describe('[5315]: Task behaviour when one manual task is closed and other sequenced automated task is failed', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData1, manualTaskTemplateData2, automatedTaskTemplateData, caseResponse, manualTaskGuid1;
@@ -449,7 +458,7 @@ describe('Failed Task', () => {
             expect(await taskViewPage.getStatusReason()).toBe('Error');
         });
     });
-
+//done
     describe('[5314]: Case Status when one automated task got failed and other 2 automated task got passed', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData1, automatedTaskTemplateData2, automatedTaskTemplateData3, caseResponse;
@@ -571,7 +580,7 @@ describe('Failed Task', () => {
         });
     });
 
-    //asahitya
+    //asahitya-done
     describe('[5330]: Automated task= Failed, Case created with case template check Default Action', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData1, automatedTaskTemplateData2, caseResponse;
@@ -666,7 +675,7 @@ describe('Failed Task', () => {
         });
     });
 
-    //asahitya
+    //asahitya defect - DRDMV-25024
     describe('[5272]: [Alerts] Notification alerts on Task Activation to Task Support Group', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, caseTemplateResponse, automatedTaskTemplateData, caseResponse, taskDisplayId;
@@ -679,6 +688,7 @@ describe('Failed Task', () => {
                 "casePriority": "Low",
                 "caseStatus": "New",
                 "company": "Petramco",
+                "ownerCompany": "Petramco",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3",
                 "taskFailureConfiguration": "Proceed With Next Task"
@@ -705,6 +715,7 @@ describe('Failed Task', () => {
                 "Summary": `5272 Summary ${randomStr}`,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateResponse.displayId,
+                "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 1",
                 "Assignee": "qtao",
