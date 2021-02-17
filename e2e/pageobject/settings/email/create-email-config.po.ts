@@ -11,7 +11,7 @@ export class CreateEmailConfig {
         saveButton: '[rx-view-component-id="cb16fd71-146e-4e5f-9e18-854ddd185d5e"] button',
         cancelButton: '[rx-view-component-id="daad4496-bc8a-4de8-8a2e-cc7665ff8813"] button',
         incomingMailBoxNameGuid: '2bd6a6db-bbba-489e-a1f2-7bb4cc07f69a',
-        lob: '[rx-view-component-id="15cb2eb7-6089-46c4-8de5-ea9e974b12a2"] input',
+        lob: '[rx-view-component-id="15cb2eb7-6089-46c4-8de5-ea9e974b12a2"] button div',
         lobValue: '[rx-view-component-id="15cb2eb7-6089-46c4-8de5-ea9e974b12a2"] .pull-left'
     }
 
@@ -55,7 +55,7 @@ export class CreateEmailConfig {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(this.selectors.lob).getText();
     }
 }
 

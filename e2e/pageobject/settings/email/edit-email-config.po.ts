@@ -66,7 +66,8 @@ export class EditEmailConfig {
         dropDownOption: '[rx-view-component-id="5021ef29-9cae-4538-bf9b-2907936a8c78"] button',
         description: '[rx-view-component-id="9d3c4cbf-faa9-4f65-834f-474b7c5c2a12"] input',
         emailIdNewBlockEmailId: '[rx-view-component-id="3b86d9d1-26a0-4fe1-8d36-57993ddeb25c"] input',
-        lobValue: '[rx-view-component-id="61e76625-685a-41b7-9c41-fd7698a71570"] .pull-left'
+        lobValue: '[rx-view-component-id="61e76625-685a-41b7-9c41-fd7698a71570"] .pull-left',
+        lob: '[rx-view-component-id="4c80a9f0-5051-4b85-a0a3-debcda8c7dd0"] button div',
     }
 
     async clickDefaultMailIdCheckbox(value: string): Promise<void> {
@@ -293,7 +294,10 @@ export class EditEmailConfig {
         await $(this.selectors.acknowledgementTemplateList).click();
         await $(this.selectors.inputFieldAcknowledgementTemplate).clear();
         await $(this.selectors.inputFieldAcknowledgementTemplate).sendKeys(template);
-        return await element(by.cssContainingText(this.selectors.acknowledgementTemplateList,template)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.acknowledgementTemplateList,template)).isPresent().then(async (present) => {
+            if (present) return await element(by.cssContainingText(this.selectors.acknowledgementTemplateList,template)).isDisplayed();
+            else return false;
+        });
     }
     async isAddNewRuleBtnEnabled(): Promise<boolean> {
         return await $(this.selectors.newExclusiveSubjects).isEnabled();
@@ -436,9 +440,8 @@ export class EditEmailConfig {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(this.selectors.lob).getText();
     }
-
 }
 
 export default new EditEmailConfig();

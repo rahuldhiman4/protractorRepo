@@ -248,7 +248,7 @@ describe('Email Acknowledgment Template', () => {
             await editAcknowledgmentTemplatePo.selectStatusDropDown('Active');
             expect(await editAcknowledgmentTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize message button is missing');
             await editAcknowledgmentTemplatePo.selectlocaleDropDown('English (United States)');
-            let arr: string[] = ["None","English (United States)", "German (Germany)", "Spanish (International Sort)","French (France)",  "Italian (Italy)", "Portuguese (Brazil)", "Swedish (Sweden)",, "Dutch (Netherlands)","Danish (Denmark)"];
+            let arr: string[] = ["None","English (United States)", "German (Germany)", "Spanish (International Sort)","French (France)",  "Italian (Italy)", "Portuguese (Brazil)", "Swedish (Sweden)", "Dutch (Netherlands)","Danish (Denmark)"];
             expect(await editAcknowledgmentTemplatePo.isLocaleDropDownValueDisplayed(arr)).toBeTruthy('Values not displayed in locale drop down');
 
             await editAcknowledgmentTemplatePo.clickOnGridSearchIcon();
@@ -263,7 +263,6 @@ describe('Email Acknowledgment Template', () => {
             await editAcknowledgmentTemplatePo.clickOnGridEditButton();
             await editAcknowledgmentTemplatePo.updateEditMessageTextBladeSubject(subject2);
             await editAcknowledgmentTemplatePo.clickOnEditMessageTextBladeSaveButton();
-            await editAcknowledgmentTemplatePo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             await editAcknowledgmentTemplatePo.searchOnGridConsole('body');
             expect(await editAcknowledgmentTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');

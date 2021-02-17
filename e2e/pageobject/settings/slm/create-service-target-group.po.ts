@@ -46,7 +46,7 @@ class CreateServiceTargetGroup {
     async getLobValue(): Promise<string> {
         return await $(this.selectors.lob).getText();
     }
- 
+
     async selectCompany(company: string): Promise<void> {
         await utilityCommon.selectDropDown($(this.selectors.company), company, DropDownType.Label);
     }
