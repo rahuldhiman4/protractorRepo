@@ -378,18 +378,14 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Assignee validation2', async () => {
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.setDropDownValue('Assignee', "Qianru Tao");
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentBladePo.setDropDownValue('Assignee', "Alastair Cook");
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            expect(await viewTask.getAssigneeText()).toBe('Alastair Cook');
             await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.getAllTaskActivity('Qianru Tao')).toBe('Qianru Tao');
+            expect(await activityTabPo.getAllTaskActivity('Alastair Cook')).toBe('Alastair Cook');
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentBladePo.clickAssignToMeBtn();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
@@ -402,13 +398,11 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup");
             await changeAssignmentBladePo.setDropDownValue('Company', "Petramco");
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
@@ -416,6 +410,7 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Assignee validation4', async () => {
             await viewTask.clickOnEditTask();
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnAssignToMe(); // Failing due to slow API response, check with dev
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -441,18 +436,14 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect((await viewTask.getAssigneeText()).trim()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.setDropDownValue('Assignee', "Qianru Tao");
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentBladePo.setDropDownValue('Assignee', "Alastair Cook");
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
+            expect(await viewTask.getAssigneeText()).toBe('Alastair Cook');
             await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.getAllTaskActivity('Qianru Tao')).toBe('Qianru Tao');
+            expect(await activityTabPo.getAllTaskActivity('Alastair Cook')).toBe('Alastair Cook');
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.clickOnAssignToMeCheckBox();
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentBladePo.clickAssignToMeBtn();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
@@ -465,13 +456,11 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup");
             await changeAssignmentBladePo.setDropDownValue('Company', "Petramco");
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
@@ -479,6 +468,7 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: [Assignment] Changing the Assignment when editing the task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();

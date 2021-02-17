@@ -621,6 +621,8 @@ describe('Create Task Template', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login("qkatawazi");
         });
     });
 //done

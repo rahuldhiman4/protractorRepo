@@ -37,7 +37,7 @@ describe("Actionable Notifications", () => {
         await loginPage.login("qkatawazi");
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        // await utilityGrid.addFilter('Company', '- Global -', 'text');
+        //await utilityGrid.addFilter('Company', '- Global -', 'text');
         // await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         // await apiHelper.apiLogin('tadmin');
         // await apiHelper.setDefaultNotificationForUser('qtao', "Alert");
@@ -46,7 +46,7 @@ describe("Actionable Notifications", () => {
         // await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         // await apiHelper.setDefaultNotificationForUser('khardison', 'Alert');
         // await apiHelper.apiLogin('sasadmin');
-        // await apiHelper.enableActionableNotificationSetting();
+        //await apiHelper.enableActionableNotificationSetting();
     });
 
     afterAll(async () => {

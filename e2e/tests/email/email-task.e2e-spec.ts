@@ -189,8 +189,8 @@ describe('Email Task', () => {
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(3);
-            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(3);
+            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(2);
+            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(2);
             await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnRequesterEmail();
@@ -200,8 +200,8 @@ describe('Email Task', () => {
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(3);
-            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(3);
+            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(2);
+            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(2);
             await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ManualtaskID);
             //verify activity email post
@@ -217,8 +217,8 @@ describe('Email Task', () => {
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(3);
-            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(3);
+            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(2);
+            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(2);
             await composeMailPo.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnRequesterEmail();
@@ -227,8 +227,8 @@ describe('Email Task', () => {
             // await expect(await emailPo.getEmailBody()).toContain('Regards');
             // await expect(await emailPo.getEmailBody()).toContain('Fritz Schulz');
             // await expect(await emailPo.getEmailBody()).toContain('fritz.schulz@petramco.com');
-            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(3);
-            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(3);
+            expect(await composeMailPo.searchPerson('To', 'fri')).toBe(2);
+            expect(await composeMailPo.searchPerson('Cc', 'fri')).toBe(2);
             await composeMailPo.setToOrCCInputTextbox('To', 'fritz.schulz@petramco.com');
             expect(await composeMailPo.getSubject()).toContain(displayId + ':' + ExternaltaskID);
             //verify activity email post
@@ -288,11 +288,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await browser.sleep(2000); // To wait until view task page gets load correctly.
             await viewTaskPo.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             ManualtaskID = await viewTaskPo.getTaskID();
@@ -307,11 +305,9 @@ describe('Email Task', () => {
             //verify activity email post
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await expect(composeMailPo.isEmailIconLinkPresent()).toBeTruthy();
             ExternaltaskID = await viewTaskPo.getTaskID();
@@ -608,11 +604,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', "Qadim Katawazi");
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await viewTaskPo.clickOnRequesterEmail();
             await composeMailPo.clickOnSelectTempalteButton();
@@ -635,11 +629,9 @@ describe('Email Task', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
         });
         it('[3844]: In Case of Reply/Reply All if we select new Email template then previous contents should not be erased.', async () => {
@@ -661,6 +653,9 @@ describe('Email Task', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            //workaround for email template issue
+            await composeMailPo.clickOnDiscardButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
     });
@@ -676,6 +671,7 @@ describe('Email Task', () => {
         expect(await editAcknowledgmentTemplatePo.getDescription()).toContain('Task Update Acknowledgement Template when task got updated via email');
         expect(await editAcknowledgmentTemplatePo.getBodyMessageValue()).toContain('<p>This is to acknowledge that the information provided by you for Task $1$ has been updated successfully.</p><p>HR Department</p>');
         expect(await editAcknowledgmentTemplatePo.getSubjectMessageValue()).toContain('Task $1$ :$450000029$ Successfully updated');
+        await editAcknowledgmentTemplatePo.clickOnCancelButton();
     });
 
     describe('[3846]: Email Templates option driven by Task assignee permission for case', async () => {
@@ -728,11 +724,9 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             ManualtaskID = await viewTaskPo.getTaskID();
             await viewTaskPo.clickOnViewCase();
@@ -742,11 +736,9 @@ describe('Email Task', () => {
             //verify activity email post
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             await viewTaskPo.clickOnRequesterEmail();
             expect(await composeMailPo.isSelectEmailTemplateButtonPresent()).toBeTruthy('Email template link not present');

@@ -1,5 +1,4 @@
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -145,6 +144,7 @@ describe('Email Configuration', () => {
             await createEmailConfigPo.setDescription("test");
             await createEmailConfigPo.clickSave();
             expect(await utilityCommon.isPopUpMessagePresent('The alternate email IDs are already used. Specify different alternate email IDs.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             await createEmailConfigPo.clickCancel();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -230,7 +230,7 @@ describe('Email Configuration', () => {
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await editEmailConfigPo.cancelEditEmailConfig();
         });
 
@@ -242,7 +242,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subject is not displayed on Human Resource email configuration to Case manager user');
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy('Exclusion subject is not displayed on Human Resource email configuration to Case manager user');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subject is not displayed on Human Resource email configuration to Case manager user');
             await editEmailConfigPo.cancelEditEmailConfig();
         });
 
@@ -254,7 +254,7 @@ describe('Email Configuration', () => {
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email configuration for Human Resource LOB is displayed to Facilities LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(facilitiesEmailID)).toBeTruthy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
             await editEmailConfigPo.cancelEditEmailConfig();
         });
@@ -267,7 +267,7 @@ describe('Email Configuration', () => {
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email configuration for Human Resource LOB is displayed to Facilities LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(facilitiesEmailID)).toBeTruthy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
             await editEmailConfigPo.cancelEditEmailConfig();
         });
@@ -280,7 +280,7 @@ describe('Email Configuration', () => {
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             expect(await utilityGrid.isGridRecordPresent(facilitiesEmailID)).toBeFalsy();
             await editEmailConfigPo.cancelEditEmailConfig();
         });
@@ -294,7 +294,7 @@ describe('Email Configuration', () => {
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
@@ -600,6 +600,11 @@ describe('Email Configuration', () => {
             caseTemplateData.templateStatus = "Inactive";
             caseTemplateData.templateName = randomStr + 'caseTemplateNameInactive'
             await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailBox('incoming', incomingEmail);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig);
         });
         it('[5114,5251,5168,5104,5382]: Exclusion Subject : Default associated public exclusion subject list', async () => {
             await navigationPage.gotoSettingsPage();

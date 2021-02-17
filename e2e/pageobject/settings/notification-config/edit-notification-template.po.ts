@@ -14,11 +14,11 @@ class EditNotificationTemplate {
         editCheckbox: '.d-icon-left-pencil',
         clickableField: 'div.cke_contents.cke_reset span[contenteditable]',
         cancelAlertMessageTextButton: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
-        defaultNotificationMethodGuid: "911e28fd-89bb-4ee0-bea9-1d22e48f1134",
-        description: '[rx-view-component-id="48a3c0ad-103c-4b1b-a8a0-3e0648ff6ab6"] input',
-        event: '[rx-view-component-id="15aad4c8-1522-4586-b9d3-6be376cfcaa8"] button',
-        addRecipientsBtn: '[rx-view-component-id="9c294d12-1577-44fd-950d-fe7021853558"] button',
-        addLocalizedMessageBtn: '[rx-view-component-id="76a40f80-9cad-41f1-8ac1-5df3e939d9f0"] button',
+        defaultNotificationMethodGuid: "c80f9de5-1a84-46fa-949d-fc073d65ebd8",
+        description: '[rx-view-component-id="73750a2f-4d74-4919-b0e4-fbc8e1b4167a"] textarea',
+        event: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] button',
+        addRecipientsBtn: '[rx-view-component-id="73a718fa-c683-48b0-b211-97b3744d7c3f"] button',
+        addLocalizedMessageBtn: '[rx-view-component-id="92468fc7-a2b9-46b4-8ad9-c2cfe12c9d8b"] button',
         alertMessageBox: '[rx-view-component-id="a0a91ca7-9acd-467b-a4fc-d22217199f01"] div[id="cke_242_contents"]',
         emailSubjectBox: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
         emailBodyMessageBox: 'div[id="cke_292_contents"]',
@@ -293,7 +293,7 @@ class EditNotificationTemplate {
                 break;
             }
             case "Default Notification Method": {
-                fieldGuid = '911e28fd-89bb-4ee0-bea9-1d22e48f1134';
+                fieldGuid = 'c80f9de5-1a84-46fa-949d-fc073d65ebd8';
                 break;
             }
             case "Event": {
