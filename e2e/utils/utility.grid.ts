@@ -537,8 +537,8 @@ export class GridOperations {
         });
 
         if (newFilterName) {
-            await $('.textfield-padding-transition').clear();
-            await $('.textfield-padding-transition').sendKeys(newFilterName);
+            await $$('.advanced-filter__editing-container .rx-form-control').get(0).clear();
+            await $$('.advanced-filter__editing-container .rx-form-control').get(0).sendKeys(newFilterName);
         }
 
         let filterCount = await $$(this.selectors.filterItems);
@@ -685,7 +685,7 @@ export class GridOperations {
     }
 
     async clearFilterNameOnEditPresetFilter(): Promise<void> {
-        await $('.textfield-padding-transition').clear();
+        await $$('.advanced-filter__editing-container .rx-form-control').get(0).clear();
     }
 
     async isValidationMessageDisplayedOnEditPresetFilter(validationMessage): Promise<boolean> {
