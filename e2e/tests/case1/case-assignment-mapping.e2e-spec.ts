@@ -569,6 +569,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("5047 Case Summary");
             await createCasePage.setPriority("Medium");
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
             await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
             await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
             await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);

@@ -24,7 +24,7 @@ class ViewTaskTemplate {
         ownerGroupValue: '[rx-view-component-id="f02e4c7b-93f9-4b35-af23-f522d56daa4b"] .read-only-content',
         buisnessunitValue: '[rx-view-component-id="787a1a66-06fc-4e1c-8bf4-172c32be397d"] .read-only-content',
         departmentValue: '[rx-view-component-id="03314749-1da7-4741-8b0d-8296933e966f"] p',
-        label: '[rx-view-component-id="bae4bb58-1146-4f96-a695-543deecc5cc1"] .read-only-content',
+        label: '[rx-view-component-id="14236a56-7a89-438b-9535-d2edca70d44c"] .read-only-content',
         editLink: '[rx-view-component-id="0ff4dfc7-09f3-4d12-bc32-5c9426f6cc6c"] .justify-content-end button',
         taskTemplateId: '[rx-view-component-id="5109350d-c09f-49ae-85b3-fbc5280fd4e4"] .text-field',
         taskSummaryGuid: '80087f51-1b1f-4b47-9fde-36aed981db13',
