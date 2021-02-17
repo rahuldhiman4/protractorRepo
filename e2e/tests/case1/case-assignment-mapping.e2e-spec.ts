@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
@@ -11,7 +10,6 @@ import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate
 import viewCasePo from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
-import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import assignmentConfigConsolePage from "../../pageobject/settings/case-management/assignments-config-console.po";
@@ -37,7 +35,6 @@ describe("Create Case Assignment Mapping", () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let userData = undefined, userData1 = undefined, userData2 = undefined;
     const userId1 = "idphylum4@petramco.com";
     let flowsetGlobalFieldsData = undefined;
     beforeAll(async () => {
@@ -95,46 +92,14 @@ describe("Create Case Assignment Mapping", () => {
     }
 
     async function createNewUsers() {
-        userData = {
-            "firstName": "Multiple",
-            "lastName": "Company",
-            "userId": "nosg",
-            "emailId": "nosg@petramco.com",
-            "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
-        }
-        userData1 = {
-            "firstName": "Petramco",
-            "lastName": "SGUser1",
-            "userId": "13550User1",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData);
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
-        await apiHelper.associatePersonToCompany(userData.userId, "Phylum");
         let personData1 = personDataFile['PhylumCaseAgent1'];
         await apiHelper.createNewUser(personData1);
         await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
         await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
-        await apiHelper.associatePersonToCompany('gderuno', 'Petramco');
-        userData2 = {
-            "firstName": "caseBA",
-            "lastName": "MultiLOB",
-            "userId": "caseBAMultiLOB",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     }
 
     afterAll(async () => {
-        //await apiHelper.apiLogin('tadmin');
-        //await apiHelper.disassociatePersonFromCompany('gderuno', 'Petramco');
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -786,7 +751,7 @@ describe("Create Case Assignment Mapping", () => {
         });
         it('[4444]:[Permissions] Location based assignment with multiple companies', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
@@ -831,12 +796,8 @@ describe("Create Case Assignment Mapping", () => {
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupValue()).toBe('Psilon Support Group1');
             expect(await viewCasePo.getAssigneeText()).toBe('Glit Deruno');
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.associatePersonToCompany(userData1.userId, "Phylum");
         });
         it('[4444]:[Permissions] Location based assignment with multiple companies', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("5418 Case Summary1");
@@ -851,6 +812,7 @@ describe("Create Case Assignment Mapping", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentMappingName);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

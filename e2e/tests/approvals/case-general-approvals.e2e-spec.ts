@@ -617,8 +617,6 @@ describe("Case General Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 });

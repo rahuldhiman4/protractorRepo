@@ -15,7 +15,6 @@ import utilityGrid from '../../utils/utility.grid';
 let userData1 = undefined;
 describe("Case Approval UI Validations", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
-    const caseApprovalMappingRecordDefinition = 'com.bmc.dsm.case-lib:Case Approval Mapping';
     let caseModule = 'Case';
 
     beforeAll(async () => {

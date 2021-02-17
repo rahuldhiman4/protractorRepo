@@ -8,7 +8,7 @@ class ApplicationConfiguration {
         configurationDefaultValue: '[class="d-textfield_required d-textfield"] input',
         addConfigurationValueButton: '[class="col-md-8"] span[class="d-icon-left-plus_circle"]',
         configurationValueText: '.form-group input',
-        companyDropDown: '.btn-secondary',
+        companyDropDown: 'button[role="listbox"]',
         companyDropdownList: 'button.dropdown-item',
         saveButton: 'div[class="float-right"] button[btn-type="primary"]',
         cancelButton: 'div[class="float-right"] button[btn-type="secondary"]',

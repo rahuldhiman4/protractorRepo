@@ -313,7 +313,7 @@ describe('Notes template', () => {
 
         });
 
-        it('[4361]: Verify task notes template is accessible to different company user with same Line of business Case BA', async () => {
+        it('[4362]: Verify task notes template is accessible to different company user with same Line of business Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
@@ -1839,7 +1839,7 @@ describe('Notes template', () => {
 
         it('[3445,3441,3437]: Verify if case notes templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -2906,7 +2906,7 @@ describe('Notes template', () => {
 
         it('[3436]: Verify Case / Task Notes Templates are accessible to Case BA user who has access to multiple (HR,Finance) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseBAMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Facilities');

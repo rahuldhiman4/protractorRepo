@@ -682,7 +682,7 @@ describe('Line of Business Permission Tests', () => {
 
     //ankagraw
     describe('[5866]: Create new SVT Group for Line of Business', async () => {
-        let userData, svtData, userData1, userData2, randomStr = Math.floor(Math.random() * 100000);
+        let userData, svtData, userData2, randomStr = Math.floor(Math.random() * 100000);
         beforeAll(async () => {
             svtData = {
                 "terms": "'1000000063'=\"cb500f4763edeb302d4644e2d5cf22372543dedda74717135ffc927758066570c1a59648f541d5392790876c312fcf2a0501a76d13290562cce65a69c48e7356\"",
@@ -706,16 +706,6 @@ describe('Line of Business Permission Tests', () => {
             await apiHelper.createNewUser(userData);
             await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
             await apiHelper.associatePersonToSupportGroup(userData.userId, "US Support 3");
-
-            userData1 = {
-                "firstName": "caseBA",
-                "lastName": "MultiLOB",
-                "userId": "caseBAMultiLOB",
-                "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-            }
-            await apiHelper.createNewUser(userData1);
-            await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
 
             userData2 = {
                 "firstName": "caseMngr",
