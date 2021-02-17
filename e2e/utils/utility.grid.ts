@@ -7,7 +7,7 @@ export class GridOperations {
         selectAllCheckBox: '.adapt-selection-cell .checkbox__input',
         noFilterAppliedError: '.has-danger .form-control-feedback',
         searchTextBox: '.adapt-search-triggerable input',
-        clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear',
+        clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear-visible',
         gridRowLinks: '.at-data-row a',
         gridRowHyperLinks: '.at-data-row a',
         gridRows: '.at-data-row',
@@ -26,7 +26,7 @@ export class GridOperations {
         visibleColumnButton: '.d-icon-eye_closed,.d-icon-eye',
         refreshIcon: 'button[rx-id="refresh-button"]',
         filterSearchValueBox: '.adapt-mt-input-container input',
-        filterCounterInput: 'input.adapt-counter-input',
+        filterCounterInput: '.tab-container .adapt-rx-counter-input',
         filterValue: '[class="filter-tags__tag-text"]',
         filterName: '.radio__item span',
         editPresetFilterSaveButton: '.advanced-filter__editing-footer .btn-primary',
@@ -465,7 +465,10 @@ export class GridOperations {
     }
 
     async clearSearchBox(): Promise<void> {
-        await $(this.selectors.clearSearchBoxButton).click();
+        await $(this.selectors.clearSearchBoxButton).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.clearSearchBoxButton).click();
+            else await console.log('Search box already clear');
+        })
     }
 
     async deleteCustomPresetFilter(filterName: string, guid?: string): Promise<void> {

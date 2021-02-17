@@ -8,7 +8,8 @@ export const Case_Assigned_FILTER_1 = {
     "Support Group": "Employee Relations",
     "Assignee": "elizabeth",
     "Origin": "Live Chat",
-    "Status": "2000"
+    "Status": "2000",
+    "Site": "Pune"
 };
 export const Case_Assigned_FILTER_2 = {
     "Description": "DRDMV-caseFilterCombination_2",
@@ -29,7 +30,8 @@ export const Case_InProgres_FILTER_3 = {
     "Support Group": "Employee Relations",
     "Assignee": "elizabeth",
     "Origin": "Live Chat",
-    "Status": "3000"
+    "Status": "3000",
+    "Site": "Pune"
 };
 export const Case_Assigned_FILTER_4 = {
     "Description": "DRDMV-caseFilterCombination_4",
@@ -82,7 +84,8 @@ export const Case_Pending_FILTER_8 = {
     "Support Group": "IN Support 1",
     "Origin": "Agent",
     "Assignee": "ajoshi",
-    "Status": "4000"
+    "Status": "4000",
+    "Site": "Petramco Site1"
 };
 
 export const Case_New_FILTER_9 = {
@@ -93,7 +96,8 @@ export const Case_New_FILTER_9 = {
     "Business Unit": "HR Support",
     "Support Group": "Employee Relations",
     "Origin": "Live Chat",
-    "Status": "1000"
+    "Status": "1000",
+    "Site": "Pune"
 };
 
 export const Case_Pending_FILTER_10 = {
@@ -105,7 +109,8 @@ export const Case_Pending_FILTER_10 = {
     "Support Group": "Employee Relations",
     "Assignee": "elizabeth",
     "Origin": "Live Chat",
-    "Status": "4000"
+    "Status": "4000",
+    "Site": "Pune"
 };
 
 export const Case_Pending_FILTER_11 = {
