@@ -768,7 +768,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr1.includes('Category Tier 3')).toBeTruthy(`Category Tier 3 is missing`);
             expect(dynamicFilterArr1.includes('Company')).toBeTruthy(`Company is missing`);
             expect(dynamicFilterArr1.includes('Flagged')).toBeTruthy(`Flagged is missing`);
-            expect(dynamicFilterArr1.includes('GUID')).toBeTruthy(`GUID is missing`);
+            expect(dynamicFilterArr1.includes('ID')).toBeTruthy(`ID is missing`);
             expect(dynamicFilterArr1.includes('Knowledge Set')).toBeTruthy(`Knowledge Set is missing`);
             expect(dynamicFilterArr1.includes('Modified By')).toBeTruthy(`Modified By is missing`);
             expect(dynamicFilterArr1.includes('Modified Date')).toBeTruthy(`Modified Date is missing`);
@@ -812,7 +812,7 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr2.includes('Category Tier 3')).toBeTruthy(`Category Tier 3 is missing`);
             expect(dynamicFilterArr2.includes('Company')).toBeTruthy(`Company is missing`);
             expect(dynamicFilterArr2.includes('Flagged')).toBeTruthy(`Flagged is missing`);
-            expect(dynamicFilterArr2.includes('GUID')).toBeTruthy(`GUID is missing`);
+            expect(dynamicFilterArr2.includes('ID')).toBeTruthy(`ID is missing`);
             expect(dynamicFilterArr2.includes('Knowledge Set')).toBeTruthy(`Knowledge Set is missing`);
             expect(dynamicFilterArr2.includes('Modified By')).toBeTruthy(`Modified By is missing`);
             expect(dynamicFilterArr2.includes('Modified Date')).toBeTruthy(`Modified Date is missing`);

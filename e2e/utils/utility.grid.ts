@@ -125,7 +125,11 @@ export class GridOperations {
     }
 
     async isNoFilterAppliedError(): Promise<boolean> {
-        return await $(this.selectors.noFilterAppliedError).isDisplayed();
+        return await await $(this.selectors.noFilterAppliedError).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.noFilterAppliedError).isDisplayed();
+            } else return false;
+        });
     }
 
     async clickFilterField(fieldName: string, guid?: string): Promise<void> {
