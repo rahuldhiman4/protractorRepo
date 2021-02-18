@@ -21,7 +21,7 @@ class QuickCasePage {
         arrowFirstRecommendedCase: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"] .list__item__preview-icon',
         arrowFirstRecommendedKnowledge: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .list__item__preview-icon',
         roleDropDown: '.sr-preview-pane .sr-preview-item-header .btn-secondary',
-        sourceValue: '.sr-select-bar .btn-xs',
+        sourceValue: '.sr-select-bar .rx-select__search-button-title',
         roleValue: '.select_option_container span',
         descriptionText: 'div.sr-placeholder div.large',
         resources: '.empty-state__label',
@@ -32,7 +32,7 @@ class QuickCasePage {
         recommendedCaseGuid: '[rx-view-component-id="c0487804-1748-4995-99c9-69e6ad217c74"]',
         recommendedCaseTemplateGuid: '[rx-view-component-id="b01aa3f3-0371-4b7e-a956-b1cf025927d6"]',
         recommendedKnowledgeGuid: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"]',
-        dropdownSourceValue: '.dropdown-item span',
+        dropdownSourceValue: '.dropdown-item .rx-select__option-content',
         recommendedTemplateDetail: '.rx-ellipsis span'
     }
 
@@ -68,9 +68,16 @@ class QuickCasePage {
     }
 
     async selectRequesterName(name: string): Promise<void> {
-        await $(this.selectors.smartSearchTextBox).sendKeys(`@${name}`);
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.requesters)), 3000);
-        await $$(this.selectors.requesters).first().click();
+        let str: string[] = name.split(' ');
+        await $(this.selectors.smartSearchTextBox).sendKeys(`@`);
+        for (let i = 0; i < str.length; i++) {
+            if (i == str.length - 1) await $(this.selectors.smartSearchTextBox).sendKeys(`${str[i]}`);
+            else await $(this.selectors.smartSearchTextBox).sendKeys(`${str[i]} `);
+        }
+        await element(by.cssContainingText('bwf-selectable-list-item .person-name, .person-email span', name)).isPresent().then(async (result) => {
+            if(result) await element(by.cssContainingText('bwf-selectable-list-item .person-name, .person-email span', name)).click();
+            else await $$(this.selectors.requesters).first().click();
+        });
     }
 
     async setCaseSummary(summary: string): Promise<void> {
