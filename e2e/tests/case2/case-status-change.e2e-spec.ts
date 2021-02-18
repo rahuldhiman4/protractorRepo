@@ -16,7 +16,6 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-// #ashastra (isPriority required label test commented)
 describe('Case Status Change', () => {
     let statusNew: string = "New";
     let statusInProgress: string = "In Progress";
@@ -37,7 +36,6 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     describe('[5981]: [Case Status] Case status change from New', async () => {
         let priority: string = "Medium";
         let summary: string = "Test case for 5981";
@@ -136,7 +134,6 @@ describe('Case Status Change', () => {
         });
     });
 
-    // #ashastra #complete (Timeout error affected, need to resolved update case status)
     describe('[6082,3498]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[6082,3498]: Checking change case template button for In Progress', async () => {
@@ -165,7 +162,7 @@ describe('Case Status Change', () => {
             expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
             await utilityCommon.closePopUpMessage();
             await editCasePage.setCaseSummary('pendingAC');
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed for Priority');
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed for Priority');
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
         });
@@ -216,7 +213,6 @@ describe('Case Status Change', () => {
         });
     });
 
-    // #ashastra #completed 
     describe('[6330]: [Case Status] Case status change from In Progress', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -321,7 +317,6 @@ describe('Case Status Change', () => {
         });
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     describe('[6333]: [Case Status] Case status change from Resolved', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -417,7 +412,6 @@ describe('Case Status Change', () => {
         });
     });
 
-    // #ashastra #completed (Quick case issue affected)
     describe('[6079]: [Case] Fields validation for case in Canceled status', async () => {
         let templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -513,7 +507,7 @@ describe('Case Status Change', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary1 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -526,7 +520,7 @@ describe('Case Status Change', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary2 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
             await updateStatusBladePo.setStatusReason('Approval Rejected');
@@ -539,7 +533,7 @@ describe('Case Status Change', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary3 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             await editCasePage.clickOnAssignToMe();
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
@@ -553,7 +547,7 @@ describe('Case Status Change', () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.setCaseSummary(summary4 + " new");
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
-            // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
+            expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
             await editCasePage.clickOnAssignToMe();
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeCaseStatus('Canceled');
@@ -563,7 +557,6 @@ describe('Case Status Change', () => {
         });
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     describe('[6329]: [Case Status] Case status change from Pending', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -682,7 +675,6 @@ describe('Case Status Change', () => {
         });
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     describe('[5742]: [Status Blade] Case Status Blade view', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -741,7 +733,6 @@ describe('Case Status Change', () => {
         });
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     it('[6080]: [Case] Fields validation for case in Resolved status', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteApprovalMapping(caseModule);
@@ -760,7 +751,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
         expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
@@ -777,7 +768,6 @@ describe('Case Status Change', () => {
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     it('[6332]: [Case Status] Case status change from Closed', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -798,7 +788,6 @@ describe('Case Status Change', () => {
         expect(await $(updateStatusBladePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status && dropdown search issue with space)
     it('[6301]: [Case Status Reason] Status Reason change without status transition', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -834,7 +823,6 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.clickSaveStatus();
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     it('[6307]: [Case Status] Case status change from Canceled', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -852,7 +840,6 @@ describe('Case Status Change', () => {
         expect(await $(updateStatusBladePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
     });
 
-    // #ashastra #completed
     it('[6083]: [Case] Fields validation for case in Assigned status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -865,7 +852,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
         expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
@@ -882,7 +869,6 @@ describe('Case Status Change', () => {
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
     });
 
-    // #ashastra #completed (Timeout error affected, need to resolved update case status)
     it('[6081]: [Case] Fields validation for case in Pending status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -898,7 +884,7 @@ describe('Case Status Change', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending);
         await viewCasePage.clickEditCaseButton();
         expect(await editCasePage.isSummaryRequiredText()).toBeTruthy('Required Text not displayed');
-        // expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
+        expect(await editCasePage.isPriorityRequiredText()).toBeTruthy('Required Text not displayed');
         // * Optional fields are: Contact, Description, Category Tiers (1-3), Assignee.
         expect(await $(editCasePage.selectors.contact).isPresent()).toBeTruthy('Contact not present');
         expect(await $(editCasePage.selectors.descriptionLabel).isPresent()).toBeTruthy('Description not present');
