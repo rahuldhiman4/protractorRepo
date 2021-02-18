@@ -48,7 +48,7 @@ export class GridOperations {
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
         }
         await this.clearFilter();
-        for (let i: number = 0; i < 7; i++) {
+        for (let i: number = 0; i < 5; i++) {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);

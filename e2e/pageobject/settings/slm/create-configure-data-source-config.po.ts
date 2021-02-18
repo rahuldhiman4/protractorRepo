@@ -12,7 +12,7 @@ class CreateDataSourceConfigurationPage {
         showAdvancedSettingsLink: '[rx-view-component-id="80a8ade0-5e29-4d4f-b0e2-7d301b1b5c30"] button[aria-label="Show Advanced Settings"]',
         saveButton: '[rx-view-component-id="fde65b3a-a200-4ca8-921e-12959a970c3e"] button',
         closeButton: '[rx-view-component-id="640ba779-7dfb-4843-b0f0-4b05c89d166b"] button',
-        fieldValues: `//*[contains(@class,'form-control-label')]//span[1]`,
+        fieldValues: ".form-control-label span",
         useEndTimeCheckbox: `//span[contains(@class,'form-control-label')]//span[1]//ancestor::div[contains(@class,"row")]//input[@type="checkbox"]`,
         regularExpSaveButton: '.modal-footer .btn-primary',
         dropdownBox: 'div.form-group div.dropdown button',
@@ -136,21 +136,11 @@ class CreateDataSourceConfigurationPage {
     }
 
     async isDatSourceAdvancedFieldsDisabled(fieldName: string): Promise<boolean> {
-        let fldsCount = await element.all(by.xpath(this.selectors.fieldValues)).count();
+        let fldsCount = await $$('.form-group').count();
         for (let i = 0; i < fldsCount; i++) {
-            let elem = await $$(this.selectors.fieldValues).get(i);
-            if (await elem.getAttribute("disabled") == fieldName) {
-                return await elem.getAttribute("disabled") ? true : false;
-            }
-        }
-    }
-
-    async isDatSourceFieldDisabled(fieldName: string): Promise<boolean> {
-        let fldsCount = await element(by.xpath(this.selectors.fieldValues)).count();
-        for (let i = 0; i < fldsCount; i++) {
-            let elem = await $$(this.selectors.fieldValues).get(i);
-            if (await elem.getAttribute("disabled") == fieldName) {
-                return await elem.getAttribute("disabled") ? true : false;
+            let label = await $$('.form-group').get(i).$(".form-control-label").getText();
+            if (await  label == fieldName) {
+                return await $$('.form-group').get(i).$("[placeholder]").getAttribute("aria-disabled") ? true : false;
             }
         }
     }

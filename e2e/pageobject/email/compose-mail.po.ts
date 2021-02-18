@@ -186,7 +186,7 @@ class ComposeMail {
     }
 
     async getEmailBody(): Promise<string> {
-      return utilityCommon.getCKEditorText(this.selectors.commonGuid);
+      return  utilityCommon.getCKEditorText(this.selectors.commonGuid);
     }
 
     async clickOnSendButton(): Promise<void> {

@@ -271,9 +271,9 @@ describe('Email Template', () => {
             await editEmailTemplatePo.clickOnGridEditButton();
             await editEmailTemplatePo.updateEditMessageTextBladeSubject(subject2);
             await editEmailTemplatePo.clickEditSubjectSaveButton();
-            await consoleEmailTemplatePo.searchOnGridConsole('body');
+            await editEmailTemplatePo.searchOnGridConsole('body');
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toContain(body2, 'body not updated correctly');
-            await consoleEmailTemplatePo.searchOnGridConsole('subject');
+            await editEmailTemplatePo.searchOnGridConsole('subject');
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message')).toBe(subject2, 'subject not updated correctly');
         });
         it('[5169,5166,5178,5096,5095,5097,5172]: Email Template : User Is able to delete Email Template', async () => {
