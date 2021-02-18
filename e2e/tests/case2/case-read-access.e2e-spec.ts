@@ -482,7 +482,7 @@ describe("Case Read Access", () => {
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         // success
-        xit('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {
+        it('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.signOut();
             await loginPage.login('gderuno');
             await navigationPo.gotoSettingsPage();
