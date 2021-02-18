@@ -26,13 +26,13 @@ class PreviewCaseTemplateBlade {
         assigneeName: '[rx-view-component-id="37cfb7c1-bfbf-4365-9362-4c051dd5ae38"] .person-name',
         supportGroupName: '[rx-view-component-id="37cfb7c1-bfbf-4365-9362-4c051dd5ae38"] .read-only-content',
         supportCompanyName: '[rx-view-component-id="37cfb7c1-bfbf-4365-9362-4c051dd5ae38"] .read-only-content',
-        backButton: '[rx-view-component-id="83c4c73b-86b4-4894-b4c2-4d0525bed20d"] button',
+        backButton: '[rx-view-component-id="8abb8018-cca7-49a2-b610-023c2bae63cc"] button',
         dynamicFieldName: '[rx-view-component-id="3cacaba4-7a3b-411f-85c1-cb76bb7bc789"] span',
         showMoreDescriptionLink: '[rx-view-component-id="169adf6c-7674-448b-9732-0eecbebae380"] button',
         readOnlyFields: '[rx-view-component-id="47d6310c-8a6d-4676-8722-052933f94bbb"] .read-only-content',
         zoomInBtn: 'button.zoom-in',
         zoomOutBtn: 'button.zoom-out',
-        lineOfBusiness: '[rx-view-component-id="9af5d1b9-4838-42ae-b36b-d9c913b91c82"] .read-only-content',
+        lineOfBusiness: '[rx-view-component-id="9af5d1b9-4838-42ae-b36b-d9c913b91c82"] .read-only-content'
     }
 
     async isElementDisplayed(element: ElementFinder): Promise<boolean> {
