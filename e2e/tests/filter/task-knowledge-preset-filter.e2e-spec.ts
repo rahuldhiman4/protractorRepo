@@ -96,9 +96,9 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'US Support 1', 'text');
-            await utilityGrid.addFilter('Assigned Group', 'US Support 2', 'text');
+            await utilityGrid.addFilter('Assigned Group\n(1 selected)', 'US Support 2', 'text');
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
-            await utilityGrid.addFilter('Status', 'Staged', 'text');
+            await utilityGrid.addFilter('Status\n(1 selected)', 'Staged', 'text');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 2; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
@@ -110,7 +110,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'US Support 1', 'text');
-            await utilityGrid.addFilter('Assigned Group', 'US Support 2', 'text');
+            await utilityGrid.addFilter('Assigned Group\n(1 selected)', 'US Support 2', 'text');
             await utilityGrid.clickRefreshIcon();
 
             for (let i: number = 2; i < 4; i++) {
@@ -119,7 +119,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'Assigned', 'text');
-            await utilityGrid.addFilter('Status', 'Staged', 'text');
+            await utilityGrid.addFilter('Status\n(1 selected)', 'Staged', 'text');
             await utilityGrid.clickRefreshIcon();
 
             for (let i: number = 2; i < 4; i++) {
@@ -273,20 +273,16 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             }
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await utilityGrid.clearFilter();
         });
     });
     describe('[12073]: Verify records are fetched on task console with Task Type, Priority and status combinations', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskId: string[] = [];
-        let label;
+        let label = 'Benefits';
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
-            label = menuItemData.menuItemName + randomStr;
-            menuItemData.menuItemName = label;
             await apiHelper.apiLogin('elizabeth');
-            await apiHelper.createNewMenuItem(menuItemData);
 
             let response1 = await apiHelper.createCase(taskData.Case_New_FILTER_5);
             let response2 = await apiHelper.createAdhocTask(response1.id, taskData.TASK_DATA_Combination_9);
@@ -310,7 +306,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             taskId.push(response8.displayId);
             await apiHelper.updateTaskStatus(response8.id, 'InProgress');
 
-            taskData.TASK_DATA_Combination_10.label = menuItemData.menuItemName;
+            taskData.TASK_DATA_Combination_10.label = label;
             let response9 = await apiHelper.createCase(taskData.Case_InProgres_FILTER_3);
             await apiHelper.updateCaseStatus(response9.id, "InProgress");
             let response10 = await apiHelper.createAdhocTask(response9.id, taskData.TASK_DATA_Combination_10);
@@ -323,9 +319,9 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Task Type', 'Manual', 'checkbox');
             await utilityGrid.addFilter('Status', 'Staged', 'text');
-            await utilityGrid.addFilter('Status', 'Assigned', 'text');
-            await utilityGrid.addFilter('Status', 'Pending', 'text');
-            await utilityGrid.addFilter('Status', 'In Progress', 'text');
+            await utilityGrid.addFilter('Status\n(1 selected)', 'Assigned', 'text');
+            await utilityGrid.addFilter('Status\n(2 selected)', 'Pending', 'text');
+            await utilityGrid.addFilter('Status\n(3 selected)', 'In Progress', 'text');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');

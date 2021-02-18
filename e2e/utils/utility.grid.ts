@@ -21,7 +21,7 @@ export class GridOperations {
         gridHeaders: '.c-header-container .c-header__separator',
         gridCellData: '.at-data-row .at-data-cell',
         filterItems: '.advanced-filter__label',
-        filterCheckboxOptions: 'adapt-tabset [role="option"]',
+        filterCheckboxOptions: '.rx-select__option-content div',
         filterTab: '.dropdown-menu [role="tablist"] .nav-item button',
         visibleColumnButton: '.d-icon-eye_closed,.d-icon-eye',
         refreshIcon: 'button[rx-id="refresh-button"]',
@@ -125,7 +125,11 @@ export class GridOperations {
     }
 
     async isNoFilterAppliedError(): Promise<boolean> {
-        return await $(this.selectors.noFilterAppliedError).isDisplayed();
+        return await await $(this.selectors.noFilterAppliedError).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.noFilterAppliedError).isDisplayed();
+            } else return false;
+        });
     }
 
     async clickFilterField(fieldName: string, guid?: string): Promise<void> {
