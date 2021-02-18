@@ -667,7 +667,7 @@ describe("Attachment", () => {
             await addReadAccess.setReadAccessConfigurationName(title);
             await addReadAccess.selectCompany('Petramco');
             await addReadAccess.selectSupportCompany('Petramco');
-            await addReadAccess.selectBusinessUnit('Canada Support');
+            await addReadAccess.selectSupportOrg('Canada Support');
             await addReadAccess.selectSupportGroup('CA Support 1');
             await addReadAccess.selectCategoryTier1(categName1);
             await addReadAccess.selectCategoryTier2(categName2);
