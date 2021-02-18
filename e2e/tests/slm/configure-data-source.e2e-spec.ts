@@ -268,18 +268,17 @@ describe('Data Source Configuration Tests', () => {
             // expect(await configureDataSourceConsolePage.getDataSourceConfigurationConsoleDescription()).toBe(dataSourceConsoleDesc);
             await utilityGrid.searchAndOpenHyperlink(dataSourceDisplayName);
             await browser.sleep(2000); // added hard wait to load Edit Data Source Blade
-            await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Company');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Assignee');
-            await createConfigureDataSourceConfigPo.clickUseEndTimeCheckbox();
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created By');
-            await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
+            await editConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
+            await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Company');
+            await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date');
+            await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Assignee');
+            await editConfigureDataSourceConfigPo.clickEndTimeCheckbox();
+            await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created Date');
+            await editConfigureDataSourceConfigPo.clickBuildExpressionBtn();
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID');
-            await approvalConfigurationPage.clickRecordOption('Record Instance');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionFieldOption();
             await browser.sleep(2000); // sleep added for expression builder loading time
@@ -287,7 +286,7 @@ describe('Data Source Configuration Tests', () => {
             await browser.sleep(1000); // sleep added for expression builder loading time
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
-            await createConfigureDataSourceConfigPo.clickSaveButton();
+            await editConfigureDataSourceConfigPo.clickSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
