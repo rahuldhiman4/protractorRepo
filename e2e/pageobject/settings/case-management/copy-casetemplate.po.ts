@@ -10,7 +10,7 @@ class CopyCaseTemplate {
         caseCategoryTier1ValueOnCopy: '[rx-view-component-id="83fbf8aa-8cf3-4672-94b5-b569f978b880"] .dropdown-toggle',
         caseCategoryTier2ValueOnCopy: '[rx-view-component-id="60c2bb3a-6278-4056-a400-3c3816f4084d"] .dropdown-toggle',
         caseCategoryTier3ValueOnCopy: '[rx-view-component-id="b544a068-bb95-4915-b6cc-217bfa458564"] .dropdown-toggle',
-        casePriorityValueOnCopy: '[rx-view-component-id="98327bc1-9ada-48f9-ab88-9787ddecd409"] .dropdown-toggle',
+        casePriorityValueOnCopy: '[rx-view-component-id="98327bc1-9ada-48f9-ab88-9787ddecd409"] .dropdown-toggle div',
         caseSummaryValueOnCopy: '[rx-view-component-id="9aac1caa-d110-450e-a9a2-d87168ec6162"] .form-control',
         statusReasonValueOnCopy: '[rx-view-component-id="b6a6fc24-c3e7-4565-b2d2-848dd4a6747b"] .dropdown-toggle',
         caseCompanyValueOnCopy: '[rx-view-component-id="127214a1-bfc0-4a8c-acb7-cd2be137fa3c"] .dropdown-toggle',
@@ -31,10 +31,7 @@ class CopyCaseTemplate {
         ownerGroupValueOnCopy: '[rx-view-component-id="a6e62e56-9bda-40af-8bce-29ad062b76f5"] button',
         ownerGroupDropdown: 'a6e62e56-9bda-40af-8bce-29ad062b76f5',
         departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .dropdown-toggle',
-        supportCompanyValueOnCopy: '.flex-wrap button[aria-label="Support Company"]',
-        supportOrganizationValueOnCopy: '.flex-wrap button .dropdown-toggle',
-        supportGroupValueOnCopy: '.flex-wrap button .dropdown-toggle',
-        assigneeValueOnCopy: '.flex-wrap button .dropdown-toggle',
+        assigneeValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] button div',
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {
@@ -72,21 +69,21 @@ class CopyCaseTemplate {
 
     async getValueOfCaseCompany(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCompanyValueOnCopy)));
-        return await $(this.selectors.caseCompanyValueOnCopy).getText();
+        return await $$(this.selectors.assigneeValueOnCopy).first().getText();
     }
 
     async getValueOfSupportCompany(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportCompanyValueOnCopy)));
-        return await $(this.selectors.supportCompanyValueOnCopy).getText();
+        return await $(this.selectors.assigneeValueOnCopy).getText();
     }
 
     async getValueOfSupportGroup(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupValueOnCopy)));
-        return await $$(this.selectors.supportGroupValueOnCopy).get(2).getText();
+        return await $$(this.selectors.assigneeValueOnCopy).get(2).getText();
     }
 
     async getValueOfBuisnessUnit(): Promise<string> {
-        return await $$(this.selectors.supportOrganizationValueOnCopy).get(1).getText();
+        return await $$(this.selectors.assigneeValueOnCopy).get(1).getText();
     }
 
     async getValueOfDepartement(): Promise<string> {
@@ -175,10 +172,7 @@ class CopyCaseTemplate {
     }
 
     async isValueOfCasePriorityPresent(priorityValue: string): Promise<boolean> {
-        //        return await browser.wait(this.EC.or(async () => {
-        return await $(this.selectors.casePriorityValueOnCopy).getAttribute('aria-label') == priorityValue;
-        //            return value;
-        //        }), 3000);
+        return (await $(this.selectors.casePriorityValueOnCopy).getText()).trim() == priorityValue;
     }
 
     async getValueOfCaseDescription(): Promise<string> {

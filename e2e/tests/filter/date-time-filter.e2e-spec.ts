@@ -275,7 +275,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);
             expect(await utilityGrid.isGridRecordPresent(knowledgeArticleData.displayId)).toBeTruthy(`${knowledgeArticleData.displayId} missing record`);
         });
-        fit('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
+        it('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Assigned Group", "CA Support 1", 'text');
