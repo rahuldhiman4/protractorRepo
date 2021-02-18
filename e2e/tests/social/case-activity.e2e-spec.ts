@@ -148,6 +148,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
+            await browser.sleep(1000); // remove if you can
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
@@ -233,6 +234,7 @@ describe('Case Activity', () => {
             await createCase.selectRequester('Elizabeth Jeffries');
             await createCase.setSummary('test case for 4212');
             await createCase.clickSaveCaseButton();
+            await browser.sleep(1000); // remove if you can
             await previewCasePo.clickGoToCaseButton();
 
             await activityTabPage.addActivityNote(caseBodyText);
@@ -265,6 +267,9 @@ describe('Case Activity', () => {
             await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperlinkOfActivityDisplay(knowledgeBodyText, 'Jacqueline Featherstonehaugh')).toBeTruthy('PersonName is not displayed correctly');
+        });
+        afterAll(async () =>{
+           await utilityCommon.closeAllBlades(); 
         });
     });
 

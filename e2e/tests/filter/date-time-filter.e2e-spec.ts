@@ -6,6 +6,9 @@ import dateTimeSelectorPo from '../../pageobject/settings/common/date-time-selec
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import knowledgeArticlesConsolePo from "../../pageobject/knowledge/knowledge-articles-console.po";
+import editKnowledgePo from "../../pageobject/knowledge/edit-knowledge.po";
+import viewKnowledgeArticlePo from "../../pageobject/knowledge/view-knowledge-article.po";
 
 describe('Date and Time Preset Filter', () => {
     beforeAll(async () => {
@@ -25,8 +28,8 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clickFilterField("Created Date");
 
             //Validating and Selecting Default Date
-            expect(await dateTimeSelectorPo.getSelectedStartDateTimestamp()).toBe('Not selected');
-            expect(await dateTimeSelectorPo.getSelectedEndDateTimestamp()).toBe('Not selected');
+            expect(await dateTimeSelectorPo.getSelectedStartDateTimestamp()).toBe('Select start value');
+            expect(await dateTimeSelectorPo.getSelectedEndDateTimestamp()).toBe('Select end value');
             let createdDate = new Date();
             let month = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
             let monthValue: string = month[createdDate.getMonth()];
@@ -184,75 +187,129 @@ describe('Date and Time Preset Filter', () => {
     });
     //contains KA
     describe('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let updatedDate;
+        let year;
+        let month: string;
+        let date;
+        let actualDate;
+        let knowledgeArticleData;
+        let knowledgeArticleName = 'ArticleName' + randomStr;
+        let expectedVersion1;
+        let expectedVersion2;
+
+        beforeAll(async () => {
+            //Create date
+            let objDate: Date = new Date();
+            year = objDate.getFullYear();
+
+            let numMonth: number = objDate.getUTCMonth() + 1;
+            let monthArr: string[] = ["Null", "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            month = monthArr[numMonth];
+            date = objDate.getUTCDate();
+            updatedDate = month + " " + date + ", " + year;
+
+            actualDate = await viewKnowledgeArticlePo.formatDate();
+            expectedVersion1 = "Version " + "1" + " - " + actualDate;
+            expectedVersion2 = "Version " + "2" + " - " + actualDate;
+
+            let articleData = {
+                "knowledgeSet": "HR",
+                "title": knowledgeArticleName,
+                "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
+                "assignedCompany": "Petramco",
+                "keyword": "",
+                "categoryTier1": "Total Rewards",
+                "categoryTier2": "Benefits",
+                "categoryTier3": "Transportation",
+                "assigneeBusinessUnit": "Canada Support",
+                "assigneeSupportGroup": "CA Support 1",
+                "assignee": "qdu"
+            }
+
+            await apiHelper.apiLogin('qkatawazi');
+            knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'Draft')).toBeTruthy('FailureMsg Status Not Set');
+            expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData.id, 'PublishApproval', 'qdu', 'CA Support 1', 'Petramco')).toBeTruthy('FailureMsg Status Not Set');
+            return knowledgeArticleData.displayId;
+        });
+
         it('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
-            await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Assignee", "Al Allbrook", 'test');
-            await utilityGrid.addFilter("Status", "Published", 'test');
-            await utilityGrid.clickFilterField("Created Date");
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Jan");
-            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
-            await dateTimeSelectorPo.selectDateOnCalender(19);
-            await dateTimeSelectorPo.selectTimeToggle();
-            expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
-            await dateTimeSelectorPo.setHour('05');
-            await dateTimeSelectorPo.setMinute(0);
-            await dateTimeSelectorPo.clickMeridianValue("PM");
-
-            await dateTimeSelectorPo.selectTimeToggle();
-            await dateTimeSelectorPo.clickEndDateTab();
-            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Jan");
-            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
-            await dateTimeSelectorPo.selectDateOnCalender(20);
-            await dateTimeSelectorPo.selectTimeToggle();
-            expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
-            await dateTimeSelectorPo.setHour('07');
-            await dateTimeSelectorPo.setMinute(0);
-            await dateTimeSelectorPo.clickMeridianValue("PM");
-            await $('body').sendKeys(protractor.Key.ESCAPE);
-            await utilityGrid.clickRefreshIcon();
-            await utilityGrid.searchRecordWithoutFilter('KA-000000000016');
-            expect(await utilityGrid.isGridRecordPresent('KA-000000000016')).toBeTruthy('KA-000000000016');
+            await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleName);
+            await viewKnowledgeArticlePo.clickOnEditLink();
+            await editKnowledgePo.selectArticleEditOption('Major Edit');
+            await editKnowledgePo.clickArticleMajorEditSaveButton();
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('KA edit link is missing');
+            expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion2, 'version missing on view KA page');
+            await editKnowledgePo.setKnowledgeStatus('Publish Approval');
         });
 
         it('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Assigned Group", "Employee Relations", 'text');
+            await utilityGrid.addFilter("Assignee", "Qiang Du", 'test');
+            await utilityGrid.addFilter("Status", "Published", 'test');
+            await utilityGrid.clickFilterField("Created Date");
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon(month);
+            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(year);
+            await dateTimeSelectorPo.selectDateOnCalender(date);
+            await dateTimeSelectorPo.selectTimeToggle();
+            expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
+            await dateTimeSelectorPo.setHour('12');
+            await dateTimeSelectorPo.setMinute(1);
+            await dateTimeSelectorPo.clickMeridianValue("AM");
+
+            await dateTimeSelectorPo.selectTimeToggle();
+            await dateTimeSelectorPo.clickEndDateTab();
+            await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon(month);
+            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(year);
+            await dateTimeSelectorPo.selectDateOnCalender(date + 1);
+            await dateTimeSelectorPo.selectTimeToggle();
+            expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
+            await dateTimeSelectorPo.setHour('11');
+            await dateTimeSelectorPo.setMinute(59);
+            await dateTimeSelectorPo.clickMeridianValue("PM");
+            await $('body').sendKeys(protractor.Key.ESCAPE);
+            await utilityGrid.clickRefreshIcon();
+            await utilityGrid.searchRecordWithoutFilter(knowledgeArticleData.displayId);
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleData.displayId)).toBeTruthy(`${knowledgeArticleData.displayId} missing record`);
+        });
+        it('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
+            await navigationPage.gotoKnowledgeConsole();
+            await utilityGrid.clearFilter();
+            await utilityGrid.addFilter("Assigned Group", "CA Support 1", 'text');
             await utilityGrid.addFilter("Category Tier 1", "Total Rewards", 'text');
             await utilityGrid.addFilter("Category Tier 2", "Benefits", 'text');
             await utilityGrid.addFilter("Category Tier 3", "Transportation", 'text');
-            expect(await utilityGrid.isGridRecordPresent('KA-000000000005')).toBeTruthy('KA-000000000023');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleData.displayId)).toBeTruthy(knowledgeArticleData.displayId);
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Template Name", "How To", 'test');
-            expect(await utilityGrid.isGridRecordPresent('KA-000000000013')).toBeTruthy('KA-000000000013');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleData.displayId)).toBeTruthy(knowledgeArticleData.displayId);
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Knowledge Set", "HR", 'test');
-            expect(await utilityGrid.isGridRecordPresent('KA-000000000040')).toBeTruthy('KA-000000000045');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleData.displayId)).toBeTruthy(knowledgeArticleData.displayId);
 
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Version", "1-2", 'counter');
             await utilityGrid.addFilter("Status", "Published", 'test');
-            expect(await utilityGrid.isGridRecordPresent('KA-000000000016')).toBeTruthy('KA-000000000016');
+            expect(await utilityGrid.isGridRecordPresent(knowledgeArticleData.displayId)).toBeTruthy(knowledgeArticleData.displayId);
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await utilityGrid.clearFilter();
         });
     });
-
+    
     describe('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
         let caseData, caseDataDWp, caseIdForDWP, caseId, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let menuItemName: string;
+        let menuItemName = "Benefits";
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            let menuItemDataFile = require('../../data/ui/ticketing/menu.item.ui');
-            menuItemName = await menuItemDataFile['SAMPLE_MENU_ITEM'].menuItemName + randomStr;
-            menuItemDataFile['SAMPLE_MENU_ITEM'].menuItemName = menuItemName;
-            await apiHelper.createNewMenuItem(menuItemDataFile['SAMPLE_MENU_ITEM']);
             caseData = {
-                "Requester": "qtao",
+                "Requester": "kjadhav",
                 "Summary": "Test123",
                 "Description": "test description",
                 "Assigned Company": "Petramco",
@@ -269,15 +326,15 @@ describe('Date and Time Preset Filter', () => {
                 "Origin": "Agent",
                 "Label": menuItemName,
                 "Target Date": "2020-12-16T18:25:00.000Z",
+                "Site": "Pune"
             }
 
             caseDataDWp =
-                {
-                    "requester": "qtao",
-                    "summary": "Testing case creation with minimal input data, Human Resource"
-                }
+            {
+                "requester": "qtao",
+                "summary": "Testing case creation with minimal input data, Human Resource"
+            }
 
-            await apiHelper.apiLogin("qkatawazi");
             caseId = await apiHelper.createCase(caseData);
             caseIdForDWP = await apiHelper.createCaseFromDwp(caseDataDWp);
         });
@@ -302,6 +359,7 @@ describe('Date and Time Preset Filter', () => {
         });
         it('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await utilityGrid.clearFilter();
+            expect(await utilityGrid.isGridRecordPresent(caseId.displayId)).toBeTruthy();
             await utilityGrid.addFilter("Category Tier 1", "Employee Relations", "text");
             await utilityGrid.addFilter("Category Tier 2", "Compensation", "text");
             await utilityGrid.addFilter("Category Tier 3", "Bonus", "text");
@@ -314,13 +372,13 @@ describe('Date and Time Preset Filter', () => {
 
         });
         it('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
-            await utilityGrid.addFilter("Requester", "Qianru Tao", "text");
+            await utilityGrid.addFilter("Requester", "Kedar Jadhav", "text");
             await utilityGrid.addFilter("Source", "Agent", "text");
             await utilityGrid.addFilter("Label", menuItemName, "text");
             await utilityGrid.addFilter("SLM Status", "Service Targets Not Attached", "checkbox");
             await utilityGrid.addFilter("Assignee Login Name", "qkatawazi", "text");
-            await utilityGrid.addFilter("Region", "North America", "text");
-            await utilityGrid.addFilter("Case Site", "Austin", "text");
+            await utilityGrid.addFilter("Region", "Asia-Pac", "text");
+            await utilityGrid.addFilter("Case Site", "Pune", "text");
             await utilityGrid.addFilter("ID", caseId.id, "test");
             expect(await utilityGrid.isGridRecordPresent(caseId.displayId)).toBeTruthy();
         });
@@ -328,7 +386,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
         });
     });
-
+    
     describe('[12074]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium;
@@ -367,6 +425,7 @@ describe('Date and Time Preset Filter', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
+            await dateTimeSelectorPo.clickStartDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Oct");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
             await dateTimeSelectorPo.selectDateOnCalender(13);
@@ -379,7 +438,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Oct");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2020);
-            await dateTimeSelectorPo.selectDateOnCalender(13);
+            await dateTimeSelectorPo.selectDateOnCalender(14);
             await dateTimeSelectorPo.selectTimeToggle();
             await dateTimeSelectorPo.setHour('11');
             await dateTimeSelectorPo.setMinute(59);

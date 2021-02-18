@@ -6,10 +6,10 @@ class DateTimeSelector {
         previousMonthSelector: 'button[data-testid*="prevMonth"]',
         invalidData: '.has-danger .form-control-feedback',
         nextMonthSelector: 'button[data-testid*="nextMonth"]',
-        monthLabel: '[aria-label="Select month"].a3t-calendar--controls-info div',
+        monthLabel: '.card-block .a3t-calendar--controls-info div',
         previousYearSelector: 'button[data-testid*="prevYear"]',
         nextYearSelector: 'button[data-testid*="nextYear"]',
-        yearLabel: '[aria-label="Select year"].a3t-calendar--controls-info div',
+        yearLabel: '.card-block .a3t-calendar--controls-info div',
         weekNames: '.a3t-calendar--table-week-name',
         selectedStartDate: '[data-testid*="start"] div',
         selectedEndDate: '[data-testid*="end"] div',
@@ -28,7 +28,7 @@ class DateTimeSelector {
     //Month name should be full month name starting with Caps
     async selectPreviousMonthUsingAngularIcon(monthName: string): Promise<void> {
         for (let i: number = 0; i < 12; i++) {
-            if (await $(this.selectors.monthLabel).getText() == monthName) 
+            if (await $$(this.selectors.monthLabel).get(0).getText() == monthName) 
             break;
             else await $(this.selectors.previousMonthSelector).click();
             await browser.sleep(500);
@@ -38,7 +38,7 @@ class DateTimeSelector {
     //Month name should be full month name starting with Caps
     async selectNextMonthUsingAngularIcon(monthName: string): Promise<void> {
         for (let i: number = 0; i < 12; i++) {
-            if (await $(this.selectors.monthLabel).getText() == monthName) break;
+            if (await $$(this.selectors.monthLabel).get(0).getText() == monthName) break;
             else await $(this.selectors.nextMonthSelector).click();
         }
     }
@@ -49,7 +49,7 @@ class DateTimeSelector {
 
     async selectPreviousYearUsingAngularIcon(yearName: number): Promise<void> {
         for (let i: number = 0; i < 15; i++) {
-            if (await $(this.selectors.yearLabel).getText() == yearName.toString()) break;
+            if (await $$(this.selectors.yearLabel).get(1).getText() == yearName.toString()) break;
             else await $(this.selectors.previousYearSelector).click();
             await browser.sleep(1000);
         }
@@ -57,7 +57,7 @@ class DateTimeSelector {
 
     async selectNextYearUsingAngularIcon(yearName: number): Promise<void> {
         for (let i: number = 0; i < 12; i++) {
-            if (await $(this.selectors.yearLabel).getText() == yearName.toString()) break;
+            if (await $$(this.selectors.yearLabel).get(1).getText() == yearName.toString()) break;
             else await $(this.selectors.nextYearSelector).click();
             await browser.sleep(1000);
         }
@@ -73,9 +73,13 @@ class DateTimeSelector {
             (value, index) => (value === expectedWeekDays[index])
         );
     }
-
+    
     async clickEndDateTab(): Promise<void> {
         await $(this.selectors.selectedEndDate).click();
+    }
+
+    async clickStartDateTab(): Promise<void> {
+        await $(this.selectors.selectedStartDate).click();
     }
 
     async getSelectedStartDateTimestamp(): Promise<string> {
@@ -87,10 +91,10 @@ class DateTimeSelector {
     }
 
     async getMonthFromCaleder(): Promise<string> {
-        return await $(this.selectors.monthLabel).getText();
+        return await $$(this.selectors.monthLabel).get(0).getText();
     }
     async getYearFromCaleder(): Promise<string> {
-        return await $(this.selectors.yearLabel).getText();
+        return await $$(this.selectors.yearLabel).get(1).getText();
     }
 
     async selectTimeToggle(): Promise<void> {

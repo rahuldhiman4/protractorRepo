@@ -514,6 +514,7 @@ describe('Document Library Consume UI', () => {
             expect(await utilityCommon.isFileDownloaded('bwfXlsx.xlsx')).toBeTruthy('FailuerMsg: bwfXlsx.xlsx File is not downloaded.');
         });
         afterAll(async () => {
+            await composeMailPo.clickOnDiscardButton();
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -610,8 +611,6 @@ describe('Document Library Consume UI', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 
