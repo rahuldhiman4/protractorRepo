@@ -817,7 +817,7 @@ describe('Global Search Template', () => {
     });
 
     //kgaikwad
-    xdescribe('[4293]: Global search with only Document Category', async () => {
+    describe('[4293]: Global search with only Document Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let attachmentFilePath = 'e2e/data/ui/search/globalsearch3.jpg';
         let attachmentFilePath2 = 'e2e/data/ui/search/globalsearch5.json';

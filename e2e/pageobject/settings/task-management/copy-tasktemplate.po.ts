@@ -94,7 +94,7 @@ class Copytaskpage {
     }
 
     async isTextRightAlignInCkEditorTextArea(rightAlignText: string): Promise<boolean> {
-        let rightAlignLocator: ElementFinder = await $$(this.selectors.rightAlignLocator).last();
+        let rightAlignLocator: ElementFinder = await $$(this.selectors.rightAlignLocator).first();
         return await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText, rightAlignLocator);
     }
 

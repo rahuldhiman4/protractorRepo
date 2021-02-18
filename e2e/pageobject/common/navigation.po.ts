@@ -277,8 +277,8 @@ class NavigationPage {
 
     async signOut(): Promise<void> {
         let title = await browser.getTitle();
-        await utilityCommon.switchToDefaultWindowClosingOtherTabs(); // switchToApplication opens in new tab
-        if (title == 'Templates - Settings - Business Workflows') {
+        await utilityCommon.switchToDefaultWindowClosingOtherTabs(); // workaround: switchToApplication opens in new tab
+        if (title == 'Templates - Settings - Business Workflows') { // workaround: close template screens
 
             await $(editCasetemplatePo.selectors.cancelButton).isPresent().then(async (cancelBtn) => {
                 if (cancelBtn) {
