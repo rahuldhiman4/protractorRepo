@@ -16,7 +16,7 @@ class EditDataSourceConfigurationPage {
         fieldValues: `//*[contains(@class,'form-control-label')]//span[1]`,
         companyfieldValue: `//*[contains(@class,'form-control-label')]//span[1]/ancestor::adapt-rx-control-label/following-sibling::div//button//*[contains(@class,'rx-select__search-button-title')]`,
         companyfield: `//*[contains(@class,'form-control-label')]//span[1]`,
-        useEndTimeCheckbox: `//span[contains(@class,'form-control-label')]//span[1]//ancestor::div[contains(@class,"row")]//input[@type="checkbox"]`,
+        useEndTimeCheckbox: '.checkbox__input',
     }
 
     async getDataSourceConfigurationHeading(): Promise<string> {
@@ -34,6 +34,10 @@ class EditDataSourceConfigurationPage {
 
     async isBuildExpressionBtnDisabled(): Promise<boolean> {
         return await $(this.selectors.buildExpressionBtn).getAttribute("disabled") == "true";
+    }
+
+    async clickBuildExpressionBtn(): Promise<void> {
+        await $(this.selectors.buildExpressionBtn).click();
     }
 
     async isAssociationNameDisabled(): Promise<boolean> {
@@ -101,6 +105,10 @@ class EditDataSourceConfigurationPage {
 
     async isUseEndTimeCheckboxAlreadySelected(): Promise<boolean> {
         return await $(this.selectors.useEndTimeCheckbox).getAttribute("checked") == "true" ? true : false;
+    }
+
+    async clickEndTimeCheckbox(): Promise<void> {
+        await $(this.selectors.useEndTimeCheckbox).click();
     }
 
 }

@@ -572,7 +572,7 @@ describe('Menu Item', () => {
             await addReadAccess.selectCompany('Petramco');
             await addReadAccess.selectSupportCompany('Petramco');
             expect(await addReadAccess.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
-            await addReadAccess.selectBusinessUnit('Canada Support');
+            await addReadAccess.selectSupportOrg('Canada Support');
             expect(await addReadAccess.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await addReadAccess.selectSupportGroup('CA Support 1');
             await addReadAccess.selectLabel(labelActive1)

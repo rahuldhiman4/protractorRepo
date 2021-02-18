@@ -44,10 +44,7 @@ describe('Date and Time Preset Filter', () => {
             let dateFormateValue: string = monthsValue[systemDate.getMonth()];
             let dateFormateNew: string = dateFormateValue.substring(0, 3);
 
-            let time1 = systemDate.toLocaleTimeString();
-            let diffTime1 = time1.split(" ");
-            let newTime1 = diffTime1[0].split(":");
-            let exactTime1 = newTime1[0] + ":" + newTime1[1] + " " + diffTime1[1];
+            let exactTime1 = '12:00 AM';
             let dateFormate: string = "Created Date: " + dateFormateNew + " " + systemDate.getDate() + ", " + systemDate.getFullYear() + " " + exactTime1;
             await $('body').sendKeys(protractor.Key.ESCAPE);
             let date: string[] = [dateFormate];
@@ -63,11 +60,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2017);
             await dateTimeSelectorPo.selectDateOnCalender(23);
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let endDate = new Date();
-            let endDatetime = endDate.toLocaleTimeString();
-            let endDatetimediffTime = endDatetime.split(" ");
-            let endDateTime1 = endDatetimediffTime[0].split(":");
-            let endDateexactTime = endDateTime1[0] + ":" + endDateTime1[1] + " " + endDatetimediffTime[1];
+            let endDateexactTime = '12:00 AM';
             let completeEndDate = 'Created Date: Aug 23, 2017 ' + endDateexactTime;
             let date1: string[] = [completeEndDate];
             expect(await utilityGrid.isAppliedFilterMatches(date1)).toBeTruthy(" date1");
@@ -80,22 +73,14 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Sep");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2015);
             await dateTimeSelectorPo.selectDateOnCalender(26);
-            let endDate = new Date();
-            let endDatetime = endDate.toLocaleTimeString();
-            let endDatetimediffTime = endDatetime.split(" ");
-            let endDateTime1 = endDatetimediffTime[0].split(":");
-            let endDateexactTime = endDateTime1[0] + ":" + endDateTime1[1] + " " + endDatetimediffTime[1];
+            let endDateexactTime = '12:00 AM';
             let completeEndDate = 'Modified Date: Sep 26, 2015 ' + endDateexactTime;
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectNextMonthUsingAngularIcon("Sep");
-            await dateTimeSelectorPo.selectNextYearUsingAngularIcon(2017);
+            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2017);
             await dateTimeSelectorPo.selectDateOnCalender(11);
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let endDate1 = new Date();
-            let endDatetime1 = endDate1.toLocaleTimeString();
-            let endDatetimediffTime1 = endDatetime1.split(" ");
-            let endDateTime11 = endDatetimediffTime1[0].split(":");
-            let endDateexactTime1 = endDateTime1[0] + ":" + endDateTime11[1] + " " + endDatetimediffTime1[1];
+            let endDateexactTime1 = '12:00 AM'
             let completeEndDate1 = ' - Sep 11, 2017 ' + endDateexactTime1;
             let date2: string[] = [completeEndDate + completeEndDate1];
             expect(await utilityGrid.isAppliedFilterMatches(date2)).toBeTruthy(" Expected Date:" + date2);
@@ -119,14 +104,14 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Feb");
             await dateTimeSelectorPo.selectNextYearUsingAngularIcon(2022);
-            await dateTimeSelectorPo.selectDateOnCalender(21);
+            await dateTimeSelectorPo.selectDateOnCalender(22);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
             await dateTimeSelectorPo.setHour('03');
             await dateTimeSelectorPo.setMinute(0);
             await dateTimeSelectorPo.clickMeridianValue("AM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
-            let date3: string[] = ["Target Date: Feb 21, 2022 2:00 AM - Feb 21, 2022 3:00 AM"];
+            let date3: string[] = ["Target Date: Feb 21, 2022 2:00 AM - Feb 22, 2022 3:00 AM"];
             expect(await utilityGrid.isAppliedFilterMatches(date3)).toBeTruthy();
         });
         it('[12071,12068]: Validation for modified date, created date and target date', async () => {
@@ -145,7 +130,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectTimeToggle();
             await await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Feb");
-            await dateTimeSelectorPo.selectNextYearUsingAngularIcon(2016);
+            await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2016);
             await dateTimeSelectorPo.selectDateOnCalender(17);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
@@ -173,13 +158,14 @@ describe('Date and Time Preset Filter', () => {
             await await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon("Sep");
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(2015);
-            await dateTimeSelectorPo.selectDateOnCalender(17);
+            await dateTimeSelectorPo.selectDateOnCalender(18);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
             await dateTimeSelectorPo.setHour('07');
             await dateTimeSelectorPo.setMinute(11);
             await dateTimeSelectorPo.clickMeridianValue("AM");
-            expect(await utilityGrid.isNoFilterAppliedError()).toBeTruthy();
+            expect(await utilityGrid.isNoFilterAppliedError()).toBeFalsy();
+            await utilityGrid.clickRefreshIcon();
         });
         afterAll(async () => {
             await utilityGrid.clearFilter();
@@ -419,7 +405,6 @@ describe('Date and Time Preset Filter', () => {
             tempIdMedium = await apiHelper.createAdhocTask(newCase1.id, adhocTaskData);
             await apiHelper.updateCaseStatus(newCase1.id, 'InProgress');
             await apiHelper.updateTaskStatus(tempIdMedium.id, 'Pending');
-
         });
         it('[12074]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
             await navigationPage.gotoTaskConsole();

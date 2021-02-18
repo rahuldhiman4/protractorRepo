@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 class AddReadAccessConfigurationPage {
    EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -12,21 +12,21 @@ class AddReadAccessConfigurationPage {
       saveButton: '[rx-view-component-id="61ac81f7-e04f-496b-b9ed-65b3163cae6d"] button',
       businessUnitGuid: 'd8f98b5b-06cc-46ae-acd9-87161bad50a9',
       departmentGuid: 'f6e934cf-8db4-40b8-aa87-571eb12ed025',
-      categoryTier1Guid: '370bf82e-1a4f-4ad6-9bfb-dc005dee2bf4',
+      categoryTier1Guid: '03a901bb-f4f4-426b-a50f-473623759ca6',
       priorityGuid: 'dc84e827-e82d-4663-858b-a131d58be352',
       accessMappingNameGuid: '4a195afd-0aa7-415a-b46d-c6cf42352e88',
       cancelButton: '[rx-view-component-id="e0a1c18c-b7bf-482c-a129-3b2fe4c1ed91"] button',
-      flowset: '[rx-view-component-id="dccf17b6-a35d-46cd-a655-b56d942ff49f"] .d-textfield__item',
-      businessUnit: '[rx-view-component-id="d8f98b5b-06cc-46ae-acd9-87161bad50a9"] .d-textfield__item',
-      department: '[rx-view-component-id="f6e934cf-8db4-40b8-aa87-571eb12ed025"] .d-textfield__item',
-      categoryTier1: '[rx-view-component-id="370bf82e-1a4f-4ad6-9bfb-dc005dee2bf4"] .d-textfield__item',
-      priority: '[rx-view-component-id="dc84e827-e82d-4663-858b-a131d58be352"] .d-textfield__item',
+      flowset: '[rx-view-component-id="dccf17b6-a35d-46cd-a655-b56d942ff49f"] .dropdown',
+      businessUnit: '[rx-view-component-id="d8f98b5b-06cc-46ae-acd9-87161bad50a9"] .dropdown',
+      department: '[rx-view-component-id="f6e934cf-8db4-40b8-aa87-571eb12ed025"] .dropdown',
+      categoryTier1: '[rx-view-component-id="03a901bb-f4f4-426b-a50f-473623759ca6"] .dropdown',
+      priority: '[rx-view-component-id="dc84e827-e82d-4663-858b-a131d58be352"] .dropdown',
       useAsDefault: '77424ee9-4d45-40b3-992f-82fc3a8162c3',
       categoryTier2Guid: '0bdb722f-3fcd-48d4-b10c-29712ed2cd86',
       categoryTier3Guid: '78f414cd-19df-4457-a2dc-cf226371eac3',
       categoryTier4Guid: '899d8ac7-85a0-4337-8435-da69fd1b81ac',
       labelGuid: '628735ec-4f31-4b7e-acac-07c920a7bec3',
-      lobValue: '[rx-view-component-id="9d7f8351-9da7-471f-8f9c-ed37919fdbc9"] .pull-left'
+      lobValue: '[rx-view-component-id="9d102ec5-590e-4bd7-813c-101d0282ac2b"] .rx-select__search-button-title'
    }
 
    async setReadAccessConfigurationName(accessmapping: string): Promise<void> {
@@ -58,7 +58,7 @@ class AddReadAccessConfigurationPage {
       await utilityCommon.selectDropDown(this.selectors.supportGroupGuid, supportGroup);
    }
 
-   async selectBusinessUnit(bu: string): Promise<void> {
+   async selectSupportOrg(bu: string): Promise<void> {
       await utilityCommon.selectDropDown(this.selectors.businessUnitGuid, bu);
    }
 

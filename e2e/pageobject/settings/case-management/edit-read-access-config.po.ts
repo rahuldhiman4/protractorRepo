@@ -19,7 +19,7 @@ class ReadAccessConfigEditPage {
         categoryTier4Guid: '236c2bd3-b189-4531-8791-f06319a3a312',
         labelValue: '[rx-view-component-id="41784500-6e79-465a-9cb9-6fd4038c53e8"] .dropdown-toggle',
         labelGuid: '41784500-6e79-465a-9cb9-6fd4038c53e8',
-        lobValue: '[rx-view-component-id="fa35a8a4-bcb2-4617-ba34-11361be50488"] .pull-left'
+        lobValue: '[rx-view-component-id="0969d589-7252-44ba-9080-8513dad09ec7"] .rx-select__search-button-title'
     }
 
     async isAccessMappingNameDisabled(): Promise<boolean> {
@@ -81,7 +81,7 @@ class ReadAccessConfigEditPage {
         await utilityCommon.selectDropDown(this.selectors.supportGroupGuid, supportGroup);
     }
 
-    async selectBusinessUnit(businessUnit: string): Promise<void> {
+    async selectSupportOrg(businessUnit: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.businessUnitGuid, businessUnit);
     }
 

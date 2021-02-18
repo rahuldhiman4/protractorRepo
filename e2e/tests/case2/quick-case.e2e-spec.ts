@@ -30,45 +30,45 @@ describe("Quick Case", () => {
         await browser.get(BWF_BASE_URL);
         await loginPo.login("qkatawazi");
 
-        //Creating new users
-        let userData1 = undefined, userData2 = undefined, userData3 = undefined, userData4 = undefined;
-        userData1 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData1",
-            "company": "Petramco",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        userData2 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData2",
-            "company": "Petramco",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        userData3 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData3",
-            "company": "Petramco",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        userData4 = {
-            "firstName": "Person1",
-            "lastName": "Person1",
-            "userId": "userData4",
-            "company": "Petramco",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.createNewUser(userData3);
-        await apiHelper.associatePersonToCompany(userData3.userId, "Petramco");
-        await apiHelper.createNewUser(userData4);
-        await apiHelper.associatePersonToCompany(userData4.userId, "Petramco");
+        // //Creating new users
+        // let userData1 = undefined, userData2 = undefined, userData3 = undefined, userData4 = undefined;
+        // userData1 = {
+        //     "firstName": "Person1",
+        //     "lastName": "Person1",
+        //     "userId": "userData1",
+        //     "company": "Petramco",
+        //     "userPermission": ["Case Business Analyst", "Human Resource"]
+        // }
+        // userData2 = {
+        //     "firstName": "Person1",
+        //     "lastName": "Person1",
+        //     "userId": "userData2",
+        //     "company": "Petramco",
+        //     "userPermission": ["Case Business Analyst", "Human Resource"]
+        // }
+        // userData3 = {
+        //     "firstName": "Person1",
+        //     "lastName": "Person1",
+        //     "userId": "userData3",
+        //     "company": "Petramco",
+        //     "userPermission": ["Case Business Analyst", "Human Resource"]
+        // }
+        // userData4 = {
+        //     "firstName": "Person1",
+        //     "lastName": "Person1",
+        //     "userId": "userData4",
+        //     "company": "Petramco",
+        //     "userPermission": ["Case Business Analyst", "Human Resource"]
+        // }
+        // await apiHelper.apiLogin('tadmin');
+        // await apiHelper.createNewUser(userData1);
+        // await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        // await apiHelper.createNewUser(userData2);
+        // await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
+        // await apiHelper.createNewUser(userData3);
+        // await apiHelper.associatePersonToCompany(userData3.userId, "Petramco");
+        // await apiHelper.createNewUser(userData4);
+        // await apiHelper.associatePersonToCompany(userData4.userId, "Petramco");
     });
 
     afterAll(async () => {
@@ -90,7 +90,7 @@ describe("Quick Case", () => {
         let categoryvalues: string[] = [caseData.Summary, caseData.description];
         for (let i = 0; i < categoryvalues.length; i++) {
             let result: boolean = undefined;
-            await quickCasePo.selectRequesterName('Adam Pavlik');
+            await quickCasePo.selectRequesterName('Harry Potter');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
             qcSummary = false ? result = false : result = true;
@@ -128,22 +128,22 @@ describe("Quick Case", () => {
         await navigationPo.gotoQuickCase();
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('Allen');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Border', '1');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('Allbrook');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '2');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('all');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '3');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('aallbrook');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '4');
         await quickCasePo.clickStartOverButton();
-        await quickCasePo.selectRequesterName('Al Allbrook');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        await quickCasePo.selectRequesterName('Allen Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '5');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('allen.allbrook@petramco.com');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Al Allbrook');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '6');
     });
 
     describe('[6385]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
@@ -172,8 +172,9 @@ describe("Quick Case", () => {
             expect(await quickCasePo.getDrpDownValueByIndex(1)).toBe('Another person contacting on behalf of the requester');
             await quickCasePo.setCaseSummary('address');
             await quickCasePo.saveCase();
-            expect(await casePreviewPo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy();
-            expect(await casePreviewPo.isContactNameDisplayed('Al Allbrook')).toBeTruthy();
+            expect(await casePreviewPo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy('Requester Name is not displayed');
+            expect(await casePreviewPo.isContactNameDisplayed('Allen Allbrook')).toBeTruthy('Contact Name is name displayed');
+            //await browser.sleep(10000000);
             await quickCasePo.gotoCaseButton();
         });
         afterAll(async () => {
@@ -184,11 +185,11 @@ describe("Quick Case", () => {
 
     it('[6379]: [Quick Case] Case creation with requester having same name as other company users', async () => {
         await navigationPo.gotoQuickCase();
-        await quickCasePo.selectRequesterName('Person1 Person1');
+        await quickCasePo.selectRequesterName('Mary');
         await quickCasePo.setCaseSummary('caseSummary');
         await quickCasePo.createCaseButton();
         await quickCasePo.gotoCaseButton();
-        expect(await viewCasePo.getRequesterName()).toBe('Person1 Person1');
+        expect(await viewCasePo.getRequesterName()).toBe('Mary Morstan');
     });
 
     describe('[6391]: [Quick Case] Case creation with all case statuses in template', async () => {
@@ -343,6 +344,7 @@ describe("Quick Case", () => {
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.gotoQuickCase();
             await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
@@ -378,11 +380,11 @@ describe("Quick Case", () => {
                 "templateStatus": "Draft",
                 "description": randomStr + 'Description',
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
-                "ownerBU": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseTemplatePsilon = {
                 "templateName": randomStr + 'PsilonCaseTemplate DRDMV795',
@@ -417,6 +419,7 @@ describe("Quick Case", () => {
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             expect(await quickCasePo.selectCaseTemplate(caseTemplatePsilon.templateName)).toBeFalsy('Different organization case template present');
@@ -577,11 +580,11 @@ describe("Quick Case", () => {
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
-            await apiHelper.apiLogin('fritz');
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
             templateDataDraft = {
                 "templateName": randomStr + "CaseTemplateDraft DRDMV773",
@@ -589,9 +592,9 @@ describe("Quick Case", () => {
                 "templateStatus": "Draft",
                 "company": "Petramco",
                 "resolveCaseonLastTaskCompletion": "1",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             await apiHelper.apiLogin('fritz');
             await apiHelper.createCaseTemplate(templateDataDraft);
@@ -611,7 +614,7 @@ describe("Quick Case", () => {
         it('[6401]: Case template selection via !', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
-            expect(await quickCasePo.selectCaseTemplate(templateData.templateName)).toBeTruthy('template is present1');
+            expect(await quickCasePo.selectCaseTemplate(templateData.templateName)).toBeTruthy('template is not present1');
         });
         it('[6401]: Case template selection via !', async () => {
             await quickCasePo.selectRequesterName('adam');
@@ -619,12 +622,12 @@ describe("Quick Case", () => {
             expect(await quickCasePo.selectCaseTemplate(templateDataDraft.templateName)).toBeFalsy('template is present2');
         });
         it('[6401]: Case template selection via !', async () => {
-            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.selectRequesterName('qtao');
             expect(await quickCasePo.selectCaseTemplate(templateDataPsilon.templateName)).toBeFalsy('template is present3');
         });
         it('[6401]: [Quick Case] Case template selection via !', async () => {
             await quickCasePo.clickStartOverButton();
-            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.selectCaseTemplate(templateData.templateName);
             await quickCasePo.createCaseButton();
             await quickCasePo.gotoCaseButton();
@@ -647,8 +650,8 @@ describe("Quick Case", () => {
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             caseTemplateData = {
                 "templateName": commonName,
@@ -656,9 +659,9 @@ describe("Quick Case", () => {
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
                 "company": "Petramco",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "casePriority": "Low",
             };
             let caseData = {
@@ -766,7 +769,7 @@ describe("Quick Case", () => {
             expect(await quickCasePo.getDescriptionDetails()).toContain("Begin by entering person's name, email, login ID or employee ID after the @ symbol. Then enter a description of the case.");
             expect(await quickCasePo.getResourcesText()).toContain('Quick Case finds resources for you while you take notes');
             expect(await quickCasePo.getSelectedSourceValue()).toContain('Agent');
-            await quickCasePo.selectRequesterName('fritz');
+            await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.setCaseSummary('new case creation');
             await quickCasePo.selectSourceValue(activeSourceUI);
             await quickCasePo.createCaseButton();
