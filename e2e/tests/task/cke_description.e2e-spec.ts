@@ -1,7 +1,3 @@
-import copyTasktemplatePo from "../../pageobject/settings/task-management/copy-tasktemplate.po";
-import editTasktemplatePo from "../../pageobject/settings/task-management/edit-tasktemplate.po";
-import previewTaskTemplatePo from "../../pageobject/settings/task-management/preview-task-template.po";
-import viewTasktemplatePo from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import { browser } from "protractor";
 import { ALL_FIELD } from '../../data/ui/case/casetemplate.data.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
@@ -23,7 +19,11 @@ import editCasetemplatePo from '../../pageobject/settings/case-management/edit-c
 import previewCaseTemplateCasesPo from '../../pageobject/settings/case-management/preview-case-template.po';
 import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
 import consoleTasktemplatePo from '../../pageobject/settings/task-management/console-tasktemplate.po';
+import copyTasktemplatePo from "../../pageobject/settings/task-management/copy-tasktemplate.po";
 import createTasktemplatePo from '../../pageobject/settings/task-management/create-tasktemplate.po';
+import editTasktemplatePo from "../../pageobject/settings/task-management/edit-tasktemplate.po";
+import previewTaskTemplatePo from "../../pageobject/settings/task-management/preview-task-template.po";
+import viewTasktemplatePo from "../../pageobject/settings/task-management/view-tasktemplate.po";
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import editTaskPo from '../../pageobject/task/edit-task.po';
 import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
@@ -82,41 +82,47 @@ describe('CKE Description', () => {
             await createCaseTemplate.setCaseSummary(caseTemplateAllFields.templateSummary);
             // bold
             await ckeditorOpsPo.updateDescription("this is text ");
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnBoldIcon();
             await ckeditorOpsPo.updateDescription(boldText);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await ckeditorOpsPo.updateDescription(italicText);
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.updateDescription(underLineText);
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
-            //Center Align
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
-            await ckeditorOpsPo.updateDescription(centerAlignText);
-            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnCenterAlignIcon();
-        });
-        it('[3528,3527,3523,3517,3520,3518] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
-            //left Align
             await ckeditorOpsPo.clickOnUnderLineIcon();
-            await ckeditorOpsPo.clickOnLeftAlignIcon();
-            await ckeditorOpsPo.updateDescription(lefAlignText);
-            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.clickOnLeftAlignIcon();
+
             //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.updateDescription(rightAlignText);
             expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
+        });
+        it('[3528,3527,3523,3517,3520,3518] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
+            //Center Align
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+            await ckeditorOpsPo.updateDescription(centerAlignText);
+            expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnCenterAlignIcon();
+
+            //left Align
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+            await ckeditorOpsPo.updateDescription(lefAlignText);
+            expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnLeftAlignIcon();
+
             //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
@@ -261,7 +267,6 @@ describe('CKE Description', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await browser.waitForAngularEnabled(true);
             await casePreviewPo.clickGoToCaseButton();
-            await browser.sleep(5000);
             await viewCasePo.clickDescriptionShowMore();
             expect(await ckeditorValidationPo.isLinkDisplayedInCKE('Google')).toBeTruthy();
             expect(await ckeditorValidationPo.isBoldTextDisplayed(boldText)).toBeTruthy();
@@ -307,9 +312,9 @@ describe('CKE Description', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await previewCaseTemplateCasesPo.clickOnBackButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await selectCasetemplateBladePo.clickOnCancelButton();
         });
         it('[3528,3527,3523,3517,3520,3518] Verify case description with login Case Manger', async () => {
-            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -351,20 +356,24 @@ describe('CKE Description', () => {
             await createTasktemplatePo.selectCompanyByName('Petramco');
             // bold
             await createTasktemplatePo.updateTaskDescription("this is text");
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnBoldIcon();
             await createTasktemplatePo.updateTaskDescription(boldText);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnBoldIcon();
             // //italic
             await ckeditorOpsPo.clickOnItalicIcon();
             await createTasktemplatePo.updateTaskDescription(italicText);
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnItalicIcon();
             // //underline
             await ckeditorOpsPo.clickOnUnderLineIcon();
             await createTasktemplatePo.updateTaskDescription(underLineText);
             expect(await ckeditorValidationPo.isUnderlineTextDisplayedInCkEditorTextArea(underLineText)).toBeTruthy('Text is not Underline In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
+            await ckeditorOpsPo.clickOnUnderLineIcon();
             // //Center Align
             await ckeditorOpsPo.clickOnCenterAlignIcon();
             await createTasktemplatePo.updateTaskDescription(centerAlignText);
@@ -374,29 +383,28 @@ describe('CKE Description', () => {
         });
         it('[3526,3525,3524,3516] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
             //left Align
-            await ckeditorOpsPo.clickOnUnderLineIcon();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
             await createTasktemplatePo.updateTaskDescription(lefAlignText);
             expect(await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnLeftAlignIcon();
-            // //Right Align
+            //Right Align
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await createTasktemplatePo.updateTaskDescription(rightAlignText);
             expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.clickOnRightAlignIcon();
-            // //set color
+            //set color
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.selectColor('Strong Red');
             await createTasktemplatePo.updateTaskDescription(redColorText);
             expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
-            // //checking number list
+            //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
             await ckeditorOpsPo.setNumberList(['PlusOne']);
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
-            // // checking bullot points
+            //checking bullot points
             await ckeditorOpsPo.setBulletList(['BulletOne']);
             expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
@@ -492,8 +500,6 @@ describe('CKE Description', () => {
             await linkPropertiesPo.clickOnOkBtn();
             expect(await ckeditorValidationPo.isLinkDisplayedInCkEditorTextArea('youtube')).toBeTruthy('Link Text not ipresent');
             await copyTasktemplatePo.clickSaveCopytemplate();
-            await viewTasktemplatePo.clickBackArrowBtn();
-            await utilityGrid.searchAndOpenHyperlink(randomString);
             await viewTasktemplatePo.clickShowMoreDescriptionLink();
             expect(await viewTasktemplatePo.isLinkDisplayedInCKE('http://www.youtube.com')).toBeTruthy('Link Text not present');
         });
@@ -580,7 +586,7 @@ describe('CKE Description', () => {
         });
     });
 
-   describe('[3522]:Verify case description field with CK editor functionality on Case', async () => {
+    describe('[3522]:Verify case description field with CK editor functionality on Case', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[3522] Create case bold , italic and underline with CKE', async () => {
             await navigationPage.gotoCreateCase();
@@ -854,4 +860,4 @@ describe('CKE Description', () => {
             await loginPage.login('qkatawazi');
         });
     });
-})
+});

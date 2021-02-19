@@ -302,7 +302,7 @@ class ViewTaskTemplate {
     }
 
     async isLinkDisplayedInCKE(value: string): Promise<boolean> {
-        return await $(`[rx-view-component-id="${this.selectors.taskDescriptionGuid}"] a[href="${value}"]`).isDisplayed();
+        return await $(`[rx-view-component-id="${this.selectors.taskDescriptionGuid}"] [href="${value}"]`).isDisplayed();
     }
 
     async getTableCellAlignText(value: string): Promise<string> {

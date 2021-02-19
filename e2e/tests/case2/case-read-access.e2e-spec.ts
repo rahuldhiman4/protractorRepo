@@ -25,8 +25,7 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import previewCaseTemplatePo from 'e2e/pageobject/settings/case-management/preview-case-template.po';
-import { ICaseTemplate } from 'e2e/data/interface/template.interface';
+import { ICaseTemplate } from '../../data/interface/template.interface';
 let flowsetGlobalFieldsData = undefined;
 
 describe("Case Read Access", () => {

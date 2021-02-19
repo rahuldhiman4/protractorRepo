@@ -2133,7 +2133,7 @@ class ApiHelper {
         adhocTaskPayload.fieldInstances[450000381].value = taskData.businessUnit;
         adhocTaskPayload.fieldInstances[1000000217].value = taskData.supportGroup;
         taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
-        adhocTaskPayload.fieldInstances[450000411].value = taskData.lineOfBusiness ? await constants.LOB[taskData.lineOfBusiness] : adhocTaskPayload.fieldInstances[450000411].value;
+        adhocTaskPayload.fieldInstances[450000411].value = taskData.lineOfBusiness ? taskData.lineOfBusiness : adhocTaskPayload.fieldInstances[450000411].value;
         if (taskData.description) {
             let taskDescription = {
                 "id": "1000000000",
