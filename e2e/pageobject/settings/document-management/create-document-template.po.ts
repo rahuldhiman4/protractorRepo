@@ -7,7 +7,7 @@ class CreateDocumentTemplate {
         addTemplate: '.d-icon-left-plus',
         templateName: '[rx-view-component-id="98493095-1421-4405-8927-dd684b0d2006"] input',
         company: 'a80a3c32-ce91-485b-a56b-3bac1f78d40f',
-        labelDropDownGuid: '02d4e346-ca1c-4eeb-a80e-322eab42ad02',
+        labelDropDownGuid: '8a25e360-c6cd-4d0b-b8ab-68df63b8c977',
         description: '[rx-view-component-id="933dd491-7d55-4735-b30a-f2826afe1461"] input',
         documentBody: '[rx-view-component-id="4c08281f-b2ce-4aeb-a0f5-13a4a4d98a7c"] div.cke_wysiwyg_div',
         saveButton: '[rx-view-component-id="01906a54-d879-427b-a057-a5c5d4834487"] button',
@@ -16,7 +16,7 @@ class CreateDocumentTemplate {
         insertFieldLinkOnDocumentBody: '[class="cke_button_icon cke_button__rtfexpressioneditor_icon"]',
         clickImageButton: '[class="cke_button_icon cke_button__image_icon"]',
         dynamicField: '[class="cke_contents cke_reset"] span',
-        lobValue: '[rx-view-component-id="bdee70fc-d43c-4b44-9422-c344d62676c7"] .pull-left'
+        lobValue: '[rx-view-component-id="dbeedef3-a2fb-4574-89f3-e6df0a417fc1"] button'
     }
     async clickOnDocumentBodyImageButton(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.clickImageButton)));

@@ -7,8 +7,8 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
+import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import createKnowledgePage from "../../pageobject/knowledge/create-knowlege.po";
@@ -27,15 +27,14 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Service Provider Model Tests Extended', () => {
-    let kingstoneUserName = 'smoran@petramco.com';
-    let oracleUserName = 'umiguelde@petramco.com';
-    let kingstonAndOracleUserName = 'jstuart@petramco.com';
-    let kingstonLegalUserName = 'yhenny@petramco.com';
+    let kingstoneUserName = 'smoran';
+    let oracleUserName = 'umiguelde';
+    let kingstonAndOracleUserName = 'jstuart';
+    let kingstonLegalUserName = 'yhenny';
 
-    let password = 'Password_1234';
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login(kingstoneUserName, password);
+        await loginPage.login(kingstoneUserName);
     });
 
     afterAll(async () => {
@@ -102,16 +101,16 @@ describe('Service Provider Model Tests Extended', () => {
                 knowledgeSetTitle: knowledgeSetDataKingstanLegal.knowledgeSetTitle,
             }
 
-            await apiHelper.apiLogin(kingstoneUserName, password);
+            await apiHelper.apiLogin(kingstoneUserName);
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
-            await apiHelper.apiLogin(kingstoneUserName, password);
+            await apiHelper.apiLogin(kingstoneUserName);
             await apiHelper.createKnowledgeSet(knowledgeSetDataKingstan);
-            await apiHelper.apiLogin(oracleUserName, password);
+            await apiHelper.apiLogin(oracleUserName);
             await apiHelper.createKnowledgeSet(knowledgeSetDataOracle);
-            await apiHelper.apiLogin(kingstonAndOracleUserName, password);
+            await apiHelper.apiLogin(kingstonAndOracleUserName);
             await apiHelper.createKnowledgeSet(knowledgeSetDataFinance);
             knowledgeArticleData = await apiHelper.createKnowledgeArticle(articleData);
-            await apiHelper.apiLogin(kingstonLegalUserName, password);
+            await apiHelper.apiLogin(kingstonLegalUserName);
             await apiHelper.createKnowledgeSet(knowledgeSetDataKingstanLegal);
             await apiHelper.createKnowledgeSet(knowledgeSetDataKingstanLegalWithKingstanCompany);
             await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
@@ -170,7 +169,7 @@ describe('Service Provider Model Tests Extended', () => {
         });
         it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
-            await loginPage.login(oracleUserName, password);
+            await loginPage.login(oracleUserName);
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate('Reference');
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -190,7 +189,7 @@ describe('Service Provider Model Tests Extended', () => {
         });
         it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
-            await loginPage.login(kingstonAndOracleUserName, password);
+            await loginPage.login(kingstonAndOracleUserName);
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.selectLineOfBusiness('Kingston HR');
             await utilityGrid.clearFilter();
@@ -207,7 +206,7 @@ describe('Service Provider Model Tests Extended', () => {
 
         it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
-            await loginPage.login(kingstonLegalUserName, password);
+            await loginPage.login(kingstonLegalUserName);
             await navigationPage.gotoCreateKnowledge();
             await createKnowledgePage.clickOnTemplate(knowledgeArticleTemplateData.templateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
@@ -231,21 +230,21 @@ describe('Service Provider Model Tests Extended', () => {
         });
         it('[12035,12031,12018,12022]: [Service Provider Model] [Knowledge] Verify the Knowledge Article Creation with respect to Line of Business when user has access to single Line of Business', async () => {
             await navigationPage.signOut();
-            await loginPage.login(kingstoneUserName, password);
+            await loginPage.login(kingstoneUserName);
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(knowledgeKingstanLegalID)).toBeFalsy();
             await navigationPage.signOut();
-            await loginPage.login(oracleUserName, password);
+            await loginPage.login(oracleUserName);
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(knowledgeKingstanLegalID)).toBeFalsy();
 
-            await loginPage.login(kingstonAndOracleUserName, password);
+            await loginPage.login(kingstonAndOracleUserName);
             await navigationPage.gotoKnowledgeConsole();
             expect(await utilityGrid.isGridRecordPresent(knowledgeKingstanLegalID)).toBeFalsy();
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login(kingstoneUserName, password);
+            await loginPage.login(kingstoneUserName);
         });
     });
 
@@ -302,7 +301,7 @@ describe('Service Provider Model Tests Extended', () => {
                 "ownerGroup": "Kingston AskHR",
                 "lineOfBusiness": "Kingston HR"
             }
-            await apiHelper.apiLogin(kingstoneUserName, password);
+            await apiHelper.apiLogin(kingstoneUserName);
             newCaseTemplatePhyto = await apiHelper.createCaseTemplate(templateDataPhytoCompany);
             newCaseTemplateKingston = await apiHelper.createCaseTemplate(templateDataKingstanCompany);
             newCaseTemplateOracle = await apiHelper.createCaseTemplate(templateDataOracleCompany);
@@ -325,7 +324,7 @@ describe('Service Provider Model Tests Extended', () => {
                 "Summary": "Automated Manager Level Approval" + randomStr,
                 "Case Template ID": newCaseTemplateGlobal.id
             }
-            await apiHelper.apiLogin(kingstoneUserName, password);
+            await apiHelper.apiLogin(kingstoneUserName);
             response1 = await apiHelper.createCase(caseDataKingston);
             response2 = await apiHelper.createCase(caseDataOracle);
             response3 = await apiHelper.createCase(caseDataGlobal);
@@ -378,7 +377,7 @@ describe('Service Provider Model Tests Extended', () => {
                 "ownerGroup": "Oracle AskHR",
                 "lineOfBusiness": "Oracle HR"
             }
-            await apiHelper.apiLogin(oracleUserName, password);
+            await apiHelper.apiLogin(oracleUserName);
             newCaseTemplatePhyto1 = await apiHelper.createCaseTemplate(templateDataPhytoCompany);
             newCaseTemplateKingston1 = await apiHelper.createCaseTemplate(templateDataKingstanCompany);
             newCaseTemplateOracle1 = await apiHelper.createCaseTemplate(templateDataOracleCompany);
@@ -404,7 +403,7 @@ describe('Service Provider Model Tests Extended', () => {
                 "Origin": "Agent",
                 "Case Template ID": newCaseTemplateGlobal1.displayId
             }
-            await apiHelper.apiLogin(oracleUserName, password);
+            await apiHelper.apiLogin(oracleUserName);
             response11 = await apiHelper.createCase(caseDataKingston1);
             response21 = await apiHelper.createCase(caseDataOracle1);
             response31 = await apiHelper.createCase(caseDataGlobal1);
@@ -479,7 +478,7 @@ describe('Service Provider Model Tests Extended', () => {
         });
         it('[12037,12023,12019]: [Service Provider Model][Quick Case]: Verify the behavior when the case agent from service provider company is able to create a case for requester company', async () => {
             await navigationPage.signOut();
-            await loginPage.login(oracleUserName, password);
+            await loginPage.login(oracleUserName);
             await navigationPage.gotoCaseConsole();
             expect(await utilityGrid.isGridRecordPresent(caseId)).toBeFalsy();
             expect(await utilityGrid.isGridRecordPresent(response1.displayId)).toBeFalsy();
@@ -491,7 +490,7 @@ describe('Service Provider Model Tests Extended', () => {
         });
         afterAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login(kingstoneUserName, password);
+            await loginPage.login(kingstoneUserName);
         });
     });
 

@@ -982,7 +982,8 @@ describe('Line of Business Permission Tests', () => {
             //Map Process to Flowset
             let flowsetProcessMappingData = {
                 function: 'Initialization',
-                registeredProcessId: registeredProcessResponse.id,
+                processNameFull: registerProcessData.processName,
+                processName: processName,
                 status: 'Active',
                 flowsetId: flowsetResponse1.id,
                 company: 'Petramco'

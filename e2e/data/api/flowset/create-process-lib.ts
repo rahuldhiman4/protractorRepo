@@ -43,15 +43,23 @@ export const PROCESS_FLOWSET_MAPPING = {
         },
         "8": {
             "id": 8,
-            "value": "AGGADG1AAP0ICAOYYI8EOYBVLDIWPD"
+            "value": "com.bmc.arsys.rx.approval:Approval Process"
         },
         "450000002": {
             "id": 450000002,
             "value": "AGGADGG8ECDC0AQ6B9G8Q5DJ2DQO7P"
         },
+        "450000152": {
+            "id": 450000152,
+            "value": "Approval Process",
+        },
         "450000003": {
             "id": 450000003,
             "value": 70
+        },
+        "450000420": {
+            "id": 450000420,
+            "value": "HumanResource",
         },
         "1000000001": {
             "id": 1000000001,
