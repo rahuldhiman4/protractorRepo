@@ -18,8 +18,10 @@ export interface IFlowsetProcess {
 
 export interface IFlowsetProcessMapping {
     function: string;
-    registeredProcessId: string;
+    processNameFull: string;
+    processName: string
     status: string;
     flowsetId: string;
     company?: string;
+    lineOfBusiness?: string;
 }

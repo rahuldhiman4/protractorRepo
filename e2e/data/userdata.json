@@ -202,5 +202,24 @@
 	"morwenna": {
 		"userName": "Morwenna",
 		"userPassword": "Password_1234"
+	},
+	"smoran": {
+		"userName": "smoran",
+		"userPassword": "Password_1234"
+	}
+	,
+	"umiguelde": {
+		"userName": "umiguelde",
+		"userPassword": "Password_1234"
+	}
+	,
+	"jstuart": {
+		"userName": "jstuart",
+		"userPassword": "Password_1234"
+	}
+	,
+	"yhenny": {
+		"userName": "yhenny",
+		"userPassword": "Password_1234"
 	}
 }

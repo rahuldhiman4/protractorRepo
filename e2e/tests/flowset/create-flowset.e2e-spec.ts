@@ -87,37 +87,37 @@ describe('Create Flowset', () => {
     describe('[5326,5296,5328,5322]: Flowset Configuration with Process Mapping for Initialization function', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let processLibConfData, processLibConfData1, processLibConfDataFacilities, processLibConfDataFacilities1;
-        let processAliasNameCaseHR = randomStr + "CaseprocessHR";
-        let processAliasNameSocialHR = randomStr + "SocialprocessHR";
-        let processAliasNameCaseFacilities = randomStr + "CaseprocessFacilities";
-        let processAliasNameSocialFacilities = randomStr + "SocialProcessFacilities";
+        let processNameCaseHR = randomStr + "CaseprocessHR";
+        let processNameSocialHR = randomStr + "SocialprocessHR";
+        let processNameCaseFacilities = randomStr + "CaseprocessFacilities";
+        let processNameSocialFacilities = randomStr + "SocialProcessFacilities";
         let flowsetMandatoryFieldsData;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             let case_management_HR = cloneDeep(CASE_MANAGEMENT_LIB_PROCESS);
-            let case_Management_Process_HR = case_management_HR.name + processAliasNameCaseHR;
+            let case_Management_Process_HR = case_management_HR.name + processNameCaseHR;
             case_management_HR.name = case_Management_Process_HR;
             await apiCoreUtil.createProcess(case_management_HR);
 
             let social_Service_HR = cloneDeep(SOCIAL_SERVICE_PROCESS);
-            let social_Service_Process_HR = social_Service_HR.name + processAliasNameSocialHR;
+            let social_Service_Process_HR = social_Service_HR.name + processNameSocialHR;
             social_Service_HR.name = social_Service_Process_HR;
             await apiCoreUtil.createProcess(social_Service_HR);
 
             let case_management_Facility = cloneDeep(CASE_MANAGEMENT_LIB_PROCESS);
-            let case_Management_Process_Facility = case_management_Facility.name + processAliasNameCaseFacilities;
+            let case_Management_Process_Facility = case_management_Facility.name + processNameCaseFacilities;
             case_management_Facility.name = case_Management_Process_Facility;
             await apiCoreUtil.createProcess(case_management_Facility);
 
             let social_Service_Facility = cloneDeep(SOCIAL_SERVICE_PROCESS);
-            let social_Service_Process_Facility = social_Service_Facility.name + processAliasNameSocialFacilities;
+            let social_Service_Process_Facility = social_Service_Facility.name + processNameSocialFacilities;
             social_Service_Facility.name = social_Service_Process_Facility;
             await apiCoreUtil.createProcess(social_Service_Facility);
 
             processLibConfData = {
                 applicationServicesLib: "com.bmc.dsm.case-lib",
                 processName: case_Management_Process_HR,
-                processAliasName: processAliasNameCaseHR,
+                processAliasName: processNameCaseHR,
                 company: "Petramco",
                 description: `First Descritpion${randomStr}`,
                 status: "Active",
@@ -126,7 +126,7 @@ describe('Create Flowset', () => {
             processLibConfData1 = {
                 applicationServicesLib: "com.bmc.dsm.social-lib",
                 processName: social_Service_Process_HR,
-                processAliasName: processAliasNameSocialHR,
+                processAliasName: processNameSocialHR,
                 company: "Petramco",
                 description: `Second description ${randomStr}`,
                 status: "Active",
@@ -136,7 +136,7 @@ describe('Create Flowset', () => {
             processLibConfDataFacilities = {
                 applicationServicesLib: "com.bmc.dsm.case-lib",
                 processName: case_Management_Process_Facility,
-                processAliasName: processAliasNameCaseFacilities,
+                processAliasName: processNameCaseFacilities,
                 company: "Petramco",
                 description: `First Descritpion${randomStr}`,
                 status: "Active",
@@ -145,7 +145,7 @@ describe('Create Flowset', () => {
             processLibConfDataFacilities1 = {
                 applicationServicesLib: "com.bmc.dsm.social-lib",
                 processName: social_Service_Process_Facility,
-                processAliasName: processAliasNameSocialFacilities,
+                processAliasName: processNameSocialFacilities,
                 company: "Petramco",
                 description: `Second description ${randomStr}`,
                 status: "Active",
@@ -172,32 +172,32 @@ describe('Create Flowset', () => {
             await editFlowset.clickOnAddNewMappingBtn();
 
             //validation of registred process filteration as per LOB
-            expect(await editFlowset.isProcessPresent(processAliasNameCaseFacilities)).toBeFalsy(); // present
-            expect(await editFlowset.isProcessPresent(processAliasNameSocialFacilities)).toBeFalsy(); // present
-            expect(await editFlowset.isProcessPresent(processAliasNameCaseHR)).toBeTruthy(); // present
-            expect(await editFlowset.isProcessPresent(processAliasNameSocialHR)).toBeTruthy(); // present
+            expect(await editFlowset.isProcessPresent(processNameCaseFacilities)).toBeTruthy(); // Process getting created in RD so other LOB process can be seen
+            expect(await editFlowset.isProcessPresent(processNameSocialFacilities)).toBeTruthy(); // Process getting created in RD so other LOB process can be seen
+            expect(await editFlowset.isProcessPresent(processNameCaseHR)).toBeTruthy();
+            expect(await editFlowset.isProcessPresent(processNameSocialHR)).toBeTruthy();
 
-            await editFlowset.selectProcess(processAliasNameCaseHR);
+            await editFlowset.selectProcess(processNameCaseHR);
             await editFlowset.selectProcessMapingStatus("Active");
             await editFlowset.clickSaveBtnOnProcessMapping();
-            await expect(editFlowset.searchProcessMappingName(processAliasNameCaseHR)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
-            await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid");
+            await expect(editFlowset.isProcessPresentOnGrid(processNameCaseHR)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible"); // False
+            await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid"); // False
             await editFlowset.clickOnAddNewMappingBtn();
             await editFlowset.selectFunction('Assignment');
-            await editFlowset.selectProcess(processAliasNameSocialHR);
+            await editFlowset.selectProcess(processNameSocialHR);
             await editFlowset.clickSaveBtnOnProcessMapping();
-            await expect(editFlowset.searchProcessMappingName(processAliasNameSocialHR)).toBeTruthy(`Second Process${randomStr}` + "Processing mapping not visible");
-            await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid");
-            await editFlowset.searchAndOpenProcessMapping(processAliasNameCaseHR);
+            await expect(editFlowset.isProcessPresentOnGrid(processNameSocialHR)).toBeTruthy(`Second Process${randomStr}` + "Processing mapping not visible"); // False
+            await expect(editFlowset.isProcessExecutionTypePresent('Additive')).toBeTruthy("Additive not present on grid"); // False
+            await editFlowset.searchAndOpenProcessMapping(processNameCaseHR);
             await editFlowset.selectProcessExecutionType('Exclusive');
             await editFlowset.clickSaveBtnOnEditProcessMapping();
-            await expect(editFlowset.searchProcessMappingName(processAliasNameCaseHR)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible");
-            await expect(editFlowset.isProcessExecutionTypePresent('Exclusive')).toBeTruthy("Exclusive not present on grid")
-            await editFlowset.searchAndOpenProcessMapping(processAliasNameSocialHR);
+            await expect(editFlowset.isProcessPresentOnGrid(processNameCaseHR)).toBeTruthy(`First Process ${randomStr}` + "Processing mapping not visible"); // False
+            await expect(editFlowset.isProcessExecutionTypePresent('Exclusive')).toBeTruthy("Exclusive not present on grid"); // False
+            await editFlowset.searchAndOpenProcessMapping(processNameSocialHR);
             await editFlowset.selectProcessExecutionType('Exclusive');
             await editFlowset.clickSaveBtnOnEditProcessMapping();
-            await expect(editFlowset.searchProcessMappingName(processAliasNameSocialHR)).toBeTruthy(`Second Process ${randomStr}` + "Processing mapping not visible");
-            await expect(editFlowset.isProcessExecutionTypePresent('Exclusive')).toBeTruthy("Exclusive not present on grid")
+            await expect(editFlowset.isProcessPresentOnGrid(processNameSocialHR)).toBeTruthy(`Second Process ${randomStr}` + "Processing mapping not visible"); // False
+            await expect(editFlowset.isProcessExecutionTypePresent('Exclusive')).toBeTruthy("Exclusive not present on grid"); // False
 
             await apiHelper.apiLogin('tadmin');
             let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';

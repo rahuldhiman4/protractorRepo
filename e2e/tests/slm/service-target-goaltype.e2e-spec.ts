@@ -63,40 +63,35 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await editGoalType.getStatusDropDownFieldValue()).toBe('Inactive');
             await utilityCommon.closeAllBlades();
         });
-
-        it('[6039]: Verify if SVT Goal Type is accessible to same LOB Case Manager', async () => {
+        it('[6039,6038,6040,6041]: Verify if SVT Goal Type is accessible to same LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is displayed to same LOB with different company Case BA.');
         });
-
-        it('[6039]: Verify if SVT Goal Type  is accessible to different LOB Case BA', async () => {
+        it('[6039,6038,6040,6041]: Verify if SVT Goal Type  is accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is dispayed to different LOB case BA');
         });
-
-        it('[6039]: Verify if SVT Goal Type is accessible to different LOB Case Manager', async () => {
+        it('[6039,6038,6040,6041]: Verify if SVT Goal Type is accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is dispayed to different LOB case manager');
         });
-
-        it('[6039]: Verify if SVT Goal Type is accessible to Case BA belonging to different company with same LOB', async () => {
+        it('[6039,6038,6040,6041]: Verify if SVT Goal Type is accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Goal Type', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.GOAL_TYPE);
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is not dispayed to same LOB and different company case BA');
         });
-
-        it('[6039]: Verify if SVT Goal Type is accessible to Case Manager user having access to multiple LOB', async () => {
+        it('[6039,6038,6040,6041]: Verify if SVT Goal Type is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
@@ -106,8 +101,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeFalsy('SVT Goal Type is not dispayed to user with multiple LOB case manager');
         });
-
-        it('[6039]: Verify if SVT Goal Type is accessible to Case BA user having access to multiple LOB', async () => {
+        it('[6039,6038,6040,6041]: Verify if SVT Goal Type is accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
@@ -122,8 +116,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await editGoalType.clickSaveGoalTypeButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-
-        it('[6039]: create same name record in same LOB', async () => {
+        it('[6039,6038,6040,6041]: create same name record in same LOB', async () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
             await createGoalType.selectGoalTypeStatus('Active');
@@ -133,7 +126,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             //on update verification is not possible since goal type name field is disabled on edit.
         });
-        it('[6039]: create same name record in different LOB', async () => {
+        it('[6039,6038,6040,6041]: create same name record in different LOB', async () => {
             await utilityGrid.selectLineOfBusiness('Facilities');
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);
@@ -142,7 +135,6 @@ describe('Service Level Management - Goal Type Tests', () => {
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is dispayed to user with multiple LOB case manager');
         });
-
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
