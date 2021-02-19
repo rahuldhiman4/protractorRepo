@@ -36,7 +36,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[4131,5585]: Check if expression is build by using all available field with different relation', async () => {
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -45,17 +45,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'Applications',"Search");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Pending", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Resolved", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -102,7 +101,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[5032]: [Global] Create a Case with global SVT', async () => {
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -111,17 +110,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -161,7 +159,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[6056]: Icons representing measurement status on SLA Progress Bar', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -171,16 +169,15 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -216,16 +213,15 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -252,7 +248,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[5031]: [Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -262,32 +258,30 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
         it('[5031]: Create company specific SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
         });
@@ -330,7 +324,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[5525]: Verify the SLA Progress Bar change in color when single SVT attached', async () => {
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -339,17 +333,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[5525]: Create a case and verify SVT attached to a case', async () => {
@@ -436,33 +429,31 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(2000);
         });
         it('[6058]: Create a SVT with 4 mins timeline', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
@@ -499,17 +490,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Company', '=', 'NAMED_LIST', 'Petramco');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Company', '=', 'Petramco','Search');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Company" + "'" + "=" + '"' + "Petramco" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
         });
@@ -542,17 +532,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -661,32 +650,30 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[5522]: Create another SVT', async () => {
             browser.sleep(2000);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("5");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -760,32 +747,30 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
         it('[5523]: Create another SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("5");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -841,32 +826,30 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "In Progress");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "In Progress", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
         it('[5524]: Create another SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("5");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
             await navigationPage.signOut();
@@ -967,17 +950,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -1029,17 +1011,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -1091,17 +1072,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -1159,17 +1139,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
             await browser.sleep(1000);
@@ -1213,17 +1192,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -1274,17 +1252,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             //Create a SVT with 2 mins timeline
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();

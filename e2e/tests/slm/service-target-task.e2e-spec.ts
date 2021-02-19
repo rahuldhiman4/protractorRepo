@@ -84,9 +84,9 @@ describe('Service Target Tests for Tasks', () => {
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "STATUS", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "STATUS", "=", "Completed","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "STATUS", "=", "Pending","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[4907]: Create a Case', async () => {
