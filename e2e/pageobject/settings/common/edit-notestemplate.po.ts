@@ -17,7 +17,7 @@ class editNotesTemplate {
         cancelButton: '[rx-view-component-id="020cadc5-e0da-4ed3-99d3-6ad0bef712bc"] button',
         localMessageVerification: '[rx-view-component-id="965fcbd6-27d1-40ae-b024-84c41629e47e"] p',
         editStatus: '[rx-view-component-id="6333057d-5f6a-4d5d-b862-a07db2f9997e"] .disabled',
-        readOnlyDescription: '[rx-view-component-id="9373799a-664e-4027-8bb1-9b2fcc9cd593"] .disabled',
+        readOnlyDescription: '[rx-view-component-id="9373799a-664e-4027-8bb1-9b2fcc9cd593"] .cke_editable',
         lobValue: '[rx-view-component-id="fab9f375-8bc8-424a-997d-529eecd287f9"] .rx-select__search-button-title'
     }
 
@@ -83,7 +83,7 @@ class editNotesTemplate {
 
     async isDescriptionFieldDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
-        return await $(this.selectors.readOnlyDescription).isPresent();
+        return await $(this.selectors.readOnlyDescription).getAttribute('contenteditable') == 'false';
     }
 
     async getLobValue(): Promise<string> {

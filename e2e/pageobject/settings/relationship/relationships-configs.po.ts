@@ -4,7 +4,7 @@ class RelationshipConfigsPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        addRelationshipButton: '.d-icon-left-plus',
+        addRelationshipButton: 'button.bwf-admin-console-action',
         relations: '.adapt-accordion .card',
         header: '.ellipsis span',
         relationshipFields: 'input',
@@ -12,8 +12,8 @@ class RelationshipConfigsPage {
         relationshipNameOrReverseRelationshipName: '.textfield__wrapper input',
     }
 
-    async isAddRelationButtonEnabled(): Promise<boolean> {
-        return await $(this.selectors.addRelationshipButton).isEnabled();
+    async isAddRelationButtonDisabled(): Promise<boolean> {
+        return await $(this.selectors.addRelationshipButton).getAttribute('disabled') == 'true';
     }
 
     async isRelationshipNameFieldEnabled(headerName: string): Promise<boolean> {
