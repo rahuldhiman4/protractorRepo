@@ -4,9 +4,9 @@ class ServiceTargetEditConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        statusFields: '[rx-view-component-id="88b4a2e0-8646-4cff-b337-e99eb00c9745"] button div',
-        description: '[rx-view-component-id="361c10e5-f7b8-4ce9-bb96-7ebd1420ca67"] input',
-        buildExpressionButton: '[rx-view-component-id="5f99b4c8-0fd5-446e-aa32-9643fbf083cb"] button',
+        statusFields: '[rx-view-component-id="a6f3c85c-ecd6-49e6-a08b-98697b9811d5"] button',
+        description: '[rx-view-component-id="a587e4b8-f37d-4cf7-b231-1565c88086eb"] textarea',
+        buildExpressionButton: '[rx-view-component-id="7ec71317-df5c-4586-b450-a4a8a2cf2e7f"] button',
         goalDays: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[2]//*[contains(@class,'adapt-counter__content')]//input`,
         goalHours: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[4]//*[contains(@class,'adapt-counter__content')]//input`,
         goallMinutes: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[6]//*[contains(@class,'adapt-counter__content')]//input`,
@@ -22,12 +22,12 @@ class ServiceTargetEditConfigPage {
         return await $(this.selectors.statusFields).getAttribute('disabled') == 'true';
     }
 
-    async isDescriptionFieldEnabled(): Promise<boolean> {
-        return await $(this.selectors.description).isEnabled();
+    async isDescriptionFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.description).getAttribute('readonly') == 'true';
     }
 
-    async isBuildExpressionButtonEnabled(): Promise<boolean> {
-        return await $$(this.selectors.buildExpressionButton).first().isEnabled();
+    async isBuildExpressionButtonDisabled(): Promise<boolean> {
+        return await $(this.selectors.buildExpressionButton).getAttribute('disabled') == 'true';
     }
 
     async isGoalDaysFieldEnabled(): Promise<boolean> {

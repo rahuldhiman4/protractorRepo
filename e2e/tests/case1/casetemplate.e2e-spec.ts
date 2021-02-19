@@ -85,7 +85,7 @@ describe('Case Template', () => {
         await viewCaseTemplate.clickBackArrowBtn();
     });
 
-    //ptidke-jbranes lob issue
+    //ptidke-jbranes lob issue-check
     describe('[5247]: Case Template creation with Template validation as ENFORCED', async () => {
         it('[5247]: Case Template creation with Template validation as ENFORCED', async () => {
             await navigationPage.gotoSettingsPage();
@@ -206,7 +206,6 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(ALL_FIELD.company);
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
-        await createCaseTemplate.setAssignmentMethodValue('None');
         expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain('None');
         await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
@@ -286,14 +285,14 @@ describe('Case Template', () => {
             expect(await viewCaseTemplate.getOwnerGroupValue()).toContain(MANDATORY_FIELD.ownerGroup);
             expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
             expect(await viewCaseTemplate.getTemplateStatusValue()).toContain(MANDATORY_FIELD.templateStatus);
-            await viewCaseTemplate.clickBackArrowBtn();
         });
         afterAll(async () => {
+            await viewCaseTemplate.clickBackArrowBtn();
             await utilityCommon.closeAllBlades();
         });
     });
 
-    //ptidke 
+    //ptidke
     it('[6305]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -647,7 +646,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         }
     });
-//jbranes lob issue
+    //jbranes lob issue
     describe('[6315]: [Case Template] Create Case Template with all fields data populated', async () => {
         let casetemplatePetramco, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateGlobal = "CaseTempateHRGlobal_" + randomStr;
@@ -1283,41 +1282,42 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-//morwenna user issue-start from here
-    it('[4942]:Case Template submitter from different company than owner group company can edit the template', async () => {
-        try {
-            await navigationPage.signOut();
-            await loginPage.login('morwenna');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
-            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
-            await createCaseTemplate.setTemplateName(caseTemplateName);
-            await createCaseTemplate.setCaseSummary(caseTemplateName);
-            await createCaseTemplate.setCompanyName('Phylum');
-            await createCaseTemplate.setPriorityValue('Low');
-            await createCaseTemplate.setOwnerCompanyValue('Psilon');
-            await createCaseTemplate.setOwnerOrgDropdownValue('Psilon Support Org1');
-            await createCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
-            await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
-            await createCaseTemplate.clickSaveCaseTemplate();
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
-            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
-            await editCasetemplatePo.changeOwnerCompanyValue('Petramco');
-            await editCasetemplatePo.changeBusinessUnitDropdownValue("Petramco Support Org1");
-            await editCasetemplatePo.changeOwnerGroupDropdownValue("Petramco Support Group1");
-            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            expect(await viewCaseTemplate.getBuisnessUnitValue()).toContain("Petramco Support Org1");
-            expect(await viewCaseTemplate.getOwnerGroupValue()).toContain("Petramco Support Group1");
-            expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
-        }
-        catch (ex) { throw ex; }
-        finally {
+    //morwenna user issue-start from here
+    describe('[4942]:Case Template submitter from different company than owner group company can edit the template', async () => {
+        it('[4942]:Case Template submitter from different company than owner group company can edit the template', async () => {
+                await navigationPage.signOut();
+                await loginPage.login('morwenna');
+                await navigationPage.gotoSettingsPage();
+                await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+                let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);
+                await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+                await createCaseTemplate.setTemplateName(caseTemplateName);
+                await createCaseTemplate.setCaseSummary(caseTemplateName);
+                await createCaseTemplate.setCompanyName('Phylum');
+                await createCaseTemplate.setPriorityValue('Low');
+                await createCaseTemplate.setOwnerCompanyValue('Psilon');
+                await createCaseTemplate.setOwnerOrgDropdownValue('Psilon Support Org1');
+                await createCaseTemplate.setOwnerGroupDropdownValue('Psilon Support Group1');
+                await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
+                await createCaseTemplate.clickSaveCaseTemplate();
+                await viewCaseTemplate.clickBackArrowBtn();
+                await navigationPage.gotoSettingsPage();
+                await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+                await utilityGrid.searchAndOpenHyperlink(caseTemplateName);
+                await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+                await editCasetemplatePo.changeOwnerCompanyValue('Petramco');
+                await editCasetemplatePo.changeBusinessUnitDropdownValue("Petramco Support Org1");
+                await editCasetemplatePo.changeOwnerGroupDropdownValue("Petramco Support Group1");
+                await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+                expect(await viewCaseTemplate.getBuisnessUnitValue()).toContain("Petramco Support Org1");
+                expect(await viewCaseTemplate.getOwnerGroupValue()).toContain("Petramco Support Group1");
+                expect(await viewCaseTemplate.getOwnerCompanyValue()).toContain('Petramco');
+        });
+        afterAll(async () => {
+            await viewCaseTemplate.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-        }
+        });
     });
 
     it('[5026]:[Negative Testing] - Global as well as company specific flowset will list if we select specific company while creating case template.', async () => {
@@ -1348,8 +1348,9 @@ describe('Case Template', () => {
         await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
         await editCasetemplatePo.clickSaveCaseTemplate();
         expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetGlobalFieldsData.flowsetName);
+        await viewCaseTemplate.clickBackArrowBtn();
     });
-
+    //assinee issue
     describe('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1 = 'caseTemplateNameCase1' + randomStr;
@@ -1446,6 +1447,7 @@ describe('Case Template', () => {
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCaseTemplate.clickBackArrowBtn();
         });
         it('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
             await navigationPage.gotoCaseConsole();
@@ -1530,7 +1532,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-
+    //compelete status dropdown issue
     describe('[3797]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
         let caseId, caseId1, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
