@@ -439,9 +439,9 @@ describe("Attachment", () => {
             await activityTabPo.clickOnPostButton();
             await viewCasePo.clickAttachmentsLink();
             await attachmentBladePo.clickAllCheckboxButton();
-            expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('50/50 files selected', 'selected checkbox count is missing for page1');
-            await attachmentBladePo.clickPaginationNext();
-            expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('50/2 files selected', 'selected checkbox count is missing for page2');
+            expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('52/52 files selected', 'selected checkbox count is missing for page1');
+            // await attachmentBladePo.clickPaginationNext();
+            // expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('50/2 files selected', 'selected checkbox count is missing for page2');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg1.jpg')).toBeTruthy('File is delete sucessfully');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('articleStatus.png')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.clickDownloadButton();

@@ -78,7 +78,7 @@ class DocumentLibraryPage {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.companyFieldGuid, textValue);
     }
 
-    
+
 
     async buisnessUnitTextPresent(textValue: string): Promise<boolean> {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.buisnessUnit, textValue);
@@ -176,10 +176,10 @@ class DocumentLibraryPage {
     }
 
     async selectSupportOrg(buisnessUnit: string): Promise<void> {
-        await utilityCommon.selectDropDown("Support Organization", buisnessUnit,DropDownType.Label);
+        await utilityCommon.selectDropDown("Support Organization", buisnessUnit, DropDownType.Label);
     }
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
-        await utilityCommon.selectDropDown("Owner Group", ownerGroupName,DropDownType.Label);
+        await utilityCommon.selectDropDown("Owner Group", ownerGroupName, DropDownType.Label);
     }
 
     async clickOnSaveButton(): Promise<void> {
