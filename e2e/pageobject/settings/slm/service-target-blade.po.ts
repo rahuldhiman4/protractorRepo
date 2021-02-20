@@ -9,10 +9,11 @@ class ServiceTargetConfig {
         createServiceTargetButton: '[rx-view-component-id="5a771a32-973d-4c3f-a90a-280c36890dea"] button',
         svtTitle: '[rx-view-component-id="36abb115-44c8-4089-a7c4-18e6835758fc"] input',
         companyGuid: '64642abd-53f9-472c-8c22-906355edc22d',
-        selectGoalType: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button',
+        selectGoalTypeGuid: '9efb3f48-3bc1-4af8-91c4-b4fa3597814a',
+        selectGoalType: '[rx-view-component-id="9efb3f48-3bc1-4af8-91c4-b4fa3597814a"] button',
         dataSourceGuid: 'a2780b54-1b51-48e7-a9ae-f387e87b55a5',
-        svtDescriptionField: '[rx-view-component-id="5425c08c-4806-4f23-8a28-4c436309d773"] input',
-        goalTypeSelectedValue: `//*[@rx-view-definition-guid="b33e03d8-128d-4c42-8a5e-93d67bebd0b7"]//*[contains(@class,'form-control-label')]//span`,
+        svtDescriptionField: '[rx-view-component-id="bbff56c3-aae3-4050-a377-5d37aaeb1ce9"] textarea',
+        goalTypeSelectedValue: '[rx-view-component-id="9efb3f48-3bc1-4af8-91c4-b4fa3597814a"] button div',
         dropDownOption: 'button.dropdown-item',
         buildExpressionLink: 'button[aria-label="Build Expression"]',
         timer: 'input.adapt-counter-input',
@@ -29,13 +30,14 @@ class ServiceTargetConfig {
         valueSearch: ' input[type="search"]',
         addButton: '.d-textfield__label .margin-top-10 button',
         expressionBuilderBtn: '[rx-view-component-id="1f691b31-30f7-4feb-b4f2-8972a616f2fe"] button',
-        termsAndConditionsField: 'textarea.form-control',
+        termsAndConditionsFieldGuid:'94891fe1-781f-4f94-bcce-12425862d97d',
         selectStatusField: '[rx-view-component-id="dc8c4074-db37-4910-96c0-b16d2be23b7e"] button',
         selectBusinessEntity: `//button//div[text()='Select Business Entity']`,
         fieldNameLabel: `//*[@rx-view-definition-guid="b33e03d8-128d-4c42-8a5e-93d67bebd0b7"]//*[contains(@class,'form-control-label')]//span`,
         noMileStonesPresentText: '.adapt-accordion .card .no-record-found',
         addNewMileStoneBtn: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-plus_circle',
-        goalTypeDropDownInput: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button'
+        goalTypeDropDownInput: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button',
+        errorMsg: '.form-control-feedback span'
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
@@ -45,6 +47,18 @@ class ServiceTargetConfig {
             } else {
                 return false;
             }
+        });
+    }
+
+    async getError(errorMsg:string): Promise<boolean> {
+        return await $(this.selectors.errorMsg).isPresent().then(async (result) => {
+            if (result) {
+                console.log('errorMsg: ',errorMsg)
+                await element(by.cssContainingText(this.selectors.errorMsg, errorMsg)).getAttribute('value')?true:false;
+            } else {
+                return null;
+            }
+            
         });
     }
 
@@ -80,8 +94,7 @@ class ServiceTargetConfig {
     }
 
     async selectGoalType(svtGoalType: string): Promise<void> {
-        await $(this.selectors.selectGoalType).click();
-        await element(by.cssContainingText(this.selectors.dropDownOption, svtGoalType)).click();
+        await utilityCommon.selectDropDown(this.selectors.selectGoalTypeGuid,svtGoalType);
     }
 
     async selectStatus(svtStatus: string): Promise<void> {
@@ -90,6 +103,7 @@ class ServiceTargetConfig {
     }
 
     async enterSVTDescription(svtDesc: string): Promise<void> {
+        await $(this.selectors.svtDescriptionField).clear();
         await $(this.selectors.svtDescriptionField).sendKeys(svtDesc);
     }
 
@@ -99,7 +113,7 @@ class ServiceTargetConfig {
 
 
     async isTermsAndConditionsFieldMandatory(): Promise<boolean> {
-        return await $(this.selectors.termsAndConditionsField).getAttribute("required") == 'true';
+    return await utilityCommon.isRequiredTagToField(this.selectors.termsAndConditionsFieldGuid)
     }
 
     async clickOnBuildExpression(): Promise<void> {
@@ -174,8 +188,8 @@ class ServiceTargetConfig {
         await $(this.selectors.closeSVTButton).click();
     }
 
-    async getGoalTypeSelectedValue(svtGoalType: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.goalTypeSelectedValue, svtGoalType)).isDisplayed();
+    async getGoalTypeSelectedValue(): Promise<string> {
+        return await $(this.selectors.goalTypeSelectedValue).getText();
     }
 
     async selectGoalTypeCheckbox(checkboxLabel: string): Promise<void> {
