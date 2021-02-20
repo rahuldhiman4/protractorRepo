@@ -81,7 +81,7 @@ describe('Copy Task Template', () => {
             await manageTask.clickCloseButton();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
-            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();
@@ -364,7 +364,7 @@ describe('Copy Task Template', () => {
             await manageTask.clickCloseButton();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
-            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus('In Progress'); // when case status is changed its not automatically reflected on case view
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();

@@ -278,7 +278,7 @@ describe('Service Provider Data Model Tests', () => {
 
             await viewCasePage.clickOnStatus();
             await updateStatusBladePo.changeStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.selectResolutionCode(resolutionCodeNamekingStone);
             expect(await updateStatusBladePo.isResolutionoCodeDropDownValueDisplayed(resolutionCodeNameOracle)).toBeFalsy('resolutionCodeNamekingStone is missing')
 
@@ -421,7 +421,7 @@ describe('Service Provider Data Model Tests', () => {
 
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await viewTaskPo.clickOnViewCase();
         });
@@ -431,7 +431,7 @@ describe('Service Provider Data Model Tests', () => {
             await manageTaskBladePo.clickTaskLink('DRDMV23763Test');
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await viewTaskPo.clickOnViewCase();
         });
@@ -459,7 +459,7 @@ describe('Service Provider Data Model Tests', () => {
 
             await viewCasePage.clickOnStatus();
             await updateStatusBladePo.changeStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.selectResolutionCode(resolutionCodeNamekingStone);
 
             await updateStatusBladePo.setResolutionDescription('resolution code update');
@@ -519,7 +519,7 @@ describe('Service Provider Data Model Tests', () => {
 
             await viewCasePage.clickOnStatus();
             await updateStatusBladePo.changeStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await expect(await updateStatusBladePo.isResolutionoCodeDropDownValueDisplayed(resolutionCodeNamekingStone)).toBeFalsy();
 
             await updateStatusBladePo.setResolutionDescription('resolution code update');

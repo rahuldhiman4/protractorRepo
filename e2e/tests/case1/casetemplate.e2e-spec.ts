@@ -463,7 +463,7 @@ describe('Case Template', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.isEditLinkDisplay();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.waitForEditCasePageToBeDisplayed();
@@ -472,8 +472,8 @@ describe('Case Template', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[5398]: Checking change case template button for Resolved', async () => {
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus('Resolved');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.waitForEditCasePageToBeDisplayed();
@@ -482,7 +482,7 @@ describe('Case Template', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[5398]: Checking change case template button for Closed', async () => {
-            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus('Closed');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.waitForEditCasePageToBeDisplayed();
@@ -498,8 +498,8 @@ describe('Case Template', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.isEditLinkDisplay();
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus('Pending');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.waitForEditCasePageToBeDisplayed();
@@ -508,8 +508,8 @@ describe('Case Template', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[5398]: Checking change case template button disabled/hidden for different case status.', async () => {
-            await updateStatusBladePo.changeCaseStatus('Canceled');
-            await updateStatusBladePo.setStatusReason('Customer Canceled');
+            await updateStatusBladePo.changeStatus('Canceled');
+            await updateStatusBladePo.selectStatusReason('Customer Canceled');
             await updateStatusBladePo.clickSaveStatus('Canceled');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.waitForEditCasePageToBeDisplayed();
@@ -1603,7 +1603,7 @@ describe('Case Template', () => {
         it('[3797]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
         });
         it('[3797]: Case behavior when Case Template is changed', async () => {
@@ -1611,7 +1611,7 @@ describe('Case Template', () => {
             await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewTaskPo.clickOnViewCase();
@@ -1620,7 +1620,7 @@ describe('Case Template', () => {
         it('[3797]: Case behavior when Case Template is changed', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
         });
         it('[3797]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
@@ -1628,7 +1628,7 @@ describe('Case Template', () => {
             await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewTaskPo.clickOnViewCase();

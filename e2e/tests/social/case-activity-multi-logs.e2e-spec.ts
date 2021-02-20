@@ -210,7 +210,7 @@ describe('Case Activity Multi Logs', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateSummary);
             await manageTaskBladePo.clickCloseButton();
             await activityTabPage.clickOnRefreshButton();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
         });
 
@@ -369,7 +369,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg: Text is missing in activity log');
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await viewTaskPo.clickOnViewCase();
         });
@@ -879,7 +879,7 @@ describe('Case Activity Multi Logs', () => {
 
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
 
             await viewTaskPo.clickOnViewCase();
@@ -897,7 +897,7 @@ describe('Case Activity Multi Logs', () => {
 
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
 
             await viewTaskPo.clickOnViewCase();
@@ -922,8 +922,8 @@ describe('Case Activity Multi Logs', () => {
         });
 
         it('[4241]:Verify social activity with status change and reopen case', async () => {
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus('Resolved');
             expect(await viewCasePo.getCaseStatusValue()).toBe('Resolved', 'FailureMsg19: Case status not displayed');
 

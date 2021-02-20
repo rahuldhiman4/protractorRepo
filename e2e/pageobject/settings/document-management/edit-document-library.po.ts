@@ -1,6 +1,6 @@
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
-import utilityCommon from '../../../utils/utility.common';
 import { DropDownType } from '../../../utils/constants';
+import utilityCommon from '../../../utils/utility.common';
 
 class EditDocumentLibraryPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -13,7 +13,7 @@ class EditDocumentLibraryPage {
         status: '[rx-view-component-id="0a8b7179-dd0a-47f9-8515-7c7aceda3118"] button',
         saveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
         deleteButton: '.bwf-attachment-viewer .d-icon-cross',
-        cancelButton: '[rx-view-component-id="b4740478-1b91-4383-ac7b-58573b431cd3"] button',
+        cancelButton: '[rx-view-component-id="61a48596-d3c0-462d-825b-4d6172e351b3"] button',
         readAccessCancelButton: '[rx-view-component-id="be1ecd02-7d93-4d3b-8c4e-add1dfb2c924"] button',
         deleteDocWarningMsg: '[rx-view-component-id="c652354a-1524-4235-b1db-6b397fc9699a"] span',
         deleteDocWarningMsgYesButton: '[rx-view-component-id="e40ad54c-ad9a-480a-aa63-a8b399caf20e"] button',
@@ -81,11 +81,11 @@ class EditDocumentLibraryPage {
     }
 
     async selectAddCompanyDropDownOfReadAccess(value: string): Promise<void> {
-        await utilityCommon.selectDropDown(await $(this.selectors.addCompany),value,DropDownType.WebElement);
+        await utilityCommon.selectDropDown(await $(this.selectors.addCompany), value, DropDownType.WebElement);
     }
 
     async selectAddSupportGroupDropDownOfReadAccess(value: string): Promise<void> {
-        await utilityCommon.selectDropDown(await $(this.selectors.addSupportGroup),value,DropDownType.WebElement);
+        await utilityCommon.selectDropDown(await $(this.selectors.addSupportGroup), value, DropDownType.WebElement);
     }
 
     async sameSupportGroupErrorMessageDisplayed(message: string): Promise<boolean> {
@@ -114,10 +114,10 @@ class EditDocumentLibraryPage {
     }
 
     async closeGroupAccessTag(accessName: string): Promise<void> {
-        let loopingLocator =await $$('.rx-case-access-group-list.ac-access-group-list li').count();
+        let loopingLocator = await $$('.rx-case-access-group-list.ac-access-group-list li').count();
         for (let i = 0; i < loopingLocator; i++) {
-            let parentOne= $$('.rx-case-access-group-list.ac-access-group-list li');
-            let textName= await parentOne.get(i).$('.rx-case-access-name').getText();
+            let parentOne = $$('.rx-case-access-group-list.ac-access-group-list li');
+            let textName = await parentOne.get(i).$('.rx-case-access-name').getText();
             if (textName == accessName) {
                 await parentOne.get(i).$('.d-icon-cross').click();
                 break;
@@ -181,7 +181,6 @@ class EditDocumentLibraryPage {
     }
 
     async clickOnSaveButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.saveButton)));
         await $(this.selectors.saveButton).click();
     }
 

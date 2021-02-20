@@ -91,6 +91,7 @@ describe('Document Library Consume UI', () => {
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
+            await editDocumentLibraryPo.clickOnCancelButton();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(publishDocData.docLibTitle);
         });

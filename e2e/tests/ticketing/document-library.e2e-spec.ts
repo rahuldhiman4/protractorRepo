@@ -16,6 +16,7 @@ import viewDocumentLibraryPo from '../../pageobject/settings/document-management
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+
 describe('Document Library', () => {
 
     beforeAll(async () => {
@@ -48,6 +49,7 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
+            await editDocumentLibraryPo.clickOnCancelButton();
         });
         it('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
             await utilityGrid.deleteGridRecord(titleRandVal);
@@ -60,12 +62,16 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
+            await editDocumentLibraryPo.clickOnCancelButton();
             await utilityGrid.deleteGridRecord(titleRandVal);
             expect(await utilityCommon.getWarningDialogMsg()).toBe('Are you sure you want to delete the document?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await utilityCommon.isPopUpMessagePresent('Document deleted successfully.')).toBeTruthy('Document deleted message not valid');
             await utilityCommon.closePopUpMessage();
             expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeFalsy('Grid Record displayed which should not be');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -95,6 +101,7 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
+            await editDocumentLibraryPo.clickOnCancelButton();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Published'), 'status is not in Published status';
             await utilityGrid.deleteGridRecord(titleRandVal);
@@ -163,7 +170,7 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-
+            await editDocumentLibraryPo.clickOnCancelButton();
         });
     });
 
@@ -206,6 +213,7 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
+            await editDocumentLibraryPo.clickOnCancelButton();
         });
         it('[4892,4918]: Verify document can be publish And Verify Search on Document Managment Console ', async () => {
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -220,7 +228,7 @@ describe('Document Library', () => {
             expect(await editDocumentLibraryPo.isOwnerGroupDropDownDisabled()).toBeTruthy('OwnerGroup Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isShareExternallyToogleButtonDisabled()).toBeTruthy('Share Externally Toogle Button field is enabled');
             expect(await editDocumentLibraryPo.isStatusDropDownDisabled()).toBeFalsy('Status Drop Down field is disabled');
-             expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
+            expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier1Disabled()).toBeTruthy('Category Tire1 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier2Disabled()).toBeTruthy('Category Tire2 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier3Disabled()).toBeTruthy('Category Tire3 field is enabled');
@@ -513,6 +521,7 @@ describe('Document Library', () => {
             let systemDate: string = await new Date().toLocaleTimeString()
             let systemTime: string[] = systemDate.split(":");
             await editDocumentLibraryPo.clickOnSaveButton();
+            await editDocumentLibraryPo.clickOnCancelButton();
             let column: string[] = ["Author"];
             await documentLibraryConsolePo.addColumnOnGrid(column);
             await documentLibraryConsolePo.searchOnGridConsole("update" + titleRandVal);
@@ -624,6 +633,7 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectBusinessUnit('Latin America Support');
             await editDocumentLibraryPo.selectOwnerGroup('LA Support 3');
             await editDocumentLibraryPo.clickOnSaveButton();
+            await editDocumentLibraryPo.clickOnCancelButton();
             //This validation is alredy covered at 4882 hence commented
             //expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });
@@ -638,7 +648,7 @@ describe('Document Library', () => {
             //await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.selectOwnerGroup('AU Support 3');
             await editDocumentLibraryPo.clickOnSaveButton();
-            // await editDocumentLibraryPo.clickOnCancelButton();
+            await editDocumentLibraryPo.clickOnCancelButton();
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoSettingsPage();
@@ -648,6 +658,7 @@ describe('Document Library', () => {
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await editDocumentLibraryPo.clickOnCancelButton();
         });
         it('[4912]: Verify that Document access on multiple change in assignments of support group.', async () => {
             await navigationPage.signOut();

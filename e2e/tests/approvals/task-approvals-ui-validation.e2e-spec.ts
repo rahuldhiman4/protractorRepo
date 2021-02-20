@@ -165,7 +165,7 @@ describe("Task Approval UI Validations", () => {
         it('[3591]: Verify if task approved is triggered for manual task', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await viewCasePo.openTaskCard(1);

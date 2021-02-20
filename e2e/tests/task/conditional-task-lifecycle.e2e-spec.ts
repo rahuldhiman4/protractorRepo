@@ -255,8 +255,8 @@ describe('Conditional Task Life Cycle', () => {
             await manageTaskBlade.clickCloseButton();
 
             //Verify Case 2 can be Resolved
-            await updateStatusBlade.changeCaseStatus('Resolved');
-            await updateStatusBlade.setStatusReason('Auto Resolved');
+            await updateStatusBlade.changeStatus('Resolved');
+            await updateStatusBlade.selectStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent('The case contains active tasks. Please close all the tasks and resolve the case.')).toBeTruthy();
             await updateStatusBlade.clickCancelButton();
@@ -289,8 +289,8 @@ describe('Conditional Task Life Cycle', () => {
             await manageTaskBlade.clickCloseButton();
 
             //Verify Case 2 can be Resolved
-            await updateStatusBlade.changeCaseStatus('Resolved');
-            await updateStatusBlade.setStatusReason('Auto Resolved');
+            await updateStatusBlade.changeStatus('Resolved');
+            await updateStatusBlade.selectStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
@@ -423,8 +423,8 @@ describe('Conditional Task Life Cycle', () => {
             await viewCasePage.clickOnTaskViewTypeBtn('Task Flow');
             expect(await viewCasePage.isTaskBoxColorCodeMatches(automatedTaskTemplateData.templateSummary, '#999999')).toBeTruthy('Color Code is not matching1');
             await apiHelper.updateTaskStatus(adhocTaskResponse.id, 'Completed', 'Successful');
-            await updateStatusBlade.changeCaseStatus('Resolved');
-            await updateStatusBlade.setStatusReason('Auto Resolved');
+            await updateStatusBlade.changeStatus('Resolved');
+            await updateStatusBlade.selectStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
 
@@ -476,8 +476,8 @@ describe('Conditional Task Life Cycle', () => {
             expect(await viewCasePage.isTaskBoxColorCodeMatches(manualTaskTemplateData.templateSummary, '#999999')).toBeTruthy('Color Code is not matching4');
             expect(await viewCasePage.isTaskBoxColorCodeMatches(externalTaskTemplateData.templateSummary, '#999999')).toBeTruthy('Color Code is not matching5');
 
-            await updateStatusBlade.changeCaseStatus('Resolved');
-            await updateStatusBlade.setStatusReason('Auto Resolved');
+            await updateStatusBlade.changeStatus('Resolved');
+            await updateStatusBlade.selectStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
@@ -680,8 +680,8 @@ describe('Conditional Task Life Cycle', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Completed Tasks', [manualTaskTemplateData1.templateSummary, externalTaskTemplateData1.templateSummary, automatedTaskTemplateData1.templateSummary])).toBeTruthy();
 
-            await updateStatusBlade.changeCaseStatus('Resolved');
-            await updateStatusBlade.setStatusReason('Auto Resolved');
+            await updateStatusBlade.changeStatus('Resolved');
+            await updateStatusBlade.selectStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
@@ -725,8 +725,8 @@ describe('Conditional Task Life Cycle', () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
             expect(await viewCasePage.isAllTaskUnderStatusTitleMatches('Completed Tasks', [manualTaskTemplateData2.templateSummary, externalTaskTemplateData2.templateSummary])).toBeTruthy();
 
-            await updateStatusBlade.changeCaseStatus('Resolved');
-            await updateStatusBlade.setStatusReason('Auto Resolved');
+            await updateStatusBlade.changeStatus('Resolved');
+            await updateStatusBlade.selectStatusReason('Auto Resolved');
             await updateStatusBlade.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
