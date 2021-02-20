@@ -14,7 +14,6 @@ export class Utility {
         popUpMsgLocator: '.a-toast__details div',
         popupMsgTitle: '.a-toast__summary',
         closeTipMsg: '.a-toast__close-button',
-        dropDownChoice: '.dropdown-item',
         dateFieldPicker: 'input.i-date-time',
         yearDate: 'div.a3t-calendar--controls-line[aria-label="Choose year"]',
         monthDate: 'div.a3t-calendar--controls-line[aria-label="Choose month"]',
@@ -44,7 +43,7 @@ export class Utility {
             case DropDownType.WebElement: {
                 if (!(typeof dropDownIdentifier === 'string')) {
                     await dropDownIdentifier.click();
-                    let option = await element(by.cssContainingText(this.selectors.dropDownChoice, dropDownValue));
+                    let option = await element(by.cssContainingText(this.selectors.dropDownOption, dropDownValue));
                     try {
                         await this.scrollToElement(option);
                         await option.click();
@@ -682,6 +681,11 @@ export class Utility {
                 if (!(typeof dropDownIdentifier === 'string')) {
                     await dropDownIdentifier.click();
                     drpDwnvalue = await $$(this.selectors.dropDownOption).count();
+                    for (let i = 0; i < drpDwnvalue; i++) {
+                        let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+                        arr[i] = ab;
+                    }
+                    await dropDownIdentifier.click();
                 }
                 break;
             }
@@ -692,6 +696,11 @@ export class Utility {
                 const dropDownInputElement = await dropDown.$('input');
                 if (dropDownSearchValue) await dropDownInputElement.sendKeys(dropDownSearchValue);
                 drpDwnvalue = await $$(this.selectors.dropDownOption).count(); // drpDwnvalue = await $$('.ui-select-choices-row-inner *').count();
+                for (let i = 0; i < drpDwnvalue; i++) {
+                    let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+                    arr[i] = ab;
+                }
+                await dropDownBoxElement.click();
                 break;
             }
             default: {
@@ -699,11 +708,13 @@ export class Utility {
                 const dropDownBoxElement = await dropDown.$(this.selectors.dropdownBox);
                 await dropDownBoxElement.click();
                 drpDwnvalue = await $$(this.selectors.dropDownOption).count();
+                for (let i = 0; i < drpDwnvalue; i++) {
+                    let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
+                    arr[i] = ab;
+                }
+                await dropDownBoxElement.click();
+                break;
             }
-        }
-        for (let i = 0; i < drpDwnvalue; i++) {
-            let ab: string = await $$(this.selectors.dropDownOption).get(i).getText();
-            arr[i] = ab;
         }
         return arr;
     }

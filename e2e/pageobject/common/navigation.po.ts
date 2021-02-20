@@ -321,7 +321,7 @@ class NavigationPage {
             let noAccess = this.EC.titleContains('No Access');
             let bwfLogin = this.EC.titleContains('Login - Business Workflows');
             await browser.wait(this.EC.or(noAccess, bwfLogin), 10000);
-            console.log(' === Signout Successfully === ');
+            console.log(' === Signout Successful === ');
         } catch (ex) {
             console.log('Already Signout because --> ', ex);
         }

@@ -521,7 +521,7 @@ describe('Case Status Configuration', () => {
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             await viewTaskPo.clickOnViewCase();
-            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
@@ -545,7 +545,7 @@ describe('Case Status Configuration', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
         });
@@ -601,7 +601,7 @@ describe('Case Status Configuration', () => {
         it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
             expect(await viewCasePo.getCaseStatusValue()).toBe("Assigned");
         });

@@ -347,7 +347,7 @@ describe('Create Process in Flowset', () => {
             await activityTabPage.clickOnPostButton();
             await browser.sleep(1000); //hardwait to complete process execution
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
-            await statusBladePo.changeCaseStatus('In Progress');
+            await statusBladePo.changeStatus('In Progress');
             await statusBladePo.clickSaveStatus('In Progress');
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
         });

@@ -86,8 +86,8 @@ describe('Case Status Verification', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
         });
 
@@ -154,10 +154,10 @@ describe('Case Status Verification', () => {
         });
 
         it('[3489]: Verify case1 without case template', async () => {
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason("Auto Resolved");
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason("Auto Resolved");
             await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus(statusClosed);
+            await updateStatusBladePo.changeStatus(statusClosed);
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg2: Closed status is missing');
@@ -222,17 +222,17 @@ describe('Case Status Verification', () => {
         await editCasePo.clickSaveCase();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned, 'FailureMsg3: Assigned status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg4: Case Reopen link displayed');
-        await updateStatusBladePo.changeCaseStatus(statusInProgress);
+        await updateStatusBladePo.changeStatus(statusInProgress);
         await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg5: In progress status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg6: Case Reopen link displayed');
-        await updateStatusBladePo.changeCaseStatus(statusPending);
-        await updateStatusBladePo.setStatusReason('Error');
+        await updateStatusBladePo.changeStatus(statusPending);
+        await updateStatusBladePo.selectStatusReason('Error');
         await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusPending, 'FailureMsg7: Pending status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg8: Case Reopen link displayed');
-        await updateStatusBladePo.changeCaseStatus(statusCanceled);
-        await updateStatusBladePo.setStatusReason('Approval Rejected');
+        await updateStatusBladePo.changeStatus(statusCanceled);
+        await updateStatusBladePo.selectStatusReason('Approval Rejected');
         await updateStatusBladePo.clickSaveStatus();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusCanceled, 'FailureMsg9: Pending status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg10: Case Reopen link displayed');
@@ -271,8 +271,8 @@ describe('Case Status Verification', () => {
 
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qing Yuan', 'Read')).toBeTruthy('Failuer: Qing Yuan Agent Name is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Write')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
         });
 
@@ -304,10 +304,10 @@ describe('Case Status Verification', () => {
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
 
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Quin Strong', 'Write')).toBeTruthy('Failuer: Quin Strong Agent Name is missing');
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus(statusClosed);
+            await updateStatusBladePo.changeStatus(statusClosed);
             await updateStatusBladePo.clickSaveStatus();
         });
 
@@ -338,8 +338,8 @@ describe('Case Status Verification', () => {
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg14: Resolved status is missing');
 
@@ -353,10 +353,10 @@ describe('Case Status Verification', () => {
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg12: Text is missing');
-            await updateStatusBladePo.changeCaseStatus(statusResolved);
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus(statusResolved);
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus(statusClosed);
+            await updateStatusBladePo.changeStatus(statusClosed);
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg13: Closed status is missing');
         });

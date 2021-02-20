@@ -222,8 +222,8 @@ describe("Case General Approval Tests", () => {
         });
 
         it('[6216,3504]:Cancel the case and verify the case details', async () => {
-            await updateStatusBladePo.changeCaseStatus('Canceled');
-            await updateStatusBladePo.setStatusReason('Approval Rejected');
+            await updateStatusBladePo.changeStatus('Canceled');
+            await updateStatusBladePo.selectStatusReason('Approval Rejected');
             await updateStatusBladePo.clickSaveStatus('Canceled');
             expect(await viewCasePo.getTextOfStatus()).toBe('Canceled');
             await activityTabPage.clickOnFilterButton();
@@ -341,8 +341,8 @@ describe("Case General Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus('Resolved');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -405,8 +405,8 @@ describe("Case General Approval Tests", () => {
         it('[5150]:Update the case status to retrigger the approval and verify the details', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus('Resolved');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
