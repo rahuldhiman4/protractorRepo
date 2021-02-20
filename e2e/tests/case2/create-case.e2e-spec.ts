@@ -45,7 +45,7 @@ describe("Create Case", () => {
         await navigationPage.signOut();
     });
 
-    //kgaikwad
+    // passed
     it('[4427]: Verify Category Tier 4 Can be Populated After Tier 3 selection', async () => {
         try {
             await navigationPage.signOut();
@@ -65,7 +65,7 @@ describe("Create Case", () => {
         }
     });
 
-    //kgaikwad
+    // passed
     describe('[4082]: Check Resolution Code and Resolution Description fields added on Case View and Status Change blade', () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId: string = undefined;
@@ -127,7 +127,7 @@ describe("Create Case", () => {
         });
     });
 
-    //kgaikwad
+    // passed
     describe('[4022]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId1, caseId2;
@@ -156,6 +156,7 @@ describe("Create Case", () => {
             caseId2 = newCase2.displayId;
         });
 
+        //passed
         it('[4022]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
@@ -178,6 +179,7 @@ describe("Create Case", () => {
             await utilityCommon.closePopUpMessage();
         });
 
+        // passed
         it('[4022]: [UI]Resolution Code can be view on Case with respect to input in field "Available on UI"', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
@@ -197,7 +199,7 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // passed
     it('[6338,6331]: [Case Creation] Case creation with/without mandatory fields populated ', async () => {
         let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -220,7 +222,7 @@ describe("Create Case", () => {
         expect(await caseConsolePage.isCaseIdHyperlinked()).toBeTruthy('Unable to find the created case');
     });
 
-    //ankagraw Pending For Assignemnet Section 
+    // failed (priority required text issue)
     describe('[6336,6339]: [Case Creation] Case Create view (UI verification) ', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseSummary = 'Summary ' + randomStr;
@@ -269,7 +271,7 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // passed
     it('[6297]: [Global navigation] Navigation to Workspaces and Create subitems in the Shell ', async () => {
         try {
             await navigationPage.gotoCaseConsole();
@@ -293,7 +295,7 @@ describe("Create Case", () => {
         }
     });
 
-    //ankagraw
+    // passed
     describe('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', () => {
         it('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
             await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
@@ -333,7 +335,7 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // passed
     describe('[5454]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, caseTemplateData;
@@ -374,15 +376,13 @@ describe("Create Case", () => {
             expect(await caseTemplatePreview.isCaseCompanyTitleDisplayed('Case Company')).toBeTruthy('Case Company is not getting displayed');
             expect(await caseTemplatePreview.isCaseStatusTitleDisplayed('Case Status')).toBeTruthy('Case Status is not getting displayed');
             expect(await caseTemplatePreview.isCasePriorityTitleDisplayed('Case Priority')).toBeTruthy('Case Priority is not getting displayed');
-            expect(await caseTemplatePreview.isCaseCategoryTier1TitleDisplayed('Case Category Tier 1')).toBeTruthy('Case Category Tier 1 is not getting displayed');
-            expect(await caseTemplatePreview.isCaseCategoryTier2TitleDisplayed('Case Category Tier 2')).toBeTruthy('Case Category Tier 2 is not getting displayed');
-            expect(await caseTemplatePreview.isCaseCategoryTier3TitleDisplayed('Case Category Tier 3')).toBeTruthy('Case Category Tier 3 is not getting displayed');
-            expect(await caseTemplatePreview.isCaseCategoryTier4TitleDisplayed('Case Category Tier 4')).toBeTruthy('Case Category Tier 4 is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCategoryTier1TitleDisplayed('Category Tier 1')).toBeTruthy('Case Category Tier 1 is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCategoryTier2TitleDisplayed('Category Tier 2')).toBeTruthy('Case Category Tier 2 is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCategoryTier3TitleDisplayed('Category Tier 3')).toBeTruthy('Case Category Tier 3 is not getting displayed');
+            expect(await caseTemplatePreview.isCaseCategoryTier4TitleDisplayed('Category Tier 4')).toBeTruthy('Case Category Tier 4 is not getting displayed');
             expect(await caseTemplatePreview.isFlowsetTitleDisplayed('Flowset')).toBeTruthy('Flowset is not getting displayed');
             expect(await caseTemplatePreview.isLabelTitleDisplayed('Label')).toBeTruthy('Label is not getting displayed');
             expect(await caseTemplatePreview.isCaseDescriptionTitleDisplayed('Case Description')).toBeTruthy('Case Description is not getting displayed');
-            expect(await caseTemplatePreview.isSupportCompanyTitleDisplayed('Support Company')).toBeTruthy('Support Company is not getting displayed');
-            expect(await caseTemplatePreview.isSupportGroupTitleDisplayed('Support Group')).toBeTruthy('Support Group is not getting displayed');
             expect(await caseTemplatePreview.isAssigneeTitleDisplayed()).toBeTruthy('Assignee is not getting displayed');
             expect(await caseTemplatePreview.getCaseTemplateName()).toBe(caseTemplateData.templateName);
             expect(await caseTemplatePreview.getCaseSummary()).toBe(caseTemplateData.templateSummary);
@@ -424,7 +424,7 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // failed undefined issue
     describe('[5659,6337]: Verify case assignment on Create Case', () => {
         it('[5659,6337]: Verify case assignment on Create Case', async () => {
             await navigationPage.signOut();
@@ -456,7 +456,7 @@ describe("Create Case", () => {
 
     });
 
-    //ankagraw
+    // passed
     it('[6084]: [Case] Fields validation for case in New status ', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -469,7 +469,6 @@ describe("Create Case", () => {
             expect(await createCasePage.isSummaryRequiredTextPresent()).toBeTruthy("Summary Reqired text not present");
             expect(await createCasePage.isSourceRequiredTextPresent()).toBeTruthy("Source Reqired text not present");
             expect(await createCasePage.isPriorityRequiredTextPresent()).toBeTruthy("Priority Reqired text not present");
-            expect(await createCasePage.isCompanyRequiredTextPresent()).toBeTruthy("Assigned Company Reqired text not present");
             expect((await createCasePage.getCreateCaseTitle()).trim()).toBe('Create Case', "Create Case title is not displayed in Create Case Page");
             expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
             await createCasePage.selectRequester('adam');
@@ -487,8 +486,6 @@ describe("Create Case", () => {
             await editCasePage.updateCasePriority('Low');
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
             expect(await editCasePage.isPriorityRequiredText()).toBeTruthy("Priority Required text not present");
-            expect(await editCasePage.isAssignedCompanyRequiredText()).toBeTruthy("Assigned Company Required text not present");
-            expect(await editCasePage.isAssignedGroupRequiredText()).toBeTruthy("Assigned Group Required text not present");
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
@@ -500,6 +497,7 @@ describe("Create Case", () => {
         }
     });
 
+    // passed
     it('[6078]: [Case] Fields validation for case in Closed status ', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -532,7 +530,7 @@ describe("Create Case", () => {
         }
     });
 
-    //apdeshmu
+    // failed qiwei
     describe('[5670]:  Case Agent user able to see all activity records in activity feed for a Case created using template', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -568,6 +566,7 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            let caseId = await viewCasePage.getCaseID();
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
@@ -577,7 +576,10 @@ describe("Create Case", () => {
             await changeAssignmentPage.setDropDownValue('AssignedGroup', "AU");
             await changeAssignmentPage.setDropDownValue('Assignee', "Qiwei");
             await editCasePage.clickSaveCase();
-            expect(await activityTabPo.isTextPresentInActivityLog("Qiwei Liu")).toBeTruthy("Text is not present in activiy tab1");
+            await navigationPage.signOut();
+            await loginPage.login('qliu');
+            await caseConsolePage.searchAndOpenCase(caseId);
+            expect(await activityTabPo.isTextPresentInActivityLog("Qianru Tao")).toBeTruthy("Text is not present in activiy tab1");
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
             expect(await activityTabPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
@@ -609,6 +611,7 @@ describe("Create Case", () => {
         });
     });
 
+    // passed
     describe('[5075]: Verify  sort on all attachments grid', () => {
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
         let activityNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -661,6 +664,7 @@ describe("Create Case", () => {
         });
     });
 
+    // passed
     describe('[3429]:Assignment blade should list the agent names which are sorted alphabetically', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let CaseTemplateData = {
@@ -700,6 +704,7 @@ describe("Create Case", () => {
         });
     });
 
+    // failed
     describe('[3496,3497,3495]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData1, templateData2, newCaseTemplate, autoTaskTemplateData;
@@ -787,6 +792,7 @@ describe("Create Case", () => {
         });
     });
 
+    // passed
     describe('[5375]: [Case] Source field on Case details/Case Workspace', async () => {
         let caseDataForEmail, caseDataForDwp, caseIdForEmail, caseIdForDWP
         beforeAll(async () => {
@@ -822,7 +828,7 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // passed
     describe('[4325]: Verify allow case reopen tag in case template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
@@ -918,7 +924,7 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // passed
     describe('[5010]: [ Task ] - Verify create case with Global task template having assignment', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let globalCategName = 'Applications';
@@ -927,6 +933,7 @@ describe("Create Case", () => {
         let TaskTemplate = 'Manual task' + randomStr;
         let TaskSummary = 'Summary' + randomStr;
 
+        // passed
         it('[5010]: [ Task ] - Verify create case with Global task template having assignment', async () => {
             //manual Task template
             await navigationPage.gotoSettingsPage();
@@ -960,19 +967,10 @@ describe("Create Case", () => {
             await manageTaskBladePo.clickCloseButton();
         });
 
+        // 
         it('[5010]: [ Task ] - Verify create case with Global task template having assignment', async () => {
-            await apiHelper.apiLogin('tadmin');
-            let userData = {
-                "firstName": "Petramco",
-                "lastName": "Psilon",
-                "userId": "5010",
-                "company": "Psilon",
-                "userPermission": ["Case Business Analyst", "Human Resource"]
-            }
-            await apiHelper.createNewUser(userData);
-            await apiHelper.associatePersonToCompany(userData.userId, "Psilon");
             await navigationPage.signOut();
-            await loginPage.login(userData.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('gwixillian');
             //Create Case
             let caseDataPsilon = {
                 "Description": "4298 Psilon",
@@ -983,7 +981,7 @@ describe("Create Case", () => {
                 "Support Group": "Psilon Support Group2",
                 "Assignee": "gwixillian"
             }
-            await apiHelper.apiLogin(userData.userId + "@petramco.com", 'Password_1234');
+            await apiHelper.apiLogin('gwixillian');
             let psilonCaseResponse = await apiHelper.createCase(caseDataPsilon);
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase(psilonCaseResponse.displayId);
@@ -1002,7 +1000,7 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // passed
     describe('[4393]: Verify the status transition Closed->New is available only when Closed case is Reopened', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate = randomStr + 'CaseTemplate';
@@ -1091,7 +1089,7 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // passed
     describe('[5038]: [Case Creation] create case with Global case template without flowset ', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
@@ -1128,14 +1126,14 @@ describe("Create Case", () => {
         });
     });
 
-    //ankagraw
+    // passed
     describe('[4330]: Reopen configurations available on Case Template Create screen ', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplate2 = 'Case Template 2' + randomStr;
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
         let caseTemplateSummary2 = 'Summary 2' + randomStr;
-
+        // passed
         it('[4330]: Reopen configurations available on Case Template Create screen ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -1161,8 +1159,10 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
 
+        // passed
         it('[4330]: Reopen configurations available on Case Template Create screen ', async () => {
             //create case
             await navigationPage.gotoCreateCase();
@@ -1183,6 +1183,7 @@ describe("Create Case", () => {
             await expect(viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
         });
 
+        // passed
         it('[4330]: Reopen configurations available on Case Template Create screen ', async () => {
             //add second case template
             await navigationPage.gotoCreateCase();
@@ -1209,6 +1210,7 @@ describe("Create Case", () => {
         });
     });
 
+    // passed
     describe('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -1218,6 +1220,7 @@ describe("Create Case", () => {
             await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], '- Global -');
             await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', [true], '- Global -');
         });
+        // passed
         it('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -1249,6 +1252,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.getResolutionCodeValue()).toBe('Report Delivered');
             expect(await viewCasePage.getResolutionDescription()).toBe("CaseResolved" + randomStr);
         });
+        // passed
         it('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
