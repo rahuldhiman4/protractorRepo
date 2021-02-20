@@ -1,6 +1,5 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
-import { async } from 'q';
 
 class ViewCasePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
