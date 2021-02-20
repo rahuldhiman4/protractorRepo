@@ -19,8 +19,11 @@ class ServiceTargetViewConsole {
         await utilityGrid.searchAndOpenHyperlink(searchSVT);
     }
 
-    async isAddSVTButtonEnabled(): Promise<boolean> {
-        return await $(this.selectors.createServiceTargetButton).isEnabled();
+    async isAddSVTButtonVisible(): Promise<boolean> {
+        return await $(this.selectors.createServiceTargetButton).isPresent().then(async (result) => {
+            if(result) $(this.selectors.createServiceTargetButton).isDisplayed();
+            else return false;
+        });
     }
 
     async removeColumns(columnNames: string[]): Promise<void> {

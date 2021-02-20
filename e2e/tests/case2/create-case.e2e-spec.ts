@@ -7,7 +7,7 @@ import createCasePage from "../../pageobject/case/create-case.po";
 import editCasePage from '../../pageobject/case/edit-case.po';
 import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import { default as changeAssignmentBladePo, default as changeAssignmentPage } from '../../pageobject/common/change-assignment.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -235,10 +235,10 @@ describe("Create Case", () => {
             expect(await createCasePage.isSelectCaseTemplateButtonEnabled()).toBeFalsy("Select Case template is Disabled");
             expect(await createCasePage.isClearTemplateButtonEnabled()).toBeFalsy("Clear Template is Disabled");
             expect(await createCasePage.isAutocategorizationEnabled()).toBeFalsy("Autocategorization is Disabled");
-            expect(await changeAssignmentBladePo.isFieldDisabled('Company')).toBeTruthy("Assigned Company read only");
-            expect(await changeAssignmentBladePo.isFieldDisabled('SupportOrg')).toBeTruthy("BuisnessUnit read only");
-            expect(await changeAssignmentBladePo.isFieldDisabled('AssignedGroup')).toBeTruthy("Assigned group read only");
-            expect(await changeAssignmentBladePo.isFieldDisabled('Assignee')).toBeTruthy("Assignee read only");
+            expect(await changeAssignmentPage.isFieldDisabled('Company')).toBeTruthy("Assigned Company read only");
+            expect(await changeAssignmentPage.isFieldDisabled('SupportOrg')).toBeTruthy("BuisnessUnit read only");
+            expect(await changeAssignmentPage.isFieldDisabled('AssignedGroup')).toBeTruthy("Assigned group read only");
+            expect(await changeAssignmentPage.isFieldDisabled('Assignee')).toBeTruthy("Assignee read only");
             expect(await createCasePage.isAttachmentButtonDisplayed()).toBeTruthy("Attachment button not displayed");
             expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enables");
             expect(await createCasePage.isPriorityRequiredTextPresent()).toBeTruthy("required text absent in Priority");
@@ -251,7 +251,7 @@ describe("Create Case", () => {
             await createCasePage.selectCategoryTier2('Social');
             await createCasePage.selectCategoryTier3('Chatter');
             await createCasePage.addDescriptionAttachment(['../../data/ui/attachment/demo.txt']);
-            await changeAssignmentBladePo.clickAssignToMeBtn();
+            await changeAssignmentPage.clickAssignToMeBtn();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getCaseSummary()).toBe(caseSummary);
@@ -438,7 +438,7 @@ describe("Create Case", () => {
             await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Kyle Kohri');
-            await changeAssignmentBladePo.clickAssignToMeBtn();
+            await changeAssignmentPage.clickAssignToMeBtn();
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qiao Feng');
             await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
@@ -652,7 +652,6 @@ describe("Create Case", () => {
             expect(await utilityGrid.isGridColumnSorted('Media type', 'ascending')).toBeTruthy("Media type Not Sorted Asecnding");
             expect(await utilityGrid.isGridColumnSorted('Created date', 'descending')).toBeTruthy("Created date Not Sorted Desecnding");
             expect(await utilityGrid.isGridColumnSorted('Created date', 'ascending')).toBeTruthy("Created date Not Sorted Asecnding");
-            
         });
 
         afterAll(async () => {
@@ -763,8 +762,8 @@ describe("Create Case", () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnChangeCaseTemplate();
-            await selectCaseTemplateBlade.selectCaseTemplate(templateData2.templateName);
-            await editCasePage.clickSaveCase();
+            await selectCaseTemplateBlade.selectCaseTemplate(templateData2.templateName);//Defect 1: Cannot read property 'resourceType' of undefined
+            await editCasePage.clickSaveCase();//Defect 2: Cannot read property 'resourceType' of undefined
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink('Summary2' + randomStr);
             await updateStatusBladePo.changeCaseStatus('In Progress');
@@ -856,10 +855,10 @@ describe("Create Case", () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
             await createCaseTemplate.setAllowCaseReopenValue('No');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -1022,10 +1021,10 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.setCaseStatusValue("Assigned");
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
             await createCaseTemplate.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoCaseConsole();

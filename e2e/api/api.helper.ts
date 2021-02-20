@@ -3214,9 +3214,11 @@ class ApiHelper {
     async mapProcessToFlowset(mappingData: IFlowsetProcessMapping): Promise<boolean> {
         let mappingPayload = cloneDeep(PROCESS_FLOWSET_MAPPING);
         mappingPayload.fieldInstances[7].value = constants.ProcessFlowsetMappingStatus[mappingData.status];
-        mappingPayload.fieldInstances[8].value = mappingData.registeredProcessId;
+        mappingPayload.fieldInstances[8].value = mappingData.processNameFull;
+        mappingPayload.fieldInstances[450000152].value = mappingData.processName;
         mappingPayload.fieldInstances[450000002].value = mappingData.flowsetId;
         mappingPayload.fieldInstances[450000003].value = constants.FlowsetFunctions[mappingData.function];
+        mappingPayload.fieldInstances[450000420].value = mappingData.lineOfBusiness ? mappingData.lineOfBusiness : mappingPayload.fieldInstances[450000420].value;
         mappingPayload.fieldInstances[1000000001].value = mappingData.company ? mappingData.company : mappingPayload.fieldInstances[1000000001].value;
 
         let mappingResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mappingPayload);

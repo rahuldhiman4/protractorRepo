@@ -90,7 +90,7 @@ describe("Quick Case", () => {
         let categoryvalues: string[] = [caseData.Summary, caseData.description];
         for (let i = 0; i < categoryvalues.length; i++) {
             let result: boolean = undefined;
-            await quickCasePo.selectRequesterName('Harry Potter');
+            await quickCasePo.selectRequesterName('Allen Allbrook');
             await quickCasePo.setCaseSummary(categoryvalues[i]);
             let qcSummary = await quickCasePo.isCaseSummaryPresentInRecommendedCases(categoryvalues[0]);
             qcSummary = false ? result = false : result = true;

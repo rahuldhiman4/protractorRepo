@@ -73,18 +73,6 @@ describe('Service Target Configs', () => {
         await apiHelper.apiLogin('fritz');
         await apiHelper.createSVTGoalType(goalTypeFacilities);
         await apiHelper.createSVTGoalType(goalTypeFacilitiesInactive);
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["SLM User","SLM Viewer","SLM Administrator","Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.apiLogin('tadmin');
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {
@@ -1007,7 +995,7 @@ describe('Service Target Configs', () => {
 
         it('[5647]: Verify if SVT with milestone is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await utilityGrid.selectLineOfBusiness('Human Resource');

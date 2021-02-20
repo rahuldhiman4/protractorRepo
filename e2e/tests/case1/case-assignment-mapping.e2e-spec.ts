@@ -557,6 +557,7 @@ describe("Create Case Assignment Mapping", () => {
 
     });
 
+    // failing because of adapt dropdown space issue
     describe('[5047,5046,5045,5044,5027]: Verify Company and Support Group selection hierarchy.', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let businessUnitUSSupport = 'United States Support';

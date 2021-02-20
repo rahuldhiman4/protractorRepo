@@ -1,4 +1,4 @@
-import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions, browser } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
 class CreateKnowledgePage {
@@ -34,7 +34,8 @@ class CreateKnowledgePage {
         templatePreview: '.create-ka-template__preview',
         backBtn: '[rx-view-component-id="75d55491-37d4-40f2-83ef-35019670e355"] button',
         imageIcon: '[rx-view-component-id="7591fcfd-3d96-4155-a450-33c6e591dc2c"] .cke_toolgroup .cke_button__image',
-        lineOfBusiness: '[rx-view-component-id="9bcf3768-1f60-4b44-a300-3bad90b22651"] button[btn-type="tertiary"]'
+        lineOfBusiness: '[rx-view-component-id="9bcf3768-1f60-4b44-a300-3bad90b22651"] button[btn-type="tertiary"]',
+        useSelectedTemplateBtn: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .btn-primary',
     }
 
     async clickChangeTemplateButton(): Promise<void> {
@@ -92,9 +93,7 @@ class CreateKnowledgePage {
     }
 
     async clickOnUseSelectedTemplateButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable(element(by.buttonText('Use selected Template'))));
-        await element(by.buttonText('Use selected Template')).click();
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.docEditorSection)));
+        await $(this.selectors.useSelectedTemplateBtn).click();
     }
 
     async setReferenceValue(value: string): Promise<void> {

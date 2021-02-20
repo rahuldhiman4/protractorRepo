@@ -195,40 +195,12 @@ describe('Case Manager Read-only Config', () => {
     it('[3993]: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.CONFIGURE_DATA_SOURCE);
-        expect(await configureDataSourceConfigConsole.isConfigDataSourceBtnDisabled()).toBeTruthy("Add button is enabled");
+        expect(await configureDataSourceConfigConsole.isConfigDataSourceBtnVisible()).toBeFalsy("Add button is visible");
         await utilityGrid.searchAndOpenHyperlink("Case Management");
         await configureDataSourceEditPage.clickDataSourceLink('Show Advanced Settings');
         expect(await configureDataSourceEditPage.isAssociationNameDisabled()).toBeTruthy("Association Name is enabled");
         expect(await configureDataSourceEditPage.isBuildExpressionBtnDisabled()).toBeTruthy("Build Expression button is enabled");
         expect(await configureDataSourceEditPage.isSaveBtnDisabled()).toBeTruthy("Save button is enabled");
-    });
-
-    // asahitya
-    it('[3994]: Check Case manager is not able to perform Create Update operation on Business Time Shared Entity', async () => {
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createBusinessTimeSharedEntity('India Business Hours');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Shared Entity', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.BUSINESS_TIME_SHARED_ENTITY);
-        expect(await businessTimeSharedEntityConfigConsole.isAddBtnDisplayed()).toBeFalsy("Add button is enabled");
-        await utilityGrid.searchAndOpenHyperlink("India Business Hours");
-        await businessTimeEntityConfigEditPage.updateStatus("Pending");
-        expect(await businessTimeEntityConfigEditPage.isSaveBtnDisabled()).toBeTruthy("Save button is enabled");
-        expect(await businessTimeEntityConfigEditPage.isAddBusinessSegmentBtnDisabled()).toBeTruthy("Add business time segment button is enabled");
-        await businessTimeEntityConfigEditPage.selectAllShortDescription();
-        expect(await businessTimeEntityConfigEditPage.isRemoveBtnDisabled()).toBeTruthy("Remove button is enabled");
-    });
-
-    // asahitya
-    it('[4001]: Check Case manager is not able to perform Create Update operation on Business Time Segment', async () => {
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createBusinessTimeSegment('India Available M-F 9AM-5PM');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Service Level Management--Business Time Segment', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.BUSINESS_TIME_SEGMENT);
-        expect(await businessTimeSegmentConfigConsole.isAddBusinessSegmentBtnDisplayed()).toBeFalsy("Add Business Time Segment button is enabled");
-        await utilityGrid.searchAndOpenHyperlink("India Available M-F 9AM-5PM");
-        await businessTimeSegmentConfigEditPage.updateStatus("Draft");
-        await businessTimeSegmentConfigEditPage.clickNextButton();
-        expect(await businessTimeSegmentConfigEditPage.isFinishButtonDisabled()).toBeTruthy("Finish button is enabled");
     });
 
     // asahitya
@@ -309,7 +281,7 @@ describe('Case Manager Read-only Config', () => {
     it('[DRDMV-18077]: Check Case manager is not able to perform Create Update operation on Case to Case Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_CASE);
-        expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
+        expect(await relationshipsConfigsPage.isAddRelationButtonDisabled()).toBeTruthy('Add Button is enabled');
         expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Parent')).toBeFalsy('Parent name is enabled');
         expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
@@ -318,7 +290,7 @@ describe('Case Manager Read-only Config', () => {
     it('[DRDMV-18078]: Check Case manager is not able to perform Create Update operation on Case to Person Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_PERSON);
-        expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
+        expect(await relationshipsConfigsPage.isAddRelationButtonDisabled()).toBeTruthy('Add Button is enabled');
         expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Witness')).toBeFalsy('Witness name is enabled');
         expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
@@ -327,7 +299,7 @@ describe('Case Manager Read-only Config', () => {
     it('[DRDMV-18079]: Check Case manager is not able to perform Create Update operation on Person to Person Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
-        expect(await relationshipsConfigsPage.isAddRelationButtonEnabled()).toBeFalsy('Add Button is enabled');
+        expect(await relationshipsConfigsPage.isAddRelationButtonDisabled()).toBeTruthy('Add Button is enabled');
         expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Former Manager')).toBeFalsy('Former Manager name is enabled');
         expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
@@ -345,7 +317,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
         expect(await emailTemplateConsolePage.isAddEmailTemplateButtonDisplayed()).toBeFalsy('Add Email Template Button is enabled');
         await utilityGrid.searchRecord(emailTemplateName);
-        await utilityGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
+        await utilityGrid.searchAndSelectGridRecord(emailTemplateName);
         expect(await emailTemplateConsolePage.isDeleteEmailTemplateButtonDisplayed()).toBeFalsy('Delete Template Button is enabled');
         await utilityGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editEmailTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
@@ -370,7 +342,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
         expect(await acknowledgementTemplateConsolePage.isAddAcknowledgeTemplateButtonDisplayed()).toBeFalsy('Add Email Template Button is enabled');
         await utilityGrid.searchRecord(emailTemplateName);
-        await utilityGrid.clickCheckBoxOfValueInGrid(emailTemplateName);
+        await utilityGrid.searchAndSelectGridRecord(emailTemplateName);
         expect(await acknowledgementTemplateConsolePage.isDeleteAcknowledgementTemplateButtonDisplayed()).toBeFalsy('Delete Template Button is enabled');
         await utilityGrid.searchAndOpenHyperlink(emailTemplateName);
         expect(await editAcknowledementTemplatePage.isTemplateNameEnabled()).toBeFalsy('Template Name is enabled');
@@ -402,11 +374,11 @@ describe('Case Manager Read-only Config', () => {
         await apiHelper.createSVT(svtData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-        expect(await serviceTargetConsolePage.isAddSVTButtonEnabled()).toBeFalsy('Add SVT button is enabled');
+        expect(await serviceTargetConsolePage.isAddSVTButtonVisible()).toBeFalsy('Add SVT button is enabled');
         await utilityGrid.searchAndOpenHyperlink("DRDMV18170" + randomStr);
         expect(await editServiceTargetConfigPage.isStatusFieldDisabled()).toBeTruthy('Status field is enabled');
-        expect(await editServiceTargetConfigPage.isBuildExpressionButtonEnabled()).toBeFalsy('Build Expression button is enabled');
-        expect(await editServiceTargetConfigPage.isDescriptionFieldEnabled()).toBeFalsy('Description field is enabled');
+        expect(await editServiceTargetConfigPage.isBuildExpressionButtonDisabled()).toBeTruthy('Build Expression button is enabled');
+        expect(await editServiceTargetConfigPage.isDescriptionFieldDisabled()).toBeTruthy('Description field is enabled');
         expect(await editServiceTargetConfigPage.isGoalDaysFieldEnabled()).toBeFalsy('Goal Days field is enabled');
         expect(await editServiceTargetConfigPage.isGoalHoursFieldEnabled()).toBeFalsy('Goal Hours field is enabled');
         expect(await editServiceTargetConfigPage.isGoalMinutesFieldEnabled()).toBeFalsy('Goal Minutes field is enabled');
@@ -446,9 +418,9 @@ describe('Case Manager Read-only Config', () => {
         await apiHelper.createServiceTargetGroup(svtGropuData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
-        expect(await serviceTargetGroupConsole.isAddServiceTargetGroupBtnEnabled()).toBeFalsy('Add Button is enabled');
+        expect(await serviceTargetGroupConsole.isAddServiceTargetGroupBtnVisible()).toBeFalsy('Add Button is enabled');
         await utilityGrid.searchAndOpenHyperlink(svtGrpName);
-        expect(await editServiceTargetGroupPage.isSVTGroupNameEnabled()).toBeFalsy('SVT Group name is enabled');
+        expect(await editServiceTargetGroupPage.isSVTGroupNameDisabled()).toBeTruthy('SVT Group name is enabled');
         expect(await editServiceTargetGroupPage.isSVTSelectRadioBtnDisabled()).toBeTruthy('SVT Selection is enabled');
         expect(await editServiceTargetGroupPage.isSaveBtnEnabled()).toBeFalsy('Save button is enabled');
         await editServiceTargetGroupPage.clickClose();
@@ -500,7 +472,7 @@ describe('Case Manager Read-only Config', () => {
         await apiHelper.createApprovalMapping(caseModule, approvalMappingData);
 
         await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+        await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
         expect(await approvalMappingConsolePO.isAddApprovalMappingBtnDisplayed()).toBeFalsy('Add Config button is displayed');
         await utilityGrid.searchAndOpenHyperlink("Approval Mapping Name" + randomStr);
         expect(await editApprovalMappingPage.isApprovalMappingNameDisabled()).toBeTruthy('Approval Mapping Name is editable');
@@ -539,6 +511,7 @@ describe('Case Manager Read-only Config', () => {
         }
         catch (ex) { throw ex; }
         finally {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteAllEmailConfiguration();
         }
@@ -611,6 +584,9 @@ describe('Case Manager Read-only Config', () => {
         await editTaskTemplatePage.clickOnEditMetadataLink();
         expect(await editTaskTemplatePage.isTemplateStatusDisabled()).toBeTruthy('Template status field is enabled');
         expect(await editTaskTemplatePage.isSaveTemplateMetadataBtnEnabled()).toBeFalsy('Task template metadata save button is enabled');
+        await editTaskTemplatePage.clickOnCancelButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        await viewTaskTemplatePage.clickBackArrowBtn();
     });
 
     it('[DRDMV-18076]: Check Case manager is not able to perform Create Update Delete operation on Document Template', async () => {

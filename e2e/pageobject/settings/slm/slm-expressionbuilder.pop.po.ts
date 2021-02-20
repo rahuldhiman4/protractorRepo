@@ -1,24 +1,26 @@
-import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$, ElementFinder } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
+import { DropDownType } from '../../../utils/constants';
 
 class SlmExpressionBuilder {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     expressionBuilderSelectors = {
-        qualificationBuilder: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .content-outlet',
-        searchField: '[rx-view-component-id="b7b2f1b7-c03c-4bcb-b5bf-fddfc34e563b"] input',
-        selectField: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-field-selector_field',
-        selectOperator: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-expression-operators button',
-        selectFieldOption: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .rx-select__option-content',
-        selectCategoryTierOptionDropDown: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"]  button.dropdown-toggle',
-        selectCategoryTierOption: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .rx-select__option-content',
+        qualificationBuilder: '[rx-view-definition-guid="7303cd72-d321-457f-9779-cbd2dc681bd9"] .content-outlet',
+        searchField: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] input',
+        selectField: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .bwf-field-selector_field',
+        selectOperator: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .bwf-expression-operators button',
+        selectFieldOption: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .rx-select__option-content',
+        selectCategoryTierOptionDropDown: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"]  button.dropdown-toggle',
+        selectCategoryTierOption: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .rx-select__option-content',
         getExpressionFieldName: 'span[type="FIELD"]',
         getExpressionOperator: 'span[type="OPERATOR"]',
         getExpressionFieldValue: 'span[type="VALUE"]',
-        saveSVTExpressionButton: '[rx-view-component-id="1dd13374-edae-4f26-ad13-a0b5e7ba4346"] button',
+        saveSVTExpressionButton: '[rx-view-component-id="46c33f50-2695-45c7-8a11-db8d7fccd581"] button',
         saveTaskSVTExpressionButton: '[rx-view-component-id="377c4912-0248-4099-bb96-30a94b3abf1b"] button',
         isPartialExpression: 'div[class*="bwf-invalid-expression"]',
         expandExpressionField: '.d-icon-triangle_right',
-        selectFirstLevelExpressionField: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-field-selector_field',
-        selectSecondLevelExpressionField: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-field-selector_child-container .bwf-field-selector_field',
+        selectFirstLevelExpressionField: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .bwf-field-selector_field',
+        selectSecondLevelExpressionField: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .bwf-field-selector_child-container .bwf-field-selector_field',
         clearExpression: 'div.cke_enable_context_menu',
         fieldSearch: '[rx-view-component-id="b7b2f1b7-c03c-4bcb-b5bf-fddfc34e563b"] input'
     }
@@ -44,8 +46,8 @@ class SlmExpressionBuilder {
 
     async getFirstLevelExpressionField(firstLevelExpression: string): Promise<string> {
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
+        await qBuilder.$(this.expressionBuilderSelectors.searchField).clear();
+        await qBuilder.$(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelExpression);
         return await $(this.expressionBuilderSelectors.selectFirstLevelExpressionField).getText();
     }
     async clearSearchField(): Promise<void> {
@@ -100,8 +102,8 @@ class SlmExpressionBuilder {
     async selectFirstLevelExpressionField(firstLevelExpression: string): Promise<void> {
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
         let firstLevelExpressionField = `//div[@class='expanded_field'][text()='${firstLevelExpression}']/preceding-sibling::*[contains(@class,'d-icon-plus_circle')]`;
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelExpression);
+        await qBuilder.$(this.expressionBuilderSelectors.searchField).clear();
+        await qBuilder.$(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelExpression);
         let checkboxRows: ElementFinder[];
         let checkboxRows1: ElementFinder[];
         checkboxRows = await $$('.add_child_icon.icon.d-icon-plus_circle+.expanded_field');
@@ -158,7 +160,7 @@ class SlmExpressionBuilder {
 
     async selectFields(field: string): Promise<void> {
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(field);
+        await qBuilder.$(this.expressionBuilderSelectors.searchField).sendKeys(field);
         await browser.sleep(3000);
         await browser.wait(this.EC.elementToBeClickable($(this.expressionBuilderSelectors.selectField)), 4000);
         await qBuilder.$(this.expressionBuilderSelectors.selectField).click();
@@ -175,24 +177,23 @@ class SlmExpressionBuilder {
         await $(this.expressionBuilderSelectors.selectFieldOption).click();
     }
 
-    async selectExpressionQualification(field: string, operator: string, fieldAttribute: string, fieldvalue: string): Promise<void> {
+    async selectExpressionQualification(field: string, operator: string, fieldvalue: string,DropDown?: string): Promise<void> {
         await this.selectFields(field);
         await this.selectOperator(operator);
-        await this.selectFieldOption(fieldAttribute, fieldvalue);
+        await this.selectFieldOption(field, fieldvalue,DropDown);
     }
 
-    async selectFirstLevelExpressionQualification(field: string, operator: string, fieldAttribute: string, fieldvalue: string): Promise<void> {
+    async selectFirstLevelExpressionQualification(field: string, operator: string, fieldvalue: string,DropDown?: string): Promise<void> {
         await this.selectFirstLevelExpressionField(field);
         await this.selectOperator(operator);
-        await this.selectFieldOption(fieldAttribute, fieldvalue);
-        await this.clickOnAddExpressionButton(fieldAttribute);
+        await this.selectFieldOption(field, fieldvalue,DropDown);
     }
 
     async selectSecondLevelExpressionQualification(firstLevelAssociationfield: string, secondLevelAssociationfield: string, operator: string, fieldAttribute: string, fieldvalue: string): Promise<void> {
         let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
         await browser.sleep(2000);
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).clear();
-        await qBuilder.element(by.model(this.expressionBuilderSelectors.searchField)).sendKeys(firstLevelAssociationfield);
+        await qBuilder.$(this.expressionBuilderSelectors.searchField).clear();
+        await qBuilder.$(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelAssociationfield);
         await browser.sleep(2000);
         await this.selectSecondLevelExpressionField(firstLevelAssociationfield, secondLevelAssociationfield);
         await this.selectOperator(operator);
@@ -200,58 +201,15 @@ class SlmExpressionBuilder {
         await this.clickOnAddExpressionButton(fieldAttribute);
     }
 
-    async selectFieldOption(fieldAttribute: string, fieldOptionValue: string): Promise<void> {
-        let ref1: string = '"' + "showField ==" + "'" + fieldAttribute + "'" + '"';
-        let attributeRef = `div[ng-show=${ref1}]`;
-        let attributeReference = await $(attributeRef);
-        let selectDropDown = '.ui-select-match';
-        let selectDropDownOption = '.ui-select-choices-row-inner';
-        let clickOnOptionFieldDropDown = await attributeReference.$(selectDropDown);
-        let selectFieldOptionFromDropDown = `div[ng-show=${ref1}]` + " .ui-select-choices-row-inner";
-        let textField = 'input[type="text"]';
-        let addBtn = 'Add';
-
-        switch (fieldAttribute) {
-            case "NAMED_LIST":
-                let attr = `"showField =='${fieldAttribute}'"`;
-                const attributeName = await $(`div[ng-if=${attr}]`);
-                await attributeName.$(selectDropDown).click();
-                let option = await element(by.cssContainingText('.ui-select-choices-row-inner div', fieldOptionValue));
-                await browser.wait(this.EC.elementToBeClickable(option), 2000);
-                await option.click();
-                break;
-            case "STATUS":
-                await $('[aria-hidden="false"] select[ng-model="selectedValue"]').click();
-                await element(by.cssContainingText('option', fieldOptionValue)).click();
-                break;
-            case "SELECTION":
-                await $('[aria-hidden="false"] select[ng-model="selectedValue"]').click();
-                await element(by.cssContainingText('option', fieldOptionValue)).click(); break;
-            case "DATE_TIME":
-                await element(by.css("input[ng-model='date']")).sendKeys(fieldOptionValue);
-                break;
-            case "ASSOCIATION":
-                await browser.sleep(2000);
-                await clickOnOptionFieldDropDown.click();
-                option = await element(by.cssContainingText(selectFieldOptionFromDropDown, fieldOptionValue));
-                await option.click();
-                break;
-            case "LABEL":
-                    await browser.sleep(2000); //Need this wait till displayed label drop down
-                    await $$('.ui-select-toggle[aria-label="Select box activate"]').get(0).click();
-                    await element(by.cssContainingText('.ui-select-choices-row-inner div', fieldOptionValue)).click();
-                    break;
-            case "PERSON":
-                await element(by.model('personGroupListCtrl.ngModel')).sendKeys(fieldOptionValue);
-                await element(by.className('uib-typeahead-match active')).click();
-                break;
-            default:
-                await attributeReference.$(textField).click();
-                await attributeReference.$(textField).clear();
-                await attributeReference.$(textField).sendKeys(fieldOptionValue);
+    async selectFieldOption(field: string, fieldOptionValue: string, DropDown?: string): Promise<void> {
+        let addBtn = ' button.bwf-add-button';
+        if (DropDown == "Direct") {
+            await utilityCommon.selectDropDown(await $(".bwf-expression-values button[role='listbox']"), fieldOptionValue,DropDownType.WebElement);
+        } else if (DropDown == "Search"){
+            await utilityCommon.selectDropDown(field, fieldOptionValue, DropDownType.Label);
         }
+        await $(addBtn).click();
     }
-
     async getSelectedExpression(): Promise<string> {
         let actualFieldName, actualOperator, actualFieldValue;
         actualFieldName = await $(this.expressionBuilderSelectors.getExpressionFieldName).getText();

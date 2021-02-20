@@ -10,9 +10,12 @@ class ConfigureDataSourceConfigConsolePage {
         clearSearchIcon : '[rx-view-component-id="39686460-fa7b-4e61-9562-302ca8c88378"] button.d-icon-cross_adapt',
     }
 
-    async isConfigDataSourceBtnDisabled(): Promise<boolean> {
-        let addBtnLocator = await $(this.selectors.addConfigDataSource);
-        return await addBtnLocator.getAttribute("aria-disabled") == "true";
+    async isConfigDataSourceBtnVisible(): Promise<boolean> {
+        return await $(this.selectors.addConfigDataSource).isPresent().then(async (result) => {
+            if(result) await $(this.selectors.addConfigDataSource).isDisplayed();
+            else return false;
+        });
+        
     }
 
     async getDataSourceConfigurationConsoleHeading(): Promise<string> {

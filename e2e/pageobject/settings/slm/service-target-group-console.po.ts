@@ -2,12 +2,15 @@ import { $ } from "protractor";
 
 class ServiceTargetGroupConsolePage {
     selectors = {
-        addServiceTargetGroup: '[rx-view-component-id="65b76257-fae2-4e39-bfe3-5ffbb93e96a3"] button',
+        addServiceTargetGroup: '[rx-view-component-id="57be1b9a-c969-49d3-830a-8af8acd7e774"] button',
         deleteButton: '.d-icon-left-cross'
     }
 
-    async isAddServiceTargetGroupBtnEnabled(): Promise<boolean> {
-        return await $(this.selectors.addServiceTargetGroup).isEnabled();
+    async isAddServiceTargetGroupBtnVisible(): Promise<boolean> {
+        return await $(this.selectors.addServiceTargetGroup).isPresent().then(async (result) => {
+            if(result) return await $(this.selectors.addServiceTargetGroup).isDisplayed();
+            else return false;
+        });
     }
 
     async isDeleteButtonEnabled(): Promise<boolean> {

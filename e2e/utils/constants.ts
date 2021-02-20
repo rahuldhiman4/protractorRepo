@@ -41,7 +41,7 @@ export const BWF_PAGE_TITLES = {
 
     },
     CASE_MANAGEMENT: {
-        APPROVALS: 'Approvals - Settings - Business Workflows',
+        APPROVALS: 'Approval Mappings - Settings - Business Workflows',
         ASSIGNMENTS: 'Assignments - Settings - Business Workflows',
         AUTOMATED_STATUS_TRANSITION: 'Automated Status Transition - Settings - Business Workflows',
         COGNITIVE: {

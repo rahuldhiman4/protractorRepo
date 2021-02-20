@@ -1,4 +1,4 @@
-import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 import utilityGrid from '../../../utils/utility.grid';
 
@@ -88,16 +88,8 @@ class EditFlowsetPage {
         await $(this.selectors.editProcessMappingSaveBtn).click();
     }
 
-    async searchProcessMappingName(processMappingName: string): Promise<boolean> {
-        await utilityGrid.isGridRecordPresent(processMappingName, this.selectors.processMappingConsoleGuid);
-        return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).isPresent().then(async (result) => {
-            if (result) {
-                return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid__link', processMappingName)).getText() == processMappingName ? true : false;
-            } else {
-                console.log("Mapping not present");
-                return false;
-            }
-        });
+    async isProcessPresentOnGrid(processMappingName: string): Promise<boolean> {
+        return await utilityGrid.isGridRecordPresent(processMappingName, this.selectors.processMappingConsoleGuid);
     }
 
     async searchAndOpenProcessMapping(processMappingName: string): Promise<void> {
@@ -108,15 +100,8 @@ class EditFlowsetPage {
         return await $(this.selectors.addNewMapping).getAttribute("disabled") == "true";
     }
 
-    async isProcessExecutionTypePresent(process: string): Promise<boolean> {
-        return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid-cell-contents', process)).isPresent().then(async (result) => {
-            if (result) {
-                return await element(by.cssContainingText('[rx-view-component-id="0e25a330-f284-4892-9777-84ae2a5583ff"] .ui-grid-cell-contents', process)).getText() == process ? true : false;
-            } else {
-                console.log("Process not present");
-                return false;
-            }
-        });
+    async isProcessExecutionTypePresent(processType: string): Promise<boolean> {
+        return (await utilityGrid.getFirstGridRecordColumnValue("Process Execution Type", this.selectors.processMappingConsoleGuid)) == processType;
     }
 
     async clickOnAddNewMappingBtn(): Promise<void> {

@@ -411,9 +411,10 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("In Progress");
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('In Progress');
             expect(await viewTask.getTaskStatusValue()).toBe('In Progress');
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5786,5787,5785,5775,5779]: Open the case verify the In Progress Status ', async () => {
             await viewCasePage.openTaskCard(1);
@@ -424,10 +425,12 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.allStatusOptionsPresent(allStatusatinProgressState);
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await updateStatusBladePo.changeStatus("Pending");
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus("Pending");
             expect(await viewTask.getTaskStatusValue()).toBe('Pending');
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5786,5787,5785,5775,5779]: Open the case verify the Pending Status ', async () => {
             await viewCasePage.openTaskCard(1);
@@ -439,13 +442,14 @@ describe('Create Task Template', () => {
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Assigned");
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus("Assigned");
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.setStatusReason("Successful");
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus("Completed");
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5786,5787,5785,5775,5779]: Open the case verify the Completed Status ', async () => {
             await viewCasePage.openTaskCard(1);
@@ -453,9 +457,10 @@ describe('Create Task Template', () => {
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Canceled");
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus("Canceled");
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled');
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5786,5787,5785,5775,5779]: Open the case verify the Canceled Status ', async () => {
             await viewCasePage.openTaskCard(1);

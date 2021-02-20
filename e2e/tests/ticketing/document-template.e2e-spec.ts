@@ -1,4 +1,3 @@
-import utilityGrid from '../../utils/utility.grid';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
@@ -10,6 +9,7 @@ import documentTemplateConsolePo from '../../pageobject/settings/document-manage
 import editDocumentTemplatePo from '../../pageobject/settings/document-management/edit-document-template.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from '../../utils/utility.grid';
 
 describe('Document Template', () => {
     beforeAll(async () => {
@@ -30,7 +30,6 @@ describe('Document Template', () => {
         let documentBody = "documentBody" + randomStr;
         let label1 = "POSH";
         let label2 = "Payroll";
-
         it('[4510]: Verify Create Document Template UI', async () => {
             // Goto document template
             await navigationPage.gotoSettingsPage();
@@ -81,6 +80,7 @@ describe('Document Template', () => {
             await createDocumentTemplatePo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent(`Template Already exist with given name:${documentName}`)).toBeTruthy("Error message absent");
             await createDocumentTemplatePo.clickOnCancelButton();
+            await utilityCommon.closePopUpMessage();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4510]: create same name record in different LOB', async () => {
@@ -102,6 +102,7 @@ describe('Document Template', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -185,6 +186,7 @@ describe('Document Template', () => {
             await editDocumentTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await documentTemplateConsolePo.searchOnGridConsole(templateRandVal1);
+            await utilityGrid.selectLineOfBusiness("Human Resource");
         });
         it('[4516,4512,4515,4514]: Verify Document template creation with Case business analyst only and different validations on the window', async () => {
             await navigationPage.signOut();
