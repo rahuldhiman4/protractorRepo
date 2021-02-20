@@ -188,12 +188,11 @@ class ViewCasePage {
     }
 
     async clickAddToWatchlistLink(): Promise<void> {
-        await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
-            if (isDisplay) {
-                await $(this.selectors.addToWatchlistDropdown).click();
-                await $('.dropdown-menu [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').click();
-            } else await $(this.selectors.addToWatchlist).click();
+        await browser.sleep(3000); // hardwait to stabilize dropdown button visibility
+        await $('[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').isDisplayed().then(async (present) => {
+            if (!present) await $(this.selectors.addToWatchlistDropdown).click();
         });
+        await $$('[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').last().click();
     }
 
     async getAddToWatchlistLinkText(): Promise<string> {
