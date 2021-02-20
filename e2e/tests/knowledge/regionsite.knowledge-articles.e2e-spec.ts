@@ -467,11 +467,12 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await editDocumentLibraryPo.setSite(siteFieldVal1);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPo.clickOnSaveButton();
-            await navigationPage.signOut();
+            await editDocumentLibraryPo.clickOnCancelButton();
         });
-
+        
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Manager
+            await navigationPage.signOut();
             await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
             //Create a document library
             await navigationPage.gotoSettingsPage();
@@ -492,11 +493,12 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await editDocumentLibraryPo.setSite(siteFieldVal1);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPo.clickOnSaveButton();
-            await navigationPage.signOut();
+            await editDocumentLibraryPo.clickOnCancelButton();
         });
-
+        
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Agent
+            await navigationPage.signOut();
             await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
             //Create a document library
             await navigationPage.gotoSettingsPage();
@@ -517,10 +519,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
             await editDocumentLibraryPo.setSite(siteFieldVal1);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
-            await editDocumentLibraryPo.clickOnSaveButton();;
-            await navigationPage.signOut();
+            await editDocumentLibraryPo.clickOnSaveButton();
+            await editDocumentLibraryPo.clickOnCancelButton();
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);

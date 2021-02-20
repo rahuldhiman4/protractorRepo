@@ -360,6 +360,7 @@ describe('Document Library Consume Permission', () => {
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectStatus('Draft');
             await editDocumentLibraryPo.clickOnSaveButton();
+            await editDocumentLibraryPo.clickOnCancelButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.setCategoryTier1('Employee Relations');
@@ -367,6 +368,7 @@ describe('Document Library Consume Permission', () => {
             await editDocumentLibraryPo.setSite('Canberra');
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
+            await editDocumentLibraryPo.clickOnCancelButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
             let objDate: Date = new Date();
             let allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
