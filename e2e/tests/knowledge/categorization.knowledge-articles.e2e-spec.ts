@@ -776,7 +776,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPage.clickOnSaveButton();
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await editDocumentLibraryPage.clickOnCancelButton();
         });
 
         it('[3913]:Verify the document search based on category tier from attachments', async () => {
