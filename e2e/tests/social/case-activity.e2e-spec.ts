@@ -148,7 +148,6 @@ describe('Case Activity', () => {
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await utilityCommon.closePopUpMessage();
-            await browser.sleep(1000); // remove if you can
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
@@ -234,7 +233,7 @@ describe('Case Activity', () => {
             await createCase.selectRequester('Elizabeth Jeffries');
             await createCase.setSummary('test case for 4212');
             await createCase.clickSaveCaseButton();
-            await browser.sleep(1000); // remove if you can
+            await utilityCommon.closeAllBlades();
             await previewCasePo.clickGoToCaseButton();
 
             await activityTabPage.addActivityNote(caseBodyText);
@@ -427,6 +426,7 @@ describe('Case Activity', () => {
         });
         afterAll(async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
         });
     });
 
