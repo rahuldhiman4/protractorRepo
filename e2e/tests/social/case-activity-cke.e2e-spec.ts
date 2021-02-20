@@ -833,7 +833,7 @@ describe('Case Activity CKE', () => {
 
         it('[3579]: Open Case And Add Task Into', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
 
@@ -872,7 +872,7 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)

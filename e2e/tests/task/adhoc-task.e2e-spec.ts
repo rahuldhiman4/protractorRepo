@@ -156,7 +156,7 @@ describe('Create Adhoc task', () => {
             await manageTask.clickCloseButton();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
         });
         it('[6105]: Case View link is not visible', async () => {

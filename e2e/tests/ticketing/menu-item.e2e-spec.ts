@@ -366,15 +366,15 @@ describe('Menu Item', () => {
             await casePreviewPo.clickGoToCaseButton();
         });
         it('[4081]: Validate case with resolution code required true condition ', async () => {
-            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.selectResolutionCode(resolutionCode);
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy('FailureMsg: Save button is not disabled');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Resolved');
-            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
@@ -389,15 +389,15 @@ describe('Menu Item', () => {
             await casePreviewPo.clickGoToCaseButton();
         });
         it('[4081]: Validate case with resolution description required true condition', async () => {
-            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Description is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.setResolutionDescription('ResolutionDescription2');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy('FailureMsg: Save button is not disabled');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Resolved');
-            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
@@ -412,18 +412,18 @@ describe('Menu Item', () => {
             await casePreviewPo.clickGoToCaseButton();
         });
         it('[4081]: Validate case with Resolution code and Resolution description required true condition', async () => {
-            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tag for Resolution Code is displayed ');
             expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Description is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.selectResolutionCode(resolutionCode);
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
             await updateStatusBladePo.setResolutionDescription('ResolutionDescription2');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy('FailureMsg: Save button is not disabled');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Resolved');
-            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });
@@ -438,13 +438,13 @@ describe('Menu Item', () => {
             await casePreviewPo.clickGoToCaseButton();
         });
         it('[4081]: Validate case with Resolution code and Resolution description required false condition', async () => {
-            await updateStatusBladePo.changeCaseStatus('Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeTruthy('FailureMsg: Save button is not disabled');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Resolved');
-            await updateStatusBladePo.changeCaseStatus('Closed');
+            await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         });

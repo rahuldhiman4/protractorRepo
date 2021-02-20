@@ -787,7 +787,7 @@ describe('Dynamic data', () => {
             expect(await viewTaskPo.getDynamicFieldValue(dynamicfield4)).toContain('100');
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
         });
         it('[4825]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
@@ -1045,7 +1045,7 @@ describe('Dynamic data', () => {
             await editCasePo.clickOnAssignToMe();
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await utilityCommon.closePopUpMessage();
             await viewCasePo.clickAddTaskButton();

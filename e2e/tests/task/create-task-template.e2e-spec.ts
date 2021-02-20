@@ -407,7 +407,7 @@ describe('Create Task Template', () => {
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned');
             await viewTask.clickOnChangeStatus();
             let allStatusatAssignedState: string[] = ["Assigned", "In Progress", "Pending", "Completed", "Canceled", "Closed"];
-            await updateStatusBladePo.allStatusOptionsPresent(allStatusatAssignedState);
+            await updateStatusBladePo.allStatusValuesPresent(allStatusatAssignedState);
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("In Progress");
@@ -422,7 +422,7 @@ describe('Create Task Template', () => {
             expect(await viewTask.getTaskStatusValue()).toBe('In Progress');
             await viewTask.clickOnChangeStatus();
             let allStatusatinProgressState: string[] = ["In Progress", "Assigned", "Pending", "Completed", "Failed", "Canceled", "Closed"];
-            await updateStatusBladePo.allStatusOptionsPresent(allStatusatinProgressState);
+            await updateStatusBladePo.allStatusValuesPresent(allStatusatinProgressState);
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -438,14 +438,14 @@ describe('Create Task Template', () => {
             expect(await viewTask.getTaskStatusValue()).toBe('Pending');
             await viewTask.clickOnChangeStatus();
             let allStatusatinProgressState: string[] = ["Pending", "Assigned", "In Progress", "Completed", "Canceled", "Closed"];
-            await updateStatusBladePo.allStatusOptionsPresent(allStatusatinProgressState);
+            await updateStatusBladePo.allStatusValuesPresent(allStatusatinProgressState);
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Assigned");
             await updateStatusBladePo.clickSaveStatus("Assigned");
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
-            await updateStatusBladePo.setStatusReason("Successful");
+            await updateStatusBladePo.selectStatusReason("Successful");
             await updateStatusBladePo.clickSaveStatus("Completed");
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
             await viewTask.clickOnViewCase();
@@ -551,16 +551,16 @@ describe('Create Task Template', () => {
         it('[5675]: Add the task and change the case status to cancel', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
-            await updateStatusBladePo.changeCaseStatus("Resolved");
-            await updateStatusBladePo.setStatusReason("Auto Resolved");
+            await updateStatusBladePo.changeStatus("Resolved");
+            await updateStatusBladePo.selectStatusReason("Auto Resolved");
             await updateStatusBladePo.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent("The case contains active tasks. Please close all the tasks and resolve the case.")).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[5675]: Update the task to cancel', async () => {
-            await updateStatusBladePo.changeCaseStatus("Canceled");
-            await updateStatusBladePo.setStatusReason("Customer Canceled");
+            await updateStatusBladePo.changeStatus("Canceled");
+            await updateStatusBladePo.selectStatusReason("Customer Canceled");
             await updateStatusBladePo.clickSaveStatus();
             await navigationPage.gotoTaskConsole();
             await taskConsolePo.searchAndOpenTask(tasktemp.displayId);
@@ -590,7 +590,7 @@ describe('Create Task Template', () => {
             await manageTask.addTaskFromTaskTemplate('manualTaskTemplate1' + randomStr);
             await manageTask.clickTaskLink('manualTaskSummary' + randomStr);
             await viewTask.clickOnViewCase();
-            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closeAllBlades();
             await navigationPage.gotoTaskConsole();
@@ -602,7 +602,7 @@ describe('Create Task Template', () => {
         it('[5675]: Change the task to complete', async () => {
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
-            await updateStatusBladePo.setStatusReason("Successful")
+            await updateStatusBladePo.selectStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closeAllBlades();
             await viewTask.clickOnViewCase();
@@ -615,7 +615,7 @@ describe('Create Task Template', () => {
         it('[5675]: verify the add button ', async () => {
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
-            await updateStatusBladePo.setStatusReason("Successful")
+            await updateStatusBladePo.selectStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closeAllBlades();
