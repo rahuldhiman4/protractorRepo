@@ -1,7 +1,7 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
-import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 import utilityCommon from '../../utils/utility.common';
+import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 
 class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -81,11 +81,11 @@ class ComposeMail {
     }
 
     async selectColor(colorValue: string): Promise<void> {
-        await ckeditorOpsPo.selectColor(colorValue,this.selectors.commonGuid);
+        await ckeditorOpsPo.selectColor(colorValue, this.selectors.commonGuid);
     }
 
     async setNumberList(values: string[]): Promise<void> {
-        await ckeditorOpsPo.setNumberList(values,this.selectors.commonGuid);
+        await ckeditorOpsPo.setNumberList(values, this.selectors.commonGuid);
     }
 
     async isUserPopulatedInToOrCc(value: string, emailToOrCCValue): Promise<boolean> {
@@ -186,17 +186,18 @@ class ComposeMail {
     }
 
     async getEmailBody(): Promise<string> {
-      return  utilityCommon.getCKEditorText(this.selectors.commonGuid);
+        return utilityCommon.getCKEditorText(this.selectors.commonGuid);
     }
 
     async clickOnSendButton(): Promise<void> {
         await $(this.selectors.sendButton).click();
     }
 
-
     async isEmailIconLinkPresent(): Promise<boolean> {
-        let presentInDom: boolean = await element(by.css('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button')).isPresent();
-        return await $('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button').isDisplayed();
+        return await element(by.css('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button')).isPresent().then(async (present) => {
+            if (present) return await $('[rx-view-component-id="b721ed87-8e6b-4279-9e21-d4348c6a4599"] button').isDisplayed();
+            else return false;
+        });
     }
 
     async isSelectEmailTemplateButtonPresent(): Promise<boolean> {
@@ -275,7 +276,7 @@ class ComposeMail {
             return values;
         }
     }
-    
+
     async setSubject(value: string): Promise<void> {
         await $(this.selectors.subjectInput).clear();
         await $(this.selectors.subjectInput).sendKeys(value);

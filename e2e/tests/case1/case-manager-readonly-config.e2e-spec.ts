@@ -1,10 +1,7 @@
-import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from "../../api/api.helper";
 import { flowsetMandatoryFields } from '../../data/ui/flowset/flowset.ui';
-import { SOCIAL_SERVICE_PROCESS } from '../../data/ui/flowset/process-for-flowset.data.ui';
 import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../../data/ui/Social/notesTemplate.api';
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import loginPage from "../../pageobject/common/login.po";
@@ -19,6 +16,7 @@ import assignmentConfigEditPage from "../../pageobject/settings/case-management/
 import editCaseTemplatePage from '../../pageobject/settings/case-management/edit-casetemplate.po';
 import caseReadAccessConfigEditPage from "../../pageobject/settings/case-management/edit-read-access-config.po";
 import caseReadAccessConfigConsole from "../../pageobject/settings/case-management/read-access-console.po";
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import notesTemplateConsole from "../../pageobject/settings/common/console-notestemplate.po";
 import editNotesTemplateConfig from "../../pageobject/settings/common/edit-notestemplate.po";
 import statusConfig from "../../pageobject/settings/common/status-config.po";
@@ -32,16 +30,10 @@ import editEmailConfiguration from '../../pageobject/settings/email/edit-email-c
 import editEmailTemplatePage from "../../pageobject/settings/email/edit-email-template.po";
 import flowsetConsole from "../../pageobject/settings/manage-flowset/console-flowset-config.po";
 import flowsetEditPage from "../../pageobject/settings/manage-flowset/edit-flowset-config.po";
-import processLibraryEditPage from "../../pageobject/settings/manage-flowset/edit-process-library-config.po";
-import processLibraryConfigConsole from "../../pageobject/settings/manage-flowset/process-library-config-console.po";
 import notificationTemplateConsolePage from '../../pageobject/settings/notification-config/console-notification-template.po';
 import editNotificationTemplatePage from '../../pageobject/settings/notification-config/edit-notification-template.po';
 import relationshipsConfigsPage from "../../pageobject/settings/relationship/relationships-configs.po";
-import businessTimeSegmentConfigConsole from "../../pageobject/settings/slm/business-time-segment-console.po";
-import businessTimeSharedEntityConfigConsole from "../../pageobject/settings/slm/business-time-shared-entity-console.po";
 import configureDataSourceConfigConsole from "../../pageobject/settings/slm/configure-data-source-config-console.po";
-import businessTimeSegmentConfigEditPage from "../../pageobject/settings/slm/edit-business-segment-config.po";
-import businessTimeEntityConfigEditPage from "../../pageobject/settings/slm/edit-business-time-entity-config.po";
 import configureDataSourceEditPage from "../../pageobject/settings/slm/edit-configure-data-source-config.po";
 import goalTypeEditPage from "../../pageobject/settings/slm/edit-goal-type.po";
 import editServiceTargetConfigPage from '../../pageobject/settings/slm/edit-service-target-config.po';
@@ -77,7 +69,7 @@ describe('Case Manager Read-only Config', () => {
     // asahitya
     it('[4020]: Check Case manager is not able to perform Create Update Delete operation on Case Assignment Mapping', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let assignmentMappingData =  {
+        let assignmentMappingData = {
             "assignmentMappingName": "Assignment mapping name" + randomStr,
             "company": "Petramco",
             "supportCompany": "Petramco",
@@ -428,8 +420,8 @@ describe('Case Manager Read-only Config', () => {
         expect(await serviceTargetGroupConsole.isDeleteButtonEnabled()).toBeFalsy('Delete Button is enabled');
     });
 
-    //asahitya
-    it('[DRDMV-18041]: Check Case manager is not able to perform Create Update Delete operation on Notification Configuration', async () => {
+    //asahitya, allow execution after memory leak issue fix DRDMV-25103
+    xit('[DRDMV-18041]: Check Case manager is not able to perform Create Update Delete operation on Notification Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         expect(await notificationTemplateConsolePage.isAddNotificationTemplateBtnDisplayed()).toBeFalsy('Add Button is enabled');

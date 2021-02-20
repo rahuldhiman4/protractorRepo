@@ -58,20 +58,18 @@ describe("Attachment", () => {
 
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
-        // find reason why following needed then uncomment
-        // await apiHelper.apiLogin('tadmin');
-        // await apiHelper.deleteAllEmailConfiguration();
-        // await apiHelper.createEmailBox('incoming');
-        // let response1 = await apiHelper.createEmailBox('outgoing');
-        // await apiHelper.createEmailProfile(response1.id);
-        // await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
-        // await apiHelper.createEmailConfiguration(emailConfig);
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
+        await apiHelper.createEmailBox('incoming');
+        let response1 = await apiHelper.createEmailBox('outgoing');
+        await apiHelper.createEmailProfile(response1.id);
+        await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+        await apiHelper.createEmailConfiguration(emailConfig);
     });
 
     afterAll(async () => {
-        // find reason why following needed then uncomment
-        // await apiHelper.apiLogin('tadmin');
-        // await apiHelper.deleteAllEmailConfiguration();
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -137,7 +135,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades();
+            await attachmentBladePo.clickCloseButton();
         });
     });
 
