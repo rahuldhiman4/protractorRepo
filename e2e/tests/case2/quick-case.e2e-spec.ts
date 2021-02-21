@@ -267,6 +267,8 @@ describe("Quick Case", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
+            await navigationPo.signOut();
+            await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData2.templateName);
@@ -275,16 +277,14 @@ describe("Quick Case", () => {
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
         });
         it('[6391]: [Quick Case] Case creation with all case statuses in template', async () => {
-            await navigationPo.signOut();
-            await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData4.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData3.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
