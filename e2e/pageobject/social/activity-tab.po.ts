@@ -14,7 +14,7 @@ class ActivityTabPage {
         addNotePostButton: '.activity-feed-note-buttons__right .btn-primary',
         addNoteCancelButton: '.activity-feed-note-buttons__right .btn-secondary',
         addNoteNotesTemplate: '.activity-note .d-icon-note_pencil',
-        activityLog: '.activity__body .activity-title, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value, .activity__body div, .activity__body div a',
+        activityLog: '.activity__body .activity-title a, .activity__body [style="position: relative;"], .activity__body .field, .activity__body .value, .activity__body div, .activity__body div a',
         filterButton: '.d-icon-filter',
         filterCheckbox: '.checkbox__label span',
         filterAuthor: '.dropdown [placeholder="Enter name, email, login ID or employee ID"]',
