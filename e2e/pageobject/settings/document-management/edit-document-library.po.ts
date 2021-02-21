@@ -32,10 +32,6 @@ class EditDocumentLibraryPage {
         siteGuid: '34a2bb5b-dff7-4dcb-a873-ee13e02abf85',
         supportOrgGuid: '86e2e239-6f18-416b-b3e4-3a1a60155443',
         tabs: 'ul[role="tablist"] li',
-        addBussinessUnit: '.ac-business-unit-field .dropdown-toggle',
-        addBussinessUnitAddButton: '.flex-item .ac-business-unit-add',
-        addSupportDepartment: '.ac-support-department-field button',
-        addSupportDepartmentAddButton: '.ac-support-department-add',
         attachedItem: '[rx-view-component-id="8cfc0c35-081a-40cb-ae85-527045bede0c"] .bwf-attachment-container__thumbnail',
         addCompanyGuid: '3fa92444-5e60-4ac2-9f4e-aab0e2acfc31',
         removeGroupAccessWarningMsg: '.ac-remove-group-access-massage span[ng-bind-html="groupRemoveMessage"]',
@@ -52,7 +48,7 @@ class EditDocumentLibraryPage {
         lob: '[rx-view-component-id="e8090938-b7e3-47e5-9e77-1f1d7c275b06"] button div',
     }
 
-    async selectBusinessUnit(bussinessUnit: string): Promise<void> {
+    async selectSupportOrg(bussinessUnit: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.supportOrgGuid, bussinessUnit)
     }
 
@@ -232,26 +228,6 @@ class EditDocumentLibraryPage {
     async isSiteDropDownDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.site)));
         return await $(this.selectors.site).getAttribute('disabled') == 'true';
-    }
-
-    async isAddBussinessUnitDropDownDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addBussinessUnit)));
-        return await $(this.selectors.addBussinessUnit).getAttribute('disabled') == 'true';
-    }
-
-    async isAddBussinessUnitAddButtonDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addBussinessUnitAddButton)));
-        return await $(this.selectors.addBussinessUnitAddButton).getAttribute('disabled') == 'true';
-    }
-
-    async isAddSupportDepartmentDropDownDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportDepartment)));
-        return await $(this.selectors.addSupportDepartment).getAttribute('disabled') == 'true';
-    }
-
-    async isAddSupportDepartmentAddButtonDisabled(): Promise<boolean> {
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.addSupportDepartmentAddButton)));
-        return await $(this.selectors.addSupportDepartmentAddButton).getAttribute('disabled') == 'true';
     }
 
     async isDeleteButtonDisplayed(): Promise<boolean> {

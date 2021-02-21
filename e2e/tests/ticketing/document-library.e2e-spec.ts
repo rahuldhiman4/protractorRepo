@@ -641,7 +641,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await viewDocumentLibraryPo.clickOnEditDocument();
-            await editDocumentLibraryPo.selectBusinessUnit('Latin America Support');
+            await editDocumentLibraryPo.selectSupportOrg('Latin America Support');
             await editDocumentLibraryPo.selectOwnerGroup('LA Support 3');
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
@@ -655,7 +655,7 @@ describe('Document Library', () => {
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await viewDocumentLibraryPo.clickOnEditDocument();
-            await editDocumentLibraryPo.selectBusinessUnit('Australia Support');
+            await editDocumentLibraryPo.selectSupportOrg('Australia Support');
             //await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.selectOwnerGroup('AU Support 3');
             await editDocumentLibraryPo.clickOnSaveButton();
