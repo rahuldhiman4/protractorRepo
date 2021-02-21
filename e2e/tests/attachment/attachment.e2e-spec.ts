@@ -58,20 +58,18 @@ describe("Attachment", () => {
 
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
-        // find reason why following needed then uncomment
-        // await apiHelper.apiLogin('tadmin');
-        // await apiHelper.deleteAllEmailConfiguration();
-        // await apiHelper.createEmailBox('incoming');
-        // let response1 = await apiHelper.createEmailBox('outgoing');
-        // await apiHelper.createEmailProfile(response1.id);
-        // await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
-        // await apiHelper.createEmailConfiguration(emailConfig);
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
+        await apiHelper.createEmailBox('incoming');
+        let response1 = await apiHelper.createEmailBox('outgoing');
+        await apiHelper.createEmailProfile(response1.id);
+        await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+        await apiHelper.createEmailConfiguration(emailConfig);
     });
 
     afterAll(async () => {
-        // find reason why following needed then uncomment
-        // await apiHelper.apiLogin('tadmin');
-        // await apiHelper.deleteAllEmailConfiguration();
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteAllEmailConfiguration();
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
@@ -137,7 +135,7 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades();
+            await attachmentBladePo.clickCloseButton();
         });
     });
 
@@ -441,9 +439,9 @@ describe("Attachment", () => {
             await activityTabPo.clickOnPostButton();
             await viewCasePo.clickAttachmentsLink();
             await attachmentBladePo.clickAllCheckboxButton();
-            expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('50/50 files selected', 'selected checkbox count is missing for page1');
-            await attachmentBladePo.clickPaginationNext();
-            expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('50/2 files selected', 'selected checkbox count is missing for page2');
+            expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('52/52 files selected', 'selected checkbox count is missing for page1');
+            // await attachmentBladePo.clickPaginationNext();
+            // expect(await attachmentBladePo.getSelectedCheckBoxCount()).toBe('50/2 files selected', 'selected checkbox count is missing for page2');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('bwfJpg1.jpg')).toBeTruthy('File is delete sucessfully');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('articleStatus.png')).toBeTruthy('File is delete sucessfully');
             await attachmentBladePo.clickDownloadButton();

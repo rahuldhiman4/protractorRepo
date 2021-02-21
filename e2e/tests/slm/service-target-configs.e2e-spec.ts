@@ -28,6 +28,7 @@ import editNotificationTemplatePo from '../../pageobject/settings/notification-c
 import createGoalType from '../../pageobject/settings/slm/create-goal-type.po';
 import serviceTargetGroupConsolePo from '../../pageobject/settings/slm/service-target-group-console.po';
 import createServiceTargetGroupPo from '../../pageobject/settings/slm/create-service-target-group.po';
+import editServiceTargetConfigPo from '../../pageobject/settings/slm/edit-service-target-config.po';
 
 let caseBAUser = 'qkatawazi';
 let goalTypeInactive, goalTypeActive, goalTypeFacilities, goalTypeFacilitiesInactive = undefined;
@@ -106,7 +107,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickCloseButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
@@ -120,54 +121,51 @@ describe('Service Target Configs', () => {
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             await utilityCommon.clickOnApplicationWarningYesNoButton('No');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is not displayed.');
-            expect(await serviceTargetConfig.getGoalTypeSelectedValue('Case Response Time')).toBeTruthy('Goal Type field value is not matched.');
+            expect(await serviceTargetConfig.getGoalTypeSelectedValue()).toBe('Case Response Time');
             await serviceTargetConfig.clickCloseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[6021]: Verify SVT with mandatory fields options', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High', "Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[6021]: Verify Edit SVT with no updates', async () => {
             await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
-            expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is displayed.');
-            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save SVT button is enabled when no mandatory fields are left empty.');
-            expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
-            await serviceTargetConfig.clickCloseButton();
+            expect(await editServiceTargetConfigPo.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is displayed.');
+            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeTruthy('Save SVT button is disabled when no mandatory fields are left empty.');
+            expect(await editServiceTargetConfigPo.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
+            await editServiceTargetConfigPo.clickCloseButton();
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
         it('[6021]: Verify Edit SVT warning appears with optionals fields updated', async () => {
             await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
-            await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
-            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
-            expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
-            await serviceTargetConfig.clickCloseButton();
+            await editServiceTargetConfigPo.enterSVTDescription('Case for Test SVT Desc');
+            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
+            expect(await editServiceTargetConfigPo.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
+            await editServiceTargetConfigPo.clickCloseButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
         it('[6021]: Verify Edit SVT warning when fields updated', async () => {
             await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
-            await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
-            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
-            expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
-            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
-            expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
-            await serviceTargetConfig.clickCloseButton();
+            await editServiceTargetConfigPo.enterSVTDescription('Case for Test SVT Desc');
+            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeTruthy('Save SVT button is enabled when no mandatory fields are left empty.');
+            expect(await editServiceTargetConfigPo.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
+            await editServiceTargetConfigPo.clickCloseButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             await utilityCommon.clickOnApplicationWarningYesNoButton('No');
-            expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is not displayed.');
-            await serviceTargetConfig.clickCloseButton();
+            expect(await editServiceTargetConfigPo.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is not displayed.');
+            await editServiceTargetConfigPo.clickCloseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
     });
@@ -182,42 +180,40 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High', "Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[6022]: Create SVT with All Fields', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High', "Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoalType('Case Response Time');
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[6022]:Verify SVT updation', async () => {
             await utilityGrid.searchAndOpenHyperlink('SVT with mandatory fields');
             // await browser.sleep(1000);
-            await serviceTargetConfig.enterSVTDescription('Case for Test SVT Desc');
-            await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await editServiceTargetConfigPo.enterSVTDescription('Case for Test SVT Desc');
+            await editServiceTargetConfigPo.clickSaveButton();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilityGrid.searchAndOpenHyperlink('SVT with all fields');
             // await browser.sleep(1000);
-            await serviceTargetConfig.clearSVTDescription();
-            await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await editServiceTargetConfigPo.clearSVTDescription();
+            await editServiceTargetConfigPo.clickSaveButton();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 
@@ -239,13 +235,12 @@ describe('Service Target Configs', () => {
         });
         it('[5712]: Verify "Terms and Condition" qualification on Service Target - Create View', async () => {
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Pending", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Resolved", "Direct");
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty.');
             await serviceTargetConfig.clickBuildExpressionLink();
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High', "Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -265,30 +260,29 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High', "Direct");
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Pending", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Resolved", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[5711,4132]: Verify "Terms and Condition" qualification on Service Target - Edit View', async () => {
             await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
-            expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Edit Service Target Configuration blade is not displayed.');
-            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty. 1');
-            expect(await serviceTargetBladePo.isTermsAndConditionsFieldMandatory()).toBeTruthy('Terms and Conditions field is optional.');
+            expect(await editServiceTargetConfigPo.isServiceTargetBladeDisplayed()).toBeTruthy('Edit Service Target Configuration blade is not displayed.');
+            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty. 1');
+            expect(await editServiceTargetConfigPo.isTermsAndConditionsFieldMandatory()).toBeFalsy('Terms and Conditions field is optional.');
             await serviceTargetConfig.clickBuildExpressionLink();
             await SlmExpressionBuilder.clearSelectedExpression();
             await browser.sleep(1000);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await browser.sleep(1000);
-            expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty. 2');
+            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty. 2');
             await serviceTargetConfig.clickBuildExpressionLink();
             await SlmExpressionBuilder.clearSelectedExpression();
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
@@ -297,7 +291,7 @@ describe('Service Target Configs', () => {
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             await expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
-            await serviceTargetConfig.clickOnSaveSVTButton();
+            await editServiceTargetConfigPo.clickSaveButton();
         });
     });
 
@@ -311,28 +305,27 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High', "Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoalType('Case Response Time');
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
         it('[6019]: Verify SVT Updation', async () => {
             await utilityGrid.searchAndOpenHyperlink('SVT with all fields');
             await browser.sleep(1000);
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "New");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "In Progress");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "New", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "In Progress", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
+            await editServiceTargetConfigPo.clickSaveButton();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
 
@@ -347,17 +340,16 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'Applications', "Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("6");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Pending", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Resolved", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -385,11 +377,9 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
             await serviceTargetInfoPage.clickOnCloseButton();
             await viewCasePo.clickEditCaseButton();
-            await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Qiao Feng');
-            await changeAssignmentPage.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         });
@@ -427,33 +417,31 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'Applications',"Search");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("60");
-            expect(await utilityCommon.isPopUpMessagePresent('Minutes can have max value of 59')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await serviceTargetConfig.getError('Range Error: The value needs to be between 0 and 59')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("366", "Days");
-            expect(await utilityCommon.isPopUpMessagePresent('Days can have max value of 365')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await serviceTargetConfig.getError('Range Error: The value needs to be between 0 and 365')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("24", "Hours");
-            expect(await utilityCommon.isPopUpMessagePresent('Hours can have max value of 23')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await serviceTargetConfig.getError('Range Error: The value needs to be between 0 and 23')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("-1");
-            expect(await utilityCommon.isPopUpMessagePresent('Minutes can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await serviceTargetConfig.getError('Range Error: The value needs to be between 0 and 59')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("-1", "Hours");
-            expect(await utilityCommon.isPopUpMessagePresent('Hours can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await serviceTargetConfig.getError('Range Error: The value needs to be between 0 and 23')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.selectGoal("-1", "Days");
-            expect(await utilityCommon.isPopUpMessagePresent('Days can have min value of 0')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
+            expect(await serviceTargetConfig.getError('Range Error: The value needs to be between 0 and 365')).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await serviceTargetConfig.clickCloseButton();
-            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[6025]: Verify SVT warning when data source is modified', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=',  'Applications',"Search");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -468,7 +456,6 @@ describe('Service Target Configs', () => {
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
-
     });
 
     //skhobrag
@@ -488,31 +475,29 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig(svtName, 'Petramco', svtDataSource);
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoalType('Case Resolution Time');
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6020]: Verify Service Target for Task Creation', async () => {
             await serviceTargetConfig.createServiceTargetConfig('task svt', 'Petramco', 'Task Management');
             await SlmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Automated');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoalType('Task Resolution Time');
             await serviceTargetConfig.selectStatus('Disabled');
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "STATUS", "=", "Staged","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "STATUS", "=", "Completed","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "STATUS", "=", "Pending","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
 
@@ -632,15 +617,14 @@ describe('Service Target Configs', () => {
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
         it('[6024,6211,6209,6201]: Create SVT and check whether goal type and measurement details are disabled', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High',"Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             expect(await serviceTargetConfig.isGoalCheckboxDisabled('Goal Time')).toBeTruthy('Goal Time field is enabled.');
@@ -650,8 +634,8 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Reset Goal for Same Request?')).toBeTruthy('Reset Goal for Same Request? field is enabled.');
             expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Allow Measurement to Re-Open?')).toBeTruthy('Allow Measurement to Re-Open? field is enabled.');
             expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Enable Team Tracking')).toBeTruthy('Enable Team Tracking field is enabled.');
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved","Direct");
             await serviceTargetConfig.clickCloseButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
@@ -661,8 +645,7 @@ describe('Service Target Configs', () => {
 
         it('[6024,6211,6209,6201]: Verify the SVT details', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT with mandatory fields', 'Petramco', dataSourceDisplayName);
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High',"Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             expect(await serviceTargetConfig.isGoalCheckboxDisabled('Goal Time')).toBeFalsy('Goal Time field is disabled.');
@@ -680,8 +663,8 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectMeasurementCheckbox('Reset Goal for Same Request?');
             await serviceTargetConfig.selectMeasurementCheckbox('Allow Measurement to Re-Open?');
             await serviceTargetConfig.selectMeasurementCheckbox('Enable Team Tracking');
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=","Resolved","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await serviceTargetConsole.searchServiceTarget("SVT with mandatory fields");
@@ -734,7 +717,6 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isServiceTargetFieldRequired('Minutes')).toBeFalsy('Minutes field is marked as required field');
             expect(await serviceTargetConfig.isServiceTargetFieldRequired('Start Time')).toBeFalsy('Start Time field is marked as required field');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
@@ -743,8 +725,8 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isServiceTargetFieldRequired('Stop When')).toBeTruthy('Stop When field is marked as optional field');
             expect(await serviceTargetConfig.isServiceTargetFieldRequired('Pause When')).toBeFalsy('Pause When field is marked as required field');
             expect(await serviceTargetConfig.isServiceTargetFieldRequired('Set Warning Status At(% of Goal)')).toBeTruthy('Set Warning Status At(% of Goal) field is marked as optional field');
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
@@ -756,10 +738,10 @@ describe('Service Target Configs', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedCaseSummary = "Updating Case summary from SVT";
         let svttile = "SVT for Case fields" + randomStr;
-        let caseNotificationHR = "Case SLA Missed HR"+randomStr;
-        let caseNotificationFacilities = "Case SLA Missed Facilities"+randomStr;
-        let taskNotificationHR = "Task SLA Missed HR"+randomStr;
-        let taskNotificationFacilities = "Task SLA Missed Facilities"+randomStr;
+        let caseNotificationHR = "Case SLA Missed HR" + randomStr;
+        let caseNotificationFacilities = "Case SLA Missed Facilities" + randomStr;
+        let taskNotificationHR = "Task SLA Missed HR" + randomStr;
+        let taskNotificationFacilities = "Task SLA Missed Facilities" + randomStr;
 
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -812,8 +794,7 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High',"Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.clickOnGoalTypeDropDown();
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
@@ -832,9 +813,9 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectGoalType('Case Resolution Time');
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned","Direct");
+ await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved","Direct");
+ await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending","Direct");
         });
 
         it('[5647]: Add milestone to the service target and verify milestone details', async () => {
@@ -863,7 +844,7 @@ describe('Service Target Configs', () => {
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[5647]: Milestone notification template validation with respect to LOB', async () => {
@@ -1019,7 +1000,6 @@ describe('Service Target Configs', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
             await serviceTargetConfig.selectGoalType('Case Resolution Time');
@@ -1035,7 +1015,6 @@ describe('Service Target Configs', () => {
             await utilityGrid.selectLineOfBusiness('Facilities');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
             // await serviceTargetConfig.selectGoalType('Case Resolution Time');
@@ -1075,8 +1054,7 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Task Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High',"Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.clickOnGoalTypeDropDown();
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Response Time')).toBeTruthy('OOTB goal type is not displayed.');
@@ -1095,9 +1073,9 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clearGoalTypeDropDownOption();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "STATUS", "=", "Staged","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "STATUS", "=", "Completed","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "STATUS", "=", "Pending","Direct");
         });
 
         it('[6028]: Add milestone to the service target and verify milestone details', async () => {
@@ -1109,7 +1087,6 @@ describe('Service Target Configs', () => {
             await milestoneConfig.setMileStonePercentage("10");
             await milestoneConfig.clickMileStoneExpression();
             await SlmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Manual');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Task Type" + "'" + "=" + '"' + "Manual" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -1126,7 +1103,7 @@ describe('Service Target Configs', () => {
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6028]: Milestone notification template validation with respect to LOB', async () => {
@@ -1266,17 +1243,17 @@ describe('Service Target Configs', () => {
         let svttileWithGoalType = "SVT with Goal Type HR" + randomStr;
         let svttileWithDSGT = "SVT with HR" + randomStr;
         let svttileWithoutGoalType = "SVT without Goal Type HR" + randomStr;
-        let svtNameHR = "SVT through API HR"+randomStr;
-        let svtNameFacilities = "SVT through API Facilities"+randomStr;
+        let svtNameHR = "SVT through API HR" + randomStr;
+        let svtNameFacilities = "SVT through API Facilities" + randomStr;
         let dataSourceTitle = "DataSource HR" + randomStr;
         let goalTypeTitle = "Goal Type HR" + randomStr;
 
-        let dataSourceTitleFacilities = "DataSource Facilities"+ randomStr;
-        let goalTypeTitleFacilities = "Goal Type Facilities"+ randomStr;
+        let dataSourceTitleFacilities = "DataSource Facilities" + randomStr;
+        let goalTypeTitleFacilities = "Goal Type Facilities" + randomStr;
         let svttileWithGoalTypeFacilities = "SVT with Goal Type Facilities" + randomStr;
         let svttileWithoutGoalTypeFacilities = "SVT without Goal Type Facilities" + randomStr;
-        let svtGroupNameHR = "svtGroup HR"+ randomStr;
-        let svtGroupNameFacilities = "svtGroup Facilities"+ randomStr;
+        let svtGroupNameHR = "svtGroup HR" + randomStr;
+        let svtGroupNameFacilities = "svtGroup Facilities" + randomStr;
 
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -1294,15 +1271,15 @@ describe('Service Target Configs', () => {
                 "dataSource": "Case Management",
                 "company": "Petramco",
                 "svtName": "DRDMV18170",
-                "lineOfBusiness":"Human Resource"
+                "lineOfBusiness": "Human Resource"
             }
             svtData.svtName = svtNameHR;
-            await apiHelper.createSVT(svtData);    
+            await apiHelper.createSVT(svtData);
 
             await apiHelper.apiLogin('fritz');
             svtData.svtName = svtNameFacilities;
             svtData.lineOfBusiness = "Facilities";
-            await apiHelper.createSVT(svtData);    
+            await apiHelper.createSVT(svtData);
         });
 
         it('[5955]: Create Data Source / Goal Type and SVT for Same LOB', async () => {
@@ -1329,7 +1306,6 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig(svttileWithGoalType, '- Global -', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
             await serviceTargetConfig.selectGoalType('Case Resolution Time');
@@ -1343,7 +1319,6 @@ describe('Service Target Configs', () => {
 
             await serviceTargetConfig.createServiceTargetConfig(svttileWithoutGoalType, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
             await serviceTargetConfig.selectGoal("3");
@@ -1356,7 +1331,6 @@ describe('Service Target Configs', () => {
 
             await serviceTargetConfig.createServiceTargetConfig(svttileWithDSGT, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectDataSource('Case Management');
             await serviceTargetConfig.selectGoalType('Case Resolution Time');
@@ -1398,7 +1372,6 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig(svttileWithGoalTypeFacilities, '- Global -', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
             await serviceTargetConfig.selectGoalType(goalTypeTitleFacilities);
@@ -1412,7 +1385,6 @@ describe('Service Target Configs', () => {
 
             await serviceTargetConfig.createServiceTargetConfig(svttileWithoutGoalTypeFacilities, 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
             await serviceTargetConfig.selectGoal("3");
@@ -1423,7 +1395,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-        
+
         it('[5955]: Verify data source / goal type reflection based on LOB in Service Target Group', async () => {
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
@@ -1555,38 +1527,38 @@ describe('Service Target Configs', () => {
             await createServiceTargetGroupPo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
-           //Service target filteration based on company, data source and goal type
-           await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
-           await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
-           await createServiceTargetGroupPo.selectCompany('Petramco');
-           await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
-           await createServiceTargetGroupPo.selectDataSource('Case Management');
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeTruthy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
-           await createServiceTargetGroupPo.clickCancelButton();
-           await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            //Service target filteration based on company, data source and goal type
+            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
+            await createServiceTargetGroupPo.selectCompany('Petramco');
+            await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
+            await createServiceTargetGroupPo.selectDataSource('Case Management');
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeTruthy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
-           await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
-           await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
-           await createServiceTargetGroupPo.selectCompany('Petramco');
-           await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
-           await createServiceTargetGroupPo.selectDataSource('Task Management');
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
-           expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
-           await createServiceTargetGroupPo.clickCancelButton();
-           await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await serviceTargetGroupConsolePo.clickAddServiceTargetGroupBtn();
+            await createServiceTargetGroupPo.setGroupName(svtGroupNameHR);
+            await createServiceTargetGroupPo.selectCompany('Petramco');
+            await createServiceTargetGroupPo.selectGoalType('Case Resolution Time');
+            await createServiceTargetGroupPo.selectDataSource('Task Management');
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithDSGT)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameHR)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalType)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalType)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithGoalTypeFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svttileWithoutGoalTypeFacilities)).toBeFalsy();
+            expect(await createServiceTargetGroupPo.isSVTOptionsPresentInDropDown(svtNameFacilities)).toBeFalsy();
+            await createServiceTargetGroupPo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5955]: create Service target group for same LOB', async () => {

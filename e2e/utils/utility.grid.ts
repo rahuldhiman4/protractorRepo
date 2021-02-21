@@ -1,4 +1,4 @@
-import { $, $$, Key, element, by, ElementFinder, browser, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilityCommon from '../utils/utility.common';
 
 export class GridOperations {
@@ -303,12 +303,13 @@ export class GridOperations {
         else columnData = await this.getAllValuesFromColumn(columnName);
 
         const copy = Object.assign([], columnData);
-        await columnData.sort(function (a, b) {
+        columnData.sort(function (a, b) {
             return a.localeCompare(b);
         })
         if (sortType == "descending") {
             columnData.reverse();
         }
+
         return columnData.length === copy.length && columnData.every(
             (value, index) => (value === copy[index])
         );
