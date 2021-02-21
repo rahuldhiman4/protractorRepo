@@ -656,7 +656,7 @@ describe('Person Profile test', () => {
             await loginPage.login('elizabeth');
         });
     });
-
+//expect conditions failing due to defect - different relation not present
     describe('[4197]: Configuration - person-to-person relationship', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4197]: Configuration - person-to-person relationship', async () => {
@@ -747,7 +747,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //asahitya
+    //asahitya-defect
     describe('[4206]: Person profile display for requester', () => {
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -778,7 +778,7 @@ describe('Person Profile test', () => {
             expect(await personProfile.getCorporateID()).toBe('PET00000252', 'Corporate Id does not match');
             expect(await personProfile.getEmployeeTypeValue()).toBe('Office-Based Employee', 'Employee Type value does not match');
             expect(await personProfile.getLoginID()).toBe('araisin', 'Login Id does not match');
-            expect(await personProfile.getFunctionalRoles()).toContain('_');
+            expect(await personProfile.getFunctionalRoles()).toContain('-');
             expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
             expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
             expect(await personProfile.getContactNumber()).toContain("91 80 30914008", "Phone number mismatch");
@@ -868,7 +868,7 @@ describe('Person Profile test', () => {
         });
 
     });
-
+//issue-need to log company details not vsisible
     describe('[59946]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', () => {
         let caseResponse;
         let caseData = {
@@ -1003,7 +1003,7 @@ describe('Person Profile test', () => {
             await loginPage.login('elizabeth');
         });
     });
-
+//defect - different lob relation is not getting added 
     describe('[59950]: Create case-case, case-person and person-person relationships using tadmin', async () => {
         it('[59950]:Case to Case Relation same name LOB validation', async () => {
             await navigationPage.signOut();
@@ -1025,6 +1025,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.saveConfig();
             // verify error
             expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             // expect(await relationshipsConfigsPage.isRelationshipPresent(caseToCaseRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -1034,6 +1035,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(caseToCaseReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             expect(await utilityCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
+            await utilityCommon.closePopUpMessage();
             //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToCaseRelation)).toBeFalsy("same name relation created");
         });
         it('[59950]:Person to Person Relation same name LOB validation', async () => {
@@ -1054,6 +1056,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.saveConfig();
             // verify error
             expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToPersonRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -1063,6 +1066,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(caseToPersonReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             expect(await utilityCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
+            await utilityCommon.closePopUpMessage();
             //expect(await relationshipsConfigsPage.isRelationshipPresent(caseToPersonRelation)).toBeFalsy("same name relation created");
         });
         it('[59950]:Person to Person Relation same name LOB validation', async () => {
@@ -1083,6 +1087,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.saveConfig();
             // verify error
             expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             //expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("Other LOB relation present");
             // verify HR LOB record not present
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -1092,6 +1097,7 @@ describe('Person Profile test', () => {
             await relationshipsConfigsPage.setNewReverseRelationshipName(personToPersonReverseRelation);
             await relationshipsConfigsPage.saveConfig();
             expect(await utilityCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
+            await utilityCommon.closePopUpMessage();
             //expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("same name relation created");
         });
     });
