@@ -124,7 +124,7 @@ describe('Document Library', () => {
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB case document library is not visible to different LOB case BA');
         });
-        // we don't have Case Manager of facilities with Document Manager role
+        // don't have Case Manager of facilities with Document Manager role
         it('[4911,4925,4924]: Verify if document library is accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
@@ -167,13 +167,13 @@ describe('Document Library', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 
-    // #Pass
+    // #Pass--Fail
     it('[4893]: Verify Document Managment Grid Console', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
         let columns1: string[] = ["Title", "Status", "Owner Group", "Company", "Modified Date"];
@@ -247,7 +247,7 @@ describe('Document Library', () => {
         });
     });
 
-    // #Pass
+    // #Pass--Fail
     describe('[4921]: Verify edit document UI', async () => {
         it('[4921]: Verify edit document UI', async () => {
             let filePath = '../../../data/ui/attachment/demo.txt';
@@ -296,6 +296,8 @@ describe('Document Library', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
