@@ -41,7 +41,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectSupportOrg('chyala');
+            await createDocumentLibraryPo.selectSupportOrg('United States Support');
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
