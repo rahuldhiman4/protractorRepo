@@ -117,8 +117,12 @@ describe('Case Activity CKE', () => {
             // Adding Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            expect (await manageTaskBladePo.isTaskLinkPresent(manualTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
             await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
+            expect (await manageTaskBladePo.isTaskLinkPresent(autoTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
+            await utilityCommon.closePopUpMessage();
+            expect (await manageTaskBladePo.isTaskLinkPresent(externalTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
             await manageTaskBladePo.clickCloseButton();
         });
 
@@ -829,19 +833,21 @@ describe('Case Activity CKE', () => {
                 "Assignee": "qdu"
             }
             newCase = await apiHelper.createCase(caseData);
+            await apiHelper.updateCaseStatus(newCase.id, 'InProgress');
         });
 
         it('[3579]: Open Case And Add Task Into', async () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
-            await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
-
             // Adding Task
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            expect (await manageTaskBladePo.isTaskLinkPresent(manualTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
             await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
+            expect (await manageTaskBladePo.isTaskLinkPresent(autoTemplateData.templateSummary)).toBeTruthy(`${autoTemplateData.templateSummary} missing task link`);
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
+            await utilityCommon.closePopUpMessage();
+            expect (await manageTaskBladePo.isTaskLinkPresent(externalTemplateData.templateSummary)).toBeTruthy(`${externalTemplateData.templateSummary} missing task link`);
             await manageTaskBladePo.clickCloseButton();
         });
         it('[3579]: Verify the Comments posted in activity with notes template For Case ', async () => {

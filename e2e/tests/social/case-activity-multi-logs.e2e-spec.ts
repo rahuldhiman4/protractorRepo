@@ -79,6 +79,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(3000);//taking time to refliect show more button
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
             expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
             expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
@@ -149,7 +150,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    describe('[4229]: All type of social activities are displayed correctly in Task Activity tab', async () => {
+    xdescribe('[4229]: All type of social activities are displayed correctly in Task Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTemplateSummary, autoTemplateData, externalTemplateSummary, newCase;
 
@@ -691,7 +692,7 @@ describe('Case Activity Multi Logs', () => {
         });
     });
     //kgaikwad
-    describe('[4241]: All type of social activities are displayed correctly in Case Activity tab', async () => {
+    xdescribe('[4241]: All type of social activities are displayed correctly in Case Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = undefined;
         let caseId: string;
@@ -788,8 +789,6 @@ describe('Case Activity Multi Logs', () => {
             tasktemplateData.templateName = 'ExternalTaskTemplateNameDRDMV16729' + randomStr;
             tasktemplateData.templateSummary = externalTaskTemplateSummary;
             externalTaskTemplateDetails = await apiHelper.createExternalTaskTemplate(tasktemplateData);
-
-            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(caseTemplateDisplayId, manualTaskTemplateDetails.displayId, externalTaskTemplateDetails.displayId, automatedTaskTemplateDetails.displayId);
 
             // create case json
             caseData = {
