@@ -12,7 +12,7 @@ class TemplateAccessTab {
         suppGrupList: '.bwf-selection-group.ac-support-group-field li',
         dropdownList: '.rx-select__option-content div',
         buisnessUnitList: '.bwf-selection-group.ac-business-unit-field li',
-        addButton: '.input-group-btn button.btn-secondary',
+        addButton: '.support-group-form button[class*="add"]',
         assignWriteAccess: '.checkbox__input',
     }
 
@@ -29,8 +29,8 @@ class TemplateAccessTab {
     async selectSupportGroup(SupportValue: string, dropDownList: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
         await $(this.selectors.searchType).sendKeys(SupportValue);
-        await element(by.cssContainingText("li[ng-repeat*='option']", SupportValue)).isDisplayed().then(async (displayed) => {
-            if (displayed) await element(by.cssContainingText(".is-open li[ng-repeat*='option']", SupportValue)).click();
+        await element(by.cssContainingText(".rx-select__option-content", SupportValue)).isDisplayed().then(async (displayed) => {
+            if (displayed) await element(by.cssContainingText(".rx-select__option-content", SupportValue)).click();
         });
     }
     
@@ -53,7 +53,7 @@ class TemplateAccessTab {
                 break;
             }
             case "Add Support Group": {
-                await $(this.selectors.addButton).click();
+                await $$(this.selectors.addButton).get(1).click();
                 break;
             }
             default: {
@@ -88,7 +88,7 @@ class TemplateAccessTab {
     }
     
     async deleteTemplateAccess(accessName: string): Promise<void> {
-        let crossIcon = await $$('.rx-case-access-name');
+        let crossIcon = await $$('.access-group-list .badge-text');
         for (let i: number = 0; i < crossIcon.length; i++) {
             let templateAccessName = await crossIcon[i].getText();
             if (templateAccessName == accessName) {
@@ -99,25 +99,27 @@ class TemplateAccessTab {
     }
     
     async isSupportGroupWriteAccessDisplayed(supportGroupText: string): Promise<boolean> {
-        let accessList = '.rx-case-access-group-list li';
-        let accessCount: number = await $$('.rx-case-access-group-list li').count();
-        for (let i: number = 0; i < accessCount; i++) {
-            let accessName = await $$(accessList).get(i).$('.rx-case-access-name').getText();
-            if (accessName == supportGroupText) {
-                return await $$(accessList).get(i).$('[class*="d-icon-pencil"]');
+        let accessParent = await $$('.badge-content');
+        let status = false;
+        for(let i=0; i<accessParent.length; i++) {
+            if(await accessParent[i].$('.badge-text').getText() == supportGroupText) {
+                status = await accessParent[i].$('.d-icon-pencil').isPresent();
+                break;
             }
         }
+        return status;
     }
 
     async isSupportGroupReadAccessDisplayed(supportGroupText: string): Promise<boolean> {
-        let accessList = '.rx-case-access-group-list li';
-        let accessCount: number = await $$('.rx-case-access-group-list li').count();
-        for (let i: number = 0; i < accessCount; i++) {
-            let accessName = await $$(accessList).get(i).$('.rx-case-access-name').getText();
-            if (accessName == supportGroupText) {
-                return await $$(accessList).get(i).$('[class*="d-icon-eye"]');
+        let accessParent = await $$('.badge-content');
+        let status = false;
+        for(let i=0; i<accessParent.length; i++) {
+            if(await accessParent[i].$('.badge-text').getText() == supportGroupText) {
+                status = await accessParent[i].$('.d-icon-eye').isPresent();
+                break;
             }
         }
+        return status;
     }
 }
 
