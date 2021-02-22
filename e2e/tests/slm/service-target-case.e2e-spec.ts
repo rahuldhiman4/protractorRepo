@@ -36,7 +36,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[4131,5585]: Check if expression is build by using all available field with different relation', async () => {
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -45,17 +45,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'NAMED_LIST', 'Applications');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
+            await SlmExpressionBuilder.selectExpressionQualification('Category Tier 1', '=', 'Applications',"Search");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Category Tier 1" + "'" + "=" + '"' + "Applications" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Pending");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Resolved");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Pending", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Resolved", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -102,7 +101,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[5032]: [Global] Create a Case with global SVT', async () => {
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -111,17 +110,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -161,7 +159,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[6056]: Icons representing measurement status on SLA Progress Bar', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -171,16 +169,15 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -216,16 +213,15 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
@@ -252,7 +248,7 @@ describe('Service Target Tests for Cases', () => {
     describe('[5031]: [Global] Both svt gets attached if we have Global and company specific SVTs', async () => {
         let selectedExp = '';
         let expectedSelectedExp = '';
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -262,32 +258,30 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
         it('[5031]: Create company specific SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
         });
@@ -330,7 +324,7 @@ describe('Service Target Tests for Cases', () => {
 
     //skhobrag
     describe('[5525]: Verify the SLA Progress Bar change in color when single SVT attached', async () => {
-        let caseId=undefined;
+        let caseId = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteServiceTargets();
@@ -339,17 +333,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[5525]: Create a case and verify SVT attached to a case', async () => {
@@ -368,14 +361,14 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)'); //green
         });
         it('[5525]: Verify SVT status when case is in Pending status', async () => {
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
             await navigationPage.gotoCaseConsole();
@@ -388,8 +381,8 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBe(true); //green
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
             await navigationPage.gotoCaseConsole();
@@ -398,21 +391,21 @@ describe('Service Target Tests for Cases', () => {
         });
         it('[5525]: Verify SVT in Missed goal status', async () => {
             browser.sleep(40000);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(60000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBe(true); //green
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarPausedIconDisplayed()).toBe(true); //green
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             await browser.sleep(2000);
             await navigationPage.gotoCaseConsole();
@@ -436,33 +429,31 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(2000);
         });
         it('[6058]: Create a SVT with 4 mins timeline', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
@@ -499,17 +490,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Company', '=', 'NAMED_LIST', 'Petramco');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('NAMED_LIST');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Company', '=', 'Petramco','Search');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Company" + "'" + "=" + '"' + "Petramco" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
         });
@@ -542,17 +532,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "High" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -569,7 +558,7 @@ describe('Service Target Tests for Cases', () => {
             caseId = await viewCasePage.getCaseID();
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
@@ -579,8 +568,8 @@ describe('Service Target Tests for Cases', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
         });
         it('[5636]: Verify SVT in pending status', async () => {
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await browser.sleep(2000);
@@ -591,7 +580,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
@@ -606,8 +595,8 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await browser.sleep(2000);
@@ -620,15 +609,15 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Warning Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Warning Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(70000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await browser.sleep(2000);
@@ -661,32 +650,30 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[5522]: Create another SVT', async () => {
             browser.sleep(2000);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("5");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -715,8 +702,8 @@ describe('Service Target Tests for Cases', () => {
             browser.sleep(60000);
         });
         it('[5522]: Verify SVT Missed Goal Status', async () => {
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await navigationPage.gotoCaseConsole();
@@ -726,7 +713,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Missed Goal Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(20000);
@@ -760,32 +747,30 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(2000);
         });
         it('[5523]: Create another SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("5");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -808,8 +793,8 @@ describe('Service Target Tests for Cases', () => {
         });
         it('[5523]: Verify the SLA Progress Bar change in color when multiple SVT attached and all SVT are in Pause State', async () => {
             await browser.sleep(2000);
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await navigationPage.gotoCaseConsole();
@@ -841,32 +826,30 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "In Progress");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "In Progress", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
         });
         it('[5524]: Create another SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
             await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('PERSON');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("5");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             browser.sleep(1000);
             await navigationPage.signOut();
@@ -884,7 +867,7 @@ describe('Service Target Tests for Cases', () => {
             await browser.sleep(31000);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
@@ -897,8 +880,8 @@ describe('Service Target Tests for Cases', () => {
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
         });
         it('[5524]: Verify SLA Warning status', async () => {
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await navigationPage.gotoCaseConsole();
@@ -908,7 +891,7 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(80000);
@@ -918,8 +901,8 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SLA Warning bar is not displayed');
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await navigationPage.gotoCaseConsole();
@@ -931,15 +914,15 @@ describe('Service Target Tests for Cases', () => {
             expect(await serviceTargetInfoPage.isServiceTargetInformationPausedIconDisplayed()).toBeTruthy('SVT Warning Pending Icon on SVT Info Blade is not displayed.');
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('Warning Pending');
             await serviceTargetInfoPage.clickOnCloseButton();
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             await browser.sleep(70000);
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(slmProgressBar.isSLAProgressBarMissedGoalIconDisplayed()).toBeTruthy('SLA Missed Goal bar is not displayed');
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await slmProgressBar.clickOnSLAProgressBarPausedIcon();
@@ -967,17 +950,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -998,8 +980,8 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             await navigationPage.gotoCaseConsole();
@@ -1029,17 +1011,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -1062,8 +1043,8 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBeTruthy('SVT is not attached to case.');
             expect(await slmProgressBar.isDueInTimeDisplayed()).toBe(true);
             expect(await viewCasePage.getSlaBarColor()).toBe('rgba(137, 195, 65, 1)');
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await slmProgressBar.clickOnSLAProgressBarSVTMetIcon();
@@ -1091,17 +1072,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -1127,8 +1107,8 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await slmProgressBar.isSLAProgressBarWarningIconDisplayed()).toBeTruthy('SVT Warning Icon is not attached to case.');
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             await navigationPage.gotoCaseConsole();
@@ -1159,17 +1139,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await navigationPage.signOut();
             await browser.sleep(1000);
@@ -1213,17 +1192,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -1274,17 +1252,16 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             //Create a SVT with 2 mins timeline
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "status", "=", "STATUS", "Resolved");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "STATUS", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "STATUS", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "STATUS", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
             await browser.sleep(1000);
             await navigationPage.signOut();
@@ -1309,15 +1286,15 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
         it('[6053,6055]: Update case status to and verify SVT status ', async () => {
-            await updateStatusBladePo.changeCaseStatus('Pending');
-            await updateStatusBladePo.setStatusReason('Customer Response');
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Pending');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('SVT from Protractor');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Status : Pending');
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('Paused on');
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Assigned');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");
@@ -1326,8 +1303,8 @@ describe('Service Target Tests for Cases', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
         });
         it('[6053,6055]: update case status to resolved and verify SVT status', async () => {
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
             expect(await slmProgressBar.isSVTToolTipTextDisplayed()).toBeTruthy("SVT ToolTip Text is not displayed.");

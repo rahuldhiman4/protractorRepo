@@ -878,7 +878,7 @@ describe('Case Activity CKE', () => {
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
             expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)

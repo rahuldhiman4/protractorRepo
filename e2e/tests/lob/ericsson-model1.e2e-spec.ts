@@ -475,8 +475,8 @@ describe('Ericsson Data Model Tests', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getResolutionCodeValue()).toBe(resolutionCode);
             expect(await viewCasePage.getResolutionDescription()).toBe(resolutionCode);
-            await updateStatusBladePo.changeCaseStatus('Resolved');
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');

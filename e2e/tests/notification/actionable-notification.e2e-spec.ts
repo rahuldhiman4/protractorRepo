@@ -981,7 +981,7 @@ describe("Actionable Notifications", () => {
             await manageTaskBladePo.clickCloseButton();
 
             //Update the status of Case to In Progress
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
 

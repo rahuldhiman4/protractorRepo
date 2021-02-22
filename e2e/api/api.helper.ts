@@ -2133,7 +2133,7 @@ class ApiHelper {
         adhocTaskPayload.fieldInstances[450000381].value = taskData.businessUnit;
         adhocTaskPayload.fieldInstances[1000000217].value = taskData.supportGroup;
         taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
-        adhocTaskPayload.fieldInstances[450000411].value = taskData.lineOfBusiness ? await constants.LOB[taskData.lineOfBusiness] : adhocTaskPayload.fieldInstances[450000411].value;
+        adhocTaskPayload.fieldInstances[450000411].value = taskData.lineOfBusiness ? taskData.lineOfBusiness : adhocTaskPayload.fieldInstances[450000411].value;
         if (taskData.description) {
             let taskDescription = {
                 "id": "1000000000",
@@ -3214,9 +3214,11 @@ class ApiHelper {
     async mapProcessToFlowset(mappingData: IFlowsetProcessMapping): Promise<boolean> {
         let mappingPayload = cloneDeep(PROCESS_FLOWSET_MAPPING);
         mappingPayload.fieldInstances[7].value = constants.ProcessFlowsetMappingStatus[mappingData.status];
-        mappingPayload.fieldInstances[8].value = mappingData.registeredProcessId;
+        mappingPayload.fieldInstances[8].value = mappingData.processNameFull;
+        mappingPayload.fieldInstances[450000152].value = mappingData.processName;
         mappingPayload.fieldInstances[450000002].value = mappingData.flowsetId;
         mappingPayload.fieldInstances[450000003].value = constants.FlowsetFunctions[mappingData.function];
+        mappingPayload.fieldInstances[450000420].value = mappingData.lineOfBusiness ? mappingData.lineOfBusiness : mappingPayload.fieldInstances[450000420].value;
         mappingPayload.fieldInstances[1000000001].value = mappingData.company ? mappingData.company : mappingPayload.fieldInstances[1000000001].value;
 
         let mappingResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(mappingPayload);

@@ -9,17 +9,18 @@ class ServiceTargetConfig {
         createServiceTargetButton: '[rx-view-component-id="5a771a32-973d-4c3f-a90a-280c36890dea"] button',
         svtTitle: '[rx-view-component-id="36abb115-44c8-4089-a7c4-18e6835758fc"] input',
         companyGuid: '64642abd-53f9-472c-8c22-906355edc22d',
-        selectGoalType: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button',
+        selectGoalTypeGuid: '9efb3f48-3bc1-4af8-91c4-b4fa3597814a',
+        selectGoalType: '[rx-view-component-id="9efb3f48-3bc1-4af8-91c4-b4fa3597814a"] button',
         dataSourceGuid: 'a2780b54-1b51-48e7-a9ae-f387e87b55a5',
-        svtDescriptionField: '[rx-view-component-id="5425c08c-4806-4f23-8a28-4c436309d773"] input',
-        goalTypeSelectedValue: `//*[@rx-view-definition-guid="b33e03d8-128d-4c42-8a5e-93d67bebd0b7"]//*[contains(@class,'form-control-label')]//span`,
+        svtDescriptionField: '[rx-view-component-id="bbff56c3-aae3-4050-a377-5d37aaeb1ce9"] textarea',
+        goalTypeSelectedValue: '[rx-view-component-id="9efb3f48-3bc1-4af8-91c4-b4fa3597814a"] button div',
         dropDownOption: 'button.dropdown-item',
-        buildExpressionLink: '[rx-view-component-id="70687d3e-2539-4474-a64b-1fa115440fd5"] button',
+        buildExpressionLink: 'button[aria-label="Build Expression"]',
         timer: 'input.adapt-counter-input',
         segments: '.adapt-accordion .card',
         segmentsArrow: '.adapt-accordion .card .tab-caret',
-        saveSVTButton: '[rx-view-component-id="8f3dd3cd-1443-4296-9061-ad90e17f1dc2"] button',
-        closeSVTButton: '[rx-view-component-id="3876db88-86b9-49d3-bcbf-0e47ca0b5ca4"] button',
+        saveSVTButton: '[rx-view-component-id="a54fb374-2287-4a40-bcca-f950d088d098"] button',
+        closeSVTButton: '[rx-view-component-id="c310b9eb-f57b-4be7-918d-2f84459e8c86"] button',
         qualificationBuilder: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .content-outlet',
         searchField: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] input.adapt-search-field',
         field: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .bwf-field-selector_field',
@@ -29,13 +30,14 @@ class ServiceTargetConfig {
         valueSearch: ' input[type="search"]',
         addButton: '.d-textfield__label .margin-top-10 button',
         expressionBuilderBtn: '[rx-view-component-id="1f691b31-30f7-4feb-b4f2-8972a616f2fe"] button',
-        termsAndConditionsField: 'textarea.form-control',
+        termsAndConditionsFieldGuid:'94891fe1-781f-4f94-bcce-12425862d97d',
         selectStatusField: '[rx-view-component-id="dc8c4074-db37-4910-96c0-b16d2be23b7e"] button',
         selectBusinessEntity: `//button//div[text()='Select Business Entity']`,
         fieldNameLabel: `//*[@rx-view-definition-guid="b33e03d8-128d-4c42-8a5e-93d67bebd0b7"]//*[contains(@class,'form-control-label')]//span`,
         noMileStonesPresentText: '.adapt-accordion .card .no-record-found',
         addNewMileStoneBtn: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-plus_circle',
-        goalTypeDropDownInput: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button'
+        goalTypeDropDownInput: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button',
+        errorMsg: '.form-control-feedback span'
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
@@ -48,6 +50,18 @@ class ServiceTargetConfig {
         });
     }
 
+    async getError(errorMsg:string): Promise<boolean> {
+        return await $(this.selectors.errorMsg).isPresent().then(async (result) => {
+            if (result) {
+                console.log('errorMsg: ',errorMsg)
+                await element(by.cssContainingText(this.selectors.errorMsg, errorMsg)).getAttribute('value')?true:false;
+            } else {
+                return null;
+            }
+            
+        });
+    }
+
     async clickCreateSVTButton(): Promise<void> {
         await $(this.selectors.createServiceTargetButton).click();
     }
@@ -56,14 +70,15 @@ class ServiceTargetConfig {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createServiceTargetButton)));
         await $(this.selectors.createServiceTargetButton).click();
         //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.svtTitle))));
-        await element(by.model(this.selectors.svtTitle)).sendKeys(svtTitleStr);
+        
+        await $(this.selectors.svtTitle).sendKeys(svtTitleStr);
         await this.selectCompany(company);
         await this.selectDataSource(dataSource);
         await $$(this.selectors.buildExpressionLink).first().click();
     }
 
     async enterSVTTitle(svtTitleStr: string): Promise<void> {
-        await element(by.model(this.selectors.svtTitle)).sendKeys(svtTitleStr);
+        await $(this.selectors.svtTitle).sendKeys(svtTitleStr);
     }
 
     async selectCompany(company: string): Promise<void> {
@@ -79,8 +94,7 @@ class ServiceTargetConfig {
     }
 
     async selectGoalType(svtGoalType: string): Promise<void> {
-        await $(this.selectors.selectGoalType).click();
-        await element(by.cssContainingText(this.selectors.dropDownOption, svtGoalType)).click();
+        await utilityCommon.selectDropDown(this.selectors.selectGoalTypeGuid,svtGoalType);
     }
 
     async selectStatus(svtStatus: string): Promise<void> {
@@ -89,16 +103,17 @@ class ServiceTargetConfig {
     }
 
     async enterSVTDescription(svtDesc: string): Promise<void> {
-        await element(by.model(this.selectors.svtDescriptionField)).sendKeys(svtDesc);
+        await $(this.selectors.svtDescriptionField).clear();
+        await $(this.selectors.svtDescriptionField).sendKeys(svtDesc);
     }
 
     async clearSVTDescription(): Promise<void> {
-        await element(by.model(this.selectors.svtDescriptionField)).clear();
+        await $(this.selectors.svtDescriptionField).clear();
     }
 
 
     async isTermsAndConditionsFieldMandatory(): Promise<boolean> {
-        return await $(this.selectors.termsAndConditionsField).getAttribute("required") == 'true';
+    return await utilityCommon.isRequiredTagToField(this.selectors.termsAndConditionsFieldGuid)
     }
 
     async clickOnBuildExpression(): Promise<void> {
@@ -134,22 +149,22 @@ class ServiceTargetConfig {
         await $$(this.selectors.segmentsArrow).get(1).click();
     }
 
-    async selectExpressionForMeasurement(measurementExp: number, field: string, operator: string, fieldAttribute: string, fieldvalue: string) {
+    async selectExpressionForMeasurement(measurementExp: number, field: string, operator: string, fieldvalue: string,DropDown?: string) {
         //        browser.sleep(2000);
         await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).get(measurementExp).click();
         //        browser.sleep(2000);
         await SlmExpressionBuilder.clearSelectedExpression();
-        await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldAttribute, fieldvalue);
-        await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
+        await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldvalue,DropDown);
+      //  await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
         await SlmExpressionBuilder.clickOnSaveExpressionButton();
     }
 
-    async selectExpressionForMeasurementForTask(measurementExp: number, field: string, operator: string, fieldAttribute: string, fieldvalue: string) {
+    async selectExpressionForMeasurementForTask(measurementExp: number, field: string, operator: string, fieldvalue: string,DropDown?: string) {
         //        browser.sleep(2000);
         await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).get(measurementExp).click();
         //        browser.sleep(2000);
-        await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldAttribute, fieldvalue);
-        await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
+        await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldvalue,DropDown);
+      //  await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
         await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
     }
 
@@ -173,8 +188,8 @@ class ServiceTargetConfig {
         await $(this.selectors.closeSVTButton).click();
     }
 
-    async getGoalTypeSelectedValue(svtGoalType: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.goalTypeSelectedValue, svtGoalType)).isDisplayed();
+    async getGoalTypeSelectedValue(): Promise<string> {
+        return await $(this.selectors.goalTypeSelectedValue).getText();
     }
 
     async selectGoalTypeCheckbox(checkboxLabel: string): Promise<void> {

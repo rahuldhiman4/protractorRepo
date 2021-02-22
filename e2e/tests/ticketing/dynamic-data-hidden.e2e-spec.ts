@@ -284,10 +284,10 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3605]: Validate dynamic field and change the status', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21451')).toBeFalsy();
-            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
-            await updateStatusBladePo.changeCaseStatus("Resolved");
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus("Resolved");
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451", 1)).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();
@@ -310,8 +310,8 @@ describe('Dynamic Hidden Data', () => {
         });
         it('[3605]: Validate dynamic field and change the status', async () => {
             expect(await viewCasePo.isDynamicFieldDisplayed('Field1OutsideDRDMV21451')).toBeFalsy('Field1OutsideDRDMV21451 displayed');
-            await updateStatusBladePo.changeCaseStatus("Resolved");
-            await updateStatusBladePo.setStatusReason('Auto Resolved');
+            await updateStatusBladePo.changeStatus("Resolved");
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent("Message not found, [bundleId = Ticketing-AppID, messageNum = 930] Required fields not entered Field1OutsideDRDMV21451", 1)).toBeTruthy();
             await updateStatusBladePo.clickCancelButton();

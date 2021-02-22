@@ -27,7 +27,7 @@ class CaseWatchlistBlade {
     }
 
     async addWatchlistEvent(eventName: string): Promise<void> {
-        await  $(this.selectors.selectAllEvent).isPresent().then(async (results) => {
+        await $(this.selectors.selectAllEvent).isPresent().then(async (results) => {
             if (results) {
                 await element(by.cssContainingText(this.selectors.watchlistEvents, eventName)).click();
             } else await element(by.cssContainingText(this.selectors.watchlistEvents, eventName)).click();
@@ -69,8 +69,8 @@ class CaseWatchlistBlade {
 
     async isCaseSearchGiveCorrectResult(caseId: string): Promise<boolean> {
         await utilityGrid.searchRecord(caseId, this.selectors.guid);
-        let count: number =  await $$(this.selectors.caseLinks).count();
-        return count==1 && await $$(this.selectors.caseLinks).first().getText()==caseId;
+        let count: number = await $$(this.selectors.caseLinks).count();
+        return count == 1 && await $$(this.selectors.caseLinks).first().getText() == caseId;
     }
 
     async isColumnSorted(columnHeader: string): Promise<boolean> {
@@ -89,7 +89,7 @@ class CaseWatchlistBlade {
         await utilityGrid.removeGridColumn(columnNames, this.selectors.guid);
     }
 
-    async addFilter(fieldName: string, textValue: string,type: string): Promise<void> {
+    async addFilter(fieldName: string, textValue: string, type: string): Promise<void> {
         await utilityGrid.addFilter(fieldName, textValue, type, this.selectors.guid);
     }
 
@@ -106,7 +106,7 @@ class CaseWatchlistBlade {
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId, this.selectors.guid);
     }
 
-    async selectTwoCases(caseId1: string, caseId2: string): Promise<void>{
+    async selectTwoCases(caseId1: string, caseId2: string): Promise<void> {
         await utilityGrid.sortGridColumn('Case ID', 'descending', this.selectors.guid);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId1, this.selectors.guid);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId2, this.selectors.guid);
@@ -121,7 +121,7 @@ class CaseWatchlistBlade {
     }
 
     async clearWatchlistFilter(): Promise<void> {
-        let clearFilterLocator =  await $$(this.selectors.clearFilterButton).first();
+        let clearFilterLocator = await $$(this.selectors.clearFilterButton).first();
         try {
             await $(this.selectors.filterPreset).click();
             if (await clearFilterLocator.isPresent()) {
@@ -175,27 +175,27 @@ class CaseWatchlistBlade {
         await locator.click();
     }
 
-    async isSaveEventsButtonEnabled(): Promise<boolean>{
+    async isSaveEventsButtonEnabled(): Promise<boolean> {
         return await $(this.selectors.saveButton).isEnabled();
     }
 
-    async clickOnCloseButton(): Promise<void>{
+    async clickOnCloseButton(): Promise<void> {
         await $(this.selectors.closeButton).click();
     }
 
-async sortDescendingByCaseId(): Promise<void>{
-    let headerText = await $$('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .at-header-data-cell');
-    for(let i:number=0; i<(await headerText.length); i++){
-        let columnName = await headerText[i].$('.c-header__separator');
-        if(await columnName.getText()=='Case ID'){
-            await headerText[i].$('adapt-table-header-cell-menu').click();
-            break;
+    async sortDescendingByCaseId(): Promise<void> {
+        let headerText = await $$('[rx-view-component-id="60bc2700-9909-4b0f-8de4-edb02443b62f"] .at-header-data-cell');
+        for (let i: number = 0; i < (await headerText.length); i++) {
+            let columnName = await headerText[i].$('.c-header__separator');
+            if (await columnName.getText() == 'Case ID') {
+                await headerText[i].$('adapt-table-header-cell-menu').click();
+                break;
+            }
         }
+        let descendingSign: ElementFinder = await $$('.adapt-table-sort-menu__btn').get(1);
+        await descendingSign.click();
+        await $$('.d-icon-refresh').last().click();
     }
-    let descendingSign: ElementFinder = await $$('.adapt-table-sort-menu__btn').get(1);
-    await descendingSign.click();
-    await $$('.d-icon-refresh').last().click();
-        }
 }
 
 export default new CaseWatchlistBlade();

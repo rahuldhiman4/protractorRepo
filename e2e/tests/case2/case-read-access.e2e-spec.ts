@@ -25,8 +25,7 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import previewCaseTemplatePo from 'e2e/pageobject/settings/case-management/preview-case-template.po';
-import { ICaseTemplate } from 'e2e/data/interface/template.interface';
+import { ICaseTemplate } from '../../data/interface/template.interface';
 let flowsetGlobalFieldsData = undefined;
 
 describe("Case Read Access", () => {
@@ -387,7 +386,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #failing due to popup
+    // #passed
     describe('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData, readAccessMappingData1, readAccessMappingData2;
@@ -434,6 +433,7 @@ describe("Case Read Access", () => {
             readAccessMappingData2.configName = randomStr + '3ReadAccessMappingName';
             await apiHelper.createReadAccessMapping(readAccessMappingData2);
         });
+        // success
         it('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
@@ -450,7 +450,7 @@ describe("Case Read Access", () => {
             await utilityGrid.searchAndOpenHyperlink(readAccessMappingData2.configName);
             await editReadAccess.setDefaultToggleButton(true);
             await editReadAccess.clickOnSave();
-            expect(await utilityCommon.isPopUpMessagePresent('Only one default record is allowed for a company. Please change the default flag and save the record.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Only one default record is allowed for a Line of Business. Please change the default flag and save the record.')).toBeTruthy('pop up message absent');
             await editReadAccess.clickOnCancel();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes')
         });
@@ -463,7 +463,7 @@ describe("Case Read Access", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Workforce Administration', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setCaseSummary('Read Access');
@@ -666,11 +666,10 @@ describe("Case Read Access", () => {
             //Bulk Read Access
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('United Kingdom Support', 'Select Business Unit');
-            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('AU Support 2', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('United States Support', 'Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
+            await accessTabPo.selectAccessEntityDropDown('LA Support 1', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
             await accessTabPo.selectAgent('Quanah George', 'Agent');
@@ -681,11 +680,6 @@ describe("Case Read Access", () => {
             //Bulk Write Access
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
-            await accessTabPo.clickAssignWriteAccessCheckbox('Business Unit');
-            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
             await accessTabPo.selectAccessEntityDropDown('AU Support 1', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
@@ -778,7 +772,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #ashastra (pending)
+    // #ashastra (failing)
     describe('[5605]: [Read Access] Editing/Deleting the Read Access Mapping', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData1, caseTemplateData2, readAccessMappingData;
@@ -860,7 +854,7 @@ describe("Case Read Access", () => {
             await utilityGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
             await editReadAccess.clearAccessMappingName();
             await editReadAccess.clickOnSave();
-            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy('Pop up message absent');
             await utilityCommon.closePopUpMessage();
             await editReadAccess.setAccessMappingName(randomStr + 'UpdatedAccessMappingName');
             await editReadAccess.clickOnSave();

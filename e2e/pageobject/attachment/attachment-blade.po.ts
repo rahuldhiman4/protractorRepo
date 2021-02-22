@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
+
 class AttachmentBlade {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
@@ -127,7 +128,9 @@ class AttachmentBlade {
     }
 
     async clickCloseButton(): Promise<void> {
-        await $(this.selectors.close).click();
+        await $(this.selectors.close).isPresent().then(async (present) => {
+            if (present) await $(this.selectors.close).click();
+        });
     }
 
     async isColumnHeaderPresent(columnHeader: string): Promise<boolean> {

@@ -12,12 +12,12 @@ class EditDocumentTemplatePage {
         description: '[rx-view-component-id="c5ac0f65-e850-43aa-8040-00434db0acc9"] input',
         saveButton: '[rx-view-component-id="0afac686-fde8-4877-854b-7b8da0f3a9fa"] button',
         cancelButton: '[rx-view-component-id="55363c3b-863f-4f6c-b8c4-fe78e55208dc"] button',
-        labelDropDown: '[rx-view-component-id="72d4bfbf-ec5c-437e-b0f1-f216babb58f8"] button',
-        labelDropDownGuid: '72d4bfbf-ec5c-437e-b0f1-f216babb58f8',
+        labelDropDown: '[rx-view-component-id="e02e7ad6-7315-44a6-8c0a-c55e16b7a787"] button',
+        labelDropDownGuid: 'e02e7ad6-7315-44a6-8c0a-c55e16b7a787',
         pageHeader: '.modal-title',
         documentBodyImg: '[rx-view-component-id="f6baa44c-1e91-49be-9164-1c56077900d8"] .cke_contents_ltr img',
         dynamicField: '[class="cke_contents cke_reset"] span',
-        lobValue: '[rx-view-component-id="d4c80fc3-8379-4215-8312-23d9201a3ff7"] .pull-left'
+        lobValue: '[rx-view-component-id="f76152b7-16b2-415f-b8ca-f01360488112"] button'
     }
 
     async isDocumentBodyImgDisplay(): Promise<boolean> {
@@ -60,7 +60,7 @@ class EditDocumentTemplatePage {
     }
 
     async isCompanyDropDownDisabled(): Promise<boolean> {
-        return await $(this.selectors.company).getAttribute('disabled') == 'true';
+        return await $(this.selectors.company).getAttribute('aria-disabled') == 'true';
     }
 
     async isTemplateNameDisabled(): Promise<boolean> {
@@ -68,7 +68,7 @@ class EditDocumentTemplatePage {
     }
 
     async isCompanyNameDisplayed(companyName: string): Promise<boolean> {
-        let getText = await $(this.selectors.company).$('.ui-select-match-text').getText();
+        let getText = await $(this.selectors.company).getText();
         return getText == companyName ? true : false
     }
 

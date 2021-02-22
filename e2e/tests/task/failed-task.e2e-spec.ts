@@ -103,7 +103,7 @@ describe('Failed Task', () => {
         });
 
         it('[5310]: Task behaviour when 2 of 3 tasks on same sequence and first task is failed(Condition set is Proceed further)', async () => {
-            await statusUpdateBladePo.changeCaseStatus('In Progress');
+            await statusUpdateBladePo.changeStatus('In Progress');
             await statusUpdateBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseDisplayId);
@@ -123,8 +123,8 @@ describe('Failed Task', () => {
             let manualTaskGuid = await coreApi.getTaskGuid(manualTaskTemplateData.templateSummary);
             await apiHelper.updateTaskStatus(manualTaskGuid, 'Completed', 'Successful');
 
-            await statusUpdateBladePo.changeCaseStatus('Resolved');
-            await statusUpdateBladePo.setStatusReason('Auto Resolved');
+            await statusUpdateBladePo.changeStatus('Resolved');
+            await statusUpdateBladePo.selectStatusReason('Auto Resolved');
             await statusUpdateBladePo.clickSaveStatus('Resolved');
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
@@ -207,7 +207,7 @@ describe('Failed Task', () => {
         });
 
         it('[5311]: Task behaviour when 2 of 3 automated tasks on same sequence and first task is failed(Condition set is Do not Proceed)', async () => {
-            await statusUpdateBladePo.changeCaseStatus('In Progress');
+            await statusUpdateBladePo.changeStatus('In Progress');
             await statusUpdateBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoTaskConsole();
             await taskConsolePo.searchAndOpenTask(automatedTaskTemplateSummary2);
@@ -339,7 +339,7 @@ describe('Failed Task', () => {
             await viewCasePage.clickOnTaskLink(manualTaskTemplateData.templateSummary);
             await taskViewPage.clickOnChangeStatus();
             await taskViewPage.changeTaskStatus('Completed');
-            await statusUpdateBladePo.setStatusReason('Failed');
+            await statusUpdateBladePo.selectStatusReason('Failed');
             await statusUpdateBladePo.clickSaveStatus();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
         });

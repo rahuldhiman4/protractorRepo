@@ -32,7 +32,7 @@ class ViewTask {
         requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-name .person-link',
         requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-phone-link',
         requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .bwf-person-email button',
-        assigneeName: '[rx-view-component-id="691c7524-167e-434b-acac-c11571c53409"] .person-main a',
+        assigneeName: '[rx-view-component-id="691c7524-167e-434b-acac-c11571c53409"] .person-main .person-name',
         assignGroupText: '[rx-view-component-id="2193d81d-8ea7-457f-8a8e-9d0378a7a43a"] label',
         assignCompany: '[rx-view-component-id="691c7524-167e-434b-acac-c11571c53409"] .read-only-content',
         taskStatusGuid: 'aea81ee2-85d9-4bb6-adb4-08c29028d45d',

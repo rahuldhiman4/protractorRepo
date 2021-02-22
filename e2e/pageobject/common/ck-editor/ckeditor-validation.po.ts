@@ -285,7 +285,7 @@ class CKEValidation {
 
     async isTextRightAlignInCkEditorTextArea(bodyText: string, rightAlignTextElement?: ElementFinder): Promise<boolean> {
         let framePresent = await $(this.selectors.frame).isPresent();
-        if (!rightAlignTextElement) rightAlignTextElement = await $$(this.selectors.rightAlignText).last();
+        if (!rightAlignTextElement) rightAlignTextElement = await $$(this.selectors.rightAlignText).first();
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
             await browser.switchTo().frame($(this.selectors.frame).getWebElement());

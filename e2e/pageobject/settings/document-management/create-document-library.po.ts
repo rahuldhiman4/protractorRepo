@@ -35,7 +35,7 @@ class DocumentLibraryPage {
         category3: 'dc6992ff-4013-442b-93fe-6f8aedaa55f5',
         category4: 'e99dc284-de1a-4908-b2d1-40e0b557a1d0',
         region: '0ec41c10-47f1-494e-ac46-43b1b63aa253',
-        site: '49033c1d-f1f7-48f5-94c4-a5a6a16c8c31',
+        site: '387f735d-b87f-4935-9bf8-28a04c9ecfda',
         status: '0a8b7179-dd0a-47f9-8515-7c7aceda3118',
         editSaveButton: '[rx-view-component-id="8035353f-acb0-4bb5-a5c5-fe7626c01b3e"] button',
         documentHamburgerGuid: '5d1f94a9-693e-4dbf-896f-3b9689f95a42',
@@ -78,7 +78,7 @@ class DocumentLibraryPage {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.companyFieldGuid, textValue);
     }
 
-    
+
 
     async buisnessUnitTextPresent(textValue: string): Promise<boolean> {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.buisnessUnit, textValue);
@@ -176,10 +176,10 @@ class DocumentLibraryPage {
     }
 
     async selectSupportOrg(buisnessUnit: string): Promise<void> {
-        await utilityCommon.selectDropDown("Support Organization", buisnessUnit,DropDownType.Label);
+        await utilityCommon.selectDropDown("Support Organization", buisnessUnit, DropDownType.Label);
     }
     async selectOwnerGroup(ownerGroupName: string): Promise<void> {
-        await utilityCommon.selectDropDown("Owner Group", ownerGroupName,DropDownType.Label);
+        await utilityCommon.selectDropDown("Owner Group", ownerGroupName, DropDownType.Label);
     }
 
     async clickOnSaveButton(): Promise<void> {

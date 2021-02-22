@@ -62,6 +62,7 @@ class LoginPage {
         let innovationStudio = this.EC.titleContains('Workspace - Innovation Studio');
         let noAccess = this.EC.titleContains('No Access');
         await browser.wait(this.EC.or(caseConsole, knowledgeConsole, tasksConsole, innovationStudio, noAccess), 30000);
+        console.log(' === Login Successful === ');
     }
 }
 

@@ -276,7 +276,7 @@ describe('Data Source Configuration Tests', () => {
             await editConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created Date');
             await editConfigureDataSourceConfigPo.clickBuildExpressionBtn();
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Expression');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID');
             await browser.sleep(2000); // sleep added for expression builder loading time
@@ -287,7 +287,7 @@ describe('Data Source Configuration Tests', () => {
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await editConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
         it('[4901]: Create a Task SVT and verify the data source details are enabled', async () => {

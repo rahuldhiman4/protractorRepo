@@ -1,4 +1,4 @@
-import { $, $$, Key, element, by, ElementFinder, browser, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilityCommon from '../utils/utility.common';
 
 export class GridOperations {
@@ -115,8 +115,7 @@ export class GridOperations {
         if (guid) { gridLocatorStr = `[rx-view-component-id="${guid}"] ${this.selectors.gridRows}`; }
         let rowLocator = await $$(gridLocatorStr);
         for (let i: number = 0; i < rowLocator.length; i++) {
-            let row = await $$(gridLocatorStr).get(i);
-            let linkText = await row.$(this.selectors.gridRowHyperLinks).getText();
+            let linkText = await $$(gridLocatorStr).get(i).$(this.selectors.gridRowHyperLinks).getText();
             if (linkText.trim() == value) {
                 await $$(gridLocatorStr).get(i).$(this.selectors.gridCheckbox).click();
                 break;
@@ -303,12 +302,13 @@ export class GridOperations {
         else columnData = await this.getAllValuesFromColumn(columnName);
 
         const copy = Object.assign([], columnData);
-        await columnData.sort(function (a, b) {
+        columnData.sort(function (a, b) {
             return a.localeCompare(b);
         })
         if (sortType == "descending") {
             columnData.reverse();
         }
+
         return columnData.length === copy.length && columnData.every(
             (value, index) => (value === copy[index])
         );

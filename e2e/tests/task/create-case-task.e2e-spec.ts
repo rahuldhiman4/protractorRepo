@@ -551,14 +551,14 @@ describe('Create Case Task', () => {
         });
         it('[5558]: Verify the task status', async () => {
             await viewCasePage.clickOnRefreshTaskList();
-            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             //validate Automation Template With Required Field
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(automationTaskSummary);
             await viewTask.clickOnChangeStatus();
-            expect(await updateStatusBladePo.allStatusOptionsPresent(status)).toBeTruthy("Staus Not Found");
+            expect(await updateStatusBladePo.allStatusValuesPresent(status)).toBeTruthy("Staus Not Found");
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Closed');
@@ -874,11 +874,11 @@ describe('Create Case Task', () => {
         await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
         await manageTaskBladePo.clickCloseButton();
         await viewCasePage.clickOnRefreshTaskList();
-        await updateStatusBladePo.changeCaseStatus('Pending');
-        await updateStatusBladePo.setStatusReason('Customer Response');
+        await updateStatusBladePo.changeStatus('Pending');
+        await updateStatusBladePo.selectStatusReason('Customer Response');
         await updateStatusBladePo.clickSaveStatus();
-        await updateStatusBladePo.changeCaseStatus('Canceled');
-        await updateStatusBladePo.setStatusReason('Customer Canceled');
+        await updateStatusBladePo.changeStatus('Canceled');
+        await updateStatusBladePo.selectStatusReason('Customer Canceled');
         await updateStatusBladePo.clickSaveStatus();
         await utilityCommon.closePopUpMessage();
         await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
@@ -939,7 +939,7 @@ describe('Create Case Task', () => {
             await manageTaskBladePo.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
@@ -1023,7 +1023,7 @@ describe('Create Case Task', () => {
             await viewTask.clickOnViewCase();
         });
         it('[5561]: Verify status of task after updating of case', async () => {
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
@@ -1031,7 +1031,7 @@ describe('Create Case Task', () => {
             await viewTask.clickOnChangeStatus();
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewTask.clickOnViewCase();
@@ -1314,7 +1314,7 @@ describe('Create Case Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCaseConsole();
@@ -1332,11 +1332,11 @@ describe('Create Case Task', () => {
         it('[5784,5672]: [Task Status] Task Status change from Completed', async () => {
             await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
             await viewTask.clickOnChangeStatus();
-            await updateStatusBladePo.allStatusOptionsPresent(statusDropdown1);
+            await updateStatusBladePo.allStatusValuesPresent(statusDropdown1);
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
@@ -1356,7 +1356,7 @@ describe('Create Case Task', () => {
             await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewTask.clickOnChangeStatus();
@@ -1673,7 +1673,7 @@ describe('Create Case Task', () => {
         it('[6088]: [Edit Task] Update summary, status, description and assignment', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase('DRDMV1579Summary' + randomStr);
-            await updateStatusBladePo.changeCaseStatus("In Progress");
+            await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoTaskConsole();

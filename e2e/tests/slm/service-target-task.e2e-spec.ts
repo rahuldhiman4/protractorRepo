@@ -84,9 +84,9 @@ describe('Service Target Tests for Tasks', () => {
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "STATUS", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "STATUS", "=", "Completed","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "STATUS", "=", "Pending","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[4907]: Create a Case', async () => {
@@ -115,7 +115,7 @@ describe('Service Target Tests for Tasks', () => {
             await browser.sleep(32000);
         });
         it('[4907]:Verify SVT applied on Manual Task', async () => {
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnTaskLink(manualTaskTemp);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
@@ -127,7 +127,7 @@ describe('Service Target Tests for Tasks', () => {
             expect(await slmProgressBar.getServiceTargetToolTipText()).toContain('due on');
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await viewTask.clickOnViewCase();
             await navigationPage.gotoTaskConsole();
@@ -311,7 +311,7 @@ describe('Service Target Tests for Tasks', () => {
             await browser.sleep(32000);
         });
         it('[4920,4919,4899]: Verify SVT status on task console when SVT condition is Met', async () => {
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnTaskLink(summary);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);
@@ -336,7 +336,7 @@ describe('Service Target Tests for Tasks', () => {
             await utilityGrid.searchAndOpenHyperlink(taskId);
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
-            await updateStatusBladePo.setStatusReason('Successful');
+            await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             expect(await slmProgressBar.isSLAProgressBarSVTMetIconDisplayed()).toBe(true); //green
             await navigationPage.gotoTaskConsole();
@@ -366,7 +366,7 @@ describe('Service Target Tests for Tasks', () => {
         });
         it('[4920,4919,4899]: Change the status of Case to trigger SVT on Task', async () => {
             await browser.sleep(32000);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnTaskLink(summary);
             taskId = await viewTask.getTaskID();
@@ -483,7 +483,7 @@ describe('Service Target Tests for Tasks', () => {
             await browser.sleep(32000);
         });
         it('[4905]:Create a SVT for Task where build expression has Custom Status', async () => {
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickOnTaskLink(summary);
             expect(await slmProgressBar.isSLAProgressBarDisplayed()).toBe(true);

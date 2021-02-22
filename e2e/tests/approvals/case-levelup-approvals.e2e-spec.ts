@@ -122,7 +122,7 @@ describe("Case Level Up Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -180,9 +180,9 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         it('[4263]:update the case status to approval trigger status and see if approval is triggered', async () => {
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -219,9 +219,9 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         it('[4263]:update the case status to approval trigger status and see if approval is triggered', async () => {
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -364,7 +364,7 @@ describe("Case Level Up Approval Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -422,9 +422,9 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         it('[5149]:update the case status to approval trigger status and see if approval is triggered', async () => {
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -460,9 +460,9 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         it('[5149]:update the case status to approval trigger status and see if approval is triggered', async () => {
-            await updateStatusBladePo.changeCaseStatus('Assigned');
+            await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
-            await updateStatusBladePo.changeCaseStatus('In Progress');
+            await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);

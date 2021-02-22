@@ -65,7 +65,8 @@ describe('Create Process in Flowset', () => {
             //Map Process to Flowset
             let flowsetProcessMappingData = {
                 function: 'Initialization',
-                registeredProcessId: registeredProcessResponse.id,
+                processNameFull: registerProcessData.processName,
+                processName: processName,
                 status: 'Active',
                 flowsetId: flowsetResponse.id,
                 company: 'Petramco'
@@ -123,7 +124,7 @@ describe('Create Process in Flowset', () => {
             let processName = `Agent Origin ${randomStr}`
             await apiHelper.createProcess(processName, 'AGENT_ORIGIN');
             await navigationPage.gotoSettingsPage();
-//            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
+            //            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
             await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
 
             //Register Process
@@ -203,7 +204,7 @@ describe('Create Process in Flowset', () => {
                 description: 'Desc ' + randomStr,
                 status: 'Active'
             }
-            let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
+            await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
             let flowsetName: string = `5295 ${randomStr}`;
@@ -214,7 +215,8 @@ describe('Create Process in Flowset', () => {
             //Map Process to Flowset
             let flowsetProcessMappingData = {
                 function: 'Initialization',
-                registeredProcessId: registeredProcessResponse.id,
+                processNameFull: registerProcessData.processName,
+                processName: processName,
                 status: 'Active',
                 flowsetId: flowsetResponse.id,
                 company: 'Petramco'
@@ -274,9 +276,10 @@ describe('Create Process in Flowset', () => {
                 processAliasName: processName,
                 company: 'Petramco',
                 description: 'Desc ' + randomStr,
-                status: 'Active'
+                status: 'Active',
+                lineOfBusiness: "Human Resource"
             }
-            let registeredProcessResponse = await apiHelper.createProcessLibConfig(registerProcessData);
+            await apiHelper.createProcessLibConfig(registerProcessData);
 
             //Create new flowset
             let flowsetName: string = `5294 ${randomStr}`;
@@ -287,7 +290,8 @@ describe('Create Process in Flowset', () => {
             //Map Process to Flowset
             let flowsetProcessMappingData = {
                 function: 'User Activity Feeds',
-                registeredProcessId: registeredProcessResponse.id,
+                processNameFull: registerProcessData.processName,
+                processName: processName,
                 status: 'Active',
                 flowsetId: flowsetResponse.id,
                 company: 'Petramco'
@@ -343,7 +347,7 @@ describe('Create Process in Flowset', () => {
             await activityTabPage.clickOnPostButton();
             await browser.sleep(1000); //hardwait to complete process execution
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
-            await statusBladePo.changeCaseStatus('In Progress');
+            await statusBladePo.changeStatus('In Progress');
             await statusBladePo.clickSaveStatus('In Progress');
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
         });
@@ -373,7 +377,7 @@ describe('Create Process in Flowset', () => {
                 description: 'Desc ' + randomStr,
                 status: 'Active'
             }
-            let registeredProcessResponse1 = await apiHelper.createProcessLibConfig(registerProcessData1);
+            await apiHelper.createProcessLibConfig(registerProcessData1);
 
             //Register the Process2
             const registerProcessData2 = {
@@ -384,7 +388,7 @@ describe('Create Process in Flowset', () => {
                 description: 'Desc ' + randomStr,
                 status: 'Active'
             }
-            let registeredProcessResponse2 = await apiHelper.createProcessLibConfig(registerProcessData2);
+            await apiHelper.createProcessLibConfig(registerProcessData2);
 
             //Create new flowset
             let flowsetName: string = `5324 ${randomStr}`;
@@ -395,7 +399,8 @@ describe('Create Process in Flowset', () => {
             //Map Process1 to Flowset
             let flowsetProcessMappingData1 = {
                 function: 'User Activity Feeds',
-                registeredProcessId: registeredProcessResponse1.id,
+                processNameFull: registerProcessData1.processName,
+                processName: processName1,
                 status: 'Active',
                 flowsetId: flowsetResponse.id,
                 company: 'Petramco'
@@ -405,7 +410,8 @@ describe('Create Process in Flowset', () => {
             //Map Process2 to Flowset
             let flowsetProcessMappingData2 = {
                 function: 'Initialization',
-                registeredProcessId: registeredProcessResponse2.id,
+                processNameFull: registerProcessData2.processName,
+                processName: processName2,
                 status: 'Active',
                 flowsetId: flowsetResponse.id,
                 company: 'Petramco'

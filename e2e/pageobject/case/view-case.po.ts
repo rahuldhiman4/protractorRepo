@@ -37,10 +37,10 @@ class ViewCasePage {
         caseSite: '[rx-view-component-id="4a58cc3b-e699-4357-a68a-482163d6cbbe"] .read-only-content',
         inprogressErrorMsg: '[rx-view-component-id="dd40ce76-9d16-4c6a-b1a1-16fe6aa6721f"] p',
         label: '[rx-view-component-id="2415f5bb-1b76-4359-a034-ff16f8e26f7b"] .read-only-content',
-        resolutionCodeText: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] span',
-        resolutionCodeValue: '[rx-view-component-id="32eeffe4-f5c1-4fc8-9c91-25946cc86d66"] button',
+        resolutionCodeText: '[rx-view-component-id="155eb52a-4680-42a4-ae91-7505ab92eb31"] label',
+        resolutionCodeValue: '[rx-view-component-id="155eb52a-4680-42a4-ae91-7505ab92eb31"] .read-only-content',
         resolutionDescriptionLabel: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] label',
-        resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .mb-2',
+        resolutionDescriptionValue: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] .collapse-block',
         priority: '[rx-view-component-id="7b47ca08-e9d4-4656-8f96-3bc751c098b0"] .selection-field',
         emailLink: '[rx-view-component-id="58a437ec-fc5b-4721-a583-1d6c80cfe6a6"] button',
         addedTaskFromCaseTemplate: '.task-summary__name',
@@ -188,12 +188,11 @@ class ViewCasePage {
     }
 
     async clickAddToWatchlistLink(): Promise<void> {
-        await $(this.selectors.addToWatchlistDropdown).isDisplayed().then(async (isDisplay) => {
-            if (isDisplay) {
-                await $(this.selectors.addToWatchlistDropdown).click();
-                await $('.dropdown-menu [rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').click();
-            } else await $(this.selectors.addToWatchlist).click();
+        await browser.sleep(3000); // hardwait to stabilize dropdown button visibility
+        await $('[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').isDisplayed().then(async (present) => {
+            if (!present) await $(this.selectors.addToWatchlistDropdown).click();
         });
+        await $$('[rx-view-component-id="df24e195-e4f2-4114-af3f-e8a07691bdfd"] button').last().click();
     }
 
     async getAddToWatchlistLinkText(): Promise<string> {

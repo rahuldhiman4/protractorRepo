@@ -1,33 +1,69 @@
 import { $, $$, protractor, ProtractorExpectedConditions, element, by } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
 class ServiceTargetEditConfigPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        statusFields: '[rx-view-component-id="88b4a2e0-8646-4cff-b337-e99eb00c9745"] button div',
-        description: '[rx-view-component-id="361c10e5-f7b8-4ce9-bb96-7ebd1420ca67"] input',
-        buildExpressionButton: '[rx-view-component-id="5f99b4c8-0fd5-446e-aa32-9643fbf083cb"] button',
+        statusFields: '[rx-view-component-id="a6f3c85c-ecd6-49e6-a08b-98697b9811d5"] button',
+        termsAndConditionsFieldGuid:'3b92bdaa-6538-47e5-b2e0-aea0d3384ea8',
+        description: '[rx-view-component-id="a587e4b8-f37d-4cf7-b231-1565c88086eb"] textarea',
+        buildExpressionButton: '[rx-view-component-id="7ec71317-df5c-4586-b450-a4a8a2cf2e7f"] button',
         goalDays: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[2]//*[contains(@class,'adapt-counter__content')]//input`,
         goalHours: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[4]//*[contains(@class,'adapt-counter__content')]//input`,
         goallMinutes: `(//*[@rx-view-component-id="23ae493d-cf14-445d-b7c4-44d26a1ae117"]//*[contains(@class,'form-group')])[6]//*[contains(@class,'adapt-counter__content')]//input`,
         expandSection: '.adapt-accordion .card .text-direction span',
         setWarningStatus: 'input#warning-status',
+        svtDescriptionField: '[rx-view-component-id="a587e4b8-f37d-4cf7-b231-1565c88086eb"] textarea',
         addMiletoneButton: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-plus_circle',
         deleteMilestoneButton: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-trash_adapt',
         editMilestoneButton: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-pencil',
-        saveButton: '[rx-view-component-id="8f246ecd-acab-4693-a9be-597edc901291"] button'
+        saveButton: '[rx-view-component-id="baaac71b-d33c-4a09-a2e1-1a8e564d1e9a"] button',
+        serviceTargetBlade: '[rx-view-definition-guid="f1e761bb-23d6-4e13-b4c0-ea500f3bcf1f"]',
+        closeSVTButton: '[rx-view-component-id="6615b898-d9cc-478c-97c7-c47f6947d525"] button',
+    }
+
+    async isServiceTargetBladeDisplayed(): Promise<boolean> {
+        return await $(this.selectors.serviceTargetBlade).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.serviceTargetBlade).isDisplayed();
+            } else {
+                return false;
+            }
+        });
+    }
+
+    async isCloseButtonEnabled(): Promise<boolean> {
+        return await $(this.selectors.closeSVTButton).isEnabled();
+    }
+
+    async enterSVTDescription(svtDesc: string): Promise<void> {
+        await $(this.selectors.svtDescriptionField).clear();
+        await $(this.selectors.svtDescriptionField).sendKeys(svtDesc);
+    }
+
+    async clearSVTDescription(): Promise<void> {
+        await $(this.selectors.svtDescriptionField).clear();
+    }
+
+    async isTermsAndConditionsFieldMandatory(): Promise<boolean> {
+        return await utilityCommon.isRequiredTagToField(this.selectors.termsAndConditionsFieldGuid)
+        }
+
+    async clickCloseButton(): Promise<void> {
+     await $(this.selectors.closeSVTButton).click();
     }
 
     async isStatusFieldDisabled(): Promise<boolean> {
         return await $(this.selectors.statusFields).getAttribute('disabled') == 'true';
     }
 
-    async isDescriptionFieldEnabled(): Promise<boolean> {
-        return await $(this.selectors.description).isEnabled();
+    async isDescriptionFieldDisabled(): Promise<boolean> {
+        return await $(this.selectors.description).getAttribute('readonly') == 'true';
     }
 
-    async isBuildExpressionButtonEnabled(): Promise<boolean> {
-        return await $$(this.selectors.buildExpressionButton).first().isEnabled();
+    async isBuildExpressionButtonDisabled(): Promise<boolean> {
+        return await $(this.selectors.buildExpressionButton).getAttribute('disabled') == 'true';
     }
 
     async isGoalDaysFieldEnabled(): Promise<boolean> {
@@ -69,6 +105,10 @@ class ServiceTargetEditConfigPage {
 
     async isSaveButtonEnabled(): Promise<boolean> {
         return await $(this.selectors.saveButton).isEnabled();
+    }
+
+    async clickSaveButton(): Promise<void> {
+         await $(this.selectors.saveButton).click();
     }
 
 }

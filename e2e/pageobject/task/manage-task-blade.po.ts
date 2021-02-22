@@ -99,10 +99,12 @@ class ManageTaskBlade {
         return summaryLinkTxt === taskSummary;
     }
 
-    async addTaskFromTaskTemplate(templateSummary: string): Promise<void> {
+    async addTaskFromTaskTemplate(templateSummary: string, expectedTaskCount?: number): Promise<void> {
         await this.clickAddTaskFromTemplateButton();
         await utilityGrid.searchAndSelectGridRecord(templateSummary);
         await this.clickTaskGridSaveButton();
+        if (expectedTaskCount) await this.waitUntilNumberOfTaskLinkAppear(expectedTaskCount);
+        else await this.waitUntilNumberOfTaskLinkAppear(1);
     }
 
     async waitUntilNumberOfTaskLinkAppear(taskCount: number): Promise<boolean> {
