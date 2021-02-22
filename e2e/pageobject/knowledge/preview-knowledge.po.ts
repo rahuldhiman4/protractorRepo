@@ -1,6 +1,4 @@
 import { $, protractor, ProtractorExpectedConditions, element, by, browser } from "protractor";
-import { async } from 'q';
-
 
 class PreviewKnowledge {
 
