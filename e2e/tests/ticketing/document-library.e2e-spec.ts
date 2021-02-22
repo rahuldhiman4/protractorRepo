@@ -30,7 +30,7 @@ describe('Document Library', () => {
         await navigationPage.signOut();
     });
 
-    // #Pass
+    // #Pass - Sometimes fail due to Adapt issue
     describe('[4917,4894]: Verify document can be Deleted And Verify OOB document manager role is added to BA', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

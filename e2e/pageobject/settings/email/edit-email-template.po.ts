@@ -67,7 +67,7 @@ class CreateEmailTemplateBlade {
     }
 
     async searchAndSelectGridRecord(value: string): Promise<void> {
-        await utilityGrid.searchAndSelectGridRecord(value);
+        await utilityGrid.searchAndSelectGridRecord(value, this.selectors.gridGuid);
     }
 
     async isModuleNameDisabled(): Promise<boolean> {
