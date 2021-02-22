@@ -111,11 +111,11 @@ describe('Case Activity CKE Styling', () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             // Adding Task
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary,1);
             expect (await manageTaskBladePo.isTaskLinkPresent(manualTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
-            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary,2);
             expect (await manageTaskBladePo.isTaskLinkPresent(autoTemplateData.templateSummary)).toBeTruthy(`${autoTemplateData.templateSummary} missing task link`);
-            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary,3);
             expect (await manageTaskBladePo.isTaskLinkPresent(externalTemplateData.templateSummary)).toBeTruthy(`${autoTemplateData.templateSummary} missing task link`);
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();

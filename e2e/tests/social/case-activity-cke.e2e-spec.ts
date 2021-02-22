@@ -116,11 +116,11 @@ describe('Case Activity CKE', () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             // Adding Task
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary,1);
             expect (await manageTaskBladePo.isTaskLinkPresent(manualTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
-            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary,2);
             expect (await manageTaskBladePo.isTaskLinkPresent(autoTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
-            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary,3);
             await utilityCommon.closePopUpMessage();
             expect (await manageTaskBladePo.isTaskLinkPresent(externalTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
             await manageTaskBladePo.clickCloseButton();
@@ -638,6 +638,8 @@ describe('Case Activity CKE', () => {
             // Profile View CK Editor
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
+            await browser.sleep(2000); // wait until page navigate to person profile in new tab
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[3580]: Verify Comment Posted In Activity For Person Profile', async () => {
@@ -841,11 +843,11 @@ describe('Case Activity CKE', () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             // Adding Task
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary,1);
             expect (await manageTaskBladePo.isTaskLinkPresent(manualTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
-            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary,2);
             expect (await manageTaskBladePo.isTaskLinkPresent(autoTemplateData.templateSummary)).toBeTruthy(`${autoTemplateData.templateSummary} missing task link`);
-            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary,3);
             await utilityCommon.closePopUpMessage();
             expect (await manageTaskBladePo.isTaskLinkPresent(externalTemplateData.templateSummary)).toBeTruthy(`${externalTemplateData.templateSummary} missing task link`);
             await manageTaskBladePo.clickCloseButton();
@@ -865,6 +867,8 @@ describe('Case Activity CKE', () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
+            await browser.sleep(2000); // wait until page navigate to person profile in new tab
+            await utilityCommon.closePopUpMessage();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplatePeopleData.templateName);
             expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplatePeopleData.body)
             await activityTabPage.clickOnPostButton();

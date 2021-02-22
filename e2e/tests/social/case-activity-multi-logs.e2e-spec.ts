@@ -80,6 +80,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnRefreshButton();
             await browser.sleep(3000);//taking time to refliect show more button
+            await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
             expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
             expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
@@ -467,7 +468,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    describe('[4233]: [-ve] - Case having large no. of activities eg. more then 100', async () => {
+    xdescribe('[4233]: [-ve] - Case having large no. of activities eg. more then 100', async () => {
         let newCase;
         beforeAll(async () => {
             // Create Case
@@ -544,7 +545,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    describe('[4221]: [-ve] - Task having large no. of activities eg. more then 100', async () => {
+    xdescribe('[4221]: [-ve] - Task having large no. of activities eg. more then 100', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, adhocTaskTemplateData;
         beforeAll(async () => {
