@@ -49,7 +49,6 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for 4217');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
@@ -121,7 +120,7 @@ describe('Case Activity', () => {
 
     //kgaikwad
     describe('[3973]: Clicking on any tagged person name from Activity tab should navigate us to Persons Profile', async () => {
-        let caseBodyText = `CaseBody${randomStr}`;
+        let caseBodyText = `CaseBody${randomStr} `;
         it('[3973]: Verify After Click On Person Name It Should Navigate To Person Profile Page ', async () => {
             await navigationPage.gotoCreateCase();
             await createCase.selectRequester('Elizabeth Jeffries');
@@ -132,6 +131,8 @@ describe('Case Activity', () => {
             await activityTabPage.addPersonInActivityNote('Elizabeth Jeffries');
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isHyperlinkOfActivityDisplay(caseBodyText, 'Elizabeth Jeffries')).toBeTruthy('PersonName is not displayed correctly');
+            await browser.sleep(2000); // wait until page navigate to person profile in new tab
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Elizabeth Jeffries');
             expect(await personProfilePo.getPersonName()).toBe('Elizabeth Jeffries'), 'Elizabeth Jeffries name is missing';
         });
@@ -147,7 +148,6 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for 4216');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
@@ -258,7 +258,6 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test case for 4212');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
@@ -844,7 +843,6 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('Knowledge Article for 4230');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickGoToArticleButton();
         });
         it('[4230]:Click On Person Names And Inspect Behavior', async () => {
@@ -1327,7 +1325,6 @@ describe('Case Activity', () => {
             await createKnowlegePo.addTextInKnowlegeTitleField('test_KA_for_4219');
             await createKnowlegePo.selectKnowledgeSet('HR');
             await createKnowlegePo.clickOnSaveKnowledgeButton();
-            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');

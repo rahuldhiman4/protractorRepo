@@ -111,9 +111,13 @@ describe('Case Activity CKE Styling', () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             // Adding Task
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
-            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
-            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary,1);
+            expect (await manageTaskBladePo.isTaskLinkPresent(manualTemplateData.templateSummary)).toBeTruthy(`${manualTemplateData.templateSummary} missing task link`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary,2);
+            expect (await manageTaskBladePo.isTaskLinkPresent(autoTemplateData.templateSummary)).toBeTruthy(`${autoTemplateData.templateSummary} missing task link`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary,3);
+            expect (await manageTaskBladePo.isTaskLinkPresent(externalTemplateData.templateSummary)).toBeTruthy(`${autoTemplateData.templateSummary} missing task link`);
+            await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
         });
 
@@ -587,6 +591,8 @@ describe('Case Activity CKE Styling', () => {
             expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing.');
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
+            await browser.sleep(2000); // wait until page navigate to person profile in new tab
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.addActivityNote(addNoteBodyText);
             expect(await ckeditorValidationPo.isCkEditorDisplayed()).toBeTruthy('CkEditor is missing');
             //bold

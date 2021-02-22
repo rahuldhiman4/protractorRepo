@@ -5,13 +5,10 @@ import { DropDownType } from '../../../utils/constants';
 class SlmExpressionBuilder {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     expressionBuilderSelectors = {
-        qualificationBuilder: '[rx-view-definition-guid="7303cd72-d321-457f-9779-cbd2dc681bd9"] .content-outlet',
-        searchField: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] input',
-        selectField: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .bwf-field-selector_field',
-        selectOperator: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .bwf-expression-operators button',
-        selectFieldOption: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .rx-select__option-content',
-        selectCategoryTierOptionDropDown: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"]  button.dropdown-toggle',
-        selectCategoryTierOption: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .rx-select__option-content',
+        searchField: 'input.adapt-search-field',
+        selectField: 'div.bwf-field-selector_field',
+        selectOperator: '.bwf-expression-operators button',
+        selectFieldOption: '.rx-select__option-content',
         getExpressionFieldName: 'span[type="FIELD"]',
         getExpressionOperator: 'span[type="OPERATOR"]',
         getExpressionFieldValue: 'span[type="VALUE"]',
@@ -19,8 +16,8 @@ class SlmExpressionBuilder {
         saveTaskSVTExpressionButton: '[rx-view-component-id="377c4912-0248-4099-bb96-30a94b3abf1b"] button',
         isPartialExpression: 'div[class*="bwf-invalid-expression"]',
         expandExpressionField: '.d-icon-triangle_right',
-        selectFirstLevelExpressionField: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .bwf-field-selector_field',
-        selectSecondLevelExpressionField: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] .bwf-field-selector_child-container .bwf-field-selector_field',
+        selectFirstLevelExpressionField: 'div.bwf-field-selector_field',
+        selectSecondLevelExpressionField: '.bwf-field-selector_child-container .bwf-field-selector_field',
         clearExpression: 'div.cke_enable_context_menu',
         fieldSearch: '[rx-view-component-id="b7b2f1b7-c03c-4bcb-b5bf-fddfc34e563b"] input'
     }
@@ -45,9 +42,8 @@ class SlmExpressionBuilder {
     }
 
     async getFirstLevelExpressionField(firstLevelExpression: string): Promise<string> {
-        let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
-        await qBuilder.$(this.expressionBuilderSelectors.searchField).clear();
-        await qBuilder.$(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelExpression);
+        await $(this.expressionBuilderSelectors.searchField).clear();
+        await $(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelExpression);
         return await $(this.expressionBuilderSelectors.selectFirstLevelExpressionField).getText();
     }
     async clearSearchField(): Promise<void> {
@@ -72,7 +68,7 @@ class SlmExpressionBuilder {
     async areSecondLevelExpressionFieldsMatches(firstLevelExpression: string, data: string[]): Promise<boolean> {
         let arr: string[] = [];
 
-        let listPrimaryOfFields: ElementFinder[] = await $$('.col-sm-4.variable_title li');
+        let listPrimaryOfFields: ElementFinder[] = await $$('.col-sm-4 [class="bwf-field-selector_field"]');
         for (let i: number = 0; i < listPrimaryOfFields.length; i++) {
             let field: ElementFinder = await listPrimaryOfFields[i].$('.expanded_field');
             let primaryElementText: string[] = (await field.getText()).split("\n");
@@ -100,10 +96,9 @@ class SlmExpressionBuilder {
     }
 
     async selectFirstLevelExpressionField(firstLevelExpression: string): Promise<void> {
-        let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
         let firstLevelExpressionField = `//div[@class='expanded_field'][text()='${firstLevelExpression}']/preceding-sibling::*[contains(@class,'d-icon-plus_circle')]`;
-        await qBuilder.$(this.expressionBuilderSelectors.searchField).clear();
-        await qBuilder.$(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelExpression);
+        await $(this.expressionBuilderSelectors.searchField).clear();
+        await $(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelExpression);
         let checkboxRows: ElementFinder[];
         let checkboxRows1: ElementFinder[];
         checkboxRows = await $$('.add_child_icon.icon.d-icon-plus_circle+.expanded_field');
@@ -159,11 +154,17 @@ class SlmExpressionBuilder {
     }
 
     async selectFields(field: string): Promise<void> {
-        let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
-        await qBuilder.$(this.expressionBuilderSelectors.searchField).sendKeys(field);
+        await $(this.expressionBuilderSelectors.searchField).sendKeys(field);
         await browser.sleep(3000);
         await browser.wait(this.EC.elementToBeClickable($(this.expressionBuilderSelectors.selectField)), 4000);
-        await qBuilder.$(this.expressionBuilderSelectors.selectField).click();
+        let allOptionsCount = await $$(this.expressionBuilderSelectors.selectField).count();
+        for (let i: number = 0; i <= allOptionsCount; i++) {
+           let optionName= await $$(this.expressionBuilderSelectors.selectField).get(i).getText();
+            if (optionName  === field) {
+                await $$(this.expressionBuilderSelectors.selectField).get(i).click();
+                break;
+            }
+        }
     }
 
     async selectOperator(operator: string): Promise<void> {
@@ -177,23 +178,29 @@ class SlmExpressionBuilder {
         await $(this.expressionBuilderSelectors.selectFieldOption).click();
     }
 
-    async selectExpressionQualification(field: string, operator: string, fieldvalue: string,DropDown?: string): Promise<void> {
+    async selectExpressionQualification(field: string, operator: string, fieldvalue: string, DropDown?: string): Promise<void> {
         await this.selectFields(field);
         await this.selectOperator(operator);
-        await this.selectFieldOption(field, fieldvalue,DropDown);
+        await this.selectFieldOption(field, fieldvalue, DropDown);
     }
 
-    async selectFirstLevelExpressionQualification(field: string, operator: string, fieldvalue: string,DropDown?: string): Promise<void> {
+    async selectExpressionQualificationForTask(field: string, operator: string, fieldvalue: string, DropDown?: string): Promise<void> {
+        await this.selectFields(field);
+        await this.selectOperator(operator);
+        await this.selectFieldOption(field, fieldvalue, DropDown);
+    }
+
+    async selectFirstLevelExpressionQualification(field: string, operator: string, fieldvalue: string, DropDown?: string): Promise<void> {
         await this.selectFirstLevelExpressionField(field);
         await this.selectOperator(operator);
-        await this.selectFieldOption(field, fieldvalue,DropDown);
+        await this.selectFieldOption(field, fieldvalue, DropDown);
     }
 
     async selectSecondLevelExpressionQualification(firstLevelAssociationfield: string, secondLevelAssociationfield: string, operator: string, fieldAttribute: string, fieldvalue: string): Promise<void> {
-        let qBuilder = await $(this.expressionBuilderSelectors.qualificationBuilder);
+
         await browser.sleep(2000);
-        await qBuilder.$(this.expressionBuilderSelectors.searchField).clear();
-        await qBuilder.$(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelAssociationfield);
+        await $(this.expressionBuilderSelectors.searchField).clear();
+        await $(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelAssociationfield);
         await browser.sleep(2000);
         await this.selectSecondLevelExpressionField(firstLevelAssociationfield, secondLevelAssociationfield);
         await this.selectOperator(operator);
@@ -204,12 +211,13 @@ class SlmExpressionBuilder {
     async selectFieldOption(field: string, fieldOptionValue: string, DropDown?: string): Promise<void> {
         let addBtn = ' button.bwf-add-button';
         if (DropDown == "Direct") {
-            await utilityCommon.selectDropDown(await $(".bwf-expression-values button[role='listbox']"), fieldOptionValue,DropDownType.WebElement);
-        } else if (DropDown == "Search"){
+            await utilityCommon.selectDropDown(await $(".bwf-expression-values button[role='listbox']"), fieldOptionValue, DropDownType.WebElement);
+        } else if (DropDown == "Search") {
             await utilityCommon.selectDropDown(field, fieldOptionValue, DropDownType.Label);
         }
         await $(addBtn).click();
     }
+
     async getSelectedExpression(): Promise<string> {
         let actualFieldName, actualOperator, actualFieldValue;
         actualFieldName = await $(this.expressionBuilderSelectors.getExpressionFieldName).getText();
