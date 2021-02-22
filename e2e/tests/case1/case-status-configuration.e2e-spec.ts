@@ -19,7 +19,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Case Status Configuration', () => {
+xdescribe('Case Status Configuration', () => {
     let flowsetPhylumFieldsData = undefined;
     let personData1, personData3;
     beforeAll(async () => {

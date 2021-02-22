@@ -10,7 +10,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe("Case Approval Mapping Tests", () => {
+xdescribe("Case Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
     const companyStr = "Company";
     const flowsetStr = "Flowset";

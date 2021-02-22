@@ -25,7 +25,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Ericsson Model Test Extended', () => {
+xdescribe('Ericsson Model Test Extended', () => {
     let supportGroupDataHR, supportGroupDataFacilities, supportGroupDataEricssonHR, supportGroupDataEricssonSAM, userData3, userData4;
     let ericssonHRAndSamLOBUserName = 'sbruce@petramco.com';
     let password = 'Password_1234';

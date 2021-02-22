@@ -17,7 +17,7 @@ import utilityGrid from '../../utils/utility.grid';
 
 let supportGroupDataHR, supportGroupDataFacilities, userData0, userData1, userData2, userData3;
 
-describe('Operating Orgnization Data Model Tests', () => {
+xdescribe('Operating Orgnization Data Model Tests', () => {
     let personDataFile = require('../../data/ui/foundation/person.ui.json');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);

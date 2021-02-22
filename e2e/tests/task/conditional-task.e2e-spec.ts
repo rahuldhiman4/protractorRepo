@@ -17,7 +17,7 @@ import previewTaskTemplatePo from '../../pageobject/settings/task-management/pre
 import taskTemplateConsolePage from '../../pageobject/settings/task-management/console-tasktemplate.po';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Conditional Task', () => {
+xdescribe('Conditional Task', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

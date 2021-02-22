@@ -15,7 +15,7 @@ export interface IIDs {
     displayId: string;
 }
 
-describe('Global Search Template', () => {
+xdescribe('Global Search Template', () => {
     let caseTemplateModule = "Case Templates";
     let taskTemplateModule = "Task Templates";
     let documentModule = "Documents";

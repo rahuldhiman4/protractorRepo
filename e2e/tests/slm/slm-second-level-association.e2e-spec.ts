@@ -15,7 +15,7 @@ import utilityGrid from '../../utils/utility.grid';
 
 let caseBAUser = 'qkatawazi';
 
-describe('Service Target - Second Level Association Tests', () => {
+xdescribe('Service Target - Second Level Association Tests', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
