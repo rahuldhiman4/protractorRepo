@@ -20,7 +20,7 @@ export interface IIDs {
     id: string;
     displayId: string;
 }
-describe('Global Search Category Validation', () => {
+xdescribe('Global Search Category Validation', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule = "Knowledge Article";

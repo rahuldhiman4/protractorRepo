@@ -35,7 +35,7 @@ let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 
 let supportGroupDataHR, supportGroupDataFacilities, userData0, userData1, userData2, userData3;
 
-describe('Operating Orgnization Data Model Extended Tests', () => {
+xdescribe('Operating Orgnization Data Model Extended Tests', () => {
     let personDataFile = require('../../data/ui/foundation/person.ui.json');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);

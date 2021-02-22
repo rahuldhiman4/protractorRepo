@@ -26,7 +26,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Service Provider Model Tests Extended', () => {
+xdescribe('Service Provider Model Tests Extended', () => {
     let kingstoneUserName = 'smoran';
     let oracleUserName = 'umiguelde';
     let kingstonAndOracleUserName = 'jstuart';

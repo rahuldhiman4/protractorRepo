@@ -19,7 +19,7 @@ let userData1 = undefined;
 const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
 let caseModule = 'Case';
 
-describe("Case General Approval Tests", () => {
+xdescribe("Case General Approval Tests", () => {
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
