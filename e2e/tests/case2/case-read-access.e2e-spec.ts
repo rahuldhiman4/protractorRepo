@@ -209,6 +209,7 @@ describe("Case Read Access", () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login("qkatawazi");
         });
