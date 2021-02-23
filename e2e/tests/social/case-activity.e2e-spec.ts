@@ -233,8 +233,8 @@ describe('Case Activity', () => {
             await createCase.selectRequester('Elizabeth Jeffries');
             await createCase.setSummary('test case for 4212');
             await createCase.clickSaveCaseButton();
-            await utilityCommon.closeAllBlades();
             await previewCasePo.clickGoToCaseButton();
+            await utilityCommon.closeAllBlades();
 
             await activityTabPage.addActivityNote(caseBodyText);
             await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
@@ -309,6 +309,7 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Category Change');
             await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
             await activityTabPage.clickOnFilterApplyButton();
+            await utilityCommon.closePopUpMessage();
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
         it('[4237]: Verify Applied Filter List Displayed On Activity Tab ', async () => {
@@ -326,6 +327,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes'), 'General Notes is missing';
             await expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
             await activityTabPage.removeFilterList();
+            await utilityCommon.closePopUpMessage();
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
             await expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
             await activityTabPage.closeNmoreLink();
@@ -339,6 +341,7 @@ describe('Case Activity', () => {
             // That particular filter is removed.
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change'), 'Status Change is missing';
             await activityTabPage.removeFilterList();
+            await utilityCommon.closePopUpMessage();
             await expect(await activityTabPage.isfilterListDisplayed('Status Change')).not.toBeTruthy('Status Change displayed');
             // All filters are removed.
             await activityTabPage.clickOnFilterButton();
@@ -559,6 +562,7 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Category Change');
             await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
             await activityTabPage.clickOnFilterApplyButton();
+            await utilityCommon.closePopUpMessage();
 
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
@@ -577,6 +581,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
 
             await activityTabPage.removeFilterList();
+            await utilityCommon.closePopUpMessage();
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
             await expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
             await activityTabPage.closeNmoreLink();
@@ -591,6 +596,7 @@ describe('Case Activity', () => {
             // That particular filter is removed.
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
             await activityTabPage.removeFilterList();
+            await utilityCommon.closePopUpMessage();
             console.log(await activityTabPage.isfilterListDisplayed('Status Change'));
             await expect(await activityTabPage.isfilterListDisplayed('Status Change')).not.toBeTruthy('Status Change displayed');
 
@@ -636,6 +642,7 @@ describe('Case Activity', () => {
             await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
 
             await activityTabPage.clickOnFilterApplyButton();
+            await utilityCommon.closePopUpMessage();
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
         it('[4225]: Verify Applied Filter List Displayed On Automation Task Activity Tab', async () => {
@@ -652,6 +659,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
             await expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
             await activityTabPage.removeFilterList();
+            await utilityCommon.closePopUpMessage();
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
             await expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
             await activityTabPage.closeNmoreLink();
@@ -666,6 +674,7 @@ describe('Case Activity', () => {
             //  v) - That particular filter is removed.
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
             await activityTabPage.removeFilterList();
+            await utilityCommon.closePopUpMessage();
             console.log(await activityTabPage.isfilterListDisplayed('Status Change'));
             await expect(await activityTabPage.isfilterListDisplayed('Status Change')).not.toBeTruthy('Status Change displayed');
 
@@ -712,7 +721,7 @@ describe('Case Activity', () => {
             await activityTabPage.selectFilterCheckBox('Category Change');
             await activityTabPage.addAuthorOnFilter('Kadeem Hardison');
             await activityTabPage.clickOnFilterApplyButton();
-
+            await utilityCommon.closePopUpMessage();
             await expect(await activityTabPage.isFilterPopUpDisplayed()).toBe('false');
         });
         it('[4225]: Verify Applied Filter List Displayed On External Task Activity Tab', async () => {
@@ -729,6 +738,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.getTextFromFilterList('General Notes')).toBe('General Notes');
             await expect(await activityTabPage.getTextOfNmoreLink()).toBe('4 Show more');
             await activityTabPage.removeFilterList();
+            await utilityCommon.closePopUpMessage();
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
             await expect(await activityTabPage.getTextOfNmoreLink()).toBe('3 Show more');
             await activityTabPage.closeNmoreLink();
@@ -742,6 +752,7 @@ describe('Case Activity', () => {
             // That particular filter is removed.
             await expect(await activityTabPage.getTextFromFilterList('Status Change')).toBe('Status Change');
             await activityTabPage.removeFilterList();
+            await utilityCommon.closePopUpMessage();
             console.log(await activityTabPage.isfilterListDisplayed('Status Change'));
             await expect(await activityTabPage.isfilterListDisplayed('Status Change')).not.toBeTruthy('Status Change displayed');
             // All filters are removed.
@@ -814,6 +825,7 @@ describe('Case Activity', () => {
             caseIdText = await viewCasePo.getCaseID();
             // Redirect on person profile
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
+            await utilityCommon.closePopUpMessage();
             await expect(browser.getTitle()).toBe('Person Profile - Business Workflows');
             await activityTabPage.clickOnHyperlinkFromActivity(1, caseIdText);
         });
@@ -829,11 +841,13 @@ describe('Case Activity', () => {
             // View Case Page
             await viewTaskPo.clickOnViewCase();
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnHyperlink(caseIdText);
             // From Case > Activity > Click on Task ID from Task comment
             await activityTabPage.clickOnHyperlinkFromActivity(1, taskId);
             // Verification Open Task > Click on Person Name from Activity
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
+            await utilityCommon.closePopUpMessage();
         });
         it('[4230]:Create Knowledge Article', async () => {
             await navigationPage.gotoCreateKnowledge();
@@ -1224,6 +1238,8 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(2000);//wait until show more button display
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
@@ -1235,6 +1251,9 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote(addNoteBodyText1);
             await activityTabPage.addAttachment([filePath1, filePath2]);
             await activityTabPage.clickOnPostButton();
+            await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(2000);//wait until show more button display
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
             await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
@@ -1245,6 +1264,9 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath4, filePath5]);
             await activityTabPage.clickOnPostButton();
+            await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(2000);//wait until show more button display
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
@@ -1256,6 +1278,9 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
             await activityTabPage.clickOnPostButton();
+            await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(2000);//wait until show more button display
+            await activityTabPage.clickOnRefreshButton();
 
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
@@ -1328,6 +1353,7 @@ describe('Case Activity', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
             await viewKnowledgeArticlePo.clickOnTab('Activity');
+            await utilityCommon.closePopUpMessage();
         });
         it('[4219]: Verify Logs With 5 Lines Or Less Than 5 Lines ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText1);
@@ -1338,6 +1364,8 @@ describe('Case Activity', () => {
         it('[4219]: Verify Logs With More Than 5 Lines', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.clickOnPostButton();
+            await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(2000);//wait until show more button display
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg3: BodyText is missing');
@@ -1350,6 +1378,8 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote(addNoteBodyText1);
             await activityTabPage.addAttachment([filePath1, filePath2]);
             await activityTabPage.clickOnPostButton();
+            await browser.sleep(2000);//wait until show more button display
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg12: Show more link for attachment is missing')
             await expect(await activityTabPage.isAttachedFileNameDisplayed('articleStatus.png')).toBeTruthy(`FailureMsg9: ${filePath1} is missing`);
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg.jpg')).toBeTruthy(`FailureMsg10: ${filePath2} is missing`);
@@ -1360,6 +1390,8 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath4, filePath5]);
             await activityTabPage.clickOnPostButton();
+            await browser.sleep(2000);//wait until show more button display
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath4} is missing`);
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg3.jpg')).toBeTruthy(`FailureMsg16: ${filePath5} is missing`);
@@ -1371,6 +1403,8 @@ describe('Case Activity', () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
             await activityTabPage.clickOnPostButton();
+            await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(2000);//wait until show more button display
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
 

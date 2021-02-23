@@ -139,7 +139,6 @@ xdescribe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("IN Support 1");
             await caseAccessTabOldPo.clickConfidentialWriteSupportGroupAccess();
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
-          
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("Sensitive Personal Data (HR)")).toBeTruthy();
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("Sensitive Personal Data (HR)");
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
@@ -454,6 +453,9 @@ xdescribe('Dynamic Confidentials Data', () => {
             await dynamicField.clickEnabledConfidentialsRadioButton();
             await dynamicField.clickSaveButton();
             await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+        });
+        afterAll(async () => {
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });

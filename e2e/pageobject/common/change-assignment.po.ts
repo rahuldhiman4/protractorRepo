@@ -48,19 +48,19 @@ class ChangeAssignmentBlade {
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         switch (dropDownName) {
             case "Company": {
-                return await $$(locator).get(0).getAttribute("disabled") == "true";
+                return await $$(locator).get(0).getAttribute("aria-disabled") == "true";
             }
             case "SupportOrg": {
-                return await $$(locator).get(1).getAttribute("disabled") == "true";
+                return await $$(locator).get(1).getAttribute("aria-disabled") == "true";
             }
             case "AssignedGroup": {
-                return await $$(locator).get(2).getAttribute("disabled") == "true";
+                return await $$(locator).get(2).getAttribute("aria-disabled") == "true";
             }
             case "Assignee": {
-                return await $$(locator).get(3).getAttribute("disabled") == "true";
+                return await $$(locator).get(3).getAttribute("aria-disabled") == "true";
             }
             case "AssignToMe": {
-                return await $$(locator).get(4).getAttribute("disabled") == "true";
+                return await $$(locator).get(4).getAttribute("aria-disabled") == "true";
             }
             default: {
                 console.log('Dropdown Not Available');
