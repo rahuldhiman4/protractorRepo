@@ -615,7 +615,6 @@ class ViewCasePage {
     async clickFirstRecommendedCases(): Promise<void> {
         await $(this.selectors.recommendedCaseGuid).$$('.flex-column bwf-search-result-fields div span').first().click();
     }
-
     async isEditAssignmenetDisabled(): Promise<boolean> {
         return await $(this.selectors.editAssignment).isPresent().then(async (result) => {
             if (result) {
