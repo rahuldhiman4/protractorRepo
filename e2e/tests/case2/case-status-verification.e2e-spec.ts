@@ -101,7 +101,7 @@ describe('Case Status Verification', () => {
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
 
-        it('[3490]: Create case2 with case template1 (', async () => {
+        it('[3490]: Create case2 with case template1', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
@@ -118,7 +118,7 @@ describe('Case Status Verification', () => {
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Qianru Tao reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
@@ -185,7 +185,7 @@ describe('Case Status Verification', () => {
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Qianru Tao reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
         });
@@ -247,11 +247,9 @@ describe('Case Status Verification', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case1_Summary');
-            await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             case1 = await viewCasePage.getCaseID();
@@ -281,11 +279,9 @@ describe('Case Status Verification', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case2_Summary');
-            await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             case2 = await viewCasePage.getCaseID();
@@ -335,7 +331,7 @@ describe('Case Status Verification', () => {
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Quin Strong reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
             await updateStatusBladePo.changeStatus(statusResolved);
@@ -350,7 +346,7 @@ describe('Case Status Verification', () => {
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Quin Strong reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg12: Text is missing');
             await updateStatusBladePo.changeStatus(statusResolved);
@@ -371,7 +367,7 @@ describe('Case Status Verification', () => {
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Quigley Heroux reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg6: Text is missing');
 
@@ -382,7 +378,7 @@ describe('Case Status Verification', () => {
             await viewCasePage.clickOnReopenCaseLink();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Quigley Heroux reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
-            await activityTabPo.clickOnShowMore();
+            // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg12: Text is missing');
         });
