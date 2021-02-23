@@ -5,7 +5,7 @@ class AccessTab {
     selectors = {
         caseAccess: '.bwf-access-manager .access-group .btn-title',
         agents: '.dropdown-menu button',
-        dropdownList: '.rx-select__option-content div',
+        dropdownList: '.rx-select__option-content span',
         searchInputField: '[placeholder="Filter options"]',
         resetToDefault: 'button[aria-label="Reset to Default"]',
         confidentialSupportGroupGuid: 'b1606736-7480-4368-aac6-a8273f0ff0d5',
@@ -21,7 +21,7 @@ class AccessTab {
     async clickToExpandAccessEntitiySearch(accessName: string, moduleName: string): Promise<void> {
         switch (moduleName) {
             case "Confidential Group": {
-                await element(by.cssContainingText(this.selectors.confidencialAccess, accessName)).click();                
+                await element(by.cssContainingText(this.selectors.confidencialAccess, accessName)).click();
                 break;
             }
             case "Case": {

@@ -17,7 +17,7 @@ class ViewKnowledgePage {
         reviewPending: '[rx-view-component-id="f0cf7f67-da22-4149-a54d-ec3b95fe05e6"] button',
         KnwoledgeArticleReviewMessage: '[rx-view-component-id="d2dbea0a-503e-47d8-b4ed-b6dcc9dcf555"] span',
         regionValue: '[rx-view-component-id="c46cafd9-8481-4ffc-812d-3f6ba1308e66"] .read-only-content',
-        siteValue: '[rx-view-component-id="04ce12b3-98c9-4239-9aa7-35b6fc950178"] .read-only-content',
+        siteValue: '[rx-view-component-id="b9ea351a-18bf-4048-86f4-a9c5d1307d6b"] .read-only-content',
         siteGroupValue: '[rx-view-component-id="4380db45-e177-4005-a9a2-b308cdb38706"] .read-only-content',
         siteValueAfterClear: '[rx-view-component-id="ff94cecf-1b32-46c2-a207-cd3e426d52f7"] .read-only-content',
         articleVersion: '[rx-view-component-id="c64b0ab4-1774-4687-a7d2-56a72eeb1c1b"] button',
@@ -39,8 +39,8 @@ class ViewKnowledgePage {
         articleViewCounter: '[rx-view-component-id="407ae5ae-c7a2-4a3c-87b3-f4e26837b2fb"] p',
         articleHelpfulCounter: '[rx-view-component-id="5cc2757f-7a22-4827-82c0-1e7dee2e12a2"] p',
         articleKeywords: '[rx-view-component-id="51e52d59-3acd-49b3-8291-e10558985fa1"] .bwf-item-text',
-        articleReviewer: '[rx-view-component-id="387dfda7-4f77-4df0-9ac0-6f4fb83b6fe7"] .read-only-content',
-        articleReviewerGroup: '[rx-view-component-id="0b622151-c917-4d1c-97e4-3a9b7f082e2d"] .read-only-content',
+        articleReviewer: '[rx-view-component-id="aad78439-aac5-4030-a613-505a30132a16"] .read-only-content',
+        articleReviewerGroup: '[rx-view-component-id="2339602d-a829-4789-8f29-432745c6bbb6"] .read-only-content',
         articleLastReviewDate: '[rx-view-component-id="bccc3ffb-8be9-4332-8f7f-fef96b43c3b9"] .read-only-content',
         articleNextReviewDate: '[rx-view-component-id="7529ddbb-6ef2-46ab-9f66-c85639c3b490"] .read-only-content',
         articleTitle: '[rx-view-component-id="4a5abb06-d6fb-4aa3-81a8-2d5e80c78acf"] p',
@@ -350,7 +350,7 @@ class ViewKnowledgePage {
     }
     async isArticleReviewerGroupDisplayed(): Promise<boolean> {
         // await browser.wait(this.EC.elementToBeClickable($(this.selectors.articleReviewerGroup)));
-        
+
         return await $(this.selectors.articleReviewerGroup).isPresent().then(async (result) => {
             if (result) return await $(this.selectors.articleReviewerGroup).isDisplayed();
             else {
@@ -360,7 +360,7 @@ class ViewKnowledgePage {
         });
     }
     async isArticleLastReviewDateDisplayed(): Promise<boolean> {
-       
+
         return await $(this.selectors.articleLastReviewDate).isPresent().then(async (result) => {
             if (result) return await $(this.selectors.articleLastReviewDate).isDisplayed();
             else {
@@ -370,7 +370,7 @@ class ViewKnowledgePage {
         });
     }
     async isArticleNextReviewDateDisplayed(): Promise<boolean> {
-        
+
         return await $(this.selectors.articleNextReviewDate).isPresent().then(async (result) => {
             if (result) return await $(this.selectors.articleNextReviewDate).isDisplayed();
             else {
