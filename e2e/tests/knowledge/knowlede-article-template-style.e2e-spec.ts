@@ -1,4 +1,4 @@
-import { browser } from "protractor";
+import {$, browser} from 'protractor';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import articleTemplateStylePo from '../../pageobject/settings/knowledge-management/article-template-style.po';

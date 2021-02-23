@@ -190,7 +190,7 @@ class CreateEmailTemplate {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(this.selectors.lobValue).getAttribute("placeholder");
     }
 
 }

@@ -5,13 +5,13 @@ class ArticleTemplateStyle {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        knowledgeset: '.bwf-define_knowledge-styles .knowledgeSetTitle .d-icon-angle_down',
+        knowledgeset: '.bwf-define_knowledge-styles .knowledgeSetTitle',
         templateName: '.bwf-template-name',
         templateStyle: '.bwf-ka-config__edit-template-sections .text-direction span',
-        addNewStyle:'.d-icon-plus',
+        addNewStyle:'.add_new_style',
         deleteButtonIcon:'.card-title-text button',
         stylesName:'.bwf-left-align [name="templateName"]',
-        saveButton:'.ka-config__add-btn',
+        saveButton:'button[btn-type="primary"]',
         styleNameRequired:'.label__text_required',
         cancelButton:'.action-panel__cancel-btn',
         sectionTitle: 'div.default-section-title',
@@ -39,15 +39,15 @@ class ArticleTemplateStyle {
     }
 
     async isDeleteStyleButtonPresent():Promise<boolean>{
-        return await $(this.selectors.deleteButtonIcon).isPresent();
+        return await $(this.selectors.deleteButtonIcon).isDisplayed();
     }
 
     async clickAddNewStyle():Promise<void>{
-        await $(this.selectors.addNewStyle).click();
+       await $(this.selectors.addNewStyle).click();
     }
 
     async clickDeleteButton():Promise<void>{
-        await $$('.templateStyles').last().$(this.selectors.deleteButtonIcon).click();
+        await $$('.bwf-templateStyles').last().$(this.selectors.deleteButtonIcon).click();
     }
 
     async isSaveButtonEnabled():Promise<boolean>{

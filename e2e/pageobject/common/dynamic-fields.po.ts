@@ -5,7 +5,7 @@ import { DropDownType } from '../../utils/constants';
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        dynamicField: 'button.d-icon-left-plus_circle',
+        dynamicField: 'bwf-dynamic-field-group-selector button.d-icon-left-plus',
         fieldName: '.textfield__wrapper .textfield-padding-transition',
         fieldDescription: '.textfield-padding-transition',
         saveButton: 'button[btn-type="primary"]',

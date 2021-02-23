@@ -375,7 +375,6 @@ describe('Case Data Store', () => {
                 expect(await viewTaskTemplate.isDynamicFieldPresent(arr[i])).toBeTruthy('field is not present');
             }
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link is not present');
-            await viewTaskTemplate.clickBackArrowBtn();
         });
         it('[4842]: [Dynamic Data] [UI] -Dynamic Fields display on Task Template Edit view UI', async () => {
             //edit
@@ -386,6 +385,7 @@ describe('Case Data Store', () => {
             }
             await editTaskTemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewTaskTemplate.clickBackArrowBtn();
             //Inactive
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
@@ -406,7 +406,7 @@ describe('Case Data Store', () => {
         afterAll(async () => {
             await editTaskTemplate.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await viewCasetemplatePo.clickBackArrowBtn();
+            await viewTaskTemplate.clickBackArrowBtn();
         });
     });
 
@@ -699,8 +699,6 @@ describe('Case Data Store', () => {
             await previewTaskTemplateCasesPo.clickOnBackButton();
             await manageTaskBladePo.clickTaskGridCancelButton();
             await manageTaskBladePo.clickCloseButton();
-
-
         });
         it('[4832]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
             let caseTemplateData = {
