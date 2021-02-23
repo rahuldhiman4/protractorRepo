@@ -28,7 +28,7 @@ describe("Notification Template", () => {
         await navigationPage.signOut();
     });
 
-    //radhiman
+    //Failing -even after clear save button is enabled
     describe('[3898]: [Copy Notification] - UI behavior when copying a notification template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notificationTemplateName = '3898_CopiedTemplate' + randomStr;
@@ -42,7 +42,7 @@ describe("Notification Template", () => {
             expect(await notificationTempGridPage.isCompanyDropDownPresentInCopyTempWindow()).toBeTruthy();
             expect(await notificationTempGridPage.isTemplateNameTxtBoxPresentInCopyTempWindow()).toBeTruthy();
             //Clear All fields and validate if the Copy button is disabled
-            await notificationTempGridPage.setTemplateNamePresentInCopyTempWindow(" ");
+            await notificationTempGridPage.clearTemplateNamePresentInCopyTempWindow();
             await expect(notificationTempGridPage.isCopyTemplateButtonDisabledInCopyTempWindow()).toBeTruthy();
             // Select company drpdwn value and keep tempName empty and validate if the Copy button is disabled
             await notificationTempGridPage.setCompanyDropDownValPresentInCopyTempWindow("Petramco");
@@ -130,7 +130,7 @@ describe("Notification Template", () => {
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeFalsy('Human Resources LOB copied notification templates is visible to case BA with multiple LOB access');
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to case BA with multiple LOB access');
-            await utilityGrid.searchRecord(notificationTemplateNameUpdated);
+            await utilityGrid.searchAndOpenHyperlink(notificationTemplateNameUpdated);
             await editNotificationTemplate.updateDescription('updated desc');
             await createNotificationTemplatePage.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
@@ -145,7 +145,7 @@ describe("Notification Template", () => {
         });
     });
 
-    //asahitya  
+    //asahitya  - IT block 2 
     describe('[4589]: To create new template with an event', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notificationEventHRGlobal = "Case Notification Event HR Global" + randomStr;
@@ -241,7 +241,8 @@ describe("Notification Template", () => {
             await createNotificationEventPage.setCompanyValue('Petramco');
             await createNotificationEventPage.setDescription('4589 Desc');
             await createNotificationEventPage.saveEventConfig();
-            expect(await utilityCommon.isPopUpMessagePresent('Given combination of Event and Company already exists.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('An Event with same name already exists.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             await createNotificationEventPage.setEventName('Case Priority Change' + randomStr);
             await createNotificationEventPage.saveEventConfig();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Error message absent");
@@ -254,6 +255,7 @@ describe("Notification Template", () => {
             await editNotificationEventPage.saveEventConfig();
             expect(await utilityCommon.isPopUpMessagePresent('Event Name is not allowed to change.')).toBeTruthy("Error message absent");
             await editNotificationEventPage.cancelEventConfig();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[4589]: To create new template with an event', async () => {
@@ -264,27 +266,16 @@ describe("Notification Template", () => {
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
 
             //Validations for notification event wrt LOB
-            await createNotificationTemplatePage.clickOnNotificationEventDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventHRGlobal)).toBeTruthy('Notification Event is not displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesGlobal)).toBeFalsy('Notification Event is displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown('Access Change')).toBeTruthy('Notification Event is not displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesPetramco)).toBeFalsy('Notification Event is displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventHRPetramco)).toBeTruthy('Notification Event is not displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventHRPetramcoInactive)).toBeFalsy('Notification Event is displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventHRGlobalInactive)).toBeFalsy('Notification Event is displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown('Agent Assignment')).toBeTruthy('Notification Event is not displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesGlobalInactive)).toBeFalsy('Notification Event is displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
-            expect(await createNotificationTemplatePage.isNotificationEventOptionPresentInDropDown(notificationEventFacilitiesPetramcoInactive)).toBeFalsy('Notification Event is displayed.');
-            await createNotificationTemplatePage.clearNotificationEventFromDropDown();
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, 'Access Change')).toBeTruthy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, notificationEventHRGlobal)).toBeTruthy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, notificationEventHRPetramco)).toBeTruthy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, 'Agent Assignment')).toBeTruthy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, notificationEventFacilitiesGlobal)).toBeFalsy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, notificationEventHRPetramcoInactive)).toBeFalsy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, notificationEventHRPetramcoInactive)).toBeFalsy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, notificationEventHRGlobalInactive)).toBeFalsy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, notificationEventFacilitiesGlobalInactive)).toBeFalsy;
+            expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, notificationEventFacilitiesPetramcoInactive)).toBeFalsy;
             await createNotificationTemplatePage.setTemplateName('4589' + randomStr);
             await createNotificationTemplatePage.setDescription('4589' + randomStr);
             await createNotificationTemplatePage.setAlertMessage('Priority is change');
@@ -299,13 +290,13 @@ describe("Notification Template", () => {
             await utilityGrid.searchAndOpenHyperlink('4589' + randomStr);
             expect(await editNotificationTemplate.getEventName()).toBe('Case Priority Change' + randomStr);
             expect(await editNotificationTemplate.getModuleName()).toBe('Cases');
+            expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assigned Group", "CC")).toBeTruthy();
             expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assignee's Manager", "BCC")).toBeTruthy();
             expect(await editNotificationTemplate.isRecipientsCheckboxChecked("External Requester", "TO")).toBeTruthy();
-            expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assigned Group", "CC")).toBeTruthy();
-            await utilityCommon.closeAllBlades();
         });
 
         it('[4589]: Verify notification template validation wrt same LOB ', async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
@@ -326,6 +317,7 @@ describe("Notification Template", () => {
         });
 
         it('[4589]: Verify notification event validation wrt different LOB ', async () => {
+            await utilityCommon.closePopUpMessage();
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
@@ -352,9 +344,8 @@ describe("Notification Template", () => {
             await editNotificationTemplate.clickRecipientsCheckbox("Assignee's Manager", "BCC");
             await editNotificationTemplate.clickRecipientsCheckbox("External Requester", "TO");
             await editNotificationTemplate.clickRecipientsCheckbox("Assigned Group", "CC");
-            await createNotificationTemplatePage.selectEvent('Case Priority Change' + randomStr);
+            await createNotificationTemplatePage.selectEvent(notificationEventHRGlobal);
             await createNotificationTemplatePage.clickOnSaveButton();
-            await utilityCommon.closeAllBlades();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("record saved successful message is not displayed.");
         });
 
@@ -368,7 +359,7 @@ describe("Notification Template", () => {
 
     });
 
-    //asahitya
+    //asahitya-log defect for company column
     it('[5917]: AC: Notification Template_Console Columns', async () => {
         let columns: string[] = ['GUID', 'ID', 'Label'];
         let allColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name', 'GUID', 'ID', 'Label'];
@@ -386,7 +377,7 @@ describe("Notification Template", () => {
         expect(await notificationTempGridPage.areColumnHeaderMatches(defaultColumns)).toBeTruthy('Default Columns are not matching');
     });
 
-    //asahitya
+    //asahitya-fixed
     describe('[4590]: Availability of Recipient List on OOB Global Template', async () => {
         it('[4590]: Availability of Recipient List on OOB Global Template', async () => {
             await utilityGrid.searchAndOpenHyperlink('New Signature Template');
@@ -419,13 +410,15 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
             await utilityGrid.searchAndOpenHyperlink('Task Agent Assignment');
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Group's Manager", "Assignee", "Assignee's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Tasks Module is not matching');
-            await utilityCommon.closeAllBlades();
             // await utilityGrid.searchAndOpenHyperlink('MC Flow Error');
             // expect(await createNotificationTemplatePage.areRecipientsMatches(["Multi-cloud Admins"])).toBeTruthy('Recipient List of MultiCloud Module is not matching');
             // await utilityCommon.closeAllBlades();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
-
+//check again
     it('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
         let eventData = {
             eventName: '4588' + randomStr
@@ -439,11 +432,13 @@ describe("Notification Template", () => {
             emailBody: 'Email Body text',
             emailSubject: 'Email Subject text'
         }
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createNotificationEvent(eventData);
         await apiHelper.createNotificationTemplate(notificationData);
 
-        await utilityGrid.searchAndOpenHyperlink('4588 namech6n');
+        await utilityGrid.searchAndOpenHyperlink(eventData.eventName);
         await editNotificationTemplate.clickAddRecipientsBtn();
         expect(await editNotificationTemplate.isSearchRecipientDispalyed()).toBeTruthy('Search Recipient field is not dispalyed');
         expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Recipient Type');

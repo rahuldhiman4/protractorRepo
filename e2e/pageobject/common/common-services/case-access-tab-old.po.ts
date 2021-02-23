@@ -2,16 +2,16 @@ import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser }
 class CaseOldAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        confidentialSupportGroupAccess: '.ac-label-manage-support',
-        confidentialSupportGroup: '.ac-confidential-group-field [id="btn-select"]',
-        confidentialSupportGroupAssignToMe: '[class="d-checkbox__item ac-label-assign-confidential-write"]',
-        addConfidentialSupportGroup: '[ng-if="enableAddSupportGroup"]',
-        dropdownElement: '.ac-confidential-group-field .options li',
-        confidentialFieldSearchBox: '.field input[placeholder="Search for Support Groups"]',
-        deleteConfidentialsSupportGroup: '[class="rx-case-access-group-list ac-access-group-list"] .d-icon-cross',
-        confidentialValueText: '.rx-case-access-name',
-        removeSupportWarningYes: '.ac-remove-group-yes',
-        supportGroupWarningText: '[class="rx-case-access-remove ac-group-not-unique"] .rx-case-access-remove-text',
+        confidentialSupportGroupAccess: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] button.btn-title',
+        confidentialSupportGroup: '[aria-label="Support Group"]',
+        confidentialSupportGroupAssignToMe: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] input[type="checkbox"]',
+        addConfidentialSupportGroup: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] .input-group-btn button',
+        dropdownElement: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] strong',
+        confidentialFieldSearchBox: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] input[type="text"]',
+        deleteConfidentialsSupportGroup: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] .d-icon-cross',
+        confidentialValueText: '[class="badge-content"] span.badge-text',
+        removeSupportWarningYes: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] .inline-btn-wrapper button[btn-type="primary"]',
+        supportGroupWarningText: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] .alert-content',
     }
     async isConfidentialSupportGroupValueTextDisplayed(SupportGroup: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.confidentialValueText, SupportGroup)).isPresent().then(async (link) => {
@@ -42,15 +42,16 @@ class CaseOldAccessTab {
     }
 
     async clickConfidentialWriteSupportGroupAccess(): Promise<void> {
-        await $$(this.selectors.confidentialSupportGroupAssignToMe).get(1).click();
+        await $(this.selectors.confidentialSupportGroupAssignToMe).click();
     }
 
     async clickAddConfidentialSupportGroup(): Promise<void> {
-        await $$(this.selectors.addConfidentialSupportGroup).get(1).click();
+        await $(this.selectors.addConfidentialSupportGroup).click();
     }
 
     async selectConfidentialSupportGroupDropDown(drop: string): Promise<void> {
-        await $$(this.selectors.confidentialFieldSearchBox).get(1).sendKeys(drop);
+        await $(this.selectors.confidentialFieldSearchBox).clear();
+        await $(this.selectors.confidentialFieldSearchBox).sendKeys(drop);
         await element(by.cssContainingText(this.selectors.dropdownElement, drop)).click();
 
     }

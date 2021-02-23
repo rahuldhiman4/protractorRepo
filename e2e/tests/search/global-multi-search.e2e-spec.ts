@@ -11,7 +11,7 @@ export interface IIDs {
     id: string;
     displayId: string;
 }
-describe('Multi Search Validation', () => {
+xdescribe('Multi Search Validation', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule = "Knowledge Article";

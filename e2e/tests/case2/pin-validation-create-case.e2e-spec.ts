@@ -12,7 +12,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
-describe('PIN Validation Create Case', () => {
+xdescribe('PIN Validation Create Case', () => {
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);

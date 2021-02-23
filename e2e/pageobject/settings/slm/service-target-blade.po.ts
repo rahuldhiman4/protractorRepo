@@ -33,11 +33,11 @@ class ServiceTargetConfig {
         termsAndConditionsFieldGuid:'94891fe1-781f-4f94-bcce-12425862d97d',
         selectStatusField: '[rx-view-component-id="dc8c4074-db37-4910-96c0-b16d2be23b7e"] button',
         selectBusinessEntity: `//button//div[text()='Select Business Entity']`,
-        fieldNameLabel: `//*[@rx-view-definition-guid="b33e03d8-128d-4c42-8a5e-93d67bebd0b7"]//*[contains(@class,'form-control-label')]//span`,
+        fieldNameLabel: `//*[contains(@class,'form-control-label')]//span`,
         noMileStonesPresentText: '.adapt-accordion .card .no-record-found',
         addNewMileStoneBtn: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-plus_circle',
         goalTypeDropDownInput: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button',
-        errorMsg: '.form-control-feedback span'
+        errorMsg: 'p.form-control-feedback'
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
@@ -50,11 +50,11 @@ class ServiceTargetConfig {
         });
     }
 
-    async getError(errorMsg:string): Promise<boolean> {
+    async getError(errorMsg:string): Promise<string> {
         return await $(this.selectors.errorMsg).isPresent().then(async (result) => {
             if (result) {
                 console.log('errorMsg: ',errorMsg)
-                await element(by.cssContainingText(this.selectors.errorMsg, errorMsg)).getAttribute('value')?true:false;
+                await element(by.cssContainingText(this.selectors.errorMsg, errorMsg)).getText();
             } else {
                 return null;
             }
@@ -163,7 +163,7 @@ class ServiceTargetConfig {
         //        browser.sleep(2000);
         await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).get(measurementExp).click();
         //        browser.sleep(2000);
-        await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldvalue,DropDown);
+        await SlmExpressionBuilder.selectExpressionQualificationForTask(field, operator, fieldvalue,DropDown);
       //  await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
         await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
     }

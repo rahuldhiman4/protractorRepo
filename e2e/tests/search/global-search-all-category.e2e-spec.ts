@@ -21,7 +21,7 @@ export interface IIDs {
     displayId: string;
 }
 
-describe('Global Search All Category', () => {
+xdescribe('Global Search All Category', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule = "Knowledge Article";

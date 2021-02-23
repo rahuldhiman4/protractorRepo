@@ -43,7 +43,7 @@ class ViewCaseTemplate {
         zoomInBtn: '.btn-zoom-in',
         zoomOutBtn: '.btn-zoom-out',
         taskFlowSectionSizeLocator: '.paper-scroller-background',
-        tab: '.rx-tab',
+        tab: 'button[role="tab"]',
         copyCaseTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
         lobValue: '[rx-view-component-id="bcd748fb-6503-44e4-b1db-2ad97b8fb088"] p',
         caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .read-only-content',
