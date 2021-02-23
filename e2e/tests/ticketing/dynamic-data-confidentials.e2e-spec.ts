@@ -29,7 +29,7 @@ import viewTasktemplatePo from '../../pageobject/settings/task-management/view-t
 import editDynamicFieldLibraryConfigPo from '../../pageobject/settings/application-config/edit-dynamic-field-library-config.po';
 import caseAccessTabOldPo from '../../pageobject/common/common-services/case-access-tab-old.po';
 
-describe('Dynamic Confidentials Data', () => {
+xdescribe('Dynamic Confidentials Data', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');

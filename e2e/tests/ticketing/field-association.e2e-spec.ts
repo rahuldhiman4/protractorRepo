@@ -8,7 +8,7 @@ import utilityCommon from '../../utils/utility.common';
 import editFieldAssociationMappingsPo from '../../pageobject/settings/application-config/edit-field-association-mappings.po';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Field Association', () => {
+xdescribe('Field Association', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('tadmin');

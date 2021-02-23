@@ -295,12 +295,13 @@ describe('Email Configuration', () => {
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
+            await utilityCommon.closeAllBlades();
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
-            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.closeAllBlades();
         });
 
         it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case BA user having access to multiple LOB', async () => {
@@ -318,7 +319,6 @@ describe('Email Configuration', () => {
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
-            await editEmailConfigPo.cancelEditEmailConfig();
         });
 
         afterAll(async () => {

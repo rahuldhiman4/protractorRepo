@@ -13,8 +13,6 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let userData1, userData2 = undefined;
-
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
     let label = "POSH";
@@ -102,8 +100,8 @@ describe('Email Template', () => {
             await editEmailTemplatePo.searchOnGridConsole('subject');
             expect(await editEmailTemplatePo.getSelectedGridRecordValue('Message Type')).toBe('subject', 'subject is missing from Grid');
         });
-
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to same LOB Case Manager', async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
@@ -111,7 +109,6 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
         });
-
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -119,9 +116,7 @@ describe('Email Template', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
-
         });
-
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
@@ -130,7 +125,6 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
         });
-
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -139,7 +133,6 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
         });
-
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
@@ -152,7 +145,6 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
         });
-
         it('[5165,5173,5177,5167,5176]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -161,7 +153,6 @@ describe('Email Template', () => {
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case BA with multiple LOB access');
-
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
@@ -169,15 +160,12 @@ describe('Email Template', () => {
             await editEmailTemplatePo.updateDescription(description);
             await editEmailTemplatePo.selectStatusDropDown('Active');
             await editEmailTemplatePo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
-
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
     });
 
     //kgaikwad
@@ -222,7 +210,9 @@ describe('Email Template', () => {
             // 5178
             await consoleEmailTemplatePo.addColumnOnGrid(arr1);
             expect(await consoleEmailTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
-            expect(await consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order')
+            await utilityGrid.sortGridColumn('Subject', 'descending');
+            await utilityGrid.sortGridColumn('Subject', 'ascending');
+            expect(await consoleEmailTemplatePo.isGridColumnSorted('Label', 'descending')).toBeTruthy('Label column is not sorted correctly with descending order');
             // 5096
             await consoleEmailTemplatePo.addFilter('Template Name', templateName1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Filter Template Name is missing in column');
@@ -247,7 +237,6 @@ describe('Email Template', () => {
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject1, 'Search Subject is missing in column');
             await consoleEmailTemplatePo.searchOnGridConsole('Petramco');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Company')).toBe('Petramco', 'Search Company is missing in column');
-
             // 5166
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(templateName1);
             // 5172
@@ -318,7 +307,6 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB case manager');
         });
-
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to different LOB Case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
@@ -326,9 +314,7 @@ describe('Email Template', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case BA');
-
         });
-
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to different LOB Case Manager', async () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
@@ -337,7 +323,6 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is not visible to different LOB case manager');
         });
-
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case BA belonging to different company with same LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -346,7 +331,6 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to same LOB with different case BA');
         });
-
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('qyuan');
@@ -359,7 +343,6 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeFalsy('Human Resources LOB email template is visible to case manager with multiple LOB access');
         });
-
         it('[5169,5166,5178,5096,5095,5097,5172]: Verify if email templates are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
@@ -373,13 +356,11 @@ describe('Email Template', () => {
             expect(await utilityGrid.isGridRecordPresent(templateName1)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(templateName2)).toBeTruthy('Human Resources LOB email template is not visible to case BA with multiple LOB access');
         });
-
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
-
     });
 
     //tzope

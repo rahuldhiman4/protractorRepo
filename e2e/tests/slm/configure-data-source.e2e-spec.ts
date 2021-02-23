@@ -314,8 +314,8 @@ describe('Data Source Configuration Tests', () => {
             await serviceTargetConfig.selectMeasurementCheckbox('Reset Goal for Same Request?');
             await serviceTargetConfig.selectMeasurementCheckbox('Allow Measurement to Re-Open?');
             await serviceTargetConfig.selectMeasurementCheckbox('Enable Team Tracking');
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "Status", "=", "Assigned");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "Status", "=", "Completed");
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });

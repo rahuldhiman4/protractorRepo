@@ -17,7 +17,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe("Task Approval UI Validations", () => {
+xdescribe("Task Approval UI Validations", () => {
     const taskApprovalRecordDefinition = 'com.bmc.dsm.task-lib:Task';
     let taskModule = 'Task';
 

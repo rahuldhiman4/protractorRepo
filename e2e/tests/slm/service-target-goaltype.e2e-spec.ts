@@ -122,6 +122,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilityCommon.isPopUpMessagePresent('A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
             await createGoalType.clickCloseGoalTypeButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             //on update verification is not possible since goal type name field is disabled on edit.
@@ -133,6 +134,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.selectGoalTypeStatus('Active');
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('SVT Goal Type is dispayed to user with multiple LOB case manager');
         });
         afterAll(async () => {
@@ -180,6 +182,9 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.clickSaveGoalTypeButton();
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
             expect(await utilityCommon.isPopUpMessagePresent('A goal with the specified name already exists. Specify a different goal name')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
+            createGoalType.clickCloseGoalTypeButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });
 
@@ -187,7 +192,7 @@ describe('Service Level Management - Goal Type Tests', () => {
     describe('[6037]: SLM - Goal Type - Console', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let defaultGoalTypeColumns: string[] = ["Goal Type Name", "Goal Type", "Status"];
-        let goalTypeColumns: string[] = ["Goal Type Name", "Goal Type", "Status", "GUID"];
+        let goalTypeColumns: string[] = ["ID"];
         let goalTypeTitle = 'New Goal Type' + randomStr;
         it('[6037]: Create a Goal Type', async () => {
             await navigationPage.gotoSettingsPage();
@@ -198,6 +203,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await createGoalType.selectGoalTypeStatus('Inactive');
             await createGoalType.clickSaveGoalTypeButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
         });
         it('[6037]: Update Goal Type and Verify the details', async () => {
             await goalTypeConsole.addColumns(goalTypeColumns);
@@ -231,25 +237,28 @@ describe('Service Level Management - Goal Type Tests', () => {
 
             await utilityGrid.clearSearchBox();
             await goalTypeConsole.clickRefreshIcon();
+            await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Goal Type Name', goalTypeTitle, 'text', goalTypeConsoleGUID);
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('Goal Type Name record is not searched.');
 
+            await utilityGrid.clearSearchBox();
             await utilityGrid.clearFilter();
             await goalTypeConsole.clickRefreshIcon();
             await utilityGrid.addFilter('Status', 'Inactive', 'checkbox', goalTypeConsoleGUID);
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('Goal Type Status record is not searched.');
 
+            await utilityGrid.clearSearchBox();
             await utilityGrid.clearFilter();
             await goalTypeConsole.clickRefreshIcon();
-            await utilityGrid.addFilter('GUID', goalTypeGUID, 'text', goalTypeConsoleGUID);
+            await utilityGrid.addFilter('ID', goalTypeGUID, 'text', goalTypeConsoleGUID);
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('Goal Type GUID record is not searched.');
 
+            await utilityGrid.clearSearchBox();
             await utilityGrid.clearFilter();
             await goalTypeConsole.clickRefreshIcon();
             await utilityGrid.addFilter('Goal Type', 'Request-Based', 'checkbox');
             expect(await utilityGrid.isGridRecordPresent(goalTypeTitle)).toBeTruthy('Goal Type record is not searched.');
-
+            await goalTypeConsole.removeColumns(goalTypeColumns);
         });
     });
-
 });

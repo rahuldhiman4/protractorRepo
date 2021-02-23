@@ -17,7 +17,7 @@ import { BWF_BASE_URL, operation, security, type, BWF_PAGE_TITLES } from '../../
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe("Notifications", () => {
+xdescribe("Notifications", () => {
     const caseModule = 'Case';
 
     beforeAll(async () => {

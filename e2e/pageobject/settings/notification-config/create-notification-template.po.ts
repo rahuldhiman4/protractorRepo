@@ -1,3 +1,4 @@
+import { remove } from 'lodash';
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 import { DropDownType } from '../../../utils/constants';
@@ -15,7 +16,7 @@ class createNotificationTemplate {
         fieldValueInAlertBody: '.cke_wysiwyg_div',
         fieldValueInEmailBody: '[id="cke_116_contents"] .cke_wysiwyg_div',
         emailTab: '[rx-view-component-id="49e5407b-f0ea-4952-8d6c-7745ab6e2ef2"] button[aria-posinset="2"]',
-        subject: '[rx-view-component-id="384fc1d0-2db9-4a9b-b807-47b1158327e6"] .cke_wysiwyg_div',
+        subject: '[rx-view-component-id="2ac0962f-e643-4534-a85f-75721da2502e"] .textfield-padding-transition',
         saveButton: '[rx-view-component-id="18ba6978-2eb2-4bf0-ab20-bd484938729e"] button',
         cancelButton: '[rx-view-component-id="1f86f67c-1645-43f5-ae8e-1cb5efa21787"] button',
         recipientsList: 'tr[class="table-row ng-star-inserted"] td',
@@ -29,6 +30,7 @@ class createNotificationTemplate {
         eventDropDownInput: '[rx-view-component-id="38aba7a1-c142-41f7-9017-d261971c2429"] input',
         eventDropDown: '[rx-view-component-id="38aba7a1-c142-41f7-9017-d261971c2429"] button',
         dropDownOption: '.dropdown-item',
+        eventGuid: '38aba7a1-c142-41f7-9017-d261971c2429'
     }
 
     async selectModuleName(value: string): Promise<void> {
@@ -89,10 +91,13 @@ class createNotificationTemplate {
 
     async areRecipientsMatches(expectedRecipients: string[]): Promise<boolean> {
         if (expectedRecipients.length > 0) {
-            let actualRecipients = await element.all(by.css(this.selectors.recipientsList))
+            let actualRecipientRaw = await element.all(by.css(this.selectors.recipientsList))
                 .map(async function (recipients) {
-                    return await recipients.getAttribute('innerText');
+                    return (await recipients.getAttribute('innerText')).trim();
                 });
+            let actualRecipients = remove(actualRecipientRaw, function (n) {
+                return n != '';
+            });
             actualRecipients.sort();
             expectedRecipients.sort();
             return actualRecipients.length === expectedRecipients.length && actualRecipients.every(

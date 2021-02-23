@@ -23,7 +23,7 @@ let caseAgentUser = 'qtao';
 let psilonCaseBAUser = 'gderuno';
 let psilonCaseAgentUser = 'werusha';
 
-describe('Service Target Tests for Tasks', () => {
+xdescribe('Service Target Tests for Tasks', () => {
     const caseModule = 'Case';
 
     beforeAll(async () => {
@@ -76,17 +76,16 @@ describe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             //Create a SVT with 2 mins timeline
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
-            await slmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Manual');
-            await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await slmExpressionBuilder.selectExpressionQualificationForTask('Task Type', '=','Manual',"Direct");
             let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Task Type" + "'" + "=" + '"' + "Manual" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "STATUS", "=", "Assigned","Direct");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "STATUS", "=", "Completed","Direct");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "STATUS", "=", "Pending","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "Status", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "Status", "=", "Completed","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "Status", "=", "Pending","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[4907]: Create a Case', async () => {
@@ -186,9 +185,9 @@ describe('Service Target Tests for Tasks', () => {
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("2");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Staged");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "Status", "=", "Staged","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "Status", "=", "Completed","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "Status", "=", "Pending","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[4906]: Create a Case', async () => {
@@ -278,9 +277,9 @@ describe('Service Target Tests for Tasks', () => {
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("4");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "Completed");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "Status", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "Status", "=", "Completed","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "Status", "=", "Pending","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[4920,4919,4899]: Create a Case', async () => {
@@ -449,9 +448,9 @@ describe('Service Target Tests for Tasks', () => {
             await slmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoal("3");
             await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "status", "=", "STATUS", "Planning");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "status", "=", "STATUS", "BeforeCompleted");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "status", "=", "STATUS", "Pending");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "Status", "=", "Planning","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "Status", "=", "BeforeCompleted","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(2, "Status", "=", "Pending","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
         });
         it('[4905]: Create a Case', async () => {

@@ -267,6 +267,8 @@ describe("Quick Case", () => {
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('New');
+            await navigationPo.signOut();
+            await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData2.templateName);
@@ -275,16 +277,14 @@ describe("Quick Case", () => {
             expect(await viewCasePo.getCaseStatusValue()).toContain('Assigned');
         });
         it('[6391]: [Quick Case] Case creation with all case statuses in template', async () => {
-            await navigationPo.signOut();
-            await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData4.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName("fritz");
+            await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(templateData3.templateName);
             await quickCasePo.saveCase();
             await casePreviewPo.clickGoToCaseButton();
@@ -917,16 +917,16 @@ describe("Quick Case", () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18972';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=PET00000104&desc=&contact=');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1);
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester1, '1');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy;
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=&contact=');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2, '2');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy;
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=61288992922&desc=&contact=');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=61 2 8899 2912&desc=&contact=');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy();
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2, '3');
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=&contact=');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2);
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2, '4');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy;
     });
 
@@ -1025,7 +1025,6 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await templateAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit');
             await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
             await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
             expect(await templateAccessTabPo.isSupportGroupReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
@@ -1039,7 +1038,6 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await templateAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit');
             await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
             await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
             expect(await templateAccessTabPo.isSupportGroupReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
@@ -1050,6 +1048,7 @@ describe("Quick Case", () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary("CaseSummary1" + randomStr);
@@ -1116,6 +1115,7 @@ describe("Quick Case", () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
@@ -1145,6 +1145,7 @@ describe("Quick Case", () => {
             await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
             await navigationPo.gotoSettingsPage();
@@ -1155,6 +1156,7 @@ describe("Quick Case", () => {
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
             await navigationPo.gotoSettingsPage();
@@ -1172,6 +1174,7 @@ describe("Quick Case", () => {
             await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
             await navigationPo.gotoSettingsPage();
@@ -1182,6 +1185,7 @@ describe("Quick Case", () => {
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
         });
         afterAll(async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
         });

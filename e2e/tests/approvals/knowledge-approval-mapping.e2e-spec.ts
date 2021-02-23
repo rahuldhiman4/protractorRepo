@@ -14,7 +14,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 let userData2 = undefined;
 
-describe("Knowledge Approval Mapping Tests", () => {
+xdescribe("Knowledge Approval Mapping Tests", () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let knowledgeModule = 'Knowledge';
     let knowledgeManagementApp = "Knowledge Management";
