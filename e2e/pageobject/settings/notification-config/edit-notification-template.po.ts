@@ -1,4 +1,5 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { DropDownType } from "../../../utils/constants";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 class EditNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -6,7 +7,7 @@ class EditNotificationTemplate {
     selectors = {
         cancelButton: '[rx-view-component-id="d2dd0f98-69d0-462f-9002-5da452b67f63"] button,[rx-view-component-id="2a50e7b7-b260-4749-ad9d-1d7cb65b5d95"] button',
         header: '.dp-title',
-        saveButton: '[rx-view-component-id="50e25982-5452-4f20-ac79-5682de7cb467"] button',
+        saveButton: '[rx-view-component-id="8b5f78b0-0aa8-40da-8d52-66d5afe1356b"] button',
         emailTab: 'li.nav-item button[aria-posinset="2"]',
         editButtonOnEmailTab: '[rx-view-component-id="a0c7d2a0-326b-4c8c-88ab-1b626b865769"] button',
         checkBoxEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] .radio__label input',
@@ -28,7 +29,7 @@ class EditNotificationTemplate {
         eventNameText: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] button div',
         searchRecipient: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .adapt-search',
         applyButton: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .filter-list [btn-type="primary"]',
-        fieldLabels: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .adapt-select-label-wrapper',
+        fieldLabels: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .form-control-label span, [rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .bwf-footer button',
         recipientTypeSelect: '[id="adapt-select-37"] .dropdown-toggle',
         selectRecipient: '.rx-recipients-assignment-person-fullName, .rx-recipients-assignment-person-structure',
         recipientList: '.body tr td',
@@ -40,7 +41,7 @@ class EditNotificationTemplate {
         emailSubject: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
-        emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.d-icon-check'
+        emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.btn-primary'
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
@@ -240,7 +241,7 @@ class EditNotificationTemplate {
                 break;
             }
         }
-        return (await $$(this.selectors.recipientsCheckboxInput).get(checkboxCount).getAttribute('class')).includes('ng-not-empty');
+        return (await $$(this.selectors.recipientsCheckboxInput).get(checkboxCount).getAttribute('aria-checked') =='true');
     }
 
     async isRecipientDisplayed(recipientName: string): Promise<boolean> {
@@ -281,15 +282,15 @@ class EditNotificationTemplate {
         let fieldGuid: string = undefined;
         switch (fieldName) {
             case "Company": {
-                fieldGuid = 'a423a785-aec4-453b-b2b7-d44f534fd2ed';
+                fieldGuid = '0d86e65f-f804-40c4-a955-ff82dd531956';
                 break;
             }
             case "Status": {
-                fieldGuid = 'edadf429-50e9-4867-ab44-d027826932df';
+                fieldGuid = 'da40a967-db52-4c1b-8d69-0c441f290323';
                 break;
             }
             case "Module": {
-                fieldGuid = '4fd471a8-c2c4-44f3-8c33-57501411df07';
+                fieldGuid = 'bdd94b56-3700-4876-8455-62f1e1b05ff6';
                 break;
             }
             case "Default Notification Method": {
@@ -297,7 +298,7 @@ class EditNotificationTemplate {
                 break;
             }
             case "Event": {
-                fieldGuid = '15aad4c8-1522-4586-b9d3-6be376cfcaa8';
+                fieldGuid = 'f535976d-f547-460a-8fa6-f959eb485d38';
                 break;
             }
             default: {
@@ -327,6 +328,34 @@ class EditNotificationTemplate {
             allValues = allValues + await $$(this.selectors.emailBody).get(i).getAttribute('innerText');
         }
         return (allValues.replace(/\s/g, "")).includes(value.replace(/\s/g, ""));
+    }
+    async setDropDownValue(dropDownName: string, dropDownValue: string): Promise<void> {
+        let locator = '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] adapt-rx-select button';
+        //if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
+        let dropDownElement: ElementFinder;
+        switch (dropDownName) {
+            case "RecipientType": {
+                dropDownElement = await $$(locator).get(0);
+                break;
+            }
+            case "Company": {
+                dropDownElement = await $$(locator).get(1);
+                break;
+            }
+            case "SupportOrg": {
+                dropDownElement = await $$(locator).get(2);
+                break;
+            }
+            case "AssignedGroup": {
+                dropDownElement = await $$(locator).get(3);
+                break;
+            }
+            default: {
+                console.log('Dropdown Not Available');
+                break;
+            }
+        }
+        await utilityCommon.selectDropDown(dropDownElement, dropDownValue, DropDownType.WebElement);
     }
 
 }

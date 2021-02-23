@@ -159,7 +159,6 @@ describe('Knowledge Article', () => {
             await utilityCommon.closeAllBlades();
         });
     });
-
     it('[3902]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         await navigationPage.gotoKnowledgeConsole();
         await navigationPage.signOut();
@@ -460,7 +459,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //Fail - Region data not avialable
+    
     it('[6069]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
         await navigationPage.gotoKnowledgeConsole();
@@ -471,11 +470,13 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnTemplate('Reference');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
-        await createKnowledgePage.selectRegionDropDownOption('Australia');
+        await createKnowledgePage.selectKnowledgeSet('HR');
         await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
         await createKnowledgePage.selectCategoryTier2Option('Compensation');
         await createKnowledgePage.selectCategoryTier3Option('Bonus');
-        await createKnowledgePage.selectSiteDropDownOption('Melbourne');
+        await createKnowledgePage.selectRegionDropDownOption('Americas');
+        await createKnowledgePage.selectSiteGroupDropDownOption('Human Resources')
+        await createKnowledgePage.selectSiteDropDownOption('Houston');
         await createKnowledgePage.setReferenceValue('reference values are as follows');
         expect(await createKnowledgePage.getKnowledgeArticleTitleValue()).toContain(knowledgeTitle, 'expected Value not present');
         expect(await createKnowledgePage.getValueOfCategoryTier1()).toContain('Employee Relations', 'value not matched with expected');
@@ -509,7 +510,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //fail - due to region data
+    
     it('[5899]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {
             let knowledgeTitle = 'knowledge2887' + randomStr;
@@ -519,22 +520,23 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet('HR');
-            await createKnowledgePage.selectRegionDropDownOption('Australia');
-            await createKnowledgePage.selectSiteDropDownOption('Melbourne');
+            await createKnowledgePage.selectRegionDropDownOption('Americas');
+            await createKnowledgePage.selectSiteGroupDropDownOption('Human Resources')
+            await createKnowledgePage.selectSiteDropDownOption('Houston');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
-            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
-            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Melbourne');
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Americas');
+            expect(await viewKnowledgeArticlePo.getSiteGroupValue()).toBe('Human Resources');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Houston');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            await editKnowledgePage.selectRegionDropDownOption('EMEA');
-            await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
+            await editKnowledgePage.selectRegionDropDownOption('Americas');
+            await editKnowledgePage.selectSiteDropDownOption('Houston');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
-            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
-            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Americas');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Houston');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.removeRegionValue();
-            await editKnowledgePage.removeSiteValue();
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('-');
             expect(await viewKnowledgeArticlePo.getSiteValueAfterClear()).toBe('-');
@@ -544,11 +546,11 @@ describe('Knowledge Article', () => {
             let knowledgeNewTitle = 'knowledgeNew2887' + randomStr;
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeNewTitle);
             await createKnowledgePage.selectKnowledgeSet('HR');
-            await createKnowledgePage.selectRegionDropDownOption('Australia');
+            await createKnowledgePage.selectRegionDropDownOption('Americas');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA();
-            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Australia');
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Americas');
         }
         catch (e) {
             throw e;
@@ -605,7 +607,7 @@ describe('Knowledge Article', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
-    //issue
+    
     describe('[5882]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         let KADetails, KACoachDetails, articleDataCoach;
         beforeAll(async () => {
