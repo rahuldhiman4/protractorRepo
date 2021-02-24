@@ -1,5 +1,4 @@
 import { browser } from "protractor";
-import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import consoleAcknowledgmentTemplatePo from '../../pageobject/settings/email/console-acknowledgment-template.po';
@@ -382,6 +381,7 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setSubject(subject);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent(`Template Already exist with given name:${templateName4}`)).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             await createAcknowledgmentTemplatesPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
