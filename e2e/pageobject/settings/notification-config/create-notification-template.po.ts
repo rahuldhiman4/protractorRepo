@@ -22,7 +22,7 @@ class createNotificationTemplate {
         recipientsList: 'tr[class="table-row ng-star-inserted"] td',
         alertMessage: '[rx-view-component-id="3b8c6647-5b47-444f-941b-aaec38d4ea2e"] .cke_wysiwyg_div',
         emailBasedApprovalFlag: '[rx-view-component-id="be4360ec-c852-457f-87c0-c1bf1abf8952"] .d-textfield',
-        emailBasedApprovalToggleGuid: '4437da1b-4da6-4e84-bf9c-f7366cca0f1a',
+        emailBasedApprovalToggleGuid: '8b68aed2-0a80-40b7-9425-155e252d962e',
         notificationMethodGuid: '0f634bc9-63ce-4515-99d1-525fdb4e44a9',
         generateClickableLinkIconAlert: '[rx-view-component-id="34d2b4a6-5403-4e22-809d-5d26fe2f4ad8"] .cke_button__clickablelink_icon',
         generateClickableLinkIconEmail: '[rx-view-component-id="ac6ba449-9c5a-46f9-85fb-8384bf57fc92"] .cke_button__clickablelink_icon',
