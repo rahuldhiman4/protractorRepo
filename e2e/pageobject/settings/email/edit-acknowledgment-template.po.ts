@@ -7,8 +7,8 @@ class EditAcknowledgementTemplate {
     selectors = {
         templateName: '[rx-view-component-id="e7893fa6-ebfd-4e5f-b997-efcd337caa8b"] input',
         description: '[rx-view-component-id="13687881-a1ff-4198-a22a-4d2583307e48"] input',
-        moduleName: '[rx-view-component-id="2a3f6607-4335-4540-aedf-f71a47c6b575"] button div',
-        company: '[rx-view-component-id="e75104bf-e0a8-41db-ad84-31b9ef05fd9f"] button div',
+        moduleName: '[rx-view-component-id="2a3f6607-4335-4540-aedf-f71a47c6b575"] button',
+        company: '[rx-view-component-id="e75104bf-e0a8-41db-ad84-31b9ef05fd9f"] button',
         status: '[rx-view-component-id="2b5a61a3-16f8-4d1f-9a60-558c4575ed3a"]  button div',
         searchButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] input[type="search"]',
         searchGuid: '8b59641c-2fca-4d96-8395-03e232cf05de',
