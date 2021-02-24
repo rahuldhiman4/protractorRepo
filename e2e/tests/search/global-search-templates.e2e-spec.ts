@@ -239,7 +239,7 @@ xdescribe('Global Search Template', () => {
             expect(await caseTemplatePreviewPo.isCaseCategoryTier4TitleDisplayed('Category Tier 4')).toBeTruthy('Case Category Tier 4 is not getting displayed');
             expect(await caseTemplatePreviewPo.isCaseDescriptionTitleDisplayed('Case Description')).toBeTruthy('FailureMsg29: Case Description label is missing');
             expect(await caseTemplatePreviewPo.isAssigneeTitleDisplayed()).toBeTruthy('FailureMsg29: Assignee label is missing');
-            expect(await caseTemplatePreviewPo.isSupportGroupTitleDisplayed('Assigned Company > Support Organization > Assigned Group')).toBeTruthy('FailureMsg30: Assigned Company > Support Organization > Assigned Goup label is missing');
+            expect(await caseTemplatePreviewPo.isSupportGroupTitleDisplayed('Support Company > Support Organization > Support Group')).toBeTruthy('FailureMsg30: Support Company > Support Organization > Support Group label is missing');
             expect(await caseTemplatePreviewPo.getCaseTemplateName()).toBe(templateName + 4, 'FailureMsg20: Case template title is missing');
             expect(await caseTemplatePreviewPo.getCaseSummary()).toBe(summary2, 'FailureMsg20: Case Summary is missing');
             expect(await caseTemplatePreviewPo.getCasePriority()).toBe('Low', 'FailureMsg33: Case priority is missing');
@@ -588,7 +588,7 @@ xdescribe('Global Search Template', () => {
             expect(await previewTaskTemplatePo.isTaskCategoryTier4TitleDisplayed('Task Category Tier 4')).toBeTruthy('FailureMsg27: Category Tier 3 label is missing');
             expect(await previewTaskTemplatePo.isTaskDescriptionTitleDisplayed()).toBeTruthy('FailureMsg29: Task Description label is missing');
             expect(await previewTaskTemplatePo.isAssigneeTitleDisplayed('Assignee')).toBeTruthy('FailureMsg29: Assignee label is missing');
-            expect(await previewTaskTemplatePo.isSupportGroupTitleDisplayed('Assigned Company > Support Organization > Assigned Group')).toBeTruthy('FailureMsg31: Assigned Company > Support Organization > Assigned Goup label is missing');
+            expect(await previewTaskTemplatePo.isSupportGroupTitleDisplayed('Support Company > Support Organization > Support Group')).toBeTruthy('FailureMsg31: Support Company > Support Organization > Support Group label is missing');
 
             expect(await previewTaskTemplatePo.getTaskTemplateName()).toBe(templateName + 4, 'FailureMsg20: Task template title is missing');
             expect(await previewTaskTemplatePo.getTaskSummary()).toBe('TemplateSummary', 'FailureMsg20: Task Summary is missing');

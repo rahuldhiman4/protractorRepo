@@ -23,7 +23,7 @@ class PersonProfilePage {
         employeeType: '[rx-view-component-id="0bd6789f-4e17-4cd2-890d-4855756b8dd9"] .read-only-content, [rx-view-component-id="6ae2d2ca-a0c7-48d4-9c03-9714081518bf"] .read-only-content',
         jobTitle: '[rx-view-component-id="46ee3b35-269a-42f1-aa68-0646e1fa146a"] .read-only-content',
         personType: '[rx-view-component-id="8aa9b555-01a0-411b-990f-e46541354b18"] .person-type span',
-        loginId: '[rx-view-component-id="e4f8e036-fcd5-40d4-9c56-103ab787f6a5"] .read-only-content, [rx-view-component-id="00e01e18-c688-4c97-b103-0eeed0f71f83"] .read-only-content',
+        loginId: '[rx-view-component-id="e4f8e036-fcd5-40d4-9c56-103ab787f6a5"] .read-only-content, [rx-view-component-id="9bad40ca-f6d8-4015-90f6-f6167c4817cd"] .read-only-content',
         functionalRoles: '[rx-view-component-id="ea17538d-db3a-4bc5-b594-52767efbf315"] .read-only-content',
         corporateId: '[rx-view-component-id="ba9661e5-6197-4835-b0b6-751eda899654"] .read-only-content',
         relatedCasesDisplayId: '.case-card .case-summary__meta-data__display-id',
