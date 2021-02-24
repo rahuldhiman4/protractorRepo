@@ -15,12 +15,12 @@ class StatusConfigPage {
         status: '.v-line',
         deleteButton: 'button.bwf-pl-zero',
         backButton: '.config-title button',
-        defaultStatusLifeCycle: '.flowchart-title .cc-title',
+        defaultStatusLifeCycle: '.config-title .title',
         flowsetGuid: '1bb469bb-ef02-4134-ad87-b92002bc8e12',
         saveButton: '[class="d-button d-button_primary d-icon-left-undefined d-button_small"]',
         cancelButton: '.footer button[btn-type="secondary"]',
-        companydefaultvalue: '[class="ui-select-match-text pull-left"]',
-        mandatoryCheckBox: '.d-checkbox__item',
+        companydefaultvalue: '[aria-label="Company"] .rx-select__search-button-title',
+        mandatoryCheckBox: '.checkbox__input',
         manageLink: '[class="d-button d-button_link d-icon-left-pencil d-button_small"]',
         addStatusReason: '.d-icon-left-plus_circle',
         localizeStatusReasonButton: '.d-icon-field_text_mapmarker',
@@ -117,15 +117,15 @@ class StatusConfigPage {
         let companyGuid: string = undefined;
         switch (page) {
             case "task": {
-                companyGuid = '6f415311-8708-4f63-9d1a-b373bad77377';
+                companyGuid = 'af9ff85c-cc3e-49a0-b813-4260175d343c';
                 break;
             }
             case "case": {
-                companyGuid = '11a8a316-3947-4479-8840-10436c8d6810';
+                companyGuid = '7ea8c0c2-6099-471b-91a2-54e4ae3cbdec';
                 break;
             }
             case "knowledge": {
-                companyGuid = '9244f298-b811-47f1-98f4-455761459dc9';
+                companyGuid = '35819be8-bbce-483d-a166-bb3ab7c92a92';
                 break;
             }
             default: {
@@ -209,9 +209,14 @@ class StatusConfigPage {
             let statusesLineLocator = $$('.joint-type-standard');
             for (let i: number = 0; i < await statusesLineLocator.count(); i++) {
                 let lineElement = await statusesLineLocator.get(i);
-                try { label = await lineElement.$('path[joint-selector="line"]').getAttribute('data-label'); }
-                catch (ex) { console.log('Searching for the Status Locator'); }
+                try { 
+                    label = await lineElement.$('path[joint-selector="line"]').getAttribute('data-label'); 
+                }
+                catch (ex) { 
+                    console.log('Searching for the Status Locator'); 
+                }
                 if (label == `${status1}--${status2}`) {
+                    console.log(label, ': Locator Found !');
                     modelId = await lineElement.getAttribute('model-id');
                     break;
                 }
