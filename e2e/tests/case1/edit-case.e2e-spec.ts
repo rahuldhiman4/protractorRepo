@@ -96,7 +96,7 @@ describe('Edit Case', () => {
         await viewCasePage.clickEditCaseButton();
         await editCasePage.clickOnRequesterName();
         await utilityCommon.switchToNewTab(1);
-        await browser.sleep(5000);
+        await browser.sleep(5000); // wait until new window gets loaded
         await expect(personProfilePage.getPersonName()).toBe('Adam Pavlik');
         await utilityCommon.switchToNewTab(0);
 

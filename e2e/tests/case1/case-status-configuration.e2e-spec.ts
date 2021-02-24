@@ -264,7 +264,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
             await statusConfigPo.clickOnBackButton();
-            // await statusConfigPo.clickEditLifeCycleLink();
+            // await statusConfigPo.clickEditLifeCycleLink(); // edit does not required everytime so commented it
             await statusConfigPo.clickEditStatus("Draft");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
