@@ -6,12 +6,14 @@ import personProfilePo from '../../pageobject/common/person-profile.po';
 import searchPo from '../../pageobject/search/global-search.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import utilityGrid from "../../utils/utility.grid";
+
 
 export interface IIDs {
     id: string;
     displayId: string;
 }
-xdescribe('Multi Search Validation', () => {
+describe('Multi Search Validation', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule = "Knowledge Article";
@@ -42,6 +44,7 @@ xdescribe('Multi Search Validation', () => {
         date = date1.toString();
 
         updatedDate = month + " " + date + ", " + year;
+        console.log('>>>>>>>>>>>>>udpateDate',updatedDate);
     });
 
     afterAll(async () => {
@@ -201,75 +204,51 @@ xdescribe('Multi Search Validation', () => {
     //kgaikwad
     describe('[4292]: Global search with only People Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let firstName = 'firstNameDRDMV16124' + randomStr;
-        let lastName = 'lastNameDRDMV16124' + randomStr;
-        let loginId = 'loginIdDRDMV16124' + randomStr;
-        let emailId = `emailIdDRDMV16124${randomStr}@petramco.com`;
+        let firstName = 'Elizabeth';
+        let lastName1 = 'Jeffries';
+        let lastName2 = 'Peters';
+        let loginId = 'ejeffries';
+        let emailId = 'ejeffries@petramco.com';
         let dummyText = 'DummayDRDMV16123' + randomStr;
-        let inactiveFirstName = 'inactiveFirstNameDRDMV16124' + randomStr;
-        let inactiveLastName = 'inactiveLastNameDRDMV16124' + randomStr;
-        let nonMatchingFirstName = 'nonMatchingFirstNameDRDMV16124' + randomStr;
-        let nonMatchingLastName = 'nonMatchingLastNameDRDMV16124' + randomStr;
-        let nonAccessFirstName = 'nonAccessFirstNameDRDMV16124' + randomStr;
-        let nonAccessLastName = 'nonAccessLastNameDRDMV16124' + randomStr;
+        let inactiveFirstName = 'Carmen';
+        let inactiveLastName = 'Electra';
+        let nonMatchingFirstName = 'Qianru';
+        let nonMatchingLastName = 'Tao';
+        let nonAccessFirstName = 'Qiang';
+        let nonAccessLastName = 'Du';
         let company = "Petramco";
-
-        beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            // Create Person
-            for (let a = 1; a < 6; a++) {
-                await createNewUser(firstName, lastName, loginId + a, emailId, company);
-            }
-
-            // Create Person With Inactive Status
-            await createNewUser(inactiveFirstName, inactiveLastName, loginId + 11, emailId);
-
-            // Non maching Document 
-            await createNewUser(nonMatchingFirstName, nonMatchingLastName, loginId + 12, emailId, company);
-
-            // Non access Document
-            await createNewUser(nonAccessFirstName, nonAccessLastName, loginId + 13, emailId, company);
-        });
 
         it('[4292]: Verify First Name', async () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
             await searchPo.searchRecord(firstName);
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, peopleModule, 1)).toBeTruthy(`${updatedDate} updatedDate is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect (await searchPo.getDateFormateOnLeftPannel('People',1)).toContain('000Z');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName} 2 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${firstName} ${lastName} 3 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${firstName} ${lastName} 4 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${firstName} ${lastName} 5 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
         });
 
         it('[4292]: Verify FirstName LastName', async () => {
-            await searchPo.searchRecord(lastName);
-            expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: Person module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, peopleModule, 1)).toBeTruthy(`${updatedDate} updatedDate is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName} 2 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${firstName} ${lastName} 3 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${firstName} ${lastName} 4 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${firstName} ${lastName} 5 Person Name is missing`);
-
-            await searchPo.clickOnLeftPannelRecord(`${firstName} ${lastName}`, peopleModule);
+            await searchPo.searchRecord(lastName1);
+            expect(await searchPo.isModuleTitleDisplayed(lastName1, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: Person module title is missing');
+            expect (await searchPo.getDateFormateOnLeftPannel('People',1)).toContain('000Z');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            await searchPo.clickOnLeftPannelRecord(`${firstName} ${lastName1}`, peopleModule);
         });
 
         it('[4292]: Verify People Preview Fields', async () => {
             expect(await personProfilePo.isFieldLabelDisplayed('Employee')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Job Title')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Corporate ID')).toBeTruthy('FailureMsg22: field label displayed');
-            expect(await personProfilePo.isFieldLabelDisplayed('Type')).toBeTruthy('FailureMsg22: field label displayed');
+            expect(await personProfilePo.isFieldLabelDisplayed('Client Type')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Login ID')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Functional Roles')).toBeTruthy('FailureMsg22: field label displayed');
             expect(await personProfilePo.isFieldLabelDisplayed('Site')).toBeTruthy('FailureMsg22: field label displayed');
 
-            expect(await personProfilePo.getPersonName()).toBe(`${firstName} ${lastName}`, 'FailureMsg22: first Name is missing');
+            expect(await personProfilePo.getPersonName()).toBe(`${firstName} ${lastName1}`, 'FailureMsg22: first Name is missing');
             expect(await personProfilePo.getCompany()).toBe(company, 'FailureMsg22: company name is missing');
             expect(await personProfilePo.getLoginID()).toContain(loginId, 'FailureMsg22: Login id is missing');
             expect(await personProfilePo.getEmail()).toBe(emailId, 'FailureMsg22: emailId is missing');
@@ -282,31 +261,22 @@ xdescribe('Multi Search Validation', () => {
 
         it('[4292]: Verify People with non matching Name', async () => {
             await searchPo.searchRecord(firstName);
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${nonMatchingFirstName} ${nonMatchingLastName}`, peopleModule)).toBeFalsy(`FailureMsg9: ${nonMatchingFirstName} ${nonMatchingLastName} 6 person is displayed`);
         });
 
         it('[4292]: Verify Person With FirstName & LastName At a Same Time ', async () => {
-            await searchPo.searchRecord(`${firstName} ${lastName}`);
-            expect(await searchPo.isModuleTitleDisplayed(`${firstName} ${lastName}`, 'People (5)', peopleModule)).toBeTruthy('FailureMsg1: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg2: ${firstName} ${lastName} 1 Person Name is missing`);
-            await browser.sleep(1000); // Added wait becoz multiple record find failing in full run for people.
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg3: ${firstName} ${lastName} 2 Person Name is missing`);
-            await browser.sleep(1000); // Added wait becoz multiple record find failing in full run for people.
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 3 Person Name is missing`);
-            await browser.sleep(1000); // Added wait becoz multiple record find failing in full run for people.
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName} 4 Person Name is missing`);
-            await browser.sleep(1000); // Added wait becoz multiple record find failing in full run for people.
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg6: ${firstName} ${lastName} 5 Person Name is missing`);
+            await searchPo.searchRecord(`${firstName} ${lastName1}`);
+            expect(await searchPo.isModuleTitleDisplayed(`${firstName} ${lastName1}`, 'People (1)', peopleModule)).toBeTruthy('FailureMsg1: People module title is missing');
         });
 
         it('[4292]: Clear search and verify record displayed on left pannel ', async () => {
             await searchPo.searchRecord(firstName);
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 People is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 People is missing`);
             await searchPo.clickClearSearchButton();
             expect(await searchPo.isClearSearchButtonDisplayed()).toBeFalsy('FailureMsg60: Search box is cleared and cross button gets hide');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 People is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 People is missing`);
         });
 
         it('[4292]: Verify search functionality with dummy text ', async () => {
@@ -314,15 +284,15 @@ xdescribe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(dummyText, peopleModule)).toBeFalsy(`FailureMsg62: ${dummyText} dummyText  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(dummyText, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: People module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeFalsy(`FailureMsg4: ${firstName} ${lastName} 1 People is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeFalsy(`FailureMsg4: ${firstName} ${lastName1} 1 People is missing`);
         });
 
         it('[4292]: Verify search functionality with Inactive Person ', async () => {
             await searchPo.searchRecord(inactiveFirstName);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(inactiveFirstName, peopleModule)).toBeFalsy(`FailureMsg62: ${inactiveFirstName} dummyText  is displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(inactiveFirstName, peopleModule)).toBeFalsy(`FailureMsg62: ${inactiveFirstName} inactive user  is displayed`);
             expect(await searchPo.isModuleTitleDisplayed(inactiveFirstName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: People module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${inactiveFirstName} ${nonMatchingLastName}`, peopleModule)).toBeFalsy(`FailureMsg4: ${firstName} ${lastName} 1 People is Displayed`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${inactiveFirstName} ${inactiveLastName}`, peopleModule)).toBeFalsy(`FailureMsg4: ${inactiveFirstName} ${inactiveLastName} 1 People is Displayed`);
         });
 
         it('[4292]: Verify search people with other company user', async () => {
@@ -333,8 +303,8 @@ xdescribe('Multi Search Validation', () => {
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg63: people module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg64: No result found validation is missing`);
 
-            await searchPo.searchRecord(lastName);
-            expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (0)', peopleModule)).toBeTruthy('FailureMsg65: people module title is missing');
+            await searchPo.searchRecord(lastName1);
+            expect(await searchPo.isModuleTitleDisplayed(lastName1, 'People (0)', peopleModule)).toBeTruthy('FailureMsg65: people module title is missing');
             expect(await searchPo.isBlankRecordValidationDisplayedOnLeftPanel(peopleModule)).toBeTruthy(`FailureMsg66: No result found validation is missing`);
 
             await searchPo.searchRecord(nonAccessFirstName);
@@ -352,10 +322,12 @@ xdescribe('Multi Search Validation', () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
-            await searchPo.searchRecord('Qadim');
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+            await searchPo.searchRecord(firstName);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
+
         });
 
         it('[4292]: Verify person record is accessible to other Line of business Case Manager', async () => {
@@ -364,10 +336,11 @@ xdescribe('Multi Search Validation', () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
-            await searchPo.searchRecord('Qadim');
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+            await searchPo.searchRecord(firstName);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
         });
 
         it('[4292]: Verify person record is accessible to other Line of business Case Agent', async () => {
@@ -376,36 +349,60 @@ xdescribe('Multi Search Validation', () => {
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
-            await searchPo.searchRecord('Qadim');
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+            await searchPo.searchRecord(firstName);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
         });
 
         it('[4292]: Verify person record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            // await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
-            await searchPo.searchRecord('Qadim');
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
+        
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('People');
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
+
         });
 
         it('[4292]: Verify person record are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('People');
-            await searchPo.searchRecord('Qadim');
-            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('qkatawazi@petramco.com', peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel('Qadim Katawazi', peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
+        
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            await navigationPage.gotoSearch();
+            expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
+            await searchPo.selectCategoryDropDownValue('People');
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
         });
-
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
@@ -421,8 +418,12 @@ xdescribe('Multi Search Validation', () => {
         let commonSearchAll = 'commonSearchDRDMV16133' + randomStr;
         let caseTemplateName = 'caseTemplateDRDMV16133' + randomStr;
         let taskTemplateName = 'taskTemplateDRDMV16133' + randomStr;
-        let lastName = 'lastNameDRDMV16133' + randomStr;
-        let loginId = 'loginIdDRDMV16133' + randomStr;
+
+        let firstName = 'Elizabeth';
+        let lastName1 = 'Jeffries';
+        let lastName2 = 'Peters';
+        let loginId = 'ejeffries';
+        let emailId = 'ejeffries@petramco.com';
 
         let caseDisplayId = [];
         let taskDisplayId = [];
@@ -470,13 +471,6 @@ xdescribe('Multi Search Validation', () => {
         it('[4291]: Create Document Library With API', async () => {
             for (let f = 1; f <= 5; f++) {
                 await createPublishDocumentLibrary(commonSearchAll, attachmentFilePath);
-            }
-        });
-
-        it('[4291]: Create Document Library With API', async () => {
-            await apiHelper.apiLogin('tadmin');
-            for (let g = 1; g <= 5; g++) {
-                await createNewUser(commonSearchAll, lastName, loginId + g, 'DRDMV16133@petramco.com', 'Petramco');
             }
         });
 
@@ -540,12 +534,10 @@ xdescribe('Multi Search Validation', () => {
         });
 
         it('[4291]: Verify People Displayed On Left Pannel', async () => {
-            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} ${lastName} 1 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${commonSearchAll} ${lastName} 2 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${commonSearchAll} ${lastName} 3 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${commonSearchAll} ${lastName} 4 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${commonSearchAll} ${lastName} 5 Person Name is missing`);
+            await searchPo.searchRecord(firstName);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
         });
 
         it('[4291]: Change Category To Case and verify records are still displayed', async () => {
@@ -647,12 +639,10 @@ xdescribe('Multi Search Validation', () => {
 
         it('[4291]: Change Category to People and verify records are still displayed', async () => {
             await searchPo.selectCategoryDropDownValue(peopleModule);
-            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'People (5)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} ${lastName} 1 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 2)).toBeTruthy(`FailureMsg5: ${commonSearchAll} ${lastName} 2 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 3)).toBeTruthy(`FailureMsg6: ${commonSearchAll} ${lastName} 3 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 4)).toBeTruthy(`FailureMsg7: ${commonSearchAll} ${lastName} 4 Person Name is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${commonSearchAll} ${lastName}`, peopleModule, 5)).toBeTruthy(`FailureMsg8: ${commonSearchAll} ${lastName} 5 Person Name is missing`);
+            await searchPo.searchRecord(firstName);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Cases (5)', caseModule)).toBeFalsy('FailureMsg2: Case module title is displayed');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Tasks (5)', taskModule)).toBeFalsy('FailureMsg2: Task module title is displayed');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeFalsy('FailureMsg2: KA module title is displayed');
@@ -677,8 +667,9 @@ xdescribe('Multi Search Validation', () => {
         let taskTemplateName = 'taskTemplateDRDMV16825' + randomStr;
         let knowledgeTitle = 'knowledgeTitleDRDMV16825' + randomStr;
         let documentName = 'documentNameDRDMV16825' + randomStr;
-        let firstName = ' Qadim';
-        let lastName = 'Katawazi';
+        let firstName = ' Elizabeth';
+        let lastName1 = 'Jeffries';
+        let lastName2 = 'Peters';
         let dummyText = 'dummyTextDRDMV16825' + randomStr;
         let caseDisplayId = [];
         let taskDisplayId;
@@ -686,6 +677,7 @@ xdescribe('Multi Search Validation', () => {
         let taskTemplateDisplayId;
         let kaDisplayId;
         let caseDetails;
+
         beforeAll(async () => {
 
             await apiHelper.apiLogin('fritz');
@@ -696,6 +688,7 @@ xdescribe('Multi Search Validation', () => {
             for (let a = 1; a <= 5; a++) {
                 caseDetails = await createCase(caseSummary, caseDescription);
                 caseDisplayId[a] = caseDetails.displayId;
+                console.log('caseDisplayId[a]>>>>>>>>>>>',caseDisplayId[a]);
             }
 
             // Create Task
@@ -735,6 +728,7 @@ xdescribe('Multi Search Validation', () => {
 
         it('[4194]: Verify Recent With Case Descripiton', async () => {
             await searchPo.searchRecord(caseDescription);
+            browser.sleep(3000);//Wait until record gets reflect on left pannel
             expect(await searchPo.isModuleTitleDisplayed(caseDescription, 'Cases (5)', caseModule)).toBeTruthy('FailureMsg2: Cases module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[1], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[2], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
@@ -825,24 +819,25 @@ xdescribe('Multi Search Validation', () => {
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(documentName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
             expect(await searchPo.getCountOfRecentDropDownValue(documentName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
 
-            it('[4194]: Verify First Name Stored In Recent Search', async () => {
-                await searchPo.searchRecord(firstName);
-                expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+        it('[4194]: Verify First Name Stored In Recent Search', async () => {
+            await searchPo.searchRecord(firstName);
+            expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
 
-                await searchPo.clickOnRecentSearchDropDownButton();
-                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(firstName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
-                expect(await searchPo.getCountOfRecentDropDownValue(firstName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
-            });
+            await searchPo.clickOnRecentSearchDropDownButton();
+            expect(await searchPo.isRecentSearchesDropDownValueDisplayed(firstName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
+            expect(await searchPo.getCountOfRecentDropDownValue(firstName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+        });
 
             it('[4194]: Verify Last Name Stored In Recent Search', async () => {
-                await searchPo.searchRecord(lastName);
-                expect(await searchPo.isModuleTitleDisplayed(lastName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
+                await searchPo.searchRecord(lastName1);
+                expect(await searchPo.isModuleTitleDisplayed(lastName1, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
 
                 await searchPo.clickOnRecentSearchDropDownButton();
-                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(lastName)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
-                expect(await searchPo.getCountOfRecentDropDownValue(lastName)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
+                expect(await searchPo.isRecentSearchesDropDownValueDisplayed(lastName1)).toBeTruthy('FailureMsg3: documentName is missing from recent search')
+                expect(await searchPo.getCountOfRecentDropDownValue(lastName1)).toBe(1, 'FailureMsg4: Count of recent search is incorrect');
             });
 
             it('[4194]: Verify After aad 11th Record First Record Gets Hide Automatically', async () => {
@@ -890,10 +885,11 @@ xdescribe('Multi Search Validation', () => {
             });
 
             it('[4194]: Select Record From Recent Search  ', async () => {
-                await searchPo.selectRecentSearchDropDownValue(firstName)
-                expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName} 1 Person Name is missing`);
-            });
+                await searchPo.searchRecord(firstName);
+                expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
+                expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
+                });
 
             it('[4194]: Verify Recent Search Is Displayed On Top  ', async () => {
                 await navigationPage.gotoSearch();
