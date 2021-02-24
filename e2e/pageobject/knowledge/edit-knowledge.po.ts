@@ -22,7 +22,7 @@ class EditKnowledgePage {
         knowledgeMetadataSection: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] label',
         saveButtonONKA: '[rx-view-component-id="813f61fe-28db-4d22-bfa5-4055e8a583fc"] button',
         editRegionGuid: 'c46cafd9-8481-4ffc-812d-3f6ba1308e66',
-        editSiteGuid: '04ce12b3-98c9-4239-9aa7-35b6fc950178',
+        editSiteGuid: 'b9ea351a-18bf-4048-86f4-a9c5d1307d6b',
         editSiteGroupGuid:'4380db45-e177-4005-a9a2-b308cdb38706',
         statusChangeDrpDwnGuid: '6f8e4177-cad6-4d59-9467-074b688aa06e',
         knowledgeTitle: '[rx-view-component-id="cd9b041b-6a82-4322-8a07-165a370ad0dd"] input',

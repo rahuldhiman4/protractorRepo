@@ -28,7 +28,7 @@ describe("Notification Template", () => {
         await navigationPage.signOut();
     });
 
-    //Failing -even after clear save button is enabled
+    //Failing -even after clear save button is enabled   - log defect
     describe('[3898]: [Copy Notification] - UI behavior when copying a notification template', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notificationTemplateName = '3898_CopiedTemplate' + randomStr;
@@ -132,7 +132,7 @@ describe("Notification Template", () => {
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateNameUpdated)).toBeTruthy('Human Resources LOB copied notification templates is not visible to case BA with multiple LOB access');
             await utilityGrid.searchAndOpenHyperlink(notificationTemplateNameUpdated);
             await editNotificationTemplate.updateDescription('updated desc');
-            await createNotificationTemplatePage.clickOnSaveButton();
+            await editNotificationTemplate.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
@@ -145,7 +145,7 @@ describe("Notification Template", () => {
         });
     });
 
-    //asahitya  - IT block 2 
+    //asahitya  - IT block 2 -check with anant-run again
     describe('[4589]: To create new template with an event', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let notificationEventHRGlobal = "Case Notification Event HR Global" + randomStr;
@@ -359,25 +359,29 @@ describe("Notification Template", () => {
 
     });
 
-    //asahitya-log defect for company column
+    //asahitya-log defect for company column DRDMV-25149
     it('[5917]: AC: Notification Template_Console Columns', async () => {
         let columns: string[] = ['GUID', 'ID', 'Label'];
         let allColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name', 'GUID', 'ID', 'Label'];
         let defaultColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name'];
         await notificationTempGridPage.addGridColumns(columns);
         expect(await notificationTempGridPage.areColumnHeaderMatches(allColumns)).toBeTruthy('Columns are not matching');
+        await utilityGrid.sortGridColumn('Description', 'descending');
+        await utilityGrid.sortGridColumn('Description', 'ascending');
         expect(await notificationTempGridPage.isGridColumnSorted('Template Name')).toBeTruthy('Template Name column is not sorted');
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         expect(await notificationTempGridPage.areColumnHeaderMatches(allColumns)).toBeTruthy('Columns are not matching');
+        await utilityGrid.sortGridColumn('Description', 'descending');
+        await utilityGrid.sortGridColumn('Description', 'ascending');
         expect(await notificationTempGridPage.isGridColumnSorted('Template Name')).toBeTruthy('Template Name column is not sorted');
         await notificationTempGridPage.removeGridColumns(columns);
         expect(await notificationTempGridPage.areColumnHeaderMatches(defaultColumns)).toBeTruthy('Default Columns are not matching');
     });
 
-    //asahitya-fixed
+    //asahitya-fixed-passed in full run
     describe('[4590]: Availability of Recipient List on OOB Global Template', async () => {
         it('[4590]: Availability of Recipient List on OOB Global Template', async () => {
             await utilityGrid.searchAndOpenHyperlink('New Signature Template');
@@ -418,73 +422,76 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-//check again
-    it('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
-        let eventData = {
-            eventName: '4588' + randomStr
-        }
-        let notificationData = {
-            description: '4588 desc',
-            module: 'Cases',
-            eventName: '4588' + randomStr,
-            templateName: '4588 name' + randomStr,
-            alertMessage: 'Alert Message text',
-            emailBody: 'Email Body text',
-            emailSubject: 'Email Subject text'
-        }
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createNotificationEvent(eventData);
-        await apiHelper.createNotificationTemplate(notificationData);
+    //log defect-first check with tushar
+    describe('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
+        it('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
+            let eventData = {
+                eventName: '4588' + randomStr
+            }
+            let notificationData = {
+                description: '4588 desc',
+                module: 'Cases',
+                eventName: '4588' + randomStr,
+                templateName: '4588 name' + randomStr,
+                alertMessage: 'Alert Message text',
+                emailBody: 'Email Body text',
+                emailSubject: 'Email Subject text'
+            }
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createNotificationEvent(eventData);
+            await apiHelper.createNotificationTemplate(notificationData);
 
-        await utilityGrid.searchAndOpenHyperlink(eventData.eventName);
-        await editNotificationTemplate.clickAddRecipientsBtn();
-        expect(await editNotificationTemplate.isSearchRecipientDispalyed()).toBeTruthy('Search Recipient field is not dispalyed');
-        expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Recipient Type');
-        expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Company');
-        expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Business Unit');
-        expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Department');
-        expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Support Group');
-        expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Save');
-        expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Cancel');
+            await utilityGrid.searchAndOpenHyperlink(eventData.eventName);
+            await editNotificationTemplate.clickAddRecipientsBtn();
+            expect(await editNotificationTemplate.isSearchRecipientDispalyed()).toBeTruthy('Search Recipient field is not dispalyed');
+            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Recipient Type');
+            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Company');
+            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Support Organization');
+            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Support Group');
+            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Save');
+            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Cancel');
 
-        await utilityCommon.selectDropDown('Company', 'Petramco', DropDownType.Label);
-        await utilityCommon.selectDropDown('Business Unit', 'HR Support', DropDownType.Label);
-        await utilityCommon.selectDropDown('Support Group', 'Compensation and Benefits', DropDownType.Label);
-        await editNotificationTemplate.clickApplyButton();
-        await editNotificationTemplate.selectIndividualRecipient('Elizabeth Peters');
-        await editNotificationTemplate.saveAddRecipients();
+            await editNotificationTemplate.setDropDownValue('Company', 'Petramco');
+            await editNotificationTemplate.setDropDownValue('SupportOrg', 'HR Support');
+            await editNotificationTemplate.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+            await editNotificationTemplate.clickApplyButton();
+            await editNotificationTemplate.selectIndividualRecipient('Elizabeth Peters');
+            await editNotificationTemplate.saveAddRecipients();
 
-        await editNotificationTemplate.clickAddRecipientsBtn();
-        await editNotificationTemplate.selectRecipientType('Group');
-        await utilityCommon.selectDropDown('Company', 'Petramco', DropDownType.Label);
-        await utilityCommon.selectDropDown('Business Unit', 'Australia Support', DropDownType.Label);
-        await editNotificationTemplate.clickApplyButton();
-        await editNotificationTemplate.selectIndividualRecipient('AU Support 1');
-        await editNotificationTemplate.saveAddRecipients();
-        await editNotificationTemplate.clickRecipientsCheckbox('Elizabeth Peters', 'TO');
-        await editNotificationTemplate.clickRecipientsCheckbox('SG - Australia Support - AU Support 1', 'CC');
-        await editNotificationTemplate.clickOnSaveButton();
+            await editNotificationTemplate.clickAddRecipientsBtn();
+            await editNotificationTemplate.selectRecipientType('Group');
+            await editNotificationTemplate.setDropDownValue('Company', 'Petramco');
+            await editNotificationTemplate.setDropDownValue('SupportOrg', 'Australia Support');
+            await editNotificationTemplate.clickApplyButton();
+            await editNotificationTemplate.selectIndividualRecipient('AU Support 1');
+            await editNotificationTemplate.saveAddRecipients();
+            await editNotificationTemplate.clickRecipientsCheckbox('Elizabeth Peters', 'TO');
+            await editNotificationTemplate.clickRecipientsCheckbox('SG - Australia Support - AU Support 1', 'CC');
+            await editNotificationTemplate.clickOnSaveButton();
 
-        await utilityGrid.searchAndOpenHyperlink('4588 name' + randomStr);
-        await editNotificationTemplate.clickRecipientsCheckbox('Elizabeth Peters', 'TO');
-        await editNotificationTemplate.clickRecipientsCheckbox('SG - Australia Support - AU Support 1', 'CC');
-        await editNotificationTemplate.clickOnSaveButton();
+            await utilityGrid.searchAndOpenHyperlink('4588 name' + randomStr);
+            await editNotificationTemplate.clickRecipientsCheckbox('Elizabeth Peters', 'TO');
+            await editNotificationTemplate.clickRecipientsCheckbox('SG - Australia Support - AU Support 1', 'CC');
+            await editNotificationTemplate.clickOnSaveButton();
 
-        await utilityGrid.searchAndOpenHyperlink('4588 name' + randomStr);
-        expect(await editNotificationTemplate.isRecipientDisplayed('Elizabeth Peters')).toBeTruthy('Elizabeth is not present in Recipient list');
-        expect(await editNotificationTemplate.isRecipientDisplayed('SG - Australia Support - AU Support 1')).toBeTruthy('AU Support 1 is not present in Recipient list');
-        await utilityCommon.closeAllBlades();
+            await utilityGrid.searchAndOpenHyperlink('4588 name' + randomStr);
+            expect(await editNotificationTemplate.isRecipientDisplayed('Elizabeth Peters')).toBeTruthy('Elizabeth is not present in Recipient list');
+            expect(await editNotificationTemplate.isRecipientDisplayed('SG - Australia Support - AU Support 1')).toBeTruthy('AU Support 1 is not present in Recipient list');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
-
+   //log defect
     describe('[4371]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
         it('[4371]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
             await createNotificationTemplatePage.setTemplateName('Email Based Approval 4371');
             await createNotificationTemplatePage.selectModuleName('Case - Approval');
-            await createNotificationTemplatePage.selectNthEvent('Email Based Approval', 1);
+            await createNotificationTemplatePage.selectEvent('Email Based Approval');
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(true);
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
             await createNotificationTemplatePage.selectEmailBasedApprovalToggle(false);
@@ -500,33 +507,37 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-
-    it('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        await notificationTempGridPage.clickOnCreateNotificationTemplate();
-        expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
-        await createNotificationTemplatePage.setTemplateName('Email Based Approval 4357');
-        await createNotificationTemplatePage.selectModuleName('Case - Approval');
-        await createNotificationTemplatePage.selectDefaultNotificationMethod('Alert');
-        await createNotificationTemplatePage.selectEvent('Email Based Approval');
-        await createNotificationTemplatePage.selectEmailBasedApprovalToggle(true);
-        expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
-        await createNotificationTemplatePage.setDescription('Description');
-        await createNotificationTemplatePage.setAlertMessage('Sample Alert Text');
-        await createNotificationTemplatePage.clickOnEmailTab();
-        await createNotificationTemplatePage.setSubject('Sample Subject text');
-        await createNotificationTemplatePage.clickOnSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Template already exists with given Event and Module combination.')).toBeTruthy();
-        await utilityCommon.closeAllBlades();
-        await notificationTempGridPage.clickOnCreateNotificationTemplate();
-        await createNotificationTemplatePage.setTemplateName('Email Based Approval 4357');
-        await createNotificationTemplatePage.selectModuleName('Case - Approval');
-        await createNotificationTemplatePage.selectEvent('Case Reopened');
-        expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
-        await utilityCommon.closeAllBlades();
+//log defect
+    describe('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
+        it('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await notificationTempGridPage.clickOnCreateNotificationTemplate();
+            expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
+            await createNotificationTemplatePage.setTemplateName('Email Based Approval 4357');
+            await createNotificationTemplatePage.selectModuleName('Case - Approval');
+            await createNotificationTemplatePage.selectDefaultNotificationMethod('Alert');
+            await createNotificationTemplatePage.selectEvent('Email Based Approval');
+            await createNotificationTemplatePage.selectEmailBasedApprovalToggle(true);
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Approvers"])).toBeTruthy('Recipient List of Case Approval Module is not matching');
+            await createNotificationTemplatePage.setDescription('Description');
+            await createNotificationTemplatePage.setAlertMessage('Sample Alert Text');
+            await createNotificationTemplatePage.clickOnEmailTab();
+            await createNotificationTemplatePage.setSubject('Sample Subject text');
+            await createNotificationTemplatePage.clickOnSaveButton();
+            expect(await utilityCommon.isPopUpMessagePresent('A template already exists for the selected combination of event, module, and line of business. Specify a different combination.')).toBeTruthy();
+            await utilityCommon.closeAllBlades();
+            await notificationTempGridPage.clickOnCreateNotificationTemplate();
+            await createNotificationTemplatePage.setTemplateName('Email Based Approval 4357');
+            await createNotificationTemplatePage.selectModuleName('Case - Approval');
+            await createNotificationTemplatePage.selectEvent('Case Reopened');
+            expect(await createNotificationTemplatePage.isEmailBasedApprovalFlagDisplayed()).toBeFalsy('Email based approval flag is displayed');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
-
+//defect DRDMV-25149
     it('[4356]: Verify OOB Notification Event and Template for Email based Approval', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);

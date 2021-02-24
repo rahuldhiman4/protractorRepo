@@ -13,12 +13,12 @@ class StatusConfigPage {
         localizedBtn: '.rx-template-editor-text-fields .d-icon-field_text_mapmarker',
         localizeMenuButtons: '.modal button[adapt-button]',
         status: '.v-line',
-        deleteButton: '.d-button_action-clear',
-        backButton: '.ac-btn-cancel-status-transition',
+        deleteButton: 'button.bwf-pl-zero',
+        backButton: '.config-title button',
         defaultStatusLifeCycle: '.flowchart-title .cc-title',
-        flowsetGuid: '3239972b-789a-46cb-ace0-c538b7bb531c',
+        flowsetGuid: '1bb469bb-ef02-4134-ad87-b92002bc8e12',
         saveButton: '[class="d-button d-button_primary d-icon-left-undefined d-button_small"]',
-        cancelButton: '[class="d-button d-button_secondary d-icon-left-undefined d-button_small"]',
+        cancelButton: '.footer button[btn-type="secondary"]',
         companydefaultvalue: '[class="ui-select-match-text pull-left"]',
         mandatoryCheckBox: '.d-checkbox__item',
         manageLink: '[class="d-button d-button_link d-icon-left-pencil d-button_small"]',
@@ -91,7 +91,7 @@ class StatusConfigPage {
 
     async clickEditStatus(status: string): Promise<void> {
         await element(by.cssContainingText(this.selectors.status, status)).click();
-        await browser.wait(this.EC.visibilityOf($('div.status-settings')), 5000);
+        await browser.wait(this.EC.visibilityOf($('.status-settings-wrapper .settings__status-name')), 5000);
     }
 
     async getDefaultStatus(status: string): Promise<string> {
