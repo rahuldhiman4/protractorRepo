@@ -810,7 +810,7 @@ describe('Knowledge Article Validation', () => {
             await loginPage.login('peter');
         });
     });
-
+//refrence defect
     describe('[6075]: [Knowledge Article] Changing the template for the article', async () => {
         it('[6075]: [Knowledge Article] Changing the template for the article', async () => {
             try {
@@ -844,6 +844,7 @@ describe('Knowledge Article Validation', () => {
                 await createKnowledgePage.selectKnowledgeSet('HR');
                 await createKnowledgePage.clickOnSaveKnowledgeButton();
                 await utilityCommon.closePopUpMessage();
+                await previewKnowledgePo.clickOnBackButton();
             }
             catch (e) {
                 throw e;
@@ -910,8 +911,9 @@ describe('Knowledge Article Validation', () => {
                 "categoryTier1": "Applications",
                 "categoryTier2": "Help Desk",
                 "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
+                "region": "Americas",
+                "siteGroup": "Human Resources",
+                "site": "Houston",
                 "articleDesc": 'knowledge2746' + randomStr,
             }
             let kaDetails = await apiHelper.createKnowledgeArticle(articleData);
@@ -924,12 +926,13 @@ describe('Knowledge Article Validation', () => {
             await editKnowledgePage.setCategoryTier1('Employee Relations');
             await editKnowledgePage.setCategoryTier2('Compensation');
             await editKnowledgePage.setCategoryTier3('Final Pay');
-            await editKnowledgePage.selectRegionDropDownOption('EMEA');
+            await editKnowledgePage.selectRegionDropDownOption('Europe');
+            await editKnowledgePage.selectSiteGroupDropDownOption('Sales');
             await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
             await editKnowledgePage.addAttachment(['../../data/ui/attachment/bwfJpg.jpg']);
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
-            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Europe');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(articleData.title);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(articleData.knowledgeSet);

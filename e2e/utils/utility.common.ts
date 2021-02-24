@@ -280,7 +280,7 @@ export class Utility {
     }
 
     async isRequiredTagToField(guid: string): Promise<boolean> {
-        let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent();
+        let isRequired: boolean = await $(`[rx-view-component-id="${guid}"] .form-control-required`).isPresent() || await $(`[rx-view-component-id="${guid}"] .d-textfield_required`).isPresent();
         if (!isRequired) {
             let nameElement = `[rx-view-component-id="${guid}"] .form-control-label`;
             return await element(by.css(nameElement)).isPresent().then(async (result) => {
