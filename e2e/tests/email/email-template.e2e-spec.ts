@@ -181,7 +181,7 @@ describe('Email Template', () => {
         let body1 = 'Body1' + randomStr;
         let body2 = 'Body2' + randomStr;
         let arr1: string[] = ["Label"];
-        let arr2: string[] = ['Template Name', 'Subject','Template ID', "Company", "Status", "Label"];
+        let arr2: string[] = ['Template Name', 'Subject', "Company", "Status", "Label"];
 
         it('[5169,5166,5178,5096,5095,5097,5172]: User Is able to delete Email Template1', async () => {
             await navigationPage.gotoSettingsPage();

@@ -727,6 +727,7 @@ describe('Case Data Store', () => {
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
             await previewTaskTemplateCasesPo.clickOnBackButton();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -986,6 +987,7 @@ describe('Case Data Store', () => {
             await createDynamicFieldLibraryConfigPo.setFieldValueType('BOOLEAN');
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Dynamic field with same name and line of business already exists.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             await createDynamicFieldLibraryConfigPo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
