@@ -60,7 +60,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    xdescribe('[4687]: Verify User not able to delete mandatory status for case', () => {
+    describe('[4687]: Verify User not able to delete mandatory status for case', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('jmilano');
@@ -131,7 +131,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    xit('[4689]:Verify UI for case status configuration', async () => {
+    it('[4689]:Verify UI for case status configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
         expect(await statusConfigPo.getTitleValue('case')).toBe('Case Status Configuration');
@@ -149,7 +149,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    xdescribe('[4612]:Verify case created prior to label change will reflect new status label changes', () => {
+    describe('[4612]:Verify case created prior to label change will reflect new status label changes', () => {
         let caseId1: string = undefined;
         afterAll(async () => {
             await navigationPage.signOut();
@@ -199,7 +199,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya  
-    xdescribe('[4680]: Verify User not able to delete mandatory status for task', () => {
+    describe('[4680]: Verify User not able to delete mandatory status for task', () => {
         it('[4680]: Verify User not able to delete mandatory status for task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
@@ -252,7 +252,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    xdescribe('[4679]: Verify User not able to delete mandatory status for Knowledge', () => {
+    describe('[4679]: Verify User not able to delete mandatory status for Knowledge', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('jmilano');
@@ -308,7 +308,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya
-    xit('[4678]:Verify UI for Knowledge status configuration', async () => {
+    it('[4678]:Verify UI for Knowledge status configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
         expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
@@ -323,7 +323,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya - required text defect
-    xit('[4683]:Verify UI for Task status configuration', async () => {
+    it('[4683]:Verify UI for Task status configuration', async () => {
         await navigationPage.signOut();
         await loginPage.login('jmilano');
         await navigationPage.gotoSettingsPage();
@@ -341,7 +341,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya - popup defect
-    xdescribe('[4676,4642]:Verify Custom status operations for case', () => {
+    describe('[4676,4642]:Verify Custom status operations for case', () => {
         afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('jmilano');
@@ -401,7 +401,7 @@ describe('Case Status Configuration', () => {
     });
 
     // popup defect
-    xit('[4682]:Verify Custom status operations for Task', async () => {
+    it('[4682]:Verify Custom status operations for Task', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
         await statusConfigPo.setCompanyDropdown('Phylum', 'task');
