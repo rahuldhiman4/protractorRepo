@@ -44,7 +44,6 @@ describe('Multi Search Validation', () => {
         date = date1.toString();
 
         updatedDate = month + " " + date + ", " + year;
-        console.log('>>>>>>>>>>>>>udpateDate',updatedDate);
     });
 
     afterAll(async () => {
@@ -688,7 +687,6 @@ describe('Multi Search Validation', () => {
             for (let a = 1; a <= 5; a++) {
                 caseDetails = await createCase(caseSummary, caseDescription);
                 caseDisplayId[a] = caseDetails.displayId;
-                console.log('caseDisplayId[a]>>>>>>>>>>>',caseDisplayId[a]);
             }
 
             // Create Task
