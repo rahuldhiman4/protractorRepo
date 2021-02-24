@@ -26,6 +26,7 @@ import utilityGrid from "../../utils/utility.grid";
 
 let caseBAUser = 'qkatawazi';
 let caseAgentUser = 'qtao';
+// let caseAgentUser = 'qyuan';
 let caseManagerUser = 'qdu';
 let knowledgeCandidateUser = 'kayo';
 let knowledgeContributorUser = 'kkohri';
@@ -50,7 +51,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     const knowledgeSetTitleStrPsilon = 'versionedKnowledgeSetPsilon_' + randomStr;
     const knowledgeSetTitleStrPhylum = 'versionedKnowledgeSetPhylum_' + randomStr;
     const knowledgeTemplateStr = 'VersionedArticleTemplate_' + randomStr;
-    const attachmentFilePath = 'e2e/data/ui/attachment/articleStatus.png';
+    const attachmentFilePath = 'data/ui/attachment/articleStatus.png';
     const minorEditHelpText = `Submitting your changes will edit the existing Version 1`;
     const majorEditHelpText = `Submitting your changes will create Version 2`;
 
@@ -72,12 +73,15 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         await apiHelper.apiLogin('elizabeth');
         await apiHelper.createKnowledgeSet(knowledgeSetData);
+
         let knowledgeArticleTemplateData = {
             templateName: knowledgeTemplateStr,
             sectionTitle: "articleSection",
             knowledgeSetTitle: knowledgeSetData.knowledgeSetTitle,
         }
         await apiHelper.createKnowledgeArticleTemplate(knowledgeArticleTemplateData);
+        // await apiHelper.apiLogin(caseAgentUser);
+        // await apiHelper.createKnowledgeSet(knowledgeSetData);
     });
 
     afterAll(async () => {
@@ -95,8 +99,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         await createKnowledgePage.clickOnTemplate('Reference');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitleStr);
-        await createKnowledgePage.setReferenceValue(knowledgeRefStr)
-        await createKnowledgePage.selectKnowledgeSet('HR');
+        await createKnowledgePage.selectKnowledgeSet(knowledgeSetTitleStrPetramco);
         await createKnowledgePage.clickOnSaveKnowledgeButton();
         expect(await previewKnowledgePo.getKnowledgeArticleTitle()).toContain(knowledgeTitleStr, 'Article title not matched.');
         await previewKnowledgePo.clickGoToArticleButton();
@@ -112,7 +115,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     //skhobrag
     describe('[3708]: Verify the functionality of Edit article with Minor Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -133,14 +136,15 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin(caseAgentUser);
 
             articleData = {
-                "knowledgeSet": "HR",
+                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
                 "categoryTier3": "Bonus",
-                "region": "Australia",
-                "site": "Canberra",
+                "region": "Americas",
+                "siteGroup": "Marketing",
+                "site": "Atlanta",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
                 "assigneeSupportGroup": "GB Support 2",
@@ -202,14 +206,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             console.log(await viewKnowledgeArticlePo.getKnowledgeArticleDescription());
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
+           expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -235,14 +239,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(expectedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
+           expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -274,8 +278,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-            let articleData = {
-                "knowledgeSet": 'HR',
+
+          let articleData = {
+            "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
                 "title": `${knowledgeTitleStr}`,
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Employee Relations",
@@ -294,6 +299,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
         it('[3705]: Verify the search based on version on knowledge article console', async () => {
             await navigationPage.gotoKnowledgeConsole();
+            await knowledgeConsole.removeColumnOnGrid(['Region']);
             await knowledgeConsole.addColumnOnGrid(versionFieldColumn);
             expect(await knowledgeConsole.isSelectedFilterOptionDisplayedOnGridConsole(knowledgeGridColumnFields)).toBe(true);
             await utilityGrid.searchRecord(versionFieldVal);
@@ -447,7 +453,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
 
-            //Search with knowledge article with published status and different versions   
+            //Search with knowledge article with published status and different versions
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -482,7 +488,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
 
-            //Search with knowledge article with published status and different versions            
+            //Search with knowledge article with published status and different versions
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -553,7 +559,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
     //skhobrag
     describe('[3707,3712]: Verify the functionality of Edit article with Major Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
+        let articleAccessPermission: string[] = [
+          "GB Support 2",
+          "Petramco",
+          "Kane Williamson",
+          "Qianru Tao"
+        ];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -575,21 +586,22 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
 
-            articleData = {
-                "knowledgeSet": 'HR',
-                "title": `${knowledgeTitleStr}`,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 2",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeTitleStr} Desc`
-            }
+           articleData = {
+            "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+            "title": `${knowledgeTitleStr}`,
+            "templateId": `${knowledgeTemplateId}`,
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "region": "Americas",
+            "siteGroup": "Marketing",
+            "site": "Atlanta",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "articleDesc": `${knowledgeTitleStr} Desc`
+          }
 
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
             articleKeywordsVal = ['MyKeyword', `${articleDetails.displayId}`];
@@ -611,7 +623,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for In Progress Knowledge Article.');
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(majorEditOption)).toBeFalsy('Major Edit Option is displayed for In Progress Knowledge Article.');
             await editKnowledgePage.clickArticleCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            // await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await editKnowledgePage.setKnowledgeStatus('Draft');
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
             await viewKnowledgeArticlePo.clickOnEditLink();
@@ -656,7 +668,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -692,7 +704,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await viewKnowledgeArticlePo.getArticleVersion()).toBe(updatedVersion);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -722,14 +734,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
+           expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -1027,21 +1039,22 @@ describe('Knowledge Articles - Versioning Tests', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-            articleData = {
-                "knowledgeSet": 'HR',
-                "title": `${knowledgeTitleStr}`,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 2",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeTitleStr} Desc`
-            }
+          articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitleStr}`,
+            "templateId": `${knowledgeTemplateId}`,
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "region": "Americas",
+            "siteGroup": "Marketing",
+            "site": "Atlanta",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "articleDesc": `${knowledgeTitleStr} Desc`
+          }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 
@@ -1134,7 +1147,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     //skhobrag
     describe('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
         let updatedArticleAccessPermission: string[] = ['GB Support 2', 'Employee Relations', 'Petramco', 'Kane Williamson'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
@@ -1156,21 +1169,23 @@ describe('Knowledge Articles - Versioning Tests', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-            articleData = {
-                "knowledgeSet": 'HR',
-                "title": `${knowledgeTitleStr}`,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 2",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeTitleStr} Desc`
-            }
+
+          articleData = {
+            "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
+            "title": `${knowledgeTitleStr}`,
+            "templateId": `${knowledgeTemplateId}`,
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "region": "Americas",
+            "siteGroup": "Marketing",
+            "site": "Atlanta",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "articleDesc": `${knowledgeTitleStr} Desc`
+          }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
             articleKeywordsVal = ['MyKeyword', `${articleDetails.displayId}`];
             console.log('Article Id:', articleDetails.displayId);
@@ -1238,14 +1253,14 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await utilityCommon.isPopUpMessagePresent('You have successfully flagged the article.')).toBeTruthy('Article Not Flagged');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(knowledgeTitleStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(articleData.articleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Qianru Tao');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe(articleData.categoryTier2);
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe(articleData.categoryTier3);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAssigneeGroupValue()).toBe(articleData.assigneeSupportGroup);
-            expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
+           expect(await viewKnowledgeArticlePo.getKnowledgeArticleAccessPermissionGroupDetails()).toEqual(articleAccessPermission);
             expect(await viewKnowledgeArticlePo.getArticleViewCounter()).toContain(articleHelpFulCounterData.viewCounter.toString());
             expect(await viewKnowledgeArticlePo.getArticleHelpfulCounter()).toContain(articleHelpFulCounterData.helpfulPercentage.toString());
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe(articleData.region);
@@ -1287,7 +1302,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await utilityCommon.refresh(); // Refresh needed to reflect article updates.
             await browser.sleep(2000);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc);
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -1340,7 +1355,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Published status.');
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe(updatedArticleTitle + "_for Version 3");
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleDescription()).toBe(updatedArticleDesc + "_for Version 3");
-            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
+            expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe(knowledgeSetTitleStrPetramco);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleCompany()).toBe(articleData.assignedCompany);
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleAuthor()).toBe('Kane Williamson');
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe(articleData.categoryTier1);
@@ -1390,21 +1405,23 @@ describe('Knowledge Articles - Versioning Tests', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(caseAgentUser);
             let knowledgeTemplateId = await apiCoreUtil.getKnowledgeTemplateGuid(knowledgeTemplateStr);
-            articleData = {
-                "knowledgeSet": 'HR',
-                "title": `${knowledgeTitleStr}`,
-                "templateId": `${knowledgeTemplateId}`,
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
-                "region": "Australia",
-                "site": "Canberra",
-                "assignedCompany": "Petramco",
-                "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 2",
-                "assignee": "KMills",
-                "articleDesc": `${knowledgeTitleStr} Desc`
-            }
+
+          articleData = {
+            "knowledgeSet": "HR",
+            "title": `${knowledgeTitleStr}`,
+            "templateId": `${knowledgeTemplateId}`,
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "region": "Americas",
+            "siteGroup": "Marketing",
+            "site": "Atlanta",
+            "assignedCompany": "Petramco",
+            "assigneeBusinessUnit": "United Kingdom Support",
+            "assigneeSupportGroup": "GB Support 2",
+            "assignee": "KMills",
+            "articleDesc": `${knowledgeTitleStr} Desc`
+          }
             articleDetails = await apiHelper.createKnowledgeArticle(articleData, attachmentFilePath);
         });
 

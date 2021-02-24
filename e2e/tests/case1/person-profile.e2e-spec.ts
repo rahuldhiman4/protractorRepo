@@ -22,19 +22,14 @@ describe('Person Profile test', () => {
     let businessData, departmentData, suppGrpData, personData, orgId;
 
     beforeAll(async () => {
-        // await apiHelper.apiLogin('elizabeth');
-        // await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
-        // await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
-        // await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
         await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');
+        await apiHelper.apiLogin('elizabeth');
+        await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
+        await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
+        await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
 
         await navigationPage.gotoPersonProfile();
-
-        // await apiHelper.apiLogin('elizabeth');
-        // await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
-        // await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
-        // await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
     });
 
     afterAll(async () => {

@@ -1217,7 +1217,7 @@ class ApiHelper {
         let taskTemplateGuid1 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId2);
         let taskTemplateGuid3 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId3);
-        // give new name to process        
+        // give new name to process
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         threeTaskFlowProcess.name = await threeTaskFlowProcess.name + "_" + randomString;
         // get case company and update in payload
@@ -1359,7 +1359,6 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[1000000001].value = data.company ? data.company : knowledgeArticleData.fieldInstances[1000000001].value;
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
-            knowledgeArticleData.fieldInstances[200000007].value = data.siteGroup;
             knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
             if (data.assignedCompany) {
                 let assignedCompanyData = {
@@ -1367,6 +1366,22 @@ class ApiHelper {
                     "value": data.assignedCompany
                 }
                 knowledgeArticleData.fieldInstances["450000157"] = assignedCompanyData;
+            }
+
+            if (data.region) {
+                let regionData = {
+                    "id": 200000012,
+                    "value": data.region
+                }
+                knowledgeArticleData.fieldInstances["200000012"] = regionData;
+            }
+
+            if (data.siteGroup) {
+                let siteGroupData = {
+                    "id": 200000007,
+                    "value": data.siteGroup
+                }
+                knowledgeArticleData.fieldInstances["200000007"] = siteGroupData;
             }
 
             if (data.site) {
@@ -1377,13 +1392,6 @@ class ApiHelper {
                 knowledgeArticleData.fieldInstances["260000001"] = siteData;
             }
 
-            if (data.region) {
-                let regionData = {
-                    "id": 200000007,
-                    "value": data.region
-                }
-                knowledgeArticleData.fieldInstances["200000007"] = regionData;
-            }
 
             if (data.categoryTier1) {
                 let categData = {
@@ -1448,7 +1456,6 @@ class ApiHelper {
             knowledgeArticleData.fieldInstances[302301262].value = data.keyword ? data.keyword : knowledgeArticleData.fieldInstances[302301262].value;
             knowledgeArticleData.fieldInstances[302311201].value = data.articleDesc ? data.articleDesc : knowledgeArticleData.fieldInstances[302311201].value;
             knowledgeArticleData.fieldInstances[450000411].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : knowledgeArticleData.fieldInstances[450000411].value;
-            knowledgeArticleData.fieldInstances[200000007].value = data.siteGroup;
 
             if (data.assignedCompany) {
                 let assignedCompanyData = {
@@ -1457,6 +1464,21 @@ class ApiHelper {
                 }
                 knowledgeArticleData.fieldInstances["450000157"] = assignedCompanyData;
             }
+            if (data.region) {
+                let regionData = {
+                    "id": 200000012,
+                    "value": data.region
+                }
+                knowledgeArticleData.fieldInstances["200000012"] = regionData;
+            }
+
+            if (data.siteGroup) {
+                let siteGroupData = {
+                    "id": 200000007,
+                    "value": data.siteGroup
+                }
+                knowledgeArticleData.fieldInstances["200000007"] = siteGroupData;
+            }
 
             if (data.site) {
                 let siteData = {
@@ -1464,14 +1486,6 @@ class ApiHelper {
                     "value": data.site
                 }
                 knowledgeArticleData.fieldInstances["260000001"] = siteData;
-            }
-
-            if (data.region) {
-                let regionData = {
-                    "id": 200000007,
-                    "value": data.region
-                }
-                knowledgeArticleData.fieldInstances["200000007"] = regionData;
             }
 
             if (data.categoryTier1) {

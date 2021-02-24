@@ -16,7 +16,7 @@ class CreateKnowledgePage {
         templateHeading: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .template-name',
         templateSection: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .template-sections',
         regionGuid: 'a0e3703d-7655-4861-9a72-13168852b998',
-        siteGuid: 'f161abec-d0d4-487d-9099-7879f66ae01a',
+        siteGuid: 'd71842ad-8244-4e00-a03c-b583a98245ba',
         categoryTier1Guid: '082c0d4d-2425-4549-a13f-3f462843559f',
         categoryTier2Guid: '214299c9-ba6d-44fb-8f0e-9a1ebefe280f',
         categoryTier3Guid: '8250e409-b774-45b5-91d2-89b620560263',
@@ -36,6 +36,7 @@ class CreateKnowledgePage {
         imageIcon: '[rx-view-component-id="7591fcfd-3d96-4155-a450-33c6e591dc2c"] .cke_toolgroup .cke_button__image',
         lineOfBusiness: '[rx-view-component-id="9bcf3768-1f60-4b44-a300-3bad90b22651"] button[btn-type="tertiary"]',
         useSelectedTemplateBtn: '[rx-view-component-id="8569cbb0-91e3-4a14-a71a-133e49bb798e"] .btn-primary',
+        siteGrpGuid: 'f161abec-d0d4-487d-9099-7879f66ae01a'
     }
 
     async clickChangeTemplateButton(): Promise<void> {
@@ -219,7 +220,9 @@ class CreateKnowledgePage {
     async selectSiteDropDownOption(fieldOption: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.siteGuid, fieldOption);
     }
-
+    async selectSiteGroupDropDownOption(fieldOption: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.siteGrpGuid, fieldOption);
+    }
     async getCreateKnowledgeHeader(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.createKnowledgeTitle)));
         return await $(this.selectors.createKnowledgeHeader).getText();

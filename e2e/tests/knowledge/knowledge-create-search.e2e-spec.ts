@@ -210,18 +210,16 @@ describe('Knowledge Create Search', () => {
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-            await createKnowledgePage.selectCategoryTier1Option('Total Rewards');
-            await createKnowledgePage.selectCategoryTier2Option('Leave');
-            await createKnowledgePage.selectCategoryTier3Option('PTO');
+            await createKnowledgePage.selectCategoryTier1Option('Applications');
+            await createKnowledgePage.selectCategoryTier2Option('Social');
+            await createKnowledgePage.selectCategoryTier3Option('Chatter');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
-            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
-            expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Leave');
-            expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('PTO');
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Applications');
+            expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Social');
+            expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Chatter');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.removeCategoryTier1();
-            await editKnowledgePage.removeCategoryTier2();
-            await editKnowledgePage.removeCategoryTier3();
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('-');
@@ -235,10 +233,10 @@ describe('Knowledge Create Search', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            await editKnowledgePage.setCategoryTier1('Total Rewards');
+            await editKnowledgePage.setCategoryTier1('Applications');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
-            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Total Rewards');
+            expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Applications');
         });
         afterAll(async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
@@ -294,12 +292,12 @@ describe('Knowledge Create Search', () => {
             expect(await viewKnowledgeArticlePo.getKnowledgeArticleTitle()).toBe('Knowledge' + randomStr);
             expect(await viewKnowledgeArticlePo.getKnowledgeSet()).toBe('HR');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            await editKnowledgePage.selectRegionDropDownOption('EMEA');
+            await editKnowledgePage.selectRegionDropDownOption('Americas');
             await editKnowledgePage.setCategoryTier1('Employee Relations');
             await editKnowledgePage.setCategoryTier2('Compensation');
             await editKnowledgePage.setCategoryTier3('Bonus');
             await editKnowledgePage.selectSiteGroupDropDownOption('Human Resources');
-            await editKnowledgePage.selectSiteDropDownOption('Barcelona 1');
+            await editKnowledgePage.selectSiteDropDownOption('Houston');
             await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
@@ -309,9 +307,9 @@ describe('Knowledge Create Search', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewKnowledgeArticlePo.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewKnowledgeArticlePo.getCategoryTier3Value()).toBe('Bonus');
-            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('EMEA');
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Americas');
             expect(await viewKnowledgeArticlePo.getSiteGroupValue()).toBe('Human Resources');
-            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Barcelona 1');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Houston');
             expect(await viewKnowledgeArticlePo.getAssigneeValue()).toContain('Peter Kahn');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
@@ -558,8 +556,9 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA1',
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Workforce Administration",
-                "region": "Central America",
-                "site": "Mexico City",
+                "region": "Americas",
+                "siteGroup": "Human Resources",
+                "site": "Houston",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
                 "assigneeSupportGroup": "GB Support 2",
@@ -570,7 +569,8 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA2',
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Workforce Administration",
-                "region": "EMEA",
+                "region": "Europe",
+                "siteGroup": "Sales",
                 "site": "Barcelona 1",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -582,7 +582,8 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA3',
                 "templateId": `${knowledgeTemplateId}`,
                 "categoryTier1": "Employee Relations",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -634,7 +635,7 @@ describe('Knowledge Create Search', () => {
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData3.title)).toEqual(articleData3.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
             await resources.enterAdvancedSearchText(articleData2.title);
-            await utilityCommon.selectDropDown('Region', 'EMEA', DropDownType.Label);
+            await utilityCommon.selectDropDown('Region', 'Europe', DropDownType.Label);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData2.title)).toEqual(articleData2.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
@@ -676,7 +677,8 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA1',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Workforce Administration",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -688,7 +690,8 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA2',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Workforce Administration",
-                "region": "Central America",
+                "region": "Americas",
+                "siteGroup": "Marketing",
                 "site": "Mexico City",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -700,7 +703,8 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA3',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Workforce Administration",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -712,7 +716,8 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA4',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Workforce Administration",
-                "region": "EMEA",
+                "region": "Europe",
+                "siteGroup": "Sales",
                 "site": "Barcelona 1",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -724,7 +729,8 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA5',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Employee Relations",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -736,7 +742,8 @@ describe('Knowledge Create Search', () => {
                 "title": randomStr + 'KA6',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Workforce Administration",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
@@ -801,17 +808,17 @@ describe('Knowledge Create Search', () => {
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData3.title)).toEqual(articleData3.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
             await resources.enterAdvancedSearchText(articleData2.title);
-            await utilityCommon.selectDropDown('Region', 'Central America', DropDownType.Label);
+            await utilityCommon.selectDropDown('Region', 'Americas', DropDownType.Label);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData2.title)).toEqual(articleData2.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
             await resources.enterAdvancedSearchText(articleData4.title);
-            await utilityCommon.selectDropDown('Site', 'Barcelona 1');
+            await utilityCommon.selectDropDown('Site', 'Barcelona 1', DropDownType.Label);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData4.title)).toEqual(articleData4.title);
             await resources.clickOnAdvancedSearchFiltersButton('Clear');
             await resources.enterAdvancedSearchText(articleData5.title);
-            await utilityCommon.selectDropDown('Operational Category Tier 1', 'Employee Relations');
+            await utilityCommon.selectDropDown('Operational Category Tier 1', 'Employee Relations', DropDownType.Label);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getAdvancedSearchResultForParticularSection(articleData5.title)).toEqual(articleData5.title);
             expect(await resources.getKnowledgeArticleInfo()).toContain(dateFormate, 'Date not correct');
@@ -843,7 +850,8 @@ describe('Knowledge Create Search', () => {
                 "title": 'knowledge3542' + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "categoryTier1": "Workforce Administration",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United States Support",
@@ -883,7 +891,7 @@ describe('Knowledge Create Search', () => {
             await utilityCommon.selectDropDown('Status', 'In Progress', DropDownType.Label);
             await utilityCommon.selectDropDown('Knowledge Set', 'HR', DropDownType.Label);
             await utilityCommon.selectDropDown('Operational Category Tier 1', 'Workforce Administration', DropDownType.Label);
-            await utilityCommon.selectDropDown('Region', 'Australia', DropDownType.Label);
+            await utilityCommon.selectDropDown('Region', 'Asia-Pac', DropDownType.Label);
             await utilityCommon.selectDropDown('Site', 'Canberra', DropDownType.Label);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
             expect(await resources.getKnowledgeArticleInfo()).toContain(articleData.title, 'title not correct');
@@ -1037,7 +1045,8 @@ describe('Knowledge Create Search', () => {
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
                 "categoryTier3": "Bonus",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",

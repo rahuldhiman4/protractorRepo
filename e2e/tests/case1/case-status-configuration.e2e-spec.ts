@@ -19,33 +19,33 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-xdescribe('Case Status Configuration', () => {
+describe('Case Status Configuration', () => {
     let flowsetPhylumFieldsData = undefined;
     let personData1, personData3;
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await apiHelper.apiLogin('tadmin');
-        const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        personData1 = personDataFile['PhylumCaseAdmin1'];
+        // await apiHelper.apiLogin('tadmin');
+        // const personDataFile = require('../../data/ui/foundation/person.ui.json');
+        // personData1 = personDataFile['PhylumCaseAdmin1'];
 
-        await apiHelper.createNewUser(personData1);
-        await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
-        await browser.sleep(7000); //Wait to reflect the user created above
+        // await apiHelper.createNewUser(personData1);
+        // await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
+        // await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
+        // await browser.sleep(7000); //Wait to reflect the user created above
 
-        let personData2 = personDataFile['PhylumCaseAdmin2'];
-        await apiHelper.createNewUser(personData2);
-        await apiHelper.associatePersonToCompany(personData2.userId, 'Phylum');
-        await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phylum Support Group1');
-        await browser.sleep(7000); //Wait to reflect the user created above
+        // let personData2 = personDataFile['PhylumCaseAdmin2'];
+        // await apiHelper.createNewUser(personData2);
+        // await apiHelper.associatePersonToCompany(personData2.userId, 'Phylum');
+        // await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phylum Support Group1');
+        // await browser.sleep(7000); //Wait to reflect the user created above
 
-        personData3 = personDataFile['PhylumKnowledgeUser'];
-        await apiHelper.createNewUser(personData3);
-        await apiHelper.associatePersonToCompany(personData3.userId, 'Phylum');
-        await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phylum Support Group1');
-        await browser.sleep(7000); //Wait to reflect the user created above
+        // personData3 = personDataFile['PhylumKnowledgeUser'];
+        // await apiHelper.createNewUser(personData3);
+        // await apiHelper.associatePersonToCompany(personData3.userId, 'Phylum');
+        // await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Phylum Support Group1');
+        // await browser.sleep(7000); //Wait to reflect the user created above
 
-        await loginPage.login(personData1.userId + "@petramco.com", 'Password_1234');
+        await loginPage.login('jmilano');
     });
 
     afterAll(async () => {
@@ -73,31 +73,25 @@ xdescribe('Case Status Configuration', () => {
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("New");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-            await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickOnCancelButton();
             await statusConfigPo.clickEditStatus("Progress");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-            await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickOnCancelButton();
             await statusConfigPo.clickEditStatus("Assigned");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-            await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickOnCancelButton();
             await statusConfigPo.clickEditStatus("Resolved");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-            await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickOnCancelButton();
             await statusConfigPo.clickEditStatus("Closed");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-            await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickOnCancelButton();
             await statusConfigPo.clickEditStatus("Pending");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-            await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickOnCancelButton();
             await statusConfigPo.clickEditStatus("Canceled");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
-            await statusConfigPo.clickOnBackButton();
+            await statusConfigPo.clickOnCancelButton();
         });
 
         it('[4687]: Verify User not able to delete mandatory status for case', async () => {
@@ -160,14 +154,12 @@ xdescribe('Case Status Configuration', () => {
         let caseId1: string = undefined;
         it('[4612]:Verify case created prior to label change will reflect new status label changes', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('zkhan');
+            await createCasePo.selectRequester('mcarney');
             await createCasePo.setSummary("4612 before configuration");
-            await createCasePo.clickChangeAssignmentButton();
             await assignmentBladePO.setDropDownValue('Company', 'Phylum');
             await assignmentBladePO.setDropDownValue('SupportOrg', 'Phylum Support Org1');
             await assignmentBladePO.setDropDownValue('AssignedGroup', 'Phylum Support Group1');
-            await assignmentBladePO.setDropDownValue('Assignee', 'Zaheer Khan');
-            await assignmentBladePO.clickOnAssignButton();
+            await assignmentBladePO.setDropDownValue('Assignee', 'Roland Flanagan');
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             caseId1 = await viewCasePo.getCaseID();
@@ -178,13 +170,11 @@ xdescribe('Case Status Configuration', () => {
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Assigned");
             await statusConfigPo.renameExistingStatus('Staged');
-
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
         it('[4612]:Verify case created prior to label change will reflect new status label changes', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePo.selectRequester('zkhan');
+            await createCasePo.selectRequester('mcarney');
             await createCasePo.setSummary("4612 after configuration");
             await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
@@ -314,28 +304,17 @@ xdescribe('Case Status Configuration', () => {
 
     //asahitya
     it('[4678]:Verify UI for Knowledge status configuration', async () => {
-        try {
-            await navigationPage.signOut()
-            await loginPage.login(personData3.userId + "@petramco.com", 'Password_1234');
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
-            expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
-            expect(await statusConfigPo.isCompanyRequiredText('knowledge')).toBeTruthy();
-            expect(await statusConfigPo.getDefaultCompanyValue()).toBe('- Global -');
-            expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
-            await statusConfigPo.setCompanyDropdown("Phylum", 'knowledge');
-            expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
-            await statusConfigPo.clickEditLifeCycleLink();
-            await statusConfigPo.clickEditStatus("Canceled");
-            await statusConfigPo.clickOnCancelButton();
-        }
-        catch (ex) {
-            throw ex;
-        }
-        finally {
-            await navigationPage.signOut();
-            await loginPage.login(personData1.userId + "@petramco.com", 'Password_1234');
-        }
+        await navigationPage.gotoSettingsPage();
+        await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
+        expect(await statusConfigPo.getTitleValue('knowledge')).toBe('Knowledge Status Configuration');
+        expect(await statusConfigPo.isCompanyRequiredText('knowledge')).toBeTruthy();
+        expect(await statusConfigPo.getDefaultCompanyValue()).toBe('- Global -');
+        expect(await statusConfigPo.getStatusLifeCycle()).toBe('Status Lifecycle for - Global -');
+        await statusConfigPo.setCompanyDropdown("Phylum", 'knowledge');
+        expect(await statusConfigPo.isEditLifeCycleBtnDisabled()).toBeFalsy('Button is disabled');
+        await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditStatus("Canceled");
+        await statusConfigPo.clickOnCancelButton();
     });
 
     //asahitya
@@ -460,24 +439,24 @@ xdescribe('Case Status Configuration', () => {
             await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Pico Support Group2');
             await browser.sleep(7000); //Wait to reflect the user created above
             caseData =
-                {
-                    "Requester": personData3.userId,
-                    "Summary": randomStr + "test",
-                    "Assigned Company": "Pico Systems",
-                    "Business Unit": "Pico Support Org1",
-                    "Support Group": "Pico Support Group1",
-                    "Assignee": personData1.userId,
-                }
+            {
+                "Requester": personData3.userId,
+                "Summary": randomStr + "test",
+                "Assigned Company": "Pico Systems",
+                "Business Unit": "Pico Support Org1",
+                "Support Group": "Pico Support Group1",
+                "Assignee": personData1.userId,
+            }
             caseDataInProgress =
-                {
-                    "Requester": personData3.userId,
-                    "Summary": randomStr + "test",
-                    "Assigned Company": "Pico Systems",
-                    "Business Unit": "Pico Support Org1",
-                    "Support Group": "Pico Support Group1",
-                    "Assignee": personData1.userId,
-                    "status": "In Progress",
-                }
+            {
+                "Requester": personData3.userId,
+                "Summary": randomStr + "test",
+                "Assigned Company": "Pico Systems",
+                "Business Unit": "Pico Support Org1",
+                "Support Group": "Pico Support Group1",
+                "Assignee": personData1.userId,
+                "status": "In Progress",
+            }
 
             knowledgeSetData = {
                 knowledgeSetTitle: "test knowledge" + randomStr,

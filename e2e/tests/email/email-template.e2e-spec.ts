@@ -16,6 +16,7 @@ import utilityGrid from '../../utils/utility.grid';
 describe('Email Template', () => {
     const emailTemplateData = require('../../data/ui/email/email.template.api.json');
     let label = "POSH";
+    let label1="Benefits";
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -189,7 +190,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
             await createEmailTemplatePo.selectStatusDropDown('Active');
-            await createEmailTemplatePo.selectLabelDropDown(label);
+            await createEmailTemplatePo.selectLabelDropDown(label1);
             await createEmailTemplatePo.setDescription(description1);
             await createEmailTemplatePo.setSubject(subject1);
             await createEmailTemplatePo.setBody(body1);
@@ -199,7 +200,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setTemplateName(templateName2);
             await createEmailTemplatePo.selectCompany('- Global -');
             await createEmailTemplatePo.selectStatusDropDown('Active');
-            await createEmailTemplatePo.selectLabelDropDown(label);
+            await createEmailTemplatePo.selectLabelDropDown(label1);
             await createEmailTemplatePo.setDescription(description1);
             await createEmailTemplatePo.setSubject(subject1);
             await createEmailTemplatePo.setBody(body1);
@@ -217,8 +218,8 @@ describe('Email Template', () => {
             await consoleEmailTemplatePo.addFilter('Template Name', templateName1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Filter Template Name is missing in column');
             await consoleEmailTemplatePo.clearGridFilter();
-            await consoleEmailTemplatePo.addFilter('Label', label, 'text');
-            expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, ' Filter Label is missing in column');
+            await consoleEmailTemplatePo.addFilter('Label', label1, 'text');
+            expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label1, ' Filter Label is missing in column');
             await consoleEmailTemplatePo.clearGridFilter();
             await consoleEmailTemplatePo.addFilter('Status', 'Active', 'checkbox');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Filter Label is missing in column');
@@ -245,7 +246,7 @@ describe('Email Template', () => {
             expect(await editEmailTemplatePo.isCompanyDropDownDisabled()).toBeTruthy('Company drop down is enabled');
             await editEmailTemplatePo.updateDescription(description2);
             await editEmailTemplatePo.selectStatusDropDown('Active');
-            await editEmailTemplatePo.selectLabelDropDown(label);
+            await editEmailTemplatePo.selectLabelDropDown(label1);
             expect(await editEmailTemplatePo.isLocalizedMessageButtonDisplayed()).toBeTruthy('Localize Message button is missing');
             await editEmailTemplatePo.selectlocaleDropDown('English (United States)');
         });
@@ -281,7 +282,7 @@ describe('Email Template', () => {
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Search Template Name is missing in column');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Subject')).toBe(subject2, 'Search Subject is missing in column');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Status')).toBe('Active', 'Search Active2 is missing in column');
-            expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label, 'Label is missing in column');
+            expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label1, 'Label is missing in column');
             await consoleEmailTemplatePo.removeColumnOnGrid(arr1);
             //5169
             await consoleEmailTemplatePo.searchAndSelectGridRecord(templateName1);
@@ -293,7 +294,7 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setTemplateName(templateName1);
             await createEmailTemplatePo.selectCompany('Petramco');
             await createEmailTemplatePo.selectStatusDropDown('Active');
-            await createEmailTemplatePo.selectLabelDropDown(label);
+            await createEmailTemplatePo.selectLabelDropDown(label1);
             await createEmailTemplatePo.setDescription(description1);
             await createEmailTemplatePo.setSubject(subject1);
             await createEmailTemplatePo.setBody(body1);
@@ -420,6 +421,9 @@ describe('Email Template', () => {
             await editEmailTemplatePo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Attachment is not deleted from Email Template');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //ankagraw
@@ -462,6 +466,8 @@ describe('Email Template', () => {
             await createEmailTemplatePo.setSubject("emailTemplateName");
             await createEmailTemplatePo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent(`Template Already exist with given name:${emailTemplateName}`)).toBeTruthy("Error message absent");
+            // expect(await utilityCommon.isPopUpMessagePresent(`Template Already exist with given name:${emailTemplateName}`)).toBeTruthy("Error message absent");
+            // await utilityCommon.closePopUpMessage();
             await createEmailTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -476,8 +482,12 @@ describe('Email Template', () => {
             // verify LOB is there
             expect(await createEmailTemplatePo.getLobValue()).toBe("Facilities");
             await createEmailTemplatePo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
+            
             //    expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.searchAndOpenEmailTemplate(emailTemplateName);
             expect(await editEmailTemplatePo.getLobValue()).toBe("Facilities");
             await editEmailTemplatePo.clickOnCancelButton();
