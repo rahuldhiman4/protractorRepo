@@ -321,7 +321,7 @@ describe('Case Cognitive', () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
-            await quickCasePo.setCaseSummary('bonus ' +randomStr);
+            await quickCasePo.setCaseSummary('Employee bonus ' +randomStr);
             expect(await resourcesTabPo.getCountOfHeading('Recommended Templates')).toBeGreaterThan(10, 'heading Count is not correct');
         });
         afterAll(async () => {
@@ -337,7 +337,7 @@ describe('Case Cognitive', () => {
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(randomStr);
             await createCasePo.clickSelectCaseTemplateButton();
-            expect(await selectCasetemplateBladePo.isCaseSummaryPresentInRecommendedTemplates('Employee needs an employment verification letter bonus '+randomStr)).toBeTruthy('Template seach is not working');
+            expect(await selectCasetemplateBladePo.isCaseSummaryPresentInRecommendedTemplates('Employee asked requested for ergonomics assessment changes '+randomStr)).toBeTruthy('Template seach is not working');
             expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeFalsy("Apply button is Enabled");
             expect(await selectCasetemplateBladePo.isPaginationPresent()).toBeTruthy("Pagination is present");
             expect(await selectCasetemplateBladePo.getCountOfTemplates()).toBe(5);
@@ -346,7 +346,7 @@ describe('Case Cognitive', () => {
             await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
             await selectCasetemplateBladePo.clickOnFirstRecommendedArrow();
             await browser.sleep(1000); // Wait For Case Template Preview Page Open.
-            expect(await caseTemplatePreview.getCaseSummary()).toContain('Employee needs an employment verification letter bonus '+randomStr);
+            expect(await caseTemplatePreview.getCaseSummary()).toContain('Employee asked requested for ergonomics assessment change '+randomStr);
             expect(await caseTemplatePreview.getCaseTemplateName()).toContain('caseTemplateForCognitive');
             expect(await caseTemplatePreview.getCaseCompanyValue()).toBe('Petramco');
             expect(await caseTemplatePreview.getCasePriority()).toBe('Critical');
@@ -435,10 +435,10 @@ describe('Case Cognitive', () => {
             await createCasePo.clearSummary();
             await createCasePo.setSummary('Employee life insurance options bonus');
             await createCasePo.clickOnAutoCategorize();
-            expect(await createCasePo.getCategoryTier1Value()).toBe('Applications');
-            expect(await createCasePo.getCategoryTier2Value()).toBe('Select');
-            expect(await createCasePo.getCategoryTier3Value()).toBe('Select');
-            expect(await createCasePo.getCategoryTier4Value()).toBe('Select');
+            expect(await createCasePo.getCategoryTier1Value()).toBe('Employee Relations');
+            expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
+            expect(await createCasePo.getCategoryTier3Value()).toBe('Bonus');
+            expect(await createCasePo.getCategoryTier4Value()).toBe('Retention Bonus');
             await createCasePo.selectCategoryTier1("Payroll");
             await createCasePo.selectCategoryTier2("Finance");
             await createCasePo.selectCategoryTier3("Cost Centers");
