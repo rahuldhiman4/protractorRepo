@@ -168,7 +168,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'Qianru Tao','link');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -212,7 +212,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=','Qianru Tao','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -257,7 +257,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Global', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'Qianru Tao','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -272,7 +272,7 @@ describe('Service Target Tests for Cases', () => {
         });
         it('[5031]: Create company specific SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qianru Tao');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'Qianru Tao','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qianru Tao" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -649,7 +649,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=','Qiang Du','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -664,7 +664,7 @@ describe('Service Target Tests for Cases', () => {
         it('[5522]: Create another SVT', async () => {
             browser.sleep(2000);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'Qiang Du','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -746,7 +746,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=','Qiang Du','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -761,7 +761,7 @@ describe('Service Target Tests for Cases', () => {
         });
         it('[5523]: Create another SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'Qiang Du','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -825,7 +825,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'Qiang Du','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -840,7 +840,7 @@ describe('Service Target Tests for Cases', () => {
         });
         it('[5524]: Create another SVT', async () => {
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'PERSON', 'Qiang Du');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Requester', '=', 'Qiang Du','link');
             selectedExp = await SlmExpressionBuilder.getSelectedExpression();
             expectedSelectedExp = "'" + "Requester" + "'" + "=" + '"' + "Qiang Du" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);

@@ -95,42 +95,10 @@ class SlmExpressionBuilder {
         );
     }
 
-    async selectFirstLevelExpressionField(firstLevelExpression: string): Promise<void> {
-        let firstLevelExpressionField = `//div[@class='expanded_field'][text()='${firstLevelExpression}']/preceding-sibling::*[contains(@class,'d-icon-plus_circle')]`;
-        await $(this.expressionBuilderSelectors.searchField).clear();
-        await $(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelExpression);
-        let checkboxRows: ElementFinder[];
-        let checkboxRows1: ElementFinder[];
-        checkboxRows = await $$('.add_child_icon.icon.d-icon-plus_circle+.expanded_field');
-        checkboxRows1 = await $$('.add_child_icon.icon.d-icon-plus_circle');
-        for (let i = 0; i < checkboxRows.length; i++) {
-            let attrVal = await checkboxRows[i].getAttribute('innerText');
-            if (attrVal == firstLevelExpression) {
-                await browser.sleep(2000);
-                await browser.wait(this.EC.elementToBeClickable((checkboxRows1[i])), 5000);
-                await checkboxRows1[i].click();
-            }
-        }
-    }
-
-    async selectSecondLevelExpressionField(firstLevelExpression: string, secondLevelExpression: string): Promise<void> {
-        let listPrimaryOfFields: ElementFinder[] = await $$('.col-sm-4.variable_title li');
-        for (let i: number = 0; i < listPrimaryOfFields.length; i++) {
-            let field: ElementFinder = await listPrimaryOfFields[i].$('.expanded_field');
-            let primaryElementText: string[] = (await field.getText()).split("\n");
-            for (let k: number = 0; k < primaryElementText.length; k++) {
-                if (primaryElementText[k].trim() == firstLevelExpression) {
-                    let primaryFieldArrow: ElementFinder = await listPrimaryOfFields[i].$('.d-icon-triangle_right');
-                    await primaryFieldArrow.click();
-                    let listOFSecondaryFields: ElementFinder[] = await listPrimaryOfFields[i].$$('.expanded_field .child_field');
-                    for (let j: number = 0; j < listOFSecondaryFields.length; j++) {
-                        if (await listOFSecondaryFields[j].getText() == secondLevelExpression) {
-                            await listOFSecondaryFields[j].click();
-                        }
-                    }
-                }
-            }
-        }
+    async selectSecondLevelExpressionField(secondLevelExpression: string): Promise<void> {
+        await $(this.expressionBuilderSelectors.searchField).sendKeys(secondLevelExpression);
+        await $('.d-icon-triangle_right').click();
+        await $$(this.expressionBuilderSelectors.selectField).last().click();
     }
 
     async getExpressionFieldOperatorAvailable(operator: string): Promise<string> {
@@ -191,20 +159,17 @@ class SlmExpressionBuilder {
     }
 
     async selectFirstLevelExpressionQualification(field: string, operator: string, fieldvalue: string, DropDown?: string): Promise<void> {
-        await this.selectFirstLevelExpressionField(field);
+        
+        await this.selectFields(field);
         await this.selectOperator(operator);
         await this.selectFieldOption(field, fieldvalue, DropDown);
     }
 
-    async selectSecondLevelExpressionQualification(firstLevelAssociationfield: string, secondLevelAssociationfield: string, operator: string, fieldAttribute: string, fieldvalue: string): Promise<void> {
-
+    async selectSecondLevelExpressionQualification(firstLevelAssociationfield: string, secondLevelAssociationfield: string, operator: string, fieldAttribute: string, fieldvalue: string, DropDown?: string): Promise<void> {
         await browser.sleep(2000);
-        await $(this.expressionBuilderSelectors.searchField).clear();
-        await $(this.expressionBuilderSelectors.searchField).sendKeys(firstLevelAssociationfield);
-        await browser.sleep(2000);
-        await this.selectSecondLevelExpressionField(firstLevelAssociationfield, secondLevelAssociationfield);
+        await this.selectSecondLevelExpressionField(secondLevelAssociationfield);
         await this.selectOperator(operator);
-        await this.selectFieldOption(fieldAttribute, fieldvalue);
+        await this.selectFieldOption(secondLevelAssociationfield, fieldvalue, DropDown);
         await this.clickOnAddExpressionButton(fieldAttribute);
     }
 
@@ -214,6 +179,9 @@ class SlmExpressionBuilder {
             await utilityCommon.selectDropDown(await $(".bwf-expression-values button[role='listbox']"), fieldOptionValue, DropDownType.WebElement);
         } else if (DropDown == "Search") {
             await utilityCommon.selectDropDown(field, fieldOptionValue, DropDownType.Label);
+        }else if (DropDown == "link") {
+            await $('input[aria-label="Requester"]').sendKeys(fieldOptionValue);
+            await $('span[class="popup-person"]').click();
         }
         await $(addBtn).click();
     }
