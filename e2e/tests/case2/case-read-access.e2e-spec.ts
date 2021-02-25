@@ -644,7 +644,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #ashastra (count issues)
+    // #ashastra
     describe('[3457]: Bulk Case Access update clicking Reset to default.', async () => {
         let newCase1;
         beforeAll(async () => {
@@ -667,31 +667,36 @@ describe("Case Read Access", () => {
             //Bulk Read Access
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('AU Support 2', 'Select Support Group');
-            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('LA Support 1', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
             await accessTabPo.selectAgent('Quanah George', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            await accessTabPo.selectAgent('Qiwei Liu', 'Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
             expect(await activityTabPo.getGrantedReadAccessCount('granted read access')).toBe(3);
         });
         it('[3457]: Bulk Case Access update clicking Reset to default.', async () => {
+            await navigationPo.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
+            await viewCasePage.clickOnTab('Case Access');
             //Bulk Write Access
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('AU Support 1', 'Select Support Group');
+            await accessTabPo.selectAccessEntityDropDown('LA Support 2', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
             await accessTabPo.selectAgent('Elizabeth Peters', 'Agent');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+            await accessTabPo.selectAgent('Qianru Tao', 'Agent');
             await accessTabPo.clickAssignWriteAccessCheckbox('Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             expect(await activityTabPo.getGrantedReadAccessCount('granted write access')).toBe(3);
             await accessTabPo.clickOnResetToDefault();
             await activityTabPo.clickShowMoreLinkInActivity(1);
-            expect(await activityTabPo.getRevokedReadAccessCount('revoked read access of')).toBe(3);
+            expect(await activityTabPo.getRevokedReadAccessCount('revoked read access of')).toBe(2);
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getRevokedReadAccessCount('revoked write access of')).toBe(3);
         });
