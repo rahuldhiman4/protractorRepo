@@ -168,7 +168,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
         await apiHelper.associateCategoryUnderDomainTag('Applications', domainTag);
         await browser.sleep(2000); //waiting for data to be reflected on UI
     }
-
+//Passed-Locally
     describe('[3918,3917,3916]:Verify the search functionality of knowledge articles console for category tiers 1,2 and 3', () => {
         let categoryTierFieldColumns: string[] = ["Category Tier 1", "Category Tier 2", "Category Tier 3"];
         let knowledgeGridColumnFields: string[] = ["Article ID", "Title", "Knowledge Set", "Status", "Assignee", "Company", "Template Name", "Reviewer", "Modified By", "Created Date", "Modified Date", "Flagged", "Category Tier 1", "Category Tier 2", "Category Tier 3"];
@@ -384,7 +384,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseBAUser);
         });
     });
-
+//Quick case issue
     describe('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', () => {
         it('[3914]:Verify the knowledge articles search based on category tier on Quick case / Create case', async () => {
             //* Check the Availability of Category Tiers with Case BA
@@ -743,7 +743,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseBAUser);
         });
     });
-
+//Passed -Locally
     describe('[3913]:Verify the document search based on category tier from attachments', () => {
         let caseData = {
             "Requester": "qdu",
@@ -777,6 +777,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPage.clickOnSaveButton();
             await editDocumentLibraryPage.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[3913]:Verify the document search based on category tier from attachments', async () => {
@@ -844,7 +845,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseBAUser);
         });
     });
-
+//Foundation data
     it('[3860,3901]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
         let knowledgeSetData = {
@@ -881,7 +882,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await changeAssignmentBlade.setDropDownValue('SupportOrg', businessData.orgName);
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', suppGrpData.orgName);
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Doomi');
-            await changeAssignmentBlade.clickOnAssignButton();
             await createKnowledgePage.selectCategoryTier1Option(categoryTier1FieldVal);
             await createKnowledgePage.selectCategoryTier2Option(categoryTier2FieldVal);
             await createKnowledgePage.selectCategoryTier3Option(categoryTier3FieldVal);
