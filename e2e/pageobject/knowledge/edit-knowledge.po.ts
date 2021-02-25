@@ -375,7 +375,7 @@ class EditKnowledgePage {
     }
 
     async removeSiteValue(): Promise<void> {
-        await utilityCommon.clearDropDown('ff94cecf-1b32-46c2-a207-cd3e426d52f7', 'Clear');
+        await utilityCommon.clearDropDown('04ce12b3-98c9-4239-9aa7-35b6fc950178', 'None');
     }
 
     async removeRegionValue(): Promise<void> {

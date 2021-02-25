@@ -491,5 +491,44 @@ class GlobalSearch {
     async closeFilterDateLabel(): Promise<void> {
         await $('.bwf-show-more__content-row a').click();
     }
+
+    async getDateFormateOnLeftPannel(moduleName: string, recordNumber?: number): Promise<string> {
+        let guid;
+        switch (moduleName) {
+            case "Case": {
+                guid = this.selectors.caseGuid;
+                break;
+            }
+            case "Task": {
+                guid = this.selectors.taskGuid;
+                break;
+            }
+            case "Knowledge Article": {
+                guid = this.selectors.knowledgeArticleGuid;
+                break;
+            }
+            case "Documents": {
+                guid = this.selectors.documentsGuid;
+                break;
+            }
+            case "People": {
+                guid = this.selectors.peopleGuid;
+                break;
+            }
+            case "Case Templates": {
+                guid = this.selectors.caseTemplatesGuid;
+                break;
+            }
+            case "Task Templates": {
+                guid = this.selectors.taskTemplateGuid;
+                break;
+            }
+            default: {
+                console.log('Module name does not match');
+                break;
+            }
+        }
+            return await $$(`[rx-view-component-id="${guid}"] .list__item`).get(recordNumber - 1).$$('.bwf-search-fields span').get(0).getText();
+        }
 }
 export default new GlobalSearch();

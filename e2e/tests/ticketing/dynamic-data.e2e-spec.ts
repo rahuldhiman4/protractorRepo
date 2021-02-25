@@ -9,6 +9,7 @@ import requesterResponseBladePo from '../../pageobject/case/requester-response-b
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -1042,7 +1043,10 @@ describe('Dynamic data', () => {
         it('[4827]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickEditCaseButton();
-            await editCasePo.clickOnAssignToMe();
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', "United States Support");
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', "US Support 3");
+            await changeAssignmentPage.setDropDownValue('Assignee', "Qadim Katawazi");
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeStatus('In Progress');
@@ -1074,62 +1078,62 @@ describe('Dynamic data', () => {
     //ptidke
     describe('[4864]:[-ve] [Dynamic Data] - Add 2 or more new fields in Case Template with same Name (ID)', async () => {
         it('[4864]:[-ve] [Dynamic Data] - Add 2 or more new fields in Case Template with same Name (ID)', async () => {
-        let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData = {
-            "templateName": 'CaseTemplateName13116' + randomStr,
-            "templateSummary": 'CaseSummarySummary13116' + randomStr,
-            "templateStatus": "Draft",
-            "assignee": "qkatawazi",
-            "company": "Petramco",
-            "businessUnit": "United States Support",
-            "ownerBU": "United States Support",
-            "supportGroup": "US Support 3",
-            "ownerGroup": "US Support 3"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createCaseTemplate(templateData);
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-        await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
-        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
-        await dynamicFieldsPo.clickOnDynamicField();
-        await dynamicFieldsPo.setFieldName('news' + randomStr);
-        await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
-        await dynamicFieldsPo.clickSaveButton();
-        await utilityCommon.closePopUpMessage();
-        //duplicate
-        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
-        await dynamicFieldsPo.clickOnDynamicField();
-        await dynamicFieldsPo.setFieldName('news' + randomStr);
-        await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
-        await dynamicFieldsPo.clickSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy("Wrong pop up message");
-        await utilityCommon.closePopUpMessage();
-        await dynamicFieldsPo.setFieldName('newName' + randomStr);
-        await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
-        await dynamicFieldsPo.clickSaveButton();
-        await utilityCommon.closePopUpMessage();
-        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewDescription' + randomStr)).toBeTruthy();
-        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri' + randomStr)).toBeTruthy();
-        await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
-        await dynamicFieldsPo.clickOnDynamicField();
-        await dynamicFieldsPo.setFieldName('newName' + randomStr);
-        await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
-        await dynamicFieldsPo.clickSaveButton();
-        expect(await utilityCommon.isPopUpMessagePresent('Message not found, [bundleId = Ticketing-AppID, messageNum = 970] Duplicate Attributes Please remove duplicates and save again.')).toBeTruthy('Wrong pop up message');
-        await utilityCommon.closePopUpMessage();
-        await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
-        await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
-        await dynamicFieldsPo.clickSaveButton();
-        await utilityCommon.closePopUpMessage();
-        expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewUpdatedDescription' + randomStr)).toBeTruthy();
-    });
-    afterAll(async () => {
-        await utilityCommon.closeAllBlades();
-        await viewCasetemplatePo.clickBackArrowBtn();
-    });
+            let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+            let templateData = {
+                "templateName": 'CaseTemplateName13116' + randomStr,
+                "templateSummary": 'CaseSummarySummary13116' + randomStr,
+                "templateStatus": "Draft",
+                "assignee": "qkatawazi",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(templateData);
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPo.clickOnDynamicField();
+            await dynamicFieldsPo.setFieldName('news' + randomStr);
+            await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
+            await dynamicFieldsPo.clickSaveButton();
+            await utilityCommon.closePopUpMessage();
+            //duplicate
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPo.clickOnDynamicField();
+            await dynamicFieldsPo.setFieldName('news' + randomStr);
+            await dynamicFieldsPo.setDescriptionName('newDescri' + randomStr);
+            await dynamicFieldsPo.clickSaveButton();
+            expect(await utilityCommon.isPopUpMessagePresent('A dynamic field with the same name already exists in the dynamic group.')).toBeTruthy("Wrong pop up message");
+            await utilityCommon.closePopUpMessage();
+            await dynamicFieldsPo.setFieldName('newName' + randomStr);
+            await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
+            await dynamicFieldsPo.clickSaveButton();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewDescription' + randomStr)).toBeTruthy();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('newDescri' + randomStr)).toBeTruthy();
+            await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
+            await dynamicFieldsPo.clickOnDynamicField();
+            await dynamicFieldsPo.setFieldName('newName' + randomStr);
+            await dynamicFieldsPo.setDescriptionName('NewDescription' + randomStr);
+            await dynamicFieldsPo.clickSaveButton();
+            expect(await utilityCommon.isPopUpMessagePresent('A dynamic field with the same name already exists in the dynamic group.')).toBeTruthy('Wrong pop up message');
+            await utilityCommon.closePopUpMessage();
+            await dynamicFieldsPo.setFieldName('newNameUpdate' + randomStr);
+            await dynamicFieldsPo.setDescriptionName('NewUpdatedDescription' + randomStr);
+            await dynamicFieldsPo.clickSaveButton();
+            await utilityCommon.closePopUpMessage();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed('NewUpdatedDescription' + randomStr)).toBeTruthy();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await viewCasetemplatePo.clickBackArrowBtn();
+        });
 
-});
+    });
 
     //ptidke
     describe('[4850,4857]:[-ve] [Dynamic Data] [UI] - Update Case dynamic fields with invalid data', async () => {

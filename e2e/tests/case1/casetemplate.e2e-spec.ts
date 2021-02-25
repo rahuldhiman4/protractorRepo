@@ -89,7 +89,7 @@ describe('Case Template', () => {
         await viewCaseTemplate.clickBackArrowBtn();
     });
 
-    //ptidke-jbranes lob issue-check
+    //ptidke-Facilities support value not getting selected
     describe('[5247]: Case Template creation with Template validation as ENFORCED', async () => {
         it('[5247]: Case Template creation with Template validation as ENFORCED', async () => {
             await navigationPage.gotoSettingsPage();
@@ -161,6 +161,7 @@ describe('Case Template', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -201,7 +202,7 @@ describe('Case Template', () => {
         }
     });
 
-    //ptidke
+    //ptidke-check
     it('[4549]: Verify the values present in the Case assignment method dropdownlist-Round Robin and None', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -248,7 +249,7 @@ describe('Case Template', () => {
         await viewCaseTemplate.clickBackArrowBtn();
     });
 
-    //ptidke-issue
+    //ptidke-issue-clear 
     describe('[6303]: [Edit Case Template] Template metadata edit', async () => {
         it('[6303]: [Edit Case Template] Template metadata edit', async () => {
             await navigationPage.gotoSettingsPage();
@@ -297,7 +298,7 @@ describe('Case Template', () => {
         });
     });
 
-    //ptidke-check
+    //ptidke-pass
     it('[6305]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -331,7 +332,7 @@ describe('Case Template', () => {
         await consoleCasetemplatePo.removeColumnFromGrid(column1);
     });
 
-    //ptidke
+    //ptidke-check
     it('[4940]: Case Agent from owner company can create a case using the template', async () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

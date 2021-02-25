@@ -125,6 +125,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.isReviewPendingButtonDisplayed();
         })
         afterAll(async () => {
+        
             await utilityCommon.closeAllBlades();
         });
     });
@@ -156,9 +157,11 @@ describe('Knowledge Article', () => {
             expect(await editKnowledgePage.getKnowledgeMetaDataValue('Support Group')).toBe(suppGrpData.orgName);
         });
         afterAll(async () => {
+            await utilityCommon.closePopUpMessage();
             await utilityCommon.closeAllBlades();
         });
     });
+
     it('[3902]: Assignment fields is not available on Status Change blade except when Status= SME Review', async () => {
         await navigationPage.gotoKnowledgeConsole();
         await navigationPage.signOut();
@@ -306,7 +309,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //pass
+  //defect-  DRDMV-24965
     it('[5702]: Review article in SME Review status & Approve article', async () => {
         try {
             let knowledgeTitile = 'knowledge5058' + randomStr;
@@ -363,7 +366,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //pass
+   
     it('[5701]: Review article in SME Review status & Reject article', async () => {
         try {
             let knowledgeTitile = 'knowledge5059' + randomStr;
@@ -417,7 +420,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //pass
+   
     it('[6000]: Assign SME - Reviewer assignment UI validation', async () => {
         try {
             let knowledgeTitile = 'knowledge2433' + randomStr;
@@ -459,7 +462,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    
+    //DRDMV-25171
     it('[6069]: [Article Creation] Ability to select the knowledge set during article creation', async () => {
         let knowledgeTitle = 'knowledgeCoachUser1914' + randomStr;
         await navigationPage.gotoKnowledgeConsole();
@@ -470,10 +473,11 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnTemplate('Reference');
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
-        await createKnowledgePage.selectKnowledgeSet('HR');
         await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
         await createKnowledgePage.selectCategoryTier2Option('Compensation');
         await createKnowledgePage.selectCategoryTier3Option('Bonus');
+        expect(await createKnowledgePage.isSaveButtonEnabled()).toBeFalsy('Save Button is enabled');
+        await createKnowledgePage.selectKnowledgeSet('HR');
         await createKnowledgePage.selectRegionDropDownOption('Americas');
         await createKnowledgePage.selectSiteGroupDropDownOption('Human Resources')
         await createKnowledgePage.selectSiteDropDownOption('Houston');
@@ -482,8 +486,6 @@ describe('Knowledge Article', () => {
         expect(await createKnowledgePage.getValueOfCategoryTier1()).toContain('Employee Relations', 'value not matched with expected');
         expect(await createKnowledgePage.getValueOfCategoryTier2()).toContain('Compensation', 'value not matched with expected');
         expect(await createKnowledgePage.getValueOfCategoryTier3()).toContain('Bonus', 'value not matched with expected');
-        expect(await createKnowledgePage.isSaveButtonEnabled()).toBeFalsy('Save Button is enabled');
-        await createKnowledgePage.selectKnowledgeSet('HR');
         expect(await createKnowledgePage.getKnowledgeSetValue()).toContain('HR', 'expected Value not present');
         expect(await createKnowledgePage.isSaveButtonEnabled()).toBeTruthy('Save Button is disabled');
         await createKnowledgePage.clickOnSaveKnowledgeButton();
@@ -491,9 +493,10 @@ describe('Knowledge Article', () => {
         await navigationPage.gotoKnowledgeConsole();
         await utilityGrid.clearFilter();
         await utilityGrid.searchRecord(knowledgeTitle);
+        await utilityGrid.addGridColumn(["Knowledge Set"]);
         expect(await knowledgeArticlesConsolePo.isValueDisplayedInGrid('Knowledge Set')).toContain('HR', 'HR not display on Knowledge Console');
     });
-    //pass
+   
     it('[6076]: [Knowledge Article] Access to the Create Knowledge view (Negative)', async () => {
         try {
             await navigationPage.signOut();
@@ -510,7 +513,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    
+   
     it('[5899]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {
             let knowledgeTitle = 'knowledge2887' + randomStr;
@@ -521,7 +524,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeTitle);
             await createKnowledgePage.selectKnowledgeSet('HR');
             await createKnowledgePage.selectRegionDropDownOption('Americas');
-            await createKnowledgePage.selectSiteGroupDropDownOption('Human Resources')
+            await createKnowledgePage.selectSiteGroupDropDownOption('Human Resources');
             await createKnowledgePage.selectSiteDropDownOption('Houston');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
@@ -529,15 +532,18 @@ describe('Knowledge Article', () => {
             expect(await viewKnowledgeArticlePo.getSiteGroupValue()).toBe('Human Resources');
             expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Houston');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            await editKnowledgePage.selectRegionDropDownOption('Americas');
-            await editKnowledgePage.selectSiteDropDownOption('Houston');
+            await editKnowledgePage.selectRegionDropDownOption('Asia-Pac');
+            await editKnowledgePage.selectSiteGroupDropDownOption('Engineering')
+            await editKnowledgePage.selectSiteDropDownOption('Canberra');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             await utilityCommon.closePopUpMessage();
-            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Americas');
-            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Houston');
+            expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('Asia-Pac');
+            expect(await viewKnowledgeArticlePo.getSiteValue()).toBe('Canberra');
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             await editKnowledgePage.removeRegionValue();
+            await editKnowledgePage.removeSiteValue();
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
             expect(await viewKnowledgeArticlePo.getRegionValue()).toBe('-');
             expect(await viewKnowledgeArticlePo.getSiteValueAfterClear()).toBe('-');
             await navigationPage.gotoCreateKnowledge();
@@ -560,15 +566,17 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //pass
+
     describe('[6350]: [Permissions] Settings menu for Knowledge Functional Roles', () => {
         it('[6350]: [Permissions] Settings menu for Knowledge Functional Roles', async () => {
             //Validation of Knowledge Coach Settings Permission
             await navigationPage.signOut();
             await loginPage.login(knowledgeCoachUser);
+            await navigationPage.switchToApplication('Knowledge Management');
             await navigationPage.gotoSettingsPage();
             let knowledgeManagementList: string[] = ['Approvals', 'Article Template Styles', 'Article Templates', 'Knowledge Sets', 'Notes Template', 'Status Configuration', 'Knowledge Management'];
             expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.switchToApplication('Knowledge Management');
             await navigationPage.gotoSettingsPage();
             expect(await navigationPage.isSettingSubMenusMatches("Knowledge Management", knowledgeManagementList)).toBeTruthy("Sub menu items not matching");
@@ -607,7 +615,7 @@ describe('Knowledge Article', () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
     });
-    
+
     describe('[5882]: Article creation and possible status changes - Knowledge Publisher & Coach', async () => {
         let KADetails, KACoachDetails, articleDataCoach;
         beforeAll(async () => {
