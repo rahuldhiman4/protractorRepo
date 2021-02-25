@@ -20,7 +20,7 @@ export interface IIDs {
     id: string;
     displayId: string;
 }
-xdescribe('Global Search Category Validation', () => {
+describe('Global Search Category Validation', () => {
     let caseModule = "Case";
     let taskModule = "Task";
     let KAModule = "Knowledge Article";
@@ -38,27 +38,17 @@ xdescribe('Global Search Category Validation', () => {
         let numYear: number = objDate.getFullYear();
         year = new Number(numYear).toString();
 
-        let numMonth: number = objDate.getUTCMonth() + 1;
+        let numMonth: number = objDate.getMonth() + 1;
         let monthArr: string[] = ["Null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
-        let numDate: number = objDate.getUTCDate();
+        let numDate: number = objDate.getDate();
         let date1 = new Number(numDate);
         date = date1.toString();
 
         updatedDate = month + " " + date + ", " + year;
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -205,13 +195,13 @@ xdescribe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg26: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg27: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg28: Source Value is missing');
-            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg29: Reqester Site Value is missing');
+            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n10431 Morado Circle\nAvalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
             expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg30: Assignee Name is missing');
             expect(await casePreviewPo.getAssigneeDetails()).toContain('CA Support 1', 'FailureMsg31: Assigned Support Group Value is missing');
             expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'FailureMsg32: Assigned Company Value is missing');
         });
         it('[4334]: Verify Modules Catergoy drop down ', async () => {
-            let category: string[] = ['', 'All', 'Case', 'Task', 'People', 'Knowledge', 'Document', 'Case Template', 'Task Template'];
+            let category: string[] = ['All', 'Case', 'Task', 'People', 'Knowledge', 'Document', 'Case Template', 'Task Template'];
             expect(await searchPo.isCategoryAllDropDownValuesMatches(category)).toBeTruthy('FailureMsg33: Category options mismatch');
         });
     });
@@ -291,7 +281,7 @@ xdescribe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
-            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n' + '10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
+            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n10431 Morado Circle\nAvalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
             expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg43: Assignee Name is missing');
             expect(await casePreviewPo.getAssigneeDetails()).toContain('CA Support 1', 'FailureMsg44: Assigned Support Group Value is missing');
             expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco');
@@ -299,6 +289,7 @@ xdescribe('Global Search Category Validation', () => {
             // Search Case with case description
             await searchPo.searchRecord(description);
             expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (2)', caseModule)).toBeTruthy('FailureMsg47: Case module title is missing');
+            browser.sleep(3000); //Wait until record display on left pannel
             await searchPo.clickOnLeftPannelRecord(caseDisplayId2[0], caseModule);
             expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseDisplayId2[0])).toBeTruthy('FailureMsg48: Case id is missing');
             expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeTruthy('FailureMsg49: Case Description is missing');
@@ -381,7 +372,7 @@ xdescribe('Global Search Category Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId4[0], caseModule)).toBeTruthy(`FailureMsg90: ${caseDisplayId4[0]} case id  is displayed`);
             await searchPo.searchRecord(description);
             expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (3)', caseModule)).toBeTruthy('FailureMsg92: Case module title is missing');
-
+            await browser.sleep(3000)//wait until record display
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[0], caseModule)).toBeTruthy(`FailureMsg93: ${caseDisplayId2[0]} case id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId2[1], caseModule)).toBeTruthy(`FailureMsg94: ${caseDisplayId2[1]} case id  is missing`);
 
@@ -457,7 +448,7 @@ xdescribe('Global Search Category Validation', () => {
 
         it('[4307]: Verify Cases are accessible to user belonging to multiple Line of business Case Manager', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await utilityGrid.selectLineOfBusiness('Facilities');
             await navigationPage.gotoSearch();
             await searchPo.selectCategoryDropDownValue(caseModule);
@@ -714,7 +705,7 @@ xdescribe('Global Search Category Validation', () => {
 
         it('[4296]: Verify Tasks are accessible to user belonging to multiple Line of business Case Manager', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSearch();
             await searchPo.selectCategoryDropDownValue(taskModule);
             await searchPo.searchRecord(summary);
