@@ -115,7 +115,7 @@ export class GridOperations {
         if (guid) { gridLocatorStr = `[rx-view-component-id="${guid}"] ${this.selectors.gridRows}`; }
         let rowLocator = await $$(gridLocatorStr);
         for (let i: number = 0; i < rowLocator.length; i++) {
-            let linkText = await $$(gridLocatorStr).get(i).$(this.selectors.gridRowHyperLinks).getText();
+            let linkText = (await (await (await $$(gridLocatorStr).get(i)).$(this.selectors.gridRowHyperLinks)).getText());
             if (linkText.trim() == value) {
                 await $$(gridLocatorStr).get(i).$(this.selectors.gridCheckbox).click();
                 break;

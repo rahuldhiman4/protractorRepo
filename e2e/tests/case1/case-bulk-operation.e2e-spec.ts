@@ -73,8 +73,8 @@ describe('Case Bulk Operation', () => {
             caseId[i] = response.displayId;
         }
         await utilityGrid.searchRecord(caseDataForTest.Summary);
-        for (let i: number = 0; i < 3; i++) {
-            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
+        for (let j: number = 0; j < 3; j++) {
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[j]);
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, 'United States Support', 'US Support 3', "Qiao Feng");
@@ -104,9 +104,9 @@ describe('Case Bulk Operation', () => {
             caseDataForTest = caseData['bulkCaseAssignee_New'];
             await apiHelper.apiLogin(qfengStr);
             caseDataForTest.Summary = "4383 Bulk Case Assignee";
-            for (let i: number = 0; i < 3; i++) {
+            for (let k: number = 0; k < 3; k++) {
                 let response = await apiHelper.createCase(caseDataForTest);
-                caseId[i] = response.displayId;
+                caseId[k] = response.displayId;
             }
             await utilityGrid.clickRefreshIcon();
         });

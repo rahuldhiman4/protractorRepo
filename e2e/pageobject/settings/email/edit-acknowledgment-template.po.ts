@@ -27,7 +27,7 @@ class EditAcknowledgementTemplate {
         msgCheckBox: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] span.radio__label',
         editPencilButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-left-pencil',
         statusField: '[rx-view-component-id="2b5a61a3-16f8-4d1f-9a60-558c4575ed3a"] button',
-        lobValue: '[rx-view-component-id="c6cbd5e4-3897-493c-a7e0-455c8262e198"] button'
+        lobValue: '[rx-view-component-id="c6cbd5e4-3897-493c-a7e0-455c8262e198"] button div'
     }
 
     async getTemplateName(): Promise<string> {

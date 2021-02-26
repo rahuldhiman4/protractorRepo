@@ -9,7 +9,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-xdescribe("Task Approval Mapping Tests", () => {
+describe("Task Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
     const companyStr = "Company";
     const statusTriggerStr = "Status Trigger";
@@ -17,7 +17,7 @@ xdescribe("Task Approval Mapping Tests", () => {
     const statusMappingNoApproverFoundStr = "No Approval Found";
     const statusMappingRejectedStr = "Rejected";
     const statusMappingErrorStr = "Error";
-    const approvalTriggerMsg = "Approval process starts when the case has above status.";
+    const approvalTriggerMsg = "Approval process starts when the task has above status.";
     const approvalMappingMsg = "Mapping the result of the approval process to the task status.";
     const approvalStatusMappingLabel = "Status mapping:";
     let taskModule = 'Task';
@@ -28,25 +28,6 @@ xdescribe("Task Approval Mapping Tests", () => {
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(taskModule);
-        userData = {
-            "firstName": "Petramco",
-            "lastName": "SGUser1",
-            "userId": "22653User",
-            "userPermission": ["Case Business Analyst", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource"]
-        }
-        await apiHelper.createNewUser(userData);
-        await apiHelper.associatePersonToCompany(userData.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData.userId, "US Support 3");
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
     });
 
     afterAll(async () => {
@@ -329,13 +310,13 @@ xdescribe("Task Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
             await createApprovalMappingPage.selectCompany('Petramco');
 
-            //Verify no. of fields displayed on Add Approval Mapping screen
+            //Verify no. of fields displayed on Create Approval Mapping screen
             expect(await createApprovalMappingPage.isApprovalMappingFieldDisplayed(approvalMappingNameStr)).toBeTruthy();
             expect(await createApprovalMappingPage.isApprovalMappingFieldDisplayed(companyStr)).toBeTruthy();
             expect(await createApprovalMappingPage.isApprovalMappingStatusTriggerFieldDisplayed(statusTriggerStr)).toBeTruthy();
@@ -344,7 +325,7 @@ xdescribe("Task Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isApprovalMappingFieldDisplayed(statusMappingRejectedStr)).toBeTruthy();
             expect(await createApprovalMappingPage.isApprovalMappingFieldDisplayed(statusMappingErrorStr)).toBeTruthy();
 
-            //Verify the mandatory and optionals fields on Add Approval Mapping screen
+            //Verify the mandatory and optionals fields on Create Approval Mapping screen
             expect(await createApprovalMappingPage.isApprovalMappingNameFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isCompanyFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isStatusTriggerFieldMandatory()).toBeTruthy();
@@ -509,7 +490,7 @@ xdescribe("Task Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeTruthy('Task Approval Mapping for Facilities LOB are displayed to the Case Manager of same LOB');
         });
 
@@ -517,7 +498,7 @@ xdescribe("Task Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
@@ -525,15 +506,16 @@ xdescribe("Task Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
         it('[3592,3514]: Verify Task Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            // HR and Facilities CaseManager
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
 
@@ -545,7 +527,7 @@ xdescribe("Task Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr)).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
 
@@ -618,7 +600,7 @@ xdescribe("Task Approval Mapping Tests", () => {
             expect(await utilityGrid.isGridRecordPresent(taskApprovalMappingStr + "_update")).toBeFalsy('Task Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr + "_update");
-            await createApprovalMappingPage.selectCompany('Petramco');
+            await createApprovalMappingPage.selectCompany('- Global -');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
             await createApprovalMappingPage.selectStatusMappingRejected('Approval Rejected');
@@ -673,9 +655,9 @@ xdescribe("Task Approval Mapping Tests", () => {
 
         it('[3411]: Task approval mapping creation with case Business analyst permission', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(taskApprovalMappingStr);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -700,13 +682,14 @@ xdescribe("Task Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectTaskTemplateCheckbox();
             expect(await editApprovalMappingPage.isSelectTaskTemplateforApprovalLeftArrawBtnEnabled()).toBeFalsy('Left Arrow button to select task template is disabled');
             await editApprovalMappingPage.clickTaskTemplateforApprovalRightArrawBtn();
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
 
         it('[3411]: Verify task approval mapping details with respect to case manager permission', async () => {
             await navigationPage.signOut();
             await loginPage.login("qdu");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             expect(await approvalMappingConsolePage.isCreateApprovalMappingButtonDisplayed()).toBeFalsy('Create Approval Mapping Button is displayed.');
             await utilityGrid.searchAndOpenHyperlink(taskApprovalMappingStr);
             expect(await editApprovalMappingPage.isApprovalMappingNameDisabled()).toBeTruthy('Approval Mapping Name is editable');
