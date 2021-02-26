@@ -30,8 +30,8 @@ class ServiceTargetConfig {
         valueSearch: ' input[type="search"]',
         addButton: '.d-textfield__label .margin-top-10 button',
         expressionBuilderBtn: '[rx-view-component-id="1f691b31-30f7-4feb-b4f2-8972a616f2fe"] button',
-        termsAndConditionsFieldGuid:'94891fe1-781f-4f94-bcce-12425862d97d',
-        selectStatusField: '[rx-view-component-id="dc8c4074-db37-4910-96c0-b16d2be23b7e"] button',
+        termsAndConditionsFieldGuid: '94891fe1-781f-4f94-bcce-12425862d97d',
+        selectStatusField: '[rx-view-component-id="db4792dc-4198-416c-b8ea-6afec63491ea"] button',
         selectBusinessEntity: `//button//div[text()='Select Business Entity']`,
         fieldNameLabel: `//*[contains(@class,'form-control-label')]//span`,
         noMileStonesPresentText: '.adapt-accordion .card .no-record-found',
@@ -50,11 +50,10 @@ class ServiceTargetConfig {
         });
     }
 
-    async getError(errorMsg:string): Promise<string> {
+    async getError(errorMsg: string): Promise<string> {
         return await $(this.selectors.errorMsg).isPresent().then(async (result) => {
             if (result) {
-                console.log('errorMsg: ',errorMsg)
-                await element(by.cssContainingText(this.selectors.errorMsg, errorMsg)).getText();
+                return (await element(by.cssContainingText(this.selectors.errorMsg, errorMsg)).getText()).trim();
             } else {
                 return null;
             }
@@ -70,7 +69,7 @@ class ServiceTargetConfig {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.createServiceTargetButton)));
         await $(this.selectors.createServiceTargetButton).click();
         //        await browser.wait(this.EC.visibilityOf(element(by.model(this.selectors.svtTitle))));
-        
+
         await $(this.selectors.svtTitle).sendKeys(svtTitleStr);
         await this.selectCompany(company);
         await this.selectDataSource(dataSource);
@@ -94,7 +93,7 @@ class ServiceTargetConfig {
     }
 
     async selectGoalType(svtGoalType: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.selectGoalTypeGuid,svtGoalType);
+        await utilityCommon.selectDropDown(this.selectors.selectGoalTypeGuid, svtGoalType);
     }
 
     async selectStatus(svtStatus: string): Promise<void> {
@@ -113,7 +112,7 @@ class ServiceTargetConfig {
 
 
     async isTermsAndConditionsFieldMandatory(): Promise<boolean> {
-    return await utilityCommon.isRequiredTagToField(this.selectors.termsAndConditionsFieldGuid)
+        return await utilityCommon.isRequiredTagToField(this.selectors.termsAndConditionsFieldGuid)
     }
 
     async clickOnBuildExpression(): Promise<void> {
@@ -149,22 +148,22 @@ class ServiceTargetConfig {
         await $$(this.selectors.segmentsArrow).get(1).click();
     }
 
-    async selectExpressionForMeasurement(measurementExp: number, field: string, operator: string, fieldvalue: string,DropDown?: string) {
+    async selectExpressionForMeasurement(measurementExp: number, field: string, operator: string, fieldvalue: string, DropDown?: string) {
         //        browser.sleep(2000);
         await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).get(measurementExp).click();
         //        browser.sleep(2000);
         await SlmExpressionBuilder.clearSelectedExpression();
-        await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldvalue,DropDown);
-      //  await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
+        await SlmExpressionBuilder.selectExpressionQualification(field, operator, fieldvalue, DropDown);
+        //  await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
         await SlmExpressionBuilder.clickOnSaveExpressionButton();
     }
 
-    async selectExpressionForMeasurementForTask(measurementExp: number, field: string, operator: string, fieldvalue: string,DropDown?: string) {
+    async selectExpressionForMeasurementForTask(measurementExp: number, field: string, operator: string, fieldvalue: string, DropDown?: string) {
         //        browser.sleep(2000);
         await $$(this.selectors.segments).get(1).$$(this.selectors.buildExpressionLink).get(measurementExp).click();
         //        browser.sleep(2000);
-        await SlmExpressionBuilder.selectExpressionQualificationForTask(field, operator, fieldvalue,DropDown);
-      //  await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
+        await SlmExpressionBuilder.selectExpressionQualificationForTask(field, operator, fieldvalue, DropDown);
+        //  await SlmExpressionBuilder.clickOnAddExpressionButton(fieldAttribute);
         await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
     }
 

@@ -6,12 +6,12 @@ class EditApprovalMapping {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        editApprovalMappingHeading: '.modal-header h3',
+        editApprovalMappingHeading: 'div.dp-header',
         approvalMappingName: '[rx-view-component-id="e61d8b24-3856-4757-b331-6586df50d2fb"] input',
         approvalMappingNameField: '[rx-view-component-id="e61d8b24-3856-4757-b331-6586df50d2fb"] input',
         approvalMappingNameGuid: 'e61d8b24-3856-4757-b331-6586df50d2fb',
         companyGuid: 'de24ae3b-7dff-44b6-8ad1-4753fb3e7317',
-        flowsetGuid: 'e21aa42f-8382-4607-80eb-43fa0a729965',
+        flowsetGuid: '09a37d8d-389a-450e-b790-6374afe1490f',
         statusTriggerDropDownGuid: '4df61be6-76a3-415c-a019-326402c27320',
         statusMappingApproved: '5e2c3279-0fdc-457e-b7dd-613030158ea9',
         statusMappingNoApprovalFound: '36141aed-2601-46d4-ab38-57b7089000c1',
@@ -30,15 +30,15 @@ class EditApprovalMapping {
         cancelButton: '[rx-view-component-id="da40842c-69c6-41ec-8871-0db58e48eb44"] button',
         caseTemplateSelectionHelpText: '[rx-view-component-id="4f699ae0-5f65-461d-b8d3-f2a247781674"] p',
         caseTemplateLabel: '[rx-view-component-id="64e986dc-0751-41f9-864a-7bf8c54fb0ad"] .bottom-margin',
-        selectCaseTemplateInputField: '[rx-view-component-id="64e986dc-0751-41f9-864a-7bf8c54fb0ad"] input',
-        selectCaseTemplateBtn: 'button.d-icon-arrow_right',
-        deselectCaseTemplateBtn: 'button.d-icon-arrow_left',
-        searchedCaseTemplateText: '.km-group-list-item__info .title span',
-        selectCaseTemplate: 'div .d-icon-square_o',
-        caseTemplateSelectionArea: '.list-container',
-        searchedCaseTemplatesRecords: '.record-list-item',
+        selectCaseTemplateInputField: '[rx-view-component-id="64e986dc-0751-41f9-864a-7bf8c54fb0ad"] .adapt-search-field',
+        selectCaseTemplateBtn: 'button .d-icon-arrow_right',
+        deselectCaseTemplateBtn: 'button .d-icon-arrow_left',
+        searchedCaseTemplateText: '.list-item',
+        selectCaseTemplate: 'input.checkbox__input',
+        caseTemplateSelectionArea: 'div.bwf-association-list',
+        searchedCaseTemplatesRecords: 'li.list-group-item',
         casesCreatedWithoutTemplateToggleBtnGuid: '3e737bb6-57aa-48e3-8a0c-993d9d2f6643',
-        lobValue: '[rx-view-component-id="a8ef078e-4681-420b-acbb-2c4aaebcf5bc"] .pull-left'
+        lobValue: '[rx-view-component-id="96240a43-ed37-4cd2-a2c4-1d209e5ef96f"] div'
     }
 
     async getEditApprovalMappingHeaderText(): Promise<string> {
@@ -87,7 +87,7 @@ class EditApprovalMapping {
             }
         }
         let locator = `[rx-view-component-id="${dropDownGuid}"] button`;
-        return await $(locator).getAttribute("disabled") == "true" ? true : false;
+        return await $(locator).getAttribute("aria-disabled") == "true" ? true : false;
     }
 
     async isCasesCreatedWithoutTemplateToggleDisabled(): Promise<boolean> {
@@ -268,9 +268,8 @@ class EditApprovalMapping {
     }
 
     async isCaseCreatedUsingTemplateGoInApprovalToggleFalse(): Promise<boolean> {
-        const togglebutton = await $(`[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"]`);
-        let enableButton = await togglebutton.$('.d-icon-check').getAttribute('aria-pressed');
-        let disableButton = await togglebutton.$('.d-icon-circle_slash_o').getAttribute('aria-pressed');
+        let enableButton = await $$(`[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"] button`).first().getAttribute('aria-pressed');
+        let disableButton = await $$(`[rx-view-component-id="${this.selectors.casesCreatedWithoutTemplateToggleBtnGuid}"] button`).last().getAttribute('aria-pressed');
         return enableButton == 'false' && disableButton == 'true';
     }
 

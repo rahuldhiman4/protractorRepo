@@ -7,7 +7,7 @@ class ApprovalMappingConsole {
 
     selectors = {
         createApprovalMapping: '[rx-view-component-id="b811f637-d94e-4850-8423-25e6f525f319"] button',
-        deleteButton: '.d-icon-left-cross',
+        deleteButton: '.d-icon-left-trash',
         gridGUID:'8f270429-325e-4c59-b100-8d1c269ddc16',
     }
 

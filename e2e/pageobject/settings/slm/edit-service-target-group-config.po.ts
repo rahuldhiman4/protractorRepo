@@ -4,10 +4,10 @@ class BusinessTimeSegmentConfigEditPage {
 
     selectors = {
         svtGroupName: '[rx-view-component-id="ec6c5279-a6da-4777-b1eb-2b9cf191d1ee"] input',
-        svtSelect: '[rx-view-component-id="76fd6f88-70a6-4867-bc8e-7cf91f77426b"] input',
-        saveButton: '[rx-view-component-id="e78f6759-c6c6-4063-be91-f39ed3640f5d"] button',
-        closeButton: '[rx-view-component-id="27e9bed8-8fbf-416e-bd94-a399f4b9ec18"] button',
-        selectAvailabelServiceTargetIcon: '[rx-view-component-id="76fd6f88-70a6-4867-bc8e-7cf91f77426b"] button',
+        svtSelect: '[rx-view-component-id="f872bc67-2370-4538-871c-5d228b9dd9aa"] input',
+        saveButton: '[rx-view-component-id="aa1df32c-323b-4a6d-a34d-7503d23d346b"] button',
+        cancelButton: '[rx-view-component-id="59cb600c-a580-4b25-b50a-02da50e79fbf"] button',
+        selectAvailabelServiceTargetIcon: '[rx-view-component-id="f872bc67-2370-4538-871c-5d228b9dd9aa"] div.checkbox',
         serviceTargetInGroup: '[rx-view-component-id="76fd6f88-70a6-4867-bc8e-7cf91f77426b"] .checkbox__item'
     }
 
@@ -24,15 +24,15 @@ class BusinessTimeSegmentConfigEditPage {
     }
 
     async isSVTSelectRadioBtnDisabled(): Promise<boolean> {
-        return await $$(this.selectors.svtSelect).first().getAttribute('disabled') == 'true';
+        return await $$(this.selectors.svtSelect).get(1).getAttribute('disabled') == 'true';
     }
 
     async isSaveBtnEnabled(): Promise<boolean> {
         return await $$(this.selectors.saveButton).first().isEnabled();
     }
 
-    async clickClose(): Promise<void> {
-        await $$(this.selectors.closeButton).last().click();
+    async clickcancel(): Promise<void> {
+        await $$(this.selectors.cancelButton).last().click();
     }
 
     async clickSaveButton(): Promise<void> {

@@ -3,7 +3,7 @@ import { $ } from "protractor";
 class ServiceTargetGroupConsolePage {
     selectors = {
         addServiceTargetGroup: '[rx-view-component-id="57be1b9a-c969-49d3-830a-8af8acd7e774"] button',
-        deleteButton: '.d-icon-left-cross'
+        deleteButton: '.d-icon-left-trash'
     }
 
     async isAddServiceTargetGroupBtnVisible(): Promise<boolean> {

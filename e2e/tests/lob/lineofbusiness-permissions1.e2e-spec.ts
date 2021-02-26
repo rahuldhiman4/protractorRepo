@@ -742,7 +742,7 @@ xdescribe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
             await utilityGrid.searchAndOpenHyperlink(randomStr + "Group");
             expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('5866');
-            await editServiceTargetGroupConfigPo.clickClose();
+            await editServiceTargetGroupConfigPo.clickcancel();
 
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
@@ -771,7 +771,7 @@ xdescribe('Line of Business Permission Tests', () => {
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target Group', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET_GROUP);
             await utilityGrid.searchAndOpenHyperlink(randomStr + "Group");
             expect(await editServiceTargetGroupConfigPo.getServiceTargetInGroup()).toBe('5866');
-            await editServiceTargetGroupConfigPo.clickClose();
+            await editServiceTargetGroupConfigPo.clickcancel();
         });
         afterAll(async () => {
             await navigationPage.signOut();
