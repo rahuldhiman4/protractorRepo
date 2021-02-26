@@ -570,7 +570,6 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr1.includes('Company')).toBeTruthy(`Company is missing`);
             expect(dynamicFilterArr1.includes('Created Date')).toBeTruthy(`Created Date is missing`);
             expect(dynamicFilterArr1.includes('ID')).toBeTruthy(`ID is missing`);
-            expect(dynamicFilterArr1.includes('Label')).toBeTruthy(`Label is missing`);
             expect(dynamicFilterArr1.includes('Modified By')).toBeTruthy(`Modified By is missing`);
             expect(dynamicFilterArr1.includes('Modified Date')).toBeTruthy(`Modified Date is missing`);
             expect(dynamicFilterArr1.includes('Priority')).toBeTruthy(`Priority is missing`);
@@ -621,7 +620,6 @@ describe('Preset Filter Funcational Verification', () => {
             expect(dynamicFilterArr2.includes('Company')).toBeTruthy(`Company is missing`);
             expect(dynamicFilterArr2.includes('Created Date')).toBeTruthy(`Created Date is missing`);
             expect(dynamicFilterArr2.includes('ID')).toBeTruthy(`ID is missing`);
-            expect(dynamicFilterArr2.includes('Label')).toBeTruthy(`Label is missing`);
             expect(dynamicFilterArr2.includes('Modified By')).toBeTruthy(`Modified By is missing`);
             expect(dynamicFilterArr2.includes('Modified Date')).toBeTruthy(`Modified Date is missing`);
             expect(dynamicFilterArr2.includes('Priority')).toBeTruthy(`Priority is missing`);

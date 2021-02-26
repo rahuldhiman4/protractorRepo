@@ -295,7 +295,6 @@ describe('Case Console Filter Combinations', () => {
         });
         it('[12078]:Verify records are fetched on case console with Label and Assigned group combinations', async () => {
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Label', label, 'text');
             await utilityGrid.addFilter('Assigned Group', 'US Support 3', 'text');
             await utilityGrid.clickRefreshIcon();
             for (let i: number = 3; i < 4; i++) {
