@@ -497,14 +497,14 @@ describe('Case Status Configuration', () => {
             await navigationPage.signOut();
             await loginPage.login('mcarney');
         });
-        it('[4608]:Delete non mandatory and custom status for task', async () => {
+        it('[4608]:Delete non mandatory and custom status 1', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
         });
-        it('[4608]:Delete non mandatory and custom status for task', async () => {
+        it('[4608]:Delete non mandatory and custom status 2', async () => {
             await apiHelper.apiLogin('mcarney');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
@@ -523,7 +523,7 @@ describe('Case Status Configuration', () => {
             taskId = await viewTaskPo.getTaskID();
 
         });
-        it('[4608]:Delete non mandatory and custom status for task', async () => {
+        it('[4608]:Delete non mandatory and custom status 3', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'task');
@@ -535,7 +535,7 @@ describe('Case Status Configuration', () => {
             expect(await utilityCommon.isPopUpMessagePresent("Tasks with this status are present")).toBeTruthy("Tasks with this status are present");
         });
 
-        it('[4608]:Delete non mandatory and custom status for task', async () => {
+        it('[4608]:Delete non mandatory and custom status 4', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
@@ -543,7 +543,7 @@ describe('Case Status Configuration', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
         });
-        it('[4608]:Delete non mandatory and custom status for task', async () => {
+        it('[4608]:Delete non mandatory and custom status 5', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'task');
@@ -554,7 +554,7 @@ describe('Case Status Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[4608]:Delete non mandatory and custom status for task', async () => {
+        it('[4608]:Delete non mandatory and custom status 6', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -565,14 +565,14 @@ describe('Case Status Configuration', () => {
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned"); // stage
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 7', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown("Phylum", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 8', async () => {
             await apiHelper.apiLogin('mcarney');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
@@ -580,7 +580,7 @@ describe('Case Status Configuration', () => {
             expect(await viewCasePo.getCaseStatusValue()).toBe('customStatus');
 
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 9', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown("Phylum", 'case');
@@ -592,14 +592,14 @@ describe('Case Status Configuration', () => {
             expect(await utilityCommon.isPopUpMessagePresent("Cases with this status are present.")).toBeTruthy();
 
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 10', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
             expect(await viewCasePo.getCaseStatusValue()).toBe("Assigned");
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 11', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown("Phylum", 'case');
@@ -609,13 +609,13 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickOnDeleteButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 12', async () => {
             await apiHelper.apiLogin('mcarney');
             caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 13', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Petramco', 'knowledge');
