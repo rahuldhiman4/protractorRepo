@@ -44,11 +44,11 @@ describe('Global Search All Category', () => {
         let numYear: number = objDate.getFullYear();
         year = new Number(numYear).toString();
 
-        let numMonth: number = objDate.getUTCMonth() + 1;
+        let numMonth: number = objDate.getMonth() + 1;
         let monthArr: string[] = ["Null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
-        let numDate: number = objDate.getUTCDate();
+        let numDate: number = objDate.getDate();
         let date1 = new Number(numDate);
         date = date1.toString();
 

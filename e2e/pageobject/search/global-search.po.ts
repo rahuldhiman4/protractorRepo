@@ -22,7 +22,8 @@ class GlobalSearch {
         peopleGuid: '04d2b294-42c4-4d11-ac7a-4d17b5621f70',
         caseTemplatesGuid: 'e69a451f-fccb-488b-ab70-33018801f747',
         taskTemplateGuid: 'fe57b0e4-2546-407e-a2ea-c6f01868a835',
-        recentSearchDropDownValue: '.dropdown-item'
+        recentSearchDropDownValue: '.dropdown-item',
+        recentSearchDropDown: '[rx-view-component-id="8d5a0a18-39ae-4305-bf38-c13e53cb957e"] .dropdown-menu'
     }
 
     async searchRecord(record: string): Promise<void> {
@@ -97,6 +98,15 @@ class GlobalSearch {
     async getCountOfRecentDropDownValue(value: string): Promise<number> {
         return await element.all(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).count();
     }
+
+    async isRecentSearchDropdownPopupDisplayed(): Promise<boolean> {
+        return await $(this.selectors.recentSearchDropDown).isPresent().then(async (link) => {
+            if (link) {
+                return await $$(this.selectors.recentSearchDropDown).isDisplayed();
+            } else return false;
+        });
+    }
+
 
     async isRecentSearchesDropDownValueDisplayed(value: string): Promise<boolean> {
         return await element(by.cssContainingText(this.selectors.recentSearchDropDownValue, value)).isPresent().then(async (link) => {
