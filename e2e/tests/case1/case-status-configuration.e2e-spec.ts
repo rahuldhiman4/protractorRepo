@@ -456,56 +456,56 @@ describe('Case Status Configuration', () => {
             // await browser.sleep(7000); //Wait to reflect the user created above
             caseData =
                 {
-                    "Requester": 'apavlik',
+                    "Requester": 'rflanagan',
                     "Summary": randomStr + "test",
-                    "Assigned Company": "Petramco",
-                    "Business Unit": "United States Support",
-                    "Support Group": "US Support 3",
-                    "Assignee": 'qkatawazi'
+                    "Assigned Company": "Phylum",
+                    "Business Unit": "Phylum Support Org1",
+                    "Support Group": "Phylum Support Group1",
+                    "Assignee": 'mcarney'
                 }
             caseDataInProgress =
                 {
-                    "Requester": 'apavlik',
+                    "Requester": 'rflanagan',
                     "Summary": randomStr + "test",
-                    "Assigned Company": "Petramco",
-                    "Business Unit": "United States Support",
-                    "Support Group": "US Support 3",
-                    "Assignee": 'qkatawazi',
+                    "Assigned Company": "Phylum",
+                    "Business Unit": "Phylum Support Org1",
+                    "Support Group": "Phylum Support Group1",
+                    "Assignee": 'mcarney',
                     "status": "In Progress",
                 }
 
             knowledgeSetData = {
                 knowledgeSetTitle: "test knowledge" + randomStr,
                 knowledgeSetDesc: "test description",
-                company: 'Petramco'
+                company: 'Phylum'
             }
 
             articleData1 = {
                 "knowledgeSet": knowledgeSetData.knowledgeSetTitle,
                 "title": "KnowledgeArticle" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
-                "company": 'Petramco'
+                "company": 'Phylum'
             }
 
             articleData2 = {
                 "knowledgeSet": knowledgeSetData.knowledgeSetTitle,
                 "title": "KnowledgeArticleData" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
-                "company": 'Petramco'
+                "company": 'Phylum'
             }
 
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('mcarney');
         });
         it('[4608]:Delete non mandatory and custom status for task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Petramco', 'task');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
         });
-        xit('[4608]:Delete non mandatory and custom status for task', async () => {
-            await apiHelper.apiLogin('qkatawazi');
+        it('[4608]:Delete non mandatory and custom status for task', async () => {
+            await apiHelper.apiLogin('mcarney');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
@@ -523,10 +523,10 @@ describe('Case Status Configuration', () => {
             taskId = await viewTaskPo.getTaskID();
 
         });
-        xit('[4608]:Delete non mandatory and custom status for task', async () => {
+        it('[4608]:Delete non mandatory and custom status for task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Petramco', 'task');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -535,7 +535,7 @@ describe('Case Status Configuration', () => {
             expect(await utilityCommon.isPopUpMessagePresent("Tasks with this status are present")).toBeTruthy("Tasks with this status are present");
         });
 
-        xit('[4608]:Delete non mandatory and custom status for task', async () => {
+        it('[4608]:Delete non mandatory and custom status for task', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
@@ -546,7 +546,7 @@ describe('Case Status Configuration', () => {
         it('[4608]:Delete non mandatory and custom status for task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Petramco', 'task');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -568,12 +568,12 @@ describe('Case Status Configuration', () => {
         it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown("Petramco", 'case');
+            await statusConfigPo.setCompanyDropdown("Phylum", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
         });
         it('[4608]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('mcarney');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
@@ -583,7 +583,7 @@ describe('Case Status Configuration', () => {
         it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown("Petramco", 'case');
+            await statusConfigPo.setCompanyDropdown("Phylum", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -602,7 +602,7 @@ describe('Case Status Configuration', () => {
         it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown("Petramco", 'case');
+            await statusConfigPo.setCompanyDropdown("Phylum", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -610,7 +610,7 @@ describe('Case Status Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[4608]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('mcarney');
             caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
@@ -635,7 +635,7 @@ describe('Case Status Configuration', () => {
         it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Petramco', 'knowledge');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Custom");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -652,7 +652,7 @@ describe('Case Status Configuration', () => {
         it('[4608]:Delete non mandatory and custom status', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Petramco', 'knowledge');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Custom");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -661,7 +661,7 @@ describe('Case Status Configuration', () => {
         });
 
         it('[4608]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('mcarney');
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
