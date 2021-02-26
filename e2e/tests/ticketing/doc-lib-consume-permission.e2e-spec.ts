@@ -347,7 +347,7 @@ describe('Document Library Consume Permission', () => {
                 }
                 await apiHelper.apiLogin('tadmin');
                 await apiHelper.deleteDocumentLibrary(publishDocLibData1.docLibTitle);
-                await apiHelper.apiLogin("qgeorge");
+                await apiHelper.apiLogin("qkatawazi");
                 let getFilePath1 = files[i];
                 let docLib = await apiHelper.createDocumentLibrary(publishDocLibData1, getFilePath1);
                 await apiHelper.publishDocumentLibrary(docLib);
@@ -567,16 +567,6 @@ describe('Document Library Consume Permission', () => {
             await apiHelper.createEmailProfile(response.id);
             await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
 
-            caseAgentuserData1 = {
-                "firstName": "CaseManager",
-                "lastName": "WithDocManager",
-                "userId": loginId2,
-                "userPermission": ["Case Manager", "Foundation Read", "Document Manager", "Human Resource"]
-            }
-            await apiHelper.createNewUser(caseAgentuserData1);
-            await apiHelper.associatePersonToCompany(caseAgentuserData1.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(caseAgentuserData1.userId, 'Compensation and Benefits');
-
             publishDocLibData1 = {
                 docLibTitle: 'drdmv13508_publish_document3',
                 company: 'Petramco',
@@ -615,12 +605,12 @@ describe('Document Library Consume Permission', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
-            await apiHelper.apiLogin(caseAgentuserData1.userId + "@petramco.com", password);
+            await apiHelper.apiLogin('qdu');
             await apiHelper.createDocumentLibrary(draftDocLibData, filePath4);
         });
         it('[4769]: Compose Email - Case manager attaches published document from document library where case manager is author of the document', async () => {
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData1.userId + "@petramco.com", password);
+            await loginPage.login('qdu');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
