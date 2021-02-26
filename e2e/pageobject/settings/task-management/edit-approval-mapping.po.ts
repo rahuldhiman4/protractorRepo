@@ -30,11 +30,13 @@ class EditApprovalMapping {
         selectTaskTemplateInputField: '[rx-view-component-id="07719c40-1bd5-4bb3-bc0a-63df14893a90"] .adapt-search-field-wrapper input',
         selectDeselectTaskTemplateBtn: '.bwf-association-actions .btn-secondary',
         searchedTaskTemplateText: '.list-item-active',
-        selectTaskTemplate: '.checkbox__input',
-        taskTemplateSelectionArea: '.bwf-association-selector .list-group',
+        selectTaskTemplate: 'input.checkbox__input',
+        taskTemplateSelectionArea: 'div.bwf-association-list',
         searchedTaskTemplatesRecords: 'list-group-item',
         tasksCreatedWithoutTemplateToggleBtnGuid: '0a3df2cb-8645-4eac-8edf-4846c82c81e7',
-        taskApprovalMappingToggleBtnHelpText: '[rx-view-component-id="7df649b3-ec1b-4a9d-af4e-4c8f426a036a"] p'
+        taskApprovalMappingToggleBtnHelpText: '[rx-view-component-id="7df649b3-ec1b-4a9d-af4e-4c8f426a036a"] p',
+        selectCaseTemplateBtn: 'button .d-icon-arrow_right',
+        deselectCaseTemplateBtn: 'button .d-icon-arrow_left',
     }
 
     async getEditApprovalMappingHeaderText(): Promise<string> {
@@ -201,25 +203,25 @@ class EditApprovalMapping {
     }
 
     async isSelectTaskTemplateforApprovalRightArrawBtnEnabled(): Promise<boolean> {
-        return await $$(this.selectors.selectDeselectTaskTemplateBtn).get(0).isPresent().then(async (result) => {
-            if (result) return await $$(this.selectors.selectDeselectTaskTemplateBtn).get(0).getAttribute("disabled") == "disabled";
+        return await $(this.selectors.selectCaseTemplateBtn).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.selectCaseTemplateBtn).getAttribute("disabled") == "disabled";
             else return false;
         });
     }
 
     async isSelectTaskTemplateforApprovalLeftArrawBtnEnabled(): Promise<boolean> {
-        return await $$(this.selectors.selectDeselectTaskTemplateBtn).get(1).isPresent().then(async (result) => {
-            if (result) return await $$(this.selectors.selectDeselectTaskTemplateBtn).get(1).getAttribute("disabled") == "disabled";
+        return await $(this.selectors.deselectCaseTemplateBtn).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.deselectCaseTemplateBtn).getAttribute("disabled") == "disabled";
             else return false;
         });
     }
 
     async clickTaskTemplateforApprovalRightArrawBtn(): Promise<void> {
-        await $$(this.selectors.selectDeselectTaskTemplateBtn).get(0).click();
+        await $(this.selectors.selectCaseTemplateBtn).click();
     }
 
     async clickTaskTemplateforApprovalLeftArrawBtn(): Promise<void> {
-        await $$(this.selectors.selectDeselectTaskTemplateBtn).get(1).click();
+        await $(this.selectors.deselectCaseTemplateBtn).click();
     }
 
     async getSearchedTaskTemplate(): Promise<string> {
@@ -264,9 +266,8 @@ class EditApprovalMapping {
     }
 
     async isTaskCreatedUsingTemplateGoInApprovalToggleFalse(): Promise<boolean> {
-        const togglebutton = await $(`[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"]`);
-        let enableButton = await togglebutton.$('.d-icon-check').getAttribute('aria-pressed');
-        let disableButton = await togglebutton.$('.d-icon-circle_slash_o').getAttribute('aria-pressed');
+        let enableButton = await $$(`[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"] button`).first().getAttribute('aria-pressed');
+        let disableButton = await $$(`[rx-view-component-id="${this.selectors.tasksCreatedWithoutTemplateToggleBtnGuid}"] button`).last().getAttribute('aria-pressed');
         return enableButton == 'false' && disableButton == 'true';
     }
 

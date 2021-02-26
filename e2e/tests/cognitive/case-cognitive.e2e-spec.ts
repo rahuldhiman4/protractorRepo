@@ -337,7 +337,7 @@ describe('Case Cognitive', () => {
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary(randomStr);
             await createCasePo.clickSelectCaseTemplateButton();
-            expect(await selectCasetemplateBladePo.isCaseSummaryPresentInRecommendedTemplates('Employee asked requested for ergonomics assessment changes '+randomStr)).toBeTruthy('Template seach is not working');
+            expect(await selectCasetemplateBladePo.isCaseSummaryPresentInRecommendedTemplates(randomStr)).toBeTruthy('Template seach is not working');
             expect(await selectCasetemplateBladePo.isApplyButtonEnabled()).toBeFalsy("Apply button is Enabled");
             expect(await selectCasetemplateBladePo.isPaginationPresent()).toBeTruthy("Pagination is present");
             expect(await selectCasetemplateBladePo.getCountOfTemplates()).toBe(5);
@@ -346,7 +346,7 @@ describe('Case Cognitive', () => {
             await selectCasetemplateBladePo.selectFirstRecommendedTemplate();
             await selectCasetemplateBladePo.clickOnFirstRecommendedArrow();
             await browser.sleep(1000); // Wait For Case Template Preview Page Open.
-            expect(await caseTemplatePreview.getCaseSummary()).toContain('Employee asked requested for ergonomics assessment change '+randomStr);
+            expect(await caseTemplatePreview.getCaseSummary()).toContain(randomStr);
             expect(await caseTemplatePreview.getCaseTemplateName()).toContain('caseTemplateForCognitive');
             expect(await caseTemplatePreview.getCaseCompanyValue()).toBe('Petramco');
             expect(await caseTemplatePreview.getCasePriority()).toBe('Critical');
@@ -379,7 +379,7 @@ describe('Case Cognitive', () => {
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getPriorityValue()).toBe('Critical');
-            expect(await viewCasePo.getCategoryTier1Value()).toBe('Accounts Payable');
+            expect(await viewCasePo.getCategoryTier1Value()).toBe('-');
             expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
             expect(await viewCasePo.getCaseSummary()).toContain(randomStr);
         });
@@ -409,14 +409,14 @@ describe('Case Cognitive', () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
-            await createCasePo.setSummary('Employee looking supplemental insurance options bonus');
+            await createCasePo.setSummary('Employee looking supplemental insurance options bonus '+ randomStr);
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe("Employee Relations");
             expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
             expect(await createCasePo.getCategoryTier3Value()).toBe('Bonus');
             expect(await createCasePo.getCategoryTier4Value()).toBe('Retention Bonus');
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('Employee asked requested change');
+            await createCasePo.setSummary('Employee asked requested change '+ randomStr);
             await createCasePo.clickOnAutoCategorize();
             expect(await utilityCommon.isPopUpMessagePresent('No results found for categories.')).toBeTruthy();
             expect(await createCasePo.getCategoryTier1Value()).toBe("Employee Relations");
@@ -424,7 +424,7 @@ describe('Case Cognitive', () => {
             expect(await createCasePo.getCategoryTier3Value()).toBe('Bonus');
             expect(await createCasePo.getCategoryTier4Value()).toBe('Retention Bonus');
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('New Joinee looking assessment for his workplace change');
+            await createCasePo.setSummary('New Joinee looking assessment for his workplace change '+ randomStr);
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe("Applications");
             expect(await createCasePo.getCategoryTier2Value()).toBe('Help Desk');
@@ -433,7 +433,7 @@ describe('Case Cognitive', () => {
         });
         it('[5406,5404]:[Cognitive] - Auto categorization when cognitive search return only tier 1, tier 1,2 and tier 1,2,3 values', async () => {
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('Employee life insurance options bonus');
+            await createCasePo.setSummary('Employee life insurance options bonus ' + randomStr);
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
@@ -446,7 +446,7 @@ describe('Case Cognitive', () => {
             expect(await createCasePo.getCategoryTier2Value()).toBe("Finance");
             expect(await createCasePo.getCategoryTier3Value()).toBe("Cost Centers");
             await createCasePo.clearSummary();
-            await createCasePo.setSummary('Employee looking life insurance options bonus');
+            await createCasePo.setSummary('Employee looking life insurance options bonus ' + randomStr);
             await createCasePo.clickOnAutoCategorize();
             expect(await createCasePo.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await createCasePo.getCategoryTier2Value()).toBe('Compensation');
@@ -595,6 +595,7 @@ describe('Case Cognitive', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
         });
     });
 

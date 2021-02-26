@@ -14,13 +14,13 @@ class CreateApprovalMapping {
         statusTriggerDropDown: '[rx-view-component-id="225a010c-17d7-41f8-aed4-edaa8bfda3c7"]',
         statusTriggerDropDownField: '[rx-view-component-id="225a010c-17d7-41f8-aed4-edaa8bfda3c7"] button',
         statusTriggerInputBox: '[placeholder="Filter options"]',
-        statusTriggerCheckBox: 'span.checkbox__item',
+        statusTriggerCheckBox: '.rx-select__option-marker div.checkbox__item',
         approvalTriggerProcessHelptext: '[rx-view-component-id="4d837936-df13-4d15-8c7f-d2b7f6991249"] span',
         statusMappingHelptext: '[rx-view-component-id="9147f71b-8519-4467-8d33-535ef0d3c6cc"] p',
         statusMappingLabel: '[rx-view-component-id="04f8d9f3-c646-4c6c-b0c6-37f9ab74cc1c"] span',
         saveButton: '[rx-view-component-id="bd10b318-6a78-4ba2-9004-4f1e043b2b3c"] button',
         cancelButton: '[rx-view-component-id="feaabaa2-352c-4b2f-8e51-7c8b02bf0047"] button',
-        lobValue: '[rx-view-component-id="7299d08b-ea5f-4f40-b4bc-5cb1221f6b64"] .pull-left'
+        lobValue: '[rx-view-component-id="468139c0-e0f8-4a3d-aa6d-c4c5bcb592d5"] div'
     }
 
     async getCreateApprovalMappingHeaderText(): Promise<string> {

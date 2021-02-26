@@ -14,12 +14,12 @@ class CreateApprovalMapping {
         statusTriggerDropDown: '[rx-view-component-id="5641bfb3-d68b-40dd-a0e0-3f1f6521aa8a"]',
         statusTriggerDropDownField: '[rx-view-component-id="5641bfb3-d68b-40dd-a0e0-3f1f6521aa8a"] button',
         statusTriggerInputBox: '[placeholder="Filter options"]',
-        statusTriggerCheckBox: 'span.checkbox__item',
+        statusTriggerCheckBox: '.rx-select__option-marker div.checkbox__item',
         statusMappingHelptext: '[rx-view-component-id="8cb76e4f-cbe1-4eb8-8f42-2e5e94cd70e5"] p',
         statusMappingLabel: '[rx-view-component-id="b782b185-a19a-45ad-b5b3-13bf50c89e3c"] span',
         saveButton: '[rx-view-component-id="186c361c-6f73-4382-9313-90596e00d821"] button',
         cancelButton: '[rx-view-component-id="6b11932f-40d7-4843-af52-a2ede371c470"] button',
-        lobValue: '[rx-view-component-id="61db57c7-292e-40f9-a577-c7f90d2d5bb1"] .pull-left'
+        lobValue: '[rx-view-component-id="2432b303-da2a-4138-96da-fb64eff12f1b"] div.rx-select__search-button-title'
     }
 
     async getCreateApprovalMappingHeaderText(): Promise<string> {
