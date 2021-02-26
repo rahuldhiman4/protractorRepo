@@ -12,9 +12,8 @@ import editApprovalMappingKnowledgePo from "../../pageobject/settings/knowledge-
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-let userData2 = undefined;
 
-xdescribe("Knowledge Approval Mapping Tests", () => {
+describe("Knowledge Approval Mapping Tests", () => {
     const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     let knowledgeModule = 'Knowledge';
     let knowledgeManagementApp = "Knowledge Management";
@@ -26,17 +25,6 @@ xdescribe("Knowledge Approval Mapping Tests", () => {
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(knowledgeModule);
-
-        userData2 = {
-            "firstName": "caseMngr",
-            "lastName": "MultiLOB",
-            "userId": "caseMngrMultiLOB",
-            "userPermission": ["Case Manager", "Foundation Read", "Knowledge Coach", "Knowledge Publisher", "Knowledge Contributor", "Knowledge Candidate", "Case Catalog Administrator", "Person Activity Read", "Human Resource", "Facilities"]
-        }
-        await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData2.userId, "US Support 3");
-
     });
 
     afterAll(async () => {
@@ -51,9 +39,9 @@ xdescribe("Knowledge Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login("fritz");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approval Mappings', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
             await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingKnowledgePo.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingKnowledgePo.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             expect(await createApprovalMappingKnowledgePo.isApprovalMappingNameFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingKnowledgePo.isCompanyFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingKnowledgePo.isStatusTriggerFieldMandatory()).toBeTruthy();
@@ -69,7 +57,7 @@ xdescribe("Knowledge Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approval Mappings', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
         });
 
@@ -77,7 +65,7 @@ xdescribe("Knowledge Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approval Mappings', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
 
@@ -92,9 +80,10 @@ xdescribe("Knowledge Approval Mapping Tests", () => {
 
         it('[3693]: Verify Knowledge Approval Mapping are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            // HR and Facilities CaseManager
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approval Mappings', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Knowledge Approval Mapping for Facilities LOB are displayed to Human Resource LOB User.');
             await utilityGrid.selectLineOfBusiness('Facilities');
@@ -106,32 +95,34 @@ xdescribe("Knowledge Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approvals', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Knowledge Management--Approval Mappings', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Facilities');
             await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
             await createApprovalMappingKnowledgePo.setApprovalMappingName(approvalMappingName + '_update');
             await createApprovalMappingKnowledgePo.selectCompany('Petramco');
             await createApprovalMappingKnowledgePo.selectStatusTrigger('Retire Approval');
             await createApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy("Error message absent");
             await createApprovalMappingKnowledgePo.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await utilityCommon.closePopUpMessage();
         });
         it('[3693]: create same name record in different LOB', async () => {
             //create same name record in different LOB
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await approvalMappingConsoleKnowledgePo.clickCreateApprovalMappingBtn();
             await createApprovalMappingKnowledgePo.setApprovalMappingName(approvalMappingName + '_update');
-            await createApprovalMappingKnowledgePo.selectCompany('Petramco');
+            await createApprovalMappingKnowledgePo.selectCompany('- Global -');
             await createApprovalMappingKnowledgePo.selectStatusTrigger('Retire Approval');
             // verify LOB is there
-            expect(await createApprovalMappingKnowledgePo.getLobValue()).toBe("Human Resource");
+            expect(await createApprovalMappingKnowledgePo.getLobValue()).toContain("Human Resource");
             await createApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await utilityGrid.searchAndOpenHyperlink(approvalMappingName + '_update');
-            expect(await editApprovalMappingKnowledgePo.getLobValue()).toBe("Human Resource");
+            expect(await editApprovalMappingKnowledgePo.getLobValue()).toContain("Human Resource");
             await editApprovalMappingKnowledgePo.clickCancelApprovalMappingBtn();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         afterAll(async () => {
             await navigationPage.signOut();
@@ -153,7 +144,7 @@ xdescribe("Knowledge Approval Mapping Tests", () => {
             let knowledgeApprovalFlowData = {
                 "flowName": "Preset Filter",
                 "approver": "KMills",
-                "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421}"
+                "qualification": "'Operational Category Tier 1' = \"Applications\""
             }
             let knowledgeApprovalMappingData = {
                 "mappingName": "Approval Config Name",
@@ -248,7 +239,7 @@ xdescribe("Knowledge Approval Mapping Tests", () => {
             let knowledgeApprovalFlowData = {
                 "flowName": "Preset Filter",
                 "approver": "KMills",
-                "qualification": "'Operational Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.cddc9f6098ac421a1aa40ec9be503abb0fda61530bc9dbb22e7049cba9c5839018ba7205a392cd9f37141091bbe33e28405caff795929e4d805fa787dfea2c0c.304405421} AND 'Operational Category Tier 2' =${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.a1390bbfc100bd7ad0fbe10210092865d8d968ff75c6fc7c68cc9b3cb727b6b9d0fff90f7a2f85aeb5d0d7903ac2b08002e172bfec02e807e4a863dce4716dea.304405421}"
+                "qualification": "('Operational Category Tier 1' = \"Applications\") AND ('Operational Category Tier 2' = \"Help Desk\")"
             }
             let knowledgeApprovalMappingData = {
                 "mappingName": "Approval Config Name",

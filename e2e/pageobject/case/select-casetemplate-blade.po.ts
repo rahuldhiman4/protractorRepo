@@ -108,12 +108,9 @@ class SelectCaseTemplateBlade {
     }
 
     async isCaseSummaryPresentInRecommendedTemplates(caseSummary: string): Promise<boolean> {
-        let numberOfTemplates = await $$('div[role="listitem"]').count();
-        for (let i: number = 0; i < numberOfTemplates; i++) {
-            return await $$('div[role="listitem"]').get(i).$(`[title="${caseSummary}"]`).isPresent().then(async (present) => {
-                if (present) return $$('div[role="listitem"]').get(i).$(`[title="${caseSummary}"]`).isDisplayed();
-            });
-        }
+        return await $(`div[role="listitem"] [title~="${caseSummary}"]`).isPresent().then(async (present) => {
+            if (present) return await $(`div[role="listitem"] [title~="${caseSummary}"]`).isDisplayed();
+        });
     }
 
     async isRecordPresent(record: string): Promise<boolean> {

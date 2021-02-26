@@ -63,7 +63,7 @@ export const BWF_PAGE_TITLES = {
         TEMPLATES: 'Templates - Settings - Business Workflows'
     },
     KNOWLEDGE_MANAGEMENT: {
-        APPROVALS: 'Approvals - Settings - Business Workflows',
+        APPROVALS: 'Approval Mappings - Settings - Business Workflows',
         ARTICLE_TEMPLATE_STYLE: 'Article Template Styles - Settings - Business Workflows',
         ARTICLE_TEMPLATES: 'Article Templates - Settings - Business Workflows',
         KNOWLEDGE_SETS: 'Knowledge Sets - Settings - Business Workflows',
@@ -98,7 +98,7 @@ export const BWF_PAGE_TITLES = {
         SERVICE_TARGET_GROUP: 'Service Target Group - Settings - Business Workflows',
     },
     TASK_MANAGEMENT: {
-        APPROVALS: 'Approvals - Settings - Business Workflows',
+        APPROVALS: 'Approval Mappings - Settings - Business Workflows',
         NOTES_TEMPLATES: 'Notes Template - Settings - Business Workflows',
         STATUS_CONFIGURATION: 'Status Configuration - Settings - Business Workflows',
         TEMPLATES: 'Templates - Settings - Business Workflows'
