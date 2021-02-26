@@ -307,12 +307,12 @@ export class EditEmailConfig {
         return await $(this.selectors.newAvailableGlobalSubjects).getAttribute("disabled");
     }
 
-    async isRemoveExlusionSubjectEnabled(): Promise<boolean> {
-        return await $(this.selectors.removeExclusiveSubject).isEnabled();
+    async isDeleteExlusionSubjectDisabled(): Promise<string> {
+        return await $(this.selectors.removeExclusiveSubject).getAttribute('disabled');
     }
 
-    async isEditExlusiceSubjectEnabled(): Promise<boolean> {
-        return await $(this.selectors.editExclusiveSubject).isEnabled();
+    async isEditExlusiceSubjectDisabled(): Promise<string> {
+        return await $(this.selectors.editExclusiveSubject).getAttribute('disabled');
     }
 
     async isAcknowledgementTemplateEditBtnEnabled(): Promise<boolean> {
