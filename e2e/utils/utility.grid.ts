@@ -240,7 +240,9 @@ export class GridOperations {
             for (let i: number = 0; i < forLimit; i++) {
                 count = count + 1;
                 let gridText = (await $$(gridHeaders).get(i).getAttribute('innerText')).trim();
-                if (gridText == columnName) { break; }
+                if (gridText == columnName) { 
+                    break; 
+                }
             }
             return (await $$(gridCellData).get(count - 1).getAttribute('innerText')).trim();
         }
