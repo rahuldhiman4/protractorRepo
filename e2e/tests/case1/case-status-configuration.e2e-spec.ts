@@ -623,7 +623,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 14', async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
@@ -632,7 +632,7 @@ describe('Case Status Configuration', () => {
             await editKnowledgePo.setKnowledgeStatus('Custom');
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 15', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
@@ -643,13 +643,13 @@ describe('Case Status Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await utilityCommon.isPopUpMessagePresent("Knowledge articles with this status are present.")).toBeTruthy();
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 16', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Draft');
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 17', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
@@ -660,7 +660,7 @@ describe('Case Status Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 18', async () => {
             await apiHelper.apiLogin('mcarney');
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
