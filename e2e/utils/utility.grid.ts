@@ -21,7 +21,7 @@ export class GridOperations {
         gridHeaders: '.c-header-container .c-header__separator',
         gridCellData: '.at-data-row .at-data-cell',
         filterItems: '.advanced-filter__label',
-        filterCheckboxOptions: 'adapt-tabset [role="option"]',
+        filterCheckboxOptions: 'adapt-tabset [role="option"],.advanced-filter__scrollable-container [role="option"]',
         filterTab: '.dropdown-menu [role="tablist"] .nav-item button',
         visibleColumnButton: '.d-icon-eye_closed,.d-icon-eye',
         refreshIcon: 'button[rx-id="refresh-button"]',

@@ -381,7 +381,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editServiceTargetConfigPage.isAddMilestoneButtonDisabled()).toBeTruthy('Add Milestone button is enabled');
         expect(await editServiceTargetConfigPage.isEditMilestoneButtonDisabled()).toBeTruthy('Edit Milestone button is enabled');
         expect(await editServiceTargetConfigPage.isDeleteMilestoneButtonDisabled()).toBeTruthy('Delete Milestone button is enabled');
-        expect(await editServiceTargetConfigPage.isSaveButtonEnabled()).toBeTruthy('Save button is enabled');
+        expect(await editServiceTargetConfigPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
 //check with anant expect failing
     it('[3962]: Check Case manager is not able to perform Create Update Delete operation on Service Target Group', async () => {
@@ -420,7 +420,7 @@ describe('Case Manager Read-only Config', () => {
     });
 
     //asahitya, allow execution after memory leak issue fix DRDMV-25103
-    xit('[DRDMV-18041]: Check Case manager is not able to perform Create Update Delete operation on Notification Configuration', async () => {
+    it('[DRDMV-18041]: Check Case manager is not able to perform Create Update Delete operation on Notification Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         expect(await notificationTemplateConsolePage.isAddNotificationTemplateBtnDisplayed()).toBeFalsy('Add Button is enabled');
@@ -490,9 +490,9 @@ describe('Case Manager Read-only Config', () => {
             expect(await editEmailConfiguration.isDefaultCaseTemplateToUseBtnDisabled()).toBeTruthy('Default Case Template field is enabled');
             expect(await editEmailConfiguration.isAddNewRuleBtnDisabled()).toBeTruthy('Add New Rule button is enabled');
             expect(await editEmailConfiguration.isAddAvailableGlobalSubjectBtnDisabled()).toBeTruthy('Add available Global Subject button is enabled');
-            await utilityGrid.clickCheckBoxOfValueInGrid('Out Of Office');
-            expect(await editEmailConfiguration.isRemoveExlusionSubjectEnabled()).toBeFalsy('Remove Exclusion Subject button is enabled');
-            expect(await editEmailConfiguration.isEditExlusiceSubjectEnabled()).toBeFalsy('Edit Exclusive Subject button is enabled');
+            await utilityGrid.searchAndSelectGridRecord('Out Of Office');
+            expect(await editEmailConfiguration.isDeleteExlusionSubjectDisabled()).toBeTruthy('Remove Exclusion Subject button is enabled');
+            expect(await editEmailConfiguration.isEditExlusiceSubjectDisabled()).toBeTruthy('Edit Exclusive Subject button is enabled');
             await editEmailConfiguration.selectTab("Acknowledgment Templates");
             await editEmailConfiguration.searchAndClickCheckboxOnAcknowledgementTemplateGrid('Task Update Ack Template');
             expect(await editEmailConfiguration.isAcknowledgementTemplateEditBtnEnabled()).toBeFalsy('Acknowledge Template Edit button is enabled');
