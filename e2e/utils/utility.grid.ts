@@ -112,10 +112,14 @@ export class GridOperations {
 
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
         let gridLocatorStr: string = this.selectors.gridRows;
-        if (guid) { gridLocatorStr = `[rx-view-component-id="${guid}"] ${this.selectors.gridRows}`; }
-        let rowLocator = await $$(gridLocatorStr);
-        for (let i: number = 0; i < rowLocator.length; i++) {
-            let linkText = (await (await (await $$(gridLocatorStr).get(i)).$(this.selectors.gridRowHyperLinks)).getText());
+        let gridRowHyperLinkStr: string = this.selectors.gridRowHyperLinks;
+        if (guid) {
+            gridLocatorStr = `[rx-view-component-id="${guid}"] ${this.selectors.gridRows}`;
+            gridRowHyperLinkStr = `[rx-view-component-id="${guid}"] ${this.selectors.gridRowHyperLinks}`;
+        }
+        let rowCount = await $$(gridLocatorStr).count();
+        for (let i: number = 0; i < rowCount; i++) {
+            let linkText = await $$(gridRowHyperLinkStr).get(i).getText();
             if (linkText.trim() == value) {
                 await $$(gridLocatorStr).get(i).$(this.selectors.gridCheckbox).click();
                 break;
@@ -240,8 +244,8 @@ export class GridOperations {
             for (let i: number = 0; i < forLimit; i++) {
                 count = count + 1;
                 let gridText = (await $$(gridHeaders).get(i).getAttribute('innerText')).trim();
-                if (gridText == columnName) { 
-                    break; 
+                if (gridText == columnName) {
+                    break;
                 }
             }
             return (await $$(gridCellData).get(count - 1).getAttribute('innerText')).trim();
