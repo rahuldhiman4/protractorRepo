@@ -39,10 +39,16 @@ let articleInClosedStatus = '3834 KnowledgeArticle_Closed';
 let articleInCanceledStatus = '3834 KnowledgeArticle_CancelApproval';
 let regionField = "Region";
 let siteField = "Site";
-let regionFieldVal = "Australia";
+let siteGrpField = "Site Group";
+
+let regionFieldVal = "Asia-Pac"; //In place of australia
+let siteGroupVal = "Engineering";
 let siteFieldVal = "Canberra";
-let regionFieldVal2 = "Central America";
-let siteFieldVal1 = "Mexico City";
+
+let regionFieldVal2 = "Americas"; // In Place of Central America
+let siteGroupVal2 = "Marketing";
+let siteFieldVal2 = "Mexico City"; 
+
 let knowledgeManagementApp = "Knowledge Management";
 let companyStr = "Petramco";
 let hrSupportStr = "HR Support";
@@ -79,7 +85,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             "categoryTier1": "Applications",
             "categoryTier2": "Help Desk",
             "categoryTier3": "Incident",
-            "region": "Australia",
+            "region": "Asia-Pac", //in place of australia
+            "siteGroup": "Engineering",
             "site": "Canberra",
             "company": "Petramco",
             "assignedCompany": "Petramco",
@@ -268,18 +275,23 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectSiteGroupDropDownOption(siteGroupVal)
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
             expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteGrpField)).toBe(siteGroupVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectSiteGroupDropDownOption(siteGroupVal2)
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal2);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.signOut();
 
             //Create Knowledge article by Case Manager
@@ -289,20 +301,23 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.clickAssignToMeButton();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 1');
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await createKnowledgePage.selectSiteGroupDropDownOption(siteGroupVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
+            await utilityCommon.closePopUpMessage();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteGrpField)).toBe(siteGroupVal);
             expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectSiteGroupDropDownOption(siteGroupVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal2);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
+            await utilityCommon.closePopUpMessage();
             await navigationPage.signOut();
         });
 
@@ -314,17 +329,20 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectSiteGroupDropDownOption(siteGroupVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteGrpField)).toBe(siteGroupVal);
             expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectSiteGroupDropDownOption(siteGroupVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal2);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await navigationPage.signOut();
 
@@ -335,17 +353,20 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectSiteGroupDropDownOption(siteGroupVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteGrpField)).toBe(siteGroupVal);
             expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectSiteGroupDropDownOption(siteGroupVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal2);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await navigationPage.signOut();
         });
@@ -358,17 +379,20 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectSiteGroupDropDownOption(siteGroupVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteGrpField)).toBe(siteGroupVal);
             expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectSiteGroupDropDownOption(siteGroupVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal2);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await navigationPage.signOut();
 
@@ -379,17 +403,20 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectSiteGroupDropDownOption(siteGroupVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteGrpField)).toBe(siteGroupVal);
             expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectSiteGroupDropDownOption(siteGroupVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal2);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
             await navigationPage.signOut();
         });
@@ -402,17 +429,20 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField(knowledgeData.KnowledgeTitle);
-            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.selectKnowledgeSet(knowledgeData.KnowledgeSet);
+            await createKnowledgePage.selectRegionDropDownOption(regionFieldVal);
             await createKnowledgePage.clickAssignToMeButton();
+            await createKnowledgePage.selectSiteGroupDropDownOption(siteGroupVal);
             await createKnowledgePage.selectSiteDropDownOption(siteFieldVal);
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePo.getSelectedFieldValue(regionField)).toBe(regionFieldVal);
+            expect(await editKnowledgePo.getSelectedFieldValue(siteGrpField)).toBe(siteGroupVal);
             expect(await editKnowledgePo.getSelectedFieldValue(siteField)).toBe(siteFieldVal);
             await editKnowledgePo.selectRegionDropDownOption(regionFieldVal2);
-            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal1);
+            await editKnowledgePo.selectSiteGroupDropDownOption(siteGroupVal2);
+            await editKnowledgePo.selectSiteDropDownOption(siteFieldVal2);
             await editKnowledgePo.saveKnowledgeMedataDataChanges();
         });
 
@@ -464,7 +494,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
-            await editDocumentLibraryPo.setSite(siteFieldVal1);
+            await editDocumentLibraryPo.setSite(siteFieldVal2);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
@@ -490,7 +520,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
-            await editDocumentLibraryPo.setSite(siteFieldVal1);
+            await editDocumentLibraryPo.setSite(siteFieldVal2);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
@@ -517,7 +547,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
-            await editDocumentLibraryPo.setSite(siteFieldVal1);
+            await editDocumentLibraryPo.setSite(siteFieldVal2);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();

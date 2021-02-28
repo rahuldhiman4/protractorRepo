@@ -44,11 +44,11 @@ describe('Global Search All Category', () => {
         let numYear: number = objDate.getFullYear();
         year = new Number(numYear).toString();
 
-        let numMonth: number = objDate.getUTCMonth() + 1;
+        let numMonth: number = objDate.getMonth() + 1;
         let monthArr: string[] = ["Null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
-        let numDate: number = objDate.getUTCDate();
+        let numDate: number = objDate.getDate();
         let date1 = new Number(numDate);
         date = date1.toString();
 
@@ -321,7 +321,7 @@ describe('Global Search All Category', () => {
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
-            expect(await casePreviewPo.isRequesterSiteDisplayed('10431 Morado Circle\n' + 'Avalon Building 5, Austin, Texas, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
+            expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n10431 Morado Circle\nAvalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
             
             expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg43: Assignee Name is missing');
             expect(await casePreviewPo.getAssigneeDetails()).toContain('CA Support 1', 'FailureMsg44: Assigned Support Group Value is missing');

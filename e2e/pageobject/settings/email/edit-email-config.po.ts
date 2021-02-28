@@ -39,7 +39,7 @@ export class EditEmailConfig {
         acknowledgementTemplateGridGuid: '4938609e-47bd-460d-b32c-57dfc21958cd',
         defaultCaseTemplateGuid: '085b8e93-0e68-41a7-a1ed-77b6ab2c9522',
         defaultCaseTemplatelist: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] button.dropdown-item',
-        defaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] button',
+        defaultCaseTemplateToUse: '[rx-view-component-id="b9089bf5-509d-4e51-a3a7-2fad413f87db"] button',
         searchDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] input',
         clearDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] button div',
         supportGroupCheckbox: '.record__list i',
@@ -268,7 +268,7 @@ export class EditEmailConfig {
     }
 
     async isDefaultCaseTemplateToUseBtnDisabled(): Promise<boolean> {
-        return await $(this.selectors.defaultCaseTemplateToUse).getAttribute('disabled') == 'true';
+        return await $(this.selectors.defaultCaseTemplateToUse).getAttribute('aria-disabled') == 'true';
     }
 
     async clearDefaultCaseTemplateToUseField(): Promise<void> {
@@ -299,20 +299,20 @@ export class EditEmailConfig {
             else return false;
         });
     }
-    async isAddNewRuleBtnEnabled(): Promise<boolean> {
-        return await $(this.selectors.newExclusiveSubjects).isEnabled();
+    async isAddNewRuleBtnDisabled(): Promise<string> {
+        return await $(this.selectors.newExclusiveSubjects).getAttribute("disabled");
     }
 
-    async isAddAvailableGlobalSubjectBtnEnabled(): Promise<boolean> {
-        return await $(this.selectors.newAvailableGlobalSubjects).isEnabled();
+    async isAddAvailableGlobalSubjectBtnDisabled(): Promise<string> {
+        return await $(this.selectors.newAvailableGlobalSubjects).getAttribute("disabled");
     }
 
-    async isRemoveExlusionSubjectEnabled(): Promise<boolean> {
-        return await $(this.selectors.removeExclusiveSubject).isEnabled();
+    async isDeleteExlusionSubjectDisabled(): Promise<string> {
+        return await $(this.selectors.removeExclusiveSubject).getAttribute('disabled');
     }
 
-    async isEditExlusiceSubjectEnabled(): Promise<boolean> {
-        return await $(this.selectors.editExclusiveSubject).isEnabled();
+    async isEditExlusiceSubjectDisabled(): Promise<string> {
+        return await $(this.selectors.editExclusiveSubject).getAttribute('disabled');
     }
 
     async isAcknowledgementTemplateEditBtnEnabled(): Promise<boolean> {

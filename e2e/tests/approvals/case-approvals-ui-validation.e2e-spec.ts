@@ -12,8 +12,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-let userData1 = undefined;
-xdescribe("Case Approval UI Validations", () => {
+describe("Case Approval UI Validations", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
     let caseModule = 'Case';
 
@@ -22,15 +21,6 @@ xdescribe("Case Approval UI Validations", () => {
         await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
-        userData1 = {
-            "firstName": "Petramco",
-            "lastName": "SGUser1",
-            "userId": "10843User1",
-            "userPermission": ["Case Business Analyst", "Human Resource"]
-        }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
     });
 
     afterAll(async () => {

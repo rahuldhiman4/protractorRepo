@@ -102,27 +102,27 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.clickEditStatus("New");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            // await statusConfigPo.clickEditLifeCycleLink(); // no need to edit everytime so line commented
             await statusConfigPo.clickEditStatus("Progress");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            // await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Assigned");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            // await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Resolved");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            // await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Closed");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            // await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Pending");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
-            await statusConfigPo.clickEditLifeCycleLink();
+            // await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Canceled");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeFalsy();
             await statusConfigPo.clickOnBackButton();
@@ -435,78 +435,77 @@ describe('Case Status Configuration', () => {
         let caseId, taskId, caseId1, caseData, articleData1, articleData2, caseDataInProgress, knowledgeSetData, knowldgeId, randomStr = Math.floor(Math.random() * 1000000);
         let personData1;
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            const personDataFile = require('../../data/ui/foundation/person.ui.json');
-            personData1 = personDataFile['AlienwareCaseAdmin1'];
-            await apiHelper.createNewUser(personData1);
-            await apiHelper.associatePersonToCompany(personData1.userId, 'Pico Systems');
-            await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Pico Support Group1');
-            await browser.sleep(7000); //Wait to reflect the user created above
+            // await apiHelper.apiLogin('tadmin');
+            // const personDataFile = require('../../data/ui/foundation/person.ui.json');
+            // personData1 = personDataFile['AlienwareCaseAdmin1'];
+            // await apiHelper.createNewUser(personData1);
+            // await apiHelper.associatePersonToCompany(personData1.userId, 'Pico Systems');
+            // await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Pico Support Group1');
+            // await browser.sleep(7000); //Wait to reflect the user created above
 
-            let personData2 = personDataFile['AlienwareCaseAdmin2'];
-            await apiHelper.createNewUser(personData2);
-            await apiHelper.associatePersonToCompany(personData2.userId, 'Pico Systems');
-            await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Pico Support Group1');
-            await browser.sleep(7000); //Wait to reflect the user created above
+            // let personData2 = personDataFile['AlienwareCaseAdmin2'];
+            // await apiHelper.createNewUser(personData2);
+            // await apiHelper.associatePersonToCompany(personData2.userId, 'Pico Systems');
+            // await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Pico Support Group1');
+            // await browser.sleep(7000); //Wait to reflect the user created above
 
-            let personData3 = personDataFile['AlienwareKnowledgeUser'];
-            await apiHelper.createNewUser(personData3);
-            await apiHelper.associatePersonToCompany(personData3.userId, 'Pico Systems');
-            await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Pico Support Group2');
-            await browser.sleep(7000); //Wait to reflect the user created above
+            // let personData3 = personDataFile['AlienwareKnowledgeUser'];
+            // await apiHelper.createNewUser(personData3);
+            // await apiHelper.associatePersonToCompany(personData3.userId, 'Pico Systems');
+            // await apiHelper.associatePersonToSupportGroup(personData3.userId, 'Pico Support Group2');
+            // await browser.sleep(7000); //Wait to reflect the user created above
             caseData =
                 {
-                    "Requester": personData3.userId,
+                    "Requester": 'rflanagan',
                     "Summary": randomStr + "test",
-                    "Assigned Company": "Pico Systems",
-                    "Business Unit": "Pico Support Org1",
-                    "Support Group": "Pico Support Group1",
-                    "Assignee": personData1.userId,
+                    "Assigned Company": "Phylum",
+                    "Business Unit": "Phylum Support Org1",
+                    "Support Group": "Phylum Support Group1",
+                    "Assignee": 'mcarney'
                 }
             caseDataInProgress =
                 {
-                    "Requester": personData3.userId,
+                    "Requester": 'rflanagan',
                     "Summary": randomStr + "test",
-                    "Assigned Company": "Pico Systems",
-                    "Business Unit": "Pico Support Org1",
-                    "Support Group": "Pico Support Group1",
-                    "Assignee": personData1.userId,
+                    "Assigned Company": "Phylum",
+                    "Business Unit": "Phylum Support Org1",
+                    "Support Group": "Phylum Support Group1",
+                    "Assignee": 'mcarney',
                     "status": "In Progress",
                 }
 
             knowledgeSetData = {
                 knowledgeSetTitle: "test knowledge" + randomStr,
                 knowledgeSetDesc: "test description",
-                company: 'Pico Systems'
+                company: 'Phylum'
             }
 
             articleData1 = {
                 "knowledgeSet": knowledgeSetData.knowledgeSetTitle,
                 "title": "KnowledgeArticle" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
-                "company": 'Pico Systems'
+                "company": 'Phylum'
             }
 
             articleData2 = {
                 "knowledgeSet": knowledgeSetData.knowledgeSetTitle,
                 "title": "KnowledgeArticleData" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
-                "company": 'Pico Systems'
+                "company": 'Phylum'
             }
 
             await navigationPage.signOut();
-            await loginPage.login(personData1.userId + '@petramco.com', 'Password_1234');
-            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login('mcarney');
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 1', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
+        it('[4608]:Delete non mandatory and custom status 2', async () => {
+            await apiHelper.apiLogin('mcarney');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
@@ -520,14 +519,14 @@ describe('Case Status Configuration', () => {
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
-            expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
+            expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus"); //stage
             taskId = await viewTaskPo.getTaskID();
 
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 3', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -536,7 +535,7 @@ describe('Case Status Configuration', () => {
             expect(await utilityCommon.isPopUpMessagePresent("Tasks with this status are present")).toBeTruthy("Tasks with this status are present");
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 4', async () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
@@ -544,10 +543,10 @@ describe('Case Status Configuration', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 5', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Pico Systems', 'task');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -555,7 +554,7 @@ describe('Case Status Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 6', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -563,28 +562,28 @@ describe('Case Status Configuration', () => {
             await createAdhocTaskPo.setSummary("Summary" + randomStr);
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
-            expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
+            expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned"); // stage
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 7', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
+            await statusConfigPo.setCompanyDropdown("Phylum", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
-            caseId = await apiHelper.createCase(caseData);
+        it('[4608]:Delete non mandatory and custom status 8', async () => {
+            await apiHelper.apiLogin('mcarney');
+            caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getCaseStatusValue()).toBe('customStatus');
 
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 9', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
+            await statusConfigPo.setCompanyDropdown("Phylum", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -593,39 +592,39 @@ describe('Case Status Configuration', () => {
             expect(await utilityCommon.isPopUpMessagePresent("Cases with this status are present.")).toBeTruthy();
 
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 10', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await updateStatusBladePo.changeStatus('Assigned');
             await updateStatusBladePo.clickSaveStatus('Assigned');
             expect(await viewCasePo.getCaseStatusValue()).toBe("Assigned");
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 11', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown("Pico Systems", 'case');
+            await statusConfigPo.setCompanyDropdown("Phylum", 'case');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
+        it('[4608]:Delete non mandatory and custom status 12', async () => {
+            await apiHelper.apiLogin('mcarney');
             caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 13', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
+            await statusConfigPo.setCompanyDropdown('Petramco', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
+        it('[4608]:Delete non mandatory and custom status 14', async () => {
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createKnowledgeSet(knowledgeSetData);
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData1);
             await navigationPage.gotoKnowledgeConsole();
@@ -633,10 +632,10 @@ describe('Case Status Configuration', () => {
             await editKnowledgePo.setKnowledgeStatus('Custom');
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 15', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Custom");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -644,16 +643,16 @@ describe('Case Status Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             expect(await utilityCommon.isPopUpMessagePresent("Knowledge articles with this status are present.")).toBeTruthy();
         });
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 16', async () => {
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
             await editKnowledgePo.setKnowledgeStatus('Draft');
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
+        it('[4608]:Delete non mandatory and custom status 17', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Pico Systems', 'knowledge');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("Custom");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
@@ -661,8 +660,8 @@ describe('Case Status Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
 
-        it('[4608]:Delete non mandatory and custom status', async () => {
-            await apiHelper.apiLogin(personData1.userId + '@petramco.com', 'Password_1234');
+        it('[4608]:Delete non mandatory and custom status 18', async () => {
+            await apiHelper.apiLogin('mcarney');
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);

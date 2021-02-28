@@ -1066,9 +1066,9 @@ describe('Case Data Store', () => {
                 expect(await viewCasetemplatePo.isDynamicFieldDisplayed(arr[i])).toBeTruthy('Group Not found');
             }
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeFalsy();
-            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4868]: Create and Verify Dynamic Fields On Case Template  ', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await utilityGrid.searchAndOpenHyperlink(draftTemplateName);
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link not present');
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
@@ -1154,6 +1154,7 @@ describe('Case Data Store', () => {
         it('[4878]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
             await utilityGrid.searchAndOpenHyperlink('LibTextField' + randomStr);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            await localizeValuePopPo.setLocalizeValue('NewLibTextField1234' + randomStr);
             await localizeValuePopPo.clearLocalizeValue();
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();

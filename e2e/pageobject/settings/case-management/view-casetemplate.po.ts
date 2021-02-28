@@ -152,8 +152,8 @@ class ViewCaseTemplate {
     }
 
     async isDynamicFieldDisplayed(value: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.dynamicFieldsName, value)).isPresent().then(async (link) => {
-            if (link) return await element(by.cssContainingText(this.selectors.dynamicFieldsName, value)).isDisplayed();
+        return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`).isPresent().then(async (link) => {
+            if (link)  return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`).isDisplayed();
             else return false;
         });
     }

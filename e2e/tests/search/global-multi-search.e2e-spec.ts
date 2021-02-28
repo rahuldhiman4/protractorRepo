@@ -35,11 +35,11 @@ describe('Multi Search Validation', () => {
         let numYear: number = objDate.getFullYear();
         year = new Number(numYear).toString();
 
-        let numMonth: number = objDate.getUTCMonth() + 1;
+        let numMonth: number = objDate.getMonth() + 1;
         let monthArr: string[] = ["Null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
-        let numDate: number = objDate.getUTCDate();
+        let numDate: number = objDate.getDate();
         let date1 = new Number(numDate);
         date = date1.toString();
 
@@ -720,6 +720,8 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[5], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
 
             await searchPo.clickOnRecentSearchDropDownButton();
+            await browser.sleep(2000);//wait until recent search drop down gets open
+            expect(await searchPo.isRecentSearchDropdownPopupDisplayed()).toBeTruthy('Recent search drop down not opened')
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseSummary)).toBeTruthy('case summary is missing from recent search')
             expect(await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(1, 'Count of recent search is incorrect');
         });

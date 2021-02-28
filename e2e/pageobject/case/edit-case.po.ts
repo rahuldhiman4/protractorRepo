@@ -28,7 +28,7 @@ class CaseEditPage {
         categoryTier3Drpbox: '[rx-view-component-id="f59cd305-9f35-4d39-891e-8824a97724e2"] button',
         labelGuid: '5ea1ef24-abf0-45da-86e6-23a90c8b215b',
         caseLabel: '[rx-view-component-id="5ea1ef24-abf0-45da-86e6-23a90c8b215b"] .btn-secondary',
-        siteGuid: '6f909ad9-4b55-4010-8500-c4b1bf0fffa5',
+        siteGuid: '52af2f63-7a8e-45ab-9344-3c326d4340a1',
         clearSiteField: '[rx-view-component-id="664af3b6-dde6-47a7-84f9-4a5ad721e993"] .btn-secondary',
         resolutionCodeGuid: '155eb52a-4680-42a4-ae91-7505ab92eb31',
         siteChangeReason: '[rx-view-component-id="54d1727e-1b2d-4f4f-8fb4-a3174746ee1d"] input',

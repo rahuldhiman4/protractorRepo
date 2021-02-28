@@ -15,7 +15,7 @@ export interface IIDs {
     displayId: string;
 }
 
-xdescribe('Global Search Template', () => {
+describe('Global Search Template', () => {
     let caseTemplateModule = "Case Templates";
     let taskTemplateModule = "Task Templates";
     let documentModule = "Documents";
@@ -34,11 +34,11 @@ xdescribe('Global Search Template', () => {
         let numYear: number = objDate.getFullYear();
         year = new Number(numYear).toString();
 
-        let numMonth: number = objDate.getUTCMonth() + 1;
+        let numMonth: number = objDate.getMonth() + 1;
         let monthArr: string[] = ["Null", "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
         month = monthArr[numMonth];
 
-        let numDate: number = objDate.getUTCDate();
+        let numDate: number = objDate.getDate();
         let date1 = new Number(numDate);
         date = date1.toString();
 
@@ -458,7 +458,7 @@ xdescribe('Global Search Template', () => {
 
         it('[4295]: Verify case template record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Case Template');
@@ -775,7 +775,7 @@ xdescribe('Global Search Template', () => {
 
         it('[4294]: Verify task template record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');
             await searchPo.selectCategoryDropDownValue('Task Template');
@@ -865,6 +865,7 @@ xdescribe('Global Search Template', () => {
 
             await searchPo.searchRecord(keywordStr);
             expect(await searchPo.isModuleTitleDisplayed(docName1, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
+            await browser.sleep(3000); // waiting for result fetch on left pannel
             expect(await searchPo.isRecordDisplayedOnLeftPannel(updatedDate, documentModule)).toBeTruthy(`${updatedDate} updatedDate is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch3.jpg', documentModule)).toBeTruthy(`${'globalsearch3.jpg'} attachment File Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 1)).toBeTruthy(`FailureMsg4: ${docName1} 1 Document is missing`);
@@ -872,7 +873,7 @@ xdescribe('Global Search Template', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 3)).toBeTruthy(`FailureMsg5: ${docName1} 3 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 4)).toBeTruthy(`FailureMsg6: ${docName1} 4 Document is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(docName1, documentModule, 5)).toBeTruthy(`FailureMsg7: ${docName1} 5 Document is missing`);
-
+            
             await searchPo.searchRecord('globalsearch5.json');
             expect(await searchPo.isModuleTitleDisplayed('globalsearch5.json', 'Documents (2)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
             expect(await searchPo.isRecordDisplayedOnLeftPannel('globalsearch5.json', documentModule)).toBeTruthy(`${'globalsearch5.json'} attachment File Name is missing`);
@@ -1077,7 +1078,7 @@ xdescribe('Global Search Template', () => {
 
         it('[4293]: Verify document library record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await utilityGrid.selectLineOfBusiness('Facilities');
             await navigationPage.gotoSearch();
             expect(await searchPo.isCategoryDropDownSelectedValueDisplayed('All')).toBeTruthy('FailureMsg1: Default value from catergory drop down is missing');

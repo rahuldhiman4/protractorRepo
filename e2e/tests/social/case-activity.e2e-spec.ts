@@ -51,6 +51,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
         });
         it('[4217]: Verify Filter UI ', async () => {
@@ -150,6 +151,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
         });
         it('[4216]: Add/Remove All Types Of Users ', async () => {
@@ -260,6 +262,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
             await activityTabPage.addPersonInActivityNote('Jacqueline Featherstonehaugh');
@@ -488,7 +491,7 @@ describe('Case Activity', () => {
                 "ownerBusinessUnit": "Facilities Support",
                 "ownerGroup": "Facilities"
             }
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('elizabeth');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
 
             // Create automated task template
@@ -522,7 +525,6 @@ describe('Case Activity', () => {
             externalTemplateData.templateName = externalTemplateData.templateName + randomStr;
             externalTemplateData.templateSummary = externalTemplateData.templateSummary + randomStr;
 
-            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createExternalTaskTemplate(externalTemplateData);
         });
 
@@ -861,6 +863,7 @@ describe('Case Activity', () => {
         });
         it('[4230]:Click On Person Names And Inspect Behavior', async () => {
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('knowoledge Edit link is missing');
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await activityTabPage.addActivityNote(knowledgeBodyText);
             await activityTabPage.clickOnPostButton();
@@ -1065,6 +1068,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoPersonProfile();
+            await utilityCommon.closePopUpMessage();
             await personProfilePo.clickOnTab('Related Cases');
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
@@ -1352,6 +1356,7 @@ describe('Case Activity', () => {
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('Edit button missing on knoledge page.');
+            await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickOnTab('Activity');
             await utilityCommon.closePopUpMessage();
         });

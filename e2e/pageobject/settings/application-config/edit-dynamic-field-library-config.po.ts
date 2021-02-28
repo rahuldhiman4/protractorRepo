@@ -17,7 +17,7 @@ class EditDynamicFieldLibrary {
         saveButton: '[rx-view-component-id="cca7e4ea-99f5-4d56-9b21-ecf1a45b7ff3"] button',
         activeConfidentialsCheckbox: '[rx-view-component-id="f89c29d3-56a2-4c8b-95c8-a03b0f5d1e52"] button[rx-id="true-button"]',
         enabledRequiredRadioButton: '[rx-view-component-id="635e3839-5821-4960-9551-0f4843f5a666"] button[rx-id="true-button"]',
-        lobValue: '[rx-view-component-id="ffd8033c-5dc5-4f97-82e4-ad62bf9cdd4c"] .pull-left'
+        lobValue: '[rx-view-component-id="e2959678-db85-488e-9d1c-b325965acedd"] input'
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -85,7 +85,7 @@ class EditDynamicFieldLibrary {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(this.selectors.lobValue).getAttribute("placeholder");
     }
 }
 

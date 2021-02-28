@@ -10,7 +10,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-xdescribe("Case Approval Mapping Tests", () => {
+describe("Case Approval Mapping Tests", () => {
     const approvalMappingNameStr = "Approval Mapping Name";
     const companyStr = "Company";
     const flowsetStr = "Flowset";
@@ -58,7 +58,6 @@ xdescribe("Case Approval Mapping Tests", () => {
         let statusMappingNoApprovalFoundWhenStatusTriggerCanceled: string[] = ["Canceled", "Pending"];
         let statusMappingRejectedWhenStatusTriggerCanceled: string[] = ["New", "Assigned", "In Progress", "Pending", "Resolved", "Canceled", "Approval Rejected"];
         let statusMappingErrorWhenStatusTriggerCanceled: string[] = ["New", "Assigned", "In Progress", "Resolved", "Canceled"];
-        let flowsetValues: string[] = ["Human Resources"]
         let approvalMappingName2 = 'Approval Mapping2' + randomStr;
         let globalApprovalMapping = 'Approval Mapping Global' + randomStr;
 
@@ -68,7 +67,7 @@ xdescribe("Case Approval Mapping Tests", () => {
         });
         it('[5197,5190,5196,5195]: Create Approval Mapping UI Validation', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
@@ -147,10 +146,15 @@ xdescribe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[5197,5190,5196,5195]: [Approval Mapping] - Create a new Approval Mapping with all fields', async () => {
+            // await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await createApprovalMappingPage.setApprovalMappingName(approvalMappingName2);
+            await createApprovalMappingPage.selectCompany('Petramco');
+            await createApprovalMappingPage.isSelectFlowsetDropDownOptionsMatches("Human Resources");
+            await createApprovalMappingPage.clickCancelApprovalMappingBtn();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName2);
             await createApprovalMappingPage.selectCompany('Petramco');
-            await createApprovalMappingPage.isSelectFlowsetDropDownOptionsMatches(flowsetValues);
             await createApprovalMappingPage.selectStatusTrigger('In Progress');
             await createApprovalMappingPage.selectFlowset('Human Resources');
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
@@ -196,7 +200,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB case manager');
@@ -206,7 +210,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName2)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case BA');
             expect(await utilityGrid.isGridRecordPresent(globalApprovalMapping)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case BA');
@@ -217,7 +221,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName2)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case manager');
             expect(await utilityGrid.isGridRecordPresent(globalApprovalMapping)).toBeFalsy('Human Resources LOB case approval mapping is not visible to different LOB case manager');
@@ -227,7 +231,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB with different case BA');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB with different case BA');
             expect(await utilityGrid.isGridRecordPresent(globalApprovalMapping)).toBeTruthy('Human Resources LOB case approval mapping is not visible to same LOB with different case BA');
@@ -238,7 +242,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             // HR and Facilities CaseManager
             await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case manager with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName2)).toBeTruthy('Human Resources LOB case approval mapping is not visible to case manager with multiple LOB access');
@@ -252,9 +256,9 @@ xdescribe("Case Approval Mapping Tests", () => {
         it('[5197,5190,5196,5195]: Verify if case approval mappings are accessible to Case BA user having access to multiple LOB', async () => {
             await navigationPage.signOut();
             // HR and Facilities CaseBA
-            await loginPage.login('morwenna');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB case approval mapping is visible to case BA with multiple LOB access');
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName2)).toBeFalsy('Human Resources LOB case approval mapping is visible to case BA with multiple LOB access');
@@ -349,7 +353,7 @@ xdescribe("Case Approval Mapping Tests", () => {
 
         it('[5193,6267]: Create Apporval Mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
@@ -386,11 +390,11 @@ xdescribe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
 
 
-            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
+             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[5193,6267]: Verify Duplicate Approval Mapping', async () => {
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -400,10 +404,11 @@ xdescribe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingError('New');
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Invalid error message');
+            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fie...')).toBeTruthy('Invalid error message');
         });
         it('[5193,6267]: [Approval Mapping] - Create/Update another mapping record with Same Name / Mappings and same trigger status', async () => {
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
+            await utilityCommon.closePopUpMessage();
             await createApprovalMappingPage.setApprovalMappingName("Test " + approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('In Progress');
@@ -424,7 +429,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectStatusMappingRejected('Canceled');
             await editApprovalMappingPage.selectStatusMappingError('New');
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy('Invalid error message');
+            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fie...')).toBeTruthy('Invalid error message');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
@@ -432,12 +437,12 @@ xdescribe("Case Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login("gwixillian");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeTruthy('Human Resources LOB approval mapping is not visible in Psilon-Human Resources');
             await navigationPage.signOut();
             await loginPage.login("qdu");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.searchAndOpenHyperlink(approvalMappingName);
             expect(await editApprovalMappingPage.isApprovalMappingNameDisabled()).toBeTruthy('Approval Mapping Name is editable');
             expect(await editApprovalMappingPage.isDropdownDisabled('Company')).toBeTruthy('Company dropdown is editable');
@@ -467,7 +472,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             // Petramco and Psilon CaseBA
             await loginPage.login('morwenna');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.searchAndOpenHyperlink(approvalMappingName);
             await editApprovalMappingPage.setApprovalMappingName(newApprovalName);
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -483,10 +488,10 @@ xdescribe("Case Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login("fritz");
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             expect(await utilityGrid.isGridRecordPresent(approvalMappingName)).toBeFalsy('Human Resources LOB approval mapping is not visible in Psilon-Human Resources');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -535,16 +540,15 @@ xdescribe("Case Approval Mapping Tests", () => {
     describe('[5035,3413]:[Approval Mapping] - Create Global Approval Mapping with all fields, Toggle button status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
-        let flowsetValues: string[] = ["Benefits"];
 
         it('[5035,3413]: Create Global Approval Mapping with all fields', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('- Global -');
-            await createApprovalMappingPage.isSelectFlowsetDropDownOptionsMatches(flowsetValues);
+            await createApprovalMappingPage.isSelectFlowsetDropDownOptionsMatches("Benefits");
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
             await createApprovalMappingPage.selectFlowset("Benefits");
             await createApprovalMappingPage.selectStatusMappingApproved('In Progress');
@@ -556,23 +560,25 @@ xdescribe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[5035,3413]: Verify global approval mapping with different company user', async () => {
             await navigationPage.signOut();
             await loginPage.login('gderuno');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.searchAndOpenHyperlink(approvalMappingName);
             expect(await editApprovalMappingPage.getSelectedCompany()).toBe('- Global -');
             expect(await editApprovalMappingPage.getApprovalMappingName()).toBe(approvalMappingName);
             expect(await editApprovalMappingPage.isCaseCreatedUsingTemplateGoInApprovalToggleFalse()).toBeTruthy('Cases created without using any template is toggle values is true.');
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[5035,3413]: create same name record in same LOB', async () => {
             //create same name record in same LOB
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
@@ -584,12 +590,13 @@ xdescribe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fields.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fie...')).toBeTruthy("Error message absent");
             await createApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[5035,3413]: create same name record in different LOB', async () => {
             //create same name record in different LOB
+            await utilityCommon.closePopUpMessage();
             await utilityGrid.selectLineOfBusiness('Facilities');
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
@@ -599,11 +606,11 @@ xdescribe("Case Approval Mapping Tests", () => {
             await createApprovalMappingPage.selectStatusMappingNoApprovalFound('Pending');
             await createApprovalMappingPage.selectStatusMappingError('New');
             // verify LOB present
-            expect(await createApprovalMappingPage.getLobValue()).toBe("Facilities");
+            expect(await createApprovalMappingPage.getLobValue()).toContain("Facilities");
             await createApprovalMappingPage.clickSaveApprovalMappingBtn();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
-            // open the record and verify LOB is on edit screen
-            expect(await editApprovalMappingPage.getLobValue()).toBe("Facilities");
+            // open the record and verify LOB is on edit screen 
+            expect(await editApprovalMappingPage.getLobValue()).toContain("Facilities");
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
@@ -622,9 +629,9 @@ xdescribe("Case Approval Mapping Tests", () => {
 
         it('[5194,5034,4268]: Create Apporval Mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -670,6 +677,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await apiHelper.deleteApprovalMapping(caseModule);
         });
     });
+
 
     //skhobrag
     describe('[3509]:Case Global Approval Mapping behavior', async () => {
@@ -740,7 +748,7 @@ xdescribe("Case Approval Mapping Tests", () => {
 
         it('[3509]: Create Apporval Mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
@@ -892,7 +900,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             let approvalFlowData = {
                 "flowName": `Approval FLow ${randomStr}`,
                 "approver": "qliu;qkatawazi",
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}"
+                "qualification":  "('Category Tier 1' = \"Workforce Administration\") AND ('Category Tier 2' = \"HR Operations\")"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
@@ -939,6 +947,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();            
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
@@ -957,6 +966,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             }
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggered');
@@ -970,7 +980,10 @@ xdescribe("Case Approval Mapping Tests", () => {
             }
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
+            console.log(caseInfo.displayId);
+            
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggered');
         });
@@ -978,7 +991,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.searchAndOpenHyperlink(approvalMappingData.mappingName);
             await editApprovalMappingPage.setCaseCreatedUsingTemplateGoInApprovalToggle(true);
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
@@ -993,6 +1006,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
@@ -1005,12 +1019,14 @@ xdescribe("Case Approval Mapping Tests", () => {
                 "Category Tier 1": "Workforce Administration",
                 "Category Tier 2": "HR Operations",
                 "Assigned Company": "Petramco",
+                "Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
                 "Assignee": "qfeng",
             }
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeTruthy('Approval is not triggered');
@@ -1024,6 +1040,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             }
             let caseInfo = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Assigned");
             expect(await viewCasePo.isShowApproversBannerDisplayed()).toBeFalsy('Approval is triggered');
@@ -1055,7 +1072,7 @@ xdescribe("Case Approval Mapping Tests", () => {
         });
         it('[5192]: Approval Mapping - Console', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Approvals', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
 
             //Verify Column Labels
             await approvalMappingConsolePage.addColumnOnGrid(['ID', 'Flowset']);
@@ -1074,7 +1091,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickSaveApprovalMappingBtn();
 
             //Verify sorting on column
-            await approvalMappingConsolePage.addColumnOnGrid(['ID']);
+            await approvalMappingConsolePage.addColumnOnGrid(['Flowset']);
             expect(await approvalMappingConsolePage.isColumnSorted("Approval Name", "asc")).toBeTruthy();
             expect(await approvalMappingConsolePage.isColumnSorted("Approval Name", "desc")).toBeTruthy();
             expect(await approvalMappingConsolePage.isColumnSorted("Status Trigger", "asc")).toBeTruthy();
@@ -1110,6 +1127,7 @@ xdescribe("Case Approval Mapping Tests", () => {
             await utilityGrid.clearFilter();
         });
         afterAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
         });
     });

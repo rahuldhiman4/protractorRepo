@@ -28,7 +28,7 @@ class CreateApprovalMapping {
         approvalMappingFields: '1e161c6a-3b3d-42c3-8119-83207d9fbbc0',
         saveButton: '[rx-view-component-id="c86fc373-e406-4e48-9001-5571ffc1772e"] button',
         cancelButton: '[rx-view-component-id="937e9d73-4012-4b1f-bab7-a9e49e63a520"] button',
-        lobValue: '[rx-view-component-id="14938de7-54b1-4916-89a9-7d1ca1886fca"] .pull-left'
+        lobValue: '[rx-view-component-id="4081af82-0528-4edf-91fc-6e966c8f4bbe"] div'
     }
 
     async getCreateApprovalMappingHeaderText(): Promise<string> {
@@ -141,8 +141,8 @@ class CreateApprovalMapping {
         await utilityCommon.selectDropDown(this.selectors.statusMappingError, errorStatusMapping);
     }
 
-    async isSelectFlowsetDropDownOptionsMatches(flowsetValues: string[]): Promise<boolean> {
-        return await utilityCommon.isAllDropDownValuesMatches(this.selectors.flowsetGuid, flowsetValues);
+    async isSelectFlowsetDropDownOptionsMatches(flowsetValues: string): Promise<boolean> {
+        return await utilityCommon.isValuePresentInDropDown(this.selectors.flowsetGuid, flowsetValues);
     }
 
     async isStatusTriggerDropDownOptionsMatches(approvalStatusTrigger: string[]): Promise<boolean> {

@@ -148,7 +148,7 @@ describe('Case Manager Read-only Config', () => {
         });
     });
 
-    // asahitya
+    // asahitya-log defect
     it('[4017]: Check Case manager is not able to perform Create Update Delete operation on Case-> Status Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
@@ -156,7 +156,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await statusConfig.isEditLifeCycleBtnDisabled()).toBeTruthy("Edit Life Cycle button is enabled");
     });
 
-    // asahitya
+    // asahitya-log defect
     it('[4007]: Check Case manager is not able to perform Create Update Delete operation on Task->Status Configuration', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
@@ -183,7 +183,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await goalTypeEditPage.isSaveButtonDisabled()).toBeTruthy("Save button is enabled");
     });
 
-    // asahitya
+    // asahitya-passing locally
     it('[3993]: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.CONFIGURE_DATA_SOURCE);
@@ -269,7 +269,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await flowsetEditPage.isAddNewMappingBtnDisabled()).toBeTruthy("Add Associate Mapping button is enabled");
     });
 
-    // asahitya
+    // asahitya-passing locally
     it('[DRDMV-18077]: Check Case manager is not able to perform Create Update operation on Case to Case Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_CASE);
@@ -278,7 +278,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
 
-    // asahitya
+    // asahitya-passing locally
     it('[DRDMV-18078]: Check Case manager is not able to perform Create Update operation on Case to Person Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_PERSON);
@@ -287,7 +287,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
 
-    // asahitya
+    // asahitya-passing locally
     it('[DRDMV-18079]: Check Case manager is not able to perform Create Update operation on Person to Person Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
@@ -346,7 +346,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editAcknowledementTemplatePage.isEditButtonEnabled()).toBeFalsy('Edit Subject button is enabled');
     });
 
-    //asahitya
+    //asahitya-tell anant about expect conditions
     it('[3963]: Check Case manager is not able to perform Create Update operation on Service Target', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await apiHelper.apiLogin('qkatawazi');
@@ -378,13 +378,12 @@ describe('Case Manager Read-only Config', () => {
         expect(await editServiceTargetConfigPage.isSetWarningstatusFieldEnabled()).toBeFalsy('Set Warning status field is enabled');
         expect(await editServiceTargetConfigPage.isStartWhenBuildExpressionButtonEnabled()).toBeFalsy('Build Expression button on Start when is enabled');
         await editServiceTargetConfigPage.expandSection('Milestones');
-        expect(await editServiceTargetConfigPage.isAddMilestoneButtonEnabled()).toBeFalsy('Add Milestone button is enabled');
-        expect(await editServiceTargetConfigPage.isEditMilestoneButtonEnabled()).toBeFalsy('Add Milestone button is enabled');
-        expect(await editServiceTargetConfigPage.isAddMilestoneButtonEnabled()).toBeFalsy('Edit Milestone button is enabled');
-        expect(await editServiceTargetConfigPage.isDeleteMilestoneButtonEnabled()).toBeFalsy('Delete Milestone button is enabled');
+        expect(await editServiceTargetConfigPage.isAddMilestoneButtonDisabled()).toBeTruthy('Add Milestone button is enabled');
+        expect(await editServiceTargetConfigPage.isEditMilestoneButtonDisabled()).toBeTruthy('Edit Milestone button is enabled');
+        expect(await editServiceTargetConfigPage.isDeleteMilestoneButtonDisabled()).toBeTruthy('Delete Milestone button is enabled');
         expect(await editServiceTargetConfigPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
-
+//check with anant expect failing
     it('[3962]: Check Case manager is not able to perform Create Update Delete operation on Service Target Group', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let svtGrpName = '3962' + randomStr;
@@ -415,13 +414,13 @@ describe('Case Manager Read-only Config', () => {
         expect(await editServiceTargetGroupPage.isSVTGroupNameDisabled()).toBeTruthy('SVT Group name is enabled');
         expect(await editServiceTargetGroupPage.isSVTSelectRadioBtnDisabled()).toBeTruthy('SVT Selection is enabled');
         expect(await editServiceTargetGroupPage.isSaveBtnEnabled()).toBeFalsy('Save button is enabled');
-        await editServiceTargetGroupPage.clickClose();
+        await editServiceTargetGroupPage.clickcancel();
         await utilityGrid.searchAndSelectGridRecord(svtGrpName);
         expect(await serviceTargetGroupConsole.isDeleteButtonEnabled()).toBeFalsy('Delete Button is enabled');
     });
 
     //asahitya, allow execution after memory leak issue fix DRDMV-25103
-    xit('[DRDMV-18041]: Check Case manager is not able to perform Create Update Delete operation on Notification Configuration', async () => {
+    it('[DRDMV-18041]: Check Case manager is not able to perform Create Update Delete operation on Notification Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         expect(await notificationTemplateConsolePage.isAddNotificationTemplateBtnDisplayed()).toBeFalsy('Add Button is enabled');
@@ -487,17 +486,18 @@ describe('Case Manager Read-only Config', () => {
             await utilityGrid.searchAndSelectGridRecord('test@gmail.com');
             expect(await emailConfigurationConsole.isDeleteBtnDisplayed()).toBeFalsy('Delete Button is displayed');
             await utilityGrid.searchAndOpenHyperlink('test@gmail.com');
+            await browser.sleep(50000);
             expect(await editEmailConfiguration.isDefaultCaseTemplateToUseBtnDisabled()).toBeTruthy('Default Case Template field is enabled');
-            expect(await editEmailConfiguration.isAddNewRuleBtnEnabled()).toBeFalsy('Add New Rule button is enabled');
-            expect(await editEmailConfiguration.isAddAvailableGlobalSubjectBtnEnabled()).toBeFalsy('Add available Global Subject button is enabled');
-            await utilityGrid.clickCheckBoxOfValueInGrid('Out Of Office');
-            expect(await editEmailConfiguration.isRemoveExlusionSubjectEnabled()).toBeFalsy('Remove Exclusion Subject button is enabled');
-            expect(await editEmailConfiguration.isEditExlusiceSubjectEnabled()).toBeFalsy('Edit Exclusive Subject button is enabled');
+            expect(await editEmailConfiguration.isAddNewRuleBtnDisabled()).toBeTruthy('Add New Rule button is enabled');
+            expect(await editEmailConfiguration.isAddAvailableGlobalSubjectBtnDisabled()).toBeTruthy('Add available Global Subject button is enabled');
+            await utilityGrid.searchAndSelectGridRecord('Out Of Office');
+            expect(await editEmailConfiguration.isDeleteExlusionSubjectDisabled()).toBeTruthy('Remove Exclusion Subject button is enabled');
+            expect(await editEmailConfiguration.isEditExlusiceSubjectDisabled()).toBeTruthy('Edit Exclusive Subject button is enabled');
             await editEmailConfiguration.selectTab("Acknowledgment Templates");
             await editEmailConfiguration.searchAndClickCheckboxOnAcknowledgementTemplateGrid('Task Update Ack Template');
             expect(await editEmailConfiguration.isAcknowledgementTemplateEditBtnEnabled()).toBeFalsy('Acknowledge Template Edit button is enabled');
             await editEmailConfiguration.selectTab("Trusted Email");
-            expect(await editEmailConfiguration.isAddNewRuleBtnEnabled()).toBeFalsy('Add Trusted Email button is enabled');
+            expect(await editEmailConfiguration.isAddNewRuleBtnDisabled()).toBeTruthy('Add Trusted Email button is enabled');
             await editEmailConfiguration.selectTab("Blocked Email");
             expect(await editEmailConfiguration.isBlockedEmailBtnEnabled()).toBeFalsy('Add Blocked Email button is enabled');
         }
