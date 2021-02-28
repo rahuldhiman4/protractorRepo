@@ -10,7 +10,6 @@ import requesterResponseBladePo from '../../pageobject/case/requester-response-b
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
-import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 import dynamicFieldsPo from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
