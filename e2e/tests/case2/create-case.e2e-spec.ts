@@ -701,7 +701,7 @@ describe("Create Case", () => {
         });
     });
 
-    // failed
+    // passed
     describe('[3496,3497,3495]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData1, templateData2, newCaseTemplate, autoTaskTemplateData;
@@ -751,7 +751,7 @@ describe("Create Case", () => {
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
         });
-        // failed
+        // passed
         it('[3496,3497,3495]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
@@ -775,7 +775,11 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.clickOnAssignToMe();
+            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'qkatawazi');
+            // await editCasePage.clickOnAssignToMe();
             await editCasePage.clickSaveCase();
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();

@@ -59,6 +59,7 @@ describe('Case Console', () => {
         await utilityGrid.removeGridColumn(['Source']);
     });
 
+    // Defect DRDMV-25208
     describe('[4424]: Verify Category Tier 4 and Label column is visible on console', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label;
@@ -244,18 +245,18 @@ describe('Case Console', () => {
             await apiHelper.createNewMenuItem(menuItemData);
             id = newCase1.id;
         });
-        it('[5531]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters 1', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
-            await viewCasePo.clickEditCaseButton();
+            await viewCasePo.clickEditCaseButton(); 
             await editCasePo.clickOnSelectCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData1.templateName);
-            await editCasePo.setResolutionDescription('Case Resolution Description');
             await editCasePo.updateCaseSite('Austin');
             await editCasePo.updateSiteChangeReason('UpdatedSite' + randomStr);
             await editCasePo.updateLabel(label);
+            await editCasePo.setResolutionDescription('Case Resolution Description');
             await editCasePo.clickSaveCase();
             let modifiedDate = new Date();
             let monthValue: string = month[modifiedDate.getMonth()];
@@ -275,11 +276,12 @@ describe('Case Console', () => {
             await editCasePo.updateSiteChangeReason('UpdatedSite2' + randomStr);
             await editCasePo.clickSaveCase();
         });
-        it('[5531]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters 2', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.addColumns(defaultCaseColumns);
             await utilityGrid.searchRecord(newCase2.displayId);
-            await utilityGrid.addFilter('SLM Status', 'Within Time Limit', 'checkbox');
+            // await utilityGrid.addFilter('SLM Status', 'Within Time Limit', 'checkbox'); // SLM not configures so commented it
+            await utilityGrid.addFilter('SLM Status', 'Service Targets Not Attached', 'checkbox');
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy('Record is not filtered on the basis of SLM Status');
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Priority', 'Low', 'checkbox');
@@ -293,7 +295,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy('Record1 is not filtered on the basis of Summary');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy('Record2 is not filtered on the basis of Summary');
         });
-        it('[5531]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters 3', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Category Tier 1', "Employee Relations", 'text');
@@ -308,7 +310,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Category Tier 3');
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy('Record2 is not filtered on the basis of Category Tier 3');
         });
-        it('[5531]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters 4', async () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Case ID', newCase1.displayId, 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Case Id');
@@ -330,7 +332,7 @@ describe('Case Console', () => {
             await utilityGrid.searchRecordWithoutFilter(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record is not filtered on the basis of Modified date');
         });
-        it('[5531]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters 5', async () => {
             await caseConsolePo.removeColumns(defaultCaseColumns);
             await caseConsolePo.addColumns(arr1);
             await utilityGrid.searchRecord(newCase1.displayId);
@@ -351,10 +353,10 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Assignee Login Name');
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy('Record2 is not filtered on the basis of Assignee Login Name');
         });
-        it('[5531]:[Case Workspace] Cases search using filters', async () => {
+        it('[5531]:[Case Workspace] Cases search using filters 6', async () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Label', "CaseLabel" + randomStr, 'text');
-            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Label');
+            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Label'); // Defect DRDMV-25208
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy('Record2 is not filtered on the basis of Label');
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter("ID", id, "text");
