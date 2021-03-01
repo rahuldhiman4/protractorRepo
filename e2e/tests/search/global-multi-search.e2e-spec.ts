@@ -720,6 +720,8 @@ describe('Multi Search Validation', () => {
             expect(await searchPo.isRecordDisplayedOnLeftPannel(caseDisplayId[5], caseModule)).toBeTruthy(`FailureMsg6: ${caseDisplayId[1]} case id  is missing`);
 
             await searchPo.clickOnRecentSearchDropDownButton();
+            await browser.sleep(2000);//wait until recent search drop down gets open
+            expect(await searchPo.isRecentSearchDropdownPopupDisplayed()).toBeTruthy('Recent search drop down not opened')
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseSummary)).toBeTruthy('case summary is missing from recent search')
             expect(await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(1, 'Count of recent search is incorrect');
         });
