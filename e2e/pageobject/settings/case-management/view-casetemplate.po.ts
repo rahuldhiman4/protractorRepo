@@ -1,4 +1,5 @@
-import { $, protractor, ProtractorExpectedConditions, $$, browser, element, by } from 'protractor';
+import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from 'protractor';
+import utilityCommon from '../../../utils/utility.common';
 
 export interface sizeAttribute {
     height: string;
@@ -152,12 +153,10 @@ class ViewCaseTemplate {
     }
 
     async isDynamicFieldDisplayed(value: string): Promise<boolean> {
-        return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`).isPresent().then(async (link) => {
-            if (link)  return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`).isDisplayed();
-            else return false;
-        });
+        await utilityCommon.scrollToElement(await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`));
+        return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`).isDisplayed();
     }
-    
+
     async isGroupDisplayed(groupName: string): Promise<boolean> {
         return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] .group-container__name div[title=${groupName}]`).isDisplayed();
     }

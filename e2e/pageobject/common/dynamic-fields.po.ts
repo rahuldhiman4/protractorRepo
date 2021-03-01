@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, $$, By, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, By, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 import { DropDownType } from '../../utils/constants';
 class DynamicField {
@@ -117,7 +117,7 @@ class DynamicField {
         return await element(By.cssContainingText(this.selectors.columnValue, fieldName)).isDisplayed();
     }
 
-    async removeField(fieldName: string): Promise<void> {
+    async removeField(): Promise<void> {
         await $(this.selectors.deleteButton).click();
     }
 

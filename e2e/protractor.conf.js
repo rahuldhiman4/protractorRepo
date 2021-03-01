@@ -67,7 +67,7 @@ exports.config = {
     await browser.manage().timeouts().implicitlyWait(5000);
 
     var width = 1300;
-    var height = 710;
+    var height = 750;
     browser.driver.manage().window().setSize(width, height);
     //browser.driver.manage().window().maximize();
 

@@ -202,9 +202,9 @@ describe('Case Data Store', () => {
         expect(await dynamicFieldsPo.isFieldDisplayedInFieldSection('temp1')).toBeTruthy();
         expect(await dynamicFieldsPo.isFieldDisplayedInFieldSection('temp2')).toBeTruthy();
         //remove field
-        await dynamicFieldsPo.removeField('temp');
-        await dynamicFieldsPo.removeField('temp1');
-        await dynamicFieldsPo.removeField('temp2');
+        await dynamicFieldsPo.removeField();
+        await dynamicFieldsPo.removeField();
+        await dynamicFieldsPo.removeField();
         await dynamicFieldsPo.clickSaveButton();
         //add new fields
         await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
@@ -726,7 +726,9 @@ describe('Case Data Store', () => {
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
-            await previewTaskTemplateCasesPo.clickOnBackButton();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
@@ -1013,6 +1015,7 @@ describe('Case Data Store', () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -1118,8 +1121,7 @@ describe('Case Data Store', () => {
             expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactiveSys' + randomStr)).toBeTruthy('field not present');
         });
         afterAll(async () => {
-            await editCasetemplatePo.clickOnCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.closeAllBlades();
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
