@@ -209,7 +209,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
         });
-        
+
         it('[3837,3836,3835]:Verify the search functionality of knowledge articles console for Region', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
@@ -499,7 +499,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
         });
-        
+
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Manager
             await navigationPage.signOut();
@@ -525,7 +525,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
         });
-        
+
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Agent
             await navigationPage.signOut();
