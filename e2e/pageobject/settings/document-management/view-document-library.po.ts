@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions } from "protractor";
 
 class ViewDocumentLibraryPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -10,7 +10,17 @@ class ViewDocumentLibraryPage {
     }
 
     async clickOnEditDocument(): Promise<void> {
-        await $(this.selectors.editDocumentLibrary).click();
+        await $(this.selectors.editDocumentLibrary).isPresent().then(async (present) => {
+            if (present) {
+                await $(this.selectors.editDocumentLibrary).isDisplayed().then(async (displayed) => {
+                    if (displayed) await $(this.selectors.editDocumentLibrary).click();
+                });
+            }
+            else {
+                await browser.sleep(1000);
+                await $(this.selectors.editDocumentLibrary).click();
+            }
+        });
     }
 
     async clickOnEditReadAccess(): Promise<void> {

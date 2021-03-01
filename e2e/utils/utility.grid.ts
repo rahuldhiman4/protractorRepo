@@ -8,7 +8,6 @@ export class GridOperations {
         noFilterAppliedError: '.has-danger .form-control-feedback',
         searchTextBox: '.adapt-search-triggerable input',
         clearSearchBoxButton: '.adapt-search-triggerable .adapt-search-clear-visible',
-        gridRowLinks: '.at-data-row a',
         gridRowHyperLinks: '.at-data-row a',
         gridRows: '.at-data-row',
         gridCheckbox: '.ui-chkbox-box, .radio__label input',
@@ -111,19 +110,22 @@ export class GridOperations {
     }
 
     async clickCheckBoxOfValueInGrid(value: string, guid?: string): Promise<void> {
-        let gridLocatorStr: string = this.selectors.gridRows;
-        let gridRowHyperLinkStr: string = this.selectors.gridRowHyperLinks;
+        let gridRowLocator: string = this.selectors.gridRows;
+        let gridRecordLocator = this.selectors.gridRowHyperLinks;
         if (guid) {
-            gridLocatorStr = `[rx-view-component-id="${guid}"] ${this.selectors.gridRows}`;
-            gridRowHyperLinkStr = `[rx-view-component-id="${guid}"] ${this.selectors.gridRowHyperLinks}`;
+            gridRowLocator = `[rx-view-component-id="${guid}"] ${this.selectors.gridRows}`;
+            gridRecordLocator = `[rx-view-component-id="${guid}"] ${this.selectors.gridRowHyperLinks}`;
         }
-        let rowCount = await $$(gridLocatorStr).count();
-        for (let i: number = 0; i < rowCount; i++) {
-            let linkText = await $$(gridRowHyperLinkStr).get(i).getText();
-            if (linkText.trim() == value) {
-                await $$(gridLocatorStr).get(i).$(this.selectors.gridCheckbox).click();
+        let totalGridRecords = await $$(gridRecordLocator).count();
+        let i = 0;
+        while (i < totalGridRecords) {
+            let linkedText = await $$(gridRecordLocator).get(i).getText();
+            if (linkedText.trim() == value) {
+                await $$(`${gridRowLocator} ${this.selectors.gridCheckbox}`).get(i).click();
                 break;
             }
+            totalGridRecords = await $$(gridRecordLocator).count();
+            i++;
         }
     }
 
@@ -226,8 +228,8 @@ export class GridOperations {
 
     async searchAndOpenHyperlink(id: string, guid?: string): Promise<void> {
         await this.searchRecord(id, guid);
-        if (guid) await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridRowLinks).first().click();
-        else await $$(this.selectors.gridRowLinks).first().click();
+        if (guid) await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridRowHyperLinks).first().click();
+        else await $$(this.selectors.gridRowHyperLinks).first().click();
     }
 
     async getFirstGridRecordColumnValue(columnName: string, guid?: string): Promise<string> {

@@ -544,7 +544,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await dynamicFieldsPage.getFieldNameAttribute('disabled')).toBeTruthy();
             expect(await dynamicFieldsPage.getDescriptionName('disabled')).toBeTruthy();
             expect(await dynamicFieldsPage.getFieldValueType('aria-disabled')).toBeTruthy();
-            await dynamicFieldsPage.removeField('GroupOne');
+            await dynamicFieldsPage.removeField();
             await dynamicFieldsPage.clickSaveButton();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
         });
@@ -567,7 +567,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await dynamicFieldsPage.getFieldNameAttribute('disabled')).toBeTruthy();
             expect(await dynamicFieldsPage.getDescriptionName('disabled')).toBeTruthy();
             expect(await dynamicFieldsPage.getFieldValueType('aria-disabled')).toBeTruthy();
-            await dynamicFieldsPage.removeField('GroupOne');
+            await dynamicFieldsPage.removeField();
             await dynamicFieldsPage.clickSaveButton();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
             await viewCasetemplatePo.clickBackArrowBtn();

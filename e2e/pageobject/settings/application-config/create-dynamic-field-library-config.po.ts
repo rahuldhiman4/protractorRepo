@@ -1,5 +1,5 @@
-import utilityCommon from '../../../utils/utility.common';
 import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
 class CreateDynamicFieldLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,7 +17,7 @@ class CreateDynamicFieldLibrary {
         saveButton: '[rx-view-component-id="2f8db2c3-2352-4732-81b9-fdaf46ccbde7"] button',
         activeConfidentialsCheckbox: '[rx-view-component-id="067cbf9a-a1db-4268-8f6b-3132270f6356"] button[aria-label="True"]',
         requiredWarningmessage: 'div.field-validation-error',
-        lobValue: '[rx-view-component-id="a9446eac-d1a5-4bff-8915-51aac36918e6"] .pull-left',
+        lobValue: '[rx-view-component-id="4d6a9c5f-623a-4cc1-9a80-22e07ab55c40"]',
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -100,7 +100,10 @@ class CreateDynamicFieldLibrary {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(`${this.selectors.lobValue} button`).isPresent().then(async (buttonLob) => {
+            if (buttonLob) return await $(`${this.selectors.lobValue} button`).getText();
+            else return await $(`${this.selectors.lobValue} input`).getAttribute("placeholder");
+        });
     }
 }
 
