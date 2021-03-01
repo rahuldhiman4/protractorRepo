@@ -222,11 +222,11 @@ class EditKnowledgePage {
     }
 
     async getSelectedFieldValue(fieldName: string): Promise<string> {
-        let fieldLocator = await $$('adapt-select');
+        let fieldLocator = await $$('adapt-rx-select');
         let fieldValue: string = undefined;
         for (let i: number = 0; i < fieldLocator.length; i++) {
             if (await fieldLocator[i].$('.form-control-label span').getText() == fieldName) {
-                fieldValue = await fieldLocator[i].$('button').getText();
+                fieldValue = await fieldLocator[i].$('.rx-select__search-button-title').getText();
             }
         }
         return fieldValue;
