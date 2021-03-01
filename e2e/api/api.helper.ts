@@ -31,7 +31,7 @@ import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGE_SET } from '../data/api/knowledge/
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import { ARTCILE_DUE_DATE, EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
-import { COMMON_CONFIG_PAYLOAD } from '../data/api/shared-services/common.configurations.api';
+import { COMMON_CONFIG_PAYLOAD, CREATE_COMMON_CONFIG, DELETE_COMMON_CONFIG } from '../data/api/shared-services/common.configurations.api';
 import * as processes from '../data/api/shared-services/create-new-process.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
@@ -3314,6 +3314,35 @@ class ApiHelper {
         updateBUPayLoad.fieldInstances[304417331].value = domainTag;
         const updateBU: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.arsys.rx.foundation:Business Unit", businessUnitGuid, updateBUPayLoad)
         return updateBU.status == 204;
+    }
+
+    async deleteCommonConfiguration(configGuid: string): Promise<boolean> {
+        let deleteConfig = cloneDeep(DELETE_COMMON_CONFIG);
+        deleteConfig.processInputValues["ID"] = configGuid;
+        let response = await axios.post(
+            commandUri,
+            deleteConfig
+        )
+        console.log('Delete Common Config API Status  =============>', response.status);
+        return response.status == 201;
+    }
+
+    async createCommonConfig(configName: string, configValue: string, company: string): Promise<IIDs> {
+        let commonConfig = cloneDeep(CREATE_COMMON_CONFIG);
+        commonConfig.fieldInstances[8].value = configName;
+        commonConfig.fieldInstances[450000152].value = configName;
+        commonConfig.fieldInstances[1000000001].value = company ? company : commonConfig.fieldInstances[1000000001].value;
+        commonConfig.fieldInstances[450000166].value = configValue;
+        commonConfig.fieldInstances[450000153].value = configValue;        
+        let commonConfigResponse : AxiosResponse = await apiCoreUtil.createRecordInstance(commonConfig);
+        console.log('Common Configuration =============> ', commonConfigResponse.status);
+        const commonConfigDetails = await axios.get(
+            await commonConfigResponse.headers.location
+        );
+        return {
+            id: commonConfigDetails.data.id,
+            displayId: commonConfigDetails.data.displayId
+        };
     }
 }
 
