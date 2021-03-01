@@ -1368,21 +1368,21 @@ class ApiHelper {
                 knowledgeArticleData.fieldInstances["450000157"] = assignedCompanyData;
             }
 
-            if (data.region) {
-                let regionData = {
-                    "id": 200000012,
-                    "value": data.region
-                }
-                knowledgeArticleData.fieldInstances["200000012"] = regionData;
+          if (data.region) {
+            let regionData = {
+              "id": 200000012,
+              "value": data.region
             }
+            knowledgeArticleData.fieldInstances["200000012"] = regionData;
+          }
 
-            if (data.siteGroup) {
-                let siteGroupData = {
-                    "id": 200000007,
-                    "value": data.siteGroup
-                }
-                knowledgeArticleData.fieldInstances["200000007"] = siteGroupData;
+          if (data.siteGroup) {
+            let siteGroupData = {
+              "id": 200000007,
+              "value": data.siteGroup
             }
+            knowledgeArticleData.fieldInstances["200000007"] = siteGroupData;
+          }
 
             if (data.site) {
                 let siteData = {
