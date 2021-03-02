@@ -159,7 +159,6 @@ class SlmExpressionBuilder {
     }
 
     async selectFirstLevelExpressionQualification(field: string, operator: string, fieldvalue: string, DropDown?: string): Promise<void> {
-        
         await this.selectFields(field);
         await this.selectOperator(operator);
         await this.selectFieldOption(field, fieldvalue, DropDown);

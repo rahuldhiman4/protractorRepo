@@ -357,7 +357,6 @@ describe('Multi Search Validation', () => {
 
         it('[4292]: Verify person record are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
             await navigationPage.signOut();
-            // await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
             await loginPage.login('qyuan');
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.gotoSearch();
