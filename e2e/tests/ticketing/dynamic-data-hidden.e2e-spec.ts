@@ -818,9 +818,9 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalTime")).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalAttachment1")).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("dynamicList")).toBeTruthy();
-            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4033,4006,4849]: verify dynamic group fields on Copy case template', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Templates', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.TEMPLATES);
             await createDocumentTemplatePo.clickOnAddTemplate();

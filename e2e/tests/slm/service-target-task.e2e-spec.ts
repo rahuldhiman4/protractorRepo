@@ -177,8 +177,7 @@ xdescribe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
-            await slmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Automated');
-            await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await slmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'Automated',"Direct");
             let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Task Type" + "'" + "=" + '"' + "Automated" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -269,8 +268,7 @@ xdescribe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Task Management');
-            await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -440,8 +438,7 @@ xdescribe('Service Target Tests for Tasks', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Psilon', 'Task Management');
-            await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'Critical');
-            await slmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await slmExpressionBuilder.selectExpressionQualification('Priority', '=', 'Critical',"Direct");
             let selectedExp: string = await slmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Priority" + "'" + "=" + '"' + "Critical" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);

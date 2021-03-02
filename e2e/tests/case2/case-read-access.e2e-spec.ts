@@ -130,7 +130,7 @@ describe("Case Read Access", () => {
         expect(await utilityCommon.isPopUpMessagePresent('Record(s) deleted successfully.')).toBeTruthy('Successfull message is not appeared');
     });
 
-    // #passed
+    // #passed ?
     describe('[5025]:[Read Access] Verify Global read acess configuration applied to case if read acess configuration qualification matches', async () => {
         let randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let readAccessName = "ReadAccess" + randVal;
@@ -269,7 +269,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #passed
+    // #passed - quick case defect
     describe('[5578,5606]: [Read Access] Configuring non-default Read Access', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData: ICaseTemplate;
@@ -317,6 +317,7 @@ describe("Case Read Access", () => {
             await addReadAccess.clickOnSave();
             await utilityCommon.closePopUpMessage();
         });
+        // quick-case template search defect
         it('[5578,5606]: [Read Access] Configuring non-default Read Access', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('qtao');
@@ -361,7 +362,7 @@ describe("Case Read Access", () => {
 
         it('[5578,5606]: Verify Case read access mapping is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPo.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -387,7 +388,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #passed
+    // #passed - quick case defect
     describe('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData, readAccessMappingData1, readAccessMappingData2;
@@ -644,7 +645,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #ashastra
+    // #ashastra - defect #DRDMV-25244
     describe('[3457]: Bulk Case Access update clicking Reset to default.', async () => {
         let newCase1;
         beforeAll(async () => {
@@ -778,7 +779,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #ashastra (failing)
+    // #ashastra (failing all) - quick case template issue
     describe('[5605]: [Read Access] Editing/Deleting the Read Access Mapping', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData1, caseTemplateData2, readAccessMappingData;
@@ -900,7 +901,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #ashastra (1 fail)
+    // #ashastra passed
     describe('[5603]: [Read Access] Access to cases that match the Read Access partially - regular mapping', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let readAccessMappingData, readAccessMappingData2, templateData;
@@ -1052,7 +1053,7 @@ describe("Case Read Access", () => {
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Employee Relations', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
-        // #failed
+        // #passed
         it('[5603]: [Read Access] Access to cases that match the Read Access partially - regular mapping', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '1ReadAccessMappingName');
