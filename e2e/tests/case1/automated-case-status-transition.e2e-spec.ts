@@ -149,8 +149,8 @@ describe('Automated Case Status Transition', () => {
         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
         await automatedStatusTransitionCreatePage.createAutomatedStatusTransition(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS);
 
-         await utilityGrid.searchAndOpenHyperlink(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name);
-         await automatedStatusTransitionEditPage.selectEnableToggle(false);
+        await utilityGrid.searchAndOpenHyperlink(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name);
+        await automatedStatusTransitionEditPage.selectEnableToggle(false);
         await automatedStatusTransitionEditPage.saveConfiguration();
         expect(await automatedStatusTransitionConsole.getEnabledColumnValueOfRule(AUTO_STATUS_TRANSITION_MANDATORY_FIELDS.name)).toBe('False');
 
@@ -204,25 +204,26 @@ describe('Automated Case Status Transition', () => {
 
         //Create the Automated status transition
         let configName: string = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-         let days: any = Math.floor(Math.random() * 180) + 1;
+        let days: any = Math.floor(Math.random() * 180) + 1;
 
-         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
-         await automatedStatusTransitionCreatePage.setName(configName);
-         await automatedStatusTransitionCreatePage.setCompany('Petramco');
+        await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
+        await automatedStatusTransitionCreatePage.setName(configName);
+        await automatedStatusTransitionCreatePage.setCompany('Petramco');
         await automatedStatusTransitionCreatePage.setFromStatus('Resolved');
         await automatedStatusTransitionCreatePage.setToStatus('Closed');
         await automatedStatusTransitionCreatePage.setFromStatusReason('Customer Follow-Up Required');
         await automatedStatusTransitionCreatePage.setChangeStatusAfter(days);
-         await automatedStatusTransitionCreatePage.saveConfig();
+        await automatedStatusTransitionCreatePage.saveConfig();
 
         // //Update the case status to Resolved, update the modified date and run the Process
-         await apiHelper.apiLogin("qkatawazi");
+        await apiHelper.apiLogin("qkatawazi");
 
         await apiHelper.updateCaseStatus(newCase.id, "Resolved", "Customer Follow-Up Required");
         let updatecase = { "statusChangedDate": "2019-06-13T10:22:21.000Z" };
         await apiHelper.updateCase(newCase.id, updatecase);
-    
-        //await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
+
+        // await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
+        await apiHelper.apiLogin("tadmin");
         await apiHelper.runAutomatedCaseTransitionProcess();
 
         await navigationPage.gotoCaseConsole();
@@ -248,6 +249,7 @@ describe('Automated Case Status Transition', () => {
         await apiHelper.createNewMenuItem(menuItemData);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Automated Status Transition', BWF_PAGE_TITLES.CASE_MANAGEMENT.AUTOMATED_STATUS_TRANSITION);
+        await utilityGrid.selectLineOfBusiness('Human Resource');
         await automatedStatusTransitionConsole.clickAddAutomatedStatusTransitionBtn();
 
         expect(await automatedStatusTransitionCreatePage.isNameRequiredText()).toBeTruthy("Name Required text not present");

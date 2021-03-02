@@ -8,7 +8,8 @@ class AutomatedStatusTransitionConfigConsolePage {
         addAutomatedTransitionButton: '[rx-view-component-id="9fa82257-c4fc-42a6-a652-6878fa70f097"] button',
         deleteButton: '[rx-view-component-id="ada73186-a453-4bbf-8b40-73939b7f2970"] button',
         editAutomatedStatusConfigBlade: '.modal-content',
-        guid: 'c17656af-35ac-46b3-9a84-ed1660799274'
+        guid: 'c17656af-35ac-46b3-9a84-ed1660799274',
+        lineOfBusiness: '[rx-view-component-id="e7cd0428-d55c-42e9-917f-1105df6051be"] button'
     } 
 
     async isAddAutomatedStatusTransitionBtnPresent(): Promise<boolean> {
