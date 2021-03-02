@@ -55,15 +55,15 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.clickCancelButton();
             expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('No');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Innovation Studio');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name(required)', 'Innovation Studio');
             expect(await utilityCommon.isPopupMsgsMatches(['No Record Definition exists for the selected Application Name com.bmc.arsys.rx.innovationstudio'])).toBeTruthy('Error : Record definition does not exists error message is not displayed.');
             await utilityCommon.closePopUpMessage();
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeTruthy('Save button is found enabled.');
 
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Detail');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'ASSIGNED COMPANY_ID Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name(required)', 'Case Management Service');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name(required)', 'com.bmc.dsm.case-lib:Case Detail');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field(required)', 'ASSIGNED COMPANY_ID Primary');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
             expect(await createConfigureDataSourceConfigPo.isDataSourceFieldRequired('Association Name')).toBeFalsy('Association Name field is marked as required field');
@@ -89,7 +89,7 @@ describe('Data Source Configuration Tests', () => {
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeFalsy('Dynamic End Time Field is disabled on Create Data Source Config screen');
             expect(await createConfigureDataSourceConfigPo.isDatSourceAdvancedFieldsDisabled('Dynamic Goal Time Field')).toBeTruthy('Dynamic Goal Time Field is enabled on Create Data Source Config screen');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created By Primary');
-            await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
+            await createConfigureDataSourceConfigPo.clickDataSourceLinkBuildExpression('Build Expression');
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
@@ -103,7 +103,7 @@ describe('Data Source Configuration Tests', () => {
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
         it('[6052,6051,6050,6048,6042,6043]: Verify Data Source Configuration Updation', async () => {
@@ -215,7 +215,7 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.clickSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('You must enter an End Time value.')).toBeTruthy('Dynamic End Time Validation message is not displayed.');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created Date');
-            await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
+            await createConfigureDataSourceConfigPo.clickDataSourceLinkBuildExpression('Build Expression');
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
@@ -229,7 +229,7 @@ describe('Data Source Configuration Tests', () => {
             await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
         it('[6049,6049,6045,6047]: Verify Data Source Configuration Creation with Reset Goal Validation', async () => {
@@ -252,7 +252,7 @@ describe('Data Source Configuration Tests', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'ASSIGNED COMPANY_ID');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
         });
 
     });
@@ -294,8 +294,7 @@ describe('Data Source Configuration Tests', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Task Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnAddExpressionButton('SELECTION');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=','High', "Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await serviceTargetConfig.selectGoalType('Task Resolution Time');
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc');
@@ -314,11 +313,10 @@ describe('Data Source Configuration Tests', () => {
             await serviceTargetConfig.selectMeasurementCheckbox('Reset Goal for Same Request?');
             await serviceTargetConfig.selectMeasurementCheckbox('Allow Measurement to Re-Open?');
             await serviceTargetConfig.selectMeasurementCheckbox('Enable Team Tracking');
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "Status", "=", "Assigned");
-            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "Status", "=", "Completed");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(0, "Status", "=", "Assigned","Direct");
+            await serviceTargetConfig.selectExpressionForMeasurementForTask(1, "Status", "=", "Completed","Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
     });
-
 });

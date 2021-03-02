@@ -165,12 +165,11 @@ class SlmExpressionBuilder {
         await this.selectFieldOption(field, fieldvalue, DropDown);
     }
 
-    async selectSecondLevelExpressionQualification(firstLevelAssociationfield: string, secondLevelAssociationfield: string, operator: string, fieldAttribute: string, fieldvalue: string, DropDown?: string): Promise<void> {
+    async selectSecondLevelExpressionQualification(firstLevelAssociationfield: string, secondLevelAssociationfield: string, operator: string, fieldvalue: string, DropDown?: string): Promise<void> {
         await browser.sleep(2000);
         await this.selectSecondLevelExpressionField(secondLevelAssociationfield);
         await this.selectOperator(operator);
         await this.selectFieldOption(secondLevelAssociationfield, fieldvalue, DropDown);
-        await this.clickOnAddExpressionButton(fieldAttribute);
     }
 
     async selectFieldOption(field: string, fieldOptionValue: string, DropDown?: string): Promise<void> {

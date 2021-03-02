@@ -209,7 +209,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             regionVal = await knowledgeConsole.getSelectedGridRecordValue(regionField);
             expect(regionVal).toEqual(emptyStr);
         });
-        
+
         it('[3837,3836,3835]:Verify the search functionality of knowledge articles console for Region', async () => {
             await navigationPage.signOut();
             await loginPage.login(knowledgeContributorUser);
@@ -469,12 +469,12 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         let title = `Document_${new Date().valueOf()}`;
         let title1 = `Document1_${new Date().valueOf()}`;
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createNewUser(caseAgentuserData);
-            await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
+            // await apiHelper.apiLogin('tadmin');
+            // await apiHelper.createNewUser(caseAgentuserData);
+            // await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
 
-            await apiHelper.createNewUser(caseManageruserData);
-            await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
+            // await apiHelper.createNewUser(caseManageruserData);
+            // await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
         });
 
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
@@ -488,22 +488,26 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSupportOrg(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
+            await createDocumentLibraryPage.selectSiteGroup(siteGroupVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
             await utilityGrid.searchAndOpenHyperlink(title);
-            expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await editDocumentLibraryPo.clickOnEditButton();
+            expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);
+            expect(await editDocumentLibraryPo.getSiteGrpSelectedValue()).toBe(siteGroupVal);
+            expect(await editDocumentLibraryPo.getSiteSelectedValue()).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
+            await editDocumentLibraryPo.setSiteGrp(siteGroupVal2);
             await editDocumentLibraryPo.setSite(siteFieldVal2);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
         });
-        
+
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Manager
             await navigationPage.signOut();
-            await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login('qdu');
             //Create a document library
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
@@ -514,22 +518,26 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSupportOrg(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
+            await createDocumentLibraryPage.selectSiteGroup(siteGroupVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilityGrid.searchAndOpenHyperlink(title1);
-            expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await utilityGrid.searchAndOpenHyperlink(title);
+            await editDocumentLibraryPo.clickOnEditButton();
+            expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);
+            expect(await editDocumentLibraryPo.getSiteGrpSelectedValue()).toBe(siteGroupVal);
+            expect(await editDocumentLibraryPo.getSiteSelectedValue()).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
+            await editDocumentLibraryPo.setSiteGrp(siteGroupVal2);
             await editDocumentLibraryPo.setSite(siteFieldVal2);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
         });
-        
+
         it('[3832]:Verify the Save functionality of Region and Site fields on Document Library Create / Edit screen', async () => {
             //Login with Case Agent
             await navigationPage.signOut();
-            await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login('qgeorge');
             //Create a document library
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
@@ -541,12 +549,16 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSupportOrg(hrSupportStr);
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
+            await createDocumentLibraryPage.selectSiteGroup(siteGroupVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilityGrid.searchAndOpenHyperlink(title2);
-            expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await utilityGrid.searchAndOpenHyperlink(title);
+            await editDocumentLibraryPo.clickOnEditButton();
+            expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);
+            expect(await editDocumentLibraryPo.getSiteGrpSelectedValue()).toBe(siteGroupVal);
+            expect(await editDocumentLibraryPo.getSiteSelectedValue()).toBe(siteFieldVal);
             await editDocumentLibraryPo.setRegion(regionFieldVal2);
+            await editDocumentLibraryPo.setSiteGrp(siteGroupVal2);
             await editDocumentLibraryPo.setSite(siteFieldVal2);
             await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPo.clickOnSaveButton();
@@ -560,7 +572,6 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
 //done
     describe('[3831]:Verify the search functionality of Document library console for Region', () => {
         let regionFields: string[] = ["Region"];
-        let emptyStr = undefined;
         let caseAgentuserData = {
             "firstName": "caseAgent",
             "lastName": "user",
@@ -575,13 +586,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
         }
 
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.createNewUser(caseAgentuserData);
-            await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, ownerSupportGroup);
-            await apiHelper.createNewUser(caseManageruserData);
-            await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
-            await apiHelper.associatePersonToSupportGroup(caseManageruserData.userId, ownerSupportGroup);
+            // await apiHelper.apiLogin('tadmin');
+            // await apiHelper.createNewUser(caseAgentuserData);
+            // await apiHelper.associatePersonToCompany(caseAgentuserData.userId, "Petramco");
+            // await apiHelper.associatePersonToSupportGroup(caseAgentuserData.userId, ownerSupportGroup);
+            // await apiHelper.createNewUser(caseManageruserData);
+            // await apiHelper.associatePersonToCompany(caseManageruserData.userId, "Petramco");
+            // await apiHelper.associatePersonToSupportGroup(caseManageruserData.userId, ownerSupportGroup);
         });
 
         it('[3831]:Verify the search functionality of Document library console for Region', async () => {
@@ -596,6 +607,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSupportOrg('HR Support');
             await createDocumentLibraryPage.selectOwnerGroup(ownerSupportGroup);
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
+            await createDocumentLibraryPage.selectSiteGroup(siteGroupVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
 
@@ -606,13 +618,13 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
             await documentLibraryPage.removeColumnOnGrid(regionFields);
             await utilityGrid.searchRecord(regionFieldVal);
-            expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(emptyStr);
+            expect(await utilityGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present');
             await navigationPage.signOut();
         });
 
         it('[3831]:Verify the search functionality of Document library console for Region', async () => {
             //Login with Case Manager
-            await loginPage.login(caseManageruserData.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
@@ -620,11 +632,11 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
 
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            expect(await utilityGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
+            expect(await utilityGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present');
             await navigationPage.signOut();
 
             //Login with Case Agent
-            await loginPage.login(caseAgentuserData.userId + '@petramco.com', 'Password_1234');
+            await loginPage.login('qgeorge');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryPage.addColumnOnGrid(regionFields);
@@ -632,7 +644,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await documentLibraryPage.getSelectedGridRecordValue(regionField)).toEqual(regionFieldVal);
 
             await documentLibraryPage.removeColumnOnGrid(regionFields);
-            expect(await utilityGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present')
+            expect(await utilityGrid.isGridRecordPresent(regionFieldVal)).toBeFalsy('Record is present');
         });
 
         afterAll(async () => {
@@ -662,13 +674,17 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSupportOrg('Facilities Support');
             await createDocumentLibraryPage.selectOwnerGroup('Facilities');
             await createDocumentLibraryPage.selectRegion(regionFieldVal);
+            await createDocumentLibraryPage.selectSiteGroup(siteGroupVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
             await utilityGrid.searchAndOpenHyperlink(title);
-            expect(await editDocumentLibraryPo.getRegionSelectedValue(regionField)).toBe(regionFieldVal);
-            expect(await editDocumentLibraryPo.getSiteSelectedValue(siteField)).toBe(siteFieldVal);
+            await editDocumentLibraryPo.clickOnEditButton();
+            expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);
+            expect(await editDocumentLibraryPo.getSiteGrpSelectedValue()).toBe(siteGroupVal);
+            expect(await editDocumentLibraryPo.getSiteSelectedValue()).toBe(siteFieldVal);
             await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await createDocumentLibraryPage.saveUpdatedDocument();
+            await editDocumentLibraryPo.clickOnCancelButton();
             await browser.sleep(30000); // To Wait For Document Library Record Updates And Display Console Page.
         });
 
@@ -832,6 +848,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
+            await utilityCommon.closePopUpMessage();
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
@@ -948,6 +965,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await utilityCommon.closePopUpMessage();
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
@@ -1063,6 +1081,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseAgentUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
+            await utilityCommon.closePopUpMessage();
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
@@ -1177,10 +1196,10 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
-            await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Petramco', 'Canada Support', 'CA Support 1', 'Qiang Du');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await utilityCommon.closePopUpMessage();
             await viewCasePage.clickOnTab('Resources');
 
             //Search with knowledge article with draft status
@@ -1298,6 +1317,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName(caseManagerUser);
             await quickCase.setCaseSummary(articleInDraftStatus);
+            await utilityCommon.closePopUpMessage();
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText(articleInDraftStatus);
@@ -1412,11 +1432,11 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
-            await createCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('Petramco', 'Canada Support', 'CA Support 1', 'Qiang Du');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Resources');
+            await utilityCommon.closePopUpMessage();
 
             //Search with knowledge article with draft status
             await resources.clickOnAdvancedSearchOptions();

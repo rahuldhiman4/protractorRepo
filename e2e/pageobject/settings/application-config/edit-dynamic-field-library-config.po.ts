@@ -1,5 +1,5 @@
-import utilityCommon from '../../../utils/utility.common';
 import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import utilityCommon from '../../../utils/utility.common';
 
 class EditDynamicFieldLibrary {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -17,7 +17,7 @@ class EditDynamicFieldLibrary {
         saveButton: '[rx-view-component-id="cca7e4ea-99f5-4d56-9b21-ecf1a45b7ff3"] button',
         activeConfidentialsCheckbox: '[rx-view-component-id="f89c29d3-56a2-4c8b-95c8-a03b0f5d1e52"] button[rx-id="true-button"]',
         enabledRequiredRadioButton: '[rx-view-component-id="635e3839-5821-4960-9551-0f4843f5a666"] button[rx-id="true-button"]',
-        lobValue: '[rx-view-component-id="e2959678-db85-488e-9d1c-b325965acedd"] input'
+        lobValue: '[rx-view-component-id="e2959678-db85-488e-9d1c-b325965acedd"]'
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -36,13 +36,13 @@ class EditDynamicFieldLibrary {
         });
     }
 
-    async isFieldNameAttribute(attribute:string): Promise<string> {
-     return await $(this.selectors.fieldName).getAttribute(attribute);
+    async isFieldNameAttribute(attribute: string): Promise<string> {
+        return await $(this.selectors.fieldName).getAttribute(attribute);
     }
 
-    async isFieldValueTypeAttribute(attribute:string): Promise<string> {
+    async isFieldValueTypeAttribute(attribute: string): Promise<string> {
         return await $(this.selectors.fieldValueType).getAttribute(attribute);
-       }
+    }
 
     async isFieldNameRequiredText(): Promise<boolean> {
         return await utilityCommon.isRequiredTagToField(this.selectors.fieldNameGuid);
@@ -85,7 +85,10 @@ class EditDynamicFieldLibrary {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getAttribute("placeholder");
+        return await $(`${this.selectors.lobValue} button`).isPresent().then(async (buttonLob) => {
+            if (buttonLob) return await $(`${this.selectors.lobValue} button`).getText();
+            else return await $(`${this.selectors.lobValue} input`).getAttribute("placeholder");
+        });
     }
 }
 
