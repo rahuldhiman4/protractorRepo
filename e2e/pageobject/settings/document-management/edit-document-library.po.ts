@@ -27,9 +27,10 @@ class EditDocumentLibraryPage {
         categoryTier4: '[rx-view-component-id="4abcb2f3-a730-4e34-8126-52ff2c2888c2"] button',
         categorTier4Guid: '4abcb2f3-a730-4e34-8126-52ff2c2888c2',
         region: '[rx-view-component-id="14f9b86f-8225-44a1-aa29-b6b463244f01"] button',
-        regionGuid: '14f9b86f-8225-44a1-aa29-b6b463244f01',
+        regionGuid: '086a90b6-7a7c-436c-a3e6-8e029fc03b03',
         site: '[rx-view-component-id="34a2bb5b-dff7-4dcb-a873-ee13e02abf85"] button',
-        siteGuid: '34a2bb5b-dff7-4dcb-a873-ee13e02abf85',
+        siteGuid: '377f6d72-07eb-46a9-b966-ea4539323107',
+        siteGrpGuid: '14f9b86f-8225-44a1-aa29-b6b463244f01',
         supportOrgGuid: '86e2e239-6f18-416b-b3e4-3a1a60155443',
         tabs: 'ul[role="tablist"] li',
         attachedItem: '[rx-view-component-id="8cfc0c35-081a-40cb-ae85-527045bede0c"] .bwf-attachment-container__thumbnail',
@@ -46,6 +47,7 @@ class EditDocumentLibraryPage {
         descriptionField: '[rx-view-component-id="407cbfa2-3ee5-457c-913f-53d561e3be8c"] textarea',
         lobValue: '[rx-view-component-id="274abed1-8498-4e92-b83b-bce68788f333"] .pull-left',
         lob: '[rx-view-component-id="e8090938-b7e3-47e5-9e77-1f1d7c275b06"] button div',
+        editButton: '[rx-view-component-id="a1b9759b-8b91-4839-b181-b94fa6933324"] button'
     }
 
     async selectSupportOrg(bussinessUnit: string): Promise<void> {
@@ -66,6 +68,10 @@ class EditDocumentLibraryPage {
 
     async setSite(value: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.siteGuid, value);
+    }
+
+    async setSiteGrp(value: string): Promise<void> {
+        await utilityCommon.selectDropDown(this.selectors.siteGrpGuid, value);
     }
 
     async setShareExternallyToggleButton(value: boolean): Promise<void> {
@@ -126,6 +132,10 @@ class EditDocumentLibraryPage {
 
     async clickOnSaveButton(): Promise<void> {
         await $(this.selectors.saveButton).click();
+    }
+
+    async clickOnEditButton(): Promise<void> {
+        await $(this.selectors.editButton).click();
     }
 
     async clickOnDeleteButton(): Promise<void> {
@@ -320,12 +330,16 @@ class EditDocumentLibraryPage {
         return await $(this.selectors.site).isDisplayed();
     }
 
-    async getRegionSelectedValue(fieldName: string): Promise<string> {
-        return await utilityCommon.getSelectedFieldValue(fieldName);
+    async getRegionSelectedValue(): Promise<string> {
+        return await utilityCommon.getSelectedFieldValue(this.selectors.regionGuid);
     }
 
-    async getSiteSelectedValue(fieldName: string): Promise<string> {
-        return await utilityCommon.getSelectedFieldValue(fieldName);
+    async getSiteSelectedValue(): Promise<string> {
+        return await utilityCommon.getSelectedFieldValue(this.selectors.siteGuid);
+    }
+
+    async getSiteGrpSelectedValue(): Promise<string> {
+        return await utilityCommon.getSelectedFieldValue(this.selectors.siteGrpGuid);
     }
 
     async getCategoryTier4(): Promise<string> {

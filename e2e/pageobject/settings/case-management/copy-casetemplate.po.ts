@@ -11,8 +11,8 @@ class CopyCaseTemplate {
         caseCategoryTier2ValueOnCopy: '[rx-view-component-id="60c2bb3a-6278-4056-a400-3c3816f4084d"] .dropdown-toggle',
         caseCategoryTier3ValueOnCopy: '[rx-view-component-id="b544a068-bb95-4915-b6cc-217bfa458564"] .dropdown-toggle',
         casePriorityValueOnCopy: '[rx-view-component-id="98327bc1-9ada-48f9-ab88-9787ddecd409"] .dropdown-toggle div',
-        caseSummaryValueOnCopy: '[rx-view-component-id="9aac1caa-d110-450e-a9a2-d87168ec6162"] .form-control',
-        statusReasonValueOnCopy: '[rx-view-component-id="b6a6fc24-c3e7-4565-b2d2-848dd4a6747b"] .dropdown-toggle',
+        caseSummaryValueOnCopy: '[rx-view-component-id="e3cb1a92-1e94-477d-93fa-b63b29c1c129"] .read-only-content',
+        statusReasonValueOnCopy: '[rx-view-component-id="10370f17-6ec0-43ca-903c-6323a04060f9"] .read-only-content',
         caseCompanyValueOnCopy: '[rx-view-component-id="127214a1-bfc0-4a8c-acb7-cd2be137fa3c"] .dropdown-toggle',
         FlowsetValueOnCopy: '[rx-view-component-id="2e16954b-fa7e-45d6-ae31-fb285c270090"] .dropdown-toggle',
         templateStatusValueOnCopy: '[rx-view-component-id="3bebf8c9-1396-487a-b9ea-bf1e39d4d475"] .dropdown-toggle',
@@ -21,9 +21,9 @@ class CopyCaseTemplate {
         taskFailureConfigurationValueOnCopy: '[rx-view-component-id="317fe9a4-3ca7-4a55-a647-18163fd4a572"] .rx-select__search-button-title',
         allowCaseReopenValueOnCopy: '[rx-view-component-id="cd24485f-5719-48e3-8d76-4320f5d13c4c"] .dropdown-toggle',
         caseStatusValueOnCopy: '[rx-view-component-id="6b1d1112-129e-4c27-82b2-2248f12dc09a"] .dropdown-toggle',
-        resolutionCodeValueOnCopy: '[rx-view-component-id="f5b64175-c39b-4b6b-a6c4-956038a232b3"] input',
-        resoltuionDescriptionValueOnCopy: '[rx-view-component-id="8f8159e2-d647-4c46-ae71-ff56f1a81a0b"] input',
-        caseDescriptionValueOnCopy: '[rx-view-component-id="9023c12e-819f-4964-8079-b11cd6c0b860"] .cke_wysiwyg_div p',
+        resolutionCodeValueOnCopy: '[rx-view-component-id="c3d9b91a-0198-4b61-b13a-59d46d3b0103"] .read-only-content',
+        resoltuionDescriptionValueOnCopy: '[rx-view-component-id="b5b2d17e-e6b1-44e9-bbd5-23d74b3f1a2a"] .read-only-content',
+        caseDescriptionValueOnCopy: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] .bwf-description-read-state .field-value div p',
         copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
         cancelButton: '[rx-view-component-id="be371341-8b3f-4433-93fa-33d242984010"] button',
@@ -64,7 +64,7 @@ class CopyCaseTemplate {
 
     async getValueOfCaseSummary(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseSummaryValueOnCopy)));
-        return await $(this.selectors.caseSummaryValueOnCopy).getAttribute('value');
+        return await $(this.selectors.caseSummaryValueOnCopy).getText();
     }
 
     async getValueOfCaseCompany(): Promise<string> {
@@ -158,12 +158,12 @@ class CopyCaseTemplate {
 
     async getValueOfResolutionCode(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.resolutionCodeValueOnCopy)));
-        return await $(this.selectors.resolutionCodeValueOnCopy).getAttribute('aria-checked') == 'true' ? true : false;
+        return await $(this.selectors.resolutionCodeValueOnCopy).getAttribute('title') == 'Yes' ? true : false;
     }
 
     async getValueOfResolutionDescription(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.resoltuionDescriptionValueOnCopy)));
-        return await $(this.selectors.resoltuionDescriptionValueOnCopy).getAttribute('aria-checked') == 'true' ? true : false;
+        return await $(this.selectors.resoltuionDescriptionValueOnCopy).getAttribute('title') == 'Yes' ? true : false;
     }
 
     async getValueOfcaseStatus(): Promise<string> {

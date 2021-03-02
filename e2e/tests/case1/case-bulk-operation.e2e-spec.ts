@@ -74,7 +74,7 @@ describe('Case Bulk Operation', () => {
         }
         await utilityGrid.searchRecord(caseDataForTest.Summary);
         for (let j: number = 0; j < 3; j++) {
-            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[j]);
+            await utilityGrid.clickCheckBoxOfValueInGrid(caseId[j]);//if fails click checkbox in reverse order [latest case appear first in console]
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, 'United States Support', 'US Support 3', "Qiao Feng");
