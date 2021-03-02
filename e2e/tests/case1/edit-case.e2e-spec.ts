@@ -176,7 +176,7 @@ describe('Edit Case', () => {
             "userPermission": ["Case Agent", "Human Resource"]
         }
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
+            // await apiHelper.apiLogin('tadmin');
             // await apiHelper.createNewUser(personData);
             // await apiHelper.associatePersonToCompany(personData.userId, 'Petramco');
             // await apiHelper.associatePersonToSupportGroup(personData.userId, 'US Support 1');
@@ -184,7 +184,7 @@ describe('Edit Case', () => {
             // await apiHelper.associatePersonToCompany(personData1.userId, 'Petramco');
 
             // await browser.sleep(10000); //Wait to update the user in backend
-            // await navigationPage.signOut();
+            await navigationPage.signOut();
             await loginPage.login('qheroux');
         });
         it('[59943]: UI fields should be visible for user with login ID contains @ sign', async () => {
