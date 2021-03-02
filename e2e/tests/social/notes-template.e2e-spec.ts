@@ -7,7 +7,6 @@ import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
-import quickCasePo from '../../pageobject/case/quick-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
 import addFieldPo from '../../pageobject/common/add-fields-pop.po';
@@ -32,9 +31,10 @@ import notesTemplateUsage from '../../pageobject/social/note-template-usage.po';
 import createAdhocTaskPo from '../../pageobject/task/create-adhoc-task.po';
 import manageTask from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPo from '../../pageobject/task/view-task.po';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 
 let tableRowFieldIndex = 0;
 let tableColumnFieldIndex = 1;
@@ -57,16 +57,14 @@ let redColorText = "this is text red";
 let formatText = "this is text Styles";
 let fontText = "this is text Font";
 let justifyAlignText = "this is text Justify align";
-let strikeThroughText = "this is text strikeThrough";
+let strikeThroughText = "this is text strikeThrough ";
 let imageSource, imageSource1, imageSource2;
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
-let userData, userData1 = undefined, userData2;
+
 describe('Notes template', () => {
     beforeAll(async () => {
-        const caseModule = 'Case';
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-        
     });
 
     afterAll(async () => {
@@ -1460,20 +1458,7 @@ describe('Notes template', () => {
         let psilonCaseResponse = undefined;
 
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
-            userData1 = {
-                "firstName": "Multiple Companies",
-                "lastName": "Access",
-                "userId": "4298_User",
-                "emailId": "4298_User@petramco.com",
-                "userPermission": ["Case Agent", "Foundation Read", "Document Manager", "Case Business Analyst", "Human Resource"]
-            }
-            await apiHelper.createNewUser(userData1);
-            await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-            await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
-            await browser.sleep(15000); //Hard Wait to reflect the new person
-
-            await apiHelper.apiLogin(userData1.userId + '@petramco.com', 'Password_1234');
+            await apiHelper.apiLogin('qheroux');
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let petramcoNotesTemplateData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
             petramcoTemplateName = petramcoNotesTemplateData.templateName + randomStr + 'Petramco';
@@ -1515,7 +1500,7 @@ describe('Notes template', () => {
 
         it('[4298]: Verify Case Notes template is displayed as per to be assignee company(operating organisation)', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userData1.userId + "@petramco.com", 'Password_1234');
+            await loginPage.login('qheroux');
             await utilityGrid.searchAndOpenHyperlink(petramcoCaseResponse.displayId);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1592,12 +1577,12 @@ describe('Notes template', () => {
             await ckeditorOpsPo.clickOnBoldIcon();
             //italic
             await ckeditorOpsPo.clickOnItalicIcon();
-            await ckeditorOpsPo.updateDescription(italicText);
+            await ckeditorOpsPo.updateDescription(italicText+'\n');
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
             await ckeditorOpsPo.clickOnItalicIcon();
             //StrikeThrough
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
-            await ckeditorOpsPo.updateDescription(strikeThroughText);
+            await ckeditorOpsPo.updateDescription(strikeThroughText+'\n');
             expect(await ckeditorValidationPo.isStrikeThroughTextDisplayedInCkEditorTextArea(strikeThroughText)).toBeTruthy('Text is not Strike Through In Ck Editor');
             await ckeditorOpsPo.clickOnStrikeThroughIcon();
             //underline
@@ -1707,6 +1692,7 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
@@ -1716,6 +1702,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -1740,6 +1727,7 @@ describe('Notes template', () => {
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -1763,15 +1751,16 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
-            await activityTabPo.clickShowMoreLinkInActivity(2);
-            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 2)).toBeTruthy('FailureMsg1: Bold Text is missing in Activity');
-            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 2)).toBeTruthy('FailureMsg2: Italic Text is missing In Activity');
-            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 2)).toBeTruthy('FailureMsg3: Underline Text is missing In Activity');
-            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText, 2)).toBeTruthy('FailureMsg4: Right Align Text is missing In Activity');
-            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 2)).toBeTruthy('FailureMsg5: Link Text is missing In Activity');
-            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 2)).toBeTruthy('FailureMsg6: Number List Text is missing In Activity');
-            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 2)).toBeTruthy('FailureMsg7: Bullet List Text is missing In Activity');
+            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 3)).toBeTruthy('FailureMsg1: Bold Text is missing in Activity');
+            expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 3)).toBeTruthy('FailureMsg2: Italic Text is missing In Activity');
+            expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 3)).toBeTruthy('FailureMsg3: Underline Text is missing In Activity');
+            expect(await activityTabPo.isRightAlignTextDisplayedInActivity(rightAlignText,3)).toBeTruthy('FailureMsg4: Right Align Text is missing In Activity');
+            expect(await activityTabPo.isHyperLinkLTextDisplayedInActivity('http://www.google.com', 'Google', 3)).toBeTruthy('FailureMsg5: Link Text is missing In Activity');
+            expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 3)).toBeTruthy('FailureMsg6: Number List Text is missing In Activity');
+            expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 3)).toBeTruthy('FailureMsg7: Bullet List Text is missing In Activity');
             expect(await ckeditorValidationPo.isTableCaptionDisplayedInCkEditorTextArea('tableSummary', 'new' + randomString)).toBeTruthy('FailureMsg8: Text is not Left Align In Ck Editor');
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('FailureMsg9: Text is not Left Align In Ck Editor');
 
@@ -1780,6 +1769,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qstrong');
             await utilityGrid.searchAndOpenHyperlink('NotesTemplateCase1' + randomString);
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInActivity(4);
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 4)).toBeTruthy('FailureMsg10: Bold Text is missing in Activity');
@@ -1996,13 +1986,11 @@ describe('Notes template', () => {
             await createKnowlegePo.clickOnUseSelectedTemplateButton();
             await createKnowlegePo.addTextInKnowlegeTitleField("KnowledgeTitle_" + randomString);
             await createKnowlegePo.selectKnowledgeSet("HR");
-            await createKnowlegePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
 
-            await changeAssignmentBladePo.clickOnAssignButton();
             await createKnowlegePo.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
@@ -2072,11 +2060,12 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
     });
-
+    
     describe('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
         let templateName: string, caseData, newCase, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -2097,8 +2086,12 @@ describe('Notes template', () => {
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('Canada Support', 'Select Business Unit');
             await accessTabPo.selectAccessEntityDropDown('CA Support 3', 'Select Support Group');
+            await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+
+            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            await accessTabPo.selectAccessEntityDropDown('Staffing', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
@@ -2282,7 +2275,7 @@ describe('Notes template', () => {
         });
         it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('22653User@petramco.com', 'Password_1234');
+            await loginPage.login('elizabeth');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAssigneeLink();
@@ -2305,7 +2298,7 @@ describe('Notes template', () => {
             await loginPage.login('elizabeth');
         });
     });
-
+    
     describe('[3436]: Verify access of notes template to Case BA of Support group 2 which is created by other SG case BA', async () => {
         let updateBody: string, caseTemplateName: string, knowledgeTemplateName: string, peopleTemplateName: string, taskTemplateName: string, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         //Case
@@ -2807,7 +2800,7 @@ describe('Notes template', () => {
 
         it('[3436]: Verify access of notes template to Case BA With Task', async () => {
             await navigationPage.signOut();
-            await loginPage.login('22653User@petramco.com', 'Password_1234');
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Notes Template', BWF_PAGE_TITLES.TASK_MANAGEMENT.NOTES_TEMPLATES);
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(taskTemplateName);
@@ -2884,7 +2877,8 @@ describe('Notes template', () => {
 
         it('[3436]: Verify Case / Task / Knowledge / Person Notes Templates are accessible to other Line of business Case Manager user', async () => {
             await navigationPage.signOut();
-            await loginPage.login('frieda');
+            await loginPage.login('qyuan');
+            await utilityGrid.selectLineOfBusiness('Facilities');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(caseTemplateName)).toBeFalsy('Case Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
@@ -2898,7 +2892,7 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(peopleTemplateName)).toBeFalsy('Person Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
-
+            
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Notes Template', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.NOTES_TEMPLATES);
             expect(await utilityGrid.isGridRecordPresent(knowledgeTemplateName)).toBeFalsy('Knowledge Article Notes Template for Human Resource LOB are displayed to Facilities LOB User.');
@@ -2994,7 +2988,7 @@ describe('Notes template', () => {
             await loginPage.login('elizabeth');
         });
     });
-
+    
     describe('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
         let templateName: string, manualTaskTemplateData, casetemplatePetramco, externaltemplateData, newCaseTemplate, automatedtemplateData, readAccessMappingData, caseId, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -3183,19 +3177,26 @@ describe('Notes template', () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
-            await navigationPage.gotoQuickCase();
-            await quickCasePo.selectRequesterName("adam");
-            await quickCasePo.selectCaseTemplate(casetemplatePetramco.templateName);
-            await quickCasePo.setCaseSummary("CaseSummary" + randomString);
-            await quickCasePo.saveCase();
-            await quickCasePo.gotoCaseButton();
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('adam');
+            await createCasePo.setSummary("CaseSummary" + randomString);
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(casetemplatePetramco.templateName);
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             caseId = await viewCasePage.getCaseID();
+            await updateStatusBladePo.changeStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
 
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('CA Support 3', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewCasePage.clickOnTab('Tasks');
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(manualTaskTemplateData.templateSummary);
+            await viewTaskPo.clickOnChangeStatus();
+            await viewTaskPo.changeTaskStatus('Completed');
+            await updateStatusBladePo.selectStatusReason('Successful');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -3206,6 +3207,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -3219,8 +3221,12 @@ describe('Notes template', () => {
         it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-            await viewCasePage.openTaskCard(2);
-            await manageTask.clickTaskLink(externaltemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(externaltemplateData.templateSummary);
+            await viewTaskPo.clickOnChangeStatus();
+            await viewTaskPo.changeTaskStatus('Completed');
+            await updateStatusBladePo.selectStatusReason('Successful');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -3231,6 +3237,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -3244,8 +3251,7 @@ describe('Notes template', () => {
         it('[3446,3442,3438]: Verify CKE functionality on Create and Edit Task Notes template', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-            await viewCasePage.openTaskCard(3);
-            await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(automatedtemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
             await activityTabPo.addActivityNote(randomString);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
@@ -3256,6 +3262,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -3270,8 +3277,8 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(manualTaskTemplateData.templateSummary);
+            await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -3283,8 +3290,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-            await viewCasePage.openTaskCard(3);
-            await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(automatedtemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -3296,8 +3302,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-            await viewCasePage.openTaskCard(2);
-            await manageTask.clickTaskLink(externaltemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(externaltemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -3312,8 +3317,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await viewCasePage.openTaskCard(1);
-            await manageTask.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(manualTaskTemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -3325,8 +3329,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-            await viewCasePage.openTaskCard(3);
-            await manageTask.clickTaskLink(automatedtemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(automatedtemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
@@ -3338,8 +3341,7 @@ describe('Notes template', () => {
             expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
-            await viewCasePage.openTaskCard(2);
-            await manageTask.clickTaskLink(externaltemplateData.templateSummary);
+            await viewCasePage.clickOnTaskLink(externaltemplateData.templateSummary);
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
