@@ -153,8 +153,15 @@ class ViewCaseTemplate {
     }
 
     async isDynamicFieldDisplayed(value: string): Promise<boolean> {
-        await utilityCommon.scrollToElement(await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`));
-        return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`).isDisplayed();
+       return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`).isPresent().then(async (result) => {
+            if (result) {
+                await utilityCommon.scrollToElement(await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`));
+                return await $(`[rx-view-component-id="ba0546ff-0bf1-4678-8312-630242b43e3c"] span[title=${value}]`).isDisplayed();
+            } else {
+                console.log("Managelink not present");
+                return false;
+            }
+        });
     }
 
     async isGroupDisplayed(groupName: string): Promise<boolean> {
