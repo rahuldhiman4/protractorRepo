@@ -281,6 +281,7 @@ describe("Case Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -465,12 +466,13 @@ describe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectAssociatedCaseTemplateCheckbox();
             expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalLeftArrawBtnEnabled()).toBeFalsy('Case template can be dissociated');
             // case agent access already verified in different JiraIDs 5244
+            await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[5193,6267]: Case approval mapping access Case BA', async () => {
             let newApprovalName = "Test2 " + approvalMappingName;
             await navigationPage.signOut();
-            // Petramco and Psilon CaseBA
-            await loginPage.login('morwenna');
+            // Facilities and Human Resource CaseBA
+            await loginPage.login('jbarnes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await utilityGrid.searchAndOpenHyperlink(approvalMappingName);
@@ -531,6 +533,7 @@ describe("Case Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -617,6 +620,7 @@ describe("Case Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -675,9 +679,9 @@ describe("Case Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
         });
     });
-
 
     //skhobrag
     describe('[3509]:Case Global Approval Mapping behavior', async () => {
@@ -750,7 +754,7 @@ describe("Case Approval Mapping Tests", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Approval Mappings', BWF_PAGE_TITLES.CASE_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -826,7 +830,7 @@ describe("Case Approval Mapping Tests", () => {
         it('[3509]: Create Apporval Mapping for Global Company', async () => {
             let approvalMappingName2 = 'Approval Mapping2' + randomStr;
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName2);
             await createApprovalMappingPage.selectCompany('Global');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -887,6 +891,7 @@ describe("Case Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -1048,6 +1053,7 @@ describe("Case Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
@@ -1129,6 +1135,7 @@ describe("Case Approval Mapping Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
         });
     });
 });
