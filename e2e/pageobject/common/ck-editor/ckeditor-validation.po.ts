@@ -18,7 +18,7 @@ class CKEValidation {
         underlineTextCkEditorTextArea: '.cke_enable_context_menu u,.activity__body u',
         colorTextCkEditorTextArea: '.cke_enable_context_menu span',
         alignmentTextCkEditorTextArea: 'div.cke_enable_context_menu , div.cke_enable_context_menu div',
-        strikeThroughTextCkEditorTextArea: '.cke_enable_context_menu s',
+        strikeThroughTextCkEditorTextArea: '.cke_enable_context_menu s,.cke_wysiwyg_div .bwf-text-strikethrough',
         justifyAlignText: '.cke_enable_context_menu [style="text-align: justify;"]',
         deletedTextInCKE: '.cke_editable_themed del',
         rightAlignText: '.cke_enable_context_menu div[style="text-align: right;"],.cke_enable_context_menu p[style="text-align: right;"]',
