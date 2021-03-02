@@ -318,7 +318,7 @@ describe("Case Read Access", () => {
             await utilityCommon.closePopUpMessage();
         });
         // quick-case template search defect
-        xit('[5578,5606]: [Read Access] Configuring non-default Read Access', async () => {
+        it('[5578,5606]: [Read Access] Configuring non-default Read Access', async () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
@@ -646,7 +646,7 @@ describe("Case Read Access", () => {
     });
 
     // #ashastra - defect #DRDMV-25244
-    fdescribe('[3457]: Bulk Case Access update clicking Reset to default.', async () => {
+    describe('[3457]: Bulk Case Access update clicking Reset to default.', async () => {
         let newCase1;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
