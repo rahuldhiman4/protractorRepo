@@ -92,12 +92,12 @@ class DynamicField {
     }
 
     async setGroupDescription(name: string): Promise<void> {
-        await $(this.selectors.groupDescription).clear();
-        await $(this.selectors.groupDescription).sendKeys(name);
+        await $$(this.selectors.groupDescription).last().clear();
+        await $$(this.selectors.groupDescription).last().sendKeys(name);
     }
 
     async isGroupDescriptionDisplay(): Promise<boolean> {
-        return await $(this.selectors.groupDescription).isDisplayed();
+        return await $$(this.selectors.groupName).last().isDisplayed();
     }
 
     async setDescriptionName(name: string): Promise<void> {

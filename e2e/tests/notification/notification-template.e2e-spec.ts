@@ -111,7 +111,7 @@ describe("Notification Template", () => {
 
         it('[3898]: Verify if copied notification templates are accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('caseMngrMultiLOB@petramco.com', 'Password_1234');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilityGrid.selectLineOfBusiness('Human Resource');
