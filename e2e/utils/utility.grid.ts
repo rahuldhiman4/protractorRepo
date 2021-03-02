@@ -117,15 +117,16 @@ export class GridOperations {
             gridRecordLocator = `[rx-view-component-id="${guid}"] ${this.selectors.gridRowHyperLinks}`;
         }
         let totalGridRecords = await $$(gridRecordLocator).count();
-        let i = 0;
-        while (i < totalGridRecords) {
-            let linkedText = await $$(gridRecordLocator).get(i).getText();
+        var index = 0;
+        while (index < totalGridRecords) {
+            let linkedText = await $$(gridRecordLocator).get(index).getText();
+            console.log(totalGridRecords + "<<<====>>>" + index);
             if (linkedText.trim() == value) {
-                await $$(`${gridRowLocator} ${this.selectors.gridCheckbox}`).get(i).click();
+                await $$(`${gridRowLocator} ${this.selectors.gridCheckbox}`).get(index).click();
                 break;
             }
             totalGridRecords = await $$(gridRecordLocator).count();
-            i++;
+            index++;
         }
     }
 
