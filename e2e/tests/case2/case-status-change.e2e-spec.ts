@@ -36,6 +36,7 @@ describe('Case Status Change', () => {
         await navigationPage.signOut();
     });
 
+    // passed
     describe('[5981]: [Case Status] Case status change from New', async () => {
         let priority: string = "Medium";
         let summary: string = "Test case for 5981";
@@ -131,6 +132,7 @@ describe('Case Status Change', () => {
         });
     });
 
+    // passed
     describe('[6082,3498]: [Case] Fields validation for case In Progress status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[6082,3498]: Checking change case template button for In Progress', async () => {
@@ -209,6 +211,7 @@ describe('Case Status Change', () => {
         });
     });
 
+    // passed
     describe('[6330]: [Case Status] Case status change from In Progress', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -313,6 +316,7 @@ describe('Case Status Change', () => {
         });
     });
 
+    // passed
     describe('[6333]: [Case Status] Case status change from Resolved', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -408,6 +412,7 @@ describe('Case Status Change', () => {
         });
     });
 
+    // failed : defect for quick case - case template search
     describe('[6079]: [Case] Fields validation for case in Canceled status', async () => {
         let templateData, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -482,7 +487,8 @@ describe('Case Status Change', () => {
             newCase4 = await apiHelper.createCase(caseData4);
             caseId4 = newCase4.displayId;
         });
-        it('[6079]: Fields validation for case in Canceled status', async () => {
+        // defect
+        it('[6079]: Fields validation for case in Canceled status 1', async () => {
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("adam");
             await quickCasePo.selectCaseTemplate(caseTemplateName1);
@@ -497,7 +503,7 @@ describe('Case Status Change', () => {
             await editCasePage.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-        it('[6079]: Fields validation for case in Canceled status', async () => {
+        it('[6079]: Fields validation for case in Canceled status 2', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId1);
             await viewCasePage.clickEditCaseButton();
@@ -509,7 +515,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
         });
-        it('[6079]: Fields validation for case in Canceled status', async () => {
+        it('[6079]: Fields validation for case in Canceled status 3', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId2);
             await viewCasePage.clickEditCaseButton();
@@ -521,7 +527,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
         });
-        it('[6079]: Fields validation for case in Canceled status', async () => {
+        it('[6079]: Fields validation for case in Canceled status 4', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId3);
             await viewCasePage.clickEditCaseButton();
@@ -534,7 +540,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
         });
-        it('[6079]: [Case] Fields validation for case in Canceled status', async () => {
+        it('[6079]: [Case] Fields validation for case in Canceled status 5', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(caseId4);
             await viewCasePage.clickEditCaseButton();
@@ -549,6 +555,7 @@ describe('Case Status Change', () => {
         });
     });
 
+    // passed
     describe('[6329]: [Case Status] Case status change from Pending', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -667,6 +674,7 @@ describe('Case Status Change', () => {
         });
     });
 
+    // passed
     describe('[5742]: [Status Blade] Case Status Blade view', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary1: string = randomStr + "Summary 1";
@@ -725,6 +733,7 @@ describe('Case Status Change', () => {
         });
     });
 
+    // passed
     it('[6080]: [Case] Fields validation for case in Resolved status', async () => {
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteApprovalMapping(caseModule);
@@ -759,6 +768,7 @@ describe('Case Status Change', () => {
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
     });
 
+    // passed
     it('[6332]: [Case Status] Case status change from Closed', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -779,6 +789,7 @@ describe('Case Status Change', () => {
         expect(await $(updateStatusBladePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
     });
 
+    // passed
     it('[6301]: [Case Status Reason] Status Reason change without status transition', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -812,6 +823,7 @@ describe('Case Status Change', () => {
         await updateStatusBladePo.clickSaveStatus();
     });
 
+    // passed
     it('[6307]: [Case Status] Case status change from Canceled', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -829,6 +841,7 @@ describe('Case Status Change', () => {
         expect(await $(updateStatusBladePo.selectors.saveUpdateStatus).isPresent()).toBeFalsy('Update Statue blade is displayed');
     });
 
+    // passed
     it('[6083]: [Case] Fields validation for case in Assigned status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();
@@ -857,6 +870,7 @@ describe('Case Status Change', () => {
         expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
     });
 
+    // passed
     it('[6081]: [Case] Fields validation for case in Pending status', async () => {
         let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await navigationPage.gotoCreateCase();

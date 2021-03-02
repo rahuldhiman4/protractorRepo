@@ -439,7 +439,7 @@ describe("Create Case", () => {
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Kyle Kohri');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qiao Feng');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toContain('Qiao Feng');
             await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await createCasePage.clickAssignToMeButton();
@@ -746,7 +746,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePage.getAssignedGroupValue()).toBe('Compensation and Benefits');
+            expect(await viewCasePage.getAssignedGroupValue()).toBe('Workforce Administration'); // default Assigned Group
             await updateStatusBladePo.changeStatus('In Progress');
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();

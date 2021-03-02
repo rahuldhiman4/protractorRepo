@@ -59,7 +59,6 @@ describe('Case Console', () => {
         await utilityGrid.removeGridColumn(['Source']);
     });
 
-    // Defect DRDMV-25208
     describe('[4424]: Verify Category Tier 4 and Label column is visible on console', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label;
@@ -176,8 +175,8 @@ describe('Case Console', () => {
             await readAccessConsolePo.addColumns([labelStr, categoryTier4Str]);
             await utilityGrid.searchRecordWithoutFilter('Read Access Mapping Name' + randomStr);
             expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(categoryTier4Str)).toContain(readAccessMappingData.category4);
-            expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(labelStr)).toContain(label);
-            await readAccessConsolePo.removeColumns([labelStr, categoryTier4Str]);
+            // expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(labelStr)).toContain(label); // removed Label column intentionally (as desinged - DRDMV-25208)
+            await readAccessConsolePo.removeColumns([categoryTier4Str]);
         });
 
         afterAll(async () => {
@@ -188,7 +187,7 @@ describe('Case Console', () => {
 
     describe('[5531]:[Case Workspace] Cases search using filters', async () => {
         let id, label, modifiedDateFormate, month, caseData1, newCase1, caseTemplateData1, caseData2, newCase2, caseTemplateData2, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let arr1: string[] = ["Assignee Login Name", "Company", "Case Site", "Modified By", "Label", "ID"];
+        let arr1: string[] = ["Assignee Login Name", "Company", "Case Site", "Modified By", "ID"];
         let defaultCaseColumns: string[] = ["Assigned Group", "Assignee", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Modified Date", "Priority", "Request ID", "Requester", "SLM Status", "Status", "Summary"];
         beforeAll(async () => {
             caseData1 = {
@@ -339,7 +338,7 @@ describe('Case Console', () => {
             await utilityGrid.addFilter('Company', 'Petramco', 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record is not filtered on the basis of Company');
             await utilityGrid.searchRecord(newCase1.displayId);
-            await utilityGrid.addFilter('Region', 'North America', 'text');
+            await utilityGrid.addFilter('Region', 'Americas', 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record is not filtered on the basis of Region');
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Case Site', 'Austin', 'text');
@@ -355,9 +354,9 @@ describe('Case Console', () => {
         });
         it('[5531]:[Case Workspace] Cases search using filters 6', async () => {
             await utilityGrid.searchRecord(newCase1.displayId);
-            await utilityGrid.addFilter('Label', "CaseLabel" + randomStr, 'text');
-            expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Label'); // Defect DRDMV-25208
-            expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy('Record2 is not filtered on the basis of Label');
+            // await utilityGrid.addFilter('Label', "CaseLabel" + randomStr, 'text'); // removed Label column intentionally (as desinged - DRDMV-25208)
+            // expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Label');
+            // expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy('Record2 is not filtered on the basis of Label');
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter("ID", id, "text");
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of ID');
