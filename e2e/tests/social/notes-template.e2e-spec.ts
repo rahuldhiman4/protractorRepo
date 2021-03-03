@@ -517,6 +517,8 @@ describe('Notes template', () => {
         it('[4299]: Case and People Notes template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
+            expect (await consoleNotesTemplatePo.isCreateNotesTemplateEnabled()).toBeTruthy('Create notes template is enabled');
+            await browser.sleep(2000)// wait untile people page open
             peopleNotesTemplate = await createNotesTemplate.createNotesTemplate('Petramco');
             await consoleNotesTemplatePo.searchAndClickOnNotesTemplate(peopleNotesTemplate);
             await editNotetemplate.changeLanguageValue('German (Germany)');
@@ -564,6 +566,8 @@ describe('Notes template', () => {
             //create same name record in same LOB
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
+            expect (await consoleNotesTemplatePo.isCreateNotesTemplateEnabled()).toBeTruthy('Create notes template is enabled');
+            await browser.sleep(2000)// wait untile people page open
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(peopleNotesTemplate);
             await createNotesTemplate.setCompanyValue('Petramco');
@@ -620,6 +624,8 @@ describe('Notes template', () => {
             //create same name record in different LOB
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('People--Notes Template', BWF_PAGE_TITLES.PEOPLE.NOTES_TEMPLATES);
+            expect (await consoleNotesTemplatePo.isCreateNotesTemplateEnabled()).toBeTruthy('Create notes template is enabled');
+            await browser.sleep(2000)// wait untile people page open
             await consoleNotesTemplatePo.clickOnCreateNotesTemplate();
             await createNotesTemplate.setTemplateName(peopleNotesTemplate);
             await createNotesTemplate.setCompanyValue('Petramco');
@@ -2060,6 +2066,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
         });
         afterAll(async () => {
+            await accessTabPo.clickCloseKnowledgeAccessBlade();
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
