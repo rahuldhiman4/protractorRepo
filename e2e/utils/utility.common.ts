@@ -369,7 +369,7 @@ export class Utility {
         return date + '/' + month + '/' + year;
     }
 
-    async setDateField(guid: string, dateValue: string): Promise<void> {
+    async setDateField(dateValue: string, guid?: string): Promise<void> {
         //expects dateValue as format 04-01-2023 06:11 PM  -  DD-MM-YYYY HH:MM PM/AM
         if (dateValue.includes(":") && dateValue.includes("-")) { // validates correct date format
 

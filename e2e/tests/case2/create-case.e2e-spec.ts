@@ -784,8 +784,8 @@ describe("Create Case", () => {
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            await viewCasePage.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(autoTaskTemplateData.templateName);
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(autoTaskTemplateData.templateName);
             expect(await viewTaskPo.getTaskStatusValue()).toBe('Completed');
         });
         afterAll(async () => {
@@ -922,6 +922,7 @@ describe("Create Case", () => {
 
         afterAll(async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });
