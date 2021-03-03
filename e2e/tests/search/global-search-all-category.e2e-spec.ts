@@ -193,22 +193,6 @@ describe('Global Search All Category', () => {
 
     }
 
-    async function createNewUser(firstName: string, lastName: string, loginId: string, emailId: string, company?: string): Promise<void> {
-        let caseAgentuserData = {
-            "firstName": firstName,
-            "lastName": lastName,
-            "userId": loginId,
-            "emailId": emailId,
-            "userPermission": ["Case Agent", "Document Manager", "Human Resource"]
-        }
-        if (company) {
-            await apiHelper.createNewUser(caseAgentuserData);
-            await apiHelper.associatePersonToCompany(caseAgentuserData.userId, company);
-        } else {
-            await apiHelper.createNewUser(caseAgentuserData, 'Inactive');
-        }
-    }
-
     //kgaikwad
     describe('[4333]: Global search with All Category', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -317,7 +301,7 @@ describe('Global Search All Category', () => {
             expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg35: Case Priority is missing');
             expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg36: Reqester Name missing');
             expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg37: Reqester Company is missing');
-            expect(await casePreviewPo.isRequesterPhoneDisplayed('+15123431923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 213 5559393')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
@@ -570,7 +554,7 @@ describe('Global Search All Category', () => {
             let objDate: Date = new Date();
             let numYear: number = objDate.getFullYear();
             year = new Number(numYear).toString();
-            let numMonth: number = objDate.getUTCMonth() + 1;
+            let numMonth: number = objDate.getMonth() + 1;
             let month1 = new Number(numMonth);
             if (month1 <= 9) month = '0' + month1.toString();
             else month = month1.toString();

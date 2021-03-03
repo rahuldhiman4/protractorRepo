@@ -538,7 +538,7 @@ class GlobalSearch {
                 break;
             }
         }
-            return await $$(`[rx-view-component-id="${guid}"] .list__item`).get(recordNumber - 1).$$('.bwf-search-fields span').get(0).getText();
+            return await $$(`[rx-view-component-id="${guid}"] .list__item`).get(recordNumber - 1).$$('.bwf-search-fields span').get(1).getText();
         }
 }
 export default new GlobalSearch();
