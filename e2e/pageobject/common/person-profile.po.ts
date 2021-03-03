@@ -11,7 +11,7 @@ class PersonProfilePage {
         managerImage: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] img',
         companyName: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .person-organization, .person-organization .text-secondary',
         phone: '[rx-view-component-id="dfb11922-8df4-405b-8d7a-2e0664897f2a"] .person-phone-link',
-        email: '[rx-view-component-id="dfb11922-8df4-405b-8d7a-2e0664897f2a"] .person-link button, [rx-view-component-id="db6003d9-b50d-4c4a-be8b-9648afecce23"] .bwf-person-email button',
+        email: '[rx-view-component-id="dfb11922-8df4-405b-8d7a-2e0664897f2a"] .person-link button, [rx-view-component-id="0a98626e-ee9f-4dff-9388-6c6327894f47"] .bwf-person-email button',
         site: '[rx-view-component-id="dfb11922-8df4-405b-8d7a-2e0664897f2a"] .person-site-text',
         managerName: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] .person-name a',
         activityNotes: '.activity-feed-note textarea',

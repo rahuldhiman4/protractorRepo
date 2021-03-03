@@ -290,14 +290,14 @@ describe('Global Search Category Validation', () => {
             await searchPo.searchRecord(description);
             expect(await searchPo.isModuleTitleDisplayed(description, 'Cases (2)', caseModule)).toBeTruthy('FailureMsg47: Case module title is missing');
             browser.sleep(3000); //Wait until record display on left pannel
-            await searchPo.clickOnLeftPannelRecord(caseDisplayId2[0], caseModule);
-            expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseDisplayId2[0])).toBeTruthy('FailureMsg48: Case id is missing');
+            await searchPo.clickOnLeftPannelRecord(caseDisplayId2[1], caseModule);
+            expect(await casePreviewPo.isGlobalSearchCaseIdDisplayed(caseDisplayId2[1])).toBeTruthy('FailureMsg48: Case id is missing');
             expect(await casePreviewPo.isDescriptionDisplayed(description)).toBeTruthy('FailureMsg49: Case Description is missing');
         });
 
         it('[4307]: Click On Goto Case button and verify ', async () => {
             await casePreviewPo.clickGoToCaseButton();
-            expect(await viewCasetemplatePo.getCaseTemplateId()).toBe(caseDisplayId2[0], 'FailureMsg50: Case id is missing on view case page');
+            expect(await viewCasetemplatePo.getCaseTemplateId()).toBe(caseDisplayId2[1], 'FailureMsg50: Case id is missing on view case page');
         });
 
         it('[4307]: Verify Case with non matching Case summary and description Also Verify case summary and description who have not access of the case', async () => {

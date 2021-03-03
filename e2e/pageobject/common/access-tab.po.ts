@@ -132,7 +132,11 @@ class AccessTab {
     }
 
     async clickCloseKnowledgeAccessBlade(): Promise<void> {
-        await $(this.selectors.closeKnowledgeAccessBlade).click();
+        await $(this.selectors.closeKnowledgeAccessBlade).isPresent().then(async (result) => {
+            if (result){
+                await $(this.selectors.closeKnowledgeAccessBlade).click();
+            } else console.log('Knowledge access close button is missing');
+        });
     }
 
     async isAccessEntityDisplayed(entityName: string, moduleName: string): Promise<boolean> {

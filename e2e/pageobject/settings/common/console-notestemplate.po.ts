@@ -1,15 +1,16 @@
-import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from "../../../utils/utility.grid";
 class ConsoleNotesTemplate {
 
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        notesTemplate: '.d-icon-left-plus',
+        notesTemplate: '.rx-runtime-view-canvas-item-margin .d-icon-left-plus',
         gridGuid: '25aff7c5-2405-4d61-8a4f-8db53b033c31',
         deleteButton: '.d-icon-left-cross',
         searchTextBox: '.adapt-search-triggerable input',
         searchButton: '.adapt-search-triggerable .input-group-append',
         refreshButton: '.d-icon-refresh',
+        templateName: '[rx-view-component-id="438e2c9d-b937-4ab5-8718-7ddb98073ee6"] input',
     }
 
     async isCreateNotesTemplateEnabled(): Promise<boolean> {
@@ -19,7 +20,9 @@ class ConsoleNotesTemplate {
 
     async clickOnCreateNotesTemplate(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplate)));
+        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplate)), 7000);
         await $(this.selectors.notesTemplate).click();
+        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)), 7000);
     }
 
     async clickOnTemplateName(temmplateName: string): Promise<void> {
