@@ -33,7 +33,7 @@ describe('Case And Employee Relationship', () => {
         await navigationPage.signOut();
     });
 
-    //asahitya
+    //asahitya passed
     describe('[4285,4284,4286]: Add person with different relations', async () => {
         it('[4285,4284,4286]: Add person with different relations', async () => {
             await navigationPage.gotoCreateCase();
@@ -63,7 +63,7 @@ describe('Case And Employee Relationship', () => {
         });
     });
 
-    //asahitya
+    //asahitya passed
     it('[4145]: Multiple people can be added by same Relationship', async () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
@@ -83,7 +83,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Lily Anthony', 'Inspector')).toBeTruthy();
     });
 
-    //asahitya
+    //asahitya (passed on cicd)
     it('[4278]: Related Persons tab is available on Person Profile check UI', async () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
@@ -113,7 +113,7 @@ describe('Case And Employee Relationship', () => {
         }
     });
 
-    //asahitya
+    //asahitya passed
     it('[4119]: Related Case tab is available on Person Profile', async () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("Allen");
@@ -141,7 +141,7 @@ describe('Case And Employee Relationship', () => {
         }
     });
 
-    //asahitya
+    //asahitya (passed on cicd)
     describe('[4121]: Remove Related Case from Case', async () => {
         let caseId1, caseId2, caseId3;
         beforeAll(async () => {
@@ -208,7 +208,7 @@ describe('Case And Employee Relationship', () => {
         });
     });
 
-    //asahitya
+    //asahitya (passed on cicd)
     it('[4283]: Check details shown for Employees on Related People tab', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -226,7 +226,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedTabPage.getRelatedPersonSite('Qianru Tao')).toBe("Austin\n10431 Morado Circle\nAvalon Building 5, Austin, Texas, 78759, United States ", "Related Person Phone number does not match");
     });
 
-    //asahitya
+    //asahitya passed
     it('[4120]: Check details shown for Employees on Related People tab', async () => {
         await apiHelper.apiLogin("qtao");
         let caseData = require('../../data/ui/case/case.ui.json');
@@ -248,7 +248,7 @@ describe('Case And Employee Relationship', () => {
         expect(await relatedCaseTabPo.getRelatedCaseSummary(caseDisplayId2)).toBe("Testing Realated Persons");
     });
 
-    //asahitya
+    //asahitya DRDMV-25258
     describe('[4281]: Remove the Person from Case Related People tab and Person Profile Related People tab', async () => {
         let caseId;
         beforeAll(async () => {
@@ -291,7 +291,7 @@ describe('Case And Employee Relationship', () => {
         });
     });
 
-    //asahitya
+    //asahitya passed
     it('[4124]: Check Related Cases Tab on Case Bottom section', async () => {
         await navigationPage.gotoCaseConsole();
         //Create case 1 to pin with quick case
@@ -325,7 +325,7 @@ describe('Case And Employee Relationship', () => {
         await relatedCaseTabPo.isCasePresent(caseId2);
     });
 
-    //asahitya
+    //asahitya passed
     it('[4117]: Check if Person is Related to other Case to which he has no access and Cases are not shown on Person Profile', async () => {
         let caseData = {
             "Description": "My Bulk Case Assignee",
@@ -367,11 +367,12 @@ describe('Case And Employee Relationship', () => {
         expect(await personProfilePage.isCaseAvailableOnRelatedCases(response2.displayId)).toBeFalsy(response2.displayId + ' is present');
     });
 
-    //asahitya
+    //asahitya failed
     describe('[4279]: Send Email to Related Person from Related Persons tab', async () => {
         let caseInfo, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
+            await apiHelper.deleteAllEmailConfiguration();
             await apiHelper.createEmailConfiguration();
             let caseData = {
                 "Requester": "apavlik",
@@ -396,7 +397,7 @@ describe('Case And Employee Relationship', () => {
             console.log(`Subject of the email = ${subjectInArSys}`);
             await browser.sleep(2000); // hardwait to appear email message in "AR System Email Messages"
             await apiHelper.apiLogin('tadmin');
-            let body = await apiHelper.getHTMLBodyOfEmail(subjectInArSys, 'qkatawazi@petramco.com');
+            let body = await apiHelper.getHTMLBodyOfEmail(subjectInArSys, 'qkatawazi@petramco.com'); // need to check
             console.log('body:', body);
             expect(body.includes('<br>4279')).toBeTruthy('Email does not match');
         });
@@ -434,7 +435,7 @@ describe('Case And Employee Relationship', () => {
             expect(await relationConfigPage.getReverseRelationShipName('Related to')).toBe('Related to', 'Reverse Relationship name for Related to does not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
-        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
+        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship 1', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId[0]);
             await viewCasePo.clickOnTab('Related Cases');
@@ -446,7 +447,7 @@ describe('Case And Employee Relationship', () => {
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[0])).toBe('Parent');
         });
-        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
+        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship 2', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId[2]);
             await viewCasePo.clickOnTab('Related Cases');
@@ -458,7 +459,7 @@ describe('Case And Employee Relationship', () => {
             await viewCasePo.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.getRelatedCaseRelation(caseId[2])).toBe('Duplicates');
         });
-        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship', async () => {
+        it('[4123]: Relate Cases using OOB Cases to Cases Relationship and check Child Relationship 3', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId[4]);
             await viewCasePo.clickOnTab('Related Cases');
