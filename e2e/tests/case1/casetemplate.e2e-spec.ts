@@ -1,3 +1,4 @@
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
@@ -10,7 +11,6 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
-import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -138,17 +138,14 @@ describe('Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
             await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.ownerOrgDropdown, ['Facilities', 'Facilities Support']);
             await createCaseTemplate.setOwnerCompanyValue(ALL_FIELD.ownerCompany);
-            await createCaseTemplate.setOwnerOrgDropdownValue('Facilities Support');
+            await createCaseTemplate.setOwnerOrgDropdownValue('Facilities'); //temp fix
             await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.ownerGroupDropdown, ['Facilities', 'Pantry Service']);
-            await createCaseTemplate.setOwnerOrgDropdownValue('Facilities Support');
-            await createCaseTemplate.setOwnerGroupDropdownValue('Facilities');
-            await createCaseTemplate.clickOnChangeAssignmentButton();
-            await changeAssignmentOldBladePo.selectCompany(ALL_FIELD.ownerCompany);
-            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Business Unit', ['Facilities', 'Facilities Support']);
-            await changeAssignmentOldBladePo.selectCompany(ALL_FIELD.ownerCompany);
-            await changeAssignmentOldBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Support Group', ['Facilities', 'Pantry Service']);
-            await changeAssignmentOldBladePo.clickOnCancelButton();
+            await createCaseTemplate.setOwnerOrgDropdownValue('Facilities');  //temp fix
+            await createCaseTemplate.setOwnerGroupDropdownValue('Facilities'); 
+            await changeAssignmentPo.setDropDownValue("Company", ALL_FIELD.ownerCompany);
+            await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support'])
+            await changeAssignmentPo.setDropDownValue('SupportOrg', 'Facilities Support');
+            await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])
             // verify LOB is there
             expect(await createCaseTemplate.getLobValue()).toBe("Facilities");
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -202,7 +199,7 @@ describe('Case Template', () => {
         }
     });
 
-    //ptidke-check
+    //ptidke
     it('[4549]: Verify the values present in the Case assignment method dropdownlist-Round Robin and None', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -298,7 +295,7 @@ describe('Case Template', () => {
         });
     });
 
-    //ptidke-pass
+    //ptidke
     it('[6305]: [Case Template Console] Search by Summary and Display ID on the Case Template Console', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
@@ -332,7 +329,7 @@ describe('Case Template', () => {
         await consoleCasetemplatePo.removeColumnFromGrid(column1);
     });
 
-    //ptidke-check
+    //ptidke-check-quick case issue
     it('[4940]: Case Agent from owner company can create a case using the template', async () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -721,8 +718,8 @@ describe('Case Template', () => {
             await createCaseTemplate.setCaseSummary(caseTemplateCompany + ' summary');
             await createCaseTemplate.setPriorityValue('High');
             await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
-            await createCaseTemplate.setOwnerOrgDropdownValue('United States Support');
-            await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
+            await createCaseTemplate.setOwnerOrgDropdownValue('India Support');
+            await createCaseTemplate.setOwnerGroupDropdownValue('IN Support 3');
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
@@ -922,6 +919,7 @@ describe('Case Template', () => {
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseSummary()).toBe(caseTemplateName);
+            await utilityCommon.closePopUpMessage();
         });
         it('[5419,5403]: Changing case template for new case status.', async () => {
             await viewCasePo.clickEditCaseButton();
@@ -1153,7 +1151,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-
+//quick case issue
     describe('[6290]: [Case Template] Template status lifecycle', async () => {
         let templateDataDraft, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'Draft';
@@ -1293,7 +1291,7 @@ describe('Case Template', () => {
     describe('[4942]:Case Template submitter from different company than owner group company can edit the template', async () => {
         it('[4942]:Case Template submitter from different company than owner group company can edit the template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('morwenna');
+            await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             let caseTemplateName: string = "TemplateName" + Math.floor(Math.random() * 100000);

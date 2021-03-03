@@ -78,8 +78,10 @@ describe('Case Activity Multi Logs', () => {
             // Verify logs with more than 5 lines
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await browser.sleep(3000);//taking time to refliect show more button
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
             expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
@@ -99,6 +101,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
             await activityTabPage.addAttachment([filePath[2], filePath[3]]);
             await activityTabPage.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeFalsy('FailureMsg18: Show more link for attachment is missing')
             expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJpg2.jpg')).toBeTruthy(`FailureMsg15: ${filePath[2]} is missing`);
@@ -111,6 +114,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.addAttachment([filePath[4], filePath[5], filePath[6], filePath[7], filePath[8]]);
 
             await activityTabPage.clickOnPostButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
             expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')

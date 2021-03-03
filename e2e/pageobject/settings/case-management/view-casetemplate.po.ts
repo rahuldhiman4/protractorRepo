@@ -46,7 +46,7 @@ class ViewCaseTemplate {
         taskFlowSectionSizeLocator: '.paper-scroller-background',
         tab: 'button[role="tab"]',
         copyCaseTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
-        lobValue: '[rx-view-component-id="bcd748fb-6503-44e4-b1db-2ad97b8fb088"] p',
+        lobValue: '[rx-view-component-id="5f849d62-a10d-4637-9d10-f4d33364d22b"]',
         caseStatusValue: '[rx-view-component-id="5289a531-7138-4e4f-afdc-ee3f67a2aa64"] .read-only-content',
     }
 
@@ -269,7 +269,10 @@ class ViewCaseTemplate {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(`${this.selectors.lobValue} button`).isPresent().then(async (buttonLob) => {
+            if (buttonLob) return await $(`${this.selectors.lobValue} button`).getText();
+            else return await $(`${this.selectors.lobValue} input`).getAttribute("placeholder");
+        });
     }
 }
 
