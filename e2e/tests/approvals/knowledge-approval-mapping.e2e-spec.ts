@@ -125,6 +125,7 @@ describe("Knowledge Approval Mapping Tests", () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');

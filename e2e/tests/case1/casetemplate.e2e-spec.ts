@@ -89,7 +89,7 @@ describe('Case Template', () => {
         await viewCaseTemplate.clickBackArrowBtn();
     });
 
-    //ptidke-Facilities support value not getting selected
+    //ptidke-Facilities support value not getting selected-temp fix defect -DRDMV-25256
     describe('[5247]: Case Template creation with Template validation as ENFORCED', async () => {
         it('[5247]: Case Template creation with Template validation as ENFORCED', async () => {
             await navigationPage.gotoSettingsPage();
@@ -329,7 +329,7 @@ describe('Case Template', () => {
         await consoleCasetemplatePo.removeColumnFromGrid(column1);
     });
 
-    //ptidke-check-quick case issue
+    //ptidke-check-quick case issue-passing on CICD
     it('[4940]: Case Agent from owner company can create a case using the template', async () => {
         try {
             let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -650,7 +650,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         }
     });
-    //jbranes lob issue
+    
     describe('[6315]: [Case Template] Create Case Template with all fields data populated', async () => {
         let casetemplatePetramco, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateGlobal = "CaseTempateHRGlobal_" + randomStr;
@@ -936,11 +936,13 @@ describe('Case Template', () => {
             expect(await viewCasePo.getCategoryTier2Value()).toBe("Compensation");
             expect(await viewCasePo.getCategoryTier3Value()).toBe("Bonus");
             expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
+            await utilityCommon.closePopUpMessage(); //waning message is displayed
             await viewCasePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
             expect(await activityTabPo.isTextPresentInActivityLog('applied the template')).toBeTruthy('Applied Template text is not present');
             await navigationPage.gotoPersonProfile();
+            await utilityCommon.closePopUpMessage(); //waning message is displayed
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy("Template is not avilable on profile");
         });
     });
@@ -1033,6 +1035,7 @@ describe('Case Template', () => {
             expect(await viewCasePo.getAssignedCompanyValue()).toBe('Petramco');
             expect(await viewCasePo.getAssigneeText()).toBe('Qadim Katawazi');
             expect(await viewCasePo.getAssignedGroupValue()).toBe('US Support 3');
+            await utilityCommon.closePopUpMessage(); //warning message displayed
             await viewCasePo.clickOnTab('Activity');
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog(updatedCaseTemplateName)).toBeTruthy('TemplateText is not available');
@@ -1151,7 +1154,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-//quick case issue
+//quick case issue-passing on CICD
     describe('[6290]: [Case Template] Template status lifecycle', async () => {
         let templateDataDraft, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'Draft';
@@ -1287,7 +1290,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-    //morwenna user issue-start from here
+    
     describe('[4942]:Case Template submitter from different company than owner group company can edit the template', async () => {
         it('[4942]:Case Template submitter from different company than owner group company can edit the template', async () => {
             await navigationPage.signOut();
@@ -1355,7 +1358,7 @@ describe('Case Template', () => {
         expect(await viewCaseTemplate.getFlowsetValue()).toBe(flowsetGlobalFieldsData.flowsetName);
         await viewCaseTemplate.clickBackArrowBtn();
     });
-    //assinee issue
+    //assinee issue-passing on CICD
     describe('[4433]: Verify case assignment method is not applicable if user changes the case template', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1 = 'caseTemplateNameCase1' + randomStr;
@@ -1537,7 +1540,7 @@ describe('Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-    //compelete status dropdown issue
+    
     describe('[3797]: [RESOLVE_CASE_ON_LAST_TASK_COMPLETION] - Case behavior when Case Template is changed', async () => {
         let caseId, caseId1, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplateName' + randomStr;
@@ -1612,6 +1615,7 @@ describe('Case Template', () => {
             await updateStatusBladePo.clickSaveStatus('In Progress');
         });
         it('[3797]: Case behavior when Case Template is changed', async () => {
+            await utilityCommon.closePopUpMessage();
             await viewCasePo.openTaskCard(1);
             await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
             await viewTaskPo.clickOnChangeStatus();

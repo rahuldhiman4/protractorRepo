@@ -235,6 +235,9 @@ describe('Automated Case Status Transition', () => {
 
     //ankagraw
     it('[4100]: Automated case status transtion rule -Creation form validations', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('jbarnes');
+
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.deleteAutomatedCaseStatusTransition();
 

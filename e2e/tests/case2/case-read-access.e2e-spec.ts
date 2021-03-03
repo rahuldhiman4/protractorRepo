@@ -118,7 +118,7 @@ describe("Case Read Access", () => {
         await addReadAccess.selectSupportGroup('AU Support 2');
         await addReadAccess.clickOnSave();
         await utilityGrid.searchAndOpenHyperlink("ReadAccess" + randVal);
-        await editReadAccess.selectCompany('Global');
+        await editReadAccess.selectCompany('- Global -');
         await editReadAccess.clickOnSave();
         await utilityGrid.searchAndOpenHyperlink("ReadAccess" + randVal);
         expect(await editReadAccess.isCompanyFieldDisabled()).toBeTruthy('Company is not disabled');
