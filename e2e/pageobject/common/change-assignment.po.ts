@@ -182,7 +182,7 @@ class ChangeAssignmentBlade {
                 break;
             }
         }
-        return await utilityCommon.isAllDropDownValuesMatches(dropDownElement, dropDownValueArr);
+        return await utilityCommon.isAllDropDownValuesMatches(dropDownElement, dropDownValueArr, DropDownType.WebElement);
     }
 
     async isAssignToMeCheckBoxSelected(): Promise<boolean> {

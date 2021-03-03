@@ -51,7 +51,7 @@ class CreateCaseTemplate {
         ckEditor: '.cke_inner',
         ckEditorTextArea: '.cke_editable_themed',
         flowsetVal: '[rx-view-component-id="2e16954b-fa7e-45d6-ae31-fb285c270090"] .dropdown-toggle',
-        lobValue: '[rx-view-component-id="57676226-5e27-4010-968d-2e6ccf27229c"] .pull-left'
+        lobValue: '[rx-view-component-id="26cdb3e6-39c6-4942-8d51-bbe18d94afe2"]'
     }
 
     async setCompanyName(companyValue: string): Promise<void> {
@@ -286,7 +286,10 @@ class CreateCaseTemplate {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(`${this.selectors.lobValue} button`).isPresent().then(async (buttonLob) => {
+            if (buttonLob) return await $(`${this.selectors.lobValue} button`).getText();
+            else return await $(`${this.selectors.lobValue} input`).getAttribute("placeholder");
+        });
     }
 }
 
