@@ -636,6 +636,7 @@ describe('Case Activity CKE', () => {
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             expect(await viewCasePo.getCaseID()).toBe(newCase.displayId, 'Case Id is missing');
             // Profile View CK Editor
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnHyperlinkFromActivity(2, 'Qadim Katawazi');
             await browser.sleep(2000); // wait until page navigate to person profile in new tab

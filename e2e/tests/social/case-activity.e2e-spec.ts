@@ -842,12 +842,14 @@ describe('Case Activity', () => {
             let taskId: string = await viewTaskPo.getTaskID();
             // View Case Page
             await viewTaskPo.clickOnViewCase();
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
             await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnHyperlink(caseIdText);
             // From Case > Activity > Click on Task ID from Task comment
             await activityTabPage.clickOnHyperlinkFromActivity(1, taskId);
             // Verification Open Task > Click on Person Name from Activity
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnHyperlinkFromActivity(1, 'Qadim Katawazi');
             await utilityCommon.closePopUpMessage();
         });
@@ -969,12 +971,14 @@ describe('Case Activity', () => {
         it('[4255]: Login In And Open Case ', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
         });
         it('[4255]: Login In With Assignee User and Verify View Count ', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await caseConsolePo.searchAndOpenCase(caseId);
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Qiao Feng viewed the case.')).toEqual(1);
@@ -1035,6 +1039,7 @@ describe('Case Activity', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskTemplateData.templateSummary);
             await viewTaskPo.clickOnViewCase();
             // Goto case   
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
         });
@@ -1045,6 +1050,7 @@ describe('Case Activity', () => {
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
             await quickCasePo.gotoCaseButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
             await navigationPage.gotoQuickCase();
@@ -1072,6 +1078,7 @@ describe('Case Activity', () => {
             await personProfilePo.clickOnTab('Related Cases');
             await relatedCaseTab.clickOnCaseSummaryLink(caseData.Summary);
             await expect(await viewCasePo.getCaseID()).toBe(caseId, 'FailureMsg: CaseId is missing');
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Qadim Katawazi viewed the case.')).toEqual(1);
             await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
