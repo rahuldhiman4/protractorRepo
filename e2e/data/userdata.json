@@ -229,5 +229,9 @@
 	"rscoyfol": {
 		"userName": "rscoyfol",
 		"userPassword": "Password_1234"
+	},
+	"awarlock": {
+		"userName": "awarlock",
+		"userPassword": "Password_1234"
 	}
 }
