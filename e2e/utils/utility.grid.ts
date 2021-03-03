@@ -376,7 +376,7 @@ export class GridOperations {
             }
 
             case "date": {
-                await utilityCommon.setDateField(guid, textValue);
+                await utilityCommon.setDateField(textValue, guid);
                 break;
             }
             case "counter": {
@@ -572,7 +572,7 @@ export class GridOperations {
                 break;
             }
             case "date": {
-                await utilityCommon.setDateField(guid, textValue);
+                await utilityCommon.setDateField(textValue, guid);
                 await $(this.selectors.editPresetFilterSaveButton).click();
                 break;
             }

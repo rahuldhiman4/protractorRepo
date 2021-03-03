@@ -8,7 +8,7 @@ class NavigationPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         menu: '.a-menu__text',
-        settingsButton: 'button.d-icon-gear',
+        settingsButton: 'adapt-nav-action-item .d-icon-gear',
         profileMenu: 'rx-shell adapt-profile button',
         helpIcon: '//*[@class="d-n-menu__link d-icon-left-question_circle"]',
         knowledgeConsoleTitle: '[rx-view-component-id="11f37569-5ecd-4239-aaa7-075d1874b1d1"] span',
