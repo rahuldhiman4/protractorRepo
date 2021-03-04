@@ -98,7 +98,7 @@ xdescribe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Summary');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
@@ -106,7 +106,7 @@ xdescribe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[5160]:Create case and verify self approval without process', async () => {
@@ -216,7 +216,7 @@ xdescribe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
@@ -228,7 +228,7 @@ xdescribe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.selectExpressionOperator('AND');
             await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 2');
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
@@ -242,7 +242,7 @@ xdescribe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.selectSelfApprovalProcess();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[5161]:Create case and verify self approval without process', async () => {

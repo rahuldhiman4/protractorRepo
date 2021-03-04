@@ -92,7 +92,7 @@ xdescribe("Task Self Approval Tests", () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Summary');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Task');
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
@@ -100,7 +100,7 @@ xdescribe("Task Self Approval Tests", () => {
             await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[3586]:Create task approval mapping', async () => {
@@ -242,7 +242,7 @@ xdescribe("Task Self Approval Tests", () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Summary');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Task');
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
@@ -251,7 +251,7 @@ xdescribe("Task Self Approval Tests", () => {
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.selectSelfApprovalProcess();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[3587]:Create task approval mapping', async () => {

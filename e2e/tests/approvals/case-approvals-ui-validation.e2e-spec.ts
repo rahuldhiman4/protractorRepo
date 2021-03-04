@@ -82,41 +82,30 @@ describe("Case Approval UI Validations", () => {
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval flows ');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
+            await approvalConfigurationPage.clickAddGeneralFlowButton();
+            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('General flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
+            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One must approve');
             await approvalConfigurationPage.clickExpressionLink();
-            await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
-            await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
-            await browser.sleep(2000); // sleep added for expression builder loading time
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Workforce Administration"');
+            await approvalConfigurationPage.clickModelOkButton();
             await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
+            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('People');
+            await approvalConfigurationPage.selectApproversForApproverFlow('People', 'Katawazi');
+            await approvalConfigurationPage.clickSelectApproversLink();
+            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('People');
+            await approvalConfigurationPage.selectApproversForApproverFlow('People', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[6220,5159]:Create a case and verify Show Approvers Blade information', async () => {
@@ -294,7 +283,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
             // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddGeneralFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
@@ -306,10 +295,10 @@ describe("Case Approval UI Validations", () => {
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
             await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
+            await approvalConfigurationPage.clickRecordOption('Record definition');
             await approvalConfigurationPage.clickRecordOption('Case');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
@@ -324,8 +313,8 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
             await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[4591,5158]:Create a case and verify Show Approvers Blade information', async () => {
@@ -520,7 +509,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
             // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddGeneralFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
@@ -531,10 +520,10 @@ describe("Case Approval UI Validations", () => {
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
             await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
+            await approvalConfigurationPage.clickRecordOption('Record definition');
             await approvalConfigurationPage.clickRecordOption('Case');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
@@ -547,8 +536,8 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.clickSelectApproversLink();
             await approvalConfigurationPage.selectApproversForApproverFlow('Support Group', 'Staffing');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[5154]:Create a case and verify Show Approvers Blade information', async () => {
@@ -676,9 +665,8 @@ describe("Case Approval UI Validations", () => {
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
+            await approvalConfigurationPage.clickAddGeneralFlowButton();
+            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('General Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
             await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
             await approvalConfigurationPage.clickExpressionLink();
@@ -686,17 +674,14 @@ describe("Case Approval UI Validations", () => {
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
             await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
+            await approvalConfigurationPage.clickRecordOption('Record definition');
             await approvalConfigurationPage.clickRecordOption('Case');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression(caseTemplateDataWithMatchingCriteria.categoryTier1);
+            await approvalConfigurationPage.setExpressionValueForParameter(caseTemplateDataWithMatchingCriteria.categoryTier1);
             await approvalConfigurationPage.clickSelectLink();
             await approvalConfigurationPage.clickFoundationDataSaveButton();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
@@ -705,8 +690,8 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
             await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
         it('[3472,3469]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {
             await apiHelper.apiLogin('qstrong');
