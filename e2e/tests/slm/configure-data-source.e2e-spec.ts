@@ -96,7 +96,7 @@ describe('Data Source Configuration Tests', () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID Primary');
             await approvalConfigurationPage.clickRecordOption('Record Instance');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Assignee GUID Primary');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
@@ -222,7 +222,7 @@ describe('Data Source Configuration Tests', () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Company');
             await approvalConfigurationPage.clickRecordOption('Record Instance');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Company');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
@@ -280,7 +280,7 @@ describe('Data Source Configuration Tests', () => {
             await browser.sleep(3000); // sleep added for expression builder loading time
             await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Assignee GUID');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time

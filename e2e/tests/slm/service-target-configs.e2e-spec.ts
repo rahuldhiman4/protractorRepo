@@ -628,7 +628,7 @@ describe('Service Target Configs', () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID Primary');
             await approvalConfigurationPage.clickRecordOption('Record Instance');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Assignee GUID Primary');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
