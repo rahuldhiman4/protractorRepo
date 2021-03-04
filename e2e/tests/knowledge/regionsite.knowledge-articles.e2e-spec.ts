@@ -521,7 +521,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSiteGroup(siteGroupVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilityGrid.searchAndOpenHyperlink(title);
+            await utilityGrid.searchAndOpenHyperlink(title1);
             await editDocumentLibraryPo.clickOnEditButton();
             expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteGrpSelectedValue()).toBe(siteGroupVal);
@@ -552,7 +552,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSiteGroup(siteGroupVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
-            await utilityGrid.searchAndOpenHyperlink(title);
+            await utilityGrid.searchAndOpenHyperlink(title2);
             await editDocumentLibraryPo.clickOnEditButton();
             expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteGrpSelectedValue()).toBe(siteGroupVal);
