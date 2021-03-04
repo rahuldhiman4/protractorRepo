@@ -592,6 +592,7 @@ describe("Task Approval Mapping Tests", () => {
             expect(await utilityCommon.isPopUpMessagePresent('The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[3592,3514]: create same name record in different LOB', async () => {

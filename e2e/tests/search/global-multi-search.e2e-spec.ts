@@ -574,6 +574,7 @@ describe('Multi Search Validation', () => {
         it('[4291]: Change Category To Knowledge Article and verify records are still displayed', async () => {
             await searchPo.selectCategoryDropDownValue('Knowledge');
             expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Knowledge Articles (5)', KAModule)).toBeTruthy('FailureMsg2: KA module title is missing');
+            await browser.sleep(2000); // Wait untile result display
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[1], KAModule)).toBeTruthy(`FailureMsg11: ${kaDisplayId[1]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[2], KAModule)).toBeTruthy(`FailureMsg12: ${kaDisplayId[2]} Knowledge Article id  is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(kaDisplayId[3], KAModule)).toBeTruthy(`FailureMsg13: ${kaDisplayId[3]} Knowledge Article id  is missing`);
