@@ -35,7 +35,7 @@ class CreateTaskTemplatePage {
         addTaskTemplateTitle: '[rx-view-component-id="e564f60e-d84f-41fc-b130-998cdc60eca4"] span',
         templateMetadataTitle: '[rx-view-component-id="24bd49d8-5ca3-451a-86a1-eb26b687e801"] span',
         newprocessGuid: 'eefdf45b-47af-48cb-8c8b-a82c73f7d5a4',
-        lobValue: '[rx-view-component-id="3296cf04-1abb-4c81-8fef-35a83e5a14f9"] input',
+        lobValue: '[rx-view-component-id="7e8353f4-38c1-440d-a306-1622ec2f6a54"]',
         assignmentSection: '[rx-view-component-id="41e20cf7-c9ac-42f8-9407-bf51e6476397"] .rx-select__search-button-title'
     }
 
@@ -242,7 +242,10 @@ class CreateTaskTemplatePage {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(`${this.selectors.lobValue} button`).isPresent().then(async (buttonLob) => {
+            if (buttonLob) return await $(`${this.selectors.lobValue} button`).getText();
+            else return await $(`${this.selectors.lobValue} input`).getAttribute("placeholder");
+        });
     }
 
 }

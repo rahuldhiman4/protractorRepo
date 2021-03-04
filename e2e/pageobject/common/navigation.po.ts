@@ -130,6 +130,7 @@ class NavigationPage {
             }
             await browser.wait(this.EC.titleContains('Knowledge Articles - Business Workflows'), 10000);
         }
+        await utilityCommon.closePopUpMessage(); // workaround for defect DRDMV-25253
     }
 
     async gotoTaskConsole(): Promise<void> {
@@ -335,6 +336,7 @@ class NavigationPage {
         await $(this.selectors.TileSearchInput).sendKeys(applicationName);
         await element(by.cssContainingText(this.selectors.TileSearchResult, applicationName)).click();
         await utilityCommon.switchToNewTab(1);
+        await utilityCommon.closePopUpMessage(); // workaround for defect DRDMV-25253
     }
 
     async isSettingPanelTextMatches(text: string): Promise<boolean> {

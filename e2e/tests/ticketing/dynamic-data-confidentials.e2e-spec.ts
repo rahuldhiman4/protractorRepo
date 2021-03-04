@@ -207,7 +207,7 @@ describe('Dynamic Confidentials Data', () => {
         });
     });
 
-    fdescribe('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
+    describe('[4487,4486,4492]: [DesignTime] Add confidential support group on case template - Global Company', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             caseTemplateData = {
