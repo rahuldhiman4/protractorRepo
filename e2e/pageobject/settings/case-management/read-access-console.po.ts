@@ -57,7 +57,7 @@ class ReadAccessConsolePage {
     async deleteDefaultReadAccess(): Promise<void> {
         await utilityGrid.clearFilter();
         await this.addFilter('Default Mapping', 'True', 'radioButton');
-        await $('div.ui-grid-row').isPresent().then(async (result) => {
+        await $('tr.at-data-row').isPresent().then(async (result) => {
             if (result) {
                 await utilityGrid.selectAllCheckBox();
                 await this.clickDeleteButton();

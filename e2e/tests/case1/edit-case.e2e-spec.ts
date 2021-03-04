@@ -42,17 +42,17 @@ describe('Edit Case', () => {
         await previewCasePo.clickGoToCaseButton();
 
         await expect(viewCasePage.getRequesterName()).toBe('Adam Pavlik');
-        await expect(viewCasePage.getRequesterPhoneNo()).toBe('+19254694006');
+        await expect(viewCasePage.getRequesterPhoneNo()).toBe('1 925 469-4006');
         await expect(viewCasePage.getRequesterEmail()).toBe('apavlik@petramco.com');
 
         await viewCasePage.clickOnContactPersonerDrpDwn();
         await expect(viewCasePage.getContactPersonName()).toBe('Qianru Tao');
-        await expect(viewCasePage.getContactPersonerPhoneNo()).toBe('+15123431921');
+        await expect(viewCasePage.getContactPersonerPhoneNo()).toBe('1 512 343-1921');
         await expect(viewCasePage.getContactPersonalEmail()).toBe('qtao@petramco.com');
         await viewCasePage.clickEditCaseButton();
 
         await expect(editCasePage.getRequesterName()).toBe('Adam Pavlik');
-        await expect(editCasePage.getRequesterPhoneNo()).toBe('+19254694006');
+        await expect(editCasePage.getRequesterPhoneNo()).toBe('1 925 469-4006');
         await expect(editCasePage.getRequesterEmail()).toBe('apavlik@petramco.com');
 
         await expect(editCasePage.isCategoryTier1Disabled()).toBeFalsy();
