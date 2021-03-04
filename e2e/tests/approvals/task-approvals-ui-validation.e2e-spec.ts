@@ -92,7 +92,7 @@ xdescribe("Task Approval UI Validations", () => {
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('Task Group');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddGeneralFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
@@ -106,7 +106,7 @@ xdescribe("Task Approval UI Validations", () => {
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Task');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
@@ -121,8 +121,8 @@ xdescribe("Task Approval UI Validations", () => {
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
             await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[3591]:Create task approval mapping', async () => {

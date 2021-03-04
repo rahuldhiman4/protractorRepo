@@ -38,7 +38,8 @@ class CaseEditPage {
         targetDateMeredian: '[rx-view-component-id="0b8f81f4-9e06-4475-b6a6-7d7270e72bbd"] button.d-timepicker__input',
         resolutionDescription: '[rx-view-component-id="923de542-50b0-482f-a370-3823d0c07645"] textarea',
         attachLink: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
-        requesterPersonImage: '.person-summary .default-thumbnail',
+        requesterPersonImage: '.person-summary .person-thumbnail',
+        requesterDefaultImage: '.person-summary .default-thumbnail',
         requesterText: '.person-main .text-field',
         siteText: '.person-location span',
         requesterPersonNameLink: '.person-name a',
@@ -313,7 +314,7 @@ class CaseEditPage {
     }
 
     async isRequesterImageDisplayed(): Promise<boolean> {
-        return await $(this.selectors.requesterPersonImage).isDisplayed();
+        return await $(this.selectors.requesterPersonImage).isDisplayed() || await $(this.selectors.requesterDefaultImage).isDisplayed();
     }
 
     async isSiteTextPresent(): Promise<boolean> {

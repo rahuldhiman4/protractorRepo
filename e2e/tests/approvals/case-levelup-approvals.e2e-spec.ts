@@ -86,7 +86,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('Level Up Approval Flow');
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New Level Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
@@ -101,7 +101,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
             await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); //Sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //Sleep added for expression builder loading
@@ -111,8 +111,8 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickSelectLink();
             await approvalConfigurationPage.clickFoundationDataSaveButton();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[4263]:Create a case and verify approval details on case', async () => {
@@ -324,7 +324,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
             // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
@@ -338,7 +338,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
             await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); //Sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //Sleep added for expression builder loading
@@ -353,8 +353,8 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
             await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[5149]:Create a case and verify approval details on case', async () => {
@@ -578,7 +578,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
@@ -592,7 +592,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
             await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); //Sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //Sleep added for expression builder loading
@@ -607,8 +607,8 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
             await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[6218,6219]:Create a case and verify Show Approvers Blade information', async () => {
@@ -776,7 +776,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
             // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
@@ -790,7 +790,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
             await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); //Sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //Sleep added for expression builder loading
@@ -805,8 +805,8 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
             await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[4982]:Create a case and verify approval mapping trigger preference', async () => {
@@ -941,7 +941,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
             // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddLevelUpFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
@@ -955,7 +955,7 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
             await browser.sleep(2000); //Sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
             await browser.sleep(2000); //Sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //Sleep added for expression builder loading
@@ -970,8 +970,8 @@ xdescribe("Case Level Up Approval Tests", () => {
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
             await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.clickApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[4983]:Create a case and verify approval mapping triggered based on global company', async () => {

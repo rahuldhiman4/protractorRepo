@@ -580,12 +580,10 @@ describe("Compose Email", () => {
             expect(await composeMail.getToEmailPerson()).toContain('Fritz Schulz');
             await composeMail.setToOrCCInputTextbox('Cc', 'fritz.schulz@petramco.com');
             expect(await composeMail.getCcEmailPerson()).toContain('Fritz Schulz');
-            await composeMail.clickOnDiscardButton();
-            expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
-            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         afterAll(async () => {
             await composeMail.clickOnDiscardButton();
+            expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });
@@ -766,7 +764,7 @@ describe("Compose Email", () => {
             await imagePropertiesPo.setInputBoxValue(uploadURL, imageUrlFieldIndex);
             await imagePropertiesPo.setInputBoxValue('200', imageWidthFieldIndex);
             await imagePropertiesPo.clickOnOkButton();
-           
+
             await composeMail.setEmailBody("Adding a Link: ");
             await composeMail.clickOnLinkIcon();
             await linkPropertiesPo.setValueOfLinkProperties('Google', linkDisplayTextFieldIndex);
@@ -1118,7 +1116,7 @@ describe("Compose Email", () => {
             await composeMail.clickOnDiscardButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
-    });
+    })
 
 
 });

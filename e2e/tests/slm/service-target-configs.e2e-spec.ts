@@ -306,6 +306,9 @@ describe('Service Target Configs', () => {
             await editServiceTargetConfigPo.clickSaveButton();
             await utilityCommon.closePopUpMessage();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //skhobrag
@@ -606,12 +609,12 @@ describe('Service Target Configs', () => {
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
             // await browser.sleep(2000);  // added hard wait to load Add Data Source Blade
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name', 'Case Management Service');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name', 'com.bmc.dsm.case-lib:Case Detail');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field', 'ASSIGNED COMPANY_ID Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name(required)', 'Case Management Service');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name(required)', 'com.bmc.dsm.case-lib:Case Detail');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field(required)', 'ASSIGNED COMPANY_ID Primary');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval Mapping Field - Company');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval Mapping Field - Label');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Create Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Edit Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Group Primary');
@@ -628,7 +631,7 @@ describe('Service Target Configs', () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID Primary');
             await approvalConfigurationPage.clickRecordOption('Record Instance');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Assignee GUID Primary');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
