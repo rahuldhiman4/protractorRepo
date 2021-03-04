@@ -3,6 +3,7 @@ export const CASE_TEMPLATE_DYNAMIC_FIELDS =
     "name": "case template",
     "templateId": "xalkdjasd",
     "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "temp",
@@ -244,6 +245,7 @@ export const CASE_TEMPLATE_WITH_CONFIDENTIAL = {
     "templateId": " ",
     "name": "casetemplate",
     "status": 0,
+    "lineOfBusiness": "HumanResource",
     "processName": null,
     "processDocumentDefinitionId": null,
     "attributeDefinitions": [
@@ -340,6 +342,7 @@ export const TASK_TEMPLATE_WITH_CONFIDENTIAL = {
     "name": "Tasktemplate",
     "status": 0,
     "processName": null,
+    "lineOfBusiness": "HumanResource",
     "processDocumentDefinitionId": null,
     "attributeDefinitions": [
         {
@@ -433,6 +436,7 @@ export const TASK_TEMPLATE_LONG__DYNAMIC_FIELDS =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "theNewDynamicFieldsIsgettingMouseOveredMouseOvered",
@@ -465,6 +469,7 @@ export const EXTERNAL_TASK_TEMPLATE_LONG__DYNAMIC =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "theExternalDynamicFieldsIsgettingMouseOveredMouseOvered",
@@ -497,6 +502,7 @@ export const AUTOMATED_TASK_TEMPLATE_LONG__DYNAMIC =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered",
@@ -636,6 +642,7 @@ export const AUTOMATED_TASK_TEMPLATE__DYNAMIC_FIELDS =
     "name": "task template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "automatedText",
@@ -685,6 +692,7 @@ export const EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS = {
     "name": "task template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "externalText",
@@ -734,6 +742,7 @@ export const EXTERNAL_TASK_TEMPLATE__DYNAMIC_FIELDS = {
 export const CASE_TEMPLATE_EACH_15_FIELD = {
     "name": "case template",
     "templateId": "xalkdjasd",
+    "lineOfBusiness": "HumanResource",
     "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
     "attributeDefinitions": [
         {
@@ -1363,6 +1372,7 @@ export const CASE_TEMPLATE_REMOVE_FIELDS =
 {
     "name": "case template",
     "templateId": "xalkdjasd",
+    "lineOfBusiness": "HumanResource",
     "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
     "attributeDefinitions": [
         {
@@ -1389,6 +1399,7 @@ export const CASE_TEMPLATE_LONG_FIELDS = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.case-lib:Case Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "theautomatedDynamicFieldsIsgettingMouseOveredMouseOvered",
@@ -1517,6 +1528,7 @@ export const DuplicateOFhiddenFieldDRDMV21418 = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [{
         "name": "Field1OutsideDRDMV21415",
         "description": "Field1OutsideDRDMV21415",
@@ -1539,6 +1551,7 @@ export const UnhiddenField = {
     "processName": null,
     "templateId": "",
     "id": "",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "Field1OutsideDRDMV21415",
@@ -1560,6 +1573,7 @@ export const RequiredHiddenDRDMV21451 = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [{
         "name": "Field1OutsideDRDMV21451",
         "description": "Field1OutsideDRDMV21451",
@@ -1581,6 +1595,7 @@ export const ConfidentialsHiddenDRDMV21452 = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [{
         "name": "Field1OutsideDRDMV21452",
         "description": "Field1OutsideDRDMV21452",
@@ -1703,6 +1718,7 @@ export const DynamicGroupContainsHiddenFieldDRDMV21416 = {
     "processDocumentDefinitionId": null,
     "processInputDocName": null,
     "processName": null,
+    "lineOfBusiness": "HumanResource",
     "templateId": "",
     "id": null,
     "attributeDefinitions": [
@@ -1738,6 +1754,7 @@ export const AllSourceAndTypeDRDMV21515 = {
     "processDocumentDefinitionId": "IDGADGG8ECDC0AQ0JI9JQJ1GGVTOG0",
     "processInputDocName": "com.bmc.dsm.bwfa:AllTypeOFData",
     "processName": null,
+    "lineOfBusiness": "HumanResource",
     "templateId": "AGGADGG8ECDC0AQ0JI7VQJ1GF8TNYG",
     //"id":"AGGADGG8ECDC0AQ0JI9JQJ1GGWTOG3",
     "attributeDefinitions": [
@@ -2214,6 +2231,7 @@ export const DynamicGroupContainsConfidentialsFieldDRDMV15041 = {
     "processName": null,
     "templateId": "",
     "id": null,
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "GroupOne",
@@ -2263,6 +2281,7 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS_DRDMV_13948 =
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [
         {
             "name": "temp",
@@ -2325,6 +2344,7 @@ export const MULTIPLE_ATTACHMENTS = {
     "name": "case template",
     "templateRecordDefinition": "com.bmc.dsm.task-lib:Task Template",
     "templateId": "nnn",
+    "lineOfBusiness": "HumanResource",
     "attributeDefinitions": [{
         "name": "attachment1",
         "description": "attachmentFirst",
@@ -2654,7 +2674,6 @@ export const TASK_TEMPLATE__DYNAMIC_FIELDS_AUTOMATED =
         }
     ]
 };
-
 
 export const BULK_DYNAMIC_FIELDS_INSIDE_OUTSIDE_GROUP = {
     "name": null,

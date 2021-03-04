@@ -9,7 +9,7 @@ class EditNotificationTemplate {
         header: '.dp-title',
         saveButton: '[rx-view-component-id="8b5f78b0-0aa8-40da-8d52-66d5afe1356b"] button',
         emailTab: 'li.nav-item button[aria-posinset="2"]',
-        editButtonOnEmailTab: '[rx-view-component-id="a0c7d2a0-326b-4c8c-88ab-1b626b865769"] button',
+        editButtonOnEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] button.d-icon-left-pencil',
         checkBoxEmailTab: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] .radio__label input',
         alertSubjectCheckbox: '[rx-view-component-id="54e4673e-6717-4f72-98e2-4251ee72d702"] label.radio__label',
         editCheckbox: '.d-icon-left-pencil',
@@ -69,7 +69,7 @@ class EditNotificationTemplate {
     }
 
     async clickOnEditButtonOfEmailTab(): Promise<void> {
-        await $$(this.selectors.editButtonOnEmailTab).get(4).click();
+        await $(this.selectors.editButtonOnEmailTab).click();
         await browser.sleep(2000); // After click, edit email tab load takes time
     }
 
