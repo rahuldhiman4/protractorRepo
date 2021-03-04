@@ -301,7 +301,7 @@ describe('Global Search All Category', () => {
             expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg35: Case Priority is missing');
             expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg36: Reqester Name missing');
             expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg37: Reqester Company is missing');
-            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 213 5559393')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 512 343 1923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');
