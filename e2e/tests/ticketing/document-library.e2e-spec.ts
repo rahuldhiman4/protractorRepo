@@ -140,7 +140,7 @@ describe('Document Library', () => {
         });
         it('[4911,4925,4924]: Verify if document library is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qyuan');
+            await loginPage.login('ncage');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await utilityGrid.selectLineOfBusiness('Human Resource');

@@ -733,7 +733,7 @@ describe("Attachment", () => {
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
             await approvalConfigurationPage.clickApprovalGroup('BWFA Group');
             // await approvalConfigurationPage.deleteApprovalConfiguration('Approval Flows');
-            await approvalConfigurationPage.clickAddNewFlowLinkButton();
+            await approvalConfigurationPage.clickAddGeneralFlowButton();
             await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
             await approvalConfigurationPage.clickExpressionLink();
 
@@ -747,13 +747,13 @@ describe("Attachment", () => {
             await approvalConfigurationPage.clickRecordOption('Case');
 
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            // await approvalConfigurationPage.selectExpressionFieldOption();
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
 
             await approvalConfigurationPage.searchExpressionFieldOption('LABEL_ID');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            // await approvalConfigurationPage.selectExpressionFieldOption();
             await browser.sleep(2000); // sleep added for expression builder loading time
         });
 

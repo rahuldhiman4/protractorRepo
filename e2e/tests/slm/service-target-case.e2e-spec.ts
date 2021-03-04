@@ -490,7 +490,7 @@ describe('Service Target Tests for Cases', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
             await serviceTargetConfig.createServiceTargetConfig('SVT from Protractor', 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Company', '=', 'Petramco','Search');
+            await SlmExpressionBuilder.selectFirstLevelExpressionQualification('Company', '=', 'Petramco','Direct');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Company" + "'" + "=" + '"' + "Petramco" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
