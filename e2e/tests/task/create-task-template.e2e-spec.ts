@@ -605,7 +605,7 @@ describe('Create Task Template', () => {
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
         });
-        fit('[5675]: verify the add button ', async () => {
+        it('[5675]: verify the add button ', async () => {
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.selectStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();
