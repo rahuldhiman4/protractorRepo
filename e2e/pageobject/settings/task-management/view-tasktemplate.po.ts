@@ -50,7 +50,7 @@ class ViewTaskTemplate {
         priorityValue: '[rx-view-component-id="5109350d-c09f-49ae-85b3-fbc5280fd4e4"] .selection-field',
         showMoreDescriptionLink: '[rx-view-component-id="cce67ce7-e6a5-4ed6-aa50-c57ea75d2854"] button',
         backArrowButton: '[rx-view-component-id="ae1743d3-c8e3-47f7-b257-fba698a2e6e0"] button',
-        lobValue: '[rx-view-component-id="0785d5e5-8f5d-432f-b5c7-fadc110fd26a"] p'
+        lobValue: '[rx-view-component-id="7f7b8d48-4df2-4607-aece-7bc65443dd6d"] div.read-only-content'
     }
 
     async getDynamicFieldTitle(): Promise<string> {

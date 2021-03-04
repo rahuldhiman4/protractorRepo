@@ -96,9 +96,9 @@ class ViewTask {
     }
 
     async clickOnChangeStatus(): Promise<void> {
-        await $(this.selectors.taskStatus).click();
+        await $$(this.selectors.taskStatus).get(1).click();
     }
-
+//need to remove this method - Use updateStatusBladePo.changeStatus
     async changeTaskStatus(statusValue: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.statusDropDown, statusValue);
     }
@@ -149,7 +149,7 @@ class ViewTask {
 
     async getTaskStatusValue(): Promise<string> {
         await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)), 4000);
-        return await (await $(this.selectors.taskStatus).getText()).trim();
+        return await (await $$(this.selectors.taskStatus).get(0).getText()).trim();
     }
 
     async isEditLinkDisplayed(): Promise<boolean> {
