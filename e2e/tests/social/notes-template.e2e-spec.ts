@@ -65,6 +65,7 @@ describe('Notes template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
+        await utilityGrid.selectLineOfBusiness('Human Resource');
     });
 
     afterAll(async () => {
@@ -1734,7 +1735,8 @@ describe('Notes template', () => {
             await activityTabPo.addActivityNote(randomString);
             await activityTabPo.clickOnPostButton();
             await utilityCommon.closePopUpMessage();
-            await activityTabPo.clickShowMoreLinkInActivity(1);
+            await activityTabPo.clickOnRefreshButton();
+            await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
             expect(await activityTabPo.isUnderlineTextDisplayedInActivity(underLineText, 1)).toBeTruthy('FailureMsg Underline Text is missing In Activity');
@@ -1748,7 +1750,6 @@ describe('Notes template', () => {
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('United Kingdom Support', 'Select Business Unit');
             await accessTabPo.selectAccessEntityDropDown('GB Support 2', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
