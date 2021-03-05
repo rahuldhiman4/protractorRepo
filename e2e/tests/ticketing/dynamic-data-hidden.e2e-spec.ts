@@ -917,7 +917,8 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isDynamicFieldPresent("externalTime")).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent("externalAttachment1")).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent("dynamicList")).toBeTruthy();
-            await viewTaskTemplate.clickBackArrowBtn();
+        });
+        afterAll(async () => {
             await viewTaskTemplate.clickBackArrowBtn();
         });
     });
