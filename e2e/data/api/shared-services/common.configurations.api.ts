@@ -1,27 +1,3 @@
-export const COMMON_CONFIG_PAYLOAD = [
-    {
-        "componentName": "Configuration Values",
-        "ownerKeyValue2": "",
-        "parentComponentName": "Configurations",
-        "settingName": "Configuration Order",
-        "settingValue": "950"
-    },
-    {
-        "componentName": "Configuration Values",
-        "ownerKeyValue2": "",
-        "parentComponentName": "Configurations",
-        "settingName": "Configuration Value",
-        "settingValue": ""
-    },
-    {
-        "componentName": "Configuration Values",
-        "ownerKeyValue2": "",
-        "parentComponentName": "Configurations",
-        "settingName": "Expression",
-        "settingValue": ""
-    }
-]
-
 export const CREATE_COMMON_CONFIG = {
     "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
     "recordDefinitionName": "com.bmc.dsm.shared-services-lib:Application Configuration",
@@ -71,4 +47,23 @@ export let DELETE_COMMON_CONFIG = {
         "ID": "AGGADGJ7CLNALAQP032VQP032V4MVC"
     },
     "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand"
+}
+
+export const COMMON_CONFIG_PAYLOAD = {
+    "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand",
+    "processDefinitionName": "com.bmc.dsm.shared-services-lib:Application Configuration - Create Copy and Update",
+    "processInputValues": {
+        "New Line of Business": "HumanResource",
+        "Boolean Value": 1,
+        "INDIVIDUAL_ASSIGNMENT_METHOD Value": "10",
+        "PropagateLOBChanges": 0,
+        "AUTOMATED_TASK_FAILURE_NEXT_ACTION Value": "Do Not Proceed",
+        "Review Period": 0,
+        "Review Period selection": 0,
+        "Value": "false",
+        "IDENTITY_VALIDATION Value": "2",
+        "Integer Value": "0",
+        "NEXT_REVIEW_PERIOD Value": "2629743",
+        "ID": "AGGADG11ILYPXAQP7TDLQP7TDLH2N4"
+    }
 }

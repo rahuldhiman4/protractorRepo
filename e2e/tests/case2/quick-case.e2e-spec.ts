@@ -128,7 +128,7 @@ describe("Quick Case", () => {
         await navigationPo.gotoQuickCase();
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('Allen');
-        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Border', '1');
+        expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook');
         await quickCasePo.clickStartOverButton();
         await quickCasePo.selectRequesterName('Allbrook');
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe('Allen Allbrook', '2');
@@ -148,10 +148,11 @@ describe("Quick Case", () => {
 
     describe('[6385]: [Quick Case] Requester, Contact, Subject Employee people selection', async () => {
         it('[6385]: Employee people selection', async () => {
-            await quickCasePo.clickStartOverButton();
+            await navigationPo.gotoQuickCase();
+            // await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName('allen');
             expect(await quickCasePo.getDrpDownValueByIndex(1)).toBe('The requester of the case');
-            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.selectRequesterName('pavlik');
             expect(await quickCasePo.getDrpDownValueByIndex(2)).toBe('Related to');
             await quickCasePo.selectRequesterName('bpitt');
             expect(await quickCasePo.getDrpDownValueByIndex(3)).toBe('Related to');
@@ -189,7 +190,7 @@ describe("Quick Case", () => {
         await quickCasePo.setCaseSummary('caseSummary');
         await quickCasePo.createCaseButton();
         await quickCasePo.gotoCaseButton();
-        expect(await viewCasePo.getRequesterName()).toBe('Mary Morstan');
+        expect(await viewCasePo.getRequesterName()).toBe('Mary Mann');
     });
 
     describe('[6391]: [Quick Case] Case creation with all case statuses in template', async () => {
@@ -207,9 +208,9 @@ describe("Quick Case", () => {
             templateData2 = {
                 "templateName": randomStr + "CaseTemplate2 DRDMV786",
                 "templateSummary": randomStr + "Summary2 DRDMV786",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -223,9 +224,9 @@ describe("Quick Case", () => {
             templateData3 = {
                 "templateName": randomStr + "CaseTemplate3 DRDMV786",
                 "templateSummary": randomStr + "Summary3 DRDMV786",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -239,9 +240,9 @@ describe("Quick Case", () => {
             templateData4 = {
                 "templateName": randomStr + "CaseTemplate4 DRDMV786",
                 "templateSummary": randomStr + "Summary4 DRDMV786",
-                "categoryTier1": "Purchasing Card",
-                "categoryTier2": "Policies",
-                "categoryTier3": "Card Issuance",
+                "categoryTier1": "Employee Relations",
+                "categoryTier2": "Compensation",
+                "categoryTier3": "Bonus",
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -291,6 +292,8 @@ describe("Quick Case", () => {
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
         afterAll(async () => {
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
         });
@@ -639,7 +642,7 @@ describe("Quick Case", () => {
         });
     });
 
-    //ankagraw
+    //ankagraw KA Issue
     describe('[6383]: [Quick Case] Resources preview', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV796";
@@ -811,7 +814,7 @@ describe("Quick Case", () => {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
-    // tgarud 
+    // tgarud KA Issue
     describe('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
         let articleData, unPublishedKA, publishedKA, publishKA_GUID;
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -922,7 +925,7 @@ describe("Quick Case", () => {
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=&contact=');
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2, '2');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy;
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=61 2 8899 2912&desc=&contact=');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=Qiwei Liu&desc=&contact=');
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy();
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toEqual(caseData[expectedJsonName].requester2, '3');
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=&contact=');
@@ -942,7 +945,7 @@ describe("Quick Case", () => {
         await browser.sleep(1000);
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=Change my Last Name&contact=14085719604');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=Change my Last Name&contact=Thad Esser');
         await browser.sleep(1000);
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
@@ -959,7 +962,7 @@ describe("Quick Case", () => {
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=Change my Last Name&contact');
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
-        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=&contact=14085719604');
+        await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=&contact=PET00000104');
         expect(await quickCasePo.validatePersonAndHisRelation(requester)).toBe(caseData[expectedJsonName].requester);
         expect(await quickCasePo.validatePersonAndHisRelation(contact)).toBe(caseData[expectedJsonName].contact);
         expect(await quickCasePo.isCreateButtonDisabled()).toBeTruthy();
@@ -992,6 +995,7 @@ describe("Quick Case", () => {
         expect(await quickCasePo.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
     });
 
+    //Assignment Dropdown issue
     describe('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData1, templateData2;

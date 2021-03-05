@@ -667,7 +667,7 @@ describe("Actionable Notifications", () => {
             await apiHelper.apiLogin('sasadmin');
             await apiHelper.updateReviewDueDateRule();
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', ['1_MINUTE'], 'Petramco');
+            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', '1_MINUTE');
             await apiHelper.deleteApprovalMapping('Knowledge');
         });
 
