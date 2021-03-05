@@ -358,6 +358,7 @@ describe('Document Library Consume UI', () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDocumentLibrary(draftDocLibData.docLibTitle);
             await apiHelper.deleteAllEmailConfiguration();
+            await apiHelper.createEmailConfiguration();
             let response = await apiHelper.createEmailBox('outgoing');
             await apiHelper.createEmailProfile(response.id);
             await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");

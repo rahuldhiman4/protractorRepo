@@ -2743,71 +2743,49 @@ class ApiHelper {
         } else return true;
     }
 
-    async addCommonConfig(configName: string, params: any[], company: string): Promise<boolean> {
+    async addCommonConfig(configName: string, configValue: string): Promise<boolean> {
         let commonConfigPayload, commonConfigGuid;
-        let companyGuid = company;
-
-        let headerConfig = {
-            headers: {
-                'default-bundle-scope': 'com.bmc.dsm.shared-services-lib'
-            }
-        };
         switch (configName) {
             case "ADD_DWP_SURVEY_ON_CASE": {
                 commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                await this.deleteCommonConfig(configName, company); // delete existing config of company
                 commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                for (let i: number = 0; i < commonConfigPayload.length; i++) {
-                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
-                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
-                }
-                commonConfigPayload[1].settingValue = String(params[0]);
+                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
+                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
                 break;
             }
             case "NEXT_REVIEW_PERIOD": {
                 commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                await this.deleteCommonConfig(configName, company); // delete existing config of company
                 commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                for (let i: number = 0; i < commonConfigPayload.length; i++) {
-                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
-                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
-                }
-                commonConfigPayload[1].settingValue = String(constants.ApplicationConfigurationsValue[params[0]]);
+                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
+                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
                 break;
             }
-            case "RESOLUTION_CODE_MANDATORY": {
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                await this.deleteCommonConfig(configName, company); // delete existing config of company
+            case "RESOLUTION_CODE_MANDATORY_HR": {
                 commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                if (company == "- Global -") commonConfigPayload[0].settingValue = 900;
-                for (let i: number = 0; i < commonConfigPayload.length; i++) {
-                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
-                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
-                }
-                commonConfigPayload[1].settingValue = String(params[0]);
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
+                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
+                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
                 break;
             }
-            case "RESOLUTION_DESCRIPTION_MANDATORY": {
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                await this.deleteCommonConfig(configName, company); // delete existing config of company
+            case "RESOLUTION_DESCRIPTION_MANDATORY_HR": {
                 commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                if (company == "- Global -") commonConfigPayload[0].settingValue = 900;
-                for (let i: number = 0; i < commonConfigPayload.length; i++) {
-                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
-                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
-                }
-                commonConfigPayload[1].settingValue = String(params[0]);
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];                
+                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
+                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
                 break;
             }
-            case "IDENTITY_VALIDATION": {
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                await this.deleteCommonConfig(configName, company); // delete existing config of company
+            case "RESOLUTION_CODE_MANDATORY_Facilities": {
                 commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                for (let i: number = 0; i < commonConfigPayload.length; i++) {
-                    commonConfigPayload[i].ownerKeyValue2 = commonConfigGuid;
-                    if (commonConfigPayload[i].settingName == 'Expression') commonConfigPayload[i].settingValue = companyGuid;
-                }
-                commonConfigPayload[1].settingValue = String(constants.ApplicationConfigurationsValue[params[0]]);
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
+                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
+                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
+                break;
+            }
+            case "RESOLUTION_DESCRIPTION_MANDATORY_Facilities": {
+                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
+                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];                
+                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
+                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
                 break;
             }
             default: {
@@ -2816,9 +2794,8 @@ class ApiHelper {
             }
         }
         let addCommonConfigResponse = await axios.post(
-            appConfigUri + commonConfigGuid,
-            commonConfigPayload,
-            headerConfig
+            commandUri,
+            commonConfigPayload
         );
         console.log('Add Common Config API Status  =============>', addCommonConfigResponse.status);
         return addCommonConfigResponse.status == 201;

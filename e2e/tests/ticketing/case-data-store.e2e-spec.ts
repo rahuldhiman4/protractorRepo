@@ -1147,6 +1147,7 @@ describe('Case Data Store', () => {
             await createDynamicFieldLibraryConfigPo.clickOnActiveConfidentialsCheckbox();
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent("Resolve the field validation errors"));
+            await utilityCommon.closePopUpMessage();
             expect(await createDynamicFieldLibraryConfigPo.getRequiredWarningMessage()).toBe("Value is required.")
             await createDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
             await localizeValuePopPo.setLocalizeValue('LibTextField' + randomStr);

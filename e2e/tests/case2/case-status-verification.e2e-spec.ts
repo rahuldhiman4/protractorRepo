@@ -88,7 +88,7 @@ describe('Case Status Verification', () => {
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeStatus('Resolved');
             await updateStatusBladePo.selectStatusReason('Auto Resolved');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Resolved');
         });
 
         it('[3490]: Verify case1 without case template', async () => {
@@ -136,6 +136,7 @@ describe('Case Status Verification', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -203,6 +204,7 @@ describe('Case Status Verification', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

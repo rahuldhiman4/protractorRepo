@@ -724,6 +724,7 @@ describe('Dynamic data', () => {
             }
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
+            await apiHelper.apiLogin('qkatawazi');
             let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_LONG__DYNAMIC_FIELDS');
             let externalTemplateData = {
@@ -1008,7 +1009,7 @@ describe('Dynamic data', () => {
             expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
             await editTaskPo.setDateValueInDynamicField('eee');
             await editTaskPo.clickOnSaveButton();
-            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value:");
+            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value");
             await editTaskPo.setDateValueInDynamicField('2020-03-01');
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
             await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
@@ -1029,7 +1030,7 @@ describe('Dynamic data', () => {
             expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
             await editTaskPo.setDateValueInDynamicField('eee');
             await editTaskPo.clickOnSaveButton();
-            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value:");
+            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value");
             await editTaskPo.setDateValueInDynamicField('2020-03-01');
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
             await editTaskPo.setDynamicFieldValue('externalText', 'sssssss');
@@ -1060,7 +1061,7 @@ describe('Dynamic data', () => {
             expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
             await editTaskPo.setDateValueInDynamicField('eee');
             await editTaskPo.clickOnSaveButton();
-            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value:");
+            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value");
             await editTaskPo.setDateValueInDynamicField('2020-03-01');
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
             await editTaskPo.setDynamicFieldValue('automatedText', 'sssssss');
@@ -1176,7 +1177,7 @@ describe('Dynamic data', () => {
             expect(await utilityCommon.isPopupMsgsMatches(msg)).toBeTruthy();
             await editCasePo.setDateValueInDynamicField('eee');
             await editCasePo.clickSaveCase();
-            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value:");
+            expect(await editTaskPo.getErrorMsgOnDynamicFiled()).toContain("Invalid value");
             await editCasePo.setDateValueInDynamicField('2020-03-01');
             await editCasePo.setDynamicFieldValue('temp', 'sssssss');
             await editCasePo.clickOnAssignToMe();

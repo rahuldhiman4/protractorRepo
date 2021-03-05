@@ -25,7 +25,7 @@ xdescribe('PIN Validation Create Case', () => {
     });
 
     describe('[4643,5219,5211,5214,5210]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
-        let casetemplatePsilon1, newCaseTemplate;
+        let casetemplatePsilon1, newCaseTemplate,configGuid;
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             casetemplatePsilon1 = {
@@ -44,7 +44,8 @@ xdescribe('PIN Validation Create Case', () => {
             await apiHelper.apiLogin('gderuno');
             newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePsilon1);
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');
+            configGuid = await apiHelper.createCommonConfig('IDENTITY_VALIDATION', '2', 'Psilon');
+            // await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');
             await apiHelper.updateCaseTemplateIdentitiyValidation(newCaseTemplate.id, 'ENFORCED');
             await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Active');
             await browser.sleep(3000); // hardwait to reflect case template validation
@@ -76,8 +77,8 @@ xdescribe('PIN Validation Create Case', () => {
         });
         it('[4643,5219,5211,5214,5210]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['NONE'], 'Psilon');
+            await apiHelper.deleteCommonConfiguration(configGuid.id);
+            configGuid = await apiHelper.createCommonConfig('IDENTITY_VALIDATION', '0', 'Psilon');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
@@ -95,8 +96,8 @@ xdescribe('PIN Validation Create Case', () => {
         });
         it('[4643,5219,5211,5214,5210]:Case creation via Create Case ,Template validation is ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
+            await apiHelper.deleteCommonConfiguration(configGuid.id);
+            configGuid = await apiHelper.createCommonConfig('IDENTITY_VALIDATION', '1', 'Psilon');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
@@ -113,7 +114,7 @@ xdescribe('PIN Validation Create Case', () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration(configGuid.id);
             await navigationPage.signOut();
             await loginPage.login('gderuno');
         });
@@ -139,7 +140,7 @@ xdescribe('PIN Validation Create Case', () => {
             await apiHelper.apiLogin('gderuno');
             newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePsilon1);
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['NONE'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','0', 'Psilon');
             await apiHelper.updateCaseTemplateIdentitiyValidation(newCaseTemplate.id, 'OPTIONAL');
             await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Active');
         });
@@ -180,7 +181,7 @@ xdescribe('PIN Validation Create Case', () => {
         it('[5221,5220,5216,5215,5212]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','1', 'Psilon');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
@@ -212,7 +213,7 @@ xdescribe('PIN Validation Create Case', () => {
         it('[5221,5220,5216,5215,5212]:Case creation via Create Case ,Template validation is OPTIONAL', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','2', 'Psilon');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
@@ -256,7 +257,7 @@ xdescribe('PIN Validation Create Case', () => {
             await apiHelper.apiLogin('gderuno');
             newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePsilon1);
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['NONE'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','0', 'Psilon');
             await apiHelper.updateCaseTemplateIdentitiyValidation(newCaseTemplate.id, 'NONE');
             await apiHelper.updateCaseTemplateStatus(newCaseTemplate.id, 'Active');
         });
@@ -296,7 +297,7 @@ xdescribe('PIN Validation Create Case', () => {
         it('[5218,5213,5217,5222]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','1', 'Psilon');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
@@ -340,7 +341,7 @@ xdescribe('PIN Validation Create Case', () => {
         it('[5218,5213,5217,5222]:Case creation via Create Case ,Template validation is OPTIONAL and NONE', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','2', 'Psilon');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
@@ -379,7 +380,7 @@ xdescribe('PIN Validation Create Case', () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['NONE'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','0', 'Psilon');
         });
         it('[5200,5207,5208,5209]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
             await navigationPage.signOut();
@@ -402,7 +403,7 @@ xdescribe('PIN Validation Create Case', () => {
         it('[5200,5207,5208,5209]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['OPTIONAL'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','1', 'Psilon');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);
@@ -433,7 +434,7 @@ xdescribe('PIN Validation Create Case', () => {
         it('[5200,5207,5208,5209]:Case creation via Create Case without Template ,Template validation is OPTIONAL and NONE and ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
-            await apiHelper.addCommonConfig('IDENTITY_VALIDATION', ['ENFORCED'], 'Psilon');
+            await apiHelper.createCommonConfig('IDENTITY_VALIDATION','2', 'Psilon');
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('gwixillian');
             await createCasePo.setSummary('Summary' + randomStr);

@@ -145,7 +145,7 @@ describe('Document Library', () => {
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await utilityGrid.selectLineOfBusiness('Human Resource');
             expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeTruthy('Human Resources LOB document library is not visible to case manager with multiple LOB access');
-            await utilityGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.selectLineOfBusiness('Finance');
             expect(await utilityGrid.isGridRecordPresent(titleRandVal)).toBeFalsy('Human Resources LOB document library is visible to case manager with multiple LOB access');
         });
         it('[4911,4925,4924]: Verify if document library is accessible to Case BA user having access to multiple LOB', async () => {
