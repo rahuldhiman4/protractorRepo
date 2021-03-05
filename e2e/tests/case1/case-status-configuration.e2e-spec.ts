@@ -322,7 +322,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.clickOnCancelButton();
     });
 
-    //asahitya - required text defect
+    //asahitya
     it('[4683]:Verify UI for Task status configuration', async () => {
         await navigationPage.signOut();
         await loginPage.login('jmilano');
@@ -340,7 +340,7 @@ describe('Case Status Configuration', () => {
         await utilityCommon.switchToDefaultWindowClosingOtherTabs();
     });
 
-    //asahitya - popup defect
+    //asahitya passed
     describe('[4676,4642]:Verify Custom status operations for case', () => {
         afterAll(async () => {
             await navigationPage.signOut();
@@ -364,7 +364,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setStatusReason("customStatus required");
             await statusConfigPo.clickOnBackButton();
             //delete custom status
-            // await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
@@ -390,7 +390,7 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.setStatusReason("customStatus required");
             await statusConfigPo.clickOnBackButton();
             //delete custom status
-            // await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.clickEditStatus("customStatus");
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
@@ -400,7 +400,7 @@ describe('Case Status Configuration', () => {
         });
     });
 
-    // popup defect
+    // passed
     it('[4682]:Verify Custom status operations for Task', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
@@ -416,7 +416,7 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.setStatusReason("customStatus required");
         await statusConfigPo.clickOnBackButton();
         //delete Custom Status
-        // await statusConfigPo.clickEditLifeCycleLink();
+        await statusConfigPo.clickEditLifeCycleLink();
         await statusConfigPo.clickEditStatus("customStatus");
         expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
         await statusConfigPo.clickOnDeleteButton();

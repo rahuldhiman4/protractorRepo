@@ -7,11 +7,11 @@ class StatusConfigPage {
     selectors = {
         editLifeCycleButton: 'button.font-weight-bold',
         localizeButton: 'button.btn-localize',
-        newStatusInput: '.modal input',
-        statusAddModalBtns: '.modal-content .status-settings_button-bar button',
+        newStatusInput: '.bwf-locale-modal input',
+        statusAddModalBtns: '.bwf-manage-status-reason-modal .btn.btn-primary',
         settingPanelButtons: '.footer button[adapt-button]',
         localizedBtn: '.rx-template-editor-text-fields .d-icon-field_text_mapmarker',
-        localizeMenuButtons: '.modal button[adapt-button]',
+        localizeMenuButtons: '.bwf-locale-modal button[adapt-button]',
         status: '.v-line',
         deleteButton: 'button.bwf-pl-zero',
         backButton: '.config-title button',
@@ -21,9 +21,11 @@ class StatusConfigPage {
         cancelButton: '.footer button[btn-type="secondary"]',
         companydefaultvalue: '[aria-label="Company"] .rx-select__search-button-title',
         mandatoryCheckBox: '.checkbox__input',
-        manageLink: '[class="d-button d-button_link d-icon-left-pencil d-button_small"]',
-        addStatusReason: '.d-icon-left-plus_circle',
+        manageLink: '.status-reason-wrapper button',
+        addStatusReason: 'button.btn-add-reason',
         localizeStatusReasonButton: '.d-icon-field_text_mapmarker',
+        statusReason: 'button.card-title',
+        statusReasonLocalizeBtn: '.reason-field button.btn-localize'
     }
 
     async clickOnMandatoryCheckbox(): Promise<void> {
@@ -33,11 +35,12 @@ class StatusConfigPage {
     async setStatusReason(newStatus: string): Promise<void> {
         await $(this.selectors.manageLink).click();
         await $(this.selectors.addStatusReason).click();
-        await $(this.selectors.localizeButton).click();
+        await $(this.selectors.statusReason).click();
+        await $(this.selectors.statusReasonLocalizeBtn).click();
         await $(this.selectors.newStatusInput).clear();
         await $(this.selectors.newStatusInput).sendKeys(newStatus);
         await $$(this.selectors.localizeMenuButtons).first().click();
-        await browser.wait(this.EC.elementToBeClickable($$(this.selectors.statusAddModalBtns).first()), 5000);
+        // await browser.wait(this.EC.elementToBeClickable($$(this.selectors.statusAddModalBtns).first()), 5000);
         await $$(this.selectors.statusAddModalBtns).first().click();
         await this.saveSetting();
     }
