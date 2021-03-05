@@ -645,7 +645,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #ashastra - defect #DRDMV-25244
+    // #ashastra - fixed
     describe('[3457]: Bulk Case Access update clicking Reset to default.', async () => {
         let newCase1;
         beforeAll(async () => {
@@ -678,16 +678,11 @@ describe("Case Read Access", () => {
             expect(await activityTabPo.getGrantedReadAccessCount('granted read access')).toBe(3);
         });
         it('[3457]: Bulk Case Access update clicking Reset to default.', async () => {
-            await navigationPo.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
-            await viewCasePage.clickOnTab('Case Access');
-            //Bulk Write Access
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
+            //Bulk Write Access // behaviour corrected
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('LA Support 2', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
-            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
             await accessTabPo.selectAgent('Elizabeth Peters', 'Agent');
             await accessTabPo.clickAssignWriteAccessCheckbox('Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
@@ -697,7 +692,7 @@ describe("Case Read Access", () => {
             expect(await activityTabPo.getGrantedReadAccessCount('granted write access')).toBe(3);
             await accessTabPo.clickOnResetToDefault();
             await activityTabPo.clickShowMoreLinkInActivity(1);
-            expect(await activityTabPo.getRevokedReadAccessCount('revoked read access of')).toBe(2);
+            expect(await activityTabPo.getRevokedReadAccessCount('revoked read access of')).toBe(3);
             await activityTabPo.clickShowMoreLinkInActivity(1);
             expect(await activityTabPo.getRevokedReadAccessCount('revoked write access of')).toBe(3);
         });
@@ -779,7 +774,7 @@ describe("Case Read Access", () => {
         });
     });
 
-    // #ashastra (failing all) - quick case template issue
+    // #ashastra
     describe('[5605]: [Read Access] Editing/Deleting the Read Access Mapping', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData1, caseTemplateData2, readAccessMappingData;
