@@ -364,12 +364,13 @@ describe('Document Library Consume Permission', () => {
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(publish[0]);
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.setCategoryTier1('Employee Relations');
-            await editDocumentLibraryPo.setRegion('Australia');
-            await editDocumentLibraryPo.setSite('Canberra');
+            await editDocumentLibraryPo.setRegion('Americas');
+            await editDocumentLibraryPo.setSiteGrp("Marketing")
+            await editDocumentLibraryPo.setSite('Mexico City');
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
-            await editDocumentLibraryPo.clickOnCancelButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy();
+            await editDocumentLibraryPo.clickOnCancelButton();
             let objDate: Date = new Date();
             let allMonths = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
             let day = "" + objDate.getDate(); //if (day.length == 1) { day = "0" + day; }
@@ -410,16 +411,16 @@ describe('Document Library Consume Permission', () => {
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 3')).toBeFalsy('Failure: Operational Category 3 is missing');
             expect(await resourcesTabPo.isAdvancedSearchFilterDropDownLabelDisplayed('Operational Category 4')).toBeFalsy('Failure: Operational Category 4 is missing');
 
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Employee Relations')).toBeTruthy('Failure: Operational Category 1 is missing');
+            expect(await resourcesTabPo.isValuePresentInDropdown( 'Employee Relations')).toBeTruthy('Failure: Operational Category 1 is missing');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Compensation')).toBeFalsy('Failure: Operational Category 2 is displayed');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Compensation')).toBeFalsy('Failure: Operational Category 2 is displayed');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Bonus')).toBeFalsy('Failure: Operational Category 3 is displayed');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Bonus')).toBeFalsy('Failure: Operational Category 3 is displayed');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
-            expect(await resourcesTabPo.isValuePresentInDropdown('Operational Category 1', 'Retention Bonus')).toBeFalsy('Failure: Operational Category 4 is displayed');
+            expect(await resourcesTabPo.isValuePresentInDropdown('Retention Bonus')).toBeFalsy('Failure: Operational Category 4 is displayed');
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
 
@@ -699,12 +700,10 @@ describe('Document Library Consume Permission', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
-            await createCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United Kingdom Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'GB Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quin Strong');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();
@@ -741,12 +740,10 @@ describe('Document Library Consume Permission', () => {
             await loginPage.login("qgeorge");
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
-            await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quanah George');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
             await navigationPage.signOut();

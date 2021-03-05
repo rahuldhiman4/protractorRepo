@@ -46,8 +46,8 @@ export class Resources {
         await $(this.selectors.advancedSearchSettingsBtnClose).click();
     }
 
-    async isValuePresentInDropdown(dropDownLabel: string, dropDownValue: string): Promise<boolean> {
-        let elementDropdown:ElementFinder =  await element(by.cssContainingText('.form-control-label', dropDownLabel));
+    async isValuePresentInDropdown(dropDownValue: string): Promise<boolean> {
+        let elementDropdown:ElementFinder =  await $('button[aria-label="Operational Category 1"]');
         return await utilityCommon.isValuePresentInDropDown(elementDropdown, dropDownValue);
     }
 

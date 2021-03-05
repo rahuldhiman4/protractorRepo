@@ -274,7 +274,7 @@ describe('Menu Item', () => {
             expect(await createMenuItems.isMenuNameFieldRequired()).toBeTruthy('FailureMsg: Menu Name required label is missing');
             expect(await createMenuItems.isMenuOptionFieldRequired()).toBeTruthy('FailureMsg: Menu Option required label is missing');
             expect(await createMenuItems.isStatusFieldRequired()).toBeTruthy('FailureMsg: Status required label is missing');
-            let menuNameValues: string[] = ['Label', 'Resolution Code'];
+            let menuNameValues: string[] = ["None",'Label', 'Resolution Code'];
             expect(await createMenuItems.isMenuNameDropDownValuesMatches(menuNameValues)).toBeTruthy('FailureMsg: Cancel status reason options mismatch');
             let statusValues: string[] = ['Active', 'Inactive', 'Deprecated'];
             expect(await createMenuItems.isStatusDropDownValuesMatches(statusValues)).toBeTruthy('FailureMsg: Cancel status reason options mismatch');
