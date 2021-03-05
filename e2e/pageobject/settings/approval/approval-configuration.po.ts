@@ -1,20 +1,22 @@
-import { $, protractor, ProtractorExpectedConditions, element, by, $$, browser } from "protractor";
+import utilityCommon from "../../../utils/utility.common";
+import { $, protractor, ProtractorExpectedConditions, element, by, $$, browser, ElementFinder } from "protractor";
 import utilityGrid from '../../../utils/utility.grid';
 
 class ApprovalsConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        approvalConfigTab: '.d-steps__link',
+        approvalConfigTab: '.nav-item button span',
         approvalGroup: '.button-open-action span',
-        addNewFlowBtn: '.d-collapse-panel[aria-expanded="true"] button.d-icon-right-angle_down',
+        addNewGeneralFlowBtn: '[rx-id="new-general-flow-button"]',
+        addNewLevelUpFlowBtn: '[rx-id="new-level-flow-button"]',
         selectNewApprovalFlowOption: 'button.d-icon-right-angle_down[aria-expanded="true"] + ul a',
-        approvalFlowBrick: '.d-collapse-panel[aria-expanded="true"] div.button-open-action',
+        approvalFlowBrick: '.card-title .text-direction span',
         expandApprovalFlowBrickArea: '.d-collapse-panel[aria-expanded="true"] div.button-open-action + div[aria-expanded="true"]',
         approvalFlowBrickTitle: 'span',
         approvalFlowBrickEditLink: '.d-icon-right-pencil',
-        approvalFlowTitleInput: 'input[rx-id="flowName"]',
+        approvalFlowTitleInput: '[rx-id="flow-name"] input',
         noOfLevelsInput: '.d-textfield__input[rx-id="levels"]',
-        expressionQualitificationLink: 'a[rx-id="general-expression"]',
+        expressionQualitificationLink: '[property-label="Qualification"] button',
         createNewApprovalFlowPopUp: '.modal-header h5',
         searchExpressionField: '.modal-content input',
         selectRecordOption: '[class="expression-node-label"]',
@@ -26,26 +28,27 @@ class ApprovalsConsole {
         expressionValueOptionSelector: 'button.d-dropdown__trigger[aria-expanded="true"] + ul a[role="menuitem"]',
         selectLink: '.select-title-btn',
         foundataDataSaveButton: 'button[rx-id="foundation-data-save-btn"]',
-        newApprovalFlowSaveButton: 'button.rx-editor-header__button_save',
+        newApprovalFlowSaveButton: 'button[rx-id="save-button"]',
         approvalFlowSaveButton: 'button.save-button',
+        approvalFlowCloseButton: 'button[rx-id="close-button"]',
         editApprovalFlowCloseButton: '.modal-footer button.d-button_large',
         newSelfApprovalFlowLinkButton: '.d-icon-left-plus_circle',
         ckEditorTextInput: '.cke_editable_inline',
         selfApprovalNextButton: 'button.d-icon-right-angle_right',
         auditInformationTextField: 'textarea[rx-id="audit-information"]',
         sampleSelfApprovalCheckbox: '.ui-grid-icon-ok',
-        multipleApproverFlowDropDown: 'select[ng-model="approvalFlowList.signingCriteria"]',
-        multipleApproverFlowDropDownOption: 'option',
-        selectApproversLink: '.d-icon-right-connection',
-        selectApproverSectionForGeneralApprovalFlow: '.role-list section a',
+        multipleApproverFlowDropDown: '[rx-id="signing-criteria"] button',
+        multipleApproverFlowDropDownOption: '[rx-id="signing-criteria"] button .rx-select__option-content div',
+        selectApproversLink: '[rx-id="flow-approvers"] button[rx-id="edit-button"]',
+        selectApproverSectionForGeneralApprovalFlow: '.a-dropdown-window--menu .rx-select__option-content div',
         businessUnitForApprovalFlow: 'rx-record-grid[rx-configuration="businessUnitGridConfiguration"]',
         primaryOrganizationForApprovalFlow: 'rx-record-grid[rx-configuration="primaryOrgsGridConfiguration"]',
         departmentForApprovalFlow: 'rx-record-grid[rx-configuration="departmentsGridConfiguration"]',
         supportGroupForApprovalFlow: 'rx-record-grid[rx-configuration="supportGroupGridConfiguration"]',
         personForApprovalFlow: 'rx-record-grid[rx-configuration="personGridConfiguration"]',
         functionalRolesForApprovalFlow: 'div[heading="Functional Roles"]',
-        functionalRolesSearchInput: 'searchFunctionalRolesText',
-        selectFunctionalRolesCheckbox: 'div[heading="Functional Roles"] .d-checkbox__item',
+        functionalRolesSearchInput: 'div.user-list div.d-icon-search',
+        selectFunctionalRolesCheckbox: '.user-list input.checkbox__input',
         fieldsIdentifyingApprovalForApprovalFlow: 'div[heading="Field Identifying Approval"]',
         fieldsIdentifyingApprovalOptionsForApprovalFlow: 'div[heading="Field Identifying Approval"] li',
         selectApprovalFlow: 'a.leftRightButton .d-icon-angle_right',
@@ -53,6 +56,10 @@ class ApprovalsConsole {
         selectSelfApprovals: '.ui-grid-selection-row-header-buttons',
         selfApprovalDeleteIcon: '.d-icon-left-trash',
         GeneralApprovalDeleteIcon: '.d-collapse-panel[aria-expanded="true"] div.button-open-action .d-icon-right-trash',
+        saveModalButton: '.modal-footer [rx-id="save-button"]',
+        cancelModalButton: '.modal-footer [rx-id="cancel-button"]',
+        moveApprovalButton: 'button.move-button',
+        approvalTypeDropdown: '[rx-id="approver-type"] button',
     }
 
     async searchAndOpenApprovalConfiguration(apporvalConfiguration: string): Promise<void> {
@@ -64,11 +71,16 @@ class ApprovalsConsole {
     }
 
     async clickApprovalGroup(approvalConfigGroup: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.approvalGroup, approvalConfigGroup)).click();
+        let locator = `input[value='${approvalConfigGroup}']`
+        await $(locator).click();
     }
 
-    async clickAddNewFlowLinkButton(): Promise<void> {
-        await $(this.selectors.addNewFlowBtn).click();
+    async clickAddGeneralFlowButton(): Promise<void> {
+        await $(this.selectors.addNewGeneralFlowBtn).click();
+    }
+
+    async clickAddLevelUpFlowButton(): Promise<void> {
+        await $(this.selectors.addNewLevelUpFlowBtn).click();
     }
 
     async selectApprovalFlowOption(approvalFlow: string): Promise<void> {
@@ -84,9 +96,7 @@ class ApprovalsConsole {
     }
 
     async editNewApprovalFlowDefaultTitle(approvalFlowTitle: string): Promise<void> {
-        await $$(this.selectors.approvalFlowBrick).last().$$(this.selectors.approvalFlowBrickEditLink).click();
-        await $$(this.selectors.approvalFlowBrick).last().$$(this.selectors.approvalFlowTitleInput).click();
-        await $$(this.selectors.approvalFlowBrick).last().$$(this.selectors.approvalFlowTitleInput).sendKeys(approvalFlowTitle);
+        await $$(this.selectors.approvalFlowTitleInput).last().sendKeys(approvalFlowTitle);
     }
 
     async setNoOfLevels(noOfLevels: string): Promise<void> {
@@ -95,7 +105,7 @@ class ApprovalsConsole {
     }
 
     async clickExpressionLink(): Promise<void> {
-        await $$(this.selectors.expandApprovalFlowBrickArea).last().$$(this.selectors.expressionQualitificationLink).click();
+        await $$(this.selectors.expressionQualitificationLink).last().click();
     }
 
     async isCreateNewApprovalFlowPopUpDisplayed(): Promise<boolean> {
@@ -122,8 +132,15 @@ class ApprovalsConsole {
         return await element(by.cssContainingText(this.selectors.selectExpressionOption, expressionFieldOption)).getText();
     }
 
-    async selectExpressionFieldOption(): Promise<void> {
-        await $(this.selectors.expressionOptionPlusIcon).click();
+    async selectExpressionFieldOption(fieldOption :string): Promise<void> {
+        let countChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').count();
+        for (let i =0; i<countChild; i++){
+            let getTextofChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').get(i).getAttribute('title');
+            if (getTextofChild == fieldOption){
+              await $$('.modal-body .ui-tree-selectable .d-icon-plus_circle').get(i).click();  
+              break;
+            }
+        }
     }
 
     async selectExpressionOperator(expressionOperator: string): Promise<void> {
@@ -159,16 +176,11 @@ class ApprovalsConsole {
     }
 
     async clickNewApprovalFlowSaveButton(): Promise<void> {
-        await browser.sleep(500);
         await $(this.selectors.newApprovalFlowSaveButton).click();
     }
 
-    async clickApprovalFlowSaveButton(): Promise<void> {
-        await $$(this.selectors.approvalFlowSaveButton).last().click();
-    }
-
-    async closeEditApprovalFlowPopUpWindow(buttonLabel: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.editApprovalFlowCloseButton, buttonLabel)).click();
+    async clickApprovalFlowCloseButton(): Promise<void> {
+        await $(this.selectors.approvalFlowCloseButton).click();
     }
 
     async clickNewSelfApprovalFlowButton(): Promise<void> {
@@ -192,15 +204,16 @@ class ApprovalsConsole {
     }
 
     async selectMultipleApproversDropDownOption(multipleApproverFlow: string): Promise<void> {
-        await $$(this.selectors.expandApprovalFlowBrickArea).last().$(this.selectors.multipleApproverFlowDropDown).click();
-        await $$(this.selectors.expandApprovalFlowBrickArea).last().$(this.selectors.multipleApproverFlowDropDown).element(by.cssContainingText(this.selectors.multipleApproverFlowDropDownOption, multipleApproverFlow)).click();
+        await $$(this.selectors.multipleApproverFlowDropDown).last().click();
+        await element(by.cssContainingText(this.selectors.multipleApproverFlowDropDownOption, multipleApproverFlow)).click();
     }
 
     async clickSelectApproversLink(): Promise<void> {
-        await $$(this.selectors.expandApprovalFlowBrickArea).last().$(this.selectors.selectApproversLink).click();
+        await $$(this.selectors.selectApproversLink).last().click();
     }
 
     async selectApproverSectionForGeneralApprovalFlow(approvalSection: string): Promise<void> {
+        await $(this.selectors.approvalTypeDropdown).click()
         await element(by.cssContainingText(this.selectors.selectApproverSectionForGeneralApprovalFlow, approvalSection)).click();
     }
 
@@ -211,7 +224,7 @@ class ApprovalsConsole {
                 await this.selectApproverSectionForGeneralApprovalFlow(approverType);
                 await $(this.selectors.functionalRolesSearchInput).sendKeys(approver);
                 await $(this.selectors.selectFunctionalRolesCheckbox).click();
-                await $(this.selectors.selectApprovalFlow).click();
+                await $(this.selectors.moveApprovalButton).click();
                 break;
             }
             case "Primary Organization": {
@@ -246,12 +259,13 @@ class ApprovalsConsole {
                 await $(this.selectors.selectApprovalFlow).click();
                 break;
             }
-            case "Person": {
+            case "People": {
                 // await $(this.selectors.personForApprovalFlow).click();
-                await this.selectApproverSectionForGeneralApprovalFlow(approverType);
-                await $(this.selectors.approvalFlowSearchIcon).click();
-                await utilityGrid.searchAndSelectGridRecord(approver);
-                await $(this.selectors.selectApprovalFlow).click();
+                await $(this.selectors.functionalRolesSearchInput).click();
+                await $('div.user-list .adapt-rx-search__input').sendKeys(approver);
+                await $$(this.selectors.selectFunctionalRolesCheckbox).last().click();
+                await $(this.selectors.moveApprovalButton).click();
+                await this.clickModelOkButton();
                 break;
             }
             case "Fields Identifying Approval": {
@@ -267,6 +281,23 @@ class ApprovalsConsole {
             }
         }
     }
+
+    async clickModelOkButton(): Promise<void> {
+        await $(this.selectors.saveModalButton).click();
+    }
+
+    async clickOnMenuItem(menuName: string): Promise<void> {
+        let countParent = await $$('.modal-body .a-tree__label').count();
+        for (let i =0; i<countParent; i++){
+            let getTextofparent = await $$('.modal-body .a-tree__label adapt-highlight').get(i).getText();
+            console.log('getTextofparent>>>>>',getTextofparent);
+            if (getTextofparent == menuName){
+              await $$('.modal-body .a-tree__toggle').get(i).click();  
+              await browser.sleep(3000);//Added becoz of slownees open the parent tree
+              break;
+            }
+        }
+    }​
 }
 
 export default new ApprovalsConsole();

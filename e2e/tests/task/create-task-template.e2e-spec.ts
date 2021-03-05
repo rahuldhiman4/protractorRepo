@@ -40,7 +40,7 @@ describe('Create Task Template', () => {
         await navigationPage.signOut();
     });
 
-    //ankagraw- required loading slow defect
+    //ankagraw
     describe('[5796,5795]: [Task Template] Task Template Create view (UI verification)', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         it('[5796,5795]: Create Manual Task template', async () => {
@@ -274,8 +274,8 @@ describe('Create Task Template', () => {
             await utilityGrid.addFilter("Modified Date", dateFormate + "-" + modifiedDateFormate, 'date');
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy(taskTemplateName);
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Template Name", 'Code of Conduct', 'text');
-            expect(await utilityGrid.isGridRecordPresent('Code of Conduct')).toBeTruthy('Code of Conduct not present');
+            await utilityGrid.addFilter("Template Name", taskTemplateName, 'text');
+            expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('Record not present');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Task Category Tier 1", 'Employee Relations', 'text');
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('Employee Relations not present');
@@ -327,20 +327,18 @@ describe('Create Task Template', () => {
             await utilityCommon.isAllDropDownValuesMatches(taskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card']);
             await taskTemplate.selectOwnerCompany('Petramco');
             await utilityCommon.isAllDropDownValuesMatches(taskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support']);
-            await taskTemplate.selectOwnerCompany('Petramco');
             await taskTemplate.selectBuisnessUnit('Facilities Support');
             await utilityCommon.isAllDropDownValuesMatches(taskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
             await taskTemplate.selectBuisnessUnit('Facilities Support');
             await taskTemplate.selectOwnerGroup('Facilities');
-            await changeAssignmentOldBladePo.selectCompany('Petramco');
-            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Business Unit', ['Facilities', 'Facilities Support']);
-            await changeAssignmentOldBladePo.selectCompany('Petramco');
-            await changeAssignmentOldBladePo.selectBusinessUnit('Facilities Support');
-            await changeAssignmentOldBladePo.isAllDropDownValuesMatches('Support Group', ['Facilities', 'Pantry Service']);
+            await changeAssignmentBlade.setDropDownValue('Company','Petramco');
+            await changeAssignmentBlade.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support'])
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Facilities Support');
+            await changeAssignmentBlade.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])
             // verify LOB is there
             expect(await taskTemplate.getLobValue()).toBe("Facilities");
             await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.', 2)).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
@@ -355,7 +353,7 @@ describe('Create Task Template', () => {
         });
     });
 
-    //ankagraw-status reason
+    //ankagraw
     describe('[5786,5787,5785,5775,5779]: [Task Status] Task Status change from Assigned', async () => {
         let randomStr = 'Manual task' + Math.floor(Math.random() * 1000000);
         //Manual task Template
@@ -409,9 +407,8 @@ describe('Create Task Template', () => {
             let allStatusatAssignedState: string[] = ["Assigned", "In Progress", "Pending", "Completed", "Canceled", "Closed"];
             await updateStatusBladePo.allStatusValuesPresent(allStatusatAssignedState);
             await updateStatusBladePo.clickCancelButton();
-            await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("In Progress");
-            await updateStatusBladePo.clickSaveStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus("In Progress");
             expect(await viewTask.getTaskStatusValue()).toBe('In Progress');
             await viewTask.clickOnViewCase();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -424,8 +421,6 @@ describe('Create Task Template', () => {
             let allStatusatinProgressState: string[] = ["In Progress", "Assigned", "Pending", "Completed", "Failed", "Canceled", "Closed"];
             await updateStatusBladePo.allStatusValuesPresent(allStatusatinProgressState);
             await updateStatusBladePo.clickCancelButton();
-            await viewTask.clickOnChangeStatus();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await updateStatusBladePo.changeStatus("Pending");
             await updateStatusBladePo.clickSaveStatus("Pending");
             expect(await viewTask.getTaskStatusValue()).toBe('Pending');
@@ -440,10 +435,8 @@ describe('Create Task Template', () => {
             let allStatusatinProgressState: string[] = ["Pending", "Assigned", "In Progress", "Completed", "Canceled", "Closed"];
             await updateStatusBladePo.allStatusValuesPresent(allStatusatinProgressState);
             await updateStatusBladePo.clickCancelButton();
-            await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Assigned");
             await updateStatusBladePo.clickSaveStatus("Assigned");
-            await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.selectStatusReason("Successful");
             await updateStatusBladePo.clickSaveStatus("Completed");
@@ -455,7 +448,6 @@ describe('Create Task Template', () => {
             await viewCasePage.openTaskCard(1);
             await manageTask.clickTaskLink(taskName3);
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
-            await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Canceled");
             await updateStatusBladePo.clickSaveStatus("Canceled");
             expect(await viewTask.getTaskStatusValue()).toBe('Canceled');
@@ -489,7 +481,7 @@ describe('Create Task Template', () => {
             await utilityCommon.closeAllBlades();
         });
     });
-    //status reason
+    
     describe('[5675]: [Tasks] Tasks status when resolving the case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, tasktemp, tasktemp1, tasktemp2, manualTemplateData;
@@ -526,9 +518,11 @@ describe('Create Task Template', () => {
                 "templateSummary": 'manualTaskSummary' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
+                "assignee": "qfeng",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3"
+
             }
 
             await apiHelper.apiLogin('qkatawazi');
@@ -596,11 +590,10 @@ describe('Create Task Template', () => {
             await navigationPage.gotoTaskConsole();
             await taskConsolePo.searchAndOpenTask('manualTaskSummary' + randomStr);
             await viewTask.clickOnEditTask();
-            await editTaskPo.clickOnAssignToMe();
+            await editTaskPo.clickOnAssignToMe(); 
             await editTaskPo.clickOnSaveButton();
         });
         it('[5675]: Change the task to complete', async () => {
-            await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.selectStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();
@@ -613,7 +606,6 @@ describe('Create Task Template', () => {
             await editTaskPo.clickOnSaveButton();
         });
         it('[5675]: verify the add button ', async () => {
-            await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.changeStatus("Completed");
             await updateStatusBladePo.selectStatusReason("Successful")
             await updateStatusBladePo.clickSaveStatus();

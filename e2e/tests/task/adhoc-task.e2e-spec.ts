@@ -545,7 +545,6 @@ describe('Create Adhoc task', () => {
         await apiHelper.changeCaseAssignment(caseCreationResponse.id, 'United States Support', 'US Support 1', 'qtao');
         await apiHelper.updateCaseStatus(caseCreationResponse.id, 'InProgress');
         await utilityGrid.searchAndOpenHyperlink(taskCreationResponse.displayId);
-        await viewTask.clickOnChangeStatus();
         await updateStatusBladePo.changeStatus("In Progress");
         expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('Save button is enabled');
         expect(await updateStatusBladePo.getValidationMessage()).toBe('Assignee is required for this task status.  Please select an assignee.');

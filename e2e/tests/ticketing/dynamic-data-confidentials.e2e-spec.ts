@@ -26,7 +26,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-xdescribe('Dynamic Confidentials Data', () => {
+describe('Dynamic Confidentials Data', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('jbarnes');
@@ -150,7 +150,6 @@ xdescribe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.clickDeleteConfidentialSupportGroup();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("IN Support 1")).toBeFalsy();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeFalsy();
-            await caseAccessTabOldPo.clickConfidentialSupportGroupAccess();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupDropDownPresent("Sensitive Personal Data (HR)")).toBeTruthy();
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("Sensitive Personal Data (HR)");
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
@@ -162,7 +161,6 @@ xdescribe('Dynamic Confidentials Data', () => {
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await viewCasetemplatePo.selectTab('Case Access');
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupAccess()).toBeFalsy();
-
         });
     });
 
@@ -277,6 +275,7 @@ xdescribe('Dynamic Confidentials Data', () => {
             await viewCasetemplatePo.clickCopycaseTemplate();
             await copyCasetemplatePo.setTemplateName(randomStr + "Copy Case Template");
             await copyCasetemplatePo.clickSaveCaseTemplate();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Case Access');
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("LA Support 1")).toBeTruthy();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("LA Support 2")).toBeTruthy();

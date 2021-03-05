@@ -89,6 +89,7 @@ class EditMessageTextBlade {
     }
 
     async setMessageBody(value:string): Promise<void> {
+        await browser.sleep(2000);
         await $(this.selectors.messageBody).sendKeys(Key.chord(Key.CONTROL, Key.END));
         await $(this.selectors.messageBody).sendKeys(Key.ENTER);
         await $(this.selectors.messageBody).sendKeys(value);

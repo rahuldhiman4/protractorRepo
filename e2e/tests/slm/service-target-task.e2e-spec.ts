@@ -23,7 +23,7 @@ let caseAgentUser = 'qtao';
 let psilonCaseBAUser = 'gderuno';
 let psilonCaseAgentUser = 'werusha';
 
-xdescribe('Service Target Tests for Tasks', () => {
+describe('Service Target Tests for Tasks', () => {
     const caseModule = 'Case';
 
     beforeAll(async () => {

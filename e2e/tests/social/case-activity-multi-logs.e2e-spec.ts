@@ -818,7 +818,7 @@ describe('Case Activity Multi Logs', () => {
             await approvalConfigurationPage.searchExpressionFieldOption('Summary');
             await approvalConfigurationPage.clickRecordOption('Record Definition');
             await approvalConfigurationPage.clickRecordOption('Case');
-            await approvalConfigurationPage.selectExpressionFieldOption();
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
@@ -826,7 +826,7 @@ describe('Case Activity Multi Logs', () => {
             await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
-            await approvalConfigurationPage.closeEditApprovalFlowPopUpWindow('Close');
+            await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[4241]:Create case and verify self approval without process', async () => {

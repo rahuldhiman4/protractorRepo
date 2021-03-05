@@ -19,10 +19,17 @@ class ConsoleNotesTemplate {
     }
 
     async clickOnCreateNotesTemplate(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplate)));
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.notesTemplate)), 7000);
-        await $(this.selectors.notesTemplate).click();
-        await browser.wait(this.EC.visibilityOf($(this.selectors.templateName)), 7000);
+        await $(this.selectors.notesTemplate).isPresent().then(async (present) => {
+            if(present) {
+                await $(this.selectors.notesTemplate).isDisplayed().then(async (displayed) => {
+                    if(displayed) await $(this.selectors.notesTemplate).click();
+                });
+            }
+            else{
+                await browser.sleep(2000);
+                await $(this.selectors.notesTemplate).click();
+            }
+        });
     }
 
     async clickOnTemplateName(temmplateName: string): Promise<void> {

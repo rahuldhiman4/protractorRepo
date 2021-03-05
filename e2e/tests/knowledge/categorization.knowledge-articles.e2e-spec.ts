@@ -776,8 +776,8 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await editDocumentLibraryPage.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             await editDocumentLibraryPage.clickOnCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[3913]:Verify the document search based on category tier from attachments', async () => {
@@ -845,7 +845,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login(caseBAUser);
         });
     });
-//Foundation data
+//knowledege set not visible for Psilon user
     it('[3860,3901]:Verify the domain configurations are honored while selecting category tiers on Knowledge articles and documents library', async () => {
         let knowledgeSetTitleStr = 'versionedKnowledgeSet_' + randomStr;
         let knowledgeSetData = {
@@ -877,10 +877,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             expect(await createKnowledgePage.isCategoryTier2FieldLabelDisplayed(categoryTier2)).toBe(true);
             expect(await createKnowledgePage.isCategoryTier3FieldLabelDisplayed(categoryTier3)).toBe(true);
             expect(await createKnowledgePage.isCategoryTier4FieldLabelDisplayed(categoryTier4)).toBe(true);
-            await createKnowledgePage.clickChangeAssignmentButton();
             await changeAssignmentBlade.setDropDownValue('Company', knowledgeData.Company);
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', businessData.orgName);
-            await changeAssignmentBlade.setDropDownValue('AssignedGroup', suppGrpData.orgName);
+            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
+            await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Doomi');
             await createKnowledgePage.selectCategoryTier1Option(categoryTier1FieldVal);
             await createKnowledgePage.selectCategoryTier2Option(categoryTier2FieldVal);
@@ -894,10 +893,10 @@ describe('Knowledge Articles - Categorization Tests', () => {
             throw error;
         }
         finally {
-            await apiHelper.apiLogin('tadmin');
-            let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
-            let domainTag = await apiHelper.createDomainTag(domainTagData);
-            await apiHelper.disableDomainTag(domainTag);
+            // await apiHelper.apiLogin('tadmin');
+            // let domainTagData = domainTagDataFile['DomainTagDataPsilon'];
+            // let domainTag = await apiHelper.createDomainTag(domainTagData);
+            // await apiHelper.disableDomainTag(domainTag);
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         }
