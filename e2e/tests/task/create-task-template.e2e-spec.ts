@@ -139,6 +139,7 @@ describe('Create Task Template', () => {
                 await editTaskTemplate.clickOnEditMetadataLink();
                 expect(await editTaskTemplate.isTemplateStatusDisabled()).toBeTruthy("Template status is enabled");
                 await editTaskTemplate.clickOnCancelMetadataButton();
+                await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
                 await viewTaskTemplate.clickBackArrowBtn();
             } catch (error) {
                 throw error;
