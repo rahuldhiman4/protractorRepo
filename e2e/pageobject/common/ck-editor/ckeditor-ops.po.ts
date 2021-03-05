@@ -282,8 +282,13 @@ class CKEditor {
     // input should be a list
     async setNumberList(values: string[], guidId?: string): Promise<void> {
         let locator: string;
-        if (guidId) { locator = `[rx-view-component-id="${guidId}"] .cke_button__numberedlist_icon` }
+        let bodyArea = this.selectors.bodyTextArea;
+        if (guidId) { 
+            locator = `[rx-view-component-id="${guidId}"] .cke_button__numberedlist_icon`;
+            bodyArea = `[rx-view-component-id="${guidId}"] ${bodyArea}` ;
+        }
         else { locator = await this.selectors.numberIcon }
+
         let framePresent = await $(this.selectors.frame).isPresent();
         if (framePresent == true) {
             await browser.waitForAngularEnabled(false);
@@ -306,14 +311,14 @@ class CKEditor {
             await browser.waitForAngularEnabled(true);
         }
         else {
-            await $(this.selectors.bodyTextArea).sendKeys(Key.CONTROL, Key.END);
-            await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+            await $$(bodyArea).last().sendKeys(Key.CONTROL, Key.END);
+            await $$(bodyArea).last().sendKeys(Key.ENTER);
             await $(locator).click();
-            if (values.length == 1) await $(this.selectors.bodyTextArea).sendKeys(values[0]);
+            if (values.length == 1) await $$(bodyArea).last().sendKeys(values[0]);
             else {
                 for (let i = 0; i < values.length; i++) {
-                    await $(this.selectors.bodyTextArea).sendKeys(values[i]);
-                    await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+                    await $$(bodyArea).last().sendKeys(values[i]);
+                    await $$(bodyArea).last().sendKeys(Key.ENTER);
                 }
             }
         }

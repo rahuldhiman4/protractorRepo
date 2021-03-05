@@ -7,8 +7,8 @@ class ComposeMail {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         title: '.modal-title',
-        commonGuid: 'c13d2848-2fe9-4e6d-adc0-79bb13e1f965',
-        commonId: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"]',
+        commonGuid: '71d315a1-3466-4e25-85be-2ce9a69efcb4',
+        commonId: '[rx-view-component-id="71d315a1-3466-4e25-85be-2ce9a69efcb4"]',
         selectEmailTemplateLink: '.select-template-button',
         attachLink: '.attachment-button button',
         sendButton: '[rx-view-component-id="58d8a41f-6c8f-4f23-b986-6a94d35b0fbe"] button',
@@ -24,10 +24,10 @@ class ComposeMail {
         subjectInput: '.subject-name input',
         templateNameHeader: '.select-email-container .template-seperator',
         recipientRemoveIcon: '.adapt-mt-wrapper .adapt-mt-item-close',
-        messageBodyFontPannelBar: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_inner .cke_reset_all',
-        colorIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__textcolor',
-        attachmentField: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .attachment-button input[type="file"]',
-        numberIcon: '[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] .cke_button__numberedlist_icon',
+        messageBodyFontPannelBar: '[rx-view-component-id="71d315a1-3466-4e25-85be-2ce9a69efcb4"] .cke_inner .cke_reset_all',
+        colorIcon: '[rx-view-component-id="71d315a1-3466-4e25-85be-2ce9a69efcb4"] .cke_button__textcolor',
+        attachmentField: '[rx-view-component-id="71d315a1-3466-4e25-85be-2ce9a69efcb4"] .attachment-button input[type="file"]',
+        numberIcon: '[rx-view-component-id="71d315a1-3466-4e25-85be-2ce9a69efcb4"] .cke_button__numberedlist_icon',
         attachmentView: 'span.bwf-attachment-container__file-name',
         warningMessage: '.modal-content .modal-body, .modal-content .d-modal__content-item',
         toCcInput: '.adapt-mt-input-container input',
@@ -170,18 +170,12 @@ class ComposeMail {
     }
 
     async setEmailBody(value: string): Promise<void> {
-        await ckeditorOpsPo.setCKEditor(value, "c13d2848-2fe9-4e6d-adc0-79bb13e1f965");
+        await ckeditorOpsPo.setCKEditor(value, "71d315a1-3466-4e25-85be-2ce9a69efcb4");
     }
 
     async isTextPresentInEmailBody(textvalue: string): Promise<boolean> {
-        let value: string = undefined;
         await browser.waitForAngularEnabled(false);
-        let elem = $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame');
-        await browser.switchTo().frame(elem.getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.emailBody)), 2000);
-        value = await $(this.selectors.emailBody).getText();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
+        let value = await $('[rx-view-component-id="71d315a1-3466-4e25-85be-2ce9a69efcb4"] .cke_wysiwyg_div').getText();
         return value.includes(textvalue) ? true : false;
     }
 
