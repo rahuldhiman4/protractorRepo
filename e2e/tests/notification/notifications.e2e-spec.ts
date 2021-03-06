@@ -23,9 +23,8 @@ xdescribe("Notifications", () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        await apiHelper.apiLogin('sasadmin');
-        await apiHelper.enableActionableNotificationSetting();
         await apiHelper.apiLogin('tadmin');
+        await apiHelper.enableActionableNotificationSetting();
         await apiHelper.deleteApprovalMapping(caseModule);
 
         const personDataFile = require('../../data/ui/foundation/person.ui.json');

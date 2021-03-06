@@ -2929,7 +2929,7 @@ class ApiHelper {
 
     async addWatsonAccount(apiKey: string): Promise<boolean> {
         // Pre-requisite: Enable Cognitive Licenses
-        await this.apiLogin('sasadmin');
+        await this.apiLogin('tadmin');
         let enableCognitiveLicPayload = cloneDeep(COGNITIVE_LICENSE);
         const enableCognitiveLicResponse = await axios.put(
             "api/rx/application/licensemanagement/Petramco/servicelicenses",
@@ -2938,7 +2938,6 @@ class ApiHelper {
         console.log("Enable Cognitive License API Status =============>", enableCognitiveLicResponse.status);
 
         // Pre-requisite: Add Cognitive Service Region
-        await this.apiLogin('tadmin');
         let cognitiveServiceRegionResponse = await axios.post(
             "api/rx/application/systemconfiguration/cognitiveServiceRegionTenantConfiguration",
             {
