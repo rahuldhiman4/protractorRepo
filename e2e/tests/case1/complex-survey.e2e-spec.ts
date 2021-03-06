@@ -7,7 +7,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 
-xdescribe('Complex Surveys', () => {
+describe('Complex Surveys', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qfeng');

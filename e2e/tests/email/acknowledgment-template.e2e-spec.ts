@@ -211,11 +211,11 @@ describe('Email Acknowledgment Template', () => {
         let templateName = 'Private' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateName2 = 'Public' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let description = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let description2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let subject = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let subject2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let body = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let body2 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let description2 = [...Array(11)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let subject = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let subject2 = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let body = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let body2 = [...Array(9)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr2: string[] = ["Label"];
         it('[5121,5115,5116]: Acknowledgment Template : Edit Acknowledgment Template UI validation', async () => {
             await navigationPage.gotoSettingsPage();
