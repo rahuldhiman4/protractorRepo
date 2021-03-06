@@ -466,7 +466,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             for (let i: number = 0; i < 1; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is not available');
             }
-            await apiHelper.apiLogin('sasadmin');
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.updateReviewDueDateRule();
         });
         it('[12066]: Verify records are fetched on knowledge console Status, Reviewer& Review Status combinations', async () => {
