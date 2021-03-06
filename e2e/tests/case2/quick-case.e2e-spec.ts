@@ -814,7 +814,7 @@ describe("Quick Case", () => {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
 
-    // tgarud KA Issue
+    // tgarud
     describe('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
         let articleData, unPublishedKA, publishedKA, publishKA_GUID;
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -916,7 +916,7 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    it('[3928]: Populating fields in Quick Case if only Required parameter is specified', async () => {
+    xit('[3928]: Populating fields in Quick Case if only Required parameter is specified', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18972';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=PET00000104&desc=&contact=');
@@ -934,7 +934,7 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    it('[3927]: Populating fields in Quick Case when all parameters are specified', async () => {
+    xit('[3927]: Populating fields in Quick Case when all parameters are specified', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18973';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu@petramco.com&desc=Change my Last Name&contact=PET00000104');
@@ -956,7 +956,7 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    it('[3925]: Populating fields in Quick Case with Required and one optional parameter', async () => {
+    xit('[3925]: Populating fields in Quick Case with Required and one optional parameter', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18980';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=qliu&desc=Change my Last Name&contact');
@@ -972,7 +972,7 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    it('[3926]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
+    xit('[3926]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=&desc=Change my Last Name&contact=PET000000000484');
         expect(await quickCasePo.getTextOfSummaryTextBox()).toBe('', 'Quick case summary text box is not empty');
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=&desc=Change my Last Name&contact=');
@@ -984,7 +984,7 @@ describe("Quick Case", () => {
     });
 
     //radhiman
-    it('[3924]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
+    xit('[3924]: [-ve] Populating fields in Quick Case if Required parameter is empty', async () => {
         let caseData = require('../../data/ui/case/case.ui.json');
         let expectedJsonName = 'caseData_DRDMV18983';
         await browser.get('/helix/index.html#/com.bmc.dsm.bwfa/view/com.bmc.dsm.case-lib:Case Create - Quick Case?customer=Test1&desc=Change my Last Name&contact=qliu');

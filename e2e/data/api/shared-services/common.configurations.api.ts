@@ -64,6 +64,6 @@ export const COMMON_CONFIG_PAYLOAD = {
         "IDENTITY_VALIDATION Value": "2",
         "Integer Value": "0",
         "NEXT_REVIEW_PERIOD Value": "2629743",
-        "ID": "AGGADG11ILYPXAQP7TDLQP7TDLH2N4"
+        "ID": null
     }
 }
