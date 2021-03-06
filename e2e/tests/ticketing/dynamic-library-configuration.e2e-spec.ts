@@ -107,8 +107,8 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Dynamic Field Library', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.DYNAMIC_FILED_LIBRARY);
             let headers: string[] = ["Field Description", "Field Name", "Field Value Type", "Status"];
-            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "InformationSource", "Confidential", "Created Date", "ID", "Modified By", "Modified Date"];
-            let header: string[] = ["InformationSource", "Confidential", "Created Date", "ID", "Modified By", "Modified Date"];
+            let updatedHeaders: string[] = ["Field Description", "Field Name", "Field Value Type", "Status", "Information Source", "Confidential", "Created Date", "ID", "Modified By", "Modified Date"];
+            let header: string[] = ["Information Source", "Confidential", "Created Date", "ID", "Modified By", "Modified Date"];
             //field Text type    
             expect(await dynamicFieldLibraryConfigConsolePo.areRequestedColumnMatches(headers)).toBeTruthy();
             await dynamicFieldLibraryConfigConsolePo.addColumnOnGrid(header);
@@ -202,7 +202,7 @@ describe('Dynamic Library Configuration', () => {
             await utilityGrid.addFilter("Field Value Type", "LIST", "checkbox");
             expect(await utilityGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("InformationSource", "Requester", "checkbox");
+            await utilityGrid.addFilter("Information Source", "Requester", "checkbox");
             expect(await utilityGrid.isGridRecordPresent('List' + randomString)).toBeTruthy();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Confidential", "False", "radioButton");
@@ -362,7 +362,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await viewTasktemplatePo.isDynamicFieldPresent('ATTACHMENT' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('DATE_TIME' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('TIME' + randomStr)).toBeTruthy();
-            await viewTasktemplatePo.clickBackArrowBtn();
+           await viewTasktemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateData.templateName);
@@ -432,7 +432,6 @@ describe('Dynamic Library Configuration', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed('Field TIME' + randomStr)).toBeTruthy();
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades();
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
@@ -540,6 +539,7 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.clickCancelButton();
             await dynamicFieldsPage.clickOnDownArrow();
             await dynamicFieldsPage.clickOnDownArrow();
+            await browser.sleep(1000);
             expect(await dynamicFieldsPage.isFieldDisplayedInFieldSection('FieldGroup1')).toBeTruthy();
             expect(await dynamicFieldsPage.getFieldNameAttribute('disabled')).toBeTruthy();
             expect(await dynamicFieldsPage.getDescriptionName('disabled')).toBeTruthy();
@@ -572,7 +572,10 @@ describe('Dynamic Library Configuration', () => {
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
             await viewCasetemplatePo.clickBackArrowBtn();
         });
+        afterAll(async () => {
+           await utilityCommon.closeAllBlades();
     });
+});
 
     describe('[4863]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
         let caseTemplate, casetemplateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

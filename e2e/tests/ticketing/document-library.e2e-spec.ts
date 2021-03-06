@@ -240,7 +240,8 @@ describe('Document Library', () => {
             expect(await docLibReadAccessTab.isAddCompanyDropDownDisplayed()).toBeTruthy('Read Access Company Disabled ');
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades();
+            await viewDocumentLibraryPo.clickOnReadAccessCancelButton();
+            await viewDocumentLibraryPo.clickOnCancelButton();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -300,7 +301,7 @@ describe('Document Library', () => {
         });
     });
 
-    // #Fail - Adapt issue
+    // #Fix
     describe('[4884]: Verify document created will not listed in Knowledge articles grid', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -359,9 +360,7 @@ describe('Document Library', () => {
             await viewDocumentLibraryPo.clickOnEditDocument();
             expect(await editDocumentLibraryPo.getLobValue()).toBe("Facilities");
             await editDocumentLibraryPo.clickOnCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewDocumentLibraryPo.clickOnCancelButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await browser.sleep(2000); // required to see LOB dropdown, else it fails
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });

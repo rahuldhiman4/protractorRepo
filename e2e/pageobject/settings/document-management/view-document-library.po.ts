@@ -5,6 +5,7 @@ class ViewDocumentLibraryPage {
     selectors = {
         editDocumentLibrary: '[rx-view-component-id="a1b9759b-8b91-4839-b181-b94fa6933324"] button',
         editReadAccess: '[rx-view-component-id="3796853b-2bf5-4607-8574-270004b8e34d"] button',
+        cancelReadAccess: '[rx-view-component-id="be1ecd02-7d93-4d3b-8c4e-add1dfb2c924"] button',
         categoryTier4: '[rx-view-component-id="4abcb2f3-a730-4e34-8126-52ff2c2888c2"] .read-only-content',
         cancelButton: '[rx-view-component-id="61a48596-d3c0-462d-825b-4d6172e351b3"] button',
     }
@@ -32,6 +33,10 @@ class ViewDocumentLibraryPage {
     }
 
     async clickOnCancelButton(): Promise<void> {
+        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
+        await $(this.selectors.cancelButton).click();
+    }
+    async clickOnReadAccessCancelButton(): Promise<void> {
         //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.cancelButton)));
         await $(this.selectors.cancelButton).click();
     }
