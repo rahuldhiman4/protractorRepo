@@ -65,9 +65,11 @@ describe("Compose Email", () => {
     });
 
     afterAll(async () => {
+        await utilityCommon.closeAllBlades();
+        await composeMail.clickOnDiscardButton();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
-        await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });
 
