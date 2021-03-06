@@ -446,6 +446,7 @@ describe('Case Data Store', () => {
                 expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
             }
             await previewCaseTemplateCasesPo.clickOnBackButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[4859]: [Dynamic Data] [UI] - Dynamic fields and groups display on Case Template preview', async () => {
             await navigationPage.gotoCreateCase();
@@ -461,6 +462,7 @@ describe('Case Data Store', () => {
                 expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
             }
             await previewCaseTemplateCasesPo.clickOnBackButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await selectCasetemplateBladePo.clickOnAllTemplateTab();
             await utilityGrid.searchAndOpenHyperlink(casetemplateData.templateName);
             //verify dynmaic groups and fields
@@ -470,6 +472,7 @@ describe('Case Data Store', () => {
                 expect(await previewCaseTemplateCasesPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
             }
             await previewCaseTemplateCasesPo.clickOnBackButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -1153,16 +1156,13 @@ describe('Case Data Store', () => {
             await localizeValuePopPo.setLocalizeValue('LibTextField' + randomStr);
             await localizeValuePopPo.clickOnSaveButton();
             await createDynamicFieldLibraryConfigPo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
         });
         it('[4878]: [Dynamic Data] [UI] - Behavior of Save, Cancel button in Add/Update Dynamic field from Library', async () => {
             await utilityGrid.searchAndOpenHyperlink('LibTextField' + randomStr);
             await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
-            await localizeValuePopPo.setLocalizeValue('NewLibTextField1234' + randomStr);
             await localizeValuePopPo.clearLocalizeValue();
-            await localizeValuePopPo.clickOnSaveButton();
-            await editDynamicFieldLibraryConfigPo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent("Resolve the field validation errors"));
-            await editDynamicFieldLibraryConfigPo.clickOnLocalizeButton();
+            expect(await localizeValuePopPo.isSaveButtonEnabled()).toBeFalsy();
             await localizeValuePopPo.setLocalizeValue('NewLibTextField' + randomStr);
             await localizeValuePopPo.clickOnSaveButton();
             await editDynamicFieldLibraryConfigPo.clickOnSaveButton();

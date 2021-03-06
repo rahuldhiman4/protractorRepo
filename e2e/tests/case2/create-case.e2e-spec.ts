@@ -1215,15 +1215,15 @@ describe("Create Case", () => {
     });
 
     // passed
-    describe('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+    xdescribe('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY_HR', '1');
-            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY_HR', '1');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '1');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1');
             await apiHelper.apiLogin('fritz');
-            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY_Facilities', '1');
-            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY_Facilities', '1');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '1');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1');
         });
         // passed
         it('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
@@ -1242,8 +1242,8 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY_HR', '0');
-            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY_HR', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
             await navigationPage.signOut();
             await loginPage.login('fritz');
             await navigationPage.gotoCreateCase();
@@ -1283,11 +1283,11 @@ describe("Create Case", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY_HR', '0');
-            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY_HR', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
             await apiHelper.apiLogin('fritz');
-            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY_Facilities', '0');
-            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY_Facilities', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

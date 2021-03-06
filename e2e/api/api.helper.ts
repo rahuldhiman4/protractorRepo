@@ -1368,21 +1368,21 @@ class ApiHelper {
                 knowledgeArticleData.fieldInstances["450000157"] = assignedCompanyData;
             }
 
-          if (data.region) {
-            let regionData = {
-              "id": 200000012,
-              "value": data.region
+            if (data.region) {
+                let regionData = {
+                    "id": 200000012,
+                    "value": data.region
+                }
+                knowledgeArticleData.fieldInstances["200000012"] = regionData;
             }
-            knowledgeArticleData.fieldInstances["200000012"] = regionData;
-          }
 
-          if (data.siteGroup) {
-            let siteGroupData = {
-              "id": 200000007,
-              "value": data.siteGroup
+            if (data.siteGroup) {
+                let siteGroupData = {
+                    "id": 200000007,
+                    "value": data.siteGroup
+                }
+                knowledgeArticleData.fieldInstances["200000007"] = siteGroupData;
             }
-            knowledgeArticleData.fieldInstances["200000007"] = siteGroupData;
-          }
 
             if (data.site) {
                 let siteData = {
@@ -2760,30 +2760,16 @@ class ApiHelper {
                 commonConfigPayload.processInputValues["Boolean Value"] = configValue;
                 break;
             }
-            case "RESOLUTION_CODE_MANDATORY_HR": {
+            case "RESOLUTION_CODE_MANDATORY": {
                 commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
                 commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
                 commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
                 commonConfigPayload.processInputValues["Boolean Value"] = configValue;
                 break;
             }
-            case "RESOLUTION_DESCRIPTION_MANDATORY_HR": {
-                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];                
-                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
-                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
-                break;
-            }
-            case "RESOLUTION_CODE_MANDATORY_Facilities": {
+            case "RESOLUTION_DESCRIPTION_MANDATORY": {
                 commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
                 commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
-                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
-                break;
-            }
-            case "RESOLUTION_DESCRIPTION_MANDATORY_Facilities": {
-                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];                
                 commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
                 commonConfigPayload.processInputValues["Boolean Value"] = configValue;
                 break;
@@ -3309,8 +3295,8 @@ class ApiHelper {
         commonConfig.fieldInstances[450000152].value = configName;
         commonConfig.fieldInstances[1000000001].value = company ? company : commonConfig.fieldInstances[1000000001].value;
         commonConfig.fieldInstances[450000166].value = configValue;
-        commonConfig.fieldInstances[450000153].value = configValue;        
-        let commonConfigResponse : AxiosResponse = await apiCoreUtil.createRecordInstance(commonConfig);
+        commonConfig.fieldInstances[450000153].value = configValue;
+        let commonConfigResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(commonConfig);
         console.log('Common Configuration =============> ', commonConfigResponse.status);
         const commonConfigDetails = await axios.get(
             await commonConfigResponse.headers.location
