@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, browser, protractor, ProtractorExpectedConditions, ElementFinder, element, by } from "protractor";
 import { DropDownType } from '../../../utils/constants';
 import utilityCommon from '../../../utils/utility.common';
 
@@ -39,6 +39,7 @@ class GoalTypeCreateConfigPage {
     async clickCreateGoalTypeConfigButton(): Promise<void> {
         await $(this.selectors.addGoalTypeButton).click();
     }
+
     async enterGoalTypeName(goalTypeName: string): Promise<void> {
         await $(this.selectors.goalTypeNameInput).clear();
         await $(this.selectors.goalTypeNameInput).sendKeys(goalTypeName);

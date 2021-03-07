@@ -42,9 +42,8 @@ describe('Service Target Configs', () => {
 
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
-        await apiHelper.apiLogin(caseBAUser);
-        await apiHelper.deleteApprovalMapping(caseModule);
         await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteApprovalMapping(caseModule);
 
         goalTypeInactive = {
             "svtGoalTypeName": "Goal Type Inactive HR" + randomStr,
@@ -96,7 +95,7 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isSaveButtonEnabled()).toBeFalsy('Save SVT button is enabled when no mandatory fields are left empty.');
             expect(await serviceTargetConfig.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
             await serviceTargetConfig.clickCloseButton();
-            expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is displayed.');
+            expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
         });
@@ -122,7 +121,6 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickCloseButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             await utilityCommon.clickOnApplicationWarningYesNoButton('No');
-            expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is not displayed.');
             expect(await serviceTargetConfig.getGoalTypeSelectedValue()).toBe('Case Response Time');
             await serviceTargetConfig.clickCloseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -141,7 +139,7 @@ describe('Service Target Configs', () => {
         it('[6021]: Verify Edit SVT with no updates', async () => {
             await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
             expect(await editServiceTargetConfigPo.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is displayed.');
-            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeTruthy('Save SVT button is disabled when no mandatory fields are left empty.');
+            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeFalsy('Save SVT button is disabled when no mandatory fields are left empty.');
             expect(await editServiceTargetConfigPo.isCloseButtonEnabled()).toBeTruthy('Close SVT button is disabled when no mandatory fields are left empty.');
             await editServiceTargetConfigPo.clickCloseButton();
             expect(await serviceTargetConfig.isServiceTargetBladeDisplayed()).toBeFalsy('Service Target Blade is displayed.');
@@ -166,7 +164,6 @@ describe('Service Target Configs', () => {
             await editServiceTargetConfigPo.clickCloseButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
             await utilityCommon.clickOnApplicationWarningYesNoButton('No');
-            expect(await editServiceTargetConfigPo.isServiceTargetBladeDisplayed()).toBeTruthy('Service Target Blade is not displayed.');
             await editServiceTargetConfigPo.clickCloseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -211,14 +208,6 @@ describe('Service Target Configs', () => {
             await utilityGrid.searchAndOpenHyperlink('SVT with mandatory fields');
             // await browser.sleep(1000);
             await editServiceTargetConfigPo.enterSVTDescription('Case for Test SVT Desc');
-            await editServiceTargetConfigPo.clickSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await utilityCommon.closePopUpMessage();
-            await utilityGrid.searchAndOpenHyperlink('SVT with mandatory fields');
-            // await browser.sleep(1000);
-            await editServiceTargetConfigPo.clearSVTDescription();
-        });
-        afterAll(async () => {
             await editServiceTargetConfigPo.clickSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilityCommon.closePopUpMessage();
@@ -288,7 +277,7 @@ describe('Service Target Configs', () => {
         it('[5711,4132]: Verify "Terms and Condition" qualification on Service Target - Edit View', async () => {
             await utilityGrid.searchAndOpenHyperlink('SVT from Protractor');
             expect(await editServiceTargetConfigPo.isServiceTargetBladeDisplayed()).toBeTruthy('Edit Service Target Configuration blade is not displayed.');
-            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeTruthy('Save button is enabled when mandatory fields are left empty. 1');
+            expect(await editServiceTargetConfigPo.isSaveButtonEnabled()).toBeFalsy('Save button is enabled when mandatory fields are left empty. 1');
             expect(await editServiceTargetConfigPo.isTermsAndConditionsFieldMandatory()).toBeFalsy('Terms and Conditions field is optional.');
             await serviceTargetConfig.clickBuildExpressionLink();
             await SlmExpressionBuilder.clearSelectedExpression();
@@ -397,14 +386,14 @@ describe('Service Target Configs', () => {
             await serviceTargetInfoPage.clickOnCloseButton();
             await viewCasePo.clickEditCaseButton();
             await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
-            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
-            await changeAssignmentPage.setDropDownValue('Assignee', 'Qiao Feng');
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 1');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Qianru Tao');
             await editCasePo.clickSaveCase();
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
         });
         it('[3562]:Verify if SVT is still attached to a case when case assignment is changed', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qfeng');
+            await loginPage.login('qtao');
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await slmProgressBar.isSLAProgressBarInProcessIconDisplayed()).toBe(true); //green
             await slmProgressBar.clickOnSLAProgressBarInProcessIcon();
@@ -614,7 +603,7 @@ describe('Service Target Configs', () => {
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field(required)', 'ASSIGNED COMPANY_ID Primary');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval Mapping Field - Label');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval mapping Field - Label');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Create Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Edit Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Group Primary');
