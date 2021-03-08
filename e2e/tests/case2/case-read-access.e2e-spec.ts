@@ -35,6 +35,7 @@ describe("Case Read Access", () => {
     let businessData1, departmentData1, suppGrpData1, businessData2, departmentData2, suppGrpData2;
     let userData1;
     beforeAll(async () => {
+        await utilityCommon.closeAllBlades();
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -384,6 +385,7 @@ describe("Case Read Access", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -500,6 +502,7 @@ describe("Case Read Access", () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(readAccessMappingData1.configName);
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '2ReadAccessMappingName');
@@ -698,6 +701,7 @@ describe("Case Read Access", () => {
             expect(await activityTabPo.getRevokedReadAccessCount('revoked write access of')).toBe(3);
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -770,6 +774,7 @@ describe("Case Read Access", () => {
             expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingData.configName)).toBeFalsy("Record is not Present");
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -892,6 +897,7 @@ describe("Case Read Access", () => {
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1079,6 +1085,7 @@ describe("Case Read Access", () => {
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '5ReadAccessMappingName');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '6ReadAccessMappingName');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '7ReadAccessMappingName');
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });

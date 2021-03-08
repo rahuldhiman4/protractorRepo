@@ -58,7 +58,7 @@ describe('Email Configuration', () => {
         await navigationPage.signOut();
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[5463,5464]: [Email Configuration] Verify Email configuration Grid view', async () => {
         it('[5463,5464]: Verify Email configuration header', async () => {
             await navigationPage.gotoSettingsPage();
@@ -165,6 +165,7 @@ describe('Email Configuration', () => {
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmail);
             expect(await editEmailConfigPo.getLobValue()).toBe("Facilities");
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
@@ -174,7 +175,7 @@ describe('Email Configuration', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw ??
     describe('[5474,5473,5472,5471,5470,5469]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[5474,5473,5472,5471,5470,5469]: Verify Email configuration Grid view', async () => {
@@ -213,7 +214,8 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeFalsy();
         });
         it('[5474,5473,5472,5471,5470,5469]: Delete the Email configuration', async () => {
-                await editEmailConfigPo.cancelEditEmailConfig();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityGrid.searchAndSelectGridRecord(emailID);
             await consoleEmailConfig.deleteConfigurationEmail();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -232,6 +234,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
 
@@ -244,6 +247,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subject is not displayed on Human Resource email configuration to Case manager user');
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subject is not displayed on Human Resource email configuration to Case manager user');
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to different LOB Case BA', async () => {
@@ -257,6 +261,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to different LOB Case Manager', async () => {
@@ -270,6 +275,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Exclusion subjects from Human Resource email configuration are displayed to Facilities email configuration');
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case BA belonging to different company with same LOB', async () => {
@@ -283,6 +289,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             expect(await utilityGrid.isGridRecordPresent(facilitiesEmailID)).toBeFalsy();
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case Manager user having access to multiple LOB', async () => {
@@ -296,12 +303,15 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await utilityCommon.closeAllBlades();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
+            // expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await utilityCommon.closeAllBlades();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5474,5473,5472,5471,5470,5469]: Verify if exclusion subjects on email config are accessible to Case BA user having access to multiple LOB', async () => {
@@ -313,12 +323,18 @@ describe('Email Configuration', () => {
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
+            // expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
+            // expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy(); // this will not will display to the case manger of Human Resource LOB
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         afterAll(async () => {
@@ -328,7 +344,7 @@ describe('Email Configuration', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[5257,5258,5259,5232]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let acknowledgementTemplateHeaders: string[] = ["Type", "Operation Type", "Ticket Status", "Template Name"];
         it('[5257,5258,5259,5232]: Verify all templates', async () => {
@@ -355,7 +371,7 @@ describe('Email Configuration', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         it('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
@@ -390,13 +406,15 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
@@ -430,6 +448,7 @@ describe('Email Configuration', () => {
         it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
             await utilityGrid.searchAndSelectGridRecord('Out Of Office');
@@ -442,6 +461,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5181]: Exclusion Subject: Available exclusion subject list for multiple email configurations of same & different companies', async () => {
             await navigationPage.signOut();
@@ -471,6 +491,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Out Of Office')).toBeTruthy();
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -479,7 +500,7 @@ describe('Email Configuration', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[5183]: Exclusion Subject: Associate exclusion subject list verification for newly added exclusion subject', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
@@ -513,13 +534,14 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Private" + randomStr)).toBeFalsy();
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
         });
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[5180,5179]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
@@ -547,6 +569,7 @@ describe('Email Configuration', () => {
         it('[5180,5179]: Exclusion Subject: Associate exclusion subject validation for newly added public subject with newly added email config', async () => {
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await navigationPage.signOut();
             await loginPage.login('gwixillian');
             await apiHelper.apiLogin('tadmin');
@@ -563,6 +586,7 @@ describe('Email Configuration', () => {
             expect(await editEmailConfigPo.isValueAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent("Global" + randomStr)).toBeTruthy();
             await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
@@ -576,7 +600,7 @@ describe('Email Configuration', () => {
         });
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[5114,5251,5168,5104,5382]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -626,6 +650,7 @@ describe('Email Configuration', () => {
         });
         it('[5114,5251,5168,5104,5382]: Acknowledgment Template: Deletion & status update shouldnt allow when Acknowledgment Template associated with email id', async () => {
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Acknowledgment Templates', BWF_PAGE_TITLES.EMAIL.ACKNOWLEDGMENT_TEMPLATES);
             await consoleAcknowledgmentTemplatePo.searchAndSelectGridRecord('Case Closed Ack Template');
@@ -642,6 +667,7 @@ describe('Email Configuration', () => {
         });
     });
 
+    // #passed
     describe('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
         let templateData, randomStr = Math.floor(Math.random() * 1000000);
         it('[5336,5337]: Add new acknowledgment template & Verify its getting pulled in email configuration acknowledgement template list', async () => {
@@ -701,6 +727,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickCancelAcknowledgementTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5336,5337]: Verify acknowledgment template is accessible to Line of business Case Manager', async () => {
@@ -783,6 +810,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickCancelAcknowledgementTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5336,5337]: Verify acknowledgment template are accessible to Case BA user who has access to multiple (HR,Facilities) LOBs', async () => {
@@ -798,6 +826,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.clickCancelAcknowledgementTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
         it('[5336,5337]: Verify acknowledgment template are accessible to Case Manager user who has access to multiple (HR,Facilities) LOBs', async () => {
@@ -827,7 +856,7 @@ describe('Email Configuration', () => {
 
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[4707]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
         let trustedMail: string = "test@abc.com"
         it('[4707]: Email - UI validation of Add/Edit Email Sender Mapping views', async () => {
