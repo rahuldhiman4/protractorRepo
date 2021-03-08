@@ -1122,9 +1122,9 @@ describe('Case Data Store', () => {
             expect(await editCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy('Link not present');
             expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactive' + randomStr)).toBeTruthy('field not present');
             expect(await editCasetemplatePo.isDynamicFieldDisplayed('newInactiveSys' + randomStr)).toBeTruthy('field not present');
+            await editCasetemplatePo.clickSaveCaseTemplate(); 
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades();
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
