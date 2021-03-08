@@ -43,7 +43,7 @@ describe('Case Activity Multi Logs', () => {
             // Create Case
             let caseData = {
                 "Requester": "Fritz",
-                "Summary": "4240_TC" + randomStr,
+                "Summary": "4228_TC" + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -55,8 +55,8 @@ describe('Case Activity Multi Logs', () => {
 
             // Create manual task template
             let manualTemplateData = {
-                "templateName": "4228 template" + randomStr,
-                "templateSummary": "4228_Manual_task template summary" + randomStr,
+                "templateName": "4228Template" + randomStr,
+                "templateSummary": "4228ManualTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -67,7 +67,7 @@ describe('Case Activity Multi Logs', () => {
 
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary,1);
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
 
             // Verify logs with 5 lines or less than 5 lines
@@ -211,9 +211,9 @@ describe('Case Activity Multi Logs', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateSummary);
-            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary,1);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateSummary,2);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateSummary,3);
             await manageTaskBladePo.clickCloseButton();
             await activityTabPage.clickOnRefreshButton();
             await updateStatusBladePo.changeStatus('In Progress');
@@ -227,8 +227,8 @@ describe('Case Activity Multi Logs', () => {
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
             expect(await viewTaskPo.getTaskStatusValue()).toBe('Completed', 'FailureMsg1: Automated task status is not completed');
             // Create Task Activity 
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg2: log icon is missing');
-            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 4)).toBeTruthy('FailureMsg2: log icon is missing');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 4)).toBeTruthy('FailureMsg4: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(autoTemplateData.templateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Status')).toBeTruthy('FailureMsg7: Text is missing in activity log');
@@ -295,9 +295,9 @@ describe('Case Activity Multi Logs', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(manualTemplateSummary);
             // Create Task Activity 
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 2)).toBeTruthy('FailureMsg2: log icon is missing');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg2: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
-            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 2)).toBeTruthy('FailureMsg4: log title is missing');
+            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(manualTemplateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Status')).toBeTruthy('FailureMsg7: Text is missing in activity log');
@@ -472,7 +472,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    xdescribe('[4233]: [-ve] - Case having large no. of activities eg. more then 100', async () => {
+    describe('[4233]: [-ve] - Case having large no. of activities eg. more then 100', async () => {
         let newCase;
         beforeAll(async () => {
             // Create Case
@@ -549,7 +549,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    xdescribe('[4221]: [-ve] - Task having large no. of activities eg. more then 100', async () => {
+    describe('[4221]: [-ve] - Task having large no. of activities eg. more then 100', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, adhocTaskTemplateData;
         beforeAll(async () => {

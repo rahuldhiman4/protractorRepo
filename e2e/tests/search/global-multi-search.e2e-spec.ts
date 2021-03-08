@@ -721,6 +721,8 @@ describe('Multi Search Validation', () => {
 
             await searchPo.clickOnRecentSearchDropDownButton();
             await browser.sleep(2000);//wait until recent search drop down gets open
+            let recentdropdownboolean = await searchPo.isRecentSearchDropdownPopupDisplayed();
+            if (recentdropdownboolean==false) await searchPo.clickOnRecentSearchDropDownButton();
             expect(await searchPo.isRecentSearchDropdownPopupDisplayed()).toBeTruthy('Recent search drop down not opened')
             expect(await searchPo.isRecentSearchesDropDownValueDisplayed(caseSummary)).toBeTruthy('case summary is missing from recent search')
             expect(await searchPo.getCountOfRecentDropDownValue(caseSummary)).toBe(1, 'Count of recent search is incorrect');

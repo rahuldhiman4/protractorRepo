@@ -115,8 +115,6 @@ class CasePreview {
     }
 
     async isRequesterPhoneDisplayed(requestPhoneNumber: string): Promise<boolean> {
-        console.log(await $(this.selectors.requestPhoneNumber).getText());
-        
         return await $(this.selectors.requestPhoneNumber).getText() == requestPhoneNumber ? true : false;
     }
 

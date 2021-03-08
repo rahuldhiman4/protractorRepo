@@ -189,7 +189,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg22: Case Priority is missing');
             expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg23: Reqester Name missing');
             expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg24: Reqester Company is missing');
-            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 512 343 1923')).toBeTruthy('FailureMsg25: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 512 343-1923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg26: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg27: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg28: Source Value is missing');
@@ -275,7 +275,7 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isPriorityDisplayed('Medium')).toBeTruthy('FailureMsg35: Case Priority is missing');
             expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('FailureMsg36: Reqester Name missing');
             expect(await casePreviewPo.isRequesterCompanyDisplayed('Petramco')).toBeTruthy('FailureMsg37: Reqester Company is missing');
-            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 512 343 1923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
+            expect(await casePreviewPo.isRequesterPhoneDisplayed('1 512 343-1923')).toBeTruthy('FailureMsg38: Reqester Phone is missing');
             expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('FailureMsg39: Reqester Company is missing');
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg40: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg41: Source Value is missing');

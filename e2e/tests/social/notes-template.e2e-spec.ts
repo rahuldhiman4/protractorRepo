@@ -1284,6 +1284,8 @@ describe('Notes template', () => {
 
         afterAll(async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await utilityCommon.closeAllBlades();
+            await navigationPage.gotoCaseConsole();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1451,6 +1453,7 @@ describe('Notes template', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
