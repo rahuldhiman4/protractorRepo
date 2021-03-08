@@ -79,5 +79,9 @@ class TaskGridPage {
     async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.taskGuid, labelName);
     }
+
+    async applyFilter(fieldName: string, textValue: string, type: string): Promise<void> {
+        await utilityGrid.addFilter(fieldName, textValue, type);
+    }
 }
 export default new TaskGridPage();

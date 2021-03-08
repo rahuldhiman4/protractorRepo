@@ -448,8 +448,7 @@ describe("Attachment", () => {
             await browser.sleep(5000); // hard wait to download 52 all files
             // File from first page is downloaded
             expect(await utilityCommon.isFileDownloaded('bwfJpg1.jpg')).toBeTruthy('bwfJpg1.jpg File is not downloaded.');
-            // File from last page is not downloaded
-            expect(await utilityCommon.isFileDownloaded('articleStatus.png')).toBeFalsy('articleStatus.png File is downloaded.');
+            expect(await utilityCommon.isFileDownloaded('articleStatus.png')).toBeTruthy('articleStatus.png File is downloaded.');
             await attachmentBladePo.clickPaginationPrevious();
             expect(await attachmentBladePo.isCheckBoxSelected('bwfPdf')).toBeFalsy('bwfPdf CheckBox is selected');
             expect(await attachmentBladePo.isCheckBoxSelected('bwfJson5')).toBeFalsy('bwfJson5 CheckBox is selected');

@@ -6,7 +6,7 @@ class QuickCasePage {
 
     selectors = {
         recommendedTitle: '.bwf-search-result .bwf-search-fields__title-text span',
-        drpdownHeader: '.sr-preview-item .dropdown-toggle',
+        drpdownHeader: '.sr-preview-item .dropdown-toggle div.rx-select__search-button-title',
         startOver: '.text-muted .btn-secondary',
         smartSearchTextBox: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .sr-input',
         confirmedItemSelection: '.sr-preview-pane .sr-preview-item-header',
@@ -22,7 +22,7 @@ class QuickCasePage {
         arrowFirstRecommendedKnowledge: '[rx-view-component-id="dceba6c7-a422-4937-8314-e7c6c1bc2ce1"] .list__item__preview-icon',
         roleDropDown: '.sr-preview-pane .sr-preview-item-header .btn-secondary',
         sourceValue: '.sr-select-bar .rx-select__search-button-title',
-        roleValue: '.select_option_container span',
+        roleValue: '.rx-select__option-content div',
         descriptionText: 'div.sr-placeholder div.large',
         resources: '.empty-state__label',
         advancedSearchFields: '[class="row ng-star-inserted"] .dropdown_select label',
@@ -55,7 +55,7 @@ class QuickCasePage {
 
     }
 
-    async getDrpDownValueByIndex(indexValue: number): Promise<string> {
+    async getDrpDownValueByIndex(indexValue: number): Promise<string> {        
         return await $$(this.selectors.drpdownHeader).get(indexValue - 1).getText();
     }
 

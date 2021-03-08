@@ -421,25 +421,10 @@ describe('Login and create case from API', () => {
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
     });
 
-    it('To test LOB Access of all user(Required by Tushar)', async () => {
-        let userArray: string[] = ["qdu", "Franz", "Elizabeth", "sbadree", "qkatawazi", "Fritz", "qtao", "kayo", "kkohri", "KMills", "KWilliamson", "gwixillian", "qliu", "khardison", "Peter", "hhaas", "qyuan", "qannis", "qfeng", "qstrong", "gderuno", "werusha", "qheroux", "qquettawala", "Frieda", "qcolumbcille", "qgeorge", "kwilson", "kdiva", "kjenner", "kbell", "kwethington", "kwilliams", "rrovnitov", "Admin", "Fabian", "dbomei", "jbarnes", "ppeter", "Monika", "ncage", "rwillie", "sbruce", "ttristan", "sherbert", "qcespedes", "cbarton", "ajoshi", "mcarney", "Morwenna", "smoran", "umiguelde", "jstuart", "yhenny"];
-        let userArrayWithNoLOB: string[] = [];
-        for (let i = 0; i < userArray.length; i++) {
-            await apiHelper.apiLogin(userArray[i], 'Password_1234');
-            try {
-                let response = await axios.get(
-                    'api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.namedlist.datapage.NamedListDataPageQuery&pageSize=-1&startIndex=0&namedlistdefinition=com.bmc.dsm.shared-services-lib%3ALine%20of%20Business%20-%20Active%20And%20Deprecated%20Status'
-                );
-                console.log('size', userArray[i], await response.data.totalSize);
-                console.log('LOB', userArray[i], await response.data.data);
-            }
-            catch (ex) { userArrayWithNoLOB.push(userArray[i]); }
-        }
-        console.log(userArrayWithNoLOB);
-    });
-
     it('Generating the userlist with no LOB Access(Required by Pravin)', async () => {
-        let userArray: string[] = ["qdu", "Franz", "Elizabeth", "sbadree", "qkatawazi", "Fritz", "qtao", "kayo", "kkohri", "KMills", "KWilliamson", "gwixillian", "qliu", "khardison", "Peter", "hhaas", "qyuan", "qannis", "qfeng", "qstrong", "gderuno", "werusha", "qheroux", "qquettawala", "Frieda", "qcolumbcille", "qgeorge", "kwilson", "kdiva", "kjenner", "kbell", "kwethington", "kwilliams", "rrovnitov", "Fabian", "dbomei", "jbarnes", "ppeter", "Monika", "ncage", "rwillie", "sbruce", "ttristan", "sherbert", "qcespedes", "cbarton", "ajoshi", "mcarney", "Morwenna", "smoran", "umiguelde", "jstuart", "yhenny"];
+        let autArray: string[] = ["qdu", "Franz", "Elizabeth", "sbadree", "qkatawazi", "Fritz", "qtao", "kayo", "kkohri", "KMills", "KWilliamson", "gwixillian", "qliu", "khardison", "Peter", "hhaas", "qyuan", "qannis", "qfeng", "qstrong", "gderuno", "werusha", "qheroux", "qquettawala", "Frieda", "qcolumbcille", "qgeorge", "kwilson", "kdiva", "kjenner", "kbell", "kwethington", "kwilliams", "rrovnitov", "Fabian", "dbomei", "jbarnes", "ppeter", "Monika", "ncage", "rwillie", "sbruce", "ttristan", "sherbert", "qcespedes", "cbarton", "ajoshi", "mcarney", "Morwenna", "smoran", "umiguelde", "jstuart", "yhenny"];
+        let manualArray: string[] = ["qdu", "Franz", "Elizabeth", "sbadree", "qkatawazi", "Fritz", "qtao", "kayo", "kkohri", "KMills", "KWilliamson", "gwixillian", "qliu", "khardison", "Peter", "hhaas", "qyuan", "qannis", "qfeng", "qstrong", "gderuno", "werusha", "qheroux", "qquettawala", "Frieda", "qcolumbcille", "qgeorge", "kwilson", "kdiva", "kjenner", "kbell", "kwethington", "kwilliams", "rrovnitov", "Fabian", "dbomei", "jbarnes", "ppeter", "Monika", "ncage", "rwillie", "sbruce", "ttristan", "sherbert", "qcespedes", "cbarton", "ajoshi", "mcarney", "Morwenna", "smoran", "umiguelde", "jstuart", "yhenny"];
+        let userArray = manualArray;
         let userArrayWithNoLOB: string[] = [];
         let userArrayWithNoAccess: string[] = [];
         for (let i = 0; i < userArray.length; i++) {

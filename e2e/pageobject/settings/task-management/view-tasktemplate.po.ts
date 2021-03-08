@@ -120,7 +120,10 @@ class ViewTaskTemplate {
     }
 
     async clickOnCopyTemplate(): Promise<void> {
-        await $(this.selectors.copyTaskButton).click();
+        await $('[rx-view-component-id="242a48e1-2a6c-4244-8d02-66f6d22597ee"] .dropdown').isPresent().then(async (present) => {
+            if (present) await $('[rx-view-component-id="242a48e1-2a6c-4244-8d02-66f6d22597ee"] .dropdown').click();
+        });
+        await $$(this.selectors.copyTaskButton).last().click();
     }
 
     async clickOnEditProcessLink(): Promise<void> {

@@ -1215,16 +1215,15 @@ describe("Create Case", () => {
     });
 
     // passed
-    describe('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+    xdescribe('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let config1, config2, config3, config4;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            // await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', [true], 'Petramco');
-            config1 = await apiHelper.createCommonConfig('RESOLUTION_CODE_MANDATORY', '1', 'Petramco')
-            config2 = await apiHelper.createCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1', 'Petramco');
-            config3 = await apiHelper.createCommonConfig('RESOLUTION_CODE_MANDATORY', '1', '- Global -');
-            config4 = await apiHelper.createCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1', '- Global -');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '1');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1');
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '1');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1');
         });
         // passed
         it('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
@@ -1242,24 +1241,30 @@ describe("Create Case", () => {
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfiguration(config1.id);
-            await apiHelper.deleteCommonConfiguration(config2.id);
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
+            await navigationPage.signOut();
+            await loginPage.login('fritz');
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await updateStatusBladePo.changeStatus('In Progress');
+            await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeStatus('Resolved');
             expect(await updateStatusBladePo.isRequiredTagToResolutionCode()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
             expect(await updateStatusBladePo.isRequiredTagToResolutionDescription()).toBeTruthy('FailureMsg: Required Tab for Resolution Code is missing');
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
-            await updateStatusBladePo.selectStatusReason('Auto Resolved');
-            await updateStatusBladePo.selectResolutionCode('Report Delivered');
-            await updateStatusBladePo.setResolutionDescription("CaseResolved" + randomStr);
-            await updateStatusBladePo.clickSaveStatus();
-            await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
-            expect(await viewCasePage.getResolutionCodeValue()).toBe('Report Delivered');
-            expect(await viewCasePage.getResolutionDescription()).toBe("CaseResolved" + randomStr);
+            await updateStatusBladePo.clickCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         // passed
         it('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary2' + randomStr);
@@ -1278,10 +1283,11 @@ describe("Create Case", () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.deleteCommonConfiguration(config1.id);
-            await apiHelper.deleteCommonConfiguration(config2.id);
-            await apiHelper.deleteCommonConfiguration(config3.id);
-            await apiHelper.deleteCommonConfiguration(config4.id);
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
+            await apiHelper.apiLogin('fritz');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

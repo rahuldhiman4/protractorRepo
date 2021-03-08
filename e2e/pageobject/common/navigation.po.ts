@@ -241,8 +241,8 @@ class NavigationPage {
             let submenuItemLocator = await $$('.a-tree__content');
             if (i < menuItems.length - 1) {
                 for (let j = 0; j < submenuItemLocator.length; j++) {
-                    if (await submenuItemLocator[j].$('adapt-highlight').getText() == menuItems[i])
-                        await submenuItemLocator[j].$('span.a-tree__toggle').click();
+                    if (await $$('.a-tree__content').get(j).$('adapt-highlight').getText() == menuItems[i])
+                    await $$('.a-tree__content').get(j).$('span.a-tree__toggle').click();
                 }
             } else {
                 let regex = new RegExp("^" + menuItems[i] + "$");

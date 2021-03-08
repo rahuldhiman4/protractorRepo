@@ -8,7 +8,7 @@ import quickCasePo from '../../pageobject/case/quick-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from "../../pageobject/case/view-case.po";
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
-import applicationConfigPo from '../../pageobject/common/common-services/application-config.po';
+import applicationConfigPo from '../../pageobject/settings/application-config/application-config.po';
 import dynamicFieldsPage from '../../pageobject/common/dynamic-fields.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -917,7 +917,8 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isDynamicFieldPresent("externalTime")).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent("externalAttachment1")).toBeTruthy();
             expect(await viewTaskTemplate.isDynamicFieldPresent("dynamicList")).toBeTruthy();
-            await viewTaskTemplate.clickBackArrowBtn();
+        });
+        afterAll(async () => {
             await viewTaskTemplate.clickBackArrowBtn();
         });
     });

@@ -25,12 +25,8 @@ class CaseOldAccessTab {
         await $(this.selectors.confidentialSupportGroupAccess).click();
     }
 
-    async isConfidentialSupportGroupAccess(): Promise<boolean> {
-        return await $(this.selectors.confidentialSupportGroupAccess).isPresent().then(async (link) => {
-            if (link) {
-                return await $(this.selectors.confidentialSupportGroupAccess).isDisplayed();
-            } else return false;
-        });
+    async isConfidentialSupportGroupAccessAbsent(): Promise<boolean> {
+        return await $('[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] bwf-collapse[hidden]').isPresent()
     }
     async getSupportGroupWarningMessage(): Promise<string> {
         return await $(this.selectors.supportGroupWarningText).getText();

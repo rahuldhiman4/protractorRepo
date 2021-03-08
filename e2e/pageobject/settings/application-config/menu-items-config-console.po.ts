@@ -37,7 +37,7 @@ class MenuItemsConsolePage {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.gridGuid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader,this.selectors.gridGuid);
     }
 
     async areColumnHeaderMatches(columnHeader: string[]): Promise<boolean> {

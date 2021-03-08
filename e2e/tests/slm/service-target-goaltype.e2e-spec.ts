@@ -18,7 +18,7 @@ describe('Service Level Management - Goal Type Tests', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login(caseBAUser);
-        await apiHelper.apiLogin(caseBAUser);
+        await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteApprovalMapping(caseModule);
     });
 
@@ -159,6 +159,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
+
         it('[6035]: Update Goal Type and Verify warning message appears', async () => {
             await utilityGrid.searchAndOpenHyperlink(goalTypeTitle);
             expect(await editGoalType.isGoalTypeFieldDisabled()).toBeTruthy('Goal Type field is enabled.');
@@ -174,6 +175,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
         });
+
         it('[6035]: Create Goal Type with Save Title and verify error message', async () => {
             await createGoalType.clickCreateGoalTypeConfigButton();
             await createGoalType.enterGoalTypeName(goalTypeTitle);

@@ -1,3 +1,4 @@
+import consoleCasetemplatePo from '../../pageobject/settings/case-management/console-casetemplate.po';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
 import previewCasePo from '../../pageobject/case/case-preview.po';
@@ -160,7 +161,8 @@ describe('Dynamic Confidentials Data', () => {
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await viewCasetemplatePo.selectTab('Case Access');
-            expect(await caseAccessTabOldPo.isConfidentialSupportGroupAccess()).toBeFalsy();
+            expect(await caseAccessTabOldPo.isConfidentialSupportGroupAccessAbsent()).toBeTruthy();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -272,7 +274,9 @@ describe('Dynamic Confidentials Data', () => {
             await caseAccessTabOldPo.selectConfidentialSupportGroupDropDown("Employee Relations Sensitive Data Access");
             await caseAccessTabOldPo.clickAddConfidentialSupportGroup();
             expect(await caseAccessTabOldPo.getSupportGroupWarningMessage()).toContain("The group already exists in the access list.");
-            await viewCasetemplatePo.clickCopycaseTemplate();
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndselectCaseTemplate(randomStr + 'caseTemplateName');
+            await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCasetemplatePo.setTemplateName(randomStr + "Copy Case Template");
             await copyCasetemplatePo.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
@@ -285,6 +289,7 @@ describe('Dynamic Confidentials Data', () => {
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("IN Support 3")).toBeTruthy();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("Employee Relations Sensitive Data Access")).toBeTruthy();
             expect(await caseAccessTabOldPo.isConfidentialSupportGroupValueTextDisplayed("Sensitive Personal Data (HR)")).toBeTruthy();
+            await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
@@ -447,12 +452,11 @@ describe('Dynamic Confidentials Data', () => {
             await viewCasetemplatePo.clickOnMangeDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
             expect(await dynamicField.isConfidentialsRadioButtonDisplayed()).toBeTruthy();
-            await dynamicField.setFieldName("test" + randomStr);
-            await dynamicField.setDescriptionName("test 123" + randomStr);
+            await dynamicField.setFieldName("testing 111" + randomStr);
+            await dynamicField.setDescriptionName("testing 111" + randomStr);
             await dynamicField.clickEnabledConfidentialsRadioButton();
             await dynamicField.clickSaveButton();
             await utilityCommon.closePopUpMessage();
-            await viewCasetemplatePo.clickBackArrowBtn();
         });
         afterAll(async () => {
             await viewCasetemplatePo.clickBackArrowBtn();
