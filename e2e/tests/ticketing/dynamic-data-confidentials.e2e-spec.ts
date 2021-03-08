@@ -161,7 +161,7 @@ describe('Dynamic Confidentials Data', () => {
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await viewCasetemplatePo.selectTab('Case Access');
-            expect(await caseAccessTabOldPo.isConfidentialSupportGroupAccessAbsent()).toBeTruthy();
+            expect(await caseAccessTabOldPo.isConfidentialSupportGroupAccessAbsent()).toBeFalsy();
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });

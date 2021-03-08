@@ -268,16 +268,16 @@ describe('Copy Task Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-
+//check
     describe('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newManualTaskTemplate = 'NewManualTaskDRDMV13540' + randomStr;
-        let newmanualTaskSummary = 'NewSummaryDRDMV13540' + randomStr;
+        let newManualTaskTemplate = randomStr+'NewManualTaskDRDMV13540';
+        let newmanualTaskSummary = randomStr+'NewSummaryDRDMV13540';
         let templateData;
         beforeAll(async () => {
             templateData = {
-                "templateName": 'DRDMV13540ManualTask' + randomStr,
-                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+                "templateName": randomStr+'DRDMV13540ManualTask',
+                "templateSummary": `${randomStr}manualTaskTemplateSummary1`,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -312,16 +312,16 @@ describe('Copy Task Template', () => {
     describe('[4569]: Create Copy of an automated Task and check execution', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, newCase;
-        let newProcessName = 'NewProcessDRDMV14215' + randomStr;
-        let updatedTaskTemplate = 'UpdatedTaskDRDMV14215' + randomStr;
-        let updatedTaskSummary = 'UpdatedSummaryDRDMV14215' + randomStr;
+        let newProcessName =  randomStr+'NewProcessDRDMV14215';
+        let updatedTaskTemplate = randomStr+'UpdatedTaskDRDMV14215';
+        let updatedTaskSummary = randomStr+'UpdatedSummaryDRDMV14215';
         beforeAll(async () => {
             templateData = {
-                "templateName": 'DRDMV14215AutomationTask' + randomStr,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateName": randomStr+'DRDMV14215AutomationTask',
+                "templateSummary": `${randomStr}AutomatedTaskTemplateActive`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": 'DRDMV14215Process' + randomStr,
+                "processName": randomStr+'DRDMV14215Process',
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
@@ -329,7 +329,7 @@ describe('Copy Task Template', () => {
             }
             let caseData = {
                 "Requester": "apavlik",
-                "Summary": 'Summary ' + randomStr,
+                "Summary": randomStr+'Summary ',
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 1",

@@ -26,7 +26,11 @@ class CaseOldAccessTab {
     }
 
     async isConfidentialSupportGroupAccessAbsent(): Promise<boolean> {
-        return await $('[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] bwf-collapse[hidden]').isPresent()
+        return await $('[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] bwf-collapse[hidden]').isPresent().then(async (link) => {
+            if (link) {
+                return await $('[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] bwf-collapse[hidden]').isDisplayed();
+            } else return false;
+        });
     }
     async getSupportGroupWarningMessage(): Promise<string> {
         return await $(this.selectors.supportGroupWarningText).getText();

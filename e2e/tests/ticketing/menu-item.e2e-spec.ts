@@ -79,7 +79,8 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    describe('[4290]: Verify Multiple records with same name', async () => {
+    //this test is skip due to DRDMV-23822 defect which was resolved on 21.05
+    xdescribe('[4290]: Verify Multiple records with same name', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = 'Legal' + randomStr;
         let label1 = 'legal' + randomStr;
@@ -200,14 +201,6 @@ describe('Menu Item', () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[4305,4304]: [Menu Items] - Update Menu Item', async () => {
-            await menuItemsConfigConsolePo.searchAndEditMenuOption(sourcesActive);
-            expect(await editMenuItemsConfigPo.isSaveButtonDisabled()).toBeTruthy();
-            expect(await editMenuItemsConfigPo.isMenuItemsStatusDisabled()).toBeTruthy();
-            expect(await editMenuItemsConfigPo.getSourceDisabledMessage()).toBe('Note: Source is disabled for editing.');
-            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
-            expect(await editMenuItemsConfigPo.isLocalizeLinkEnabled()).toBeFalsy();
-            await editMenuItemsConfigPo.clickOnCancelButton();
-
             await menuItemsConfigConsolePo.searchAndEditMenuOption(label);
             expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
             await editMenuItemsConfigPo.clickOnLocalizeLink();
@@ -249,15 +242,32 @@ describe('Menu Item', () => {
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(label), 'Menu Option column value is missing for label';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for label';
 
+            await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCode);
+            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Resolution Code'), 'Menu Name column value is missing for resolution code';
+            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(resolutionCode), 'Menu Option column value is missing for resolution code';
+            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for resolution code';
+        });
+        it('[4305,4304]: [Menu Items] - Update records AND grid Validation', async () => {
+            await navigationPage.signOut();
+            await loginPage.login('tadmin');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Application Configuration--Menu Items', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.MENU_ITEMS);
+            await menuItemsConfigConsolePo.searchAndEditMenuOption(sourcesActive);
+            expect(await editMenuItemsConfigPo.isSaveButtonDisabled()).toBeTruthy();
+            expect(await editMenuItemsConfigPo.isMenuItemsStatusDisabled()).toBeTruthy();
+            expect(await editMenuItemsConfigPo.getSourceDisabledMessage()).toBe('Note: Source is disabled for editing.');
+            expect(await editMenuItemsConfigPo.isMenuNameDropDownEnabled()).toBeFalsy('MenuName drop down is editable');
+            expect(await editMenuItemsConfigPo.isLocalizeLinkEnabled()).toBeFalsy();
+            await editMenuItemsConfigPo.clickOnCancelButton();
             await menuItemsConfigConsolePo.searchOnGridConsole(sourcesActive);
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Source'), 'Menu Name column value is missing for Source';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(sourcesActive), 'Menu Option column value is missing for source';
             expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for source';
 
-            await menuItemsConfigConsolePo.searchOnGridConsole(resolutionCode);
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Name')).toBe('Resolution Code'), 'Menu Name column value is missing for resolution code';
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Menu Options')).toBe(resolutionCode), 'Menu Option column value is missing for resolution code';
-            expect(await menuItemsConfigConsolePo.getSelectedGridRecordValue('Status')).toBe('Active'), 'Status column value is missing for resolution code';
+        }); afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -274,7 +284,7 @@ describe('Menu Item', () => {
             expect(await createMenuItems.isMenuNameFieldRequired()).toBeTruthy('FailureMsg: Menu Name required label is missing');
             expect(await createMenuItems.isMenuOptionFieldRequired()).toBeTruthy('FailureMsg: Menu Option required label is missing');
             expect(await createMenuItems.isStatusFieldRequired()).toBeTruthy('FailureMsg: Status required label is missing');
-            let menuNameValues: string[] = ["None",'Label', 'Resolution Code'];
+            let menuNameValues: string[] = ["None", 'Label', 'Resolution Code'];
             expect(await createMenuItems.isMenuNameDropDownValuesMatches(menuNameValues)).toBeTruthy('FailureMsg: Cancel status reason options mismatch');
             let statusValues: string[] = ['Active', 'Inactive', 'Deprecated'];
             expect(await createMenuItems.isStatusDropDownValuesMatches(statusValues)).toBeTruthy('FailureMsg: Cancel status reason options mismatch');
@@ -651,7 +661,7 @@ describe('Menu Item', () => {
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeLabelValue(labelActive1);
             await editCasetemplatePo.clickSaveCaseTemplate();
-          //  expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            //  expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
         it('[4277]: Verify Inactive, deprecated label With Edit Task Template', async () => {
