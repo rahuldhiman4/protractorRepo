@@ -182,7 +182,7 @@ class EditDocumentLibraryPage {
 
     async isSupportOrgDropDownDisabled(): Promise<boolean> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.bussinessUnit)));
-        return await $(this.selectors.supportOrg).getAttribute('disabled') == 'true';
+        return await $(this.selectors.supportOrg).getAttribute('aria-disabled') == 'true';
     }
 
     async isOwnerGroupDropDownDisabled(): Promise<boolean> {

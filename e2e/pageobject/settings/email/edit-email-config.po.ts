@@ -37,11 +37,11 @@ export class EditEmailConfig {
         associatedSupportGroupSearchResult: '.km-group-list-item__info span',
         saveEditEmailConfig: '[rx-view-component-id="e36471c2-f950-4df7-bc42-ed2bbf59898b"] button',
         acknowledgementTemplateGridGuid: '4938609e-47bd-460d-b32c-57dfc21958cd',
-        defaultCaseTemplateGuid: '085b8e93-0e68-41a7-a1ed-77b6ab2c9522',
-        defaultCaseTemplatelist: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] button.dropdown-item',
+        defaultCaseTemplateGuid: 'b9089bf5-509d-4e51-a3a7-2fad413f87db',
+        defaultCaseTemplatelist: '.rx-select__options button.dropdown-item',
         defaultCaseTemplateToUse: '[rx-view-component-id="b9089bf5-509d-4e51-a3a7-2fad413f87db"] button',
-        searchDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] input',
-        clearDefaultCaseTemplateToUse: '[rx-view-component-id="085b8e93-0e68-41a7-a1ed-77b6ab2c9522"] button div',
+        searchDefaultCaseTemplateToUse: '.rx-select__search-wrapper input',
+        clearDefaultCaseTemplateToUse: '[rx-view-component-id="b9089bf5-509d-4e51-a3a7-2fad413f87db"] button div',
         supportGroupCheckbox: '.record__list i',
         addTrustedEmailBtn: '[rx-view-component-id="0dfbc207-b03e-40ab-8e6b-c74f5609aa89"] button',
         newTrustedEmailId: '[rx-view-component-id="00fb62e7-3e31-4aba-b9b5-a60daec4db46"] input',
@@ -370,9 +370,10 @@ export class EditEmailConfig {
     async isValuePresentInDropDown(value: string): Promise<boolean> {
         await $(this.selectors.dropDownOption).click();
         await $(this.selectors.newTrustedEmailMappedRequesterInputBox).sendKeys(value);
-       let result=  await element(by.cssContainingText(this.selectors.dropDownOption,value)).isDisplayed();
-       await $(this.selectors.dropDownOption).click();
-       return result;
+        return await element(by.cssContainingText(this.selectors.dropDownOption,value)).isPresent().then(async (present) => {
+            if (present) return await element(by.cssContainingText(this.selectors.dropDownOption,value)).isDisplayed();
+            else return false;
+        });
     }
 
     async isBlockedEmailBtnEnabled(): Promise<boolean> {

@@ -35,6 +35,7 @@ describe("Case Read Access", () => {
     let businessData1, departmentData1, suppGrpData1, businessData2, departmentData2, suppGrpData2;
     let userData1;
     beforeAll(async () => {
+        await utilityCommon.closeAllBlades();
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
@@ -221,7 +222,6 @@ describe("Case Read Access", () => {
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
         it('[5050,5049]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
-            await browser.manage().window().maximize();
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -242,18 +242,18 @@ describe("Case Read Access", () => {
             await navigationPo.gotoCaseConsole();
         });
         it('[5050,5049]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
-            await browser.manage().window().maximize();
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName("test_mapping" + randomStr);
-            await addReadAccess.selectCompany('Global');
+            await addReadAccess.selectCompany('- Global -');
             await addReadAccess.selectFlowset(flowsetGlobalFieldsData.flowsetName);
             await addReadAccess.selectSupportCompany('Petramco');
             await addReadAccess.selectSupportOrg('Australia Support');
             await addReadAccess.selectSupportGroup('AU Support 2');
             await addReadAccess.clickOnSave();
             await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('gwixillian');
             await navigationPo.gotoSettingsPage();
@@ -384,6 +384,7 @@ describe("Case Read Access", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -500,6 +501,7 @@ describe("Case Read Access", () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(readAccessMappingData1.configName);
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '2ReadAccessMappingName');
@@ -698,6 +700,7 @@ describe("Case Read Access", () => {
             expect(await activityTabPo.getRevokedReadAccessCount('revoked write access of')).toBe(3);
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -770,6 +773,7 @@ describe("Case Read Access", () => {
             expect(await consoleReadAcess.searchReadAccessMappingName(readAccessMappingData.configName)).toBeFalsy("Record is not Present");
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -854,11 +858,11 @@ describe("Case Read Access", () => {
             await loginPage.login('qkatawazi');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
-            await editReadAccess.clearAccessMappingName();
-            await editReadAccess.clickOnSave();
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.clickOnSave();
             expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy('Pop up message absent');
-            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
             await editReadAccess.setAccessMappingName(randomStr + 'UpdatedAccessMappingName');
             await editReadAccess.clickOnSave();
             await utilityCommon.closePopUpMessage();
@@ -892,6 +896,7 @@ describe("Case Read Access", () => {
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1079,6 +1084,7 @@ describe("Case Read Access", () => {
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '5ReadAccessMappingName');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '6ReadAccessMappingName');
             await apiHelper.deleteReadAccessOrAssignmentMapping(randomStr + '7ReadAccessMappingName');
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });

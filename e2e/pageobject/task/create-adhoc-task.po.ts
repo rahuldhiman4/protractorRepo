@@ -5,6 +5,7 @@ import utilityCommon from '../../utils/utility.common';
 import changeAssignmentBladePo from "../common/change-assignment.po";
 import ckeditorOpsPo from '../common/ck-editor/ckeditor-ops.po';
 import CreateTaskTemplatePage from "../settings/task-management/create-tasktemplate.po";
+import manageTaskBladePo from "./manage-task-blade.po";
 
 class CreateAdhocTaskTemplatePage {
 
@@ -91,12 +92,14 @@ class CreateAdhocTaskTemplatePage {
         await $(this.selectors.taskSummary).sendKeys(summary);
     }
 
-    async clickSaveAdhoctask(): Promise<void> {
+    async clickSaveAdhoctask(expectedTaskCount?: number): Promise<void> {
         await $(this.selectors.saveAdhocTask).click();
+        if (expectedTaskCount) await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(expectedTaskCount);
     }
 
     async clickChangeAssignmentButton(): Promise<void> {
         await $(this.selectors.changeAssignmentButton).click();
+
     }
 
     async clickAssignToMeButton(): Promise<void> {
