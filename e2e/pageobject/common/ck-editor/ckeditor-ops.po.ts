@@ -283,7 +283,7 @@ class CKEditor {
     async setNumberList(values: string[], guidId?: string): Promise<void> {
         let locator: string;
         let bodyArea = this.selectors.bodyTextArea;
-        if (guidId) { 
+        if (guidId) {
             locator = `[rx-view-component-id="${guidId}"] .cke_button__numberedlist_icon`;
             bodyArea = `[rx-view-component-id="${guidId}"] ${bodyArea}` ;
         }
@@ -311,29 +311,50 @@ class CKEditor {
             await browser.waitForAngularEnabled(true);
         }
         else {
-            await $$(bodyArea).last().sendKeys(Key.CONTROL, Key.END);
-            await $$(bodyArea).last().sendKeys(Key.ENTER);
-            await $(locator).click();
-            if (values.length == 1) await $$(bodyArea).last().sendKeys(values[0]);
-            else {
-                for (let i = 0; i < values.length; i++) {
-                    await $$(bodyArea).last().sendKeys(values[i]);
-                    await $$(bodyArea).last().sendKeys(Key.ENTER);
+            try {
+                await $$(bodyArea).last().sendKeys(Key.CONTROL, Key.END);
+                await $$(bodyArea).last().sendKeys(Key.ENTER);
+                await $(locator).click();
+                if (values.length == 1) await $$(bodyArea).last().sendKeys(values[0]);
+                else {
+                    for (let i = 0; i < values.length; i++) {
+                        await $$(bodyArea).last().sendKeys(values[i]);
+                        await $$(bodyArea).last().sendKeys(Key.ENTER);
+                    }
                 }
             }
+            catch (ex) {
+                await $$(bodyArea).first().sendKeys(Key.CONTROL, Key.END);
+                await $$(bodyArea).first().sendKeys(Key.ENTER);
+                await $(locator).click();
+                if (values.length == 1) await $$(bodyArea).first().sendKeys(values[0]);
+                else {
+                    for (let i = 0; i < values.length; i++) {
+                        await $$(bodyArea).first().sendKeys(values[i]);
+                        await $$(bodyArea).first().sendKeys(Key.ENTER);
+                    }
+                }
+            }
+
         }
     }
 
     // input should be a list
-    async setBulletList(values: string[]): Promise<void> {
-        await $(this.selectors.bodyTextArea).sendKeys(Key.CONTROL, Key.END);
-        await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
-        await $(this.selectors.bulletIcon).click();
-        if (values.length == 1) await $(this.selectors.bodyTextArea).sendKeys(values[0]);
+    async setBulletList(values: string[], guidId?: string): Promise<void> {
+        let bodyArea = this.selectors.bodyTextArea;
+        let bulletIconLctr = this.selectors.bulletIcon;
+        if (guidId) {
+            bulletIconLctr = `[rx-view-component-id="${guidId}"] ${bulletIconLctr}`;
+            bodyArea = `[rx-view-component-id="${guidId}"] ${bodyArea}`;
+        }
+        await $(bodyArea).sendKeys(Key.CONTROL, Key.END);
+        await $(bodyArea).sendKeys(Key.ENTER);
+        await $(bulletIconLctr).click();
+        if (values.length == 1) await $(bodyArea).sendKeys(values[0]);
         else {
             for (let i = 0; i < values.length; i++) {
-                await $(this.selectors.bodyTextArea).sendKeys(values[i]);
-                await $(this.selectors.bodyTextArea).sendKeys(Key.ENTER);
+                await $(bodyArea).sendKeys(values[i]);
+                await $(bodyArea).sendKeys(Key.ENTER);
             }
         }
     }
