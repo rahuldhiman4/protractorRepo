@@ -117,7 +117,7 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closeAllBlades();
         });
     });
-
+//Data issue
     describe('[6105]: [Permissions] Navigating to case from the task', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, taskTemplateData;
@@ -128,12 +128,12 @@ describe('Create Adhoc task', () => {
                 "templateSummary": `${randomStr} Manual task summary`,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
-                "buisnessUnit": "HR Support",
-                "supportGroup": "Workforce Administration",
-                "assignee": "Elizabeth",
+                "buisnessUnit": "Australia Support",
+                "supportGroup": "AU Support 1",
+                "assignee": "qliu",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "HR Support",
-                "ownerGroup": "Workforce Administration"
+                "ownerBusinessUnit": "Australia Support",
+                "ownerGroup": "AU Support 1"
             }
             // create case
             let caseData = {
@@ -161,7 +161,7 @@ describe('Create Adhoc task', () => {
         });
         it('[6105]: Case View link is not visible', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('qliu');
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await taskConsole.setTaskSearchBoxValue(taskTemplateData.templateSummary);
@@ -378,12 +378,12 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Assignee validation2', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('Assignee', "Alastair Cook");
+            await changeAssignmentBladePo.setDropDownValue('Assignee', "Priscilla Presley");
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssigneeText()).toBe('Alastair Cook');
+            expect(await viewTask.getAssigneeText()).toBe('Priscilla Presley');
             await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.getAllTaskActivity('Alastair Cook')).toBe('Alastair Cook');
+            expect(await activityTabPo.getAllTaskActivity('Priscilla Presley')).toBe('Priscilla Presley');
             await viewTask.clickOnEditTask();
             await changeAssignmentBladePo.clickAssignToMeBtn();
             await editTask.clickOnSaveButton();
@@ -436,12 +436,12 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect((await viewTask.getAssigneeText()).trim()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('Assignee', "Alastair Cook");
+            await changeAssignmentBladePo.setDropDownValue('Assignee', "Priscilla Presley");
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewTask.getAssigneeText()).toBe('Alastair Cook');
+            expect(await viewTask.getAssigneeText()).toBe('Priscilla Presley');
             await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.getAllTaskActivity('Alastair Cook')).toBe('Alastair Cook');
+            expect(await activityTabPo.getAllTaskActivity('Priscilla Presley')).toBe('Priscilla Presley');
             await viewTask.clickOnEditTask();
             await changeAssignmentBladePo.clickAssignToMeBtn();
             await editTask.clickOnSaveButton();
@@ -530,6 +530,7 @@ describe('Create Adhoc task', () => {
             "Assigned Company": "Petramco",
             "Business Unit": "United States Support",
             "Support Group": "US Support 1",
+            "Assignee": "qtao"
         }
 
         let taskData = {

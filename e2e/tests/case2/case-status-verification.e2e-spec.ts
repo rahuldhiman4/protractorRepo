@@ -14,6 +14,7 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 
 describe('Case Status Verification', () => {
     let statusNew: string = "New";
@@ -88,7 +89,7 @@ describe('Case Status Verification', () => {
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeStatus('Resolved');
             await updateStatusBladePo.selectStatusReason('Auto Resolved');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Resolved');
         });
 
         it('[3490]: Verify case1 without case template', async () => {
@@ -136,6 +137,7 @@ describe('Case Status Verification', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -203,6 +205,7 @@ describe('Case Status Verification', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -218,6 +221,7 @@ describe('Case Status Verification', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew, 'FailureMsg1: New status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg2: Case Reopen link displayed');
         await viewCasePage.clickEditCaseButton();
+        await changeAssignmentPage.setDropDownValue('Company', 'None');
         await editCasePo.clickOnAssignToMe();
         await editCasePo.clickSaveCase();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned, 'FailureMsg3: Assigned status is missing');

@@ -175,6 +175,7 @@ describe('Case Bulk Operation', () => {
             throw ex;
         }
         finally {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(qfengStr);
         }

@@ -77,7 +77,9 @@ class GoalTypeConfigConsolePage {
         await $(guidId + this.selectors.applyButton).click();
     }
 
-
+    async searchAndOpenGoalType(goalTypeTitle: string): Promise<void> {
+        await utilityGrid.searchAndOpenHyperlink(goalTypeTitle, this.selectors.goalTypeConsoleGUID);
+    }
 
 }
 

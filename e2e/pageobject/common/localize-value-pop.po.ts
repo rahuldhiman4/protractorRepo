@@ -12,6 +12,10 @@ class AddLocalizeValue {
         await $(this.selectors.saveButton).click();
     }
 
+    async isSaveButtonEnabled(): Promise<boolean> {
+      return  await $(this.selectors.saveButton).isEnabled();
+    }
+
     async clearValueTextBox(): Promise<void> {
         await $(this.selectors.valueTextBox).clear();
     }

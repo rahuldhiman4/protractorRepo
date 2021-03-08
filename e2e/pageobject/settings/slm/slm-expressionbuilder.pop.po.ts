@@ -108,7 +108,7 @@ class SlmExpressionBuilder {
 
     async getExpressionFieldOperatorAvailableAll(data: string[]): Promise<boolean> {
         let arr: string[] = [];
-        let expressionOperator: string = `div[ng-repeat='operator in operatorRow'] button`;
+        let expressionOperator: string = '.bwf-expression-operators button';
         let drpDwnvalue: number = await $$(expressionOperator).count();
         for (let i = 0; i < drpDwnvalue; i++) {
             let ab: string = await $$(expressionOperator).get(i).getText();

@@ -45,7 +45,7 @@ describe("Actionable Notifications", () => {
         // await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
         // await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         // await apiHelper.setDefaultNotificationForUser('khardison', 'Alert');
-        // await apiHelper.apiLogin('sasadmin');
+        // await apiHelper.apiLogin('tadmin');
         //await apiHelper.enableActionableNotificationSetting();
     });
 
@@ -664,10 +664,10 @@ describe("Actionable Notifications", () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let articleResponse = undefined;
         beforeAll(async () => {
-            await apiHelper.apiLogin('sasadmin');
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.updateReviewDueDateRule();
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', ['1_MINUTE'], 'Petramco');
+            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', '1_MINUTE');
             await apiHelper.deleteApprovalMapping('Knowledge');
         });
 

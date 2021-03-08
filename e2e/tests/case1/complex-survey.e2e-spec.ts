@@ -7,17 +7,17 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from "../../utils/utility.grid";
 
-xdescribe('Complex Surveys', () => {
+describe('Complex Surveys', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qfeng');
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.addCommonConfig('ADD_DWP_SURVEY_ON_CASE', [true], 'Petramco');
+        await apiHelper.addCommonConfig('ADD_DWP_SURVEY_ON_CASE','1');
     });
 
     afterAll(async () => {
         await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.deleteCommonConfig('ADD_DWP_SURVEY_ON_CASE', 'Petramco');
+        await apiHelper.addCommonConfig('ADD_DWP_SURVEY_ON_CASE','0');
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
     });

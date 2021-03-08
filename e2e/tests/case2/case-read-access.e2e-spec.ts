@@ -264,6 +264,7 @@ describe("Case Read Access", () => {
             expect(await editCasetemplatePo.isCaseSummaryReadOnly()).toBeTruthy();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
         });
