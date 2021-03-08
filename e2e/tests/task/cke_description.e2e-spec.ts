@@ -639,11 +639,11 @@ describe('CKE Description', () => {
             expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
             //checking number list
             await ckeditorOpsPo.enterNewLineInCKE();
-            await ckeditorOpsPo.setNumberList(['PlusOne']);
+            await editCasePo.setDescriptionNumberList(['PlusOne']);
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await ckeditorOpsPo.enterNewLineInCKE();
             // checking bullot points
-            await ckeditorOpsPo.setBulletList(['BulletOne']);
+            await editCasePo.setDescriptionBulletList(['BulletOne']);
             expect(await ckeditorValidationPo.isBulletListDisplayedInCkEditorTextArea('BulletOne')).toBeTruthy('Text is not center Align In Ck Editor');
             expect(await ckeditorValidationPo.getTextCkEditorMinimizeOrMiximize()).toBe('Maximize');
             await ckeditorOpsPo.clickMaximizeMinimizeIcon();
@@ -691,8 +691,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
-            await createCasePo.clickSaveCaseButton();
-            await casePreviewPo.clickGoToCaseButton();
+            await editCasePo.clickSaveCase();
         });
         it('[3522] Verify case description field on case', async () => {
             await viewCasePo.clickDescriptionShowMore();
