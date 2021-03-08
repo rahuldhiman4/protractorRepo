@@ -549,7 +549,7 @@ describe('Case Activity CKE', () => {
             // Create knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
             await knowledgeArticlesConsolePo.searchAndOpenKnowledgeArticle(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('FailureMsg KA Edit link is missing')
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('FailureMsg KA Edit link is missing');
 
             await viewKnowledgeArticlePo.clickOnActivityTab();
             await activityTabPage.addActivityNote(addNoteBodyText);
@@ -856,7 +856,7 @@ describe('Case Activity CKE', () => {
         it('[3579]: Verify the Comments posted in activity with notes template For Case ', async () => {
             // Verify Case Notes Template
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateCaseData.templateName);
-            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateCaseData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateCaseData.body);
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateCaseData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
@@ -871,7 +871,7 @@ describe('Case Activity CKE', () => {
             await browser.sleep(2000); // wait until page navigate to person profile in new tab
             await utilityCommon.closePopUpMessage();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplatePeopleData.templateName);
-            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplatePeopleData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplatePeopleData.body);
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplatePeopleData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
@@ -886,7 +886,7 @@ describe('Case Activity CKE', () => {
             await updateStatusBladePo.selectStatusReason('Successful');
             await updateStatusBladePo.clickSaveStatus();
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
-            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body);
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
@@ -896,7 +896,7 @@ describe('Case Activity CKE', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
-            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body);
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
@@ -906,7 +906,7 @@ describe('Case Activity CKE', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
-            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body);
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
             await viewTaskPo.clickOnViewCase();
@@ -918,14 +918,14 @@ describe('Case Activity CKE', () => {
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             await adhoctaskTemplate.setSummary(adhocTaskSummary);
             await adhoctaskTemplate.setDescription("Description");
-            await adhoctaskTemplate.clickSaveAdhoctask();
+            await adhoctaskTemplate.clickSaveAdhoctask(4);
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);
-            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateTaskData.body);
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateTaskData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
@@ -933,11 +933,11 @@ describe('Case Activity CKE', () => {
             // Create knowledge Article task template
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
-            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('FailureMsg KA Edit link is missing')
+            expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('FailureMsg KA Edit link is missing');
             await viewKnowledgeArticlePo.clickOnActivityTab();
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateKnowledgeData.templateName);
-            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateKnowledgeData.body)
+            expect(await ckeditorValidationPo.getTextCkEditorTextArea()).toContain(notesTemplateKnowledgeData.body);
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInNote(notesTemplateKnowledgeData.body)).toBeTruthy('FailureMsg Note Template is missing in activity');
         });
