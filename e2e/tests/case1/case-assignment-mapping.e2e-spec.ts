@@ -132,13 +132,6 @@ describe("Create Case Assignment Mapping", () => {
         await caseConsolePage.addColumns(defaultCaseColumns);
         await caseConsolePage.setCaseSearchBoxValue('6321 summary');
         expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default columns are not matching");
-        let caseLabelColumn: string[] = ["Label"];
-        await caseConsolePage.addRequestedCaseGridColumn(caseLabelColumn);
-        defaultCaseColumns.push("Label");
-        expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default And new columns added are not matching");
-        await caseConsolePage.removeRequestedCaseGridColumn(caseLabelColumn);
-        await defaultCaseColumns.splice(defaultCaseColumns.indexOf("Label"), 1);
-        expect(await caseConsolePage.areCaseGridColumnMatches(defaultCaseColumns)).toBeTruthy("Default And remaining new columns are not matching");
     });
 
     //radhiman

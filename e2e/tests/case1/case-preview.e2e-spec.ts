@@ -170,8 +170,8 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isCategoryTier1Displayed('Employee Relations')).toBeTruthy('CategoryTier1 is missing');
         expect(await casePreviewPo.isCategoryTier2Displayed('Compensation')).toBeTruthy('CategoryTier2 is missing');
         expect(await casePreviewPo.isCategoryTier3Displayed('Bonus')).toBeTruthy('CategoryTier3 is missing');
-        expect(await casePreviewPo.isAssigneeDisplayed('Qianru Tao')).toBeTruthy('Assignee name is missing');
-        expect(await casePreviewPo.getAssigneeDetails()).toContain('US Support 1', 'Assigned group name is missing'); // defect
+        expect(await casePreviewPo.isAssigneeDisplayed('Qadim Katawazi')).toBeTruthy('Assignee name is missing');
+        expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco > United States Support > US Support 3', 'Assigned group name is missing');
         expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'Assigned company name is missing');
         expect(await casePreviewPo.isCreateNewCaseButtonDisplayed()).toBeTruthy('Create New Case button is missing');
         expect(await casePreviewPo.isTitleDisplayed()).toBeTruthy('Case Preview Title is missing');
