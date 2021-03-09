@@ -17,6 +17,7 @@ import viewDocumentLibraryPo from '../../pageobject/settings/document-management
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import readAccessTabPo from '../../pageobject/settings/document-management/read-access-tab.po';
 
 describe('Document Library', () => {
 
@@ -225,14 +226,13 @@ describe('Document Library', () => {
             expect(await editDocumentLibraryPo.isOwnerGroupDropDownDisabled()).toBeTruthy('OwnerGroup Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isShareExternallyToogleButtonDisabled()).toBeTruthy('Share Externally Toogle Button field is enabled');
             expect(await editDocumentLibraryPo.isStatusDropDownDisabled()).toBeFalsy('Status Drop Down field is disabled');
-            expect(await editDocumentLibraryPo.isKeywordsFieldEnabled()).toBeFalsy('Keywords Field field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier1Disabled()).toBeTruthy('Category Tire1 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier2Disabled()).toBeTruthy('Category Tire2 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier3Disabled()).toBeTruthy('Category Tire3 field is enabled');
             expect(await editDocumentLibraryPo.isCategoryTier4Disabled()).toBeTruthy('Category Tire4 field is enabled');
             expect(await editDocumentLibraryPo.isRegionDropDownDisabled()).toBeTruthy('Region Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isSiteDropDownDisabled()).toBeTruthy('Site Drop Down field is enabled');
-            await editDocumentLibraryPo.clickOnCancelButton();
+            await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewDocumentLibraryPo.clickOnEditReadAccess();
             expect(await docLibReadAccessTab.isSupportGroupAccessButtonDisplayed()).toBeTruthy('Support Group Access Group Button is enabled');
@@ -240,7 +240,7 @@ describe('Document Library', () => {
             expect(await docLibReadAccessTab.isAddCompanyDropDownDisplayed()).toBeTruthy('Read Access Company Disabled ');
         });
         afterAll(async () => {
-            await viewDocumentLibraryPo.clickOnReadAccessCancelButton();
+            await readAccessTabPo.clickReadAccessCancelButton();
             await viewDocumentLibraryPo.clickOnCancelButton();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');

@@ -28,7 +28,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Case Activity', () => {
-    const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+    const randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -355,12 +355,11 @@ describe('Case Activity', () => {
 
     //kgaikwad
     describe('[4224]: From Task Activity Filters > Person search behavior in Author field', async () => {
-        let summary = 'summaryDRDMV16760' + randomStr;
         let manualTemplateData;
         beforeAll(async () => {
             manualTemplateData = {
-                "templateName": "3582_task template" + summary,
-                "templateSummary": "3582_Manual_task template summary" + summary,
+                "templateName": "4224ManualTaskTemplate" + randomStr,
+                "templateSummary": "4224ManualTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -378,7 +377,7 @@ describe('Case Activity', () => {
             await createCase.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary,1);
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
         });
         it('[4224]: Add/Remove All Types Of Users ', async () => {
@@ -483,8 +482,8 @@ describe('Case Activity', () => {
         let externalTemplateData: ITaskTemplate;
         beforeAll(async () => {
             manualTemplateData = {
-                "templateName": "3582_task template" + randomStr,
-                "templateSummary": "3582_Manual_task template summary" + randomStr,
+                "templateName": "4225ManualTaskTemplate" + randomStr,
+                "templateSummary": "4225ManualTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -496,8 +495,8 @@ describe('Case Activity', () => {
 
             // Create automated task template
             autoTemplateData = {
-                "templateName": "auto task template ",
-                "templateSummary": "auto task template summary ",
+                "templateName": "4225AutoTtaskTemplate",
+                "templateSummary": "4225AutoTaskTemplateSummary",
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": "Case Process ",
@@ -514,8 +513,8 @@ describe('Case Activity', () => {
             await apiHelper.createAutomatedTaskTemplate(autoTemplateData);
 
             externalTemplateData = {
-                "templateName": "external task template name ",
-                "templateSummary": "external task template summary ",
+                "templateName": "4225ExternalTaskTemplateName",
+                "templateSummary": "4225ExternalTaskTemplateSummary",
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -537,7 +536,7 @@ describe('Case Activity', () => {
 
             // On view case page.
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTemplateData.templateSummary,1);
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
         });
         it('[4225]: Verify Manual Task Filter On UI', async () => {
@@ -616,7 +615,7 @@ describe('Case Activity', () => {
             await previewCasePo.clickGoToCaseButton();
 
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTemplateData.templateSummary,1);
             await manageTaskBladePo.clickTaskLink(autoTemplateData.templateSummary);
         });
         it('[4225]: Verify Automation Task Filter On UI', async () => {
@@ -694,7 +693,7 @@ describe('Case Activity', () => {
             await previewCasePo.clickGoToCaseButton();
 
             await viewCasePo.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(externalTemplateData.templateSummary,1);
             await manageTaskBladePo.clickTaskLink(externalTemplateData.templateSummary);
         });
         it('[4225]: Verify External Task Filter On UI', async () => {
@@ -762,6 +761,9 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnFilterClearButton();
             await expect(await activityTabPage.isfilterPresent()).not.toBeTruthy('filter displayed');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //kgaikwad
@@ -795,15 +797,14 @@ describe('Case Activity', () => {
         let caseBodyText = "This is unique caseActivity text " + randomStr;
         let taskBodyText = "This is unique TaskActivity text " + randomStr;
         let knowledgeBodyText = "This is unique KnowledgeActivity text " + randomStr;
-        let summary = 'summaryDRDMV16733' + randomStr;
         let caseIdText;
         let manualTemplateData;
 
         beforeAll(async () => {
             // Create manual task template
             manualTemplateData = {
-                "templateName": "3582_task template" + summary,
-                "templateSummary": "3582_Manual_task template summary" + summary,
+                "templateName": "4230TaskTemplate" + randomStr,
+                "templateSummary": "4230ManualTaskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -878,14 +879,14 @@ describe('Case Activity', () => {
 
     // ptidke
     describe('[5557]:  [Automatic Task] - Automatic Task: Social: Manual Comments', async () => {
-        let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let taskBodyText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let taskBodyText = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let filePath = '../../data/ui/attachment/bwfPdf.pdf';
         let autoTemplateData;
         beforeAll(async () => {
             autoTemplateData = {
-                "templateName": "auto task 5557 template",
-                "templateSummary": "auto task 5557template summary",
+                "templateName": "5557AutoTaskTemplate",
+                "templateSummary": "5557AutoTaskTemplateSummary",
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": "Case Process ",
@@ -952,12 +953,12 @@ describe('Case Activity', () => {
 
     //kgaikwad
     describe('[4255]: Check case view count log is displayed on the activity feed of case along with name of user and time', async () => {
-        let summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let random = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId;
         beforeAll(async () => {
             let caseData = {
                 "Requester": "qdu",
-                "Summary": "Test case for 5515RandVal" + summary,
+                "Summary": "4255TestCaseForRandVal" + random,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
@@ -1017,8 +1018,8 @@ describe('Case Activity', () => {
 
             // Create Task Template
             manualTaskTemplateData = {
-                "templateName": "4250_task template" + summary,
-                "templateSummary": "4250_Manual_task template summary" + summary,
+                "templateName": "4250TaskTemplate" + summary,
+                "templateSummary": "4250ManualTaskTemplateSummary" + summary,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -1235,7 +1236,6 @@ describe('Case Activity', () => {
             await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
-
         });
 
         it('[4240]: Verify Logs With 5 Lines Or Less Than 5 Lines ', async () => {
@@ -1299,6 +1299,7 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
             await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing');
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg26: BodyText is missing');
 
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
@@ -1423,7 +1424,8 @@ describe('Case Activity', () => {
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
-            await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing')
+            await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing');
+            await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg26: BodyText is missing');
 
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);

@@ -222,7 +222,6 @@ describe("Case Read Access", () => {
         let caseTemplate1 = 'Case Template 1' + randomStr;
         let caseTemplateSummary1 = 'Summary 1' + randomStr;
         it('[5050,5049]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
-            await browser.manage().window().maximize();
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
@@ -243,18 +242,18 @@ describe("Case Read Access", () => {
             await navigationPo.gotoCaseConsole();
         });
         it('[5050,5049]: [Global Case Template] Create/Update Case template with company and flowset as Global', async () => {
-            await browser.manage().window().maximize();
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await consoleReadAcess.clickOnReadAccessConfiguration();
             await addReadAccess.setReadAccessConfigurationName("test_mapping" + randomStr);
-            await addReadAccess.selectCompany('Global');
+            await addReadAccess.selectCompany('- Global -');
             await addReadAccess.selectFlowset(flowsetGlobalFieldsData.flowsetName);
             await addReadAccess.selectSupportCompany('Petramco');
             await addReadAccess.selectSupportOrg('Australia Support');
             await addReadAccess.selectSupportGroup('AU Support 2');
             await addReadAccess.clickOnSave();
             await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
             await navigationPo.signOut();
             await loginPage.login('gwixillian');
             await navigationPo.gotoSettingsPage();
@@ -859,11 +858,11 @@ describe("Case Read Access", () => {
             await loginPage.login('qkatawazi');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
-            await editReadAccess.clearAccessMappingName();
-            await editReadAccess.clickOnSave();
+            await consoleReadAcess.clickOnReadAccessConfiguration();
+            await addReadAccess.clickOnSave();
             expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy('Pop up message absent');
-            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
+            await utilityGrid.searchAndOpenHyperlink(readAccessMappingData.configName);
             await editReadAccess.setAccessMappingName(randomStr + 'UpdatedAccessMappingName');
             await editReadAccess.clickOnSave();
             await utilityCommon.closePopUpMessage();

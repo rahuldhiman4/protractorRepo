@@ -1,5 +1,6 @@
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilityCommon from '../utils/utility.common';
+import { uniqBy } from 'lodash';
 
 export class GridOperations {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -309,18 +310,51 @@ export class GridOperations {
         let columnData: string[] = undefined;
         if (guid) columnData = await this.getAllValuesFromColumn(columnName, guid);
         else columnData = await this.getAllValuesFromColumn(columnName);
-
         const copy = Object.assign([], columnData);
-        columnData.sort(function (a, b) {
-            return a.localeCompare(b);
-        })
-        if (sortType == "descending") {
-            columnData.reverse();
-        }
+        
+        if (columnName == 'Priority') {
+            columnData = uniqBy(columnData, function (record) { return record; });
+            var priorityOrder = ['Critical', 'High', 'Medium', 'Low']; //Asc by default
+            if (sortType == "descending") {
+                priorityOrder.reverse();
+            }
+            var excludePriorities = [];
+            priorityOrder.forEach(function (outItem, outIndex) {
+                var isMatch = false;
+                columnData.forEach(function (inItem, inIndex) {
+                    if(outItem == inItem) {
+                        isMatch = true;
+                    }
+                });
+                if(!isMatch) {
+                    excludePriorities.push(outItem);
+                }
+            });
+            excludePriorities.forEach(function(item, index){
+                var priorityIndex = priorityOrder.indexOf(item);
+                if (priorityIndex > -1) {
+                    priorityOrder.splice(priorityIndex, 1);
+                 }
+            });
+            var returnVar = true;
+            columnData.forEach(function (item, index) {
+                if(item != priorityOrder[index]) {
+                    returnVar = false;
+                }
+            });
+            return returnVar;
+        } else {
+            columnData.sort(function (a, b) {
+                return a.localeCompare(b);
+            })
+            if (sortType == "descending") {
+                columnData.reverse();
+            }
 
-        return columnData.length === copy.length && columnData.every(
-            (value, index) => (value === copy[index])
-        );
+            return columnData.length === copy.length && columnData.every(
+                (value, index) => (value === copy[index])
+            );
+        }
     }
 
     //Accepts sortType as 'ascending' or 'descending'

@@ -190,7 +190,7 @@ describe('Create Case Task', () => {
         it('[5559,5565,6425,6386]: Validate manual task', async () => {
             await manageTaskBladePo.clickTaskLink(automationTaskSummaryWithallField);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
-            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data2 ${randomStr}`);
+            expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.lob.human-resource:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
             expect(await viewTask.getLabelValue()).toBe(menuItem.menuItemName);
             expect(await viewTask.getCategoryTier1Value()).toBe('Employee Relations');
@@ -204,7 +204,7 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(autmationTaskSummaryWithRequiredData);
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
-            expect(await viewTask.getProcessNameValue()).toBe(`com.petramco.human-resource:Get Request Status Data1 ${randomStr}`);
+            expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.lob.human-resource:Get Request Status Data1 ${randomStr}`);
             expect(await viewTask.getDescriptionValue()).toBe('-', "getDescriptionValue");
             expect(await viewTask.getLabelValue()).toBe('-', "getLabelValue");
             expect(await viewTask.getCategoryTier1Value()).toBe('-', "getCategoryTier1Value");
@@ -440,6 +440,7 @@ describe('Create Case Task', () => {
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await utilityCommon.closePopUpMessage();
+            await viewTasktemplatePo.clickBackArrowBtn();
         });
         it('[4941]: Edit the above template', async () => {
             //search above template
@@ -616,6 +617,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
+    //Issue with the Filter, scroll option is not present for few of the last fields //DRDMV-25300
     describe('[5564,5570]: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -676,10 +678,10 @@ describe('Create Case Task', () => {
 
     //ankagraw
     describe('[5984]: [Permissions] Settings menu for Case Functional Roles', async () => {
-        let caseManagementList: string[] = ['Case Management', 'Approvals', 'Assignments', 'Automated Status Transition', 'Notes Template', 'Read Access', 'Status Configuration', 'Templates'];
+        let caseManagementList: string[] = ['Case Management', 'Approval Mappings', 'Assignments', 'Automated Status Transition', 'Notes Template', 'Read Access', 'Status Configuration', 'Templates'];
         let manageFlowsetList: string[] = ['Manage Flowsets', 'Define Flowsets'];
         let serviceLevelManagementList: string[] = ['Service Level Management', 'Configure Data Source', 'Goal Type', 'Service Target', 'Service Target Group'];
-        let taskManagementList: string[] = ['Task Management', 'Approvals', 'Notes Template', 'Status Configuration', 'Templates'];
+        let taskManagementList: string[] = ['Task Management', 'Approval Mappings', 'Notes Template', 'Status Configuration', 'Templates'];
         let emailtList: string[] = ['Email', 'Acknowledgment Templates', 'Configuration', 'Templates'];
         let notificationConfigurationList: string[] = ['Notification Configuration', 'Manage Events', 'Manage Templates'];
         it('[5984]: Verify Permissions role of CBA', async () => {
@@ -843,6 +845,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

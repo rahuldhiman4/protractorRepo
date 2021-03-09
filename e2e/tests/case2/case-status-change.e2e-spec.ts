@@ -130,6 +130,11 @@ describe('Case Status Change', () => {
             expect(await caseConsole.isCaseStatusPresent(statusPending)).toBeTruthy("Status Pending not matching");
             expect(await caseConsole.isCaseSummaryPresent(summary)).toBeTruthy("Summary not matching");
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     // passed
@@ -208,6 +213,11 @@ describe('Case Status Change', () => {
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -313,6 +323,8 @@ describe('Case Status Change', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -409,6 +421,11 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus('Closed');
             expect(await viewCasePage.getTextOfStatus()).toBe('Closed');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -553,6 +570,11 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('Canceled');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        });
     });
 
     // passed
@@ -671,6 +693,8 @@ describe('Case Status Change', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 
@@ -730,6 +754,11 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
         });
     });
 

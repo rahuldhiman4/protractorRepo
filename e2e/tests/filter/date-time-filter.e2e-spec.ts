@@ -28,10 +28,10 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clickFilterField("Created Date");
 
             //Validating and Selecting Default Date
-            expect(await dateTimeSelectorPo.getSelectedStartDateTimestamp()).toBe('Select start value');
-            expect(await dateTimeSelectorPo.getSelectedEndDateTimestamp()).toBe('Select end value');
+            expect(await dateTimeSelectorPo.getSelectedStartDateTimestamp()).toBe('Not selected');
+            expect(await dateTimeSelectorPo.getSelectedEndDateTimestamp()).toBe('Not selected');
             let createdDate = new Date();
-            let month = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+            let month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
             let monthValue: string = month[createdDate.getMonth()];
             expect(await dateTimeSelectorPo.getMonthFromCaleder()).toBe(monthValue);
             expect(await dateTimeSelectorPo.isAllDaysPresentInWeek()).toBeTruthy();
@@ -171,7 +171,7 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clearFilter();
         });
     });
-    //contains KA
+    //contains KA-check-KA not visible
     describe('[12065,12064]: Verify records are fetched on knowledge console Knowledge set, Version, template Name and Assigned group combinations', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedDate;
@@ -336,7 +336,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectDateOnCalender(16);
             await dateTimeSelectorPo.selectTimeToggle();
             await dateTimeSelectorPo.setHour('11');
-            await dateTimeSelectorPo.setMinute(55);
+            await dateTimeSelectorPo.setMinute(54);
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
             await utilityGrid.clickRefreshIcon();
@@ -360,7 +360,7 @@ describe('Date and Time Preset Filter', () => {
         it('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await utilityGrid.addFilter("Requester", "Kedar Jadhav", "text");
             await utilityGrid.addFilter("Source", "Agent", "text");
-            await utilityGrid.addFilter("Label", menuItemName, "text");
+            //await utilityGrid.addFilter("Label", menuItemName, "text"); //Label is removed from case console
             await utilityGrid.addFilter("SLM Status", "Service Targets Not Attached", "checkbox");
             await utilityGrid.addFilter("Assignee Login Name", "qkatawazi", "text");
             await utilityGrid.addFilter("Region", "Asia-Pac", "text");
@@ -416,7 +416,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectDateOnCalender(13);
             await dateTimeSelectorPo.selectTimeToggle();
             await dateTimeSelectorPo.setHour('11');
-            await dateTimeSelectorPo.setMinute(55);
+            await dateTimeSelectorPo.setMinute(54);
             await dateTimeSelectorPo.clickMeridianValue("PM");
 
             await dateTimeSelectorPo.selectTimeToggle();

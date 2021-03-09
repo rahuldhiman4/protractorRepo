@@ -1,6 +1,7 @@
 import { resolve } from 'path';
 import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions, Key } from "protractor";
 import utilityCommon from "../../utils/utility.common";
+import ckeEditor from '../../pageobject/common/ck-editor/ckeditor-ops.po';
 
 class CaseEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -474,6 +475,15 @@ class CaseEditPage {
         }
         return await utilityCommon.isValuePresentInDropDown(guid, value);
     }
+
+    async setDescriptionNumberList(values: string[]): Promise<void> {
+        await ckeEditor.setNumberList(values, this.selectors.descriptionGuid);
+    }
+
+    async setDescriptionBulletList(values: string[]): Promise<void> {
+        await ckeEditor.setBulletList(values, this.selectors.descriptionGuid);
+    }
+
 }
 
 export default new CaseEditPage();
