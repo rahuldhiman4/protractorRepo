@@ -13,8 +13,11 @@ class ServiceTargetGroupConsolePage {
         });
     }
 
-    async isDeleteButtonEnabled(): Promise<boolean> {
-        return await $(this.selectors.deleteButton).isEnabled();
+    async isDeleteButtonPresent(): Promise<boolean> {
+        return await $(this.selectors.deleteButton).isPresent().then(async (result) => {
+            if(result) return await $(this.selectors.deleteButton).isDisplayed();
+            else return false;
+        });
     }
 
     async clickAddServiceTargetGroupBtn(): Promise<void> {
