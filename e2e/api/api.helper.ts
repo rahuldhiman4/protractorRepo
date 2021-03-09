@@ -2143,9 +2143,11 @@ class ApiHelper {
         adhocTaskPayload.fieldInstances[8].value = taskData.taskName;
         adhocTaskPayload.fieldInstances[536870913].value = caseGuid;
         adhocTaskPayload.fieldInstances[1000000001].value = taskData.company;
+        adhocTaskPayload.fieldInstances[450000157].value = taskData.company;
         adhocTaskPayload.fieldInstances[450000152].value = await apiCoreUtil.getPersonGuid(taskData.assignee);
         adhocTaskPayload.fieldInstances[450000381].value = taskData.businessUnit;
         adhocTaskPayload.fieldInstances[1000000217].value = taskData.supportGroup;
+        adhocTaskPayload.fieldInstances[536870913].value = caseGuid;
         taskData.priority ? adhocTaskPayload.fieldInstances[1000000164].value = constants.CasePriority[taskData.priority] : adhocTaskPayload.fieldInstances[1000000164].value;
         adhocTaskPayload.fieldInstances[450000411].value = taskData.lineOfBusiness ? taskData.lineOfBusiness : adhocTaskPayload.fieldInstances[450000411].value;
         if (taskData.description) {
@@ -2205,6 +2207,8 @@ class ApiHelper {
             }
             adhocTaskPayload.fieldInstances["1000000337"] = taskRequester;
         }
+        console.log('>>>>>>>>>>>>>>>>>>',adhocTaskPayload);
+        
         let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
         console.log('Create Task API Status =============>', createTaskResponse.status);
         const taskDetails = await axios.get(
