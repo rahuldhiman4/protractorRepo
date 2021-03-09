@@ -73,12 +73,11 @@ describe('Create Flowset', () => {
         await expect(consoleFlowset.isDecriptionPresentOnGrid('Test Flowset name description')).toBeTruthy(" description is not present ");
         await expect(consoleFlowset.isFlowsetPresentOnGrid("FlowsetHasNoName")).toBeFalsy(" Flowset is present ");
 
-        await editFlowset.setFlowset("edit Flowset" + randomStr);
         await editFlowset.setDescription("edit description" + randomStr);
         await expect(editFlowset.getStatusvalue()).toBe("Active");
         await editFlowset.selectFlowsetConfigStatus("Draft");
         await editFlowset.clickSaveBtn();
-        await consoleFlowset.searchAndSelectFlowset("edit Flowset" + randomStr);
+        await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
         await expect(editFlowset.getStatusvalue()).toBe("Draft");
         await editFlowset.clickCancelFlowsetBtn();
     });
@@ -198,15 +197,15 @@ describe('Create Flowset', () => {
             await editFlowset.clickSaveBtnOnEditProcessMapping();
             await expect(editFlowset.isProcessPresentOnGrid(processNameSocialHR)).toBeTruthy(`Second Process ${randomStr}` + "Processing mapping not visible"); // False
             await expect(editFlowset.isProcessExecutionTypePresent('Exclusive')).toBeTruthy("Exclusive not present on grid"); // False
+        });
 
+        afterAll(async () => {
+            await editFlowset.clickCancelFlowsetBtn();
             await apiHelper.apiLogin('tadmin');
             let processName = 'com.bmc.dsm.social-lib:Social - Sample Activity Update By User';
             let processName1 = 'com.bmc.dsm.case-lib:Case - Initialization';
             await apiHelper.deleteFlowsetProcessLibConfig(processName1);
             await apiHelper.deleteFlowsetProcessLibConfig(processName);
-        });
-
-        afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
     });
@@ -277,14 +276,7 @@ describe('Create Flowset', () => {
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetMandatoryFieldsData.flowsetName)).toBeTruthy("Flowset is not displayed to other LOB");
             await expect(consoleFlowset.isFlowsetPresentOnGrid(flowsetWithGlobalFieldsData.flowsetName)).toBeTruthy(" Flowset is not displayed to other LOB");
         });
-
         it('[6278]: Validate create new record with same name in same LOB', async () => {
-            await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
-            await editFlowset.setFlowset(flowsetWithGlobalFieldsData.flowsetName);
-            await editFlowset.clickSaveBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-            await editFlowset.clickCancelFlowsetBtn();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await consoleFlowset.clickOnAddFlowset();
             await createFlowset.selectCompany('Petramco');
             await createFlowset.setFlowsetname(flowsetMandatoryFieldsData.flowsetName);
@@ -308,6 +300,7 @@ describe('Create Flowset', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await navigationPage.gotoSettingsPage();
@@ -319,22 +312,19 @@ describe('Create Flowset', () => {
     describe('[5640]: [Flowsets] Flowsets Console verification', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let availableValues: string[] = ['Company', 'Description', 'Display ID', 'Flowset Name', 'ID', 'Status'];
-
-        it('[5640]: [Flowsets] Flowsets Console verification', async () => {
-
+        let flowsetName;
+        beforeAll(async () => {
             //API call to create the flowset
             await apiHelper.apiLogin('qkatawazi');
             let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
-            flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
+            flowsetName = flowsetMandatoryFieldsData.flowsetName = flowsetMandatoryFieldsData.flowsetName + randomStr;
             await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
-
+        });
+        it('[5640]: [Flowsets] Flowsets Console verification', async () => {
             await consoleFlowset.addColumn(["ID", 'Display ID']);
             await expect(consoleFlowset.isAllVisibleColumnPresent(availableValues)).toBeTruthy("Available value is not present");
-            await consoleFlowset.searchAndSelectFlowset(flowsetMandatoryFieldsData.flowsetName);
-            await editFlowset.setFlowset("edit Flowset" + randomStr);
-            await editFlowset.clickSaveBtn();
             await consoleFlowset.clickGridRefreshButton();
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy();
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy();
             await consoleFlowset.clearSearcBox();
             await consoleFlowset.clickGridRefreshButton();
             await expect(consoleFlowset.getSortedValuesFromColumn("Flowset Name")).toBeTruthy("Sorted not possible");
@@ -345,7 +335,7 @@ describe('Create Flowset', () => {
             await loginPage.login('qdu');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is not dispayed to same LOB case manager');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy('Flowset is not dispayed to same LOB case manager');
         });
 
         it('[5640]: Verify if flowset  is accessible to different LOB Case BA', async () => {
@@ -353,7 +343,7 @@ describe('Create Flowset', () => {
             await loginPage.login('fritz');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is dispayed to different LOB case BA');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeFalsy('Flowset is dispayed to different LOB case BA');
         });
 
         it('[5640]: Verify if flowset is accessible to different LOB Case Manager', async () => {
@@ -361,7 +351,7 @@ describe('Create Flowset', () => {
             await loginPage.login('frieda');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is dispayed to different LOB case manager');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeFalsy('Flowset is dispayed to different LOB case manager');
         });
 
         it('[5640]: Verify if flowset is accessible to Case BA belonging to different company with same LOB', async () => {
@@ -369,7 +359,7 @@ describe('Create Flowset', () => {
             await loginPage.login('gwixillian');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is not dispayed to same LOB and different company case BA');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy('Flowset is not dispayed to same LOB and different company case BA');
         });
 
         it('[5640]: Verify if flowset is accessible to Case Manager user having access to multiple LOB', async () => {
@@ -378,9 +368,9 @@ describe('Create Flowset', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is dispayed to user with multiple LOB case manager');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy('Flowset is dispayed to user with multiple LOB case manager');
             await utilityGrid.selectLineOfBusiness('Facilities');
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is not dispayed to user with multiple LOB case manager');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeFalsy('Flowset is not dispayed to user with multiple LOB case manager');
         });
 
         it('[5640]: Verify if flowset is accessible to Case BA user having access to multiple LOB', async () => {
@@ -389,9 +379,9 @@ describe('Create Flowset', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeTruthy('Flowset is dispayed to user with multiple LOB case manager');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeTruthy('Flowset is dispayed to user with multiple LOB case manager');
             await utilityGrid.selectLineOfBusiness('Facilities');
-            expect(await consoleFlowset.isFlowsetPresentOnGrid("edit Flowset" + randomStr)).toBeFalsy('Flowset is not dispayed to user with multiple LOB case manager');
+            expect(await consoleFlowset.isFlowsetPresentOnGrid(flowsetName)).toBeFalsy('Flowset is not dispayed to user with multiple LOB case manager');
         });
 
         afterAll(async () => {
