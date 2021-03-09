@@ -372,8 +372,7 @@ describe('Case And Employee Relationship', () => {
         let caseInfo, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailConfiguration();
+            await apiHelper.createEmailBox('outgoing');
             let caseData = {
                 "Requester": "apavlik",
                 "Summary": "Email check " + randomStr,
