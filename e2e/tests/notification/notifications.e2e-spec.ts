@@ -204,13 +204,7 @@ xdescribe("Notifications", () => {
         let caseResponse = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.setDefaultNotificationForUser('qfeng', 'AlertAndEmail');
-            await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailBox('incoming');
             let response1 = await apiHelper.createEmailBox('outgoing');
-            await apiHelper.createEmailProfile(response1.id);
-            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
-            await apiHelper.createEmailConfiguration(emailConfig);
             await apiHelper.apiLogin('qtao');
             caseResponse = await apiHelper.createCase(caseData);
         });

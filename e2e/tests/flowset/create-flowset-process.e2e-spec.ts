@@ -324,10 +324,7 @@ describe('Create Process in Flowset', () => {
             }
             caseResponse = await apiHelper.createCase(caseData);
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            let response = await apiHelper.createEmailBox('outgoing');
-            await apiHelper.createEmailProfile(response.id);
-            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+            await apiHelper.createEmailBox('outgoing');
         });
         it('[5294,5325,5321]: User Activity Feeds process execution for post created by email', async () => {
             await navigationPage.gotoCaseConsole();
