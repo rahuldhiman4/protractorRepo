@@ -25,6 +25,7 @@ import updateStatusBladePo from '../../pageobject/common/update.status.blade.po'
 import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import caseConsole from '../../pageobject/case/case-console.po';
 import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
+import editCasePo from '../../pageobject/case/edit-case.po';
 
 const caseData = require('../../data/ui/case/case.ui.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
@@ -92,16 +93,16 @@ describe("Actionable Notifications", () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
         await utilityGrid.searchAndOpenHyperlink('Case Agent Assignment');
-        await notificationTemplateEditPage.openAlertEditMessageText();
-        expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
-        await notificationTemplateEditPage.cancelAlertMessageText();
-        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-        await notificationTemplateEditPage.clickOnEmailTab();
-        await notificationTemplateEditPage.openEmailBodyEditMessageText();
-        expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
-        await utilityCommon.closeAllBlades();
-
         try {
+            await notificationTemplateEditPage.openAlertEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+            await notificationTemplateEditPage.cancelAlertMessageText();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await notificationTemplateEditPage.clickOnEmailTab();
+            await notificationTemplateEditPage.openEmailBodyEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+            await utilityCommon.closeAllBlades();
+
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await notificationPo.clickOnNotificationIcon();
@@ -113,6 +114,7 @@ describe("Actionable Notifications", () => {
             throw ex;
         }
         finally {
+            await utilityCommon.closeAllBlades();
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -196,18 +198,21 @@ describe("Actionable Notifications", () => {
     //asahitya
     it('[4171]: Check out of the box notification-"Case Watchlist - Assignment Change" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
+        caseData['actionableNotificationWithAssignee'].Summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await navigationPage.signOut();
         await loginPage.login('qfeng');
-        await utilityGrid.searchRecord('Actionable Notification ');
+        await utilityGrid.searchRecord(caseData['actionableNotificationWithAssignee'].Summary);
         await utilityGrid.clickCheckBoxOfValueInGrid(response.displayId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent('Case Assignment Changes');
         await caseWatchlist.saveEvents();
+        await utilityGrid.searchAndOpenHyperlink(caseData['actionableNotificationWithAssignee'].Summary);
+        await viewCasePage.clickEditCaseButton();
+        await assignmentBladePO.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Nisha Sharma');
+        await editCasePo.clickSaveCase();
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
-        await apiHelper.apiLogin('qfeng');
-        await apiHelper.changeCaseAssignment(response.id, 'United States Support', 'US Support 3', 'nisha');
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
@@ -242,10 +247,11 @@ describe("Actionable Notifications", () => {
     //asahitya
     it('[4168]: Check out of the box notification-"Case Watchlist - Status Change" is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qfeng');
+        caseData['actionableNotificationWithAssignee'].Summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await navigationPage.signOut();
         await loginPage.login('qfeng');
-        await utilityGrid.searchRecord('Actionable Notification ');
+        await utilityGrid.searchRecord(caseData['actionableNotificationWithAssignee'].Summary);
         await utilityGrid.clickCheckBoxOfValueInGrid(response.displayId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent('Case Status Changes');
@@ -286,10 +292,11 @@ describe("Actionable Notifications", () => {
 
     it('[4170]: Check out of the box notification-"Case Watchlist - Group Assignment Change " is actionable for type Alert', async () => {
         await apiHelper.apiLogin('qtao');
+        caseData['actionableNotificationWithAssignee'].Summary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let response = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
         await navigationPage.signOut();
         await loginPage.login('qfeng');
-        await utilityGrid.searchRecord('Actionable Notification ');
+        await utilityGrid.searchRecord(caseData['actionableNotificationWithAssignee'].Summary);
         await utilityGrid.clickCheckBoxOfValueInGrid(response.displayId);
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent('Case Group Assignment Changes');
@@ -338,25 +345,24 @@ describe("Actionable Notifications", () => {
             "supportGroup": "US Support 3",
             "assignee": "qkatawazi",
         }
-
-        await apiHelper.apiLogin('qfeng');
-        let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
-        let response2 = await apiHelper.createAdhocTask(response1.id, taskData);
-        await apiHelper.updateCaseStatus(response1.id, 'InProgress');
-
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        await utilityGrid.searchAndOpenHyperlink('Task Agent Assignment');
-        await notificationTemplateEditPage.openAlertEditMessageText();
-        expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
-        await notificationTemplateEditPage.cancelAlertMessageText();
-        await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-        await notificationTemplateEditPage.clickOnEmailTab();
-        await notificationTemplateEditPage.openEmailBodyEditMessageText();
-        expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
-        await utilityCommon.closeAllBlades();
-
         try {
+            await apiHelper.apiLogin('qfeng');
+            let response1 = await apiHelper.createCase(caseData['actionableNotificationWithAssignee']);
+            let response2 = await apiHelper.createAdhocTask(response1.id, taskData);
+            await apiHelper.updateCaseStatus(response1.id, 'InProgress');
+
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
+            await utilityGrid.searchAndOpenHyperlink('Task Agent Assignment');
+            await notificationTemplateEditPage.openAlertEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+            await notificationTemplateEditPage.cancelAlertMessageText();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await notificationTemplateEditPage.clickOnEmailTab();
+            await notificationTemplateEditPage.openEmailBodyEditMessageText();
+            expect(await notificationTemplateEditPage.isFieldClickable(displayIdStr)).toBeTruthy(displayIdStr + ' is not clickable');
+            await utilityCommon.closeAllBlades();
+
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await utilityCommon.closePopUpMessage();
