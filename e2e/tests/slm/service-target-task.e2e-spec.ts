@@ -239,6 +239,7 @@ describe('Service Target Tests for Tasks', () => {
     describe('[4900]: UI Validation for Qualification builder for Task SVT', async () => {
         let firstLevelAssociationFields: string[] = ["Assigned Company", "Assigned Group", "Assigned Support Organization","Category Tier 1", "Category Tier 2", "Category Tier 3", "Category Tier 4","Company", "Label", "Priority","Requester","Site","State", "Status", "Status Reason","Target Date", "Task Region", "Task Type"];
         let expressionOperatorFields: string[] = ["(", ")", ">", "<", "=", "!=", ">=", "<=", "LIKE", "AND", "OR", "NOT", "NEW VALUE", "OLD VALUE"];
+
         it('[4900]: Verify Qualification Builder UI for Task SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
@@ -249,6 +250,11 @@ describe('Service Target Tests for Tasks', () => {
             let expressionOperatorsVal = await slmExpressionBuilder.getExpressionFieldOperatorAvailableAll(expressionOperatorFields);
             expect(expressionOperatorsVal).toBeTruthy('Expression Builder Operators does not matches.');
         });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+
     });
 
     //skhobrag
@@ -285,8 +291,8 @@ describe('Service Target Tests for Tasks', () => {
             await loginPage.login(caseAgentUser);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('Qiang Du');
-            await createCasePage.setPriority('Critical');
             await createCasePage.setSummary('Case for SVT creation');
+            await createCasePage.setPriority('Critical');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
         });
@@ -412,6 +418,7 @@ describe('Service Target Tests for Tasks', () => {
             // expect(await utilityGrid.getAllValuesFromColumn('SLM Status')).toEqual(slmStatusBreachedArr);
         })
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login(caseBAUser);
         });

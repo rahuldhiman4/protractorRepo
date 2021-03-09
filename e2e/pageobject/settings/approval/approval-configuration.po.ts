@@ -287,6 +287,10 @@ class ApprovalsConsole {
         await $(this.selectors.saveModalButton).click();
     }
 
+    async clickModelCancelButton(): Promise<void> {
+        await $(this.selectors.cancelModalButton).click();
+    }
+
     async clickOnMenuItem(menuName: string): Promise<void> {
         let countParent = await $$('.modal-body .a-tree__label').count();
         for (let i = 0; i < countParent; i++) {

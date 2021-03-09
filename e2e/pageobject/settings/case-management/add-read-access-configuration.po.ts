@@ -22,9 +22,9 @@ class AddReadAccessConfigurationPage {
       categoryTier1: '[rx-view-component-id="03a901bb-f4f4-426b-a50f-473623759ca6"] .dropdown',
       priority: '[rx-view-component-id="dc84e827-e82d-4663-858b-a131d58be352"] .dropdown',
       useAsDefault: '77424ee9-4d45-40b3-992f-82fc3a8162c3',
-      categoryTier2Guid: '0bdb722f-3fcd-48d4-b10c-29712ed2cd86',
-      categoryTier3Guid: '78f414cd-19df-4457-a2dc-cf226371eac3',
-      categoryTier4Guid: '899d8ac7-85a0-4337-8435-da69fd1b81ac',
+      categoryTier2Guid: '871cc8aa-60cf-4268-810c-f13049489d59',
+      categoryTier3Guid: '8ce2f2ac-7227-47f3-9dff-bf5225bb09f7',
+      categoryTier4Guid: 'b82b9c16-c338-4183-9d67-99637d83fc90',
       labelGuid: '628735ec-4f31-4b7e-acac-07c920a7bec3',
       lobValue: '[rx-view-component-id="9d102ec5-590e-4bd7-813c-101d0282ac2b"] .rx-select__search-button-title'
    }
