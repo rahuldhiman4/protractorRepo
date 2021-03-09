@@ -21,16 +21,16 @@ describe('Multi Search Validation', () => {
     let taskTemplateModule = "Task Templates";
     let documentModule = "Documents";
     let peopleModule = "People";
+    let year: string;
+    let month: string;
+    let date: string;
     let updatedDate;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');
-        // Create Date
-        let year: string;
-        let month: string;
-        let date: string;
 
+        // Create Date
         let objDate: Date = new Date();
         let numYear: number = objDate.getFullYear();
         year = new Number(numYear).toString();
@@ -223,7 +223,7 @@ describe('Multi Search Validation', () => {
             await searchPo.selectCategoryDropDownValue('People');
             await searchPo.searchRecord(firstName);
             expect(await searchPo.isModuleTitleDisplayed(firstName, 'People (2)', peopleModule)).toBeTruthy('FailureMsg2: People module title is missing');
-            expect (await searchPo.getDateFormateOnLeftPannel('People',1)).toContain('000Z');
+            expect (await searchPo.getDateFormateOnLeftPannel('People',1)).toContain(year);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule, 1)).toBeTruthy(`${emailId} emailId is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName2}`, peopleModule)).toBeTruthy(`FailureMsg5: ${firstName} ${lastName2} 2 Person Name is missing`);
@@ -232,7 +232,7 @@ describe('Multi Search Validation', () => {
         it('[4292]: Verify FirstName LastName', async () => {
             await searchPo.searchRecord(lastName1);
             expect(await searchPo.isModuleTitleDisplayed(lastName1, 'People (1)', peopleModule)).toBeTruthy('FailureMsg2: Person module title is missing');
-            expect (await searchPo.getDateFormateOnLeftPannel('People',1)).toContain('000Z');
+            expect (await searchPo.getDateFormateOnLeftPannel('People',1)).toContain(year);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(emailId, peopleModule)).toBeTruthy(`${emailId} emailId is missing`);
             expect(await searchPo.isRecordDisplayedOnLeftPannel(`${firstName} ${lastName1}`, peopleModule, 1)).toBeTruthy(`FailureMsg4: ${firstName} ${lastName1} 1 Person Name is missing`);
             await searchPo.clickOnLeftPannelRecord(`${firstName} ${lastName1}`, peopleModule);
