@@ -26,7 +26,7 @@ describe('Preset Filter Funcational Verification', () => {
         await navigationPage.signOut();
     });
 
-    //kgaikwad
+    //kgaikwad-KA not visible on Console defect
     describe('[12086]: Verify Preset Filter Retain Same After Logout And Login In', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
@@ -206,7 +206,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
     });
 
-    //kgaikwad
+    //kgaikwad-KA not visible on Console defect
     describe('[12084]: Verify Functionality Of Delete Custom Preset Filter', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;
@@ -840,7 +840,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
     });
 
-    //kgaikwad (with keep blank required field filter gets saved and not shows validatoin)
+    //kgaikwad (with keep blank required field filter gets saved and not shows validatoin)-clear issue
     describe('[12072]: Verify mandatary fields with verify validation on edit custom fields', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;

@@ -163,8 +163,7 @@ describe('Create Adhoc task', () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.clearFilter();
-            await taskConsole.setTaskSearchBoxValue(taskTemplateData.templateSummary);
+            await utilityGrid.searchRecord(taskTemplateData.templateSummary);
             expect(await utilityGrid.getFirstGridRecordColumnValue('Case ID')).toBe("", " Case Id Displayed in Task console");
             await utilityGrid.searchAndOpenHyperlink(taskTemplateData.templateSummary);
             expect(await viewTask.isCaseViewLinkDisplayed()).toBeFalsy('Case View Link is displayed');
