@@ -198,10 +198,7 @@ xdescribe('Line of Business Permission Tests', () => {
         beforeAll(async () => {
             lobName = `q1W Name ${randomString}`;
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            await apiHelper.createEmailBox('incoming');
-            let response1 = await apiHelper.createEmailBox('outgoing');
-            await apiHelper.createEmailProfile(response1.id);
+            await apiHelper.createEmailBox('outgoing');
         });
         it('[60219]: Validate that tenant admin is able to create the LOB and upon LOB creation Domain Tag is created of LOB name in the Domain Tag registry', async () => {
             let lobConfigPageList = ['Define Line of Business', 'Manage Line of Business', 'Line of Business'];

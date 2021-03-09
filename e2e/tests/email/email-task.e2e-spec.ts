@@ -27,9 +27,7 @@ describe('Email Task', () => {
         await apiHelper.apiLogin('tadmin');
         await apiHelper.deleteAllEmailConfiguration();
         await apiHelper.createEmailBox('incoming');
-        let response1 = await apiHelper.createEmailBox('outgoing');
-        await apiHelper.createEmailProfile(response1.id);
-        await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+        await apiHelper.createEmailBox('outgoing');
         await apiHelper.createEmailConfiguration(emailConfig);
     });
 
