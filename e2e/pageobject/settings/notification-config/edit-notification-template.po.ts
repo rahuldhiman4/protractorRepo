@@ -20,7 +20,7 @@ class EditNotificationTemplate {
         event: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] button',
         addRecipientsBtn: '[rx-view-component-id="73a718fa-c683-48b0-b211-97b3744d7c3f"] button',
         addLocalizedMessageBtn: '[rx-view-component-id="92468fc7-a2b9-46b4-8ad9-c2cfe12c9d8b"] button',
-        alertMessageBox: '[rx-view-component-id="a0a91ca7-9acd-467b-a4fc-d22217199f01"] div[id="cke_242_contents"]',
+        alertMessageBox: 'a.cke_button',
         emailSubjectBox: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
         emailBodyMessageBox: 'div[id="cke_292_contents"]',
         cancelEmailSubjectBlade: '[rx-view-component-id="8335618d-2a88-49d1-9002-e5b7601b7674"] button',
@@ -126,7 +126,7 @@ class EditNotificationTemplate {
     }
 
     async isAlertSubjectMessageDisabled(): Promise<boolean> {
-        return await $(this.selectors.alertMessageBox).getAttribute('class') == 'rtf-read-only';
+        return await $(this.selectors.alertMessageBox).getAttribute('aria-disabled') == 'true';
     }
 
     async isEmailSubjectMessageDisabled(): Promise<boolean> {

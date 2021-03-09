@@ -271,10 +271,14 @@ describe('Case Template', () => {
             await editCasetemplatePo.changeOwnerGroupDropdownValue(MANDATORY_FIELD.ownerGroup);
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
-            await editCasetemplatePo.clickEditCaseTemplate();
-            await editCasetemplatePo.clearCaseSummary(); // defect cleared via protractor can still show error
-            await editCasetemplatePo.clickSaveCaseTemplate();
+            await viewCaseTemplate.clickBackArrowBtn();
+            await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
+            await createCaseTemplate.clickSaveCaseTemplate();
             expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
+            await createCaseTemplate.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
+            await viewCaseTemplate.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeCaseSummary('Updated Summary');
             await editCasetemplatePo.clickSaveCaseTemplate();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
