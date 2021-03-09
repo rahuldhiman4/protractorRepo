@@ -307,8 +307,7 @@ describe('Email Configuration', () => {
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
-            // expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await utilityCommon.closeAllBlades();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
@@ -323,15 +322,13 @@ describe('Email Configuration', () => {
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
-            // expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
             await editEmailConfigPo.cancelEditEmailConfig();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
-            // expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy(); // this will not will display to the case manger of Human Resource LOB
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await editEmailConfigPo.cancelEditEmailConfig();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
