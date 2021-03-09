@@ -59,7 +59,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            expect(await createTaskTemplate.isAddTaskTemplateTitleDisplayed('Add Task Template')).toBeTruthy('Add Task Template Title not displayed');
+            expect(await createTaskTemplate.isAddTaskTemplateTitleDisplayed('Create Task Template')).toBeTruthy('Add Task Template Title not displayed');
             expect(await createTaskTemplate.isTemplateMetadataTitleDisplayed('Template Metadata')).toBeTruthy('Template Metadata Title not displayed');
             expect(await createTaskTemplate.isTemplateNameRequiredText()).toBeTruthy("Template Name Required text Not Present");
             expect(await createTaskTemplate.isCreateNewProcessRequiredText()).toBeTruthy("CreateNewProcess Required text Not Present");
@@ -97,7 +97,7 @@ describe('Dynamic Hidden Data', () => {
             expect(await viewTaskTemplate.isManageDynamicFieldLinkDisplayed()).toBeTruthy(" Manage link not present");
             await viewTaskTemplate.clickOnEditLink();
             expect(await viewTaskTemplate.isEditProcessLinkDisplayed()).toBeFalsy(" Edit link is displayed");
-            expect(await editTaskTemplate.getTaskTypeValueAttribute('disabled')).toBeTruthy(" Attribute value is disabled");
+            expect(await editTaskTemplate.getTaskTypeValueAttribute('aria-disabled')).toBeTruthy(" Attribute value is disabled");
             expect(await editTaskTemplate.isManageProcessLinkDisplayed()).toBeTruthy(" Manage process link present");
             await editTaskTemplate.clickOnCancelButton();
             await viewTaskTemplate.clickBackArrowBtn();
@@ -130,19 +130,19 @@ describe('Dynamic Hidden Data', () => {
             await createTaskTemplate.selectCompanyByName('Petramco');
 
             // verify categ1, BU and SG as per LOB
-            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.taskCategoryDrpDown1, ['Applications', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card'])).toBeTruthy("Category 1");
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.taskCategoryDrpDown1, ['None', 'Facilities', 'Fixed Assets', 'Phones', 'Projectors', 'Purchasing Card','Talent Management'])).toBeTruthy("Category 1");
             await createTaskTemplate.selectOwnerCompany('Petramco');
-            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.buisnessUnit, ['Facilities', 'Facilities Support'])).toBeTruthy('SupportOrg');
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.buisnessUnit, ['None','Facilities Support', 'India Support'])).toBeTruthy('SupportOrg');
             await createTaskTemplate.selectOwnerCompany('Petramco');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
-            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service'])).toBeTruthy('Owner Group');
+            expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['None','Facilities', 'Pantry Service'])).toBeTruthy('Owner Group');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
             await createTaskTemplate.selectOwnerGroup('Facilities');
             await changeAssignmentPo.setDropDownValue("Company", 'Petramco');
-            expect(await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support'])).toBeTruthy('SupportOrg');
+            expect(await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['None','Facilities Support\nPetramco > Facilities Support', 'India Support\nPetramco > India Support'])).toBeTruthy('SupportOrg');
             await changeAssignmentPo.setDropDownValue("Company", 'Petramco');
             await changeAssignmentPo.setDropDownValue("SupportOrg", 'Facilities Support');
-            expect(await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])).toBeTruthy('AssignedGroup');
+            expect(await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['None','Facilities\nPetramco > Facilities Support > Facilities', 'Pantry Service\nPetramco > Facilities Support > Pantry Service'])).toBeTruthy('AssignedGroup');
             // verify LOB is there
             expect(await createTaskTemplate.getLobValue()).toBe("Facilities");
             await createTaskTemplate.clickOnSaveTaskTemplate();

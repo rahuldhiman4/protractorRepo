@@ -60,6 +60,7 @@ class ApprovalsConsole {
         cancelModalButton: '.modal-footer [rx-id="cancel-button"]',
         moveApprovalButton: 'button.move-button',
         approvalTypeDropdown: '[rx-id="approver-type"] button',
+        approvalModalSaveButton: '.modal-footer button[rx-id="save-button"]'
     }
 
     async searchAndOpenApprovalConfiguration(apporvalConfiguration: string): Promise<void> {
@@ -132,13 +133,13 @@ class ApprovalsConsole {
         return await element(by.cssContainingText(this.selectors.selectExpressionOption, expressionFieldOption)).getText();
     }
 
-    async selectExpressionFieldOption(fieldOption :string): Promise<void> {
+    async selectExpressionFieldOption(fieldOption: string): Promise<void> {
         let countChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').count();
-        for (let i =0; i<countChild; i++){
+        for (let i = 0; i < countChild; i++) {
             let getTextofChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').get(i).getAttribute('title');
-            if (getTextofChild == fieldOption){
-              await $$('.modal-body .ui-tree-selectable .d-icon-plus_circle').get(i).click();  
-              break;
+            if (getTextofChild == fieldOption) {
+                await $$('.modal-body .ui-tree-selectable .d-icon-plus_circle').get(i).click();
+                break;
             }
         }
     }
@@ -288,16 +289,47 @@ class ApprovalsConsole {
 
     async clickOnMenuItem(menuName: string): Promise<void> {
         let countParent = await $$('.modal-body .a-tree__label').count();
-        for (let i =0; i<countParent; i++){
+        for (let i = 0; i < countParent; i++) {
             let getTextofparent = await $$('.modal-body .a-tree__label adapt-highlight').get(i).getText();
-            console.log('getTextofparent>>>>>',getTextofparent);
-            if (getTextofparent == menuName){
-              await $$('.modal-body .a-tree__toggle').get(i).click();  
-              await browser.sleep(3000);//Added becoz of slownees open the parent tree
-              break;
+            console.log('getTextofparent>>>>>', getTextofparent);
+            if (getTextofparent == menuName) {
+                await $$('.modal-body .a-tree__toggle').get(i).click();
+                await browser.sleep(3000);//Added becoz of slownees open the parent tree
+                break;
             }
         }
-    }​
+    }
+
+    async selectDropdownValueForMultiselect(dropdownName: string, dropdownValue: string) {
+        let dropdown = 'rx-select-with-pagination';
+        let dropdownCount = await $$(dropdown).count();
+        for (let i = 0; i < dropdownCount; i++) {
+            let name = await $$(dropdown).get(i).$('.form-control-label span').getText();
+            if (name === dropdownName) {
+                await $$(dropdown).get(i).$('button.dropdown-toggle').click();
+                await $$(dropdown).get(i).$('.adapt-rx-search__input-wrapper input').sendKeys(dropdownValue);
+                await browser.sleep(3000);
+                let drpDwnvalue = await $$('button.dropdown-item').count();
+                for (let i = 0; i < drpDwnvalue; i++) {
+                    let value: string = await $$('button.dropdown-item').get(i).$('.rx-select__option-content strong').getText();
+                    if (value === dropdownValue) {
+                        console.log('Element found for ', dropdownValue);
+                        await $$('button.dropdown-item').get(i).click();
+                        break;
+                    }
+                }
+                await $$(dropdown).get(i).click();
+            }
+        }
+    }
+
+    async clickMoveButton() {
+        await $(this.selectors.moveApprovalButton).click();
+    }
+
+    async clickApproverModalSaveButton() {
+        await $(this.selectors.approvalModalSaveButton).click();
+    }
 }
 
 export default new ApprovalsConsole();
