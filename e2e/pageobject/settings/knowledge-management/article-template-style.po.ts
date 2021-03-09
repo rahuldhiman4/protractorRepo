@@ -14,15 +14,15 @@ class ArticleTemplateStyle {
         saveButton:'button[btn-type="primary"]',
         styleNameRequired:'.label__text_required',
         cancelButton:'.action-panel__cancel-btn',
-        sectionTitle: 'div.default-section-title',
-        boldIcon: 'label[title="Bold"]',
-        italicIcon: 'label[title="Italic"]',
-        underLineIcon: 'label[title="Underline"]',
-        leftAlignIcon: 'label[title="Align Left"]',
-        rightAlignIcon: 'label[title="Align Right"]',
-        justifyAlignIcon: 'label[title="Justify"]',
-        strikeOutIcon: 'label[title="Strikethrough"]',
-        centeralAlignIcon: 'label[title="Center"]',
+        sectionTitle: 'adapt-accordion-tab .text-direction span',
+        boldIcon: 'button .d-icon-bold',
+        italicIcon: 'button .d-icon-italic',
+        underLineIcon: 'button .d-icon-underline',
+        leftAlignIcon: 'button .d-icon-align_left',
+        rightAlignIcon: 'button .d-icon-align_right',
+        justifyAlignIcon: 'button .d-icon-lines',
+        strikeOutIcon: 'button .d-icon-strikeout',
+        centeralAlignIcon: 'button .d-icon-align_center',
         previewBox: 'textarea.create-ticket__item',
         fontDropdown: 'select[ng-model="selected_css.fontFamily.value"]',
         fontDropdownValue: 'select[ng-model="selected_css.fontFamily.value"] option',
@@ -39,7 +39,7 @@ class ArticleTemplateStyle {
     }
 
     async isDeleteStyleButtonPresent():Promise<boolean>{
-        return await $(this.selectors.deleteButtonIcon).isDisplayed();
+        return await $$(this.selectors.deleteButtonIcon).last().isDisplayed();
     }
 
     async clickAddNewStyle():Promise<void>{
@@ -65,6 +65,7 @@ class ArticleTemplateStyle {
     }
 
     async setStyleName(values:string):Promise<void>{
+      await $$(this.selectors.stylesName).last().clear();
        await $$(this.selectors.stylesName).last().sendKeys(values);
     }
 
