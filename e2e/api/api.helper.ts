@@ -2207,7 +2207,6 @@ class ApiHelper {
             }
             adhocTaskPayload.fieldInstances["1000000337"] = taskRequester;
         }
-        console.log('>>>>>>>>>>>>>>>>>>',adhocTaskPayload);
         
         let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
         console.log('Create Task API Status =============>', createTaskResponse.status);
