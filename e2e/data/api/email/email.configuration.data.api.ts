@@ -142,6 +142,10 @@ export const EMAIL_OUTGOING = {
         "18217": {
             "id": 18217,
             "value": "Temp"
+        },
+        "18147": {
+            "id": 18147,
+            "value": 1
         }
     }
 };

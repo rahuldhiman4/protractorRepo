@@ -561,10 +561,7 @@ describe('Document Library Consume Permission', () => {
         let publish: string[];
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteAllEmailConfiguration();
-            let response = await apiHelper.createEmailBox('outgoing');
-            await apiHelper.createEmailProfile(response.id);
-            await apiHelper.updateLOBWithEmailProfile("Human Resource", "Email Profile for Outgoing");
+            await apiHelper.createEmailBox('outgoing');
 
             publishDocLibData1 = {
                 docLibTitle: 'drdmv13508_publish_document3',
