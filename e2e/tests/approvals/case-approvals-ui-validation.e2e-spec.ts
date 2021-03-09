@@ -448,7 +448,7 @@ describe("Case Approval UI Validations", () => {
     });
 
     //skhobrag
-    fdescribe('[5154]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
+    describe('[5154]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
         let caseSummary = "Automated One must Approval Case" + randomStr;
