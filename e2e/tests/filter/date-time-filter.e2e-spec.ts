@@ -326,8 +326,9 @@ describe('Date and Time Preset Filter', () => {
         });
         it('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await navigationPage.gotoCaseConsole();
+            await browser.sleep(2000); //Time reguired for case to appear on case console
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Request ID", "121", "test");
+            await utilityGrid.addFilter("Request ID", "121", "test"); //Failing due to defect DRDMV-25217
             expect(await utilityGrid.isGridRecordPresent(caseIdForDWP.displayId)).toBeTruthy();
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
@@ -336,7 +337,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectDateOnCalender(16);
             await dateTimeSelectorPo.selectTimeToggle();
             await dateTimeSelectorPo.setHour('11');
-            await dateTimeSelectorPo.setMinute(54);
+            await dateTimeSelectorPo.setMinute(50);
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
             await utilityGrid.clickRefreshIcon();
@@ -360,7 +361,7 @@ describe('Date and Time Preset Filter', () => {
         it('[12077]: Verify records are fetched on case console Target date and Request ID combinations', async () => {
             await utilityGrid.addFilter("Requester", "Kedar Jadhav", "text");
             await utilityGrid.addFilter("Source", "Agent", "text");
-            //await utilityGrid.addFilter("Label", menuItemName, "text"); //Label is removed from case console
+            //await utilityGrid.addFilter("Label", menuItemName, "text"); //Label is removed from case console. This is as expected as per defect DRDMV-25208.
             await utilityGrid.addFilter("SLM Status", "Service Targets Not Attached", "checkbox");
             await utilityGrid.addFilter("Assignee Login Name", "qkatawazi", "text");
             await utilityGrid.addFilter("Region", "Asia-Pac", "text");
@@ -408,6 +409,7 @@ describe('Date and Time Preset Filter', () => {
         });
         it('[12074]: Verify records are fetched on task console with Targeted Date, Priority and status combinations', async () => {
             await navigationPage.gotoTaskConsole();
+            await browser.sleep(2000); //Time reguired for case to appear on case console
             await utilityGrid.clearFilter();
             await utilityGrid.clickFilterField("Target Date");
             await dateTimeSelectorPo.clickStartDateTab();
@@ -416,7 +418,7 @@ describe('Date and Time Preset Filter', () => {
             await dateTimeSelectorPo.selectDateOnCalender(13);
             await dateTimeSelectorPo.selectTimeToggle();
             await dateTimeSelectorPo.setHour('11');
-            await dateTimeSelectorPo.setMinute(54);
+            await dateTimeSelectorPo.setMinute(50);
             await dateTimeSelectorPo.clickMeridianValue("PM");
 
             await dateTimeSelectorPo.selectTimeToggle();

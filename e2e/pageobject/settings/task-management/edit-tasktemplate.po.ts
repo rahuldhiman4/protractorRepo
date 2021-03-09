@@ -32,7 +32,7 @@ class EditTaskTemplate {
         processNameValue: '[rx-view-component-id="534ab8af-7e9d-49a9-8cab-c3ab1aa38c91"] input',
         taskDescription: 'b9b752cf-8cef-4598-9a8d-85748b13f0d7',
         templateStatus: '[rx-view-component-id="279fd957-576d-4428-b503-a1330cbd9498"] .dropdown',
-        labelValue: '[rx-view-component-id="11b0e7ec-10f6-4ecf-a69f-b513d68fa45d"] button'
+        labelValue: '[rx-view-component-id="e820992c-e571-4729-b7cd-6c52eda13dd5"] button'
     }
 
     async selectPriorityValue(priority: string): Promise<void> {
@@ -183,7 +183,7 @@ class EditTaskTemplate {
     }
 
     async getTaskCategoryTier4(): Promise<string> {
-        return await $(`[rx-view-component-id="${this.selectors.taskCategoryDrpDown4}"] .ui-select-match-text`).getText();
+        return await $(`[rx-view-component-id="${this.selectors.taskCategoryDrpDown4}"] .rx-select__search-button-title`).getText();
     }
 
 

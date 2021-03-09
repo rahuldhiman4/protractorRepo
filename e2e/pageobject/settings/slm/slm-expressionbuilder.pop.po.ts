@@ -13,13 +13,14 @@ class SlmExpressionBuilder {
         getExpressionOperator: 'span[type="OPERATOR"]',
         getExpressionFieldValue: 'span[type="VALUE"]',
         saveSVTExpressionButton: '[rx-view-component-id="46c33f50-2695-45c7-8a11-db8d7fccd581"] button',
+        cancelSVTExpressionButton: '[rx-view-component-id="ac2d52d1-e0e3-427e-9e35-40d20b91e35c"] button',
         saveTaskSVTExpressionButton: '[rx-view-component-id="377c4912-0248-4099-bb96-30a94b3abf1b"] button',
         isPartialExpression: 'div[class*="bwf-invalid-expression"]',
         expandExpressionField: '.d-icon-triangle_right',
         selectFirstLevelExpressionField: 'div.bwf-field-selector_field',
         selectSecondLevelExpressionField: '.bwf-field-selector_child-container .bwf-field-selector_field',
         clearExpression: 'div.cke_enable_context_menu',
-        fieldSearch: '[rx-view-component-id="b7b2f1b7-c03c-4bcb-b5bf-fddfc34e563b"] input'
+        fieldSearch: '[rx-view-component-id="2979b946-c150-43d3-86d5-892f6f9b229f"] input'
     }
 
     async getExpressionFieldAvailable(expressionField: string): Promise<string> {
@@ -47,7 +48,7 @@ class SlmExpressionBuilder {
         return await $(this.expressionBuilderSelectors.selectFirstLevelExpressionField).getText();
     }
     async clearSearchField(): Promise<void> {
-        await $$(this.expressionBuilderSelectors.fieldSearch).get(0).clear();
+        await $(this.expressionBuilderSelectors.fieldSearch).clear();
     }
 
     async getFirstLevelExpressionFieldAll(data: string[]): Promise<boolean> {
@@ -218,6 +219,10 @@ class SlmExpressionBuilder {
     async clickOnSaveExpressionButton() {
         // await browser.wait(this.EC.visibilityOf($(this.expressionBuilderSelectors.saveSVTExpressionButton)), 2000);
         await $(this.expressionBuilderSelectors.saveSVTExpressionButton).click();
+    }
+
+    async clickOnCancelExpressionButton() {
+        await $(this.expressionBuilderSelectors.cancelSVTExpressionButton).click();
     }
 
     async clickOnSaveExpressionButtonForTask() {
