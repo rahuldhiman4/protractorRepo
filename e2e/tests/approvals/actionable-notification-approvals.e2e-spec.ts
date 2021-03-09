@@ -12,7 +12,7 @@ import utilityGrid from '../../utils/utility.grid';
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
 let requestSecondaryStr: string = 'Request Secondary';
 
-xdescribe("Actionable Notification Approval", () => {
+describe("Actionable Notification Approval", () => {
     let caseData;
     let caseModule = 'Case';
 
