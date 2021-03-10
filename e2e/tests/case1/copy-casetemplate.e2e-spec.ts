@@ -218,7 +218,6 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.isOwnerCompanyEmpty()).toBeTruthy();
         });
         afterAll(async () => {
-            await 
             await navigationPage.signOut();
             await loginPage.login("qkatawazi");
         });

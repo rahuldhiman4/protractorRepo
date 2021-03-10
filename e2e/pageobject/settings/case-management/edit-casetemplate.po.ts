@@ -40,7 +40,7 @@ class EditCaseTemplate {
         cancelTemplateMetaData: '[rx-view-component-id="e4cd9ed1-026d-4c8c-8557-bce659a2c344"] button',
         caseTemplateId: '.text-field',
         reopentimelineDays: '[rx-view-component-id="88249662-e4c4-4ca7-9e34-0ecbd4bc0252"] input',
-        manageDynamicFieldsLink: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] .edit-link',
+        manageDynamicFieldsLink: '[rx-view-component-id="3cd9b535-36f6-4718-bede-9154ca02ae22"] .d-icon-left-pencil',
         copyTemplate: '[rx-view-component-id="0bb1dd3b-639f-4019-adbd-96faae6920ef"] button',
         taskFlow: '[rx-view-component-id="3b142f9f-078c-4a9f-9215-0cc3ec054244"] .d-icon-left-pencil',
         assignmentMethodValue: '[rx-view-component-id="9183824b-61c4-4a00-bcfa-7f4e7461e10c"] .dropdown-toggle',

@@ -81,7 +81,7 @@ describe('Knowledge Article', () => {
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe('Qadim Katawazi');
-            expect(await editKnowledgePage.getKnowledgeMetaDataValue('Support Group')).toBe('US Support 3');
+            expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe('US Support 3');
         }
         catch (error) {
             throw error;
@@ -149,7 +149,7 @@ describe('Knowledge Article', () => {
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
             //let assigneeFullName = personData.firstName + " " + personData.lastName;
             expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assignee')).toBe("Qadim Katawazi");
-            expect(await editKnowledgePage.getKnowledgeMetaDataValue('Support Group')).toBe("US Support 3");
+            expect(await editKnowledgePage.getKnowledgeMetaDataValue('Assigned Group')).toBe("US Support 3");
         });
         afterAll(async () => {
             await utilityCommon.closePopUpMessage();
@@ -502,7 +502,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-
+//DRDMV-25260
     it('[5899]: [Knowledge Article] Adding/Modifying location data while creating knowledge articles - site, region', async () => {
         try {
             let knowledgeTitle = 'knowledge2887' + randomStr;
