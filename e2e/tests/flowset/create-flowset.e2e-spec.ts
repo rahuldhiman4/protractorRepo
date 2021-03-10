@@ -284,6 +284,7 @@ describe('Create Flowset', () => {
             await createFlowset.selectStatus("Active");
             await createFlowset.clickSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Flowset with the same name already exists. Specify a different name.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
             await createFlowset.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
