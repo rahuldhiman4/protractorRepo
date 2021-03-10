@@ -212,6 +212,10 @@ describe('Service Target Configs', () => {
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilityCommon.closePopUpMessage();
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+
     });
 
     //skhobrag
@@ -246,7 +250,7 @@ describe('Service Target Configs', () => {
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
-    
+
     });
 
     //skhobrag
@@ -334,7 +338,12 @@ describe('Service Target Configs', () => {
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilityCommon.closePopUpMessage();
         });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
+
 
     //skhobrag
     describe('[3562]: SLAs attached even though current user loose access to the current record', async () => {
@@ -556,7 +565,7 @@ describe('Service Target Configs', () => {
 
             await utilityGrid.clearFilter();
             await utilityGrid.clickRefreshIcon()
-            
+
             await utilityGrid.addFilter('Service Target ID', serviceTargetID, 'text');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target ID record is not searched.');
 
@@ -580,6 +589,10 @@ describe('Service Target Configs', () => {
             await utilityGrid.addFilter('Status', 'Enabled', 'checkbox');
             expect(await serviceTargetConsole.isFilteredRecordDisplayed()).toBeTruthy('Service Target Status record is not searched.');
             await utilityGrid.clearFilter();
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -697,6 +710,10 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Enable Team Tracking')).toBeFalsy('Enable Team Tracking field is disabled.');
             await serviceTargetConfig.clickCloseButton();
         });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //skhobrag
@@ -742,6 +759,10 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.clickOnSaveSVTButton();
             expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await utilityCommon.closePopUpMessage();
+        });
+
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -1041,6 +1062,7 @@ describe('Service Target Configs', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1243,6 +1265,7 @@ describe('Service Target Configs', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1611,6 +1634,7 @@ describe('Service Target Configs', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

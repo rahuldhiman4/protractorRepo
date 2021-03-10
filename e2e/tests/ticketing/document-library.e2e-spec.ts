@@ -514,8 +514,8 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
-            await createDocumentLibraryPo.selectSupportOrg('HR Support');
-            await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
+            await createDocumentLibraryPo.selectSupportOrg('United States Support');
+            await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
@@ -530,6 +530,7 @@ describe('Document Library', () => {
             let systemDate: string = await new Date().toLocaleTimeString()
             let systemTime: string[] = systemDate.split(":");
             await editDocumentLibraryPo.clickOnSaveButton();
+            await utilityCommon.closePopUpMessage();
             await editDocumentLibraryPo.clickOnCancelButton();
             let column: string[] = ["Author"];
             await documentLibraryConsolePo.addColumnOnGrid(column);

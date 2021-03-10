@@ -383,7 +383,7 @@ describe('Case Manager Read-only Config', () => {
         expect(await editServiceTargetConfigPage.isDeleteMilestoneButtonDisabled()).toBeTruthy('Delete Milestone button is enabled');
         expect(await editServiceTargetConfigPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
     });
-//check with anant expect failing
+
     it('[3962]: Check Case manager is not able to perform Create Update Delete operation on Service Target Group', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let svtGrpName = '3962' + randomStr;
@@ -416,10 +416,10 @@ describe('Case Manager Read-only Config', () => {
         expect(await editServiceTargetGroupPage.isSaveBtnEnabled()).toBeFalsy('Save button is enabled');
         await editServiceTargetGroupPage.clickcancel();
         await utilityGrid.searchAndSelectGridRecord(svtGrpName);
-        expect(await serviceTargetGroupConsole.isDeleteButtonEnabled()).toBeFalsy('Delete Button is enabled');
+        expect(await serviceTargetGroupConsole.isDeleteButtonPresent()).toBeFalsy('Delete Button is enabled');
     });
 
-    //asahitya, allow execution after memory leak issue fix DRDMV-25103
+    //asahitya,Raised DRDMV-25315
     it('[DRDMV-18041]: Check Case manager is not able to perform Create Update Delete operation on Notification Configuration', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
@@ -435,6 +435,7 @@ describe('Case Manager Read-only Config', () => {
         await editNotificationTemplatePage.openAlertEditMessageText();
         expect(await editNotificationTemplatePage.isAlertSubjectMessageDisabled()).toBeTruthy('Alert textbox is enabled');
         await editNotificationTemplatePage.cancelAlertMessageText();
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await editNotificationTemplatePage.clickOnEmailTab();
         await editNotificationTemplatePage.openEmailBodyEditMessageText();
         expect(await editNotificationTemplatePage.isEmailBodyMessageDisabled()).toBeTruthy('Email body textbox is enabled');

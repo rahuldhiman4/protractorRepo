@@ -62,16 +62,6 @@ describe('Create Process in Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             flowsetMandatoryFieldsData["lineOfBusiness"] = "Facilities";
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
-            //Map Process to Flowset
-            let flowsetProcessMappingData = {
-                function: 'Initialization',
-                processNameFull: registerProcessData.processName,
-                processName: processName,
-                status: 'Active',
-                flowsetId: flowsetResponse.id,
-                company: 'Petramco'
-            }
-            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
 
             //Create Case Template
             let caseTemplateData = {
@@ -212,17 +202,6 @@ describe('Create Process in Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
-            //Map Process to Flowset
-            let flowsetProcessMappingData = {
-                function: 'Initialization',
-                processNameFull: registerProcessData.processName,
-                processName: processName,
-                status: 'Active',
-                flowsetId: flowsetResponse.id,
-                company: 'Petramco'
-            }
-            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
-
             //Create Case Template
             let caseTemplateData = {
                 "templateName": '5295 tname' + randomStr,
@@ -286,17 +265,6 @@ describe('Create Process in Flowset', () => {
             let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
-
-            //Map Process to Flowset
-            let flowsetProcessMappingData = {
-                function: 'User Activity Feeds',
-                processNameFull: registerProcessData.processName,
-                processName: processName,
-                status: 'Active',
-                flowsetId: flowsetResponse.id,
-                company: 'Petramco'
-            }
-            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
 
             //Create Case Template
             let caseTemplateData = {
@@ -392,29 +360,7 @@ describe('Create Process in Flowset', () => {
             let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetName
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
-
-            //Map Process1 to Flowset
-            let flowsetProcessMappingData1 = {
-                function: 'User Activity Feeds',
-                processNameFull: registerProcessData1.processName,
-                processName: processName1,
-                status: 'Active',
-                flowsetId: flowsetResponse.id,
-                company: 'Petramco'
-            }
-            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData1);
-
-            //Map Process2 to Flowset
-            let flowsetProcessMappingData2 = {
-                function: 'Initialization',
-                processNameFull: registerProcessData2.processName,
-                processName: processName2,
-                status: 'Active',
-                flowsetId: flowsetResponse.id,
-                company: 'Petramco'
-            }
-            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData2);
-
+           
             //Create Case Template
             let caseTemplateData = {
                 "templateName": '5324 tname' + randomStr,
