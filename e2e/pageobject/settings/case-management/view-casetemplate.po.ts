@@ -227,8 +227,10 @@ class ViewCaseTemplate {
     }
 
     async clickBackArrowBtn(): Promise<void> {
-        await browser.wait(this.EC.elementToBeClickable(await $(this.selectors.backArrowButton)), 6000);
-        await $(this.selectors.backArrowButton).click();
+        let backArrow = await $$(this.selectors.backArrowButton).count();
+        for (let i = 0; i < backArrow; i++) {
+            await $$(this.selectors.backArrowButton).last().click();
+        }
     }
 
     async isTaskFlowBtnEnabled(): Promise<boolean> {
