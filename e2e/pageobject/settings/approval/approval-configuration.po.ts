@@ -304,29 +304,6 @@ class ApprovalsConsole {
         }
     }
 
-    async selectDropdownValueForMultiselect(dropdownName: string, dropdownValue: string) {
-        let dropdown = 'rx-select-with-pagination';
-        let dropdownCount = await $$(dropdown).count();
-        for (let i = 0; i < dropdownCount; i++) {
-            let name = await $$(dropdown).get(i).$('.form-control-label span').getText();
-            if (name === dropdownName) {
-                await $$(dropdown).get(i).$('button.dropdown-toggle').click();
-                await $$(dropdown).get(i).$('.adapt-rx-search__input-wrapper input').sendKeys(dropdownValue);
-                await browser.sleep(3000);
-                let drpDwnvalue = await $$('button.dropdown-item').count();
-                for (let i = 0; i < drpDwnvalue; i++) {
-                    let value: string = await $$('button.dropdown-item').get(i).$('.rx-select__option-content strong').getText();
-                    if (value === dropdownValue) {
-                        console.log('Element found for ', dropdownValue);
-                        await $$('button.dropdown-item').get(i).click();
-                        break;
-                    }
-                }
-                await $$(dropdown).get(i).click();
-            }
-        }
-    }
-
     async clickMoveButton() {
         await $(this.selectors.moveApprovalButton).click();
     }

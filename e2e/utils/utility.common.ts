@@ -734,6 +734,32 @@ export class Utility {
         if (values >= 1) return true;
         else return false;
     }
+
+    async selectMultiSelectDropDownValues(dropdownName: string, dropdownValue: string[]) {
+        let dropdown = 'rx-select-with-pagination';
+        let dropdownItem = 'button.dropdown-item';
+        let dropdownCount = await $$(dropdown).count();
+        for (let i = 0; i < dropdownCount; i++) {
+            let name = await $$(dropdown).get(i).$('.form-control-label span').getText();
+            if (name === dropdownName) {
+                for (let j = 0; j < dropdownValue.length; j++) {
+                    await $$(dropdown).get(i).$('button.dropdown-toggle').click();
+                    await $$(dropdown).get(i).$('.adapt-rx-search__input-wrapper input').sendKeys(dropdownValue[j]);
+                    await browser.sleep(3000);
+                    let drpDwnvalue = await $$(dropdownItem).count();
+                    for (let k = 0; k < drpDwnvalue; k++) {
+                        let value: string = await $$(dropdownItem).get(k).$('.rx-select__option-content').getText();
+                        if (value.includes(dropdownValue[j])) {
+                            console.log('Element found for ', dropdownValue[j]);
+                            await $$(dropdownItem).get(k).click();
+                            await $$(dropdown).get(i).click();
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 export default new Utility();
