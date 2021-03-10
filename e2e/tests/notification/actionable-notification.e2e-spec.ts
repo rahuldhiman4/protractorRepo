@@ -519,7 +519,7 @@ describe("Actionable Notifications", () => {
             "supportGroup": "US Support 3"
         }
 
-        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.apiLogin('qfeng');
         let response1 = await apiHelper.createCase(caseData['actionableNotificationWithoutAssignee']);
         let response2 = await apiHelper.createAdhocTask(response1.id, taskData);
         await apiHelper.changeCaseAssignment(response1.id, 'United States Support', 'US Support 1', 'qtao');
@@ -758,8 +758,6 @@ describe("Actionable Notifications", () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('NEXT_REVIEW_PERIOD', 'Petramco');
         });
     });
 
@@ -768,7 +766,7 @@ describe("Actionable Notifications", () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             let svtCreateData = {
-                "terms": "'1000000337'=\"e7c60fdad2002d4c199935a94b253ad99d9a68b555f60a08a8de2c9feb2c5c4384b4342bc1571d45eb31b96696b3c309e6b007f0469d329dfffbee32c5139e34\" AND '1000000164'=\"1000\"",
+                "terms": "'1000000337'=\"IDGAA5V0HI5R3ANATPP8SX6Q8CB988\" AND '1000000164'=\"1000\"",
                 "readableTerms": "'Company'=\"Petramco\"",
                 "startWhen": "'450000021'=\"2000\"",
                 "readableStartWhen": "'Status'=\"Assigned\"",
@@ -831,10 +829,11 @@ describe("Actionable Notifications", () => {
 
     describe('[4173]: Check out of the box notification-"Task SLA Missed" is actionable for type Alert', () => {
         let caseResponse, taskResponse = undefined;
+        const svtName = '4173' + [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             let svtCreateData = {
-                "terms": "'1000000164'=\"1000\" AND '1000000063'=\"4bae23c056ea5678c965c0ac99a0d42129fac36dad17734f4cccf72ed0728970484abbb531b3257310f5218d372e9f858c4dab28b02703e23a18a069d7cc079c\"",
+                "terms": "'1000000164'=\"1000\" AND '1000000063'=\"Total Rewards\"",
                 "readableTerms": "'Priority'=\"Critical\" AND 'Category Tier 1'=\"Accounts Payable\"",
                 "startWhen": "'450000021'=\"2000\"",
                 "readableStartWhen": "'Status'=\"Assigned\"",
@@ -843,7 +842,7 @@ describe("Actionable Notifications", () => {
                 "goalTimeMinutes": "1",
                 "dataSource": "Task Management",
                 "company": "Petramco",
-                "svtName": '4173'
+                "svtName": svtName
             }
             let svtResponse = await apiHelper.createSVT(svtCreateData);
             await apiHelper.attachMilestone(svtResponse.id, 'TASK');
@@ -868,7 +867,7 @@ describe("Actionable Notifications", () => {
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
                 "assignee": "qfeng",
-                "category1": "Accounts Payable"
+                "category1": "Total Rewards"
             }
             taskResponse = await apiHelper.createAdhocTask(caseResponse.id, taskData)
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress')
