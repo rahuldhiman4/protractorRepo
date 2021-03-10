@@ -16,31 +16,17 @@ import editNotificationTemplatePage from '../../pageobject/settings/notification
 import { BWF_BASE_URL, operation, security, type, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import caseConsole from '../../pageobject/case/case-console.po';
+import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
 
-xdescribe("Notifications", () => {
+describe("Notifications", () => {
     const caseModule = 'Case';
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
         await apiHelper.apiLogin('tadmin');
-        await apiHelper.enableActionableNotificationSetting();
         await apiHelper.deleteApprovalMapping(caseModule);
-
-        const personDataFile = require('../../data/ui/foundation/person.ui.json');
-        let personData1 = personDataFile['PhylumCaseAgent1'];
-        await apiHelper.createNewUser(personData1);
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData1.userId, 'Phylum');
-
-        let personData2 = personDataFile['PhylumCaseAgent2'];
-        await apiHelper.createNewUser(personData2);
-        await apiHelper.associatePersonToSupportGroup(personData2.userId, 'Phylum Support Group1');
-        await apiHelper.associatePersonToCompany(personData2.userId, 'Phylum');
-
-        await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
-        await apiHelper.setDefaultNotificationForUser('Fritz', "Alert");
-        await apiHelper.setDefaultNotificationForUser('qfeng', "Alert");
     });
 
     afterAll(async () => {
@@ -52,9 +38,9 @@ xdescribe("Notifications", () => {
     describe('[4355]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
         beforeAll(async () => {
             await navigationPage.signOut();
-            await loginPage.login('idphylum1@petramco.com', 'Password_1234');
+            await loginPage.login('mcarney');
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.setDefaultNotificationForUser('idphylum1', "Alert");
+            // await apiHelper.setDefaultNotificationForUser('idphylum1', "Alert");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfig.setCompanyDropdown('Phylum', 'case');
@@ -63,30 +49,34 @@ xdescribe("Notifications", () => {
         });
 
         it('[4355]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', async () => {
-            await apiHelper.apiLogin('idphylum2@petramco.com', "Password_1234");
+            await apiHelper.apiLogin('jmilano');
             let caseData = {
                 "Description": "4355-Desc",
-                "Requester": "idphylum2",
+                "Requester": "jmilano",
                 "Summary": "4355-Summary",
                 "Assigned Company": "Phylum",
                 "Business Unit": "Phylum Support Org1",
                 "Support Group": "Phylum Support Group1",
-                "Assignee": "idphylum1",
+                "Assignee": "mcarney",
                 "Status": "2000",
                 "Line of Business": "Finance"
             }
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await apiHelper.apiLogin('idphylum1@petramco.com', "Password_1234");
-            await apiHelper.addCaseToWatchlistAllEvents(response.id);
-            await apiHelper.apiLogin('idphylum2@petramco.com', "Password_1234");
+            await apiHelper.apiLogin('mcarney');
+            await utilityGrid.searchRecord(response.displayId);
+            await utilityGrid.clickCheckBoxOfValueInGrid(response.displayId);
+            await caseConsole.clickOnAddToWatchlist();
+            await caseWatchlist.addWatchlistEvent('Case Status Changes');
+            await caseWatchlist.saveEvents();
+            await apiHelper.apiLogin('jmilano');
             await apiHelper.updateCaseStatus(response.id, 'InProgress');
             await apiHelper.updateCaseStatus(response.id, 'Pending', 'Customer Response');
             await apiHelper.updateCaseStatus(response.id, 'Resolved', 'Auto Resolved');
             await apiHelper.updateCaseStatus(response.id, 'AfterResolved');
             await utilityCommon.refresh(); //Refreshing the page to reflect the notification
             await notificationPo.clickOnNotificationIcon();
-            expect(await notificationPo.isAlertPresent(`phylumfn2 phylumln2 changed the status of ${response.displayId} to AfterResolved`)).toBeTruthy();
+            expect(await notificationPo.isAlertPresent(`Jeanne Milano changed the status of ${response.displayId} to AfterResolved`)).toBeTruthy();
         });
 
         afterAll(async () => {
@@ -186,7 +176,7 @@ xdescribe("Notifications", () => {
         }
     });
 
-    describe('[59944]: Formatting for notifications-multi line data appearing in notification', () => {
+    xdescribe('[59944]: Formatting for notifications-multi line data appearing in notification', () => {
         let caseData = {
             "Description": "Notification check",
             "Requester": "qkatawazi",
