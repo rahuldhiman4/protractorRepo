@@ -62,6 +62,16 @@ describe('Create Process in Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             flowsetMandatoryFieldsData["lineOfBusiness"] = "Facilities";
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
+            //Map Process to Flowset
+            let flowsetProcessMappingData = {
+                function: 'Initialization',
+                processNameFull: registerProcessData.processName,
+                processName: processName,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
 
             //Create Case Template
             let caseTemplateData = {
@@ -202,6 +212,17 @@ describe('Create Process in Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
+             //Map Process to Flowset
+             let flowsetProcessMappingData = {
+                function: 'Initialization',
+                processNameFull: registerProcessData.processName,
+                processName: processName,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
+
             //Create Case Template
             let caseTemplateData = {
                 "templateName": '5295 tname' + randomStr,
@@ -247,24 +268,20 @@ describe('Create Process in Flowset', () => {
             processName = `Activity Feed Email ${randomStr}`
             await apiHelper.createProcess(processName, 'SOCIAL_ACTIVITY_FEED');
 
-            //Register the Process
-            await apiHelper.apiLogin('qkatawazi');
-            const registerProcessData = {
-                applicationServicesLib: "com.bmc.dsm.social-lib",
-                processName: 'com.bmc.dsm.social-lib:' + processName,
-                processAliasName: processName,
-                company: 'Petramco',
-                description: 'Desc ' + randomStr,
-                status: 'Active',
-                lineOfBusiness: "Human Resource"
-            }
-            await apiHelper.createProcessLibConfig(registerProcessData);
-
             //Create new flowset
             let flowsetName: string = `5294 ${randomStr}`;
             let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
+            await apiHelper.apiLogin('qkatawazi');
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
+            
+            //Map Process to Flowset
+            let flowsetProcessMappingData = {
+                flowsetId: flowsetResponse.id,
+                processName: processName,
+                processNameFull: 'com.bmc.dsm.social-lib:' + processName,
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData);
 
             //Create Case Template
             let caseTemplateData = {
@@ -311,7 +328,7 @@ describe('Create Process in Flowset', () => {
             await activityTabPage.addActivityNote("hello");
             await activityTabPage.clickOnPostButton();
             await browser.sleep(1000); //hardwait to complete process execution
-            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(1);
             await statusBladePo.changeStatus('In Progress');
             await statusBladePo.clickSaveStatus('In Progress');
             expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.social-lib', processName)).toEqual(2);
@@ -361,6 +378,28 @@ describe('Create Process in Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetName
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
            
+             //Map Process1 to Flowset
+             let flowsetProcessMappingData1 = {
+                function: 'User Activity Feeds',
+                processNameFull: registerProcessData1.processName,
+                processName: processName1,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData1);
+
+            //Map Process2 to Flowset
+            let flowsetProcessMappingData2 = {
+                function: 'Initialization',
+                processNameFull: registerProcessData2.processName,
+                processName: processName2,
+                status: 'Active',
+                flowsetId: flowsetResponse.id,
+                company: 'Petramco'
+            }
+            await apiHelper.mapProcessToFlowset(flowsetProcessMappingData2);
+
             //Create Case Template
             let caseTemplateData = {
                 "templateName": '5324 tname' + randomStr,
