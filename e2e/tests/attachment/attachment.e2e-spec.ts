@@ -1457,7 +1457,7 @@ describe("Attachment", () => {
         });
     });
 
-    xdescribe('[12125]: Verify all the Options are loaded in Region Dropdown on multiple screens if Region Count is more than 50', () => {
+    describe('[12125]: Verify all the Options are loaded in Region Dropdown on multiple screens if Region Count is more than 50', () => {
         let caseResponse = undefined;
         let regionStr: string = 'Region';
         let lastRegionValue: string = 'Region Tier39';
