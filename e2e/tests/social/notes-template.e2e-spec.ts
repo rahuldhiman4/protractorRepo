@@ -65,7 +65,6 @@ describe('Notes template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("elizabeth");
-        await utilityGrid.selectLineOfBusiness('Human Resource');
     });
 
     afterAll(async () => {
@@ -388,7 +387,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('Petramco');
             await createNotesTemplate.setLanguageValue('English (United States)');
             await createNotesTemplate.clickOnInsertFieldLink();
-            await addFieldPo.setValueOfField('Knowledge Article', 'Assignee');
+            await addFieldPo.setValueOfField('Knowledge Article', 'Knowledge Set');
             await addFieldPo.clickOnOkButtonOfEditor();
             await createNotesTemplate.setBody("this is new actiivty notes template");
             await createNotesTemplate.clickOnSaveButton();
@@ -400,7 +399,7 @@ describe('Notes template', () => {
             await createNotesTemplate.setCompanyValue('- Global -');
             await createNotesTemplate.setLanguageValue('English (United States)');
             await createNotesTemplate.clickOnInsertFieldLink();
-            await addFieldPo.setValueOfField('Knowledge Article', 'Assignee');
+            await addFieldPo.setValueOfField('Knowledge Article', 'Knowledge Set');
             await addFieldPo.clickOnOkButtonOfEditor();
             await createNotesTemplate.setBody("this is new actiivty notes template");
             await createNotesTemplate.clickOnSaveButton();
@@ -997,6 +996,7 @@ describe('Notes template', () => {
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateManualData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1017,6 +1017,7 @@ describe('Notes template', () => {
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateExternalData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1031,6 +1032,7 @@ describe('Notes template', () => {
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1047,6 +1049,7 @@ describe('Notes template', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse2.displayId);
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateManualData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1061,6 +1064,7 @@ describe('Notes template', () => {
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateAutomatedData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1075,6 +1079,7 @@ describe('Notes template', () => {
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateExternalData1.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1091,6 +1096,7 @@ describe('Notes template', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse1.displayId);
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateManualData.templateSummary);
             await activityTabPo.clickActivityNoteTextBox();
             await activityTabPo.clickOnNotesTemplate();
@@ -1115,6 +1121,7 @@ describe('Notes template', () => {
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateAutomatedData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
             await activityTabPo.addActivityNote('AutomatedTemplateData');
@@ -1123,6 +1130,7 @@ describe('Notes template', () => {
 
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickTaskLink(templateExternalData.templateSummary);
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
             await activityTabPo.addActivityNote('ExternalTemplateData');
@@ -1138,14 +1146,17 @@ describe('Notes template', () => {
         it('[4346]: [Run Time] Verify case BA is able to select and utilize Active Task notes templates in Activity for Manual Task', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(3);
             await manageTask.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary('AdhocTask_DRDMV_16045');
             await createAdhocTaskPo.setDescription("Description");
             await createAdhocTaskPo.selectPriority('Low');
-            await createAdhocTaskPo.clickSaveAdhoctask();
+            await createAdhocTaskPo.clickAssignToMeButton();
+            await createAdhocTaskPo.clickSaveAdhoctask(4);
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closeAllBlades();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(4);
             await manageTask.clickTaskLink('AdhocTask_DRDMV_16045');
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(tempNotesTemplateData.templateName);// notes template not shown
             await activityTabPo.addActivityNote('AdhocTemplateData');

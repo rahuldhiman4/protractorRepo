@@ -462,6 +462,7 @@ describe('Case Activity CKE', () => {
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             await adhoctaskTemplate.setSummary(adhocTaskSummary);
             await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
@@ -918,6 +919,7 @@ describe('Case Activity CKE', () => {
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             await adhoctaskTemplate.setSummary(adhocTaskSummary);
             await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.clickSaveAdhoctask(4);
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
