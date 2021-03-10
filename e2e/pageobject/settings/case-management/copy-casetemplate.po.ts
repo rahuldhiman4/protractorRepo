@@ -31,7 +31,7 @@ class CopyCaseTemplate {
         ownerGroupValueOnCopy: '[rx-view-component-id="a6e62e56-9bda-40af-8bce-29ad062b76f5"] button',
         ownerGroupDropdown: 'a6e62e56-9bda-40af-8bce-29ad062b76f5',
         departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .dropdown-toggle',
-        assigneeValueOnCopy: '[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] button div',
+        assigneeValueOnCopy:'[rx-view-component-id="a370b52e-3949-429a-b49c-e10200f7ab2c"] .rx-select__search-button-title',
     }
 
     async setTemplateName(templateNameValue: string): Promise<void> {

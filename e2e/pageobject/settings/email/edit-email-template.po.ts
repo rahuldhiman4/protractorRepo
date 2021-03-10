@@ -29,8 +29,8 @@ class CreateEmailTemplateBlade {
         editPencilButton: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-left-pencil',
         statusField: '[rx-view-component-id="2b5a61a3-16f8-4d1f-9a60-558c4575ed3a"] button',
         attachLink: 'bwf-button-link button',
-        removeAttachment: '.rx-attachment-view-remove',
-        AttachedfileName: '.rx-attachment-view-name',
+        removeAttachment: 'bwf-attachment-viewer .d-icon-cross',
+        AttachedfileName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
         lobValue: '[rx-view-component-id="88459fe5-ba0c-445f-b99d-838351677590"] .pull-left'
     }
 

@@ -1042,7 +1042,7 @@ describe("Attachment", () => {
             await attachmentBladePo.clickCloseButton();
         });
 
-        it('[12090]: Verify Attachment With Task Description Attach Button ', async () => {
+        it('[12090]: Verify Document Libaray Attachment On Task Activity Tab ', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsole.searchAndOpenCase(newCase2.displayId);
             await viewCasePo.clickAddTaskButton();
@@ -1050,63 +1050,10 @@ describe("Attachment", () => {
             await adhoctaskTemplate.setSummary('AdhocTaskSummaryDRDMV15252');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await manageTaskPo.clickTaskLink('AdhocTaskSummaryDRDMV15252');
+            
 
-            await viewTaskPo.clickOnEditTask();
-            await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName1}`, `../../data/ui/attachment/${fileName2}`, `../../data/ui/attachment/${fileName3}`, `../../data/ui/attachment/${fileName4}`]);
-            await editTaskPo.clickOnSaveButton();
-            await viewCasePo.clickShowMoreShowLessLink();
-
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
-            await viewTaskPo.isAttachedFileNamePresent(fileName1);
-            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName1}`);
-            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
-
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
-            await viewTaskPo.isAttachedFileNamePresent(fileName2);
-            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName2}`);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
-
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
-            await viewTaskPo.isAttachedFileNamePresent(fileName3);
-            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName3}`);
-            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
-
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
-            await viewTaskPo.isAttachedFileNamePresent(fileName4);
-            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName4}`);
-            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
-        });
-
-        it('[12090]: Verify Locally Attachment On Task Activity Tab', async () => {
-            await activityTabPo.addActivityNote(addNoteRandomText);
-            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`, `../../data/ui/attachment/${fileName6}`, `../../data/ui/attachment/${fileName7}`, `../../data/ui/attachment/${fileName8}`]);
-            await activityTabPo.clickOnPostButton();
-            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
-
-            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName5)).toBeTruthy(`${fileName5} Attached file name is missing`);
-            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName6)).toBeTruthy(`${fileName6} Attached file name is missing`);
-            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName7)).toBeTruthy(`${fileName7} Attached file name is missing`);
-            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName8)).toBeTruthy(`${fileName8} Attached file name is missing`);
-
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
-            await activityTabPo.clickAttachedFile(`${fileName5}`);
-            expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
-
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
-            await activityTabPo.clickAttachedFile(`${fileName6}`);
-            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is not downloaded.`);
-
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
-            await activityTabPo.clickAttachedFile(`${fileName7}`);
-            expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
-
-            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
-            await activityTabPo.clickAttachedFile(`${fileName8}`);
-            expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
-        });
-
-        it('[12090]: Verify Document Libaray Attachment On Task Activity Tab ', async () => {
-            await activityTabPo.addActivityNote(addNoteRandomText);
+            await activityTabPo.clickActivityNoteTextBox();
+            await utilityCommon.updateCKEditor(addNoteRandomText, '972e87ef-cfa0-469e-9eda-a5e2d679d9d2');
             await activityTabPo.clickOnAttachLink();
             await attachDocumentBladePo.searchAndAttachDocument(docLibTitle + 1);
             await activityTabPo.clickOnAttachLink();
@@ -1138,6 +1085,62 @@ describe("Attachment", () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
             await activityTabPo.clickAttachedFile(`${fileName12}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+        });
+
+        it('[12090]: Verify Locally Attachment On Task Activity Tab', async () => {
+            //await activityTabPo.addActivityNote(addNoteRandomText);
+            await activityTabPo.clickActivityNoteTextBox();
+            await utilityCommon.updateCKEditor(addNoteRandomText, '972e87ef-cfa0-469e-9eda-a5e2d679d9d2');
+            await activityTabPo.addAttachment([`../../data/ui/attachment/${fileName5}`, `../../data/ui/attachment/${fileName6}`, `../../data/ui/attachment/${fileName7}`, `../../data/ui/attachment/${fileName8}`]);
+            await activityTabPo.clickOnPostButton();
+            await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
+
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName5)).toBeTruthy(`${fileName5} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName6)).toBeTruthy(`${fileName6} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName7)).toBeTruthy(`${fileName7} Attached file name is missing`);
+            expect(await activityTabPo.isAttachedFileNameDisplayed(fileName8)).toBeTruthy(`${fileName8} Attached file name is missing`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName5}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName6}`);
+            expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName7}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
+            await activityTabPo.clickAttachedFile(`${fileName8}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
+        });
+        it('[12090]: Verify Attachment With Task Description Attach Button ', async () => {
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.addAttachment([`../../data/ui/attachment/${fileName1}`, `../../data/ui/attachment/${fileName2}`, `../../data/ui/attachment/${fileName3}`, `../../data/ui/attachment/${fileName4}`]);
+            await editTaskPo.clickOnSaveButton();
+            await viewCasePo.clickShowMoreShowLessLink();
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
+            await viewTaskPo.isAttachedFileNamePresent(fileName1);
+            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName1}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            await viewTaskPo.isAttachedFileNamePresent(fileName2);
+            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName2}`);
+            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
+            await viewTaskPo.isAttachedFileNamePresent(fileName3);
+            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName3}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
+
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
+            await viewTaskPo.isAttachedFileNamePresent(fileName4);
+            await viewTaskPo.clickOnAttachedDocumentFile(`${fileName4}`);
+            expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
         });
 
         it('[12090]: Verify Files On Attachment Blade ', async () => {
@@ -1323,7 +1326,6 @@ describe("Attachment", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTempateName);
-            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.clickOnMangeDyanmicLink();
             await browser.sleep(3000); // Wait for attach elements gets load.
             await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName5}`], 1);
@@ -1335,6 +1337,7 @@ describe("Attachment", () => {
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.changeOwnerGroupDropdownValue('US Support 1');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.clickBackArrowBtn();
             //Create Case
             await navigationPage.gotoCaseConsole();
             await navigationPage.gotoCreateCase();
@@ -1432,6 +1435,7 @@ describe("Attachment", () => {
             await composeMail.setEmailBody("With thai attachmnents");
             await composeMail.addAttachment([`../../data/ui/attachment/${fileName9}`, `../../data/ui/attachment/${fileName10}`, `../../data/ui/attachment/${fileName11}`, `../../data/ui/attachment/${fileName12}`]);
             await composeMail.clickOnSendButton();
+            await utilityCommon.closePopUpMessage();
 
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickShowMoreLinkInAttachmentActivity(1);
