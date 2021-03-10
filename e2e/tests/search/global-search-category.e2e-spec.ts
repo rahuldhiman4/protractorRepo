@@ -196,8 +196,8 @@ describe('Global Search Category Validation', () => {
             expect(await casePreviewPo.isCaseSiteDisplayed('Austin')).toBeTruthy('FailureMsg27: Case Site Value is missing');
             expect(await casePreviewPo.isSourceDisplayed('External')).toBeTruthy('FailureMsg28: Source Value is missing');
             expect(await casePreviewPo.isRequesterSiteDisplayed('Austin\n10431 Morado Circle\nAvalon Building 5, Austin, Texas, 78759, United States ')).toBeTruthy('FailureMsg42: Reqester Site Value is missing');
-            expect(await casePreviewPo.isAssigneeDisplayed('Qiang Du')).toBeTruthy('FailureMsg30: Assignee Name is missing');
-            expect(await casePreviewPo.getAssigneeDetails()).toContain('CA Support 1', 'FailureMsg31: Assigned Support Group Value is missing');
+            expect(await casePreviewPo.isAssigneeDisplayed('Quillan Cespedes')).toBeTruthy('FailureMsg43: Assignee Name is missing');
+            expect(await casePreviewPo.getAssigneeDetails()).toContain('IN Support 3', 'FailureMsg44: Assigned Support Group Value is missing');
             expect(await casePreviewPo.getAssigneeDetails()).toContain('Petramco', 'FailureMsg32: Assigned Company Value is missing');
         });
         it('[4334]: Verify Modules Catergoy drop down ', async () => {
