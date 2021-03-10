@@ -847,6 +847,8 @@ describe('Email Configuration', () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });

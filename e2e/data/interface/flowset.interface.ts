@@ -17,11 +17,11 @@ export interface IFlowsetProcess {
 }
 
 export interface IFlowsetProcessMapping {
-    function: string;
-    processNameFull: string;
-    processName: string
-    status: string;
     flowsetId: string;
+    processName: string
+    processNameFull: string;
+    function?: string;
+    status?: string;
     company?: string;
     lineOfBusiness?: string;
 }

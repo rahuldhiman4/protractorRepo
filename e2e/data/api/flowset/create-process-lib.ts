@@ -63,7 +63,7 @@ export const PROCESS_FLOWSET_MAPPING = {
         },
         "1000000001": {
             "id": 1000000001,
-            "value": "- Global -"
+            "value": "Petramco"
         }
     }
 };

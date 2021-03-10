@@ -20,6 +20,7 @@ class ServiceTargetConfig {
         segments: '.adapt-accordion .card',
         segmentsArrow: '.adapt-accordion .card .tab-caret',
         saveSVTButton: '[rx-view-component-id="a54fb374-2287-4a40-bcca-f950d088d098"] button',
+        cancelSVTButton: '[rx-view-component-id="c310b9eb-f57b-4be7-918d-2f84459e8c86"] button',
         closeSVTButton: '[rx-view-component-id="c310b9eb-f57b-4be7-918d-2f84459e8c86"] button',
         qualificationBuilder: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] .content-outlet',
         searchField: '[rx-view-definition-guid="9648b7db-6a58-4dcf-9bd0-5bcf69ef2364"] input.adapt-search-field',
@@ -169,6 +170,10 @@ class ServiceTargetConfig {
 
     async clickOnSaveSVTButton() {
         await $(this.selectors.saveSVTButton).click();
+    }
+
+    async clickOnCancelSVTButton() {
+        await $(this.selectors.cancelSVTButton).click();
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
