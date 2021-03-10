@@ -19,6 +19,7 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 describe('Edit Case', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
+        await utilityCommon.closeAllBlades();
         await loginPage.login('qkatawazi');
     });
 

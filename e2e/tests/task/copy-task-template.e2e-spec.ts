@@ -271,8 +271,8 @@ describe('Copy Task Template', () => {
 //check
     describe('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newManualTaskTemplate = randomStr+'NewManualTaskDRDMV13540';
-        let newmanualTaskSummary = randomStr+'NewSummaryDRDMV13540';
+        let newManualTaskTemplate = 'DRDMV13540NewManualTask'+randomStr;
+        let newmanualTaskSummary = 'DRDMV13540NewManualTask'+randomStr;
         let templateData;
         beforeAll(async () => {
             templateData = {
@@ -282,7 +282,7 @@ describe('Copy Task Template', () => {
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
@@ -299,6 +299,7 @@ describe('Copy Task Template', () => {
         });
         it('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', async () => {
             expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
+            expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("US Support 3");
             await viewTaskTemplate.clickBackArrowBtn();
@@ -430,7 +431,7 @@ describe('Copy Task Template', () => {
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createExternalTaskTemplate(templateData);
@@ -465,7 +466,7 @@ describe('Copy Task Template', () => {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             let taskTemplate = 'DRDMV13547TaskTemplate' + randomStr;
             let taskSummary = 'DRDMV13547Summary' + randomStr;
-            let updatedTaskTemplate = 'DRDMV13547UpdatedName' + randomStr;
+            let updatedTaskTemplate = randomStr+ 'DRDMV13547UpdatedName' ;
 
             let templateData = {
                 "templateName": taskTemplate,
@@ -478,7 +479,7 @@ describe('Copy Task Template', () => {
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData);
@@ -534,7 +535,7 @@ describe('Copy Task Template', () => {
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createAutomatedTaskTemplate(templateData);

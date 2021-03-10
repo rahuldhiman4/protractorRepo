@@ -28,7 +28,7 @@ describe("Case Approval UI Validations", () => {
         await navigationPage.signOut();
     });
 
-    //skhobrag
+    //skhobrag #passed
     describe('[6220,5159]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
@@ -41,7 +41,7 @@ describe("Case Approval UI Validations", () => {
             // Create Case Template through API
             caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
-                "templateSummary": 'Automated One must Approval Case',
+                "templateSummary": 'Automated One must Approval Case' + randomStr,
                 "categoryTier1": 'Workforce Administration',
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -71,12 +71,13 @@ describe("Case Approval UI Validations", () => {
 
             caseData = {
                 "Requester": "apavlik",
-                "Summary": "Automated One must Approval Case",
+                "Summary": "Automated One must Approval Case" + randomStr,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
             }
         });
 
+        // passed
         it('[6220,5159]:Create One must approval configuration', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
@@ -108,6 +109,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
+        // passed
         it('[6220,5159]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
@@ -137,11 +139,12 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
+        // passed
         it('[6220,5159]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
-            await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case', 'Approve');
+            await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case' + randomStr, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -152,6 +155,7 @@ describe("Case Approval UI Validations", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
+        // passed
         it('[6220,5159]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
@@ -172,6 +176,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
+        // passed
         it('[6220,5159]:Verify the approvals details on case activity after case rejection', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
@@ -179,7 +184,7 @@ describe("Case Approval UI Validations", () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
-            await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case', 'Reject');
+            await approvalConsolePage.searchCaseOnApprovalConsole('Automated One must Approval Case' + randomStr, 'Reject');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -215,7 +220,7 @@ describe("Case Approval UI Validations", () => {
 
     });
 
-    //skhobrag
+    //skhobrag #passed
     describe('[4591,5158]:[Approval] Approval details in Case details - UI validation (All Must Sign)', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
@@ -342,11 +347,12 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
+        // passed
         it('[4591,5158]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
             await navigationPage.switchToApplication('Approval');
-            await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary1, 'Approve'); // record grid search locator is different
+            await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary1, 'Approve');
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);
@@ -376,6 +382,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
+        // passed
         it('[4591,5158]:Verify the approvals details on case activity', async () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
@@ -406,6 +413,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
+        // passed
         it('[4591,5158]:Verify the approvals details on case activity after case rejection', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData1);
@@ -447,7 +455,7 @@ describe("Case Approval UI Validations", () => {
         });
     });
 
-    //skhobrag
+    //skhobrag #passed
     describe('[5154]:[Approval] Approval details in Case details - UI validation (One Must Sign)', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
@@ -461,7 +469,7 @@ describe("Case Approval UI Validations", () => {
             let caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated One must Approval Case' + randomStr,
-                "categoryTier1": 'Fixed Assets',
+                "categoryTier1": 'Facilities',
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -520,19 +528,20 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.clickOnMenuItem('Case');
             await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await approvalConfigurationPage.setExpressionValueForParameter('"Fixed Assets"');
+            await approvalConfigurationPage.setExpressionValueForParameter('"Facilities"');
             await approvalConfigurationPage.clickModelOkButton();
 
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickSelectApproversLink();
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Support company');
-            await approvalConfigurationPage.selectDropdownValueForMultiselect('Support group', 'Staffing');
+            await utilityCommon.selectMultiSelectDropDownValues('Support group', ['Staffing']);
             await approvalConfigurationPage.clickMoveButton();
             await approvalConfigurationPage.clickApproverModalSaveButton();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
+        // passed
         it('[5154]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
@@ -563,6 +572,7 @@ describe("Case Approval UI Validations", () => {
             await showApproversBladePo.clickBackButtonOnApprovalBlade();
         });
 
+        // passed
         it('[5154]:Approve the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
@@ -578,6 +588,7 @@ describe("Case Approval UI Validations", () => {
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was approved');
         });
 
+        // passed
         it('[5154]:Verify the approvals details on case activity', async () => {
             await activityTabPage.clickShowApproversLink('Show Approvers');
             expect(await showApproversBladePo.isShowApproversBladeOnActivityDisplayed()).toBeTruthy('Approver List blade is not displayed');
@@ -780,7 +791,7 @@ describe("Case Approval UI Validations", () => {
         });
     });
 
-    //ankagraw
+    //ankagraw #passed
     describe('[6395,6393]:[Case Status Reason] Transiting between the statuses that have Status Reason values', async () => {
         let caseData, caseId, caseData1, caseData2, caseData3, caseTemplateDataWithMatchingCriteria, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -822,7 +833,7 @@ describe("Case Approval UI Validations", () => {
             let approvalFlowData = {
                 "flowName": `Bulk Operation ${randomStr}`,
                 "approver": "qkatawazi",
-                "qualification": "'Category Tier 3' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.c2636a9ab1d4aa37cf23b2cf0dbd1f9ea3a5d6046a3ad0ad998c63411e41815d81709de7a5f6153e78fc47ebcc9c3f3f4db51dd0d9e44084eb3a345df03cb66d.304405421}"
+                "qualification": `'Category Tier 3' = "Chatter"`
             }
             await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
 

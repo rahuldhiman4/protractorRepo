@@ -21,7 +21,6 @@ class EditFlowsetPage {
         companyValue: '[rx-view-component-id="2303bffc-b2c5-4cd2-a55a-bac22b61d516"] button',
         processMappingConsoleGuid: '0e25a330-f284-4892-9777-84ae2a5583ff',
         selectProcessNameDropDown: '[rx-view-component-id="af88dc8f-11a0-4172-bff1-3ef81f96e252"] button',
-        selectProcessNameDropDownInput: '[rx-view-component-id="e2da86d2-692a-4f0a-8278-8989b27aa9e5"] input',
         dropDownOption: '[rx-view-component-id="e2da86d2-692a-4f0a-8278-8989b27aa9e5"] [ class="dropdown-item ng-tns-c137-73 ng-star-inserted"]',
         cancelFlowsetBtn: '[rx-view-component-id="e65c4830-eb0f-4080-a56b-82d635272ac1"] button'
     }
