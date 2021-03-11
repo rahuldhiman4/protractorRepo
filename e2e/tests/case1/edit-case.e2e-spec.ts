@@ -17,10 +17,30 @@ import caseConsolePo from '../../pageobject/case/case-console.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
 
 describe('Edit Case', () => {
+    let caseTemplateData;
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await utilityCommon.closeAllBlades();
         await loginPage.login('qkatawazi');
+
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        caseTemplateData = {
+            "templateName": 'case_template' + randomStr,
+            "templateSummary": 'case_template_summary' + randomStr,
+            "categoryTier1": 'Workforce Administration',
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qfeng",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 3"
+        }
+
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createCaseTemplate(caseTemplateData);
+
     });
 
     afterAll(async () => {
@@ -85,7 +105,7 @@ describe('Edit Case', () => {
         
         await expect(editCasePage.getSelectCaseTemplate()).toBe('Select Case Template');
         await editCasePage.clickOnSelectCaseTemplate();
-        await caseTemplatePage.selectCaseTemplate('401K Status');
+        await caseTemplatePage.selectCaseTemplate(caseTemplateData.templateName);
 
         await expect(editCasePage.getChangeCaseTemplate()).toBe('Change Case Template');
         await editCasePage.clickSaveCase();
