@@ -1384,7 +1384,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    //ankagraw..not fixed
+    //ankagraw.. fixed
     describe('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco;
@@ -1459,7 +1459,7 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
             await adhoctaskTemplate.selectCategoryTier2('Compensation');
             await adhoctaskTemplate.selectCategoryTier3('Bonus');
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1',"0d11a862-c378-49cc-bda8-2d6efbd2beeb");
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickTaskLink("Summary2" + randomStr);
