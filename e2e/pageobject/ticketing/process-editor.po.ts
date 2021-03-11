@@ -1,4 +1,4 @@
-import { $, $$, browser, element, by, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilityGrid from '../../utils/utility.grid';
 
 class ProcessEditor {
@@ -14,40 +14,75 @@ class ProcessEditor {
     }
 
     async dragDropCreateTask(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         let source = await $('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner');
         let destination = await $$('.marker-target').last();
         await browser.actions().dragAndDrop(source, destination).perform();
         await browser.actions().mouseMove($$('.rx-icon-container').last()).click().perform();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async clickSelectTemplateBtn(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         await browser.wait(this.EC.elementToBeClickable($(this.selectors.selectTemplateBtn)), 6000);
         await $(this.selectors.selectTemplateBtn).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async clickCancelOnTemplateSelectBlade(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         await $(this.selectors.templateSelectionGridCancelBtn).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async clickGoBackToTemplateBtn(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         await $(this.selectors.goBackToTemplateBtn).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async isTemplatePresent(templateName: string): Promise<boolean> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         await utilityGrid.clearSearchBox();
         await utilityGrid.searchRecord(templateName);
         let recordLocator: ElementFinder = await element(by.cssContainingText(this.selectors.gridLink, templateName));
-        return await recordLocator.isPresent().then(async (result) => {
+        let isTemplate = await recordLocator.isPresent().then(async (result) => {
             if (result) return await recordLocator.isDisplayed();
             else return false;
-        })
+        });
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return isTemplate;
     }
 
     async saveTemplateBtn(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         await $(this.selectors.templateSaveBtn).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async addAllTaskTypeFromProcessEditor(temp1: string, temp2: string, temp3: string): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+
         //Drag and Drop first Create task
         await browser.sleep(5000); // Required For Drag And Drop Operation
         let source = await $('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner');
@@ -88,13 +123,49 @@ class ProcessEditor {
         await this.saveTemplateBtn();
         await browser.actions().dragAndDrop(source1, await $$('.rotatable image[data-icon-type="transparent"]').get(3)).perform();
         await $(this.selectors.processSaveBtn).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 
     async isTaskEditorOpened(): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.pallete, 'Palette')).isPresent().then(async (result) => {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let isTaskEditorOpen = await element(by.cssContainingText(this.selectors.pallete, 'Palette')).isPresent().then(async (result) => {
             if (result) return await element(by.cssContainingText(this.selectors.pallete, 'Palette')).isDisplayed();
             else return false;
-        })
+        });
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return isTaskEditorOpen;
+    }
+
+    async searchAndOpenTaskTemplate(searchValue: string, guid?: string) {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let searchBoxInput: string = '[rx-id="search-text-input"]';
+        let gridRefreshButton: string = 'button.d-icon-refresh';
+        let gridSearchIcon: string = '[rx-id="submit-search-button"]';
+        if (guid) {
+            searchBoxInput = `[rx-view-component-id="${guid}"] ` + searchBoxInput;
+            gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
+            gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
+        }
+        for (let i: number = 0; i < 7; i++) {
+            console.log(searchValue, "search angularJs grid count: ", i);
+            await $(searchBoxInput).clear();
+            await $(gridRefreshButton).click();
+            await $(searchBoxInput).sendKeys(searchValue);
+            await $(gridSearchIcon).click();
+            let gridRecordCount: number = await await $$('.ui-grid-render-container-body .ui-grid-row').count();
+            if (gridRecordCount == 0) {
+                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
+            } else break;
+        }
+        await element(by.cssContainingText('.ui-grid__link', searchValue)).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
     }
 }
 

@@ -118,7 +118,7 @@ describe('Create Adhoc task', () => {
         });
     });
     //Data issue
-    fdescribe('[6105]: [Permissions] Navigating to case from the task', async () => {
+    describe('[6105]: [Permissions] Navigating to case from the task', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, taskTemplateData;
         beforeAll(async () => {
@@ -141,8 +141,8 @@ describe('Create Adhoc task', () => {
                 "Summary": 'Summary ' + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 1",
-                "Assignee": "qtao"
+                "Support Group": "US Support 3",
+                "Assignee": "qkatawazi"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(taskTemplateData);
