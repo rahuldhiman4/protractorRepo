@@ -96,7 +96,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
-            await browser.sleep(5000); // wait for the data reflect on UI
+            await browser.sleep(2000); // wait for the data reflect on UI
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Qianru Tao reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
@@ -165,7 +165,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy('FailureMsg1: reopen button is missing');
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg2: Closed status is missing');
             await viewCasePage.clickOnReopenCaseLink();
-            await browser.sleep(5000);
+            await browser.sleep(2000);
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('Qianru Tao reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg5: Text is missing');
