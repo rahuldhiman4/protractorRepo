@@ -437,7 +437,7 @@ describe('Failed Task', () => {
             await apiHelper.updateCaseStatus(caseResponse.id, 'InProgress');
         });
 
-        it('[[5315]: Task behaviour when one manual task is closed and other sequenced automated task is failed', async () => {
+        it('[5315]: Task behaviour when one manual task is closed and other sequenced automated task is failed', async () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.openTaskCard(1);

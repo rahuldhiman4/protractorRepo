@@ -251,8 +251,8 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             let templateData4 = {
-                "templateName": 'AutomatedTaskTemplateActive'+randomStr ,
-                "templateSummary": 'AutomatedTaskTemplateActive'+randomStr ,
+                "templateName": 'AutomatedTaskTemplateActive' + randomStr,
+                "templateSummary": 'AutomatedTaskTemplateActive' + randomStr,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
@@ -324,7 +324,7 @@ describe('Create Case Task', () => {
         });
         it('[5569]: Verify the Automation Active task template', async () => {
             await viewTasktemplatePo.clickBackArrowBtn();
-            await selectTaskTemplate.searchAndOpenTaskTemplate('AutomatedTaskTemplateActive'+randomStr);
+            await selectTaskTemplate.searchAndOpenTaskTemplate('AutomatedTaskTemplateActive' + randomStr);
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
@@ -852,40 +852,47 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw.. fixed??
-    it('[5554]: [Automatic Task] - When Case is Cancelled while there are Automatic Tasks which are in Staged, Assigned, Resolved, Closed state', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData = {
-            "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-            "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
-            "templateStatus": "Active",
-            "processBundle": "com.bmc.dsm.case-lib",
-            "processName": `Case Process 1 ${randomStr}`,
-            "taskCompany": "Petramco",
-            "ownerCompany": "Petramco",
-            "ownerBusinessUnit": "United States Support",
-            "ownerGroup": "US Support 1"
-        }
-        await apiHelper.apiLogin('qkatawazi');
-        await apiHelper.createAutomatedTaskTemplate(templateData);
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester('qtao');
-        await createCasePage.setSummary('Summary' + randomStr);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
-        await viewCasePage.clickAddTaskButton();
-        await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
-        await manageTaskBladePo.clickCloseButton();
-        await viewCasePage.clickOnRefreshTaskList();
-        await updateStatusBladePo.changeStatus('Pending');
-        await updateStatusBladePo.selectStatusReason('Customer Response');
-        await updateStatusBladePo.clickSaveStatus();
-        await updateStatusBladePo.changeStatus('Canceled');
-        await updateStatusBladePo.selectStatusReason('Customer Canceled');
-        await updateStatusBladePo.clickSaveStatus();
-        await utilityCommon.closePopUpMessage();
-        await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
-        expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
+    describe('[5554]: [Automatic Task] - When Case is Cancelled while there are Automatic Tasks which are in Staged, Assigned, Resolved, Closed state', async () => {
+        let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            templateData = {
+                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateStatus": "Active",
+                "processBundle": "com.bmc.dsm.case-lib",
+                "processName": `Case Process 1 ${randomStr}`,
+                "taskCompany": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 1"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createAutomatedTaskTemplate(templateData);
+        });
+        it('[5554]: [Automatic Task] - When Case is Cancelled while there are Automatic Tasks which are in Staged, Assigned, Resolved, Closed state', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester('qtao');
+            await createCasePage.setSummary('Summary' + randomStr);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePage.clickAddTaskButton();
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTaskBladePo.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
+            await updateStatusBladePo.changeStatus('Pending');
+            await updateStatusBladePo.selectStatusReason('Customer Response');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeStatus('Canceled');
+            await updateStatusBladePo.selectStatusReason('Customer Canceled');
+            await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
+            await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     //ankagraw

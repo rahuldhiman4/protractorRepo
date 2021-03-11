@@ -117,8 +117,8 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closeAllBlades();
         });
     });
-//Data issue
-    describe('[6105]: [Permissions] Navigating to case from the task', async () => {
+    //Data issue
+    fdescribe('[6105]: [Permissions] Navigating to case from the task', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, taskTemplateData;
         beforeAll(async () => {
@@ -184,53 +184,59 @@ describe('Create Adhoc task', () => {
         });
     });
 
-    it('[4971,4976]: Verify task creation with attachments & Verify attachment grid from case', async () => {
+    describe('[4971,4976]: Verify task creation with attachments & Verify attachment grid from case', async () => {
         let filePath = '../../data/ui/attachment/demo.txt';
         let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        let caseData = {
-            "Requester": "qkatawazi",
-            "Summary": summary
-        }
-        await apiHelper.apiLogin('qtao');
-        let newCaseTemplate = await apiHelper.createCase(caseData);
-        await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
+        beforeAll(async () => {
+            let caseData = {
+                "Requester": "qkatawazi",
+                "Summary": summary
+            }
+            await apiHelper.apiLogin('qtao');
+            let newCaseTemplate = await apiHelper.createCase(caseData);
+            await caseConsolePo.searchAndOpenCase(newCaseTemplate.displayId);
+        });
+        it('[4971,4976]: Verify task creation with attachments & Verify attachment grid from case', async () => {
+            //Adhoc task validation
+            await viewCasePage.clickAddTaskButton();
+            await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
+            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setDescription("Description");
+            await adhoctaskTemplate.addAttachment([filePath]);
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTask.clickCloseButton();
+            await viewCasePage.clickOnRefreshTaskList();
+            await viewCasePage.clickOnTaskLink(summary);
+            expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is missing');
+            await utilityCommon.deleteAlreadyDownloadedFile('demo.txt');
+            await viewTask.clickOnAttachments('demo.txt');
+            expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
 
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.addAttachment([filePath]);
-        await adhoctaskTemplate.clickSaveAdhoctask();
-        await utilityCommon.closePopUpMessage();
-        await manageTask.clickCloseButton();
-        await viewCasePage.clickOnRefreshTaskList();
-        await viewCasePage.clickOnTaskLink(summary);
-        expect(await viewTask.isAttachedFileNamePresent('demo.txt')).toBeTruthy('Attached file name is missing');
-        await utilityCommon.deleteAlreadyDownloadedFile('demo.txt');
-        await viewTask.clickOnAttachments('demo.txt');
-        expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
-
-        //Navigated To Case and Verify attachments grid for task attachments
-        await viewTask.clickOnViewCase();
-        await viewCasePage.clickAttachmentsLink();
-        await attachmentBladePo.clickFileName('demo');
-        let finalDate: string = await utilityCommon.getCurrentDate();
-        expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
-        expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: demo', 'FileName is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation('Task')).toBe('Type: Task', 'Type is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation('text/plain')).toBe('Media type: text/plain', 'Media Type is missing');
-        expect(await attachmentInformationBladePo.getValuesOfInformation('Created date')).toContain(finalDate);
-        expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
-        expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
-        expect(await utilityCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
-        await attachmentInformationBladePo.clickDownloadButton();
-        expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
-        await utilityCommon.deleteAlreadyDownloadedFile('demo.txt');
-        await attachmentInformationBladePo.clickCloseButton();
-        await attachmentBladePo.clickCloseButton();
+            //Navigated To Case and Verify attachments grid for task attachments
+            await viewTask.clickOnViewCase();
+            await viewCasePage.clickAttachmentsLink();
+            await attachmentBladePo.clickFileName('demo');
+            let finalDate: string = await utilityCommon.getCurrentDate();
+            expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
+            expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
+            expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: demo', 'FileName is missing');
+            expect(await attachmentInformationBladePo.getValuesOfInformation('Task')).toBe('Type: Task', 'Type is missing');
+            expect(await attachmentInformationBladePo.getValuesOfInformation('text/plain')).toBe('Media type: text/plain', 'Media Type is missing');
+            expect(await attachmentInformationBladePo.getValuesOfInformation('Created date')).toContain(finalDate);
+            expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
+            expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
+            expect(await utilityCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');
+            await attachmentInformationBladePo.clickDownloadButton();
+            expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+            await utilityCommon.deleteAlreadyDownloadedFile('demo.txt');
+            await attachmentInformationBladePo.clickCloseButton();
+            await attachmentBladePo.clickCloseButton();
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
     });
 
     it('[4975]: Verify task attachments deletion', async () => {
