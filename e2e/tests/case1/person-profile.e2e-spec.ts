@@ -25,6 +25,12 @@ describe('Person Profile test', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('elizabeth');
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.addRelationShip('Former Manager', 'Former Reportee', 'Person to Person');
+        await apiHelper.addRelationShip('Parent', 'Child', 'Person to Person');
+        await apiHelper.addRelationShip('Dependent of', 'Dependent on', 'Person to Person');
+        await apiHelper.addRelationShip('Student', 'Parent', 'Person to Person');
+        await apiHelper.addRelationShip('Related to', 'Related to', 'Person to Person');
         await navigationPage.gotoPersonProfile();
     });
 
@@ -78,7 +84,6 @@ describe('Person Profile test', () => {
 
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickAssigneeLink();
@@ -128,7 +133,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //asahitya
+    //asahitya Fail DRDMV-25335
     describe('[4201]: Person profile display for person from activity/history tab', async () => {
         it('[4201]: Person profile display for person from activity/history tab', async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
@@ -145,7 +150,6 @@ describe('Person Profile test', () => {
 
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await activityTabPage.addPersonInActivityNote('Qiao Feng');
@@ -198,7 +202,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //asahitya
+    //asahitya Fail DRDMV-25335
     describe('[4203]: Person profile display for Contact', () => {
         let response = undefined;
         afterEach(async () => {
@@ -224,7 +228,6 @@ describe('Person Profile test', () => {
 
             // Verify the Person Profile of Adam Pavlik
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
@@ -255,7 +258,7 @@ describe('Person Profile test', () => {
             await relatedTabPage.clickRelatedPersonName('Qianru Tao');
             await utilityCommon.switchToNewTab(2);
             await browser.sleep(3000); //Takes time to redirect to person profile on new tab
-            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Adam Pavlik', 'Related of')).toBeTruthy('Relation does not match');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Adam Pavlik', 'Former Reportee')).toBeTruthy('Relation does not match');
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
         });
 
@@ -272,7 +275,6 @@ describe('Person Profile test', () => {
             //Verify that updated relation name does not impact existing relations
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
@@ -307,7 +309,6 @@ describe('Person Profile test', () => {
 
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickOnContactPersonerDrpDwn();
@@ -531,7 +532,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //asahitya
+    //asahitya Fail DRDMV-25335
     describe('[4206]: Person profile display for requester', () => {
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -554,7 +555,6 @@ describe('Person Profile test', () => {
 
             //Verify the Person Profile of Alex Raisin
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickRequsterName();
@@ -583,7 +583,7 @@ describe('Person Profile test', () => {
             await addRelatedPopupPage.addPerson('Qianru Tao', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Qianru Tao');
             await utilityCommon.switchToNewTab(2);
-            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Alex Raisin', 'Related of')).toBeTruthy('Relation does not match');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Alex Raisin', 'Child')).toBeTruthy('Relation does not match');
             await utilityCommon.switchToNewTab(1);
 
             //Remove the relation and verify that Relation is actually removed
@@ -610,7 +610,6 @@ describe('Person Profile test', () => {
 
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             await viewCasePage.clickRequsterName();
@@ -640,7 +639,7 @@ describe('Person Profile test', () => {
             await addRelatedPopupPage.addPerson('Qianru Tao', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Qianru Tao');
             await utilityCommon.switchToNewTab(2);
-            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Quinn Norton', 'Related of')).toBeTruthy('Relation does not match');
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Quinn Norton', 'Child')).toBeTruthy('Relation does not match');
             await utilityCommon.switchToNewTab(1);
 
             //Remove the relation and verify that Relation is actually removed
@@ -895,7 +894,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //expect conditions failing due to defect - different relation not present
+    //expect conditions failing due to defect - different relation not present Fail DRDMV-25335
     describe('[4197]: Configuration - person-to-person relationship', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4197]: Configuration - person-to-person relationship', async () => {
@@ -1068,7 +1067,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.isCasePresentOnAssignedCases(caseDisplayId)).toBeTruthy("Case is not present");
     });
 
-    //asahitya-falling due to person imag not set
+    //asahitya-falling due to person imag not set Fail DRDMV-25335
     it('[4596,4198,4586]: Verify My Profile Console', async () => {
         await navigationPage.gotoCaseConsole();
         await navigationPage.gotoPersonProfile();

@@ -143,9 +143,10 @@ describe('Case Template', () => {
             await createCaseTemplate.setOwnerOrgDropdownValue('Facilities');  //temp fix
             await createCaseTemplate.setOwnerGroupDropdownValue('Facilities'); 
             await changeAssignmentPo.setDropDownValue("Company", ALL_FIELD.ownerCompany);
-            await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support'])
+            await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support']);
             await changeAssignmentPo.setDropDownValue('SupportOrg', 'Facilities Support');
-            await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])
+            await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service']);
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'Facilities');
             // verify LOB is there
             expect(await createCaseTemplate.getLobValue()).toBe("Facilities");
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -248,11 +249,12 @@ describe('Case Template', () => {
 
     //ptidke-issue-clear 
     describe('[6303]: [Edit Case Template] Template metadata edit', async () => {
-        it('[6303]: [Edit Case Template] Template metadata edit', async () => {
+        let templateData;
+        beforeAll(async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             const randomStr = Math.floor(Math.random() * 100000);
-            let templateData = {
+            templateData = {
                 "templateName": MANDATORY_FIELD.templateName + randomStr,
                 "templateSummary": MANDATORY_FIELD.templateSummary + randomStr,
                 "caseStatus": "InProgress",
@@ -263,6 +265,8 @@ describe('Case Template', () => {
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData);
+        });
+        it('[6303]: [Edit Case Template] Template metadata edit', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(templateData.templateName);
@@ -272,6 +276,8 @@ describe('Case Template', () => {
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Draft');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await viewCaseTemplate.clickBackArrowBtn();
+        });
+        it('[6303]: [Edit Case Template] Template metadata edit', async () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.clickSaveCaseTemplate();
             expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
