@@ -9,7 +9,7 @@ class PersonProfilePage {
         personName: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .ac-person-full-name, .ac-person-full-name',
         personImage: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] .person-badge .d-icon-user_circle',
         managerImage: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] img',
-        companyName: '[rx-view-component-id="5098446d-2f2c-4ea0-b7bf-c48add2dfaa9"] .person-organization span,[rx-view-component-id="a108323b-b110-41ed-9ad8-9dc7b0258c77"] .person-organization span,[rx-view-component-id="8aa9b555-01a0-411b-990f-e46541354b18"] .person-organization span',
+        companyName: '[rx-view-component-id="5098446d-2f2c-4ea0-b7bf-c48add2dfaa9"] .person-organization span, [rx-view-component-id="8aa9b555-01a0-411b-990f-e46541354b18"] .person-organization span',
         phone: '[rx-view-component-id="dfb11922-8df4-405b-8d7a-2e0664897f2a"] .person-phone-link',
         email: '[rx-view-component-id="dfb11922-8df4-405b-8d7a-2e0664897f2a"] .person-link button, [rx-view-component-id="0a98626e-ee9f-4dff-9388-6c6327894f47"] .bwf-person-email button',
         site: '[rx-view-component-id="dfb11922-8df4-405b-8d7a-2e0664897f2a"] .person-site-text',
