@@ -206,13 +206,13 @@ describe('Knowledge Create Search', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
             await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
             await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectCategoryTier1Option('Applications');
+            await createKnowledgePage.selectCategoryTier2Option('Social');
+            await createKnowledgePage.selectCategoryTier3Option('Chatter');
             await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-            await createKnowledgePage.selectCategoryTier1Option('Applications');
-            await createKnowledgePage.selectCategoryTier2Option('Social');
-            await createKnowledgePage.selectCategoryTier3Option('Chatter');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Applications');
@@ -879,6 +879,7 @@ describe('Knowledge Create Search', () => {
             expect(await resources.isFilterAvailable('Operational Category Tier 1')).toBeTruthy();
             let statusFieldValues: string[] = ["None", "Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Request Cancelation"];
             expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
+            await utilityCommon.selectDropDown('Status', 'None', DropDownType.Label);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
         });
         it('[6432]: Advanced Search UI verification on the Quick Case view', async () => {
@@ -1099,8 +1100,9 @@ describe('Knowledge Create Search', () => {
                 "categoryTier1": "Applications",
                 "categoryTier2": "Help Desk",
                 "categoryTier3": "Incident",
-                "region": "Australia",
-                "site": "Canberra",
+                "region": "Americas",
+                "siteGroup":'Human Resources',
+                "site": "Houston",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
                 "assigneeSupportGroup": "GB Support 2",
@@ -1116,104 +1118,104 @@ describe('Knowledge Create Search', () => {
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr, 'title not correct');
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed("GB Support 2", 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            //await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            //await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            //await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            //await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            //await accessTabPo.clickAccessEntitiyAddButton("Business Unit");
+            //await accessTabPo.clickCloseKnowledgeAccessBlade();
+            //expect(await accessTabPo.isAccessTypeOfEntityDisplayed(businessData.orgName, 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            //await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            //await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            //await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            //await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            //await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
+            //await accessTabPo.clickAccessEntitiyAddButton('Support Department');
+            //await accessTabPo.clickCloseKnowledgeAccessBlade();
+            //expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
-            await accessTabPo.clickAccessEntitiyAddButton("Business Unit");
-            await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(businessData.orgName, 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
-            await accessTabPo.clickAccessEntitiyAddButton('Support Department');
-            await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
-            await accessTabPo.selectAccessEntityDropDown(suppGrpData.orgName, 'Select Support Group');
+            //await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            //await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
+            await accessTabPo.selectAccessEntityDropDown('GB Support 1', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData.orgName, 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('GB Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
-            await accessTabPo.selectAgent('fnPerson lnPerson', 'Agent');
+            await accessTabPo.selectAgent('Qianru Tao', 'Agent');
             await accessTabPo.clickAccessEntitiyAddButton('Agent');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('fnPerson lnPerson', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qianru Tao', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickRemoveAccess(businessData.orgName, true);
-            await accessTabPo.clickAccessRemoveWarningBtn('Yes');
-            await accessTabPo.clickRemoveAccess(departmentData.orgName, true);
-            await accessTabPo.clickAccessRemoveWarningBtn('Yes');
-            await accessTabPo.clickRemoveAccess(suppGrpData.orgName, true);
+            //await accessTabPo.clickRemoveAccess(businessData.orgName, true);
+            //await accessTabPo.clickAccessRemoveWarningBtn('Yes');
+            //await accessTabPo.clickRemoveAccess(departmentData.orgName, true);
+            //await accessTabPo.clickAccessRemoveWarningBtn('Yes');
+            await accessTabPo.clickRemoveAccess('GB Support 1', true);
             await accessTabPo.clickAccessRemoveWarningBtn('Yes');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(businessData.orgName, 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData.orgName, 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            //expect(await accessTabPo.isAccessTypeOfEntityDisplayed(businessData.orgName, 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            //expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('GB Support 1', 'Read')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
         });
         it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
+            // await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            // await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            // await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            // await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            // await accessTabPo.clickAssignWriteAccessCheckbox("Business Unit");
+            // await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
+            // await accessTabPo.clickCloseKnowledgeAccessBlade();
+            // expect(await accessTabPo.isAccessTypeOfEntityDisplayed(businessData.orgName, 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            // await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
+            // await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
+            // await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
+            // await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            // await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
+            // await accessTabPo.clickAssignWriteAccessCheckbox("Support Department");
+            // await accessTabPo.clickAccessEntitiyAddButton('Support Department');
+            // await accessTabPo.clickCloseKnowledgeAccessBlade();
+            // expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
-            await accessTabPo.clickAssignWriteAccessCheckbox("Business Unit");
-            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
-            await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(businessData.orgName, 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
-            await accessTabPo.clickAssignWriteAccessCheckbox("Support Department");
-            await accessTabPo.clickAccessEntitiyAddButton('Support Department');
-            await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
-            await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
-            await accessTabPo.selectAccessEntityDropDown(suppGrpData.orgName, 'Select Support Group');
+            //await accessTabPo.selectAccessEntityDropDown(businessData.orgName, 'Select Business Unit');
+            //await accessTabPo.selectAccessEntityDropDown(departmentData.orgName, 'Select Department');
+            await accessTabPo.selectAccessEntityDropDown('GB Support 1', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox("Support Group");
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData.orgName, 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('GB Support 1', 'Write')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
-            await accessTabPo.selectAgent('fnPerson lnPerson', 'Agnet');
+            await accessTabPo.selectAgent('Qianru Tao', 'Agnet');
             await accessTabPo.clickAccessEntitiyAddButton('Agnet');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('fnPerson lnPerson', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Qianru Tao', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
         });
         it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
-            await accessTabPo.clickRemoveAccess(businessData.orgName, true);
-            await accessTabPo.clickAccessRemoveWarningBtn('Yes');
-            await accessTabPo.clickRemoveAccess(departmentData.orgName, true);
-            await accessTabPo.clickAccessRemoveWarningBtn('Yes');
-            await accessTabPo.clickRemoveAccess(suppGrpData.orgName, true);
+            //await accessTabPo.clickRemoveAccess(businessData.orgName, true);
+            //await accessTabPo.clickAccessRemoveWarningBtn('Yes');
+            //await accessTabPo.clickRemoveAccess(departmentData.orgName, true);
+            //await accessTabPo.clickAccessRemoveWarningBtn('Yes');
+            await accessTabPo.clickRemoveAccess('GB Support 1', true);
             await accessTabPo.clickAccessRemoveWarningBtn('Yes');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(businessData.orgName, 'Write')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Write')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            //expect(await accessTabPo.isAccessTypeOfEntityDisplayed(businessData.orgName, 'Write')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
+            //expect(await accessTabPo.isAccessTypeOfEntityDisplayed(departmentData.orgName, 'Write')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed(suppGrpData.orgName, 'Write')).toBeFalsy('FailuerMsg1: Support Group Name is missing');
         });
         it('[3577]:[UI] [KA Access] - UI behavior for adding/removing Access in knowledge article.', async () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('HR Support', 'Select Business Unit');
-            await accessTabPo.selectAccessEntityDropDown('Employee Relations', 'Select Support Group');
+            //await accessTabPo.selectAccessEntityDropDown('HR Support', 'Select Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Compensation and Benefits', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Knowledge');
             await accessTabPo.selectAgent('Peter Kahn', 'Agent');

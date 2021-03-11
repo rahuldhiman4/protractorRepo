@@ -701,13 +701,13 @@ describe('Knowledge Article Validation', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
             await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
             await createKnowledgePage.selectKnowledgeSet('HR');
+            await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
+            await createKnowledgePage.selectCategoryTier2Option('Compensation');
+            await createKnowledgePage.selectCategoryTier3Option('Bonus');
             await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-            await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
-            await createKnowledgePage.selectCategoryTier2Option('Compensation');
-            await createKnowledgePage.selectCategoryTier3Option('Bonus');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy('full view of article is not displayed');

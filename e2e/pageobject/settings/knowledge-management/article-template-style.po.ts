@@ -8,12 +8,12 @@ class ArticleTemplateStyle {
         knowledgeset: '.bwf-define_knowledge-styles .knowledgeSetTitle',
         templateName: '.bwf-template-name',
         templateStyle: '.bwf-ka-config__edit-template-sections .text-direction span',
-        addNewStyle:'.add_new_style',
-        deleteButtonIcon:'.card-title-text button',
-        stylesName:'.bwf-left-align [name="templateName"]',
-        saveButton:'button[btn-type="primary"]',
-        styleNameRequired:'.label__text_required',
-        cancelButton:'.action-panel__cancel-btn',
+        addNewStyle: '.add_new_style',
+        deleteButtonIcon: '.card-title-text button',
+        stylesName: '.bwf-left-align [name="templateName"]',
+        saveButton: 'button[btn-type="primary"]',
+        styleNameRequired: 'adapt-textfield[name="templateName"] input.form-control',
+        cancelButton: '.action-panel__cancel-btn',
         sectionTitle: 'adapt-accordion-tab .text-direction span',
         boldIcon: 'button .d-icon-bold',
         italicIcon: 'button .d-icon-italic',
@@ -30,64 +30,62 @@ class ArticleTemplateStyle {
         backGroundColor: 'input[ng-model="selected_css.backgroundColor.value"]'
     }
 
-    async clickSaveButton():Promise<void>{
+    async clickSaveButton(): Promise<void> {
         await $(this.selectors.saveButton).click();
     }
 
-    async clickCancelButton():Promise<void>{
+    async clickCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
 
-    async isDeleteStyleButtonPresent():Promise<boolean>{
+    async isDeleteStyleButtonPresent(): Promise<boolean> {
         return await $$(this.selectors.deleteButtonIcon).last().isDisplayed();
     }
 
-    async clickAddNewStyle():Promise<void>{
-       await $(this.selectors.addNewStyle).click();
+    async clickAddNewStyle(): Promise<void> {
+        await $(this.selectors.addNewStyle).click();
     }
 
-    async clickDeleteButton():Promise<void>{
+    async clickDeleteButton(): Promise<void> {
         await $$('.bwf-templateStyles').last().$(this.selectors.deleteButtonIcon).click();
     }
 
-    async isSaveButtonEnabled():Promise<boolean>{
+    async isSaveButtonEnabled(): Promise<boolean> {
         return await $(this.selectors.saveButton).isEnabled();
     }
 
-    async getStyleNameFieldRequiredValue():Promise<string>{
-        let nameElement =   await element.all(by.cssContainingText(this.selectors.styleNameRequired,'Style Name')).first();
-        let value:string = await utilityCommon.getTextFromAfterTag(nameElement);
-        return await value.trim().substring(3,value.length-2);
-       }
-
-    async isAddedStyleDeleted(styleName:string):Promise<boolean>{
-        return  await element.all(by.cssContainingText('.templateStyles',styleName)).first().isPresent();
+    async isStyleNameFieldRequired(): Promise<boolean> {
+        return await $$(this.selectors.styleNameRequired).last().getAttribute("aria-required") == "true";
     }
 
-    async setStyleName(values:string):Promise<void>{
-      await $$(this.selectors.stylesName).last().clear();
-       await $$(this.selectors.stylesName).last().sendKeys(values);
+    async isAddedStyleDeleted(styleName: string): Promise<boolean> {
+        return await element.all(by.cssContainingText('.templateStyles', styleName)).first().isPresent();
     }
 
-    async isAddNewStyleButtonDisplay():Promise<boolean>{
+    async setStyleName(values: string): Promise<void> {
+        await $$(this.selectors.stylesName).last().clear();
+        await $$(this.selectors.stylesName).last().sendKeys(values);
+    }
+
+    async isAddNewStyleButtonDisplay(): Promise<boolean> {
         return await $(this.selectors.addNewStyle).isDisplayed();
     }
 
-    async navigateToTemplateName(knowledgesetValue:string,templateNameValue:string): Promise<void> {
-        await element.all(by.cssContainingText(this.selectors.knowledgeset,knowledgesetValue)).first().click();
-        await element.all(by.cssContainingText(this.selectors.templateName,templateNameValue)).first().click();
+    async navigateToTemplateName(knowledgesetValue: string, templateNameValue: string): Promise<void> {
+        await element.all(by.cssContainingText(this.selectors.knowledgeset, knowledgesetValue)).first().click();
+        await element.all(by.cssContainingText(this.selectors.templateName, templateNameValue)).first().click();
     }
 
-    async isDefaultTemplateDisplayed(templatNameValue:string):Promise<boolean>{
-       return await element.all(by.cssContainingText(this.selectors.templateName,templatNameValue)).first().isDisplayed();
-     }
+    async isDefaultTemplateDisplayed(templatNameValue: string): Promise<boolean> {
+        return await element.all(by.cssContainingText(this.selectors.templateName, templatNameValue)).first().isDisplayed();
+    }
 
     async getStyleOfAllTemplate(): Promise<string> {
-        let allstyle="";
+        let allstyle = "";
         let countofstyle: number = await $$(this.selectors.templateStyle).count();
         for (let i = 0; i < countofstyle; i++) {
             let message = await $$(this.selectors.templateStyle).get(i).getText();
-            allstyle = (allstyle)+" "+message;
+            allstyle = (allstyle) + " " + message;
         }
         return allstyle;
     }

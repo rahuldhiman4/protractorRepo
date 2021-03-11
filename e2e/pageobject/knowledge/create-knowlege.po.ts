@@ -1,3 +1,4 @@
+import { DropDownType } from "../../utils/constants";
 import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
@@ -102,7 +103,7 @@ class CreateKnowledgePage {
     }
 
     async selectKnowledgeSet(knowledgeSet: string): Promise<void> {
-        await utilityCommon.selectDropDown(this.selectors.knowledgeSet, knowledgeSet);
+        await utilityCommon.selectDropDown("Knowledge Set(required)", knowledgeSet, DropDownType.Label);
     }
 
     async addTextInKnowlegeTitleField(addTextKnowlegeTitleField: string): Promise<void> {
