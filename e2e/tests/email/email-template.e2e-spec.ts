@@ -429,19 +429,21 @@ describe('Email Template', () => {
     //ankagraw
     describe('[5171,5170]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
         let emailTemplateName, randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        it('[5171,5170]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
+        beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             emailTemplateName = emailTemplateData['emailTemplateWithMandatoryField'].TemplateName = await emailTemplateData['emailTemplateWithMandatoryField'].TemplateName + randomStr;
             await apiHelper.createEmailTemplate(emailTemplateData['emailTemplateWithMandatoryField']);
+        });
+        it('[5171,5170]: Email Template:if user goes away from both edit and create view warning should be appeared', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Email--Templates', BWF_PAGE_TITLES.EMAIL.TEMPLATES);
             await consoleEmailTemplatePo.clickOnAddEmailTemplateButton();
-            expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy();
-            expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy();
-            expect(await createEmailTemplatePo.islineOfBusinessRequiredTextPresent()).toBeTruthy();
-            expect(await createEmailTemplatePo.isStatusRequiredTextPresent()).toBeTruthy();
-            expect(await createEmailTemplatePo.isDescriptionRequiredTextPresent()).toBeTruthy();
-            expect(await createEmailTemplatePo.isSubjectRequiredTextPresent()).toBeTruthy();
+            expect(await createEmailTemplatePo.isTemplateRequiredTextPresent()).toBeTruthy('Template Name is not tagged as required');
+            expect(await createEmailTemplatePo.isCompanyRequiredTextPresent()).toBeTruthy('Company Name is not tagged as required');
+            expect(await createEmailTemplatePo.islineOfBusinessRequiredTextPresent()).toBeTruthy('LOB is not tagged as required');
+            expect(await createEmailTemplatePo.isStatusRequiredTextPresent()).toBeTruthy('Status is not tagged as required');
+            expect(await createEmailTemplatePo.isDescriptionRequiredTextPresent()).toBeTruthy('Description is not tagged as required');
+            expect(await createEmailTemplatePo.isSubjectRequiredTextPresent()).toBeTruthy('Subject is not tagged as required');
             await createEmailTemplatePo.setTemplateName("templateName1");
             await createEmailTemplatePo.clickOnCancelButton();
             expect(await utilityCommon.getDialoguePopupMessage()).toBe('You have unsaved data. Do you want to continue without saving?');
@@ -470,6 +472,7 @@ describe('Email Template', () => {
             // await utilityCommon.closePopUpMessage();
             await createEmailTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await utilityCommon.closePopUpMessage();
         });
         it('[5171,5170]: create same name record in different LOB', async () => {
             //create same name record in different LOB
@@ -483,7 +486,6 @@ describe('Email Template', () => {
             expect(await createEmailTemplatePo.getLobValue()).toBe("Facilities");
             await createEmailTemplatePo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            
             //    expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await navigationPage.gotoSettingsPage();

@@ -5,7 +5,7 @@ class EditNotificationTemplate {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        cancelButton: '[rx-view-component-id="d2dd0f98-69d0-462f-9002-5da452b67f63"] button,[rx-view-component-id="2a50e7b7-b260-4749-ad9d-1d7cb65b5d95"] button',
+        cancelButton: '.rx-action-button_secondary button.btn-secondary',
         header: '.dp-title',
         saveButton: '[rx-view-component-id="8b5f78b0-0aa8-40da-8d52-66d5afe1356b"] button',
         emailTab: 'li.nav-item button[aria-posinset="2"]',
