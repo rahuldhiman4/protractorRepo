@@ -234,6 +234,12 @@ export class GridOperations {
         else await $$(this.selectors.gridRowHyperLinks).first().click();
     }
 
+    async searchAndOpenHyperlinkWithoutRemovingFilter(id: string, guid?: string): Promise<void> {
+        await this.searchRecordWithoutFilter(id, guid);
+        if (guid) await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridRowHyperLinks).first().click();
+        else await $$(this.selectors.gridRowHyperLinks).first().click();
+    }
+
     async getFirstGridRecordColumnValue(columnName: string, guid?: string): Promise<string> {
         let count: number = 0;
         let gridHeaders = '.c-header-container .c-header__separator';

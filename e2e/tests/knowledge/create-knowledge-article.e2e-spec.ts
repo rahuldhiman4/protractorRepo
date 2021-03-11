@@ -91,7 +91,7 @@ describe('Knowledge Article', () => {
             await loginPage.login('peter');
         }
     });
-    //fail-due foundation data-done
+   
     describe('[3904]: Change Reviewer blade should process properly on KA', async () => {
         it('[3904]: Change Reviewer blade should process properly on KA', async () => {
             let businessData = businessDataFile['BusinessUnitData'];
@@ -124,7 +124,7 @@ describe('Knowledge Article', () => {
             await utilityCommon.closeAllBlades();
         });
     });
-    //fail- due to foundation data-done
+   
     describe('[3903]: On Edit KA, Change Assignment blade should process properly ', async () => {
         it('[3903]: On Edit KA, Change Assignment blade should process properly ', async () => {
             let businessData = businessDataFile['BusinessUnitData'];
@@ -197,7 +197,7 @@ describe('Knowledge Article', () => {
         await editKnowledgePage.clickCancelStatusBtn();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
     });
-    //fail- due to foundation data-done
+    
     it('[3852]: On Create KA, Change Assignment blade should process properly', async () => {
         await navigationPage.signOut();
         await loginPage.login('peter');
@@ -233,7 +233,7 @@ describe('Knowledge Article', () => {
         await apiHelper.associatePersonToSupportGroup(personData.userId, suppGrpData.orgName);
         await apiHelper.associatePersonToCompany(personData.userId, company)
     }
-    //failing due to foundation data-done
+    
     describe('[3853]: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
         it('[3853]: On Create KA, Agent having access to multiple support groups on "Assign to me" click should process properly on KA', async () => {
             let businessData2 = businessDataFile['BusinessUnitData19501'];

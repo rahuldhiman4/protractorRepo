@@ -31,7 +31,7 @@ class CreateEmailTemplateBlade {
         attachLink: 'bwf-button-link button',
         removeAttachment: 'bwf-attachment-viewer .d-icon-cross',
         AttachedfileName: 'bwf-attachment-viewer .bwf-attachment-container__file-name',
-        lobValue: '[rx-view-component-id="88459fe5-ba0c-445f-b99d-838351677590"] .pull-left'
+        lobValue: '[rx-view-component-id="c6cbd5e4-3897-493c-a7e0-455c8262e198"] .rx-select__search-button-title'
     }
 
     async clickOnLocalizeMessageButton(): Promise<void> {
