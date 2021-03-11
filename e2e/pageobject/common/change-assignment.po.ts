@@ -340,7 +340,10 @@ class ChangeAssignmentBlade {
     }
 
     async getAssigneeValue(): Promise<string> {
-        return await $(this.selectors.assigneeValue).getText();
+        return await $(this.selectors.assigneeValue).isPresent().then(async (result) => {
+            if (result) return await $(this.selectors.assigneeValue).getText();
+            else return await $(".assignment-read-only .person-main p").getText();;
+        });
     }
 }
 
