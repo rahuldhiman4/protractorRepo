@@ -33,7 +33,7 @@ class EditNotificationTemplate {
         recipientTypeSelect: '[id="adapt-select-37"] .dropdown-toggle',
         selectRecipient: '.rx-recipients-assignment-person-fullName, .rx-recipients-assignment-person-structure',
         recipientList: '.body tr td',
-        unCheckEmailGridvalue: '[rx-view-component-id="a0c7d2a0-326b-4c8c-88ab-1b626b865769"] input[type="checkbox"]',
+        unCheckEmailGridvalue: '[rx-view-component-id="4436dca0-329b-406f-8dd9-ab686df3f4b8"] input[type="radio"]',
         recipientsCheckbox: '.body tr td label span input',
         recipientsCheckboxInput: '.body tr td label span input',
         notificationMethod: '[rx-view-component-id="c80f9de5-1a84-46fa-949d-fc073d65ebd8"] .dropdown',
@@ -225,15 +225,15 @@ class EditNotificationTemplate {
         }
         switch (recipientOption) {
             case "TO": {
-                checkboxCount = count * 3;
+                checkboxCount = count+1;
                 break;
             }
             case "CC": {
-                checkboxCount = (count * 3) + 1;
+                checkboxCount = (count ) + 2;
                 break;
             }
             case "BCC": {
-                checkboxCount = (count * 3) + 2;
+                checkboxCount = (count) + 3;
                 break;
             }
             default: {
@@ -241,7 +241,7 @@ class EditNotificationTemplate {
                 break;
             }
         }
-        return (await $$(this.selectors.recipientsCheckboxInput).get(checkboxCount).getAttribute('aria-checked') =='true');
+        return (await $$(this.selectors.recipientList).get(checkboxCount).$('[type=checkbox]').getAttribute('aria-checked') =='true');
     }
 
     async isRecipientDisplayed(recipientName: string): Promise<boolean> {
