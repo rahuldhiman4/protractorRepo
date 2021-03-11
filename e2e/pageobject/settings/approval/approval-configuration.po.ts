@@ -15,7 +15,7 @@ class ApprovalsConsole {
         approvalFlowBrickTitle: 'span',
         approvalFlowBrickEditLink: '.d-icon-right-pencil',
         approvalFlowTitleInput: '[rx-id="flow-name"] input',
-        noOfLevelsInput: '.d-textfield__input[rx-id="levels"]',
+        noOfLevelsInput: '.adapt-rx-counter input',
         expressionQualitificationLink: '[property-label="Qualification"] button',
         createNewApprovalFlowPopUp: '.modal-header h5',
         searchExpressionField: '.modal-content input',
@@ -101,8 +101,7 @@ class ApprovalsConsole {
     }
 
     async setNoOfLevels(noOfLevels: string): Promise<void> {
-        await $$(this.selectors.expandApprovalFlowBrickArea).last().$$(this.selectors.noOfLevelsInput).click();
-        await $$(this.selectors.expandApprovalFlowBrickArea).last().$$(this.selectors.noOfLevelsInput).sendKeys(noOfLevels);
+        await $$(this.selectors.noOfLevelsInput).last().sendKeys(noOfLevels);
     }
 
     async clickExpressionLink(): Promise<void> {
