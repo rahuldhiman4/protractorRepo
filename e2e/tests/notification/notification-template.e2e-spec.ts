@@ -54,6 +54,8 @@ describe("Notification Template", () => {
             //Select Company drpdown value again, and click Copy Template button
             await notificationTempGridPage.setCompanyDropDownValPresentInCopyTempWindow("Petramco");
             await notificationTempGridPage.clickCopyTemplateButtonInCopyTempWindow();
+            await utilityCommon.closePopUpMessage();
+            await browser.sleep(1000);
             await editNotificationTemplate.clickOnCancelButton();
             //Validate if the new copied template is created
             await utilityGrid.clickCheckBoxOfValueInGrid("Task SLA Missed");
@@ -71,6 +73,7 @@ describe("Notification Template", () => {
             await notificationTempGridPage.setTemplateNamePresentInCopyTempWindow(notificationTemplateNameUpdated);
             await notificationTempGridPage.clickCopyTemplateButtonInCopyTempWindow();
             expect(await utilityCommon.isPopUpMessagePresent('Template is copied successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
             await editNotificationTemplate.clickOnCancelButton();
             await utilityGrid.clickCheckBoxOfValueInGrid("Case Agent Assignment");
             await utilityGrid.clearFilter();
@@ -246,6 +249,7 @@ describe("Notification Template", () => {
             await createNotificationEventPage.setEventName('Case Priority Change' + randomStr);
             await createNotificationEventPage.saveEventConfig();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             //validate on edit mode
             await utilityGrid.searchAndOpenHyperlink('Case Priority Change' + randomStr);
             await editNotificationEventPage.setEventName(notificationEventHRGlobal);
@@ -254,6 +258,7 @@ describe("Notification Template", () => {
             await editNotificationEventPage.setEventName(notificationEventHRGlobal + "_updated");
             await editNotificationEventPage.saveEventConfig();
             expect(await utilityCommon.isPopUpMessagePresent('Event Name is not allowed to change.')).toBeTruthy("Error message absent");
+            await utilityCommon.closePopUpMessage();
             await editNotificationEventPage.cancelEventConfig();
             await utilityCommon.closePopUpMessage();
         });
@@ -263,7 +268,7 @@ describe("Notification Template", () => {
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.selectModuleName('Cases');
-            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
 
             //Validations for notification event wrt LOB
             expect(await utilityCommon.isValuePresentInDropDown(createNotificationTemplatePage.selectors.eventGuid, 'Access Change')).toBeTruthy;
@@ -293,10 +298,10 @@ describe("Notification Template", () => {
             expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assigned Group", "CC")).toBeTruthy();
             expect(await editNotificationTemplate.isRecipientsCheckboxChecked("Assignee's Manager", "BCC")).toBeTruthy();
             expect(await editNotificationTemplate.isRecipientsCheckboxChecked("External Requester", "TO")).toBeTruthy();
+            await editNotificationTemplate.clickOnCancelButton();
         });
 
         it('[4589]: Verify notification template validation wrt same LOB ', async () => {
-            await utilityCommon.closeAllBlades();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
@@ -361,8 +366,8 @@ describe("Notification Template", () => {
 
     //asahitya-log defect for company column DRDMV-25149
     it('[5917]: AC: Notification Template_Console Columns', async () => {
-        let columns: string[] = ['GUID', 'ID', 'Label'];
-        let allColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name', 'GUID', 'ID', 'Label'];
+        let columns: string[] = ['Modified By', 'ID', 'Label'];
+        let allColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name', 'Modified By', 'ID', 'Label'];
         let defaultColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name'];
         await notificationTempGridPage.addGridColumns(columns);
         expect(await notificationTempGridPage.areColumnHeaderMatches(allColumns)).toBeTruthy('Columns are not matching');
@@ -391,7 +396,7 @@ describe("Notification Template", () => {
             expect(await createNotificationTemplatePage.areRecipientsMatches(["Followers"])).toBeTruthy('Recipient List of Case Watchlist Module is not matching');
             await utilityCommon.closeAllBlades();
             await utilityGrid.searchAndOpenHyperlink('Case Agent Assignment');
-            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List of Cases Module is not matching');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Group"])).toBeTruthy('Recipient List of Cases Module is not matching');
             await utilityCommon.closeAllBlades();
         });
         it('[4590]: Availability of Recipient List on OOB Global Template', async () => {
@@ -484,7 +489,7 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-   //log defect
+    //Fix
     describe('[4371]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
         it('[4371]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
@@ -507,7 +512,7 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-//log defect
+    //Fix
     describe('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
         it('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
             await navigationPage.gotoSettingsPage();
@@ -537,7 +542,7 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-//defect DRDMV-25149
+    //defect DRDMV-25149
     it('[4356]: Verify OOB Notification Event and Template for Email based Approval', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
@@ -564,6 +569,7 @@ describe("Notification Template", () => {
         await editNotificationTemplate.cancelEmailSubjectBlade();
         await editNotificationTemplate.clickEmailUncheckvalue();
         await editNotificationTemplate.openEmailBodyEditMessageText();
+        await browser.sleep(1000);
         expect(await editNotificationTemplate.isEmailBodyContains('Case Details')).toBeTruthy('Case Details is not present');
         expect(await editNotificationTemplate.isEmailBodyContains('Requester')).toBeTruthy('Requester is not present');
         expect(await editNotificationTemplate.isEmailBodyContains('Request Date')).toBeTruthy('Request Date is not present');

@@ -1039,9 +1039,28 @@ describe('Person Profile test', () => {
         //Verify sorting
         expect(await personProfile.isAssignedCasesColumnsSortedAscending("Case ID")).toBeTruthy("Columns are not sorted");
     });//, 160 * 1000);    
-  
+
     //asahitya-falling due to person imag not set
     it('[4585]: Verify Profile picture of Managar-Logged in user on My Profile page', async () => {
+        await apiHelper.apiLogin('elizabeth');
+        let caseData = {
+            "Requester": "araisin",
+            "Summary": "Test case for 4202",
+            "Contact": "apavlik",
+            "Assigned Company": "Petramco",
+            "Business Unit": "United States Support",
+            "Support Group": "US Support 3",
+            "Assignee": "qkatawazi"
+        }
+        //Create the case with contact as Adam Pavlik
+        let response = await apiHelper.createCase(caseData);
+        // Verify the Person Profile of Adam Pavlik
+        await navigationPage.gotoCaseConsole();
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndOpenHyperlink(response.displayId);
+        await viewCasePage.clickOnContactPersonerDrpDwn();
+        await viewCasePage.clickContactPersonName();
+        await utilityCommon.switchToNewTab(1);
         expect(await personProfile.isPersonManagerImageDisplayed()).toBeTruthy("Person Manager image is not displayed");
     });
 
