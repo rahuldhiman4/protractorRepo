@@ -16,6 +16,8 @@ let caseTemplateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString
 
 describe("Case Preview", () => {
 
+    let caseTemplateData;
+
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qtao");
@@ -36,6 +38,25 @@ describe("Case Preview", () => {
         }
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.createCaseTemplate(templateData);
+
+        caseTemplateData = {
+            "templateName": 'Paid Time Off Request ' + caseTemplateName,
+            "templateSummary": 'Employee has asked for time off.',
+            "description": "Register the time off in the HCM system and verify they have enough PTO remaining.",
+            "categoryTier1": "Total Rewards",
+            "categoryTier2": "Leave",
+            "categoryTier3": "PTO",
+            "casePriority": "High",
+            "templateStatus": "Active",
+            "caseStatus": "Assigned",
+            "company": "Petramco",
+            "businessUnit": "HR Support",
+            "supportGroup": "Compensation and Benefits",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 3"
+        }
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.createCaseTemplate(caseTemplateData);
     });
 
     afterAll(async () => {
@@ -104,7 +125,7 @@ describe("Case Preview", () => {
         await createCasePo.selectRequester('qkatawazi');
         await createCasePo.setSummary(caseSummary);
         await createCasePo.clickSelectCaseTemplateButton();
-        await selectCasetemplateBladePo.selectCaseTemplate('Paid Time Off Request');
+        await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
         await createCasePo.clickSaveCaseButton();
         expect(await casePreviewPo.isCaseSummaryDisplayed(caseSummary)).toBeTruthy('Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('Case ID is missing');
@@ -113,7 +134,7 @@ describe("Case Preview", () => {
         expect(await casePreviewPo.isRequesterNameDisplayed('Qadim Katawazi')).toBeTruthy('Requester name is missing');
         expect(await casePreviewPo.isRequesterPhoneDisplayed('1 512 343-1923')).toBeTruthy('Requester phone number is missing');
         expect(await casePreviewPo.isRequesterEmailIdDisplayed('qkatawazi@petramco.com')).toBeTruthy('Requester email id is missing');
-        expect(await casePreviewPo.isCaseTemplateDisplayed('Paid Time Off Request')).toBeTruthy('Case Template is missing');
+        expect(await casePreviewPo.isCaseTemplateDisplayed(caseTemplateData.templateName)).toBeTruthy('Case Template is missing');
         expect(await casePreviewPo.isDescriptionDisplayed('Register the time off in the HCM system and verify they have enough PTO remaining.')).toBeTruthy('Description is missing');
         expect(await casePreviewPo.isCategoryTier1Displayed('Total Rewards')).toBeTruthy('CategoryTier1 is missing');
         expect(await casePreviewPo.isCategoryTier2Displayed('Leave')).toBeTruthy('CategoryTier2 is missing');
