@@ -13,10 +13,9 @@ import statusBladePo from '../../pageobject/common/update.status.blade.po';
 import composeEmailPo from '../../pageobject/email/compose-mail.po';
 import consoleCasetemplatePage from '../../pageobject/settings/case-management/console-casetemplate.po';
 import createCaseTemplatePage from '../../pageobject/settings/case-management/create-casetemplate.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
 import consoleFlowsetConfigPage from '../../pageobject/settings/manage-flowset/console-flowset-config.po';
-import consoleFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/console-process-library-config.po';
 import createFlowsetPage from '../../pageobject/settings/manage-flowset/create-flowset-config.po';
-import createFlowsetProcessLibrary from '../../pageobject/settings/manage-flowset/create-register-process-config.po';
 import editFlowsetConfigPo from '../../pageobject/settings/manage-flowset/edit-flowset-config.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
@@ -116,25 +115,13 @@ describe('Create Process in Flowset', () => {
     })
 
     //asahitya
-    xdescribe('[5317]: Initialization process execution for case origin Agent', () => {
+    describe('[5317]: Initialization process execution for case origin Agent', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let processName = `Agent Origin 5317 ${randomStr}`;
         it('[5317]: Initialization process execution for case origin Agent', async () => {
             //Create a Process
             await apiHelper.apiLogin('tadmin');
-            let processName = `Agent Origin ${randomStr}`
             await apiHelper.createProcess(processName, 'AGENT_ORIGIN');
-            await navigationPage.gotoSettingsPage();
-            //            await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Process Library', BWF_PAGE_TITLES.MANAGE_FLOWSETS.PROCESS_LIBRARY);
-            await consoleFlowsetProcessLibrary.clickOnRegisterProcess();
-
-            //Register Process
-            await createFlowsetProcessLibrary.selectCompany('Petramco');
-            await createFlowsetProcessLibrary.selectApplicationService("Case Management Service");
-            await createFlowsetProcessLibrary.selectStatus("Active");
-            await createFlowsetProcessLibrary.selectProcessName(processName);
-            await createFlowsetProcessLibrary.setAliasName(processName);
-            await createFlowsetProcessLibrary.setDescription("description" + randomStr);
-            await createFlowsetProcessLibrary.clickSaveButton();
 
             //Create a Flowset
             await navigationPage.gotoSettingsPage();
@@ -145,11 +132,8 @@ describe('Create Process in Flowset', () => {
             await createFlowsetPage.setDescription("description" + randomStr);
             await createFlowsetPage.selectStatus("Active");
             await createFlowsetPage.clickSaveButton();
-            await utilityCommon.closeAllBlades();
-
-            await consoleFlowsetProcessLibrary.searchAndSelectFlowset('Flowset' + randomStr);
             await editFlowsetConfigPo.clickOnAddNewMappingBtn();
-            await utilityCommon.searchAndSelectProcessInSelectProcessPopup(processName);
+            await editFlowsetConfigPo.selectProcess(processName);
             await editFlowsetConfigPo.selectFunction('Initialization');
             await editFlowsetConfigPo.selectProcessStatus('Active');
             await editFlowsetConfigPo.clickSaveBtnOnProcessMapping();
@@ -170,6 +154,7 @@ describe('Create Process in Flowset', () => {
             await createCaseTemplatePage.setTemplateStatusDropdownValue('Active');
             await createCaseTemplatePage.setPriorityValue('High');
             await createCaseTemplatePage.clickSaveCaseTemplate();
+            await viewCasetemplatePo.clickBackArrowBtn();
             //Create a case using above flowset
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
@@ -179,7 +164,7 @@ describe('Create Process in Flowset', () => {
             await previewCasePage.clickGoToCaseButton();
             expect(await viewCasePage.getPriorityValue()).toBe('Low');
             await apiHelper.apiLogin('tadmin');
-            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', `Agent Origin ${randomStr}`)).toEqual(1);
+            expect(await apiCoreUtil.getProcessRunCount('com.bmc.dsm.case-lib', processName)).toEqual(1);
         });
     });
 
@@ -212,8 +197,8 @@ describe('Create Process in Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
 
-             //Map Process to Flowset
-             let flowsetProcessMappingData = {
+            //Map Process to Flowset
+            let flowsetProcessMappingData = {
                 function: 'Initialization',
                 processNameFull: registerProcessData.processName,
                 processName: processName,
@@ -274,7 +259,7 @@ describe('Create Process in Flowset', () => {
             flowsetMandatoryFieldsData.flowsetName = flowsetName;
             await apiHelper.apiLogin('qkatawazi');
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
-            
+
             //Map Process to Flowset
             let flowsetProcessMappingData = {
                 flowsetId: flowsetResponse.id,
@@ -377,9 +362,9 @@ describe('Create Process in Flowset', () => {
             let flowsetMandatoryFieldsData = cloneDeep(flowsetMandatoryFields);
             flowsetMandatoryFieldsData.flowsetName = flowsetName
             let flowsetResponse = await apiHelper.createNewFlowset(flowsetMandatoryFieldsData);
-           
-             //Map Process1 to Flowset
-             let flowsetProcessMappingData1 = {
+
+            //Map Process1 to Flowset
+            let flowsetProcessMappingData1 = {
                 function: 'User Activity Feeds',
                 processNameFull: registerProcessData1.processName,
                 processName: processName1,

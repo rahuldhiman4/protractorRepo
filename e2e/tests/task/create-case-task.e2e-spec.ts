@@ -251,8 +251,8 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             let templateData4 = {
-                "templateName": randomStr + 'AutomatedTaskTemplateActive',
-                "templateSummary": randomStr + 'AutomatedTaskTemplateActive',
+                "templateName": 'AutomatedTaskTemplateActive'+randomStr ,
+                "templateSummary": 'AutomatedTaskTemplateActive'+randomStr ,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
@@ -324,7 +324,7 @@ describe('Create Case Task', () => {
         });
         it('[5569]: Verify the Automation Active task template', async () => {
             await viewTasktemplatePo.clickBackArrowBtn();
-            await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr + 'AutomatedTaskTemplateActive');
+            await selectTaskTemplate.searchAndOpenTaskTemplate('AutomatedTaskTemplateActive'+randomStr);
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Automated');
             await viewTasktemplatePo.clickOnEditLink();
             expect(await editTaskTemplate.getTaskTypeValue()).toBe('Automated');
@@ -719,8 +719,8 @@ describe('Create Case Task', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             let templateDataDraft1 = {
-                "templateName": `manualTaskTemplateDraft1 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateDraft1 ${randomStr}`,
+                "templateName": `5800manualTaskTemplateDraft1 ${randomStr}`,
+                "templateSummary": `5800manualTaskTemplateDraft1 ${randomStr}`,
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",

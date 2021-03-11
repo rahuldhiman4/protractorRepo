@@ -65,7 +65,6 @@ class AddField {
     async selectDynamicField(value: string): Promise<void> {
         let fieldValue = await element(by.cssContainingText(this.selectors.fieldVariable, value));
         await browser.actions().mouseMove(fieldValue).doubleClick().perform();
-
     }
 
     async clickOnGroupName(groupvalue: string): Promise<void> {
@@ -76,9 +75,9 @@ class AddField {
         return await element(by.cssContainingText(this.selectors.parentFields, caseTemplateValue)).isPresent();
     }
     async setValueOfField(fromTree: string, value: string): Promise<void> {
-        let countParent = await $$('.modal-body .a-tree__label span span').count();
+        let countParent = await $$('.modal-body .ui-tree-selectable .a-tree__label adapt-highlight[title]').count();
         for (let i =0; i<countParent; i++){
-            let getTextofparent = await $$('.modal-body .a-tree__label span span').get(i).getText();
+            let getTextofparent = await $$('.modal-body .ui-tree-selectable .a-tree__label adapt-highlight[title]').get(i).getText();
             console.log('getTextofparent>>>>>',getTextofparent);
             if (getTextofparent == fromTree){
               await $$('.modal-body .a-tree__toggle').get(i).click();  
