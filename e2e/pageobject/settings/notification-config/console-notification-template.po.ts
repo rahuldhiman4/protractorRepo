@@ -55,7 +55,7 @@ class NotificationTemplateGridPage {
 
     async clearCompanyDropDownValPresentInCopyTempWindow() {
         await $(this.selectors.companyDropDownCopyTempWindow).click();
-        await $$(this.selectors.companyDropDownValueCopyTempWindow).get(1).click();
+        await $$(this.selectors.companyDropDownValueCopyTempWindow).get(0).click();
     }
 
     async clickOnCreateNotificationTemplate(): Promise<void> {
@@ -72,7 +72,10 @@ class NotificationTemplateGridPage {
     }
 
     async clearTemplateNamePresentInCopyTempWindow() {
-        await $(this.selectors.tempNameCopyTempWindow).clear();
+      //  await $(this.selectors.tempNameCopyTempWindow).clear();
+        for (let j: number = 0; j < 17; j++) {
+            await $(this.selectors.tempNameCopyTempWindow).sendKeys(protractor.Key.BACK_SPACE);
+             }
     }
 
     async isCopyTemplateButtonDisabledInCopyTempWindow(): Promise<Boolean> {
