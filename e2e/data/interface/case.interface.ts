@@ -17,6 +17,7 @@ export interface ICaseAssignmentMapping {
     businessUnit?: string;
     department?: string;
     assignee?: string;
+    lineOfBusiness?: string;
 };
 
 export interface ICreateCaseDWP {

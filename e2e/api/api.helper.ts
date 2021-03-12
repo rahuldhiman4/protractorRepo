@@ -581,6 +581,7 @@ class ApiHelper {
         assignmentMappingData.fieldInstances[450000381].value = data.businessUnit;
         assignmentMappingData.fieldInstances[450000152].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : assignmentMappingData.fieldInstances[450000152].value;
         assignmentMappingData.fieldInstances[1000000164].value = data.priority ? constants.CasePriority[data.priority] : assignmentMappingData.fieldInstances[1000000164].value;
+        assignmentMappingData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : assignmentMappingData.fieldInstances[450000420].value;
         if (data.useAsDefault) assignmentMappingData.fieldInstances[450000001].value = data.useAsDefault ? "1" : "0";
 
         let newCaseAssignmentMapping: AxiosResponse = await apiCoreUtil.createRecordInstance(assignmentMappingData);
