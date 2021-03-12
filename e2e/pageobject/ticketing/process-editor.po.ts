@@ -10,7 +10,15 @@ class ProcessEditor {
         gridLink: '.ui-grid__link',
         templateSaveBtn: '[rx-view-component-id="b7f9f666-5c22-463a-bc86-4cb66e26fa35"] button',
         processSaveBtn: 'button.rx-editor-header__button_save',
-        pallete: 'a.rx-blade-toggle'
+        pallete: 'a.rx-blade-toggle',
+        taskTemplateName: '[rx-view-component-id="227ba62e-b3ee-4f84-958c-7d2c7f2d2be3"] span',
+        taskSummaryValue: '[rx-view-component-id="a790b9d4-46d5-408c-8f86-4e04a683bc3d"] .d-textfield p',
+        taskCompanyValue: '[rx-view-component-id="44e56c5d-b8d5-4f23-b4b6-da4d8baa43e9"] .d-textfield p',
+        taskTypeValue: '[rx-view-component-id="d7598602-1dce-4cf8-af9b-b0083df0e721"] label ~ *',
+        taskPriorityValue: '[rx-view-component-id="f4a0b2ba-433c-471f-89b1-e94d0c0f3b43"] .d-textfield p',
+        fieldParentLocator: '[rx-configuration="configuration"] .d-textfield',
+        assigneeFieldValue: '.person-main a',
+        backButton: '[rx-view-component-id="cbb794a3-d696-4fff-81df-27e73e1438d8"] button'
     }
 
     async dragDropCreateTask(): Promise<void> {
@@ -157,6 +165,7 @@ class ProcessEditor {
             await $(searchBoxInput).clear();
             await $(gridRefreshButton).click();
             await $(searchBoxInput).sendKeys(searchValue);
+            await browser.sleep(3000);
             await $(gridSearchIcon).click();
             let gridRecordCount: number = await await $$('.ui-grid-render-container-body .ui-grid-row').count();
             if (gridRecordCount == 0) {
@@ -167,6 +176,113 @@ class ProcessEditor {
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
+    async isFieldLabelDisplayed(guid: string, fieldName: string): Promise<boolean> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let fieldLabel = `[rx-view-component-id='${guid}'] .d-textfield__item, [rx-view-component-id='${guid}'] label.d-textfield__label span`;
+        let isFieldLabel = await element(by.cssContainingText(fieldLabel, fieldName)).isPresent().then(async (result) => {
+            if (result) {
+                return await element(by.cssContainingText(fieldLabel, fieldName)).getText() == fieldName ? true : false;
+            } else {
+                console.log("Flowset not present");
+                return false;
+            }
+        });
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return isFieldLabel;
+    }
+    async getTaskTemplateName(): Promise<string> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let taskTemplateNameValue = await $(this.selectors.taskTemplateName).getText();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return taskTemplateNameValue;
+    }
+    
+    async getTaskSummary(): Promise<string> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let taskSummaryvalue = await $(this.selectors.taskSummaryValue).getText();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return taskSummaryvalue;
+    }
+
+    async getTaskCompany(): Promise<string> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let taskCompanyvalue = await $(this.selectors.taskCompanyValue).isPresent().then(async (present) => {
+            if (present) {
+                return await $(this.selectors.taskCompanyValue).getText();
+            }else{ 
+                return "no company";
+            }
+        });
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return taskCompanyvalue;
+    }
+    async getTaskType(): Promise<string> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let taskTypevalue = await $(this.selectors.taskTypeValue).getText();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return taskTypevalue;
+    }
+
+    async getTaskPriority(): Promise<string> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let taskPriorityvalue = await $(this.selectors.taskPriorityValue).getText();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return taskPriorityvalue;
+    }
+
+    async getFieldValue(fieldName: string): Promise<string> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
+        let fieldValue: string = undefined;
+        for (let i = 0; i < (await $$(this.selectors.fieldParentLocator)).length; i++) {
+            let fieldLabelLocator = await $$(this.selectors.fieldParentLocator).get(i).$('label .d-textfield__item');
+            if (await fieldLabelLocator.getText() == fieldName) {
+                fieldValue = (await $$(this.selectors.fieldParentLocator).get(i).$('.d-textfield p').getText()).trim();
+                break;
+            }
+        }
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return fieldValue;
+    }
+
+    async getAssigneeFieldValue(): Promise<string> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); 
+        let assigneeValue =  (await $$(this.selectors.assigneeFieldValue).first().getText()).trim();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+        return assigneeValue;
+    }
+    async clickOnBackButton(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); 
+        await $(this.selectors.backButton).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true);
+    }
+
 }
 
 export default new ProcessEditor();
