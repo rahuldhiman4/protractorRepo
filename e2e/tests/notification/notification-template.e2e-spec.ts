@@ -306,7 +306,7 @@ describe("Notification Template", () => {
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.selectModuleName('Cases');
-            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
             await createNotificationTemplatePage.setTemplateName('4589' + randomStr);
             await createNotificationTemplatePage.setDescription('4589' + randomStr);
             await createNotificationTemplatePage.selectEvent('Access Change');
@@ -340,7 +340,7 @@ describe("Notification Template", () => {
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
             await createNotificationTemplatePage.selectModuleName('Cases');
-            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Business Unit's Manager", "Assigned Department's Manager", "Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Business Unit", "Assigned Department", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
+            expect(await createNotificationTemplatePage.areRecipientsMatches(["Assigned Group's Manager", "Assignee", "Assignee's Manager", "Contact", "Contact's Manager", "External Requester", "Requester", "Requester's Manager", "Assigned Group"])).toBeTruthy('Recipient List is not matching');
             await createNotificationTemplatePage.setTemplateName('4589' + randomStr);
             await createNotificationTemplatePage.setDescription('4589' + randomStr);
             await createNotificationTemplatePage.setAlertMessage('Priority is change');
@@ -369,21 +369,13 @@ describe("Notification Template", () => {
         let columns: string[] = ['Modified By', 'ID', 'Label'];
         let allColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name', 'Modified By', 'ID', 'Label'];
         let defaultColumns: string[] = ['Company', 'Description', 'Event', 'Modified Date', 'Module Name', 'Status', 'Template Name'];
+        expect(await notificationTempGridPage.areColumnHeaderMatches(defaultColumns)).toBeTruthy('Default Columns are not matching');
+        await utilityGrid.sortGridColumn('Description', 'descending');
+        await utilityGrid.sortGridColumn('Description', 'ascending');
+        expect(await notificationTempGridPage.isGridColumnSorted('Template Name')).toBeTruthy('Template Name column is not sorted');
         await notificationTempGridPage.addGridColumns(columns);
         expect(await notificationTempGridPage.areColumnHeaderMatches(allColumns)).toBeTruthy('Columns are not matching');
-        await utilityGrid.sortGridColumn('Description', 'descending');
-        await utilityGrid.sortGridColumn('Description', 'ascending');
-        expect(await notificationTempGridPage.isGridColumnSorted('Template Name')).toBeTruthy('Template Name column is not sorted');
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
-        await navigationPage.gotoSettingsPage();
-        await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
-        expect(await notificationTempGridPage.areColumnHeaderMatches(allColumns)).toBeTruthy('Columns are not matching');
-        await utilityGrid.sortGridColumn('Description', 'descending');
-        await utilityGrid.sortGridColumn('Description', 'ascending');
-        expect(await notificationTempGridPage.isGridColumnSorted('Template Name')).toBeTruthy('Template Name column is not sorted');
         await notificationTempGridPage.removeGridColumns(columns);
-        expect(await notificationTempGridPage.areColumnHeaderMatches(defaultColumns)).toBeTruthy('Default Columns are not matching');
     });
 
     //asahitya-fixed-passed in full run
@@ -461,6 +453,9 @@ describe("Notification Template", () => {
             await editNotificationTemplate.setDropDownValue('Company', 'Petramco');
             await editNotificationTemplate.setDropDownValue('SupportOrg', 'HR Support');
             await editNotificationTemplate.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+        });
+        // added due to defect failed reaming test cases
+        it('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
             await editNotificationTemplate.clickApplyButton();
             await editNotificationTemplate.selectIndividualRecipient('Elizabeth Peters');
             await editNotificationTemplate.saveAddRecipients();
@@ -542,7 +537,7 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-    //defect DRDMV-25149
+    //Fix
     it('[4356]: Verify OOB Notification Event and Template for Email based Approval', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
