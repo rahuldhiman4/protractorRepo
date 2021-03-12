@@ -32,7 +32,7 @@ class CreateEmailTemplate {
         saveButton: '[rx-view-component-id="093a0eeb-c1e0-4ed8-945f-da46d9bbde88"] button',
         cancelButton: '[rx-view-component-id="9aeef4d7-1a10-4ffd-aa3a-22665c32883c"] button',
         lineOfBusinessGuid: 'c4638c50-356f-4aa6-8e22-7392e1efd6c9',
-        lobValue: '[rx-view-component-id="c4638c50-356f-4aa6-8e22-7392e1efd6c9"] input'
+        lobValue: '[rx-view-component-id="c4638c50-356f-4aa6-8e22-7392e1efd6c9"] .rx-select__search-button-title'
     }
 
     async setTemplateName(value: string): Promise<void> {
@@ -60,7 +60,7 @@ class CreateEmailTemplate {
     }
 
     async isDescriptionRequiredTextPresent(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.descriptionGuid);
+        return await utilityCommon.isRequiredTagToField('13cf801e-fc2f-4d74-a57b-77e4ebf2bde6');
     }
 
     async isSubjectRequiredTextPresent(): Promise<boolean> {
@@ -190,7 +190,7 @@ class CreateEmailTemplate {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getAttribute("placeholder");
+        return await $(this.selectors.lobValue).getText();
     }
 
 }

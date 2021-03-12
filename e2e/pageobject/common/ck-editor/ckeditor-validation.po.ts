@@ -413,7 +413,7 @@ class CKEValidation {
         let alignColorFontStyle;
         await $(`div.contents [style="${value}"]`).isPresent().then(async (result) => {
             if (result) {
-                alignColorFontStyle = `div.contents [style="${value}"]`;
+                alignColorFontStyle = `div [style="${value}"]`;
             } else {
                 alignColorFontStyle = `[style="${value}"]`;
             }
@@ -619,14 +619,23 @@ class CKEValidation {
     }
 
     async isHyperLinkDisplayedInCkEditorTextArea(value: string): Promise<boolean> {
-        await browser.waitForAngularEnabled(false);
-        await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
-        await browser.wait(this.EC.elementToBeClickable($(this.selectors.bodyTextArea)), 3000);
+        let framePresent = await $(this.selectors.frame).isPresent();
         let locator = `[href='${value}']`;
-        let islinkDisplayed: boolean = await $(locator).isDisplayed();
-        await browser.switchTo().defaultContent();
-        await browser.waitForAngularEnabled(true);
-        return islinkDisplayed;
+        if (framePresent == true) {
+            await browser.waitForAngularEnabled(false);
+            await browser.switchTo().frame(await $('[rx-view-component-id="c13d2848-2fe9-4e6d-adc0-79bb13e1f965"] iframe.cke_wysiwyg_frame').getWebElement());
+            await browser.wait(this.EC.elementToBeClickable($(this.selectors.bodyTextArea)), 3000);
+            let islinkDisplayed: boolean = await $(locator).isDisplayed();
+            await browser.switchTo().defaultContent();
+            await browser.waitForAngularEnabled(true);
+            return islinkDisplayed;
+        }
+        else {
+            return await $(locator).isPresent().then(async (isPresent) => {
+                if(isPresent) return await $$(locator).last().isDisplayed();
+                else return false;
+            })
+        }
     }
 }
 

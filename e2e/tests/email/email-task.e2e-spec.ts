@@ -526,6 +526,7 @@ describe('Email Task', () => {
         expect(await activityTabPo.getEmailTitle()).toContain('Qadim Katawazi sent an email');
         expect(await activityTabPo.getRecipientInTo()).toContain('To: Fritz Schulz');
         expect(await activityTabPo.getEmailSubject()).toContain(displayId + ':' + 'Create case for Email Test');
+        await activityTabPo.clickOnShowMore();
         expect(await activityTabPo.getEmailBody()).toContain('this is new email sending frist time to the user');
         await activityTabPo.clickOnReplyAll();
         await composeMailPo.isComposeEmailUIDisplay();

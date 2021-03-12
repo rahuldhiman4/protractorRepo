@@ -117,7 +117,7 @@ xdescribe('Conditional Task', () => {
             await processEditorPage.clickSelectTemplateBtn();
 
             //Validate all field labels of Manual Task Template
-            await utilityGrid.searchAndOpenHyperlink(manualTaskTemplateData.templateName);
+            await processEditorPage.searchAndOpenTaskTemplate(manualTaskTemplateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -156,7 +156,7 @@ xdescribe('Conditional Task', () => {
             await taskTemplatePreview.clickOnBackButton();
 
             //Validate all field labels of External Task Template
-            await utilityGrid.searchAndOpenHyperlink(externalTaskTemplateData.templateName);
+            await processEditorPage.searchAndOpenTaskTemplate(externalTaskTemplateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -195,7 +195,7 @@ xdescribe('Conditional Task', () => {
             await taskTemplatePreview.clickOnBackButton();
 
             //Validate all field labels of Automated Task Template
-            await utilityGrid.searchAndOpenHyperlink(automatedTaskTemplateData.templateName);
+            await processEditorPage.searchAndOpenTaskTemplate(automatedTaskTemplateData.templateName);
             expect(await taskTemplatePreview.isTaskSummaryTitleDisplayed('Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await taskTemplatePreview.isTaskCompanyTitleDisplayed('Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await taskTemplatePreview.isTaskPriorityTitleDisplayed('Task Priority')).toBeTruthy('Task Priority is not getting displayed');

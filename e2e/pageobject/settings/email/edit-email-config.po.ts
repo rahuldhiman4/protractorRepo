@@ -68,6 +68,7 @@ export class EditEmailConfig {
         emailIdNewBlockEmailId: '[rx-view-component-id="3b86d9d1-26a0-4fe1-8d36-57993ddeb25c"] input',
         lobValue: '[rx-view-component-id="61e76625-685a-41b7-9c41-fd7698a71570"] .pull-left',
         lob: '[rx-view-component-id="4c80a9f0-5051-4b85-a0a3-debcda8c7dd0"] button div',
+        acknowledgementTemplateUpdate: '[rx-view-component-id="a5437a3a-3a11-4e07-8829-9cee403dca61"] button'
     }
 
     async clickDefaultMailIdCheckbox(value: string): Promise<void> {
@@ -195,7 +196,7 @@ export class EditEmailConfig {
     }
 
     async selectAcknowledgementTemplate(template: string): Promise<void> {
-        await utilityCommon.selectDropDown("Acknowledgment Template",template,DropDownType.Label);
+        await utilityCommon.selectDropDown(await $(this.selectors.acknowledgementTemplateUpdate),template,DropDownType.WebElement);
     }
 
     async selectBusinessUnitInAssociatedSupportGroupTab(template: string): Promise<void> {

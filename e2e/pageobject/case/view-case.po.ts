@@ -55,7 +55,7 @@ class ViewCasePage {
         tab: '.nav-item button',
         showApproversBanner: '.rx-runtime-view-canvas-item-margin [rx-view-component-id="f288e1bb-9273-4ddd-98da-175d0c9b7413"]',
         pendingApprovalsInfo: '[rx-view-component-id="9766d3d3-3f7c-43fe-8237-473d88298daa"] span[aria-label="Status of case approvals"] span',
-        showApproversLink: '.show-approvers-button-container',
+        showApproversLink: '[rx-view-component-id="3526bece-a540-4774-aa46-009075dbee5f"] button',
         showMoreDescription: '[rx-view-component-id="9d3ef0fc-c49f-425f-a9e1-52422ba87f4f"] button',
         approvalButtons: '.approval-buttons span',
         approveButton: '.d-icon-left-check_shield',
@@ -477,7 +477,7 @@ class ViewCasePage {
     }
 
     async clickShowApproversLink(): Promise<void> {
-        await $(this.selectors.showApproversBanner).$(this.selectors.showApproversLink).click();
+        await $(this.selectors.showApproversLink).click();
     }
 
     async getShowPendingApproversInfo(): Promise<string> {

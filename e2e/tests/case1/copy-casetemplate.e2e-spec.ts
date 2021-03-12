@@ -281,7 +281,7 @@ describe('Copy Case Template', () => {
         await copyCaseTemplate.clickCancelCaseTemplate();
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
-//Defect - DRDMV-25229 -check with tushar
+//Defect - DRDMV-25229 -check with tushar Task Click issue
     describe('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateDataSet, casetemplatePetramco, newCaseTemplate1, manualTaskTemplate;

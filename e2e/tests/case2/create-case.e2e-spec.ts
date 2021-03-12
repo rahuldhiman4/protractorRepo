@@ -580,7 +580,10 @@ describe("Create Case", () => {
             await loginPage.login('qliu');
             await caseConsolePage.searchAndOpenCase(caseId);
             expect(await activityTabPo.isTextPresentInActivityLog("Qianru Tao")).toBeTruthy("Text is not present in activiy tab1");
-            expect(await activityTabPo.isTextPresentInActivityLog("viewed the case.")).toBeTruthy("Text is not present in activiy tab2");
+            await activityTabPo.clickOnShowMore();
+            expect(await activityTabPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
+            expect(await activityTabPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab3");
+            expect(await activityTabPo.isTextPresentInActivityLog("Assigned Group")).toBeTruthy("Text is not present in activiy tab4");
             expect(await activityTabPo.isTextPresentInActivityLog("AU Support 1")).toBeTruthy("Text is not present in activiy tab5");
         });
 
@@ -893,6 +896,7 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[4325]: Verify allow case reopen tag in case template', async () => {

@@ -63,6 +63,7 @@ let fs = require('fs');
 axios.defaults.baseURL = browser.baseUrl;
 axios.defaults.headers.common['X-Requested-By'] = 'XMLHttpRequest';
 axios.defaults.headers.common['Content-Type'] = 'application/json';
+axios.defaults.headers.common['request-overlay-group'] = '1';
 const commandUri = 'api/rx/application/command';
 const articleTemplateUri = 'api/com.bmc.dsm.knowledge/rx/application/article/template';
 const appConfigUri = 'api/rx/application/admin-settings/local/component-settings/Configuration Values/';
@@ -804,7 +805,7 @@ class ApiHelper {
         templateData.fieldInstances[7].value = constants.TaskTemplate[data.templateStatus];
         templateData.fieldInstances[8].value = data.templateSummary;
         templateData.fieldInstances[1000001437].value = data.templateName;
-        templateData.fieldInstances[450000154].value = data.processBundle;
+        templateData.fieldInstances[450000154].value = data.processBundle ? data.processBundle : templateData.fieldInstances[450000154].value;
         templateData.fieldInstances[450000141].value = data.processName;
         templateData.fieldInstances[301566300].value = data.ownerCompany ? data.ownerCompany : templateData.fieldInstances[301566300].value;
         templateData.fieldInstances[1000000001].value = data.taskCompany ? data.taskCompany : templateData.fieldInstances[1000000001].value;
@@ -2208,7 +2209,7 @@ class ApiHelper {
             }
             adhocTaskPayload.fieldInstances["1000000337"] = taskRequester;
         }
-        
+
         let createTaskResponse = await apiCoreUtil.createRecordInstance(adhocTaskPayload);
         console.log('Create Task API Status =============>', createTaskResponse.status);
         const taskDetails = await axios.get(

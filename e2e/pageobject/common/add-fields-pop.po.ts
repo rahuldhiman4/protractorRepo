@@ -4,11 +4,14 @@ class AddField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         fieldVariable: '.rx-data-dictionary-item-value',
-        parentFields: '.modal-body .a-tree__content',
+        parentFields: '.modal-body .a-tree__content .a-tree__toggle',
         okButtonOnEditor: '.modal-footer .btn-primary',
         cancelButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_secondary',
         addField: '.rx-expression-editor-dictionary h5',
-        groupName: '.rx-data-dictionary-item div'
+        groupName: '.rx-data-dictionary-item div',
+        allNodesParent: '[rx-id="node"]',
+        nodeName: 'adapt-highlight',
+        nodeButton: 'button'
     }
 
     async getHeaderOfAddfield(): Promise<string> {
@@ -28,7 +31,8 @@ class AddField {
     }
 
     async clickOnCase(): Promise<void> {
-        await $$(this.selectors.parentFields).first().click();
+        await browser.wait(this.EC.elementToBeClickable(await $$(this.selectors.parentFields).get(1)), 6000);
+        await $$(this.selectors.parentFields).get(1).click();
     }
 
     async navigateToAssociationsInCase() {
@@ -63,8 +67,16 @@ class AddField {
     }
 
     async selectDynamicField(value: string): Promise<void> {
-        let fieldValue = await element(by.cssContainingText(this.selectors.fieldVariable, value));
-        await browser.actions().mouseMove(fieldValue).doubleClick().perform();
+        let allPersonNum: number = await $$(this.selectors.allNodesParent).count();
+        for (let i = 0; i < allPersonNum; i++) {
+            let parentNode = await $$(this.selectors.allNodesParent).get(i);
+            let nm: string = await parentNode.$(this.selectors.nodeName).getText();
+            if (nm == value) {
+                parentNode = await $$(this.selectors.allNodesParent).get(i);
+                await parentNode.$(this.selectors.nodeButton).click();
+                break;
+            }
+        }
     }
 
     async clickOnGroupName(groupvalue: string): Promise<void> {
@@ -76,23 +88,23 @@ class AddField {
     }
     async setValueOfField(fromTree: string, value: string): Promise<void> {
         let countParent = await $$('.modal-body .ui-tree-selectable .a-tree__label adapt-highlight[title]').count();
-        for (let i =0; i<countParent; i++){
+        for (let i = 0; i < countParent; i++) {
             let getTextofparent = await $$('.modal-body .ui-tree-selectable .a-tree__label adapt-highlight[title]').get(i).getText();
-            console.log('getTextofparent>>>>>',getTextofparent);
-            if (getTextofparent == fromTree){
-              await $$('.modal-body .a-tree__toggle').get(i).click();  
-              await browser.sleep(3000);//Added becoz of slownees open the parent tree
-              break;
+            console.log('getTextofparent>>>>>', getTextofparent);
+            if (getTextofparent == fromTree) {
+                await $$('.modal-body .a-tree__toggle').get(i).click();
+                await browser.sleep(3000);//Added becoz of slownees open the parent tree
+                break;
             }
         }
 
         let countChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').count();
-        for (let i =0; i<countChild; i++){
+        for (let i = 0; i < countChild; i++) {
             let getTextofChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').get(i).getText();
-            console.log('getTextofparent>>>>>',getTextofChild);
-            if (getTextofChild == value){
-              await $$('.modal-body .ui-tree-selectable .d-icon-plus_circle').get(i).click();  
-              break;
+            console.log('getTextofparent>>>>>', getTextofChild);
+            if (getTextofChild == value) {
+                await $$('.modal-body .ui-tree-selectable .d-icon-plus_circle').get(i).click();
+                break;
             }
         }
     }

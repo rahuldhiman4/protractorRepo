@@ -32,8 +32,8 @@ describe('Copy Task Template', () => {
         let templateData;
         beforeAll(async () => {
             templateData = {
-                "templateName": `${randomStr} AutomatedTaskTemplateActive`,
-                "templateSummary": `${randomStr} AutomatedTaskTemplateActive`,
+                "templateName": `${randomStr}AutomatedTaskTemplateActive`,
+                "templateSummary": `${randomStr}AutomatedTaskTemplateActive`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'DRDMV14214ProcessName' + randomStr,
@@ -48,7 +48,7 @@ describe('Copy Task Template', () => {
         it('[4570]: Create copy of task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await selectTaskTemplate.searchAndSelectTaskTemplate(`${randomStr} AutomatedTaskTemplateActive`);
+            await selectTaskTemplate.searchAndSelectTaskTemplate(templateData.templateName);
             await selectTaskTemplate.clickOnCopyTaskTemplateButton();
             expect(await copyTemplatePage.unSelectCopyExistingProcess()).toBeTruthy();
             expect(await copyTemplatePage.getProcessName()).toBe(templateData.processName);
@@ -268,16 +268,17 @@ describe('Copy Task Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-//check
+
+    //check
     describe('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newManualTaskTemplate = 'DRDMV13540NewManualTask'+randomStr;
-        let newmanualTaskSummary = 'DRDMV13540NewManualTask'+randomStr;
+        let manualTaskTemplateName2 = randomStr + 'DRDMV13540ManualTaskName2';
+        let manualTaskTemplateSummary2 = randomStr + 'DRDMV13540ManualTaskSummary2';
         let templateData;
         beforeAll(async () => {
             templateData = {
-                "templateName": randomStr+'DRDMV13540ManualTask',
-                "templateSummary": `${randomStr}manualTaskTemplateSummary1`,
+                "templateName": randomStr + 'DRDMV13540ManualTaskName1',
+                "templateSummary": randomStr + 'DRDMV13540ManualTaskSummary1',
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -292,19 +293,19 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndSelectTaskTemplate(templateData.templateName);
             await selectTaskTemplate.clickOnCopyTaskTemplateButton();
-            await copyTemplatePage.setTemplateName(newManualTaskTemplate);
-            await copyTemplatePage.setTaskSummary(newmanualTaskSummary);
+            await copyTemplatePage.setTemplateName(manualTaskTemplateName2);
+            await copyTemplatePage.setTaskSummary(manualTaskTemplateSummary2);
             await copyTemplatePage.clickSaveCopytemplate();
             await utilityCommon.closePopUpMessage();
         });
         it('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', async () => {
             expect(await viewTaskTemplate.getTemplateStatus()).toBe("Draft");
-            expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
+            expect(await viewTaskTemplate.getTemplateName()).toBe(manualTaskTemplateName2);
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("US Support 3");
             await viewTaskTemplate.clickBackArrowBtn();
-            await utilityGrid.searchAndOpenHyperlink(newManualTaskTemplate);
-            expect(await viewTaskTemplate.getTemplateName()).toBe(newManualTaskTemplate);
+            await utilityGrid.searchAndOpenHyperlink(manualTaskTemplateName2);
+            expect(await viewTaskTemplate.getTemplateName()).toBe(manualTaskTemplateName2);
             await viewTaskTemplate.clickBackArrowBtn();
         });
     });
@@ -313,16 +314,16 @@ describe('Copy Task Template', () => {
     describe('[4569]: Create Copy of an automated Task and check execution', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, newCase;
-        let newProcessName =  randomStr+'NewProcessDRDMV14215';
-        let updatedTaskTemplate = randomStr+'UpdatedTaskDRDMV14215';
-        let updatedTaskSummary = randomStr+'UpdatedSummaryDRDMV14215';
+        let newProcessName = randomStr + 'NewProcessDRDMV14215';
+        let updatedTaskTemplate = randomStr + 'UpdatedTaskDRDMV14215';
+        let updatedTaskSummary = randomStr + 'UpdatedSummaryDRDMV14215';
         beforeAll(async () => {
             templateData = {
-                "templateName": randomStr+'DRDMV14215AutomationTask',
+                "templateName": randomStr + 'DRDMV14215AutomationTask',
                 "templateSummary": `${randomStr}AutomatedTaskTemplateActive`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": randomStr+'DRDMV14215Process',
+                "processName": randomStr + 'DRDMV14215Process',
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
@@ -330,7 +331,7 @@ describe('Copy Task Template', () => {
             }
             let caseData = {
                 "Requester": "apavlik",
-                "Summary": randomStr+'Summary ',
+                "Summary": randomStr + 'Summary ',
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 1",
@@ -372,7 +373,7 @@ describe('Copy Task Template', () => {
         });
     });
 
-    // there is no edit process link on automated task
+    // skipped: click edit process link opens Discover Innovation Studio video
     xdescribe('[4563]: Check Error Message when trying to edit a process, where process is linked to Active Automated Task template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedTaskTemplate = randomStr + 'DRDMV14221UpdatedTask';
@@ -418,11 +419,11 @@ describe('Copy Task Template', () => {
     //Done
     describe('[4714,4734]: Fields copied while creating copy of External Task template', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData, updatedTaskTemplate = 'DRDMV13574UpdatedTask' + randomStr;
+        let templateData, updatedTaskTemplate = randomStr + 'DRDMV13574UpdatedTask';
         beforeAll(async () => {
             templateData = {
-                "templateName": 'DRDMV13574ExternalTask' + randomStr,
-                "templateSummary": 'DRDMV13574Summary' + randomStr,
+                "templateName": randomStr + 'DRDMV13574ExternalTask',
+                "templateSummary": randomStr + 'DRDMV13574Summary',
                 "templateStatus": "Active",
                 "description": randomStr,
                 "category1": "Employee Relations",
@@ -464,9 +465,9 @@ describe('Copy Task Template', () => {
     it('[4738,4716]: Create a Copy of Task template by Case Business Analyst that belongs to Support Group', async () => {
         try {
             const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-            let taskTemplate = 'DRDMV13547TaskTemplate' + randomStr;
-            let taskSummary = 'DRDMV13547Summary' + randomStr;
-            let updatedTaskTemplate = randomStr+ 'DRDMV13547UpdatedName' ;
+            let taskTemplate = randomStr + 'DRDMV13547TaskTemplate';
+            let taskSummary = randomStr + 'DRDMV13547Summary';
+            let updatedTaskTemplate = randomStr + 'DRDMV13547UpdatedName';
 
             let templateData = {
                 "templateName": taskTemplate,
@@ -505,7 +506,7 @@ describe('Copy Task Template', () => {
             expect(await viewTaskTemplate.getCategoryTier3Value()).toBe('Bonus');
             expect(await viewTaskTemplate.getOwnerCompanyValue()).toBe("Petramco");
             expect(await viewTaskTemplate.getBuisnessunitValue()).toBe('Australia Support');
-            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("AU Support 3"); 
+            expect(await viewTaskTemplate.getOwnerGroupValue()).toBe("AU Support 3");
         } catch (e) {
             throw e;
         } finally {

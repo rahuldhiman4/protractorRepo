@@ -17,7 +17,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-xdescribe("Task Approval UI Validations", () => {
+describe("Task Approval UI Validations", () => {
     const taskApprovalRecordDefinition = 'com.bmc.dsm.task-lib:Task';
     let taskModule = 'Task';
 
@@ -76,7 +76,7 @@ xdescribe("Task Approval UI Validations", () => {
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
-            await apiHelper.apiLogin('qtao');
+            await apiHelper.apiLogin('qkatawazi');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
             await apiHelper.apiLogin('qkatawazi');
@@ -89,47 +89,38 @@ xdescribe("Task Approval UI Validations", () => {
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(taskApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval Flows');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Approval flows ');
             await approvalConfigurationPage.clickApprovalGroup('Task Group');
             await approvalConfigurationPage.clickAddGeneralFlowButton();
-            await approvalConfigurationPage.selectApprovalFlowOption('General Approval Flow');
-            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Flow:New General Flow');
+            await approvalConfigurationPage.clickAddGeneralFlowButton();
+            expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('General flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
-            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One Must Approve');
+            await approvalConfigurationPage.selectMultipleApproversDropDownOption('One must approve');
             await approvalConfigurationPage.clickExpressionLink();
-            await browser.sleep(5000); // sleep added for expression builder loading time
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create New Approval Flow');
-            await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Task');
-            await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await browser.sleep(2000); // sleep added for expression builder loading time
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Task');        
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Workforce Administration');
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Workforce Administration"');
+            await approvalConfigurationPage.clickModelOkButton();
             await approvalConfigurationPage.clickSelectApproversLink();
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'Katawazi');
-            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Person');
-            await approvalConfigurationPage.selectApproversForApproverFlow('Person', 'qliu');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('People');
+            await approvalConfigurationPage.selectApproversForApproverFlow('People', 'Katawazi');
+            await approvalConfigurationPage.clickSelectApproversLink();
+            await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('People');
+            await approvalConfigurationPage.selectApproversForApproverFlow('People', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[3591]:Create task approval mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName('Task Mapping for one must flow');
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -189,8 +180,8 @@ xdescribe("Task Approval UI Validations", () => {
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -219,7 +210,7 @@ xdescribe("Task Approval UI Validations", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
             expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');

@@ -15,7 +15,7 @@ class ApprovalsConsole {
         approvalFlowBrickTitle: 'span',
         approvalFlowBrickEditLink: '.d-icon-right-pencil',
         approvalFlowTitleInput: '[rx-id="flow-name"] input',
-        noOfLevelsInput: '.d-textfield__input[rx-id="levels"]',
+        noOfLevelsInput: '.adapt-rx-counter input',
         expressionQualitificationLink: '[property-label="Qualification"] button',
         createNewApprovalFlowPopUp: '.modal-header h5',
         searchExpressionField: '.modal-content input',
@@ -35,7 +35,7 @@ class ApprovalsConsole {
         newSelfApprovalFlowLinkButton: '.d-icon-left-plus_circle',
         ckEditorTextInput: '.cke_editable_inline',
         selfApprovalNextButton: 'button.d-icon-right-angle_right',
-        auditInformationTextField: 'textarea[rx-id="audit-information"]',
+        auditInformationTextField: '[rx-id="audit-information"] textarea',
         sampleSelfApprovalCheckbox: '.ui-grid-icon-ok',
         multipleApproverFlowDropDown: '[rx-id="signing-criteria"] button',
         multipleApproverFlowDropDownOption: '[rx-id="signing-criteria"] button .rx-select__option-content div',
@@ -60,7 +60,11 @@ class ApprovalsConsole {
         cancelModalButton: '.modal-footer [rx-id="cancel-button"]',
         moveApprovalButton: 'button.move-button',
         approvalTypeDropdown: '[rx-id="approver-type"] button',
-        approvalModalSaveButton: '.modal-footer button[rx-id="save-button"]'
+        approvalModalSaveButton: '.modal-footer button[rx-id="save-button"]',
+        selfApprovalQualificationLink: '[property-label="Self approval qualification"] button',
+        selfApprovalPrecendence: '[rx-id="precedence"] input',
+        selfApprovalAddButton: 'button[rx-id="add-button"]',
+        selfApprovalProcess: '[rx-id="process"]'
     }
 
     async searchAndOpenApprovalConfiguration(apporvalConfiguration: string): Promise<void> {
@@ -101,8 +105,7 @@ class ApprovalsConsole {
     }
 
     async setNoOfLevels(noOfLevels: string): Promise<void> {
-        await $$(this.selectors.expandApprovalFlowBrickArea).last().$$(this.selectors.noOfLevelsInput).click();
-        await $$(this.selectors.expandApprovalFlowBrickArea).last().$$(this.selectors.noOfLevelsInput).sendKeys(noOfLevels);
+        await $$(this.selectors.noOfLevelsInput).last().sendKeys(noOfLevels);
     }
 
     async clickExpressionLink(): Promise<void> {
@@ -311,6 +314,19 @@ class ApprovalsConsole {
     async clickApproverModalSaveButton() {
         await $(this.selectors.approvalModalSaveButton).click();
     }
+
+    async clickSelfApprovalQualificationLink() {
+        await $(this.selectors.selfApprovalQualificationLink).click();
+    }
+
+    async setSelfApprovalPrecendenceValue(value: string) {
+        await $(this.selectors.selfApprovalPrecendence).sendKeys(value);
+    }
+
+    async clickSelfApprovalAddButton() {
+        await $(this.selectors.selfApprovalAddButton).click();
+    }
+
 }
 
 export default new ApprovalsConsole();
