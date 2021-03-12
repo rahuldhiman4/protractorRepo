@@ -57,6 +57,7 @@ import { ICreateSVT, ICreateSVTGoalType, ICreateSVTGroup } from '../data/interfa
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
+import { CASE_ACCESS_COMMAND, CASE_ACCESS_CHILD_SECURITY} from '../data/api/case/update.case.access.api';
 
 let fs = require('fs');
 
@@ -1730,19 +1731,25 @@ class ApiHelper {
     }
 
     async updateCaseAccess(caseGuid: string, data: IUpdateCaseAccess): Promise<number> {
-        let accessFile = await require('../data/api/case/case.access.api.json');
-        let caseAccessData = await accessFile.CaseAccess;
-        caseAccessData.processInputValues['Record Instance ID'] = caseGuid;
-        caseAccessData.processInputValues['Type'] = data.type;
+        let caseAccessData = cloneDeep(CASE_ACCESS_COMMAND);
+        caseAccessData.processInputValues.Type = data.type;
         caseAccessData.processInputValues['Operation'] = data.operation;
         caseAccessData.processInputValues['Security Type'] = data.security;
         caseAccessData.processInputValues['Value'] = data.username;
+        caseAccessData.processInputValues["Record Instance ID"] = caseGuid;
         const updateCaseAccess = await axios.post(
             commandUri,
             caseAccessData
         );
-
         console.log('Update Case Access API Status =============>', updateCaseAccess.status);
+
+        let caseAccessChildSecurityData = cloneDeep(CASE_ACCESS_CHILD_SECURITY);
+        caseAccessChildSecurityData.processInputValues["Record Instance ID"] = caseGuid;
+        const updateCaseAccessChildSecurity = await axios.post(
+            commandUri,
+            caseAccessChildSecurityData
+        );
+        console.log('Update Case Access Child Security API Status =============>', updateCaseAccessChildSecurity.status);
         return updateCaseAccess.status;
     }
 
