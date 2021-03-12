@@ -59,9 +59,9 @@ describe('Email Acknowledgment Template', () => {
             await createAcknowledgmentTemplatesPo.setTemplateName(templateName);
             await createAcknowledgmentTemplatesPo.selectCompanyDropDown('Petramco');
             await createAcknowledgmentTemplatesPo.selectStatusDropDown('Active');
-            await createAcknowledgmentTemplatesPo.selectLabelDropDown(label);
             await createAcknowledgmentTemplatesPo.setDescription(description);
             await createAcknowledgmentTemplatesPo.setSubject(subject);
+            await createAcknowledgmentTemplatesPo.selectLabelDropDown(label);
             await createAcknowledgmentTemplatesPo.setBody(body);
             await createAcknowledgmentTemplatesPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();

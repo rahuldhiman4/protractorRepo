@@ -419,12 +419,9 @@ describe('Create Case Task', () => {
     // categ2 not populated
     describe('[4941]: Task Template submitter from different company of owner group can edit the template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let TaskTemplate = randomStr + 'Manual task';
-        let TaskSummary = randomStr + 'Summary';
+        let TaskTemplate = randomStr + 'ManualTask4941';
+        let TaskSummary = randomStr + 'Summary4941';
         let description = 'description' + randomStr;
-
-        beforeAll(async () => {
-        });
         it('[4941]: Login with Psilon user', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
@@ -444,8 +441,6 @@ describe('Create Case Task', () => {
         });
         it('[4941]: Edit the above template', async () => {
             //search above template
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTasktemplatePo.clickOnEditLink();
             await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
@@ -462,6 +457,7 @@ describe('Create Case Task', () => {
             expect(await viewTasktemplatePo.getCategoryTier3Value()).toBe('Bonus', 'Bonus is not present');
         });
         afterAll(async () => {
+            await viewTasktemplatePo.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login("qkatawazi")
         });
@@ -716,20 +712,20 @@ describe('Create Case Task', () => {
 
     //ankagraw
     describe('[5800]: [Task Template] Task Template Status changes', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateDataDraft1, templateDataActive, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            let templateDataDraft1 = {
-                "templateName": `5800manualTaskTemplateDraft1 ${randomStr}`,
-                "templateSummary": `5800manualTaskTemplateDraft1 ${randomStr}`,
+            templateDataDraft1 = {
+                "templateName": `${randomStr}5800manualTaskTemplateDraft1`,
+                "templateSummary": `${randomStr}5800manualTaskTemplateDraft1`,
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 1"
             }
-            let templateDataActive = {
-                "templateName": `manualTaskTemplateActive ${randomStr}`,
-                "templateSummary": `manualTaskTemplateActive ${randomStr}`,
+            templateDataActive = {
+                "templateName": `${randomStr}5800manualTaskTemplateActive`,
+                "templateSummary": `${randomStr}5800manualTaskTemplateActive`,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -744,7 +740,7 @@ describe('Create Case Task', () => {
         it('[5800]: Verify the task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateDraft1 ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateDataDraft1.templateName);
             expect(await viewTasktemplatePo.getTaskTypeValue()).toBe('Manual');
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Active");
@@ -767,7 +763,7 @@ describe('Create Case Task', () => {
         it('[5800]: Update the task template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await selectTaskTemplate.searchAndOpenTaskTemplate(`manualTaskTemplateActive ${randomStr}`);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateDataActive.templateName);
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus("Inactive");
             await editTaskTemplate.clickOnSaveMetadata();
@@ -784,16 +780,16 @@ describe('Create Case Task', () => {
 
     // Extra error message on create case page
     describe('[5544]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let caseTemplateName = randomStr + 'caseTemplateName';
-        let casTemplateSummary = 'CaseSummaryName' + randomStr;
+        let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateName = randomStr + 'caseTemplateName5544';
+        let casTemplateSummary = randomStr + 'CaseSummaryName5544';
         beforeAll(async () => {
-            let templateData = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            templateData = {
+                "templateName": `${randomStr}AutomatedTaskTemplateActive5544 `,
+                "templateSummary": `${randomStr}AutomatedTaskTemplateActive5544`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": `Case Process 1 ${randomStr}`,
+                "processName": `Case Process5544 ${randomStr}`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "assignee": "qtao",
@@ -829,19 +825,19 @@ describe('Create Case Task', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
-            await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
         it('[5544]: create case and add task on it', async () => {
             //Quick Case 
             await navigationPage.gotoQuickCase();
             await quickCase.selectRequesterName('adam');
-            await quickCase.selectCaseTemplate(`${caseTemplateName}`);
+            await quickCase.selectCaseTemplate(caseTemplateName);
             await quickCase.createCaseButton();
             await quickCase.gotoCaseButton();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickOnRefreshTaskList();
-            await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
         afterAll(async () => {
@@ -856,8 +852,8 @@ describe('Create Case Task', () => {
         let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             templateData = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateName": `${randomStr}AutomatedTaskTemplateActive5554`,
+                "templateSummary": `${randomStr}AutomatedTaskTemplateActive5554`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
@@ -887,7 +883,7 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.selectStatusReason('Customer Canceled');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            await viewCasePage.clickOnTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
         });
         afterAll(async () => {
@@ -897,25 +893,25 @@ describe('Create Case Task', () => {
 
     //ankagraw
     describe('[5555,5556]: [Automatic Task] - Task Activation when multiple Tasks are on same sequence', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData, templateData1, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            let templateData = {
-                "templateName": `FirstAutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateSummaryActive ${randomStr}`,
+            templateData = {
+                "templateName": `${randomStr} 5555FirstAutomatedTaskTemplateActive`,
+                "templateSummary": `${randomStr} 5555AutomatedTaskTemplateSummaryActive`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": 'case_Management_Process' + randomStr,
+                "processName": 'case_Management_Process5555' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 1"
             }
-            let templateData1 = {
-                "templateName": `SecondAutomatedTaskTemplateActive1 ${randomStr}`,
-                "templateSummary": `SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`,
+            templateData1 = {
+                "templateName": `${randomStr} 5555SecondAutomatedTaskTemplateActive1`,
+                "templateSummary": `${randomStr} 5555SecondAutomatedTaskTemplateSummaryActive1`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": 'case_Management_Process123' + randomStr,
+                "processName": 'case_Management_Process1235555' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
@@ -935,32 +931,32 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(`FirstAutomatedTaskTemplateActive ${randomStr}`);
-            await manageTaskBladePo.addTaskFromTaskTemplate(`SecondAutomatedTaskTemplateActive1 ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData1.templateName);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
         it('[5555,5556]: Verify first task on it', async () => {
             await viewCasePage.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(templateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateSummaryActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             expect(await viewTask.getStatusReason()).toBe("Successful");
             await viewTask.clickOnViewCase();
         });
         it('[5555,5556]: Verify second task on it', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.clickTaskLink(`SecondAutomatedTaskTemplateSummaryActive1 ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(templateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
     });
@@ -970,8 +966,8 @@ describe('Create Case Task', () => {
         let templateData1, templateData2, templateData3, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             templateData1 = {
-                "templateName": 'manualTaskTemplate1' + randomStr,
-                "templateSummary": 'manualTaskTemplateSummary1' + randomStr,
+                "templateName": '5561manualTaskTemplate1' + randomStr,
+                "templateSummary": '5561manualTaskTemplateSummary1' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -980,8 +976,8 @@ describe('Create Case Task', () => {
             }
 
             templateData2 = {
-                "templateName": 'manualTaskTemplate2' + randomStr,
-                "templateSummary": 'manualTaskTemplateSummary2' + randomStr,
+                "templateName": '5561manualTaskTemplate2' + randomStr,
+                "templateSummary": '5561manualTaskTemplateSummary2' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -990,8 +986,8 @@ describe('Create Case Task', () => {
             }
 
             templateData3 = {
-                "templateName": 'manualTaskTemplate3' + randomStr,
-                "templateSummary": 'manualTaskTemplateSummary3' + randomStr,
+                "templateName": '5561manualTaskTemplate3' + randomStr,
+                "templateSummary": '5561manualTaskTemplateSummary3' + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -1062,15 +1058,15 @@ describe('Create Case Task', () => {
 
     //ankagraw
     describe('[5563,5562]: [Automatic Task] - Task Activation behaviour immediately after creation when Task is at seq 1', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let inProgress, pending, resolved, closed, canceled;
         beforeAll(async () => {
-            let templateData = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+            templateData = {
+                "templateName": `5562AutomatedTaskTemplateActive ${randomStr}`,
+                "templateSummary": `5562AutomatedTaskTemplateActive ${randomStr}`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": 'case_Management_Process' + randomStr,
+                "processName": 'case_Management_Process5562' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
@@ -1081,7 +1077,7 @@ describe('Create Case Task', () => {
             let caseWithInprogressStatus = {
                 "Status": "3000",
                 "Company": "Petramco",
-                "Description": "This case was created by java integration tests",
+                "Description": "This case was created by java integration tests 5562",
                 "Requester": "qkatawazi",
                 "Summary": "create case is inProgress Status" + randomStr,
                 "Assigned Company": "Petramco",
@@ -1093,7 +1089,7 @@ describe('Create Case Task', () => {
             let caseWithPendingStatus = {
                 "Status": "4000",
                 "Company": "Petramco",
-                "Description": "This case was created by java integration tests",
+                "Description": "This case was created by java integration tests 5562",
                 "Requester": "qkatawazi",
                 "Summary": "create case is in Pending Status" + randomStr,
                 "Assigned Company": "Petramco",
@@ -1105,7 +1101,7 @@ describe('Create Case Task', () => {
             let caseWithResolvedStatus = {
                 "Status": "5000",
                 "Company": "Petramco",
-                "Description": "This case was created by java integration tests",
+                "Description": "This case was created by java integration tests 5562",
                 "Requester": "qkatawazi",
                 "Summary": "create case is in Resolved Status" + randomStr,
                 "Assigned Company": "Petramco",
@@ -1115,9 +1111,9 @@ describe('Create Case Task', () => {
             }
 
             let caseWithClosedStatus = {
-                "Status": "7000",
+                "Status": "3000",
                 "Company": "Petramco",
-                "Description": "This case was created by java integration tests",
+                "Description": "This case was created by java integration tests 5562",
                 "Requester": "qkatawazi",
                 "Summary": "create case is in Closed Status" + randomStr,
                 "Assigned Company": "Petramco",
@@ -1127,9 +1123,9 @@ describe('Create Case Task', () => {
             }
 
             let caseWithCanceledStatus = {
-                "Status": "6000",
+                "Status": "3000",
                 "Company": "Petramco",
-                "Description": "This case was created by java integration tests",
+                "Description": "This case was created by java integration tests 5562",
                 "Requester": "qkatawazi",
                 "Summary": "create case is in Canceled Status" + randomStr,
                 "Assigned Company": "Petramco",
@@ -1142,13 +1138,16 @@ describe('Create Case Task', () => {
             let PendingCase = await apiHelper.createCase(caseWithPendingStatus);
             let resolvedCase = await apiHelper.createCase(caseWithResolvedStatus);
             let closedCase = await apiHelper.createCase(caseWithClosedStatus);
-            let CanceledCase = await apiHelper.createCase(caseWithCanceledStatus);
-
+            await apiHelper.updateCaseStatus(closedCase.id, 'Resolved', 'Auto Resolved');
+            await apiHelper.updateCaseStatus(closedCase.id, 'Closed');
+            let canceledCase = await apiHelper.createCase(caseWithCanceledStatus);
+            await apiHelper.updateCaseStatus(canceledCase.id, 'Canceled', 'Customer Canceled');
+            
             inProgress = inProgressCase.displayId;
             pending = PendingCase.displayId;
             resolved = resolvedCase.displayId;
             closed = closedCase.displayId;
-            canceled = CanceledCase.displayId;
+            canceled = canceledCase.displayId;
         });
         it('[5563,5562]: Create new status case and assign task on it', async () => {
             //Verify New Case
@@ -1161,11 +1160,11 @@ describe('Create Case Task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
         it('[5563,5562]: Create Assigned status case and assign task on it', async () => {
@@ -1179,11 +1178,11 @@ describe('Create Case Task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
         it('[5563,5562]: Create InProgress status case and assign task on it', async () => {
@@ -1193,11 +1192,11 @@ describe('Create Case Task', () => {
             await caseConsolePage.searchAndOpenCase(inProgress);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
         });
         it('[5563,5562]: Create Pending status case and assign task on it', async () => {
@@ -1207,11 +1206,11 @@ describe('Create Case Task', () => {
             await caseConsolePage.searchAndOpenCase(pending);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(`AutomatedTaskTemplateActive ${randomStr}`);
+            await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
         it('[5563,5562]: Create resolved status case and assign task on it', async () => {
@@ -1238,12 +1237,12 @@ describe('Create Case Task', () => {
 
     // need to discuss this observation
     describe('[5784,5672]: [Task Status] Task Status change from Completed', async () => {
-        let templateData3, casetemplatePetramco, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData1, templateData2, templateData3, casetemplatePetramco, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let statusDropdown1: string[] = ["Completed", "Canceled", "Closed"];
         beforeAll(async () => {
-            let templateData1 = {
-                "templateName": `manualTaskTemplate1 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary1 ${randomStr}`,
+            templateData1 = {
+                "templateName": `${randomStr}5672manualTaskTemplate1`,
+                "templateSummary": `${randomStr}5672manualTaskTemplateSummary1`,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -1253,9 +1252,9 @@ describe('Create Case Task', () => {
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
             }
-            let templateData2 = {
-                "templateName": `manualTaskTemplate2 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary2 ${randomStr}`,
+            templateData2 = {
+                "templateName": `${randomStr}5672manualTaskTemplate2`,
+                "templateSummary": `${randomStr}5672manualTaskTemplateSummary2`,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -1266,8 +1265,8 @@ describe('Create Case Task', () => {
                 "supportGroup": "US Support 3",
             }
             templateData3 = {
-                "templateName": `manualTaskTemplate3 ${randomStr}`,
-                "templateSummary": `manualTaskTemplateSummary3 ${randomStr}`,
+                "templateName": `${randomStr}5672manualTaskTemplate3`,
+                "templateSummary": `${randomStr}5672manualTaskTemplateSummary3`,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -1282,8 +1281,8 @@ describe('Create Case Task', () => {
             let template2 = await apiHelper.createManualTaskTemplate(templateData2);
             await apiHelper.createManualTaskTemplate(templateData3);
             casetemplatePetramco = {
-                "templateName": 'caseTemplateName' + randomStr,
-                "templateSummary": 'caseTemplateName' + randomStr,
+                "templateName": '5672caseTemplateName' + randomStr,
+                "templateSummary": '5672caseTemplateName' + randomStr,
                 "templateStatus": "Active",
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
@@ -1312,16 +1311,16 @@ describe('Create Case Task', () => {
         });
         it('[5784,5672]: [Task Status] Task Status change from Completed', async () => {
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.searchAndOpenHyperlink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(templateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await navigationPage.gotoTaskConsole();
-            await utilityGrid.searchAndOpenHyperlink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(templateData2.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
         it('[5784,5672]: [Task Status] Task Status change from Completed', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(`manualTaskTemplate3 ${randomStr}`);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData3.templateName);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await updateStatusBladePo.changeStatus('In Progress');
@@ -1329,18 +1328,18 @@ describe('Create Case Task', () => {
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase('DRDMV3880Summary' + randomStr);
-            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(templateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.clickOnViewCase();
-            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(templateData2.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.clickOnViewCase();
-            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary3 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(templateData3.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
         });
         it('[5784,5672]: [Task Status] Task Status change from Completed', async () => {
-            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary1 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(templateData1.templateSummary);
             await viewTask.clickOnChangeStatus();
             await updateStatusBladePo.allStatusValuesPresent(statusDropdown1);
             await updateStatusBladePo.clickCancelButton();
@@ -1358,12 +1357,12 @@ describe('Create Case Task', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", "Canceled", "text");
-            expect(await utilityGrid.isGridRecordPresent(`manualTaskTemplateSummary1 ${randomStr}`)).toBeTruthy(`manualTaskTemplateSummary1 ${randomStr}`);
+            expect(await utilityGrid.isGridRecordPresent(templateData1.templateSummary)).toBeTruthy(templateData1.templateSummary);
         });
         it('[5784,5672]: [Task Status] Task Status change from Completed', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePage.searchAndOpenCase('DRDMV3880Summary' + randomStr);
-            await viewCasePage.clickOnTaskLink(`manualTaskTemplateSummary2 ${randomStr}`);
+            await viewCasePage.clickOnTaskLink(templateData2.templateSummary);
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
             await updateStatusBladePo.selectStatusReason('Successful');
@@ -1377,7 +1376,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Status", "Closed", "text");
-            expect(await utilityGrid.isGridRecordPresent(`manualTaskTemplateSummary2 ${randomStr}`)).toBeTruthy(`manualTaskTemplateSummary2 ${randomStr}`);
+            expect(await utilityGrid.isGridRecordPresent(templateData2.templateSummary)).toBeTruthy(templateData2.templateSummary);
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -1459,7 +1458,7 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
             await adhoctaskTemplate.selectCategoryTier2('Compensation');
             await adhoctaskTemplate.selectCategoryTier3('Bonus');
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1',"0d11a862-c378-49cc-bda8-2d6efbd2beeb");
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1', "0d11a862-c378-49cc-bda8-2d6efbd2beeb");
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickTaskLink("Summary2" + randomStr);
