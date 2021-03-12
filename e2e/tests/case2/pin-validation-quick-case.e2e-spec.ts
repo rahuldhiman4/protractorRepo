@@ -20,6 +20,8 @@ xdescribe('PIN Validation Quick Case', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('gderuno');
+        await apiHelper.apiLogin('tadmin');
+        await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
     });
 
     afterAll(async () => {
@@ -85,7 +87,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         it('[4644,5233,5227,5224,5223]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await apiHelper.createCommonConfig('IDENTITY_VALIDATION','0', 'Psilon');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
@@ -104,7 +106,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         it('[4644,5233,5227,5224,5223]:Case creation via Quick Case ,Template validation is ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await apiHelper.createCommonConfig('IDENTITY_VALIDATION','1', 'Psilon');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
@@ -126,7 +128,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await navigationPage.signOut();
             await loginPage.login('gderuno');
         });
@@ -195,7 +197,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         it('[5235,5234,5229,5228,5225]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await apiHelper.createCommonConfig('IDENTITY_VALIDATION','1', 'Psilon');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
@@ -230,7 +232,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         it('[5235,5234,5229,5228,5225]:Case creation via Quick Case ,Template validation is OPTIONAL', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await apiHelper.createCommonConfig('IDENTITY_VALIDATION','2', 'Psilon');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
@@ -251,7 +253,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await navigationPage.signOut();
             await loginPage.login('gderuno');
         });
@@ -362,7 +364,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         it('[5201,5246,5206,5204]:Case creation via Quick Case ,Template validation is OPTIONAL and NONE', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await apiHelper.createCommonConfig('IDENTITY_VALIDATION','1', 'Psilon');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
@@ -397,7 +399,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData.assignmentMappingName);
             await navigationPage.signOut();
             await loginPage.login('gderuno');
@@ -514,7 +516,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         it('[5231,5230,5205,5226]:Case creation via Quick Case,Template validation is OPTIONAL & NONE & ENFORCED', async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await apiHelper.createCommonConfig('IDENTITY_VALIDATION','2', 'Psilon');
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName("gwixillian");
@@ -542,7 +544,7 @@ xdescribe('PIN Validation Quick Case', () => {
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.deleteCommonConfig('IDENTITY_VALIDATION', 'Psilon');
+            await apiHelper.deleteCommonConfiguration('IDENTITY_VALIDATION','Psilon');
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData.assignmentMappingName);
             await navigationPage.signOut();
             await loginPage.login('gderuno');
