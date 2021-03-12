@@ -212,7 +212,7 @@ class EditNotificationTemplate {
                 break;
             }
         }
-        await $$(this.selectors.recipientList).get(checkboxCount).click();
+        await $$(this.selectors.recipientList).get(checkboxCount).$('[class="checkbox__label"]').click();
     }
 
     async isRecipientsCheckboxChecked(recipientName: string, recipientOption: string): Promise<boolean> {

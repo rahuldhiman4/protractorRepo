@@ -1,7 +1,7 @@
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
+import { flowsetGlobalFieldsWithFacilities, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import caseConsolePage from "../../pageobject/case/case-console.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
@@ -35,17 +35,24 @@ describe("Create Case Assignment Mapping", () => {
     const departmentDataFile = require('../../data/ui/foundation/department.ui.json');
     const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
     const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    const userId1 = "idphylum4@petramco.com";
+    const userId1 = "mcarney";
     let flowsetGlobalFieldsData = undefined;
+    let flowsetGlobalFieldsWithFacilitiesData = undefined;
     beforeAll(async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-        //await foundationData("Petramco");
+        // await foundationData("Petramco");
         await apiHelper.apiLogin('qkatawazi');
         flowsetGlobalFieldsData = cloneDeep(flowsetGlobalFields);
         flowsetGlobalFieldsData.flowsetName = flowsetGlobalFieldsData.flowsetName = randomStr;
         await apiHelper.createNewFlowset(flowsetGlobalFieldsData);
+
+        await apiHelper.apiLogin('mcarney');
+        flowsetGlobalFieldsWithFacilitiesData = cloneDeep(flowsetGlobalFieldsWithFacilities);
+        flowsetGlobalFieldsWithFacilitiesData.flowsetName = flowsetGlobalFieldsWithFacilitiesData.flowsetName = randomStr;
+        await apiHelper.createNewFlowset(flowsetGlobalFieldsWithFacilitiesData);
+
     });
 
     async function foundationData(company: string) {
@@ -858,60 +865,55 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    xdescribe('[4449]: Assignment mapping search using filters', async () => {
+    describe('[4449]: Assignment mapping search using filters', async () => {
         let assignmentMapping1, id, label, assignmentData1, assignmentData2, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr1: string[] = ["Department", "Flowset", "Business Unit", "Label", "Category Tier 4", "ID"];
         let defaultCaseAssignmentColumns: string[] = ["Case Priority", "Company", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Region", "Site", "Support Company", "Support Group", "Default Mapping"];
-        let businessData, departmentData, suppGrpData;
+        
         beforeAll(async () => {
-            await foundationData2('Phylum', 'BusinessUnitDataPhylum1', 'DepartmentDataPhylum1', 'SuppGrpDataPhylum1', 'PhylumCaseAgent4');
-            businessData = businessDataFile['BusinessUnitDataPhylum1'];
-            departmentData = departmentDataFile['DepartmentDataPhylum1'];
-            suppGrpData = supportGrpDataFile['SuppGrpDataPhylum1'];
-            await createNewUsers();
-            let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
-            label = "MappingLabel" + randomStr;
-            menuItemData.menuItemName = label;
+            label = "Accounts";
             assignmentData1 = {
-                "assignmentMappingName": randomStr + "1DRDMV8968",
+                "assignmentMappingName": randomStr + "14449",
                 "company": "Phylum",
                 "supportCompany": "Phylum",
-                "businessUnit": businessData.orgName,
-                "department": departmentData.orgName,
-                "supportGroup": suppGrpData.orgName,
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
+                "businessUnit": "Phylum Support Org1",
+                "supportGroup": "Phylum Support Group1",
+                "categoryTier1": "Accounts Receivable",
+                "categoryTier2": "Collection",
+                "categoryTier3": "Payment Plans",
                 "categoryTier4": "Retention Bonus",
                 "priority": "Low",
-                "region": "North America",
+                "region": "Americas",
+                "siteGroup": "Human Resources",
                 "site": "Phylum Site1",
-                "label": label
+                "label": label,
+                "lineOfBusiness": "Finance",
             }
+            
             assignmentData2 = {
-                "assignmentMappingName": randomStr + "2DRDMV8968",
+                "assignmentMappingName": randomStr + "24449",
                 "company": "Phylum",
                 "supportCompany": "Phylum",
-                "businessUnit": businessData.orgName,
-                "department": departmentData.orgName,
-                "supportGroup": suppGrpData.orgName,
+                "businessUnit": "Phylum Support Org1",
+                "supportGroup": "Phylum Support Group1",
                 "categoryTier1": "Payroll",
                 "categoryTier2": "Finance",
                 "categoryTier3": "Cost Centers",
                 "priority": "High",
-                "region": "North America",
+                "region": "Americas",
+                "siteGroup": "Marketing",
                 "site": "Phylum Site2",
-                "label": label
+                "label": label,
+                "lineOfBusiness": "Finance",
             }
-            await apiHelper.apiLogin(userId1, "Password_1234");
-            await apiHelper.createNewMenuItem(menuItemData);
+            await apiHelper.apiLogin('mcarney');
             assignmentMapping1 = await apiHelper.createCaseAssignmentMapping(assignmentData1);
             await apiHelper.createCaseAssignmentMapping(assignmentData2);
             id = assignmentMapping1.id;
         });
         it('[4449]: Assignment mapping search using filters', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userId1, 'Password_1234');
+            await loginPage.login('mcarney');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
@@ -921,55 +923,54 @@ describe("Create Case Assignment Mapping", () => {
             await utilityCommon.closePopUpMessage();
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Company', 'Phylum', 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Support Company', 'Phylum', 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Region', 'North America', 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await assignmentConfigConsolePage.addFilter('Region', 'Americas', 'text');
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Site', 'Phylum Site2', 'text');
-            await utilityGrid.searchRecord(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecordWithoutFilter(assignmentData2.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Case Priority', 'Low', 'checkbox');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Default Mapping', 'True', 'checkbox');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Default Mapping')).toContain("True", 'Filter Default Mapping is missing in column');
-        });
+            await assignmentConfigConsolePage.addFilter('Default Mapping', 'True', 'radioButton');
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Default Mapping')).toContain("True", 'Filter Default Mapping is missing in column');        });
         it('[4449]: Assignment mapping search using filters', async () => {
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Assignment Name', assignmentData2.assignmentMappingName, 'text');
-            await utilityGrid.searchRecord(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecordWithoutFilter(assignmentData2.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Category Tier 1', "Employee Relations", 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await assignmentConfigConsolePage.addFilter('Category Tier 1', "Accounts Receivable", 'text');
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Category Tier 2', 'Finance', 'text');
-            await utilityGrid.searchRecord(assignmentData2.assignmentMappingName);
+            await utilityGrid.searchRecordWithoutFilter(assignmentData2.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Category Tier 3', "Bonus", 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await assignmentConfigConsolePage.addFilter('Category Tier 3', "Payment Plans", 'text');
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeFalsy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Support Group', suppGrpData.orgName, 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await assignmentConfigConsolePage.addFilter('Support Group', 'Phylum Support Group1', 'text');
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
         });
@@ -979,34 +980,29 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.removeColumns(defaultCaseAssignmentColumns);
             await assignmentConfigConsolePage.addColumns(arr1);
             await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Department', departmentData.orgName, 'text');
-            await utilityGrid.searchRecord(assignmentData2.assignmentMappingName);
-            expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
-            expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
-            await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Business Unit', businessData.orgName, 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await assignmentConfigConsolePage.addFilter('Support Organization', 'Phylum Support Org1', 'text');
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
             await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Label', "MappingLabel" + randomStr, 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
-            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Label')).toContain("MappingLabel" + randomStr, 'Filter Flowset is missing in column');
+            await assignmentConfigConsolePage.addFilter('Label', label, 'text');
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Label')).toContain(label, 'Label is missing in column');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("ID", id, "text");
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(id)).toBeTruthy(id + ' not present');
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Category Tier 4', "Retention Bonus", 'text');
-            await utilityGrid.searchRecord(assignmentData1.assignmentMappingName);
+            await utilityGrid.searchRecordWithoutFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
             assignmentData1.assignmentMappingName = randomStr + "3DRDMV8968";
-            assignmentData1.flowset = flowsetGlobalFieldsData.flowsetName;
+            assignmentData1.flowset = flowsetGlobalFieldsWithFacilitiesData.flowsetName;
             await apiHelper.createCaseAssignmentMapping(assignmentData1);
             await assignmentConfigConsolePage.clearFilter();
-            await assignmentConfigConsolePage.addFilter('Flowset', flowsetGlobalFieldsData.flowsetName, 'text');
-            await utilityGrid.searchRecord(randomStr + "3DRDMV8968");
-            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Flowset')).toContain(flowsetGlobalFieldsData.flowsetName, 'Filter Flowset is missing in column');
+            await assignmentConfigConsolePage.addFilter('Flowset', flowsetGlobalFieldsWithFacilitiesData.flowsetName, 'text');
+            await utilityGrid.searchRecordWithoutFilter(randomStr + "3DRDMV8968");
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Flowset')).toContain(flowsetGlobalFieldsWithFacilitiesData.flowsetName, 'Filter Flowset is missing in column');
             await assignmentConfigConsolePage.removeColumns(arr1);
             await assignmentConfigConsolePage.addColumns(defaultCaseAssignmentColumns);
         });
@@ -1015,18 +1011,15 @@ describe("Create Case Assignment Mapping", () => {
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData1.assignmentMappingName);
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData2.assignmentMappingName);
             await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
+            await loginPage.login('mcarney');
         });
     });
 
-    xdescribe('[5418]:[Assignment Mapping] Categories partial match', () => {
+    describe('[5418]:[Assignment Mapping] Categories partial match', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let businessData = businessDataFile['BusinessUnitDataPhylum1'];
-        let departmentData = departmentDataFile['DepartmentDataPhylum1'];
-        let suppGrpData = supportGrpDataFile['SuppGrpDataPhylum1'];
         it('[5418]:[Assignment Mapping] Categories partial match', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userId1, 'Password_1234');
+            await loginPage.login('jmilano');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
@@ -1034,60 +1027,59 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setAssignmentMapName("1DRDMV8968 " + randomStr);
             await assignmentConfigCreatePage.setCompany("Phylum");
             await assignmentConfigCreatePage.setPriority("Critical");
-            await assignmentConfigCreatePage.setCategoryTier1("Employee Relations");
+            await assignmentConfigCreatePage.setCategoryTier1("Accounts Receivable");
             await assignmentConfigCreatePage.setSupportCompany("Phylum");
-            await assignmentConfigCreatePage.setBusinessUnit(businessData.orgName);
-            await assignmentConfigCreatePage.setDepartement(departmentData.orgName);
-            await assignmentConfigCreatePage.setSupportGroup(suppGrpData.orgName);
-            await assignmentConfigCreatePage.setAssignee("phylumfn4 phylumln4");
+            await assignmentConfigCreatePage.setBusinessUnit('Phylum Support Org1');
+            await assignmentConfigCreatePage.setSupportGroup('Phylum Support Group1');
+            await assignmentConfigCreatePage.setAssignee("Morwenna Rosales");
             await assignmentConfigCreatePage.clickonSaveButton();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("Anna");
+            await createCasePage.selectRequester("mcarney");
             await createCasePage.setSummary("5418 Case Summary1");
             await createCasePage.setPriority("Critical");
-            await createCasePage.selectCategoryTier1("Employee Relations");
+            await createCasePage.selectCategoryTier1("Accounts Receivable");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('Phylum Support Group1');
+            expect(await viewCasePo.getAssigneeText()).toBe("Roland Flanagan");
         });
         it('[5418]:[Assignment Mapping] Categories partial match', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig("1DRDMV8968 " + randomStr);
-            await editAssignmentsConfigPo.setCategoryTier2("Compensation");
+            await editAssignmentsConfigPo.setCategoryTier2("Collection");
             await editAssignmentsConfigPo.clickonSaveButton();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("Anna");
+            await createCasePage.selectRequester("mcarney");
             await createCasePage.setSummary("5418 Case Summary2");
             await createCasePage.setPriority("Critical");
-            await createCasePage.selectCategoryTier1("Employee Relations");
-            await createCasePage.selectCategoryTier2("Compensation");
+            await createCasePage.selectCategoryTier1("Accounts Receivable");
+            await createCasePage.selectCategoryTier2("Collection");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('Phylum Support Group1');
+            expect(await viewCasePo.getAssigneeText()).toBe("Roland Flanagan");
         });
         it('[5418]:[Assignment Mapping] Categories partial match', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.searchAndClickOnAssignmentConfig("1DRDMV8968 " + randomStr);
-            await editAssignmentsConfigPo.setCategoryTier3("Bonus");
+            await editAssignmentsConfigPo.setCategoryTier3("Payment Plans");
             await editAssignmentsConfigPo.clickonSaveButton();
             await utilityCommon.closePopUpMessage();
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("Anna");
+            await createCasePage.selectRequester("mcarney");
             await createCasePage.setSummary("5418 Case Summary3");
             await createCasePage.setPriority("Critical");
-            await createCasePage.selectCategoryTier1("Employee Relations");
-            await createCasePage.selectCategoryTier2("Compensation");
-            await createCasePage.selectCategoryTier3("Bonus");
+            await createCasePage.selectCategoryTier1("Accounts Receivable");
+            await createCasePage.selectCategoryTier2("Collection");
+            await createCasePage.selectCategoryTier3("Payment Plans");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('Phylum Support Group1');
+            expect(await viewCasePo.getAssigneeText()).toBe("Roland Flanagan");
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -1097,32 +1089,30 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    xdescribe('[5365]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', () => {
-        let assignmentData, caseTemplateData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let businessData = businessDataFile['BusinessUnitDataPhylum1'];
-        let departmentData = departmentDataFile['DepartmentDataPhylum1'];
-        let suppGrpData = supportGrpDataFile['SuppGrpDataPhylum1'];
+    describe('[5365]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', () => {
+        let caseTemplateData, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await createNewUsers();
             caseTemplateData = {
                 "templateName": `${randomStr}Casetemplate`,
                 "templateStatus": "Draft",
                 "templateSummary": `${randomStr}Summary`,
                 "caseStatus": "New",
                 "casePriority": "Low",
-                "categoryTier1": "Employee Relations",
-                "categoryTier2": "Compensation",
-                "categoryTier3": "Bonus",
+                "categoryTier1": "Accounts Receivable",
+                "categoryTier2": "Collection",
+                "categoryTier3": "Payment Plans",
                 "company": "Phylum",
-                "ownerBU": businessData.orgName,
-                "ownerGroup": "Phylum Support Group1"
+                "ownerBU": "Phylum Support Org1",
+                "ownerGroup": "Phylum Support Group1",
+                "lineOfBusiness": "Finance"
             }
-            await apiHelper.apiLogin(userId1, "Password_1234");
-            await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.apiLogin("jmilano");
+            let kk = await apiHelper.createCaseTemplate(caseTemplateData);
         });
+
         it('[5365]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
             await navigationPage.signOut();
-            await loginPage.login(userId1, 'Password_1234');
+            await loginPage.login('jmilano');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
@@ -1130,43 +1120,44 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setAssignmentMapName("1DRDMV8968 " + randomStr);
             await assignmentConfigCreatePage.setCompany("Phylum");
             await assignmentConfigCreatePage.setPriority("Low");
-            await assignmentConfigCreatePage.setFlowset(flowsetGlobalFieldsData.flowsetName);
-            await assignmentConfigCreatePage.setCategoryTier1("Employee Relations");
-            await assignmentConfigCreatePage.setCategoryTier2("Compensation");
+            await assignmentConfigCreatePage.setFlowset(flowsetGlobalFieldsWithFacilitiesData.flowsetName);
+            await assignmentConfigCreatePage.setCategoryTier1("Accounts Receivable");
+            await assignmentConfigCreatePage.setCategoryTier2("Collection");
+            await assignmentConfigCreatePage.setCategoryTier3("Payment Plans");
             await assignmentConfigCreatePage.setSupportCompany("Phylum");
-            await assignmentConfigCreatePage.setBusinessUnit(businessData.orgName);
-            await assignmentConfigCreatePage.setDepartement(departmentData.orgName);
-            await assignmentConfigCreatePage.setSupportGroup(suppGrpData.orgName);
-            await assignmentConfigCreatePage.setAssignee("phylumfn4 phylumln4");
+            await assignmentConfigCreatePage.setBusinessUnit("Phylum Support Org1");
+            await assignmentConfigCreatePage.setSupportGroup("Phylum Support Group1");
+            await assignmentConfigCreatePage.setAssignee("Roland Flanagan");
             await assignmentConfigCreatePage.clickonSaveButton();
             await utilityCommon.closePopUpMessage();
         });
         it('[5365]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
-            await navigationPage.signOut();
-            await loginPage.login(userId1, 'Password_1234');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateName);
             await viewCaseTemplate.clickOnEditCaseTemplateButton();
-            await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsData.flowsetName);
+            await editCasetemplatePo.changeFlowsetValue(flowsetGlobalFieldsWithFacilitiesData.flowsetName);
             await editCasetemplatePo.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.changeOwnerCompanyValue('Phylum');
+            await editCasetemplatePo.changeBusinessUnitDropdownValue("Phylum Support Org1");
+            await editCasetemplatePo.changeOwnerGroupDropdownValue("Phylum Support Group1");
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilityCommon.closePopUpMessage();
+            await viewCaseTemplate.clickBackArrowBtn();
         });
         it('[5365]:[Assignment Mapping] Partially matching Assignment mapping with Flowset', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('Anna');
+            await createCasePage.selectRequester('mcarney');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupValue()).toBe(suppGrpData.orgName);
-            expect(await viewCasePo.getAssigneeText()).toBe("phylumfn4 phylumln4");
+            expect(await viewCasePo.getAssignedGroupValue()).toBe("Phylum Support Group1");
+            expect(await viewCasePo.getAssigneeText()).toBe("Roland Flanagan");
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');

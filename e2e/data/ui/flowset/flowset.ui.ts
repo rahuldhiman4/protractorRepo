@@ -25,3 +25,11 @@ export const flowsetPhylumFields = {
     "company": "Phylum",
     "description": "test description for Phylum"
 };
+
+export const flowsetGlobalFieldsWithFacilities = {
+    "flowsetName": "Test Flowset Global name Finance",
+    "flowsetStatus": 10,
+    "company": "- Global -",
+    "description": "test description",
+    "lineOfBusiness":"Finance"
+};

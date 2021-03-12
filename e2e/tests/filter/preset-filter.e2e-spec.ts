@@ -837,6 +837,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
         afterAll(async () => {
             await utilityGrid.clearFilter();
+            await utilityCommon.closeAllBlades();
         });
     });
 

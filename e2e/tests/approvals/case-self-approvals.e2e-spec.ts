@@ -5,11 +5,11 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-xdescribe("Case Self Approval Tests", () => {
+describe("Case Self Approval Tests", () => {
     const caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
     let caseModule = 'Case';
 
@@ -26,7 +26,7 @@ xdescribe("Case Self Approval Tests", () => {
         await navigationPage.signOut();
     });
 
-    //skhobrag
+    //skhobrag #passed
     describe('[5160]:[Approval] - Case Self Approval without Process', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let summary = '"' + "Automated Self Approval without process" + '"';
@@ -89,23 +89,23 @@ xdescribe("Case Self Approval Tests", () => {
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Self Approval');
-            await approvalConfigurationPage.clickNewSelfApprovalFlowButton();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Self approval');
+            await approvalConfigurationPage.clickSelfApprovalQualificationLink();
+            await browser.sleep(3000);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Approval Flow');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(5000); //sleep added for expression builder loading
-            await approvalConfigurationPage.searchExpressionFieldOption('Summary');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await browser.sleep(1000); //sleep added for expression builder loading
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //sleep added for expression builder loading
-            await approvalConfigurationPage.setExpressionValueForParameter(summary);
-            await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Applications"');
+            await approvalConfigurationPage.clickModelOkButton();
+            
+            await approvalConfigurationPage.setSelfApprovalPrecendenceValue('1');
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
@@ -144,7 +144,7 @@ xdescribe("Case Self Approval Tests", () => {
 
     });
 
-    //skhobrag
+    //skhobrag #passed
     describe('[5161]:[Approval] - Case Self Approval with Process', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = undefined, caseData1 = undefined;
@@ -207,41 +207,25 @@ xdescribe("Case Self Approval Tests", () => {
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Self Approval');
-            await approvalConfigurationPage.clickNewSelfApprovalFlowButton();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Self approval');
+            await approvalConfigurationPage.clickSelfApprovalQualificationLink();
+            await browser.sleep(3000);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Approval Flow');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(5000); //sleep added for expression builder loading
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await browser.sleep(2000); //sleep added for expression builder loading
+
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
+            await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //sleep added for expression builder loading
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Applications');
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
-            await approvalConfigurationPage.selectExpressionOperator('AND');
-            await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 2');
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await browser.sleep(2000); //sleep added for expression builder loading
-            await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //sleep added for expression builder loading
-            await approvalConfigurationPage.clickExpressionOperatorLinkToSelectExpressionValue();
-            await approvalConfigurationPage.selectExpressionValuesOptions('Categorization', 'Operational');
-            await approvalConfigurationPage.selectFoundationDataToApprovalExpression('Applications');
-            await approvalConfigurationPage.searchFoundationDataToApprovalExpression('Social');
-            await approvalConfigurationPage.clickSelectLink();
-            await approvalConfigurationPage.clickFoundationDataSaveButton();
-            await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Applications"');
+            await approvalConfigurationPage.clickModelOkButton();
+
+            await approvalConfigurationPage.setSelfApprovalPrecendenceValue('1');
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
-            await approvalConfigurationPage.selectSelfApprovalProcess();
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await utilityCommon.selectDropDown('Self approval process', 'Case - Sample Self Approval', DropDownType.Label);
+            await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
