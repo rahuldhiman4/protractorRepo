@@ -207,7 +207,7 @@ class EditKnowledgePage {
     }
 
     async getCategoryTier1SelectedValue(): Promise<string> {
-        return await utilityCommon.getSelectedFieldValue('254ef6b1-74fe-47ae-ab5f-701acbcb1fd5');
+        return await utilityCommon.getSelectedFieldValue('548abb7f-fba4-45ff-99b1-892b3f2a4259');
     }
     async getLineOfBusinessValue(): Promise<string> {
         return await utilityCommon.getSelectedFieldValue('0cfb311c-db00-4b54-93dd-6c03e301e3ab');

@@ -84,8 +84,8 @@ describe('Knowledge article template style', () => {
             await loginPage.login('peter');
         });
     });
-
-    it('[5718]: [Article Styles] Mandatory field validation on template styles', async () => {
+//DRDMV-25329, DRDMV-25333
+    it('[5718]: [Article Styles] Mandatory field validation on template styles', async () => {  
         await navigationPage.signOut();
         await loginPage.login(knowledgeCoachUser);
         await navigationPage.gotoSettingsPage();
@@ -96,7 +96,7 @@ describe('Knowledge article template style', () => {
         expect(await articleTemplateStylePo.isDeleteStyleButtonPresent()).toBeFalsy('Delete Button should not be Present');
         await articleTemplateStylePo.clickAddNewStyle();
         expect(await articleTemplateStylePo.isSaveButtonEnabled()).toBeFalsy('Save Button enabled');
-        expect(await articleTemplateStylePo.getStyleNameFieldRequiredValue()).toContain('required', 'Field is not reuqired');
+        expect(await articleTemplateStylePo.isStyleNameFieldRequired()).toBeTruthy('Field is not reuqired');
         await articleTemplateStylePo.setStyleName(randomStr);
         await articleTemplateStylePo.clickCancelButton();
         expect(await utilityCommon.getWarningDialogMsg()).toContain('You have unsaved data. Do you want to continue?');
@@ -144,7 +144,7 @@ describe('Knowledge article template style', () => {
             expect(await utilityCommon.isPopUpMessagePresent(`The style name ${styleName} is already taken by another style. Please select a different name.`)).toBeTruthy("Duplicate style Message is not present");
         });
     });
-
+//DRDMV-25334
     describe('[5716,5720,5721]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
         it('[5716,5720,5721]: [Template Styles] Add/Modify New Style - OOB/Custom Templates', async () => {
             await navigationPage.signOut();

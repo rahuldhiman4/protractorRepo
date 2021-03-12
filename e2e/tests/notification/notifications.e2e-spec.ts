@@ -35,7 +35,7 @@ describe("Notifications", () => {
     });
 
     //asahitya
-    describe('[4355]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
+    xdescribe('[4355]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('mcarney');

@@ -170,7 +170,9 @@ class ComposeMail {
     }
 
     async setEmailBody(value: string): Promise<void> {
-        await ckeditorOpsPo.setCKEditor(value, "71d315a1-3466-4e25-85be-2ce9a69efcb4");
+        await $$('.cke_enable_context_menu, .cke_editable_themed').last().sendKeys(Key.CONTROL, Key.END);
+        await $$('.cke_enable_context_menu, .cke_editable_themed').last().sendKeys(Key.ENTER);
+        await ckeditorOpsPo.updateCKEditor(value, "71d315a1-3466-4e25-85be-2ce9a69efcb4");
     }
 
     async isTextPresentInEmailBody(textvalue: string): Promise<boolean> {

@@ -502,4 +502,4 @@ describe('Task and Knowledge Console Filter Combinations', () => {
             await utilityGrid.clearFilter();
         });
     });
-})
+});

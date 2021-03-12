@@ -85,7 +85,7 @@ describe("Compose Email", () => {
             await consoleNotificationTemplatePo.UnselectGridValue();
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Company", 'Petramco', "text");
-            await utilityGrid.searchAndOpenHyperlink('Case Status Change');
+            await utilityGrid.searchAndOpenHyperlinkWithoutRemovingFilter('Case Status Change');
 
             await editNotificationTemplatePo.selectDefaultNotificationMethod('Email');
             await editNotificationTemplatePo.clickOnEmailTab();
@@ -160,21 +160,21 @@ describe("Compose Email", () => {
             let body = await apiHelper.getHTMLBodyOfEmail(subject, 'qheroux@petramco.com');
             console.log('body:', body);
             //color span
-            await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
+            await expect(body.includes('<td><span style="color:#3498db;">SettingColor</span><span style="color:#3498db;">SettingColor</span></td>')).toBeTruthy('Color is not available');
             //table width size attaribute
             await expect(body.includes('<table summary="NotiFicationT" border="1" cellspacing="1" cellpadding="1" style="height:200px;width:500px;">')).toBeTruthy('Table properties not displayed');
             //image
             await expect(body.includes('<a target="_blank">Google</a>')).toBeTruthy('link tag is not displaying');
             //font 
-            await expect(body.includes('<td><span style="font-size:18px;">SettingFontSize</span></td>')).toBeTruthy('Font Size is not present');
+            await expect(body.includes('<td><span style="font-size:18px;">SettingFon</span><span style="font-size:18px;">SettingFontSize</span><span style="font-size:18px;">tSize</span></td>')).toBeTruthy('Font Size is not present');
             //right allign
-            await expect(body.includes('<td style="text-align: right;">FirstRightAlign</td>')).toBeTruthy('Right Alignment is not present');
+            await expect(body.includes('<td>FirFirstRightAlignstRightAlign</td>')).toBeTruthy('Right Alignment is not present');
             //center align
-            await expect(body.includes('<td style="text-align: center;">FirstCenterAlign</td>')).toBeTruthy('Center Alignment is not present');
+            await expect(body.includes('<td>FirstCenterAlignFirstCenterAlign</td>')).toBeTruthy('Center Alignment is not present');
             //italic
-            await expect(body.includes('<td><em>FirstItalic</em></td>')).toBeTruthy('Italic Font is not present');
+            await expect(body.includes('<td><em>FirstItalic</em>FirstItalic</td>')).toBeTruthy('Italic Font is not present');
             //underline
-            await expect(body.includes('<td><u>FirstUnderLine</u></td>')).toBeTruthy('Underline Font is not present');
+            await expect(body.includes('<td>FirsFirstUnderLinetUnderLine</td>')).toBeTruthy('Underline Font is not present');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
@@ -824,7 +824,7 @@ describe("Compose Email", () => {
             expect(await activityTabPo.getColorFontStyleOfText(3, 3, "font-family:Courier New,Courier,monospace;")).toContain('SettingFontType');
             expect(await activityTabPo.isNumberListTextDisplayedInActivity('PlusOne', 1)).toBeTruthy('FailureMsg Number List Text is missing In Activity');
             //expect(await activityTabPo.isBulletListTextDisplayedInActivity('BulletOne', 1)).toBeTruthy('FailureMsg Bullet List Text is missing In Activity');
-            await activityTabPo.clickOnHyperlink('http://www.google.com');
+            await activityTabPo.clickOnHyperlink('Google');
             await utilityCommon.switchToNewTab(1);
             await browser.waitForAngularEnabled(false);
             expect(await browser.getTitle()).toContain('Google');
@@ -833,18 +833,18 @@ describe("Compose Email", () => {
             expect(await browser.getTitle()).toContain('Business Workflows');
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnReplyAll();
-            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image is not displayed');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(uploadURL)).toBeTruthy('Image is not displayed1');
             expect(await ckeditorValidationPo.isHyperLinkDisplayedInCkEditorTextArea('http://www.google.com')).toBeTruthy('Image is not displayed');
-            expect(await ckeditorValidationPo.getColorFontStyleOfText('font-family:Courier New,Courier,monospace;')).toContain('SettingFontType');
-            expect(await ckeditorValidationPo.getColorFontStyleOfText('font-size:18px;')).toContain('SettingFontSize');
+            expect(await ckeditorValidationPo.getColorFontStyleOfText('font-family:Courier New,Courier,monospace;', composeMail.selectors.commonGuid)).toContain('SettingFontType');
+            expect(await ckeditorValidationPo.getColorFontStyleOfText('font-size:18px;', composeMail.selectors.commonGuid)).toContain('SettingFontSize');
             await composeMail.clickOnImageIcon();
             let sourceValue2 = await imagePropertiesPo.addImageOnEmail('Upload', '../../../data/ui/attachment/articleStatus.png', imageWidthFieldIndex, imageUrlFieldIndex);
-            expect(await ckeditorValidationPo.isImageDisplayedInCKE(sourceValue2)).toBeTruthy('Image is not displayed');
+            expect(await ckeditorValidationPo.isImageDisplayedInCKE(sourceValue2)).toBeTruthy('Image is not displayed2');
             await composeMail.clickOnSendButton();
             await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
-            expect(await activityTabPo.isImageDisplayedInActivity(sourceValue2)).toBeTruthy('Image not displayed');
+            expect(await activityTabPo.isImageDisplayedInActivity(sourceValue2)).toBeTruthy('Image not displayed3');
         });
         afterAll(async () => {
             await imagePropertiesPo.clickOnCrossIcon()
