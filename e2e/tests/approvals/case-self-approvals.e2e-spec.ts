@@ -5,7 +5,7 @@ import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -224,7 +224,7 @@ describe("Case Self Approval Tests", () => {
 
             await approvalConfigurationPage.setSelfApprovalPrecendenceValue('1');
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
-            await approvalConfigurationPage.selectDropdownForSelfApprovalProcess('Case - Sample Self Approval');
+            await utilityCommon.selectDropDown('Self approval process', 'Case - Sample Self Approval', DropDownType.Label);
             await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });

@@ -327,17 +327,6 @@ class ApprovalsConsole {
         await $(this.selectors.selfApprovalAddButton).click();
     }
 
-    async selectDropdownForSelfApprovalProcess(value: string) {
-        await $(`${this.selectors.selfApprovalProcess} button`).click();
-        await $(`${this.selectors.selfApprovalProcess} input`).sendKeys(value);
-        let count = await $$('.dropdown-item').count();
-        for(let i=0; i<count; i++) {
-            let option = await $$('.dropdown-item').get(i).$('.rx-select__option-content').getText();
-            if(option === value) {
-                await $$('.dropdown-item').get(i).click();
-            }
-        }
-    }
 }
 
 export default new ApprovalsConsole();
