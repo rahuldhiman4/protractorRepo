@@ -26,13 +26,12 @@ class TaskTemplateGridPage {
     }
 
     async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
-        await utilityGrid.clearFilter();
         await utilityGrid.searchAndOpenHyperlink(taskName,this.selectors.taskTemplateGuid);
     }
 
     async searchAndSelectTaskTemplate(taskName: string): Promise<void> {
-        await utilityGrid.clearFilter();
-        await utilityGrid.searchAndSelectGridRecord(taskName);
+        await utilityGrid.searchRecord(taskName);
+        await utilityGrid.clickCheckBoxOfValueInGrid(taskName);
     }
 
     async addColumn(columnName: string[]): Promise<void> {
