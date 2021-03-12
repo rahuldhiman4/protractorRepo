@@ -40,15 +40,6 @@ export const CREATE_COMMON_CONFIG = {
         }
     }
 }
-
-export let DELETE_COMMON_CONFIG = {
-    "processDefinitionName": "com.bmc.dsm.shared-services-lib:Application Configuration - Validate Delete",
-    "processInputValues": {
-        "ID": "AGGADGJ7CLNALAQP032VQP032V4MVC"
-    },
-    "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand"
-}
-
 export const COMMON_CONFIG_PAYLOAD = {
     "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand",
     "processDefinitionName": "com.bmc.dsm.shared-services-lib:Application Configuration - Create Copy and Update",

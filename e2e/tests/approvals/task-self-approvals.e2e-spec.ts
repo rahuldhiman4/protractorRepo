@@ -17,7 +17,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-xdescribe("Task Self Approval Tests", () => {
+describe("Task Self Approval Tests", () => {
     const taskApprovalRecordDefinition = 'com.bmc.dsm.task-lib:Task';
     let taskModule = 'Task';
 
@@ -83,31 +83,29 @@ xdescribe("Task Self Approval Tests", () => {
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(taskApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Self Approval');
-            await approvalConfigurationPage.clickNewSelfApprovalFlowButton();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Self approval');
+            await approvalConfigurationPage.clickSelfApprovalQualificationLink();
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Approval Flow');
-            await browser.sleep(5000); //sleep added for expression builder loading
-            await approvalConfigurationPage.searchExpressionFieldOption('Summary');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Task');
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await browser.sleep(1000); //sleep added for expression builder loading
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Task');
+            await approvalConfigurationPage.selectExpressionFieldOption('Summary');
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.setExpressionValueForParameter(summary);
-            await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
+            await approvalConfigurationPage.clickModelOkButton();
+            await approvalConfigurationPage.setSelfApprovalPrecendenceValue('1');
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[3586]:Create task approval mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName('Task Mapping');
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -233,32 +231,29 @@ xdescribe("Task Self Approval Tests", () => {
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(taskApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Self Approval');
-            await approvalConfigurationPage.clickNewSelfApprovalFlowButton();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Self approval');
+            await approvalConfigurationPage.clickSelfApprovalQualificationLink();
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Approval Flow');
-            await browser.sleep(5000); //sleep added for expression builder loading
-            await approvalConfigurationPage.searchExpressionFieldOption('Summary');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Task');
-            await approvalConfigurationPage.searchExpressionFieldOption('Category Tier 1');
-            await browser.sleep(1000); //sleep added for expression builder loading
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Task');
+            await approvalConfigurationPage.selectExpressionFieldOption('Summary');
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.setExpressionValueForParameter(summary);
-            await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
+            await approvalConfigurationPage.clickModelOkButton();
+            await approvalConfigurationPage.setSelfApprovalPrecendenceValue('1');
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
-            await approvalConfigurationPage.selectSelfApprovalProcess();
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
         it('[3587]:Create task approval mapping', async () => {
             await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Task Management--Approvals', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Approval Mappings', BWF_PAGE_TITLES.TASK_MANAGEMENT.APPROVALS);
             await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
-            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Add Approval Mapping');
+            expect(await createApprovalMappingPage.getCreateApprovalMappingHeaderText()).toBe('Create Approval Mapping');
             await createApprovalMappingPage.setApprovalMappingName('Task Mapping');
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.selectStatusTrigger('Assigned');
@@ -635,7 +630,7 @@ xdescribe("Task Self Approval Tests", () => {
             await loginPage.login('qkatawazi');
         });
     });
-
+//Fail -DRDMV-25358
     describe('[3471,3470]:Tiggered the Approval on Task and check Task View screen by Approver should show Approval component', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, manualTaskDisplayId, approvalMappingResponse, approvalMappingData;
@@ -678,7 +673,7 @@ xdescribe("Task Self Approval Tests", () => {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:qstrong",
                 "isLevelUp": false,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
+                "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,
                 "signingCriteria": 0,
             }
@@ -791,7 +786,7 @@ xdescribe("Task Self Approval Tests", () => {
             await loginPage.login('qkatawazi');
         });
     });
-
+//Fail -DRDMV-25358
     describe('[3502]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when task enters approval cycle', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData, globalApprovalMappingData;
