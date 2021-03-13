@@ -121,7 +121,6 @@ export class GridOperations {
         var index = 0;
         while (index < totalGridRecords) {
             let linkedText = await $$(gridRecordLocator).get(index).getText();
-            console.log(totalGridRecords + "<<<====>>>" + index);
             if (linkedText.trim() == value) {
                 await $$(`${gridRowLocator} ${this.selectors.gridCheckbox}`).get(index).click();
                 break;

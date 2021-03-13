@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../../utils/utility.grid';
 
 class TaskTemplateGridPage {
@@ -26,16 +26,16 @@ class TaskTemplateGridPage {
     }
 
     async searchAndOpenTaskTemplate(taskName: string): Promise<void> {
-        await utilityGrid.searchAndOpenHyperlink(taskName,this.selectors.taskTemplateGuid);
+        await utilityGrid.searchAndOpenHyperlink(taskName, this.selectors.taskTemplateGuid);
     }
 
     async searchAndSelectTaskTemplate(taskName: string): Promise<void> {
-        await utilityGrid.searchRecord(taskName);
-        await utilityGrid.clickCheckBoxOfValueInGrid(taskName);
+        await utilityGrid.clearFilter();
+        await utilityGrid.searchAndSelectGridRecord(taskName);
     }
 
     async addColumn(columnName: string[]): Promise<void> {
-        await utilityGrid.addGridColumn(columnName,this.selectors.taskTemplateGuid);
+        await utilityGrid.addGridColumn(columnName, this.selectors.taskTemplateGuid);
     }
 
     async removeColumn(columnName: string[]): Promise<void> {
@@ -55,7 +55,7 @@ class TaskTemplateGridPage {
     }
 
     async isAutomationTaskTemplateButtonEnabled(): Promise<boolean> {
-      return await $(this.selectors.automationtaskTemplateButton).isEnabled();
+        return await $(this.selectors.automationtaskTemplateButton).isEnabled();
     }
 
     async clickOnExtrnalTaskTemplateButton(): Promise<void> {
@@ -63,7 +63,7 @@ class TaskTemplateGridPage {
     }
 
     async isExtrnalTaskTemplateButtonEnabled(): Promise<boolean> {
-      return await $(this.selectors.externalTaskTemplateButton).isEnabled();
+        return await $(this.selectors.externalTaskTemplateButton).isEnabled();
     }
 
     async clickOnCopyTaskTemplateButton(): Promise<void> {
@@ -113,7 +113,7 @@ class TaskTemplateGridPage {
     }
 
     async getFirstRecordValue(columnName: string): Promise<string> {
-        return await utilityGrid.getFirstGridRecordColumnValue(columnName,this.selectors.taskTemplateGuid);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnName, this.selectors.taskTemplateGuid);
     }
 
     async isAddManualTaskTemplateBtnDisplayed(): Promise<boolean> {
