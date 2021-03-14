@@ -71,6 +71,7 @@ export class GridOperations {
             await $(searchTextBoxLocator).clear();
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
             let gridRecordCount: number = await $$(gridRecordsLocator).count();
+            console.log("grid records found: ", gridRecordCount);            
             if (gridRecordCount == 0) {
                 await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
