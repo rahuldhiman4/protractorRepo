@@ -19,7 +19,7 @@ class DocumentLibraryPage {
     }
 
     async searchOnGridConsole(value: string): Promise<void> {
-        await utilityGrid.searchRecordWithoutFilter(value);
+        await utilityGrid.searchRecordWithoutClearFilter(value);
         //        await utilCommon.waitUntilSpinnerToHide();
     }
 
