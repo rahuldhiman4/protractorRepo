@@ -270,7 +270,7 @@ describe('Copy Task Template', () => {
     });
 
     //check
-    describe('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', () => {
+    fdescribe('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateName2 = randomStr + 'DRDMV13540ManualTaskName2';
         let manualTaskTemplateSummary2 = randomStr + 'DRDMV13540ManualTaskSummary2';
