@@ -545,10 +545,10 @@ describe('Dynamic Library Configuration', () => {
             expect(await dynamicFieldsPage.getDescriptionName('disabled')).toBeTruthy();
             expect(await dynamicFieldsPage.getFieldValueType('aria-disabled')).toBeTruthy();
             await dynamicFieldsPage.removeField();
-            await dynamicFieldsPage.clickSaveButton();
-            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
         });
         it('[4869]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
+            await dynamicFieldsPage.clickSaveButton();
+            expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
             await viewCasetemplatePo.clickBackArrowBtn();
             await utilityGrid.searchAndOpenHyperlink(randomStr + 'caseTemplateInactive');
             expect(await viewCasetemplatePo.isManageDynamicFieldLinkDisplayed()).toBeTruthy();

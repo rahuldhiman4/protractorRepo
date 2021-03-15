@@ -367,7 +367,7 @@ describe('Case And Employee Relationship', () => {
         expect(await personProfilePage.isCaseAvailableOnRelatedCases(response2.displayId)).toBeFalsy(response2.displayId + ' is present');
     });
 
-    //asahitya failed
+    //asahitya passed
     describe('[4279]: Send Email to Related Person from Related Persons tab', async () => {
         let caseInfo, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -381,6 +381,7 @@ describe('Case And Employee Relationship', () => {
             caseInfo = await apiHelper.createCase(caseData);
         });
         it('[4279]: Send Email to Related Person from Related Persons tab', async () => {
+            const emailBody = '4279 ' + randomStr;
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseInfo.displayId);
             let subject = 'Email Subject ' + randomStr;
@@ -390,7 +391,7 @@ describe('Case And Employee Relationship', () => {
             await relatedTabPage.clickRelatedPersonEmail('Qadim Katawazi');
             await composeEmailPage.setSubject(subject);
             // CASE-0000000239:CASE-0000000239:Email Subject w7t05kmfmby2pi0
-            await composeEmailPage.setEmailBody('4279 ' + randomStr);
+            await composeEmailPage.setEmailBody(emailBody);
             await composeEmailPage.clickOnSendButton();
             let subjectInArSys = `${caseInfo.displayId}:${subject}`;
             console.log(`Subject of the email = ${subjectInArSys}`);
@@ -398,7 +399,7 @@ describe('Case And Employee Relationship', () => {
             await apiHelper.apiLogin('tadmin');
             let body = await apiHelper.getHTMLBodyOfEmail(subjectInArSys, 'qkatawazi@petramco.com'); // need to check
             console.log('body:', body);
-            expect(body.includes('<br>4279')).toBeTruthy('Email does not match');
+            expect(body.includes(emailBody)).toBeTruthy('Email body does not match');
         });
     });
 

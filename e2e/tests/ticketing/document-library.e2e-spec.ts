@@ -207,6 +207,11 @@ describe('Document Library', () => {
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Owner Group')).toBe('Compensation and Benefits'), 'Owner Group is missing';
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Company')).toBe('Petramco'), 'Company is missing';
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
+            await viewDocumentLibraryPo.clickOnEditReadAccess();
+            expect(await docLibReadAccessTab.isSupportGroupAccessButtonDisplayed()).toBeTruthy('Support Group Access Group Button is enabled');
+            await docLibReadAccessTab.clickOnSupportGroupAccessButton();
+            expect(await docLibReadAccessTab.isAddCompanyDropDownDisplayed()).toBeTruthy('Read Access Company Disabled ');
+            await readAccessTabPo.clickReadAccessCancelButton();
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectStatus('Published');
             await editDocumentLibraryPo.clickOnSaveButton();
@@ -232,28 +237,23 @@ describe('Document Library', () => {
             expect(await editDocumentLibraryPo.isCategoryTier4Disabled()).toBeTruthy('Category Tire4 field is enabled');
             expect(await editDocumentLibraryPo.isRegionDropDownDisabled()).toBeTruthy('Region Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isSiteDropDownDisabled()).toBeTruthy('Site Drop Down field is enabled');
-            await editDocumentLibraryPo.clickOnSaveButton();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await viewDocumentLibraryPo.clickOnEditReadAccess();
-            expect(await docLibReadAccessTab.isSupportGroupAccessButtonDisplayed()).toBeTruthy('Support Group Access Group Button is enabled');
-            await docLibReadAccessTab.isSupportGroupAccessButtonDisplayed();
-            expect(await docLibReadAccessTab.isAddCompanyDropDownDisplayed()).toBeTruthy('Read Access Company Disabled ');
+            await editDocumentLibraryPo.clickOnCancelButton();
         });
         afterAll(async () => {
-            await readAccessTabPo.clickReadAccessCancelButton();
             await viewDocumentLibraryPo.clickOnCancelButton();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
     });
 
-    // #Pass--Fail
+    // #Pass
     describe('[4921]: Verify edit document UI', async () => {
         it('[4921]: Verify edit document UI', async () => {
             let filePath = '../../../data/ui/attachment/demo.txt';
             let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await navigationPage.signOut();
             await loginPage.login('jbarnes');
+            await utilityGrid.selectLineOfBusiness("Human Resource")
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
@@ -371,7 +371,7 @@ describe('Document Library', () => {
         });
     });
 
-    // #Fail - Read level access can not set keywords
+    // #Pass
     describe('[4915]: Verify Support Group Level Read access of Document', async () => {
         let filePath = '../../../data/ui/attachment/demo.txt';
         let titleRandVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -421,7 +421,7 @@ describe('Document Library', () => {
             expect(await editDocumentLibraryPo.isCategoryTier4Disabled()).toBeTruthy('Category Tire4 field is enabled');
             expect(await editDocumentLibraryPo.isRegionDropDownDisabled()).toBeTruthy('Region Drop Down field is enabled');
             expect(await editDocumentLibraryPo.isSiteDropDownDisabled()).toBeTruthy('Site Drop Down field is enabled');
-            await editDocumentLibraryPo.updateKeywordField(titleRandVal);
+            await editDocumentLibraryPo.clickOnCancelButton();
             await viewDocumentLibraryPo.clickOnEditReadAccess();
             expect(await docLibReadAccessTab.isSupportGroupAccessButtonDisplayed()).toBeFalsy();
             await docLibReadAccessTab.clickReadAccessCancelButton();
@@ -519,6 +519,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
+            expect(await documentLibraryConsolePo.isGridRecordPresent(titleRandVal)).toBeTruthy();
         });
         it('[4916,4889]: Verify document can be Edited in draft status', async () => {
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal), 'Title is missing';
@@ -771,5 +772,4 @@ describe('Document Library', () => {
             await loginPage.login('qkatawazi');
         }
     });
-
 });

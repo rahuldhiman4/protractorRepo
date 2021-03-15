@@ -767,6 +767,9 @@ describe("Create Case", () => {
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        // passed
+        it('[3496,3497,3495]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnChangeCaseTemplate();
             await selectCaseTemplateBlade.selectCaseTemplate(templateData2.templateName);//Defect 1: Cannot read property 'resourceType' of undefined
@@ -1003,6 +1006,7 @@ describe("Create Case", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
