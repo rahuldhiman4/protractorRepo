@@ -430,8 +430,8 @@ describe('Case Status Configuration', () => {
         await statusConfigPo.renameExistingStatus('Update');
     });
 
-    //ankagraw in progress
-    describe('[4608]:Delete non mandatory and custom status', async () => {
+    //ankagraw all passing
+    describe('[4608]:Delete non mandatory and custom status from case, knowledge and task', async () => {
         let caseId, taskId, caseId1, caseData, articleData1, articleData2, caseDataInProgress, knowledgeSetData, knowldgeId, randomStr = Math.floor(Math.random() * 1000000);
         let personData1;
         beforeAll(async () => {
@@ -507,7 +507,7 @@ describe('Case Status Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'task');
             await statusConfigPo.clickEditLifeCycleLink();
-            await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
+            await statusConfigPo.addCustomStatus("Update", "Assigned", "customStatus");
         });
         it('[4608]:Delete non mandatory and custom status 2', async () => {
             await apiHelper.apiLogin('jmilano');
@@ -623,7 +623,7 @@ describe('Case Status Configuration', () => {
         it('[4608]:Delete non mandatory and custom status 13', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Knowledge Management--Status Configuration', BWF_PAGE_TITLES.KNOWLEDGE_MANAGEMENT.STATUS_CONFIGURATION);
-            await statusConfigPo.setCompanyDropdown('Petramco', 'knowledge');
+            await statusConfigPo.setCompanyDropdown('Phylum', 'knowledge');
             await statusConfigPo.clickEditLifeCycleLink();
             await statusConfigPo.addCustomStatus("In Progress", "Draft", "Custom");
         });

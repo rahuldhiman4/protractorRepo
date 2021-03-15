@@ -29,7 +29,7 @@ describe("Case Level Up Approval Tests", () => {
         await navigationPage.signOut();
     });
 
-    //skhobrag pending
+    //skhobrag #passed
     describe('[4263]:Verify Manager Approval Flow - Approve Reject Approve', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
@@ -258,7 +258,7 @@ describe("Case Level Up Approval Tests", () => {
 
     });
 
-    //skhobrag pending
+    //skhobrag #passed
     describe('[5149]:[Approval] - Case Re Approval by moving Case Status back to Trigger status', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
@@ -820,8 +820,8 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
-            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Closed')).toContain('Closed');
-            expect(await showApproversBladePo.isClosedApproverIconDisplayedFromActivity()).toBeTruthy('Closed icon button on Approver List blade is not displayed');
+            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Closed')).toContain('Closed'); // ??
+            expect(await showApproversBladePo.isClosedApproverIconDisplayedFromActivity()).toBeTruthy('Closed icon button on Approver List blade is not displayed'); // ??
             expect(await showApproversBladePo.isApprovedApproverIconDisplayedFromActivity()).toBeTruthy('Approved button on Approver List blade is not displayed');
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
@@ -900,7 +900,7 @@ describe("Case Level Up Approval Tests", () => {
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('Level up flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
             // await approvalConfigurationPage.selectMultipleApproversDropDownOption('One must approve');
-            await approvalConfigurationPage.setNoOfLevels('1');
+            await approvalConfigurationPage.setNoOfLevels('2');
             await approvalConfigurationPage.clickExpressionLink();
             await browser.sleep(5000); //Sleep added for expression builder loading
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
