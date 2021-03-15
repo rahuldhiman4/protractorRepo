@@ -1,6 +1,6 @@
+import { uniqBy } from 'lodash';
 import { $, $$, browser, by, element, ElementFinder, Key, protractor, ProtractorExpectedConditions } from 'protractor';
 import utilityCommon from '../utils/utility.common';
-import { uniqBy } from 'lodash';
 
 export class GridOperations {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -48,29 +48,26 @@ export class GridOperations {
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
         }
         await this.clearFilter();
-        for (let i: number = 0; i < 5; i++) {
-            console.log(searchValue, "search angular grid count: ", i);
-            await $(searchTextBoxLocator).clear();
-            await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
-            let gridRecordCount: number = await $$(gridRecordsLocator).count();
-            if (gridRecordCount == 0) {
-                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
-            } else break;
-        }
+        await this.loopGridSearch(searchValue, searchTextBoxLocator, gridRecordsLocator);
     }
 
-    async searchRecordWithoutFilter(searchValue: string, guid?: string): Promise<void> {
+    async searchRecordWithoutClearFilter(searchValue: string, guid?: string): Promise<void> {
         let searchTextBoxLocator: string = this.selectors.searchTextBox;
         let gridRecordsLocator: string = this.selectors.gridRows;
         if (guid) {
             searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
         }
-        for (let i: number = 0; i < 6; i++) {
+        await this.loopGridSearch(searchValue, searchTextBoxLocator, gridRecordsLocator);
+    }
+
+    async loopGridSearch(searchValue: string, searchTextBoxLocator: string, gridRecordsLocator: string): Promise<void> {
+        for (let i: number = 0; i < 5; i++) {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
             let gridRecordCount: number = await $$(gridRecordsLocator).count();
+            console.log("grid records found: ", gridRecordCount);
             if (gridRecordCount == 0) {
                 await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
@@ -121,7 +118,6 @@ export class GridOperations {
         var index = 0;
         while (index < totalGridRecords) {
             let linkedText = await $$(gridRecordLocator).get(index).getText();
-            console.log(totalGridRecords + "<<<====>>>" + index);
             if (linkedText.trim() == value) {
                 await $$(`${gridRowLocator} ${this.selectors.gridCheckbox}`).get(index).click();
                 break;
@@ -235,7 +231,7 @@ export class GridOperations {
     }
 
     async searchAndOpenHyperlinkWithoutRemovingFilter(id: string, guid?: string): Promise<void> {
-        await this.searchRecordWithoutFilter(id, guid);
+        await this.searchRecordWithoutClearFilter(id, guid);
         if (guid) await $$(`[rx-view-component-id='${guid}'] ` + this.selectors.gridRowHyperLinks).first().click();
         else await $$(this.selectors.gridRowHyperLinks).first().click();
     }
@@ -317,7 +313,7 @@ export class GridOperations {
         if (guid) columnData = await this.getAllValuesFromColumn(columnName, guid);
         else columnData = await this.getAllValuesFromColumn(columnName);
         const copy = Object.assign([], columnData);
-        
+
         if (columnName == 'Priority') {
             columnData = uniqBy(columnData, function (record) { return record; });
             var priorityOrder = ['Critical', 'High', 'Medium', 'Low']; //Asc by default
@@ -328,23 +324,23 @@ export class GridOperations {
             priorityOrder.forEach(function (outItem, outIndex) {
                 var isMatch = false;
                 columnData.forEach(function (inItem, inIndex) {
-                    if(outItem == inItem) {
+                    if (outItem == inItem) {
                         isMatch = true;
                     }
                 });
-                if(!isMatch) {
+                if (!isMatch) {
                     excludePriorities.push(outItem);
                 }
             });
-            excludePriorities.forEach(function(item, index){
+            excludePriorities.forEach(function (item, index) {
                 var priorityIndex = priorityOrder.indexOf(item);
                 if (priorityIndex > -1) {
                     priorityOrder.splice(priorityIndex, 1);
-                 }
+                }
             });
             var returnVar = true;
             columnData.forEach(function (item, index) {
-                if(item != priorityOrder[index]) {
+                if (item != priorityOrder[index]) {
                     returnVar = false;
                 }
             });
@@ -456,11 +452,11 @@ export class GridOperations {
         let selectCheckbox = '.ui-chkbox-box';
         let selectRadioButton = '.radio__label input';
         if (guid) {
-            await this.searchRecordWithoutFilter(recordName, guid);
+            await this.searchRecordWithoutClearFilter(recordName, guid);
             selectCheckbox = `[rx-view-component-id="${guid}"] ` + selectCheckbox;
             selectRadioButton = `[rx-view-component-id="${guid}"] ` + selectRadioButton;
         }
-        else await this.searchRecordWithoutFilter(recordName);
+        else await this.searchRecordWithoutClearFilter(recordName);
         let checkboxLocator = await $(selectCheckbox);
         let radioButtonLocator = await $(selectRadioButton);
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();

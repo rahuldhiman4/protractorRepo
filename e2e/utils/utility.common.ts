@@ -320,10 +320,13 @@ export class Utility {
                     } else return false;
                 });
             }
-            else {                                  //taking Element as parameter and getting required text from inner attribute
+            else {
                 let nameElement = identifier;
-                let value: string = await this.getTextFromAfterTag(nameElement);
-                isRequired = value.includes('required');
+                if (await nameElement.isPresent()) {                                  //taking Element as parameter and getting required text from inner attribute
+                    let value: string = await this.getTextFromAfterTag(nameElement);
+                    isRequired = value.includes('required');
+                }
+                else return false;
             }
         }
         return isRequired;

@@ -491,9 +491,9 @@ describe("Case Read Access", () => {
             await loginPage.login('gderuno');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilityGrid.searchRecordWithoutFilter(readAccessMappingData1.configName);
+            await utilityGrid.searchRecordWithoutClearFilter(readAccessMappingData1.configName);
             expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData1.configName);
-            await utilityGrid.searchRecordWithoutFilter(readAccessMappingData2.configName);
+            await utilityGrid.searchRecordWithoutClearFilter(readAccessMappingData2.configName);
             expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData2.configName);
             await utilityGrid.searchAndOpenHyperlink(readAccessMappingData1.configName);
             expect(await editReadAccess.isCompanyFieldDisabled()).toBeTruthy('Company is not disabled');
@@ -740,7 +740,7 @@ describe("Case Read Access", () => {
             await loginPage.login('qheroux');
             await navigationPo.gotoSettingsPage();
             await navigationPo.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
-            await utilityGrid.searchRecordWithoutFilter(readAccessMappingData.configName);
+            await utilityGrid.searchRecordWithoutClearFilter(readAccessMappingData.configName);
             expect(await consoleReadAcess.getValueOnReadAccessConfigGrid('Access Mapping Name')).toContain(readAccessMappingData.configName);
             await navigationPo.signOut();
             await loginPage.login('qdu');

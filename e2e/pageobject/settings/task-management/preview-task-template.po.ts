@@ -18,6 +18,7 @@ class PreviewTaskTemplateBlade {
         taskCategoryTier4: 'fee46083-3316-45b8-8600-190e851bee3b',
         taskType: 'd7598602-1dce-4cf8-af9b-b0083df0e721',
         taskTypeValue: '[rx-view-component-id="d7598602-1dce-4cf8-af9b-b0083df0e721"] label ~ *',
+        labelGuid:'ef679736-6aaf-4b21-867a-307e154464d8',
         label: "[rx-view-component-id='ef679736-6aaf-4b21-867a-307e154464d8'] label",
         taskDescription: 'f663f6d7-ef45-4170-9dda-6ca2459fad08',
         processName: 'f79145f8-5b9f-4ef5-b573-7920752f860a',

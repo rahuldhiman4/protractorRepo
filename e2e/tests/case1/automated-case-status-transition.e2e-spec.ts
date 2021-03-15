@@ -229,7 +229,7 @@ describe('Automated Case Status Transition', () => {
         await navigationPage.gotoCaseConsole();
         await utilityCommon.refresh(); // required to get alert notification
         await notificationPo.clickOnNotificationIcon();
-        expect(await notificationPo.isAlertPresent('tadmin Tenant Administrator changed the status of ' + newCase.displayId + ' to Closed')).toBeTruthy('Alert message is not present');
+        expect(await notificationPo.isAlertPresent('Tenant Admin changed the status of ' + newCase.displayId + ' to Closed')).toBeTruthy('Alert message is not present');
         await utilityCommon.closePopUpMessage();
     });
 
