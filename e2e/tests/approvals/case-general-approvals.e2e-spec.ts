@@ -45,7 +45,7 @@ describe("Case General Approval Tests", () => {
     //skhobrag
     describe('[5143]:[Approval] - Case Level Up Approval when Requester does not have Manager', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let approvalFlowName = 'Approval Flow' + randomStr;
+        let approvalFlowName = 'Levelup Flow' + randomStr;
         let caseData = undefined;
         let caseId: string;
         let approvalMappingData = undefined;
@@ -135,6 +135,7 @@ describe("Case General Approval Tests", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
             await navigationPage.signOut();
@@ -143,7 +144,7 @@ describe("Case General Approval Tests", () => {
 
     });
 
-    //skhobrag
+    //skhobrag #passing on cicd
     describe('[6216,3504]:[Approval] Approval details when case canceled not being approved', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalFlowName = 'Approval Flow' + randomStr;
@@ -171,7 +172,7 @@ describe("Case General Approval Tests", () => {
             let approvalFlowData = {
                 "flowName": `Approval FLow ${randomStr}`,
                 "approver": "qliu;qkatawazi",
-                "qualification": `'Category Tier 1' = "Workforce Administration"`
+                "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
@@ -217,7 +218,7 @@ describe("Case General Approval Tests", () => {
             expect(await viewCasePo.getShowPendingApproversInfo()).toContain('Pending Approval :1');
         });
 
-        // ??
+        // wofking on cicd
         it('[6216,3504]:Cancel the case and verify the case details', async () => {
             await updateStatusBladePo.changeStatus('Canceled');
             await updateStatusBladePo.selectStatusReason('Approval Rejected');
