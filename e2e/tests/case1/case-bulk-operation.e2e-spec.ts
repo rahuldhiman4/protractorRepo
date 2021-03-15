@@ -1,3 +1,4 @@
+import { random } from "lodash";
 import { browser } from "protractor";
 import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
@@ -256,13 +257,14 @@ describe('Case Bulk Operation', () => {
 
     });
 
-    xdescribe('[4301]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
+    describe('[4301]: Verify that Agent creates the Case with BU, Org, Support Group, Department and while Bulk Assignment select only Org and Support Group', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId: string[] = [], caseGuid: string[] = [];
         let caseDataForTest;
         beforeAll(async () => {
             await apiHelper.apiLogin(qfengStr);
             caseDataForTest = caseData['bulkCaseAssignee_New'];
-            caseDataForTest.Summary = "4301 Bulk Case Assignee";
+            caseDataForTest.Summary = "4301BulkCaseAssignee"+randomStr;
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
@@ -285,21 +287,20 @@ describe('Case Bulk Operation', () => {
                 await apiHelper.updateCaseAccess(caseGuid[i], caseReadAccessDataQtao);
             }
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', petramcoStr);
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', businessData.orgName);
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', suppGrpData.orgName);
-            await changeAssignmentBladePo.setDropDownValue('Assignee', `${personData.firstName} ${personData.lastName}`);
+            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
+            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiang Du');
             await changeAssignmentBladePo.clickOnAssignButton();
-            expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
+            expect(await utilityCommon.isPopUpMessagePresent(`New Assignee 'Qiang Du' has been added to the Case Access List.`)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
-                expect(await viewCasePage.getBusinessUnitText()).toBe(businessData.orgName, `Business unit details are not matching for ${caseId[i]}`);
-                expect(await viewCasePage.getDepartmentText()).toBe(departmentData.orgName, `Department details are not matching for ${caseId[i]}`);
-                expect(await viewCasePage.getAssignedCompanyValue()).toBe(petramcoStr);
-                expect(await viewCasePage.getAssignedGroupValue()).toBe(suppGrpData.orgName, `Assigned Group details are not matching for ${caseId[i]}`);
-                expect(await viewCasePage.getAssigneeText()).toBe(`${personData.firstName} ${personData.lastName}`, `Assignee details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getAssignedCompanyValue()).toBe('Petramco');
+                expect(await viewCasePage.getBusinessUnitText()).toBe('Canada Support', `Business unit details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getAssignedGroupValue()).toBe('CA Support 3', `Assigned Group details are not matching for ${caseId[i]}`);
+                expect(await viewCasePage.getAssigneeText()).toBe('Qiang Du', `Assignee details are not matching for ${caseId[i]}`);
                 await navigationPage.gotoCaseConsole();
             }
         });
@@ -308,13 +309,25 @@ describe('Case Bulk Operation', () => {
         });
     });
 
-    xdescribe('[4300]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
+    describe('[4300]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
+        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId: string[] = [];
         let caseDataForTest;
         beforeAll(async () => {
-            caseDataForTest = caseData['bulkCaseAssigneeWithAllAssigneeFields'];
-            caseDataForTest.Summary = "4300 Bulk Case Assignee";
-            await apiHelper.apiLogin(personData.userId + '@petramco.com', "Password_1234");
+            // caseDataForTest = caseData['bulkCaseAssigneeWithAllAssigneeFields'];
+            caseDataForTest = {
+                "Description": "My Bulk Case Assignee",
+                "Requester": "apavlik",
+                "Priority": "4000",
+                "Summary": "Bulk Case Assignee",
+                "Assigned Company": "Petramco",
+                "Business Unit": "HR Support",
+                "Support Group": "Compensation and Benefits",
+                "Assignee": "Elizabeth Peters",
+                "Status": "2000"
+            },
+            caseDataForTest.Summary = "4300 Bulk Case Assignee"+randomStr;
+            await apiHelper.apiLogin('elizabeth');
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[i] = response.displayId;
@@ -322,7 +335,7 @@ describe('Case Bulk Operation', () => {
         });
         it('[4300]: Verify that Agent creates the Case with Org, Support Group and while Bulk Assignment select BU, Org, Support Group, Department', async () => {
             await navigationPage.signOut();
-            await loginPage.login(personData.userId + '@petramco.com', "Password_1234");
+            await loginPage.login('elizabeth');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchRecord(caseDataForTest.Summary);
             for (let i: number = 0; i < 3; i++) {
@@ -331,13 +344,14 @@ describe('Case Bulk Operation', () => {
 
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
-            expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
+            await changeAssignmentBladePo.clickOnAssignButton();
+            expect(await utilityCommon.isPopUpMessagePresent(`The selected case(s) have been successfully assigned.`)).toBeTruthy();
             for (let i: number = 0; i < 3; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
-                expect(await viewCasePage.isTextPresent('BulkOperationBusinessUnit')).toBeFalsy("BulkOperationBusinessUnit is present");
-                expect(await viewCasePage.isTextPresent('BulkOperationDepartment')).toBeFalsy("BulkOperationDepartment is present");
+                expect(await viewCasePage.isTextPresent('HR Support')).toBeFalsy("HR Support is present");
+                expect(await viewCasePage.isTextPresent('Compensation and Benefits')).toBeFalsy("Compensation and Benefits is present");
                 expect(await viewCasePage.getAssignedCompanyValue()).toBe('Petramco');
-                expect(await viewCasePage.getAssignedGroupValue()).toBe(usSupportGroup3Str);
+                expect(await viewCasePage.getAssignedGroupValue()).toBe('US Support 3');
                 expect(await viewCasePage.getAssigneeText()).toBe('Qadim Katawazi');
                 await navigationPage.gotoCaseConsole();
             }

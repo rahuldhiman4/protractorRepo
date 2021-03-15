@@ -7,7 +7,9 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import showApproversBladePo from "../../pageobject/common/show-approvers-list-tab.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
+import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
+import viewTaskPo from "../../pageobject/task/view-task.po";
 import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
@@ -28,9 +30,9 @@ xdescribe("Task Approval Tests", () => {
             "userId": "21827user1",
             "userPermission": ["Case Business Analyst", "Human Resource"]
         }
-        await apiHelper.createNewUser(userData1);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
+        // await apiHelper.createNewUser(userData1);
+        // await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
+        // await apiHelper.associatePersonToSupportGroup(userData1.userId, "US Support 3");
 
     });
 
@@ -84,7 +86,7 @@ xdescribe("Task Approval Tests", () => {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:qkatawazi",
                 "isLevelUp": false,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
+                "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,
                 "signingCriteria": 1,
             }
@@ -123,9 +125,8 @@ xdescribe("Task Approval Tests", () => {
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
-            await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
-            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await viewTask.getTaskID();
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
@@ -143,8 +144,8 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('All of the following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -182,8 +183,8 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApprovalStatusLabel()).toContain('Awaiting Approval');
             await showApproversBladePo.clickApproversTab('Approval Decision');
             expect(await showApproversBladePo.getApproversCount()).toBe(1);
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isApprovedApproverIconDisplayed()).toBeTruthy('Approved icon is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabel()).toContain('Approved');
@@ -210,7 +211,7 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (2)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
             expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
@@ -231,9 +232,8 @@ xdescribe("Task Approval Tests", () => {
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
-            await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
-            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await viewTask.getTaskID();
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
@@ -253,7 +253,7 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (2)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
             expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Rejected')).toContain('Rejected');
@@ -314,7 +314,7 @@ xdescribe("Task Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
+                "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,
                 "isLevelUp": true,
                 "levels": 1,
@@ -353,9 +353,8 @@ xdescribe("Task Approval Tests", () => {
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
-            await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
-            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await viewTask.getTaskID();
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
@@ -372,8 +371,8 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabel('Approval Decision')).toContain('Approval Decision (0)');
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(1);
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.isApproverPersonIconDisplayed('RA3 Liu')).toBeTruthy('Approver Person Icon is not displayed');
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.isApproverPersonIconDisplayed('Qiwei Liu')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompany('Petramco')).toBeTruthy('Approver Company is not displayed');
@@ -402,7 +401,7 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
@@ -423,9 +422,8 @@ xdescribe("Task Approval Tests", () => {
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
-            await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
-            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await viewTask.getTaskID();
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.signOut();
             await loginPage.login('qliu');
@@ -444,7 +442,7 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Pending Approval')).toContain('Pending Approval (0)');
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(1);
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Rejected')).toContain('Rejected');
@@ -506,7 +504,7 @@ xdescribe("Task Approval Tests", () => {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "U:qliu;U:qkatawazi",
                 "isLevelUp": false,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
+                "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,
                 "signingCriteria": 0,
             }
@@ -551,9 +549,8 @@ xdescribe("Task Approval Tests", () => {
         });
 
         it('[3475]: Verify the task approval details', async () => {
-            await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
-            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(manualTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await viewTask.getTaskID();
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(automatedTaskDisplayId);
@@ -568,7 +565,7 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isApproverPersonIconDisplayed('Fritz Schulz')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
@@ -603,7 +600,7 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
             expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
@@ -632,9 +629,8 @@ xdescribe("Task Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
-            await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
-            await manageTaskPo.clickTaskLink(manualTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(manualTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await viewTask.getTaskID();
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 
@@ -666,7 +662,7 @@ xdescribe("Task Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
             expect(await showApproversBladePo.getApproversNameFromActivity('Qadim Katawazi')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Rejected')).toContain('Rejected');
@@ -766,7 +762,7 @@ xdescribe("Task Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
+                "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,
                 "isLevelUp": true,
                 "levels": 1,
@@ -818,9 +814,8 @@ xdescribe("Task Approval Tests", () => {
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
-            await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
-            await manageTaskPo.clickTaskLink(autoTaskTemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(autoTaskTemplateData.templateSummary);
+            automatedTaskDisplayId = await viewTask.getTaskID();
             let taskId = await viewTask.getTaskID();
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -839,9 +834,8 @@ xdescribe("Task Approval Tests", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1); // navigation requried to reflect updated task status
-            await viewCasePo.openTaskCard(1);
-            automatedTaskDisplayId = await manageTaskPo.getTaskDisplayId();
-            await manageTaskPo.clickTaskLink(externaltemplateData.templateSummary);
+            await viewCasePo.clickOnTaskLink(externaltemplateData.templateSummary);
+            automatedTaskDisplayId = await viewTask.getTaskID();
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
             expect(await viewTask.isShowApproversBannerDisplayed()).toBeFalsy('Show Approvers Banner is not displayed');
             expect(await activityTabPage.getApprovalErrorActivityText('An error occurred during approval')).toBeTruthy('Show Approvers Banner is not displayed');

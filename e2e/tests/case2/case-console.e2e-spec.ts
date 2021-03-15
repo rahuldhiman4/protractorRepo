@@ -146,7 +146,7 @@ describe('Case Console', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await caseTemplateConsolePO.addColumnOnGrid([labelStr, caseCategoryTier4Str]);
-            await utilityGrid.searchRecordWithoutFilter(caseTemplateData.templateName);
+            await utilityGrid.searchRecordWithoutClearFilter(caseTemplateData.templateName);
             expect(await caseTemplateConsolePO.getFirstRecordValue(caseCategoryTier4Str)).toContain(caseTemplateData.categoryTier4);
             expect(await caseTemplateConsolePO.getFirstRecordValue(labelStr)).toContain(label);
             await caseTemplateConsolePO.removeColumnFromGrid([labelStr, caseCategoryTier4Str]);
@@ -155,7 +155,7 @@ describe('Case Console', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await taskTemplateConsolePO.addColumn([labelStr, taskCategoryTier4Str]);
-            await utilityGrid.searchRecordWithoutFilter('task template name ' + randomStr);
+            await utilityGrid.searchRecordWithoutClearFilter('task template name ' + randomStr);
             expect(await taskTemplateConsolePO.getFirstRecordValue(taskCategoryTier4Str)).toContain(taskTemplateData.category4);
             expect(await taskTemplateConsolePO.getFirstRecordValue(labelStr)).toContain(label);
             await taskTemplateConsolePO.removeColumn([labelStr, taskCategoryTier4Str]);
@@ -164,7 +164,7 @@ describe('Case Console', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePo.addColumns([labelStr, categoryTier4Str]);
-            await utilityGrid.searchRecordWithoutFilter('Assignment mapping name' + randomStr);
+            await utilityGrid.searchRecordWithoutClearFilter('Assignment mapping name' + randomStr);
             expect(await assignmentConfigConsolePo.getValueOnAssignmentConfigGrid(categoryTier4Str)).toContain(assignmentMappingData.categoryTier4);
             expect(await assignmentConfigConsolePo.getValueOnAssignmentConfigGrid(labelStr)).toContain(label);
             await assignmentConfigConsolePo.removeColumns([labelStr, categoryTier4Str]);
@@ -173,7 +173,7 @@ describe('Case Console', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Read Access', BWF_PAGE_TITLES.CASE_MANAGEMENT.READ_ACCESS);
             await readAccessConsolePo.addColumns([labelStr, categoryTier4Str]);
-            await utilityGrid.searchRecordWithoutFilter('Read Access Mapping Name' + randomStr);
+            await utilityGrid.searchRecordWithoutClearFilter('Read Access Mapping Name' + randomStr);
             expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(categoryTier4Str)).toContain(readAccessMappingData.category4);
             // expect(await readAccessConsolePo.getValueOnReadAccessConfigGrid(labelStr)).toContain(label); // removed Label column intentionally (as desinged - DRDMV-25208)
             await readAccessConsolePo.removeColumns([categoryTier4Str]);
@@ -328,7 +328,7 @@ describe('Case Console', () => {
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeFalsy('Record2 is not filtered on the basis of Assignee');
             await utilityGrid.clearFilter();
             await utilityGrid.typeInFilterExperssion("Modified Date:" + modifiedDateFormate);
-            await utilityGrid.searchRecordWithoutFilter(newCase1.displayId);
+            await utilityGrid.searchRecordWithoutClearFilter(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record is not filtered on the basis of Modified date');
         });
         it('[5531]:[Case Workspace] Cases search using filters 5', async () => {

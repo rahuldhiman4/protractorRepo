@@ -6,7 +6,7 @@ class AssignmentsConfigConsolePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        guid: "1b99bc03-6124-4e14-9acc-7c6213f23f4a",
+        guid: "876fe795-fdb4-4ebe-ada7-dd2ff5cb280c",
         addAssignmentBtn: '[rx-view-component-id="3d2b6371-d60f-4346-a9c0-7815d2cd4241"] button',
         deleteButton: '[rx-view-component-id="10da8112-39a0-4be3-9388-f526f2fd1bbd"] button'
     }
@@ -89,7 +89,7 @@ class AssignmentsConfigConsolePage {
 
     async deleteDefaultAssignmentConfig(): Promise<void> {
         await utilityGrid.clearFilter();
-        await this.addFilter('Default Mapping', 'True', 'checkbox');
+        await this.addFilter('Default Mapping', 'True', 'radioButton');
         await $('.at-selection-checkbox .ui-chkbox-box').isPresent().then(async (result) => {
             if (result) {
                 await utilityGrid.selectAllCheckBox();
@@ -118,7 +118,7 @@ class AssignmentsConfigConsolePage {
     }
 
     async getSelectedGridRecordValue(columnHeader: string): Promise<string> {
-        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.guid, columnHeader);
+        return await utilityGrid.getFirstGridRecordColumnValue(columnHeader, this.selectors.guid);
     }
 
 }

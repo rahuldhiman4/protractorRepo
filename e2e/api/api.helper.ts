@@ -31,7 +31,7 @@ import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGE_SET } from '../data/api/knowledge/
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import { ARTCILE_DUE_DATE, EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
-import { COMMON_CONFIG_PAYLOAD, CREATE_COMMON_CONFIG, DELETE_COMMON_CONFIG } from '../data/api/shared-services/common.configurations.api';
+import { COMMON_CONFIG_PAYLOAD, CREATE_COMMON_CONFIG} from '../data/api/shared-services/common.configurations.api';
 import * as processes from '../data/api/shared-services/create-new-process.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
@@ -57,6 +57,7 @@ import { ICreateSVT, ICreateSVTGoalType, ICreateSVTGroup } from '../data/interfa
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
+import { CASE_ACCESS_COMMAND, CASE_ACCESS_CHILD_SECURITY} from '../data/api/case/update.case.access.api';
 
 let fs = require('fs');
 
@@ -581,6 +582,7 @@ class ApiHelper {
         assignmentMappingData.fieldInstances[450000381].value = data.businessUnit;
         assignmentMappingData.fieldInstances[450000152].value = data.assignee ? await apiCoreUtil.getPersonGuid(data.assignee) : assignmentMappingData.fieldInstances[450000152].value;
         assignmentMappingData.fieldInstances[1000000164].value = data.priority ? constants.CasePriority[data.priority] : assignmentMappingData.fieldInstances[1000000164].value;
+        assignmentMappingData.fieldInstances[450000420].value = data.lineOfBusiness ? await constants.LOB[data.lineOfBusiness] : assignmentMappingData.fieldInstances[450000420].value;
         if (data.useAsDefault) assignmentMappingData.fieldInstances[450000001].value = data.useAsDefault ? "1" : "0";
 
         let newCaseAssignmentMapping: AxiosResponse = await apiCoreUtil.createRecordInstance(assignmentMappingData);
@@ -1729,19 +1731,25 @@ class ApiHelper {
     }
 
     async updateCaseAccess(caseGuid: string, data: IUpdateCaseAccess): Promise<number> {
-        let accessFile = await require('../data/api/case/case.access.api.json');
-        let caseAccessData = await accessFile.CaseAccess;
-        caseAccessData.processInputValues['Record Instance ID'] = caseGuid;
-        caseAccessData.processInputValues['Type'] = data.type;
+        let caseAccessData = cloneDeep(CASE_ACCESS_COMMAND);
+        caseAccessData.processInputValues.Type = data.type;
         caseAccessData.processInputValues['Operation'] = data.operation;
         caseAccessData.processInputValues['Security Type'] = data.security;
         caseAccessData.processInputValues['Value'] = data.username;
+        caseAccessData.processInputValues["Record Instance ID"] = caseGuid;
         const updateCaseAccess = await axios.post(
             commandUri,
             caseAccessData
         );
-
         console.log('Update Case Access API Status =============>', updateCaseAccess.status);
+
+        let caseAccessChildSecurityData = cloneDeep(CASE_ACCESS_CHILD_SECURITY);
+        caseAccessChildSecurityData.processInputValues["Record Instance ID"] = caseGuid;
+        const updateCaseAccessChildSecurity = await axios.post(
+            commandUri,
+            caseAccessChildSecurityData
+        );
+        console.log('Update Case Access Child Security API Status =============>', updateCaseAccessChildSecurity.status);
         return updateCaseAccess.status;
     }
 
@@ -3282,15 +3290,15 @@ class ApiHelper {
         return updateBU.status == 204;
     }
 
-    async deleteCommonConfiguration(configGuid: string): Promise<boolean> {
-        let deleteConfig = cloneDeep(DELETE_COMMON_CONFIG);
-        deleteConfig.processInputValues["ID"] = configGuid;
-        let response = await axios.post(
-            commandUri,
-            deleteConfig
-        )
-        console.log('Delete Common Config API Status  =============>', response.status);
-        return response.status == 201;
+    async deleteCommonConfiguration(configName: string,company: string): Promise<boolean> {
+        let allRecords = await apiCoreUtil.getGuid("com.bmc.dsm.shared-services-lib:Application Configuration");        
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[450000152] === configName && obj[1000000001] === company;
+        });
+        let configGuid = entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+        if (configGuid) {
+            return await apiCoreUtil.deleteRecordInstance('com.bmc.dsm.shared-services-lib:Application Configuration', configGuid);
+        }
     }
 
     async createCommonConfig(configName: string, configValue: string, company: string): Promise<IIDs> {

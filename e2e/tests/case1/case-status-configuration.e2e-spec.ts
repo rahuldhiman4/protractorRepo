@@ -456,46 +456,51 @@ describe('Case Status Configuration', () => {
             // await browser.sleep(7000); //Wait to reflect the user created above
             caseData =
                 {
-                    "Requester": 'rflanagan',
+                    "Requester": 'mcarney',
                     "Summary": randomStr + "test",
                     "Assigned Company": "Phylum",
                     "Business Unit": "Phylum Support Org1",
                     "Support Group": "Phylum Support Group1",
-                    "Assignee": 'mcarney'
+                    "Assignee": 'jmilano',
+                    "Line of Business": "Finance"
                 }
             caseDataInProgress =
                 {
-                    "Requester": 'rflanagan',
+                    "Requester": 'mcarney',
                     "Summary": randomStr + "test",
                     "Assigned Company": "Phylum",
                     "Business Unit": "Phylum Support Org1",
                     "Support Group": "Phylum Support Group1",
-                    "Assignee": 'mcarney',
+                    "Assignee": 'jmilano',
                     "status": "In Progress",
+                    "Line of Business": "Finance"
                 }
 
             knowledgeSetData = {
                 knowledgeSetTitle: "test knowledge" + randomStr,
                 knowledgeSetDesc: "test description",
-                company: 'Phylum'
+                company: 'Phylum',
+                lineOfBusiness: "Finance",
             }
 
             articleData1 = {
                 "knowledgeSet": knowledgeSetData.knowledgeSetTitle,
                 "title": "KnowledgeArticle" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
-                "company": 'Phylum'
+                "company": 'Phylum',
+                "lineOfBusiness": "Finance",
             }
 
             articleData2 = {
                 "knowledgeSet": knowledgeSetData.knowledgeSetTitle,
                 "title": "KnowledgeArticleData" + randomStr,
                 "templateId": "AGGAA5V0HGVMIAOK04TZO94MC355RA",
-                "company": 'Phylum'
+                "company": 'Phylum',
+                "lineOfBusiness": "Finance",
             }
 
             await navigationPage.signOut();
-            await loginPage.login('mcarney');
+            await loginPage.login('jmilano');
         });
         it('[4608]:Delete non mandatory and custom status 1', async () => {
             await navigationPage.gotoSettingsPage();
@@ -505,13 +510,14 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.addCustomStatus("Staged", "Assigned", "customStatus");
         });
         it('[4608]:Delete non mandatory and custom status 2', async () => {
-            await apiHelper.apiLogin('mcarney');
+            await apiHelper.apiLogin('jmilano');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary("Summary" + randomStr);
+            await createAdhocTaskPo.clickAssignToMeButton();
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             await viewTaskPo.clickOnViewCase();
@@ -521,7 +527,6 @@ describe('Case Status Configuration', () => {
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus"); //stage
             taskId = await viewTaskPo.getTaskID();
-
         });
         it('[4608]:Delete non mandatory and custom status 3', async () => {
             await navigationPage.gotoSettingsPage();
@@ -560,6 +565,7 @@ describe('Case Status Configuration', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary("Summary" + randomStr);
+            await createAdhocTaskPo.clickAssignToMeButton();
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned"); // stage
@@ -573,12 +579,11 @@ describe('Case Status Configuration', () => {
             await statusConfigPo.addCustomStatus("New", "Assigned", "customStatus");
         });
         it('[4608]:Delete non mandatory and custom status 8', async () => {
-            await apiHelper.apiLogin('mcarney');
+            await apiHelper.apiLogin('jmilano');
             caseId = await apiHelper.createCase(caseDataInProgress);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getCaseStatusValue()).toBe('customStatus');
-
         });
         it('[4608]:Delete non mandatory and custom status 9', async () => {
             await navigationPage.gotoSettingsPage();
@@ -610,7 +615,7 @@ describe('Case Status Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
         it('[4608]:Delete non mandatory and custom status 12', async () => {
-            await apiHelper.apiLogin('mcarney');
+            await apiHelper.apiLogin('jmilano');
             caseId1 = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId1.displayId);
@@ -661,7 +666,7 @@ describe('Case Status Configuration', () => {
         });
 
         it('[4608]:Delete non mandatory and custom status 18', async () => {
-            await apiHelper.apiLogin('mcarney');
+            await apiHelper.apiLogin('jmilano');
             knowldgeId = await apiHelper.createKnowledgeArticle(articleData2);
             await navigationPage.gotoKnowledgeConsole();
             await utilityGrid.searchAndOpenHyperlink(knowldgeId.displayId);
