@@ -465,6 +465,7 @@ describe("Case Read Access", () => {
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
             await quickCasePo.saveCase();
+            await utilityCommon.closePopUpMessage();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
@@ -472,6 +473,7 @@ describe("Case Read Access", () => {
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setCaseSummary('Read Access');
             await quickCasePo.saveCase();
+            await utilityCommon.closePopUpMessage();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
@@ -481,6 +483,7 @@ describe("Case Read Access", () => {
             await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.setCaseSummary('Read Access');
             await quickCasePo.saveCase();
+            await utilityCommon.closePopUpMessage();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
