@@ -236,7 +236,7 @@ describe("Attachment", () => {
             expect(await activityTabPo.isAttachedFileNameDisplayed('bwfWord1.rtf')).toBeTruthy('Attached file name is missing');
         });
         afterAll(async () => {
-            await utilityCommon.closePopUpMessage();
+            await utilityCommon.closeAllBlades();
         });
     });
 
@@ -768,7 +768,6 @@ describe("Attachment", () => {
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qtao');
-
         });
     });
 
@@ -1454,6 +1453,9 @@ describe("Attachment", () => {
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
             await activityTabPo.clickAndDownloadAttachmentFile(fileName12);
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 
