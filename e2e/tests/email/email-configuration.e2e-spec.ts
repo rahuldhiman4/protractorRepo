@@ -175,7 +175,7 @@ describe('Email Configuration', () => {
         });
     });
 
-    //ankagraw ??
+    //ankagraw
     describe('[5474,5473,5472,5471,5470,5469]: [Email Configuration] Verify Email configuration Grid view', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[5474,5473,5472,5471,5470,5469]: Verify Email configuration Grid view', async () => {
@@ -307,8 +307,8 @@ describe('Email Configuration', () => {
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy('Email ID is present');
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy('Record is present in Exclusive grid');
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Record is present in Exclusive grid');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy('Record is present in Exclusive grid');
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy('Record is display in Exclusive grid');
             await utilityCommon.closeAllBlades();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -322,13 +322,13 @@ describe('Email Configuration', () => {
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await editEmailConfigPo.cancelEditEmailConfig();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityGrid.selectLineOfBusiness('Facilities');
             expect(await utilityGrid.isGridRecordPresent(emailID)).toBeFalsy();
             await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
-            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeFalsy();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeFalsy();
             await editEmailConfigPo.cancelEditEmailConfig();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');

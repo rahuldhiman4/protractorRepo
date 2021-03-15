@@ -1212,7 +1212,6 @@ describe('Notes template', () => {
         let notesTemplateGlobalData;
         let notesTemplateWithLabelData;
         let templateGuid;
-
         beforeAll(async () => {
             //Creating Petramco Template
             notesTemplatePetramcoData = cloneDeep(notesTemplateData.NOTES_TEMPLATE_MANDATORY_FIELD);
@@ -1232,24 +1231,15 @@ describe('Notes template', () => {
             notesTemplateInactiveData.templateName = notesTemplateInactiveData.templateName + randomStr + '789';
             await apiHelper.createNotesTemplate("Case", notesTemplateInactiveData);
 
-            let menuItemData = {
-                "menuItemName": "TestMenuItemName" + randomStr,
-                "menuItemStatus": "Active",
-                "menuType": "Label"
-            }
-            await apiHelper.createNewMenuItem(menuItemData);
-
             notesTemplateWithLabelData = {
                 "templateName": "Notes template with label",
                 "company": "Petramco",
                 "templateStatus": 2,
                 "body": "this is template description",
-                "label": "TestMenuItemName"
+                "label": "Payroll"
             }
-
             //Creating Template with Label
             notesTemplateWithLabelData.templateName = notesTemplateWithLabelData.templateName + randomStr;
-            notesTemplateWithLabelData.label = notesTemplateWithLabelData.label + randomStr;
             await apiHelper.createNotesTemplate("Case", notesTemplateWithLabelData);
         });
 
@@ -1283,7 +1273,7 @@ describe('Notes template', () => {
             expect(await utilityGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Template Name Filter is not applied');
             expect(await utilityGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Template Name Filter is not applied');
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter('Label', 'TestMenuItemName' + randomStr, 'text');
+            await utilityGrid.addFilter('Label','Payroll', 'text');
             expect(await utilityGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeTruthy('Label Filter is not applied');
             expect(await utilityGrid.isGridRecordPresent(notesTemplateInactiveData.templateName)).toBeFalsy('Label Filter is not applied');
             await utilityGrid.clearFilter();
