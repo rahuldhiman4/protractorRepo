@@ -1044,8 +1044,6 @@ describe('Dynamic data', () => {
         it('[4827]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickEditCaseButton();
-            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', "United States Support");
             await changeAssignmentPage.setDropDownValue('AssignedGroup', "US Support 3");
             await changeAssignmentPage.setDropDownValue('Assignee', "Qadim Katawazi");
             await editCasePo.clickSaveCase();

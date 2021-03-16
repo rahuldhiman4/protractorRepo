@@ -1433,8 +1433,6 @@ describe('Create Case Task', () => {
         });
         it('[5575]:[Add Adhoc Task] [Assignment] Changing the Assignment on Add Adhoc Task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco')
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiao Feng');
             await editTask.clickOnSaveButton();
@@ -1596,7 +1594,6 @@ describe('Create Case Task', () => {
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('Description' + randomStr);
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Workforce Administration');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -1623,7 +1620,6 @@ describe('Create Case Task', () => {
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('UpdatedDescription' + randomStr);
             await editTask.clickOnChangeAssignementButton();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Workforce Administration');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -1657,7 +1653,6 @@ describe('Create Case Task', () => {
             await expect(viewCasePage.getContactPersonName()).toBe('Elizabeth Peters');
             await viewCasePage.clickEditCaseButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiao Feng');
             await changeAssignmentBladePo.clickOnAssignButton();

@@ -238,8 +238,6 @@ describe('Create Task Template', () => {
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
-            await changeAssignmentBlade.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'US Support 3');
             await taskTemplate.selectTaskCategoryTier1('Employee Relations');
             await taskTemplate.clickOnSaveTaskTemplate();
@@ -330,10 +328,6 @@ describe('Create Task Template', () => {
             await utilityCommon.isAllDropDownValuesMatches(taskTemplate.selectors.ownerGroup, ['Facilities', 'Pantry Service']);
             await taskTemplate.selectBuisnessUnit('Facilities Support');
             await taskTemplate.selectOwnerGroup('Facilities');
-            await changeAssignmentBlade.setDropDownValue('Company','Petramco');
-            await changeAssignmentBlade.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support'])
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Facilities Support');
-            await changeAssignmentBlade.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service'])
             // verify LOB is there
             expect(await taskTemplate.getLobValue()).toBe("Facilities");
             await taskTemplate.clickOnSaveTaskTemplate();

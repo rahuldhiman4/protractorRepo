@@ -223,7 +223,6 @@ describe('Case Status Verification', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew, 'FailureMsg1: New status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg2: Case Reopen link displayed');
         await viewCasePage.clickEditCaseButton();
-        await changeAssignmentPage.setDropDownValue('Company', 'None');
         await editCasePo.clickOnAssignToMe();
         await editCasePo.clickSaveCase();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned, 'FailureMsg3: Assigned status is missing');
@@ -253,7 +252,6 @@ describe('Case Status Verification', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case1_Summary');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await createCasePage.clickSaveCaseButton();
@@ -285,7 +283,6 @@ describe('Case Status Verification', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case2_Summary');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await createCasePage.clickSaveCaseButton();

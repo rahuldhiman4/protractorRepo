@@ -88,8 +88,6 @@ describe('Dynamic Confidentials Data', () => {
             expect(await viewCasePo.getValueOfDynamicFields("LocalNonConfidentialDesc")).toBe("Test 1");
             expect(await viewCasePo.getValueOfDynamicFields("LocalConfidentialDesc")).toBe("1234");
             await viewCasePo.clickEditCaseButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', "United Kingdom Support");
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'GB Support 2');
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();

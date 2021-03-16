@@ -255,7 +255,7 @@ describe("Notifications", () => {
             await editCasePage.clickSaveCase();
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Qiao Feng');
+            await changeAssignmentBladePo.setAssignee('US Support 3', 'Qiao Feng');
             await editCasePage.clickSaveCase();
             await navigationPage.signOut();
             await loginPage.login('qfeng');

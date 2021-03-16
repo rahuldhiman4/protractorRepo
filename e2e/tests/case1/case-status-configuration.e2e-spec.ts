@@ -159,8 +159,6 @@ describe('Case Status Configuration', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('mcarney');
             await createCasePo.setSummary("4612 before configuration");
-            await assignmentBladePO.setDropDownValue('Company', 'Phylum');
-            await assignmentBladePO.setDropDownValue('SupportOrg', 'Phylum Support Org1');
             await assignmentBladePO.setDropDownValue('AssignedGroup', 'Phylum Support Group1');
             await assignmentBladePO.setDropDownValue('Assignee', 'Roland Flanagan');
             await createCasePo.clickSaveCaseButton();
