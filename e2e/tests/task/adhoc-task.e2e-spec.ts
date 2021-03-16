@@ -397,15 +397,12 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Assignee validation3', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup");
-            await changeAssignmentBladePo.setDropDownValue('Company', "Petramco");
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await editTask.clickOnSaveButton();
@@ -421,7 +418,6 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
@@ -455,15 +451,12 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Second Task validation2', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup");
-            await changeAssignmentBladePo.setDropDownValue('Company', "Petramco");
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await editTask.clickOnSaveButton();
@@ -479,7 +472,6 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();

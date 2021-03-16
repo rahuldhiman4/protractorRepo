@@ -570,8 +570,6 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary("5047 Case Summary");
             await createCasePage.setPriority("Medium");
-            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
             await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
             await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);
             await createCasePage.clickSaveCaseButton();
@@ -592,7 +590,6 @@ describe("Create Case Assignment Mapping", () => {
             await manageTaskPo.clickTaskLink(summary);
             await viewTask.clickOnEditTask();
             await editTaskPo.updateTaskSummary(summary + "new");
-            await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
             await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
             await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);
             await editTaskPo.clickOnSaveButton();
@@ -612,7 +609,6 @@ describe("Create Case Assignment Mapping", () => {
             await createCaseTemplate.setOwnerCompanyValue("Petramco");
             await createCaseTemplate.setOwnerOrgDropdownValue(businessUnitUSSupport);
             await createCaseTemplate.setOwnerGroupDropdownValue(suppGrpUSSupport1);
-            await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
             await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
             await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);
             await createCaseTemplate.clickSaveCaseTemplate();
@@ -632,7 +628,6 @@ describe("Create Case Assignment Mapping", () => {
             await taskTemplate.selectOwnerCompany("Petramco");
             await taskTemplate.selectBuisnessUnit(businessUnitUSSupport);
             await taskTemplate.selectOwnerGroup(suppGrpUSSupport1);
-            await changeAssignmentPage.setDropDownValue('SupportOrg', businessUnitUSSupport);
             await changeAssignmentPage.setDropDownValue('AssignedGroup', suppGrpUSSupport1);
             await changeAssignmentPage.setDropDownValue('Assignee', assigneeQfeng);
             await taskTemplate.clickOnSaveTaskTemplate();

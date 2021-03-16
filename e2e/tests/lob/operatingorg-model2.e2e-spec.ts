@@ -244,7 +244,6 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Facilities Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Australia Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'AU Support 1');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'RA3 Liu');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -607,9 +606,7 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await createKnowledgePage.selectCategoryTier2Option('Compensation');
             await createKnowledgePage.selectCategoryTier3Option('Bonus');
             await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             // Need to add validation to verify Business unit , support group, Agent are visible as per logged in user LOB - Human Resource on create knowledge article
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -627,9 +624,7 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await utilityCommon.closePopUpMessage();
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
             // Need to add validation to verify Business unit , support group, Agent are visible as per logged in user LOB - Human Resource on SME Review blade
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -713,13 +708,8 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
 
             //Validating Assignment fields
             await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
@@ -762,13 +752,8 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
@@ -820,17 +805,11 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
             await createKnowledgePage.addTextInKnowlegeTitleField('DRDMV23625');
             await createKnowledgePage.selectKnowledgeSet('HR');
-            await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Psilon');
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeFalsy();
-            await changeAssignmentBladePo.clickOnCancelButton();
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Psilon');
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeFalsy();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
@@ -906,13 +885,8 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await createKnowledgePage.clickOnUseSelectedTemplateButton();
 
             await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
@@ -930,13 +904,8 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await editKnowledgePo.setKnowledgeStatus('Draft');
             await editKnowledgePo.setKnowledgeStatusWithoutSave('SME Review');
             await statusBladeKnowledgeArticlePo.clickChangeReviewerBtn();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
@@ -969,13 +938,8 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Payroll');
 
             await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Australia Support')).toBeTruthy();
-            expect(await changeAssignmentBladePo.isValuePresentInDropDown("SupportOrg", 'Facilities Support')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco HR')).toBeTruthy();
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Petramco Facilities')).toBeFalsy();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData0.firstName} ${userData0.lastName}`)).toBeTruthy('User is not present on Assignment blade');
             expect(await changeAssignmentBladePo.isPersonAvailableOnAssignBlade(`${userData2.firstName} ${userData2.lastName}`)).toBeFalsy('User is present on Assignment blade');
@@ -1147,7 +1111,6 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Facilities Support')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Australia Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'AU Support 1');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'RA3 Liu');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -1203,7 +1166,6 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
         });
         it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Australia Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'AU Support 1');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'RA3 Liu');
             await changeAssignmentBladePo.clickOnAssignButton();

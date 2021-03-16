@@ -112,8 +112,6 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             await editKnowledgePage.setKnowledgeStatusWithoutSave(knowledgeData.ReviewStatus);
             expect(await editKnowledgePage.isReviewerFieldDisbaledOnStatusChangeBlade()).toBeTruthy(); //done status
-            await changeAssignmentBlade.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Qadim Katawazi');
             await editKnowledgePage.clickSaveStatusBtn();
@@ -142,8 +140,6 @@ describe('Knowledge Article', () => {
             await previewKnowledgePo.clickGoToArticleButton();
             expect(await viewKnowledgeArticlePo.isEditLinkDisplayedOnKA()).toBeTruthy();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            await changeAssignmentBlade.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBlade.setDropDownValue('Assignee', "Qadim Katawazi");
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
@@ -210,10 +206,7 @@ describe('Knowledge Article', () => {
         await createKnowledgePage.clickOnTemplate(knowledgeData.TemplateName);
         await createKnowledgePage.clickOnUseSelectedTemplateButton();
         await createKnowledgePage.selectKnowledgeSet('HR');
-        expect(await changeAssignmentBlade.isDropDownDisplayed("Company")).toBeTruthy("Company dropdown not displayed");
         expect(await changeAssignmentBlade.isDropDownDisplayed("AssignedGroup")).toBeTruthy("SupportGroup dropdown not displayed");
-        await changeAssignmentBlade.setDropDownValue('Company', 'Petramco');
-        await changeAssignmentBlade.setDropDownValue('SupportOrg', 'United States Support');
         await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'US Support 3');
         await changeAssignmentBlade.setDropDownValue('Assignee', 'Qadim Katawazi');
     });
@@ -254,7 +247,7 @@ describe('Knowledge Article', () => {
             expect(await createKnowledgePage.isAssignmentFieldDisabled('Assigned Group')).toBeFalsy('Assign Field is enabled');
             expect(await createKnowledgePage.isAssignedToFieldDisabled('Assigned To')).toBeFalsy('Assign Field is enabled');
             await createKnowledgePage.clickAssignToMeButton();
-            let assignedGroupList: string[] = await changeAssignmentBlade.getAllDropDownValues("AssignedGroup")
+            let assignedGroupList: string[] = await changeAssignmentBlade.getAllDropDownValues("AssignedGroup");
             expect(assignedGroupList.length).toBeGreaterThanOrEqual(2);
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'AU Support 4');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Adam Warlock')
@@ -434,8 +427,6 @@ describe('Knowledge Article', () => {
             await utilityCommon.closePopUpMessage();
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
             expect(await editKnowledgePage.getKnowledgeReviewHeader()).toContain('Knowledge Review');
-            await changeAssignmentBlade.setDropDownValue('Company', 'Petramco', changeAssignmentBlade.selectors.knowledgeReviewGuid);
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Australia Support', changeAssignmentBlade.selectors.knowledgeReviewGuid);
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'AU Support 3', changeAssignmentBlade.selectors.knowledgeReviewGuid);
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Kane Williamson', changeAssignmentBlade.selectors.knowledgeReviewGuid);
             expect(await editKnowledgePage.getReviewerValue()).toContain('Kane Williamson', 'Reviewer not matched with expected');
