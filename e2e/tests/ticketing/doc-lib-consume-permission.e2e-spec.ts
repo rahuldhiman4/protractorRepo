@@ -696,8 +696,6 @@ describe('Document Library Consume Permission', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('qtao');
             await createCasePo.setSummary(caseSummary);
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United Kingdom Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'GB Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quin Strong');
             await createCasePo.clickSaveCaseButton();
@@ -736,8 +734,6 @@ describe('Document Library Consume Permission', () => {
             await loginPage.login("qgeorge");
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quanah George');
             await editCasePo.clickSaveCase();

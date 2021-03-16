@@ -596,8 +596,6 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
-            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
@@ -726,8 +724,6 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();
@@ -837,8 +833,6 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();
@@ -918,8 +912,6 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();

@@ -230,7 +230,6 @@ class CreateCaseTemplate {
         await this.setAllowCaseReopenValue(caseTemplate.allowCaseReopen);
         await this.isResolutionCodeRequired(true);
         await this.isResolutionDescriptionRequired(true);
-        await changeAssignmentBlade.setDropDownValue('SupportOrg', caseTemplate.businessUnit);
         await changeAssignmentBlade.setDropDownValue('AssignedGroup', caseTemplate.supportGroup);
         await changeAssignmentBlade.setDropDownValue('Assignee', caseTemplate.assignee);
         //        await browser.wait(this.EC.invisibilityOf($(changeAssignemetOldBlade.selectors.assignToMeCheckBox)));

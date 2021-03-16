@@ -312,10 +312,6 @@ class CreateAdhocTaskTemplatePage {
 
     }
 
-    async getSupportOrgText(): Promise<string> {
-        return await changeAssignmentBladePo.getDropDownValue("SupportOrg", this.selectors.assignmentGuid);
-    }
-
     async getAssignedGroupText(): Promise<string> {
         return await changeAssignmentBladePo.getDropDownValue("AssignedGroup", this.selectors.assignmentGuid);
     }
@@ -324,16 +320,8 @@ class CreateAdhocTaskTemplatePage {
         return await changeAssignmentBladePo.getDropDownValue("Assignee", this.selectors.assignmentGuid);
     }
 
-    async getCompanyValue(): Promise<string> {
-        return await changeAssignmentBladePo.getDropDownValue("Company", this.selectors.assignmentGuid);
-    }
-
     async isDropDownListSorted(dropdown: string): Promise<boolean> {
         return await changeAssignmentBladePo.isDropDownListSorted(dropdown, this.selectors.assignmentGuid);
-    }
-
-    async setDropDownValue(dropDownName: string, dropDownValue: string, guid?: string): Promise<void> {
-        return await changeAssignmentBladePo.setDropDownValue(dropDownName,dropDownValue,this.selectors.assignmentGuid);
     }
 
     async isValuePresentInDropDown(dropdown: string, dropDownValue: string): Promise<boolean> {

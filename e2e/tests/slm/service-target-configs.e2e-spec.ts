@@ -394,7 +394,6 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetInfoPage.getServiceTargetStatus()).toBe('InProcess');
             await serviceTargetInfoPage.clickOnCloseButton();
             await viewCasePo.clickEditCaseButton();
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 1');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Qianru Tao');
             await editCasePo.clickSaveCase();

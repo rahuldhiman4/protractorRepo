@@ -19,20 +19,12 @@ class ChangeAssignmentBlade {
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         let dropDownElement: ElementFinder;
         switch (dropDownName) {
-            case "Company": {
+            case "AssignedGroup": {
                 dropDownElement = await $$(locator).get(0);
                 break;
             }
-            case "SupportOrg": {
-                dropDownElement = await $$(locator).get(1);
-                break;
-            }
-            case "AssignedGroup": {
-                dropDownElement = await $$(locator).get(2);
-                break;
-            }
             case "Assignee": {
-                dropDownElement = await $$(locator).get(3);
+                dropDownElement = await $$(locator).get(1);
                 break;
             }
             default: {
@@ -47,20 +39,14 @@ class ChangeAssignmentBlade {
         let locator = this.selectors.changeAssignmentComponent;
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         switch (dropDownName) {
-            case "Company": {
+            case "AssignedGroup": {
                 return await $$(locator).get(0).getAttribute("aria-disabled") == "true";
             }
-            case "SupportOrg": {
+            case "Assignee": {
                 return await $$(locator).get(1).getAttribute("aria-disabled") == "true";
             }
-            case "AssignedGroup": {
-                return await $$(locator).get(2).getAttribute("aria-disabled") == "true";
-            }
-            case "Assignee": {
-                return await $$(locator).get(3).getAttribute("aria-disabled") == "true";
-            }
             case "AssignToMe": {
-                return await $$(locator).get(4).getAttribute("aria-disabled") == "true";
+                return await $$(locator).get(2).getAttribute("aria-disabled") == "true";
             }
             default: {
                 console.log('Dropdown Not Available');
@@ -74,20 +60,12 @@ class ChangeAssignmentBlade {
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         let dropDownElement: ElementFinder;
         switch (dropDownName) {
-            case "Company": {
+            case "AssignedGroup": {
                 dropDownElement = await $$(locator).get(0);
                 break;
             }
-            case "SupportOrg": {
-                dropDownElement = await $$(locator).get(1);
-                break;
-            }
-            case "AssignedGroup": {
-                dropDownElement = await $$(locator).get(2);
-                break;
-            }
             case "Assignee": {
-                dropDownElement = await $$(locator).get(3);
+                dropDownElement = await $$(locator).get(1);
                 break;
             }
             default: {
@@ -103,20 +81,12 @@ class ChangeAssignmentBlade {
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         let dropDownElement: ElementFinder;
         switch (dropDownName) {
-            case "Company": {
+            case "AssignedGroup": {
                 dropDownElement = await $$(locator).get(0);
                 break;
             }
-            case "SupportOrg": {
-                dropDownElement = await $$(locator).get(1);
-                break;
-            }
-            case "AssignedGroup": {
-                dropDownElement = await $$(locator).get(2);
-                break;
-            }
             case "Assignee": {
-                dropDownElement = await $$(locator).get(3);
+                dropDownElement = await $$(locator).get(1);
                 break;
             }
             default: {
@@ -132,20 +102,12 @@ class ChangeAssignmentBlade {
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         let dropDownElement: ElementFinder;
         switch (dropDownName) {
-            case "Company": {
+            case "AssignedGroup": {
                 dropDownElement = await $$(locator).get(0);
                 break;
             }
-            case "SupportOrg": {
-                dropDownElement = await $$(locator).get(1);
-                break;
-            }
-            case "AssignedGroup": {
-                dropDownElement = await $$(locator).get(2);
-                break;
-            }
             case "Assignee": {
-                dropDownElement = await $$(locator).get(3);
+                dropDownElement = await $$(locator).get(1);
                 break;
             }
             default: {
@@ -161,20 +123,12 @@ class ChangeAssignmentBlade {
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         let dropDownElement: ElementFinder;
         switch (dropDownName) {
-            case "Company": {
+            case "AssignedGroup": {
                 dropDownElement = await $$(locator).get(0);
                 break;
             }
-            case "SupportOrg": {
-                dropDownElement = await $$(locator).get(1);
-                break;
-            }
-            case "AssignedGroup": {
-                dropDownElement = await $$(locator).get(2);
-                break;
-            }
             case "Assignee": {
-                dropDownElement = await $$(locator).get(3);
+                dropDownElement = await $$(locator).get(1);
                 break;
             }
             default: {
@@ -213,20 +167,9 @@ class ChangeAssignmentBlade {
         await $('.modal-footer .btn-secondary').click();
     }
 
-    async setAssignee(company: string, supportOrg: string, assignedGroup: string, assignee: string, guid?: string): Promise<void> {
-        await this.setDropDownValue('Company', company, guid);
-        await this.setDropDownValue('SupportOrg', supportOrg, guid);
+    async setAssignee(assignedGroup: string, assignee: string, guid?: string): Promise<void> {
         await this.setDropDownValue('AssignedGroup', assignedGroup, guid);
         await this.setDropDownValue('Assignee', assignee, guid);
-    }
-
-    // write separate method for this operation
-    async setAssigneeOnBlade(company: string, bu: string, group: string, assignee: string): Promise<void> {
-        await this.setDropDownValue('Company', company);
-        await this.setDropDownValue('SupportOrg', bu);
-        //await this.setDropDownValue('AssignedGroup', group);
-        await this.setDropDownValue('Assignee', assignee);
-        await this.clickOnAssignButton();
     }
 
     async clickAssignToMeBtn(guid?: string): Promise<void> {
@@ -261,20 +204,12 @@ class ChangeAssignmentBlade {
         let locator = this.selectors.changeAssignmentComponent;
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         switch (dropDownName) {
-            case "Company": {
+            case "AssignedGroup": {
                 dropDownElement = await $$(locator).get(0);
                 break;
             }
-            case "SupportOrg": {
-                dropDownElement = await $$(locator).get(1);
-                break;
-            }
-            case "AssignedGroup": {
-                dropDownElement = await $$(locator).get(2);
-                break;
-            }
             case "Assignee": {
-                dropDownElement = await $$(locator).get(3);
+                dropDownElement = await $$(locator).get(1);
                 break;
             }
             default: {
@@ -315,7 +250,7 @@ class ChangeAssignmentBlade {
         await dropDownElement.click();
         await $$('input').last().sendKeys(OrgValue);
         return await element(by.cssContainingText('.dropdown-item', hierarchyName)).isPresent().then(async (result) => {
-            if(result) return await element(by.cssContainingText('.dropdown-item', hierarchyName)).isDisplayed();
+            if (result) return await element(by.cssContainingText('.dropdown-item', hierarchyName)).isDisplayed();
             else return false;
         });
     }

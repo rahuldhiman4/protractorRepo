@@ -150,7 +150,6 @@ xdescribe('Ericsson Data Model Tests', () => {
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'Ericsson Asset Management - India')).toBeFalsy();
             await changeAssignmentBladePo.clickOnCancelButton();
             await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Ericsson United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Rudner Rita');
             await changeAssignmentBladePo.clickOnAssignButton();

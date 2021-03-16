@@ -154,8 +154,6 @@ describe("Case Read Access", () => {
             await createCasePage.setSummary('set summary');
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.setPriority('Critical');
-            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
             await createCasePage.clickSaveCaseButton();
