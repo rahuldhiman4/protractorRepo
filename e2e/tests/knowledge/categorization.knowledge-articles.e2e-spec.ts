@@ -563,7 +563,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("adam");
             await createCasePage.setSummary(articleInDraftStatus);
-            await changeAssignmentBlade.setAssignee('Petramco', 'Canada Support', 'CA Support 1', 'Qiang Du');
+            await changeAssignmentBlade.setAssignee('CA Support 1', 'Qiang Du');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Resources');
@@ -880,8 +880,6 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createKnowledgePage.selectCategoryTier1Option(categoryTier1FieldVal);
             await createKnowledgePage.selectCategoryTier2Option(categoryTier2FieldVal);
             await createKnowledgePage.selectCategoryTier3Option(categoryTier3FieldVal);
-            await changeAssignmentBlade.setDropDownValue('Company', knowledgeData.Company);
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Doomi');
             await createKnowledgePage.clickOnSaveKnowledgeButton();

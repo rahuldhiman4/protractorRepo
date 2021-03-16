@@ -209,7 +209,7 @@ describe("Actionable Notifications", () => {
         await caseWatchlist.saveEvents();
         await utilityGrid.searchAndOpenHyperlink(caseData['actionableNotificationWithAssignee'].Summary);
         await viewCasePage.clickEditCaseButton();
-        await assignmentBladePO.setAssignee('Petramco', 'United States Support', 'US Support 3', 'Nisha Sharma');
+        await assignmentBladePO.setAssignee('US Support 3', 'Nisha Sharma');
         await editCasePo.clickSaveCase();
         await navigationPage.signOut();
         await loginPage.login('qkatawazi');
@@ -970,8 +970,6 @@ describe("Actionable Notifications", () => {
             await createCasePage.selectRequester("Allen");
             await createCasePage.setSummary("4285");
             await createCasePage.clickChangeAssignmentButton();
-            await assignmentBladePO.setDropDownValue('Company', 'Petramco');
-            await assignmentBladePO.setDropDownValue('SupportOrg', 'United States Support');
             await assignmentBladePO.setDropDownValue('AssignedGroup', 'US Support 3');
             await assignmentBladePO.setDropDownValue('Assignee', 'Qiao Feng');
             await assignmentBladePO.clickOnAssignButton();

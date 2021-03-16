@@ -567,9 +567,7 @@ describe('Knowledge Article Validation', () => {
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
             await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-            let assignedGroupList: string[] = await changeAssignmentBladePo.getAllDropDownValues("AssignedGroup")
-            expect(await changeAssignmentBladePo.getDropDownValue("Company")).toContain('Petramco');
-            expect(await changeAssignmentBladePo.getDropDownValue("SupportOrg")).toContain('United Kingdom Support');
+            let assignedGroupList: string[] = await changeAssignmentBladePo.getAllDropDownValues("AssignedGroup");
             expect(await changeAssignmentBladePo.getDropDownValue("AssignedGroup")).toContain('GB Support 2');
             expect(await changeAssignmentBladePo.getDropDownValue("Assignee")).toContain('Kyle Mills');
             await editKnowledgePage.cancelKnowledgeMedataDataChanges();
@@ -605,10 +603,7 @@ describe('Knowledge Article Validation', () => {
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.searchAndOpenHyperlink(knowledgeArticleData.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        expect(await changeAssignmentBladePo.isDropDownDisplayed("Company")).toBeTruthy("Company dropdown not displayed");
         expect(await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup")).toBeTruthy("SupportGroup dropdown not displayed");
-        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
         await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
         await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
@@ -704,8 +699,6 @@ describe('Knowledge Article Validation', () => {
             await createKnowledgePage.selectCategoryTier1Option('Employee Relations');
             await createKnowledgePage.selectCategoryTier2Option('Compensation');
             await createKnowledgePage.selectCategoryTier3Option('Bonus');
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
             await createKnowledgePage.clickOnSaveKnowledgeButton();

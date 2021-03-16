@@ -7,7 +7,7 @@ import { NOTES_TEMPLATE_MANDATORY_FIELD } from '../data/ui/Social/notesTemplate.
 describe('Login and create case from API', () => {
     const EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-    it('create case', async () => {
+    fit('create case', async () => {
         let caseData =
         {
             "Requester": "qtao",
@@ -421,10 +421,10 @@ describe('Login and create case from API', () => {
         await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_CONFIDENTIAL');
     });
 
-    it('Generating the userlist with no LOB Access(Required by Pravin)', async () => {
+    fit('Generating the userlist with no LOB Access(Required by Pravin)', async () => {
         let autArray: string[] = ["qdu", "Franz", "Elizabeth", "sbadree", "qkatawazi", "Fritz", "qtao", "kayo", "kkohri", "KMills", "KWilliamson", "gwixillian", "qliu", "khardison", "Peter", "hhaas", "qyuan", "qannis", "qfeng", "qstrong", "gderuno", "werusha", "qheroux", "qquettawala", "Frieda", "qcolumbcille", "qgeorge", "kwilson", "kdiva", "kjenner", "kbell", "kwethington", "kwilliams", "rrovnitov", "Fabian", "dbomei", "jbarnes", "ppeter", "Monika", "ncage", "rwillie", "sbruce", "ttristan", "sherbert", "qcespedes", "cbarton", "ajoshi", "mcarney", "Morwenna", "smoran", "umiguelde", "jstuart", "yhenny"];
         let manualArray: string[] = ["qdu", "Franz", "Elizabeth", "sbadree", "qkatawazi", "Fritz", "qtao", "kayo", "kkohri", "KMills", "KWilliamson", "gwixillian", "qliu", "khardison", "Peter", "hhaas", "qyuan", "qannis", "qfeng", "qstrong", "gderuno", "werusha", "qheroux", "qquettawala", "Frieda", "qcolumbcille", "qgeorge", "kwilson", "kdiva", "kjenner", "kbell", "kwethington", "kwilliams", "rrovnitov", "Fabian", "dbomei", "jbarnes", "ppeter", "Monika", "ncage", "rwillie", "sbruce", "ttristan", "sherbert", "qcespedes", "cbarton", "ajoshi", "mcarney", "Morwenna", "smoran", "umiguelde", "jstuart", "yhenny"];
-        let userArray = manualArray;
+        let userArray = autArray;
         let userArrayWithNoLOB: string[] = [];
         let userArrayWithNoAccess: string[] = [];
         for (let i = 0; i < userArray.length; i++) {

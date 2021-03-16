@@ -3,6 +3,9 @@ export const ONE_TASKFLOW = {
     "guid": "rx-2f8669a4-1ca0-419b-91d8-e0bf9720d7hf",
     "description": "",
     "scope": "PUBLIC",
+    "overlayGroupId": "1",
+    "developerId": "com.bmc.dsm",
+    "internal": false,
     "tags": [
         "Petramco"
     ],

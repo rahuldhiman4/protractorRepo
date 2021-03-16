@@ -282,7 +282,7 @@ describe('Copy Case Template', () => {
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
 //Defect - DRDMV-25229 -check with tushar Task Click issue
-    describe('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
+    fdescribe('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateDataSet, casetemplatePetramco, newCaseTemplate1, manualTaskTemplate;
         beforeAll(async () => {
@@ -595,8 +595,6 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             await copyCaseTemplate.setCompanyName('Psilon');
-            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
@@ -725,8 +723,6 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();
@@ -836,8 +832,6 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();
@@ -917,8 +911,6 @@ describe('Copy Case Template', () => {
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org1");
             await copyCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group1");
-            await changeAssignmentBlade.setDropDownValue('Company', 'Psilon');
-            await changeAssignmentBlade.setDropDownValue('SupportOrg', 'Psilon Support Org1');
             await changeAssignmentBlade.setDropDownValue('AssignedGroup', 'Psilon Support Group1');
             await changeAssignmentBlade.setDropDownValue('Assignee', 'Glit Deruno');
             await copyCaseTemplate.clickSaveCaseTemplate();

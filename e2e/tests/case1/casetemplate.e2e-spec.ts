@@ -142,9 +142,6 @@ describe('Case Template', () => {
             await utilityCommon.isAllDropDownValuesMatches(createCaseTemplate.selectors.ownerGroupDropdown, ['Facilities', 'Pantry Service']);
             await createCaseTemplate.setOwnerOrgDropdownValue('Facilities');  //temp fix
             await createCaseTemplate.setOwnerGroupDropdownValue('Facilities'); 
-            await changeAssignmentPo.setDropDownValue("Company", ALL_FIELD.ownerCompany);
-            await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['Facilities', 'Facilities Support']);
-            await changeAssignmentPo.setDropDownValue('SupportOrg', 'Facilities Support');
             await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['Facilities', 'Pantry Service']);
             await changeAssignmentPo.setDropDownValue('AssignedGroup', 'Facilities');
             // verify LOB is there
