@@ -592,6 +592,7 @@ describe('Case Watchlist', () => {
         });
     });
 
+    // woking on cicd except dropdown issue
     it('[4260]: Verify that Agent remove the Case Group Assignment and Status from Watchlist update event then only Assignment change notifications will be shown', async () => {
         await apiHelper.apiLogin(qtaoStr);
 
@@ -631,7 +632,7 @@ describe('Case Watchlist', () => {
             await updateStatusBladePo.changeStatus(inProgressStr);
             await updateStatusBladePo.clickSaveStatus();
             await viewCasePage.clickEditCaseButton();
-            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr);
+            await changeAssignment.setAssignee(auSupport1Str, kasiaOstlunStr); // Dropdown issue
             await editCase.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickEditCaseButton();
@@ -662,6 +663,7 @@ describe('Case Watchlist', () => {
         }
     });
 
+    // woking on cicd except dropdown issue
     it('[4259]: Verify that Agent can update(add) Case group Assignment for any of the existing Watched case', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['caseWatchlist_1'];
@@ -970,6 +972,7 @@ describe('Case Watchlist', () => {
         });
     });
 
+    // woking on cicd except dropdown issue
     describe('[4340]: Verify that user can edit the access from watchlist and it reflects(Assignment only to Assignment and Status', async () => {
         let caseDataForTest = cloneDeep(caseData['caseWatchlist']);
         let caseId: string[] = [];
@@ -1064,6 +1067,7 @@ describe('Case Watchlist', () => {
         });
     });
 
+    // woking on cicd except dropdown issue
     describe('[4341]: Verify that user can edit the access from watchlist and it reflects(Status only to Assignment and Status', async () => {
         let caseId: string[] = [];
         let caseGuid: string[] = [];
