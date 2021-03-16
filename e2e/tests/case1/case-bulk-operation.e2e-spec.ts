@@ -78,7 +78,7 @@ describe('Case Bulk Operation', () => {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[j]);//if fails click checkbox in reverse order [latest case appear first in console]
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, 'United States Support', 'US Support 3', "Qiao Feng");
+        await changeAssignmentBladePo.setAssignee('US Support 3', "Qiao Feng");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
@@ -116,11 +116,11 @@ describe('Case Bulk Operation', () => {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, unitedStateSupportStr, 'US Support 1', "Qianru Tao");
+            await changeAssignmentBladePo.setAssignee('US Support 1', "Qianru Tao");
             await utilityCommon.closePopUpMessage();
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, "Qiao Feng");
+            await changeAssignmentBladePo.setAssignee(usSupportGroup3Str, "Qiao Feng");
             await utilityCommon.closePopUpMessage();
             await navigationPage.signOut();
             await loginPage.login("qtao");
@@ -168,7 +168,7 @@ describe('Case Bulk Operation', () => {
             await utilityGrid.clickCheckBoxOfValueInGrid(newCase1.displayId);
             await utilityGrid.clickCheckBoxOfValueInGrid(newCase2.displayId);
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, 'Qiao Feng');
+            await changeAssignmentBladePo.setAssignee(usSupportGroup3Str, 'Qiao Feng');
             expect(await utilityCommon.isPopUpMessagePresent('You do not have permission to perform this operation. Please contact your system administrator.', 1)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
         }
@@ -212,7 +212,7 @@ describe('Case Bulk Operation', () => {
                 await apiHelper.updateCaseAccess(caseGuid[i], caseReadAccessDataFeng);
             }
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, unitedStateSupportStr, 'US Support 1', "Qianru Tao");
+            await changeAssignmentBladePo.setAssignee('US Support 1', "Qianru Tao");
             expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 3)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closePopUpMessage();
@@ -245,7 +245,7 @@ describe('Case Bulk Operation', () => {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[i]);
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, unitedStateSupportStr, usSupportGroup3Str, "Qadim Katawazi");
+        await changeAssignmentBladePo.setAssignee(usSupportGroup3Str, "Qadim Katawazi");
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
 
         await utilityCommon.closePopUpMessage();
@@ -287,8 +287,6 @@ describe('Case Bulk Operation', () => {
                 await apiHelper.updateCaseAccess(caseGuid[i], caseReadAccessDataQtao);
             }
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiang Du');
             await changeAssignmentBladePo.clickOnAssignButton();
@@ -343,7 +341,7 @@ describe('Case Bulk Operation', () => {
             }
 
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setAssignee(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
+            await changeAssignmentBladePo.setAssignee("US Support 3", 'Qadim Katawazi');
             await changeAssignmentBladePo.clickOnAssignButton();
             expect(await utilityCommon.isPopUpMessagePresent(`The selected case(s) have been successfully assigned.`)).toBeTruthy();
             for (let i: number = 0; i < 3; i++) {
@@ -387,7 +385,7 @@ describe('Case Bulk Operation', () => {
         }
 
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
+        await changeAssignmentBladePo.setAssignee("US Support 3", 'Qadim Katawazi');
         expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.', 1)).toBeTruthy();
         await caseConsolePage.selectAllCases();
     });
@@ -454,7 +452,7 @@ describe('Case Bulk Operation', () => {
         await utilityGrid.searchRecord(caseId[0]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
+        await changeAssignmentBladePo.setAssignee("US Support 3", 'Qadim Katawazi');
         expect(await utilityCommon.isPopUpMessagePresent('Cases that are pending approval can only be manually moved to canceled status.', 1)).toBeTruthy();
         await utilityCommon.closePopUpMessage();
 
@@ -462,7 +460,7 @@ describe('Case Bulk Operation', () => {
         await utilityGrid.searchRecord(caseId[1]);
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
-        await changeAssignmentBladePo.setAssigneeOnBlade(petramcoStr, 'United States Support', "US Support 3", 'Qadim Katawazi');
+        await changeAssignmentBladePo.setAssignee("US Support 3", 'Qadim Katawazi');
         expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.', 1)).toBeTruthy();
     });
 });

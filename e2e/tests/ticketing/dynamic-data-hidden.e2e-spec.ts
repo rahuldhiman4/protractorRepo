@@ -138,15 +138,12 @@ describe('Dynamic Hidden Data', () => {
             expect(await utilityCommon.isAllDropDownValuesMatches(createTaskTemplate.selectors.ownerGroup, ['None','Facilities', 'Pantry Service'])).toBeTruthy('Owner Group');
             await createTaskTemplate.selectBuisnessUnit('Facilities Support');
             await createTaskTemplate.selectOwnerGroup('Facilities');
-            await changeAssignmentPo.setDropDownValue("Company", 'Petramco');
-            expect(await changeAssignmentPo.isAllValuePresentInDropDown('SupportOrg', ['None','Facilities Support\nPetramco > Facilities Support', 'India Support\nPetramco > India Support'])).toBeTruthy('SupportOrg');
-            await changeAssignmentPo.setDropDownValue("Company", 'Petramco');
-            await changeAssignmentPo.setDropDownValue("SupportOrg", 'Facilities Support');
-            expect(await changeAssignmentPo.isAllValuePresentInDropDown('AssignedGroup', ['None','Facilities\nPetramco > Facilities Support > Facilities', 'Pantry Service\nPetramco > Facilities Support > Pantry Service'])).toBeTruthy('AssignedGroup');
             // verify LOB is there
             expect(await createTaskTemplate.getLobValue()).toBe("Facilities");
+            await changeAssignmentPo.setDropDownValue("AssignedGroup", 'Facilities');
             await createTaskTemplate.clickOnSaveTaskTemplate();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
+            await utilityCommon.closePopUpMessage();
             // open the record and verify LOB is on edit screen
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(automatedTaskTemplate1);
@@ -809,6 +806,7 @@ describe('Dynamic Hidden Data', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCasetemplatePo.setTemplateName('copyCaseTemplateName' + randomStr);
             await copyCasetemplatePo.clickSaveCaseTemplate();
+            await utilityCommon.closePopUpMessage();
             expect(await viewCasetemplatePo.isGroupDisplayed("GroupOne")).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeTruthy();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("externalNumber")).toBeTruthy();
@@ -827,6 +825,7 @@ describe('Dynamic Hidden Data', () => {
             await createDocumentTemplatePo.setTemplateName("Document" + randomStr);
             await createDocumentTemplatePo.setCompany("Petramco");
             await createDocumentTemplatePo.clickOnInsertFieldOfDocumentBody();
+            await browser.sleep(1000);
             await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(randomStr + 'caseTemplateName');
             expect(await addFieldsPopPo.isAssocitionDisplayed('GroupOne')).toBeTruthy("Group");
             await addFieldsPopPo.clickOnGroupName('GroupOne');

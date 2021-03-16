@@ -209,8 +209,6 @@ describe('Knowledge Create Search', () => {
             await createKnowledgePage.selectCategoryTier1Option('Applications');
             await createKnowledgePage.selectCategoryTier2Option('Social');
             await createKnowledgePage.selectCategoryTier3Option('Chatter');
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
@@ -298,8 +296,6 @@ describe('Knowledge Create Search', () => {
             await editKnowledgePage.setCategoryTier3('Bonus');
             await editKnowledgePage.selectSiteGroupDropDownOption('Human Resources');
             await editKnowledgePage.selectSiteDropDownOption('Houston');
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
             await editKnowledgePage.saveKnowledgeMedataDataChanges();
@@ -342,8 +338,6 @@ describe('Knowledge Create Search', () => {
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
         await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
         await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
         await editKnowledgePage.saveKnowledgeMedataDataChanges();
@@ -356,8 +350,6 @@ describe('Knowledge Create Search', () => {
         expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
         await utilityGrid.searchAndOpenHyperlink(kaDetails.displayId);
         await viewKnowledgeArticlePo.clickEditKnowledgeMedataData();
-        await changeAssignmentBladePo.setDropDownValue('Company', 'Petramco');
-        await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'HR Support');
         await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Employee Relations');
         await changeAssignmentBladePo.setDropDownValue('Assignee', 'Elizabeth Peters');
         await editKnowledgePage.saveKnowledgeMedataDataChanges();

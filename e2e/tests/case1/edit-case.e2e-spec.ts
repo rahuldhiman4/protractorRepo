@@ -98,8 +98,6 @@ describe('Edit Case', () => {
         await expect(editCasePage.isRequesterImageDisplayed()).toBeTruthy();
         await expect(editCasePage.isSiteTextPresent()).toBeTruthy();
 
-        await expect(changeAssignmentPage.isDropDownDisplayed("Company")).toBeTruthy();
-        await expect(changeAssignmentPage.isDropDownDisplayed("SupportOrg")).toBeTruthy();
         await expect(changeAssignmentPage.isDropDownDisplayed("AssignedGroup")).toBeTruthy();
         await expect(changeAssignmentPage.isDropDownDisplayed("Assignee")).toBeTruthy();
         
@@ -138,15 +136,12 @@ describe('Edit Case', () => {
         let caseID = await viewCasePo.getCaseID();
         await viewCasePage.clickEditCaseButton();
         await changeAssignmentPage.clickAssignToMeBtn();
-        expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Petramco');
-        expect(await changeAssignmentPage.getDropDownValue("SupportOrg")).toBe('United States Support');
         expect(await changeAssignmentPage.isDropDownDisplayed("AssignedGroup")).toBeTruthy();
         await changeAssignmentPage.setDropDownValue('Assignee', 'Qiao Feng');
         await editCasePage.clickSaveCase();
         expect(await viewCasePage.getAssigneeText()).toBe('Qiao Feng');
 
         await viewCasePage.clickEditCaseButton();
-        await changeAssignmentPage.setDropDownValue('SupportOrg', 'Australia Support');
         await changeAssignmentPage.setDropDownValue('AssignedGroup', 'AU Support 3');
         await changeAssignmentPage.setDropDownValue('Assignee', 'Qiwei Liu');
         await editCasePage.clickSaveCase();
@@ -159,7 +154,6 @@ describe('Edit Case', () => {
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.getTaskActivity('AU Support 3')).toContain('AU Support 3');
         await viewCasePage.clickEditCaseButton();
-        await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
         await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
         await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
         await editCasePage.clickSaveCase();
@@ -175,7 +169,6 @@ describe('Edit Case', () => {
         await activityTabPo.clickShowMoreLinkInActivity(1);
         expect(await activityTabPo.isTextPresentInActivityLog('US Support 3')).toBeTruthy();
         await viewCasePage.clickEditCaseButton();
-        await changeAssignmentPage.setDropDownValue('SupportOrg', 'HR Support');
         await changeAssignmentPage.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
         await editCasePage.clickSaveCase();
         await utilityCommon.closePopUpMessage();

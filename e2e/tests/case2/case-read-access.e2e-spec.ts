@@ -154,8 +154,6 @@ describe("Case Read Access", () => {
             await createCasePage.setSummary('set summary');
             await createCasePage.selectCategoryTier1('Employee Relations');
             await createCasePage.setPriority('Critical');
-            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
             await createCasePage.clickSaveCaseButton();
@@ -465,6 +463,7 @@ describe("Case Read Access", () => {
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
             await quickCasePo.saveCase();
+            await utilityCommon.closePopUpMessage();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
@@ -472,6 +471,7 @@ describe("Case Read Access", () => {
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.setCaseSummary('Read Access');
             await quickCasePo.saveCase();
+            await utilityCommon.closePopUpMessage();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
@@ -481,6 +481,7 @@ describe("Case Read Access", () => {
             await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.setCaseSummary('Read Access');
             await quickCasePo.saveCase();
+            await utilityCommon.closePopUpMessage();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');

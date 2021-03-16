@@ -286,7 +286,6 @@ describe('Email Task', () => {
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await browser.sleep(2000); // To wait until view task page gets load correctly.
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await editTask.clickOnSaveButton();
@@ -303,7 +302,6 @@ describe('Email Task', () => {
             //verify activity email post
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await editTask.clickOnSaveButton();
@@ -603,7 +601,6 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', "Qadim Katawazi");
             await editTask.clickOnSaveButton();
@@ -628,7 +625,6 @@ describe('Email Task', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await editTask.clickOnSaveButton();
@@ -723,7 +719,6 @@ describe('Email Task', () => {
             await manageTaskBladePo.addTaskFromTaskTemplate(externalTaskSummary);
             await manageTaskBladePo.clickTaskLink(manualTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await editTask.clickOnSaveButton();
@@ -735,7 +730,6 @@ describe('Email Task', () => {
             //verify activity email post
             await manageTaskBladePo.clickTaskLink(externalTaskSummary);
             await viewTaskPo.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('SupportOrg', 'Canada Support');
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
             await editTask.clickOnSaveButton();

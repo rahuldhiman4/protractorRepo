@@ -237,8 +237,6 @@ describe("Create Case", () => {
             expect(await createCasePage.isSelectCaseTemplateButtonEnabled()).toBeFalsy("Select Case template is Disabled");
             expect(await createCasePage.isClearTemplateButtonEnabled()).toBeFalsy("Clear Template is Disabled");
             expect(await createCasePage.isAutocategorizationEnabled()).toBeFalsy("Autocategorization is Disabled");
-            expect(await changeAssignmentPage.isFieldDisabled('Company')).toBeTruthy("Assigned Company read only");
-            expect(await changeAssignmentPage.isFieldDisabled('SupportOrg')).toBeTruthy("BuisnessUnit read only");
             expect(await changeAssignmentPage.isFieldDisabled('AssignedGroup')).toBeTruthy("Assigned group read only");
             expect(await changeAssignmentPage.isFieldDisabled('Assignee')).toBeTruthy("Assignee read only");
             expect(await createCasePage.isAttachmentButtonDisplayed()).toBeTruthy("Attachment button not displayed");
@@ -434,13 +432,10 @@ describe("Create Case", () => {
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
             expect(await createCasePage.getCompany()).toBe('Petramco');
-            expect(await changeAssignmentPage.getDropDownValue("Company")).toBe('Select');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Kyle Kohri');
             await changeAssignmentPage.clickAssignToMeBtn();
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toContain('Qiao Feng');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support')
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
@@ -571,8 +566,6 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePage.getTextOfStatus()).toBe('In Progress');
             await viewCasePage.clickEditCaseButton();
-            await changeAssignmentPage.setDropDownValue('Company', petramcoStr);
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'Australia');
             await changeAssignmentPage.setDropDownValue('AssignedGroup', "AU");
             await changeAssignmentPage.setDropDownValue('Assignee', "Qiwei");
             await editCasePage.clickSaveCase();
@@ -767,6 +760,9 @@ describe("Create Case", () => {
             expect(await viewCasePage.getErrorMsgOfInprogressStatus()).toBe('Assignee is required for this case status.  Please select an assignee. ');
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        });
+        // passed
+        it('[3496,3497,3495]: User Should not allow to remove assignee when case is in "In Progress" Status', async () => {
             await viewCasePage.clickEditCaseButton();
             await editCasePage.clickOnChangeCaseTemplate();
             await selectCaseTemplateBlade.selectCaseTemplate(templateData2.templateName);//Defect 1: Cannot read property 'resourceType' of undefined
@@ -778,8 +774,6 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewCasePage.clickEditCaseButton();
-            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'qkatawazi');
             // await editCasePage.clickOnAssignToMe();
@@ -867,8 +861,6 @@ describe("Create Case", () => {
             await createCaseTemplate.setCompanyName('Petramco');
             await createCaseTemplate.setCaseSummary(caseTemplateSummary2);
             await createCaseTemplate.setCaseStatusValue("Assigned");
-            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
             await createCaseTemplate.setAllowCaseReopenValue('No');
@@ -1003,6 +995,7 @@ describe("Create Case", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1027,8 +1020,6 @@ describe("Create Case", () => {
             await createCaseTemplate.setAllowCaseReopenValue('Yes');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
             await createCaseTemplate.setCaseStatusValue("Assigned");
-            await changeAssignmentPage.setDropDownValue('Company', 'Petramco');
-            await changeAssignmentPage.setDropDownValue('SupportOrg', 'United States Support');
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
             await createCaseTemplate.clickSaveCaseTemplate();
