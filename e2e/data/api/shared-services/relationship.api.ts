@@ -17,7 +17,7 @@ export const RELATIONSHIPS = {
       },
       "450000153": {
         "resourceType": "com.bmc.arsys.rx.services.record.domain.FieldInstance",
-        "id": 450000152,
+        "id": 450000153,
         "value": "com.bmc.dsm.case-lib:"
       },
       "450000154": {

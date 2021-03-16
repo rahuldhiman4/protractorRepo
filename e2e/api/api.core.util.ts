@@ -47,8 +47,8 @@ class ApiCoreUtil {
             + "&pageSize=-1&recorddefinition="
             + recordName
             + "&startIndex=0";
-
-        let allRecords = await axios.get(
+        
+            let allRecords = await axios.get(
             dataPageUri
         );
         console.log(`Get GUID Status ${recordName} =============>`, allRecords.status);
@@ -469,6 +469,22 @@ class ApiCoreUtil {
             uri
         );
         return await processRunDetails.data.totalSize;
+    }
+
+    async getCommonConfigurationId(configName: string): Promise<string> {
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Application Configuration");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[450000152] === configName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
+    }
+
+    async isRelationshipPresent(relationshipName: string, relationshipType:string): Promise<boolean> {
+        let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Relationship Type");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[450000152] === relationshipName  && obj[450000153] === relationshipType;
+        });
+        return entityObj.length >= 1;
     }
 }
 
