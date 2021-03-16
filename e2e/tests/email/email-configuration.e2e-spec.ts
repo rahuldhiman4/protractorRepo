@@ -29,6 +29,11 @@ describe('Email Configuration', () => {
         incomingMailBoxName: incomingEmail.mailBoxName,
     }
 
+    let emailConfig2 = {
+        email: "newbmctemp@gmail.com",
+        incomingMailBoxName: incomingEmail.mailBoxName,
+    }
+
     let emailConfigFacilities = {
         email: emailID,
         incomingMailBoxName: incomingEmail.mailBoxName,
@@ -333,6 +338,43 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.cancelEditEmailConfig();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
+        it('[5474,5473,5472,5471,5470,5469]: Verify new Global Value with existing or old configuration', async () => {
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createEmailConfiguration(emailConfig2);
+            await utilityGrid.selectLineOfBusiness('Human Resource');
+            await utilityGrid.searchAndOpenHyperlink(emailConfig2.email);
+            await editEmailConfigPo.clickNewExclusiveSubjectsButton();
+            expect(await newExclusiveSubjectPo.isSaveButtonEnabled()).toBeFalsy();
+            await newExclusiveSubjectPo.setSubject("Global2" + randomStr);
+            await newExclusiveSubjectPo.setSortOrder('20');
+            await newExclusiveSubjectPo.selectGlobal("True");
+            await newExclusiveSubjectPo.clickSaveButton();
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global2' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            // Verify Global2 with old email id
+            expect(await utilityGrid.isGridRecordPresent(emailID)).toBeTruthy();
+            await utilityGrid.searchAndOpenHyperlink(emailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global2' + randomStr)).toBeFalsy();
+
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated('Global2' + randomStr);
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Global2' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+
+            // Change LOB and verify same
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            await utilityGrid.searchAndOpenHyperlink(facilitiesEmailID);
+            expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global2' + randomStr)).toBeFalsy();
+            await editEmailConfigPo.clickNewAvailableGlobalSubjects();
+            await editEmailConfigPo.searchAvailableEntitiesToBeAssociated('Global2' + randomStr);
+            expect(await editEmailConfigPo.isValueAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent('Global2' + randomStr)).toBeTruthy();
+            await editEmailConfigPo.closedAssociatePublicExclusionSubjects();
+            await editEmailConfigPo.cancelEditEmailConfig();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+        });
 
         afterAll(async () => {
             await utilityCommon.closeAllBlades(); // escape is working on these settings pages
@@ -388,6 +430,7 @@ describe('Email Configuration', () => {
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy();
         });
+
         it('[5249,5182,5250]: Exclusion Subject: Re-add Deleted public exclusion subject', async () => {
             expect(await editEmailConfigPo.isNewAvailableGlobalSubjectsDisplayed()).toBeTruthy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
