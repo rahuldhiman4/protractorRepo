@@ -197,7 +197,7 @@ describe('Case Status Configuration', () => {
     });
 
     //asahitya  
-    describe('[4680]: Verify User not able to delete mandatory status for task', () => {
+    xdescribe('[4680]: Verify User not able to delete mandatory status for task', () => {
         it('[4680]: Verify User not able to delete mandatory status for task', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
@@ -399,7 +399,7 @@ describe('Case Status Configuration', () => {
     });
 
     // passed
-    it('[4682]:Verify Custom status operations for Task', async () => {
+    xit('[4682]:Verify Custom status operations for Task', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Status Configuration', BWF_PAGE_TITLES.TASK_MANAGEMENT.STATUS_CONFIGURATION);
         await statusConfigPo.setCompanyDropdown('Phylum', 'task');
@@ -429,7 +429,7 @@ describe('Case Status Configuration', () => {
     });
 
     //ankagraw all passing
-    describe('[4608]:Delete non mandatory and custom status from case, knowledge and task', async () => {
+    xdescribe('[4608]:Delete non mandatory and custom status from case, knowledge and task', async () => {
         let caseId, taskId, caseId1, caseData, articleData1, articleData2, caseDataInProgress, knowledgeSetData, knowldgeId, randomStr = Math.floor(Math.random() * 1000000);
         let personData1;
         beforeAll(async () => {
