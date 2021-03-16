@@ -21,8 +21,8 @@ class EditNotificationTemplate {
         addRecipientsBtn: '[rx-view-component-id="73a718fa-c683-48b0-b211-97b3744d7c3f"] button',
         addLocalizedMessageBtn: '[rx-view-component-id="92468fc7-a2b9-46b4-8ad9-c2cfe12c9d8b"] button',
         alertMessageBox: 'a.cke_button',
-        emailSubjectBox: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
-        emailBodyMessageBox: 'div[id="cke_292_contents"]',
+        emailSubjectBox: '[rx-view-component-id="73172dfd-bed4-4bfc-9d7e-e2647d2059b8"]  .form-control-disabled-look',
+        emailBodyMessageBox: '.cke_contents .cke_editable_themed',
         cancelEmailSubjectBlade: '[rx-view-component-id="8335618d-2a88-49d1-9002-e5b7601b7674"] button',
         cancelEmailBodyBlade: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
         moduleNameText: '[rx-view-component-id="bdd94b56-3700-4876-8455-62f1e1b05ff6"] button div',
@@ -130,11 +130,11 @@ class EditNotificationTemplate {
     }
 
     async isEmailSubjectMessageDisabled(): Promise<boolean> {
-        return await $(this.selectors.emailSubjectBox).getAttribute('readonly') == 'true';
+        return await $$(this.selectors.emailSubjectBox).get(1).isPresent();
     }
 
     async isEmailBodyMessageDisabled(): Promise<boolean> {
-        return await $(this.selectors.emailBodyMessageBox).getAttribute('class') == 'rtf-read-only';
+        return await $(this.selectors.emailBodyMessageBox).getAttribute('contenteditable') == 'false';
     }
 
     async cancelEmailSubjectBlade(): Promise<void> {
