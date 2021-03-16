@@ -1506,7 +1506,6 @@ xdescribe('Ericsson Model Test Extended', () => {
 
             //Validating Assignment fields
             await createKnowledgePage.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('Company', 'Ericsson HR');
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo HR')).toBeTruthy();
             expect(await changeAssignmentBladePo.isValuePresentInDropDown("AssignedGroup", 'EricssonCo SAM')).toBeFalsy();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
