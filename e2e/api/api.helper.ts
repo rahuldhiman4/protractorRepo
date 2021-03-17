@@ -31,7 +31,7 @@ import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGE_SET } from '../data/api/knowledge/
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import { ARTCILE_DUE_DATE, EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
-import { COMMON_CONFIG_PAYLOAD, CREATE_COMMON_CONFIG} from '../data/api/shared-services/common.configurations.api';
+import { COMMON_CONFIG_PAYLOAD, CREATE_COMMON_CONFIG, COMMON_CONFIG_GET } from '../data/api/shared-services/common.configurations.api';
 import * as processes from '../data/api/shared-services/create-new-process.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
@@ -57,7 +57,7 @@ import { ICreateSVT, ICreateSVTGoalType, ICreateSVTGroup } from '../data/interfa
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
-import { CASE_ACCESS_COMMAND, CASE_ACCESS_CHILD_SECURITY} from '../data/api/case/update.case.access.api';
+import { CASE_ACCESS_COMMAND, CASE_ACCESS_CHILD_SECURITY } from '../data/api/case/update.case.access.api';
 
 let fs = require('fs');
 
@@ -2755,39 +2755,32 @@ class ApiHelper {
         } else return true;
     }
 
-    async addCommonConfig(configName: string, configValue: string): Promise<boolean> {
-        let commonConfigPayload, commonConfigGuid;
+    //LOB specific
+    async addCommonConfig(configName: string, configValue: string, lob?: string): Promise<boolean> {
+        let commonConfigGuid = await apiCoreUtil.getCommonConfigurationId(configName);
+        let commonConfigGetPayload = cloneDeep(COMMON_CONFIG_GET);
+        commonConfigGetPayload.processInputValues.ID = commonConfigGuid;
+        console.log('commonConfigGetPayload:', commonConfigGetPayload);
+        const getResponse = await axios.post(
+            commandUri,
+            commonConfigGetPayload
+        );
+        console.log('Add Common Config API Status  =============>', getResponse.status);
+
+        let commonConfigPayload;
+        commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
+        if (lob) commonConfigPayload.processInputValues["New Line of Business"] = `;${lob}`;
+        commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
         switch (configName) {
-            case "ADD_DWP_SURVEY_ON_CASE": {
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
-                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
-                break;
-            }
             case "NEXT_REVIEW_PERIOD": {
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
-                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
-                break;
-            }
-            case "RESOLUTION_CODE_MANDATORY": {
-                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
-                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
-                break;
-            }
-            case "RESOLUTION_DESCRIPTION_MANDATORY": {
-                commonConfigPayload = cloneDeep(COMMON_CONFIG_PAYLOAD);
-                commonConfigGuid = constants.ApplicationConfigurationsGuid[configName];
-                commonConfigPayload.processInputValues["ID"] = commonConfigGuid;
-                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
-                break;
+                commonConfigPayload.processInputValues["Boolean Value"] = constants.ApplicationConfigurationsValue[configValue];
+                commonConfigPayload.processInputValues["Value"] = constants.ApplicationConfigurationsValue[configValue];
+                commonConfigPayload.processInputValues["NEXT_REVIEW_PERIOD Value"] = constants.ApplicationConfigurationsValue[configValue];
             }
             default: {
-                console.log("ERROR: Invalid config name");
+                commonConfigPayload.processInputValues["Boolean Value"] = configValue;
+                if(configValue == '1') commonConfigPayload.processInputValues["Value"] = "false";
+                else commonConfigPayload.processInputValues["Value"] = "true";
                 break;
             }
         }
@@ -3096,9 +3089,15 @@ class ApiHelper {
 
     async updateReviewDueDateRule(): Promise<boolean> {
         let url = 'api/rx/application/rule/ruledefinition/com.bmc.dsm.knowledge:Knowledge Article - Notify ReviewDate due';
+        let axiosConfig = {
+            headers: {
+                'request-overlay-group': '0'
+            }
+          };
         const reviewOverdueNotifyUpdateResponse = await axios.put(
             url,
-            ARTCILE_DUE_DATE
+            ARTCILE_DUE_DATE,
+            axiosConfig
         );
         console.log("Update Review Date Overdue =============>", reviewOverdueNotifyUpdateResponse.status);
         return reviewOverdueNotifyUpdateResponse.status == 204;
@@ -3230,10 +3229,15 @@ class ApiHelper {
         relationship.fieldInstances[450000155].value = reverseRelationshipName;
         relationship.fieldInstances[450000156].value = reverseRelationshipName;
         relationship.fieldInstances[450000153].value = relationship.fieldInstances[450000153].value + relationshipType;
-
-        let relationshipResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(relationship);
-        console.log('Relationship status =============> ', relationshipResponse.status);
-        return relationshipResponse.status == 201;
+        if(await apiCoreUtil.isRelationshipPresent(relationshipName, relationship.fieldInstances[450000153].value)) {
+            console.log("Relationship already present");
+            return true;
+        }
+        else {
+            let relationshipResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(relationship);
+            console.log('Relationship status =============> ', relationshipResponse.status);  
+            return relationshipResponse.status == 201;
+        }
     }
 
     async createSVTGoalType(svtData: ICreateSVTGoalType): Promise<boolean> {
@@ -3290,8 +3294,9 @@ class ApiHelper {
         return updateBU.status == 204;
     }
 
-    async deleteCommonConfiguration(configName: string,company: string): Promise<boolean> {
-        let allRecords = await apiCoreUtil.getGuid("com.bmc.dsm.shared-services-lib:Application Configuration");        
+    //Delete at Company Level
+    async deleteCommonConfiguration(configName: string, company: string): Promise<boolean> {
+        let allRecords = await apiCoreUtil.getGuid("com.bmc.dsm.shared-services-lib:Application Configuration");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
             return obj[450000152] === configName && obj[1000000001] === company;
         });
@@ -3301,6 +3306,7 @@ class ApiHelper {
         }
     }
 
+    //Company specific
     async createCommonConfig(configName: string, configValue: string, company: string): Promise<IIDs> {
         let commonConfig = cloneDeep(CREATE_COMMON_CONFIG);
         commonConfig.fieldInstances[8].value = configName;

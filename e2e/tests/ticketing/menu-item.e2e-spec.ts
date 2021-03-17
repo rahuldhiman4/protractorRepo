@@ -38,6 +38,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -586,15 +587,25 @@ describe('Menu Item', () => {
             expect(await addReadAccess.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await addReadAccess.selectSupportGroup('CA Support 1');
             await addReadAccess.selectLabel(labelActive1)
+            await addReadAccess.selectSupportCompany('Petramco');
+            await addReadAccess.selectSupportOrg('Canada Support');
+            await addReadAccess.selectSupportGroup('CA Support 1');
             await addReadAccess.clickOnSave();
         });
 
         it('[4277]: Verify Label With Create SVT', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            //await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management'); let this it block fail until SVT refactor
-            //await SlmExpressionBuilder.selectExpressionQualification('Label', '=', 'LABEL', labelActive1);
+            await serviceTargetConfig.createServiceTargetConfig(title, 'Global', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Label', '=', labelActive1, "Search");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.selectGoal("4");
+            await serviceTargetConfig.selectMeasurement();
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "Status", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "Status", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "Status", "=", "Pending", "Direct");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            browser.sleep(2000);
         });
 
         it('[4277]: Change Status Active Label Status to InActive', async () => {
@@ -619,7 +630,6 @@ describe('Menu Item', () => {
             await editCasePo.clickSaveCase();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateLabel(labelDeprecated);
-            await editCasePo.updateLabel(labelActive1);
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasePo.clickOnCancelCaseButton();
@@ -638,7 +648,7 @@ describe('Menu Item', () => {
             await editTaskPo.setLabel(labelActive2);
             await editTaskPo.clickOnSaveButton();
             await viewTaskPo.clickOnEditTask();
-            await editTaskPo.setLabel(labelActive1);
+            await editTaskPo.setLabel(labelInactive);
             await editTaskPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editTaskPo.clickOnCancelButton();
@@ -661,6 +671,7 @@ describe('Menu Item', () => {
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             await editCasetemplatePo.changeLabelValue(labelActive1);
             await editCasetemplatePo.clickSaveCaseTemplate();
+            await viewCasetemplatePo.clickBackArrowBtn()
             //  expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 
@@ -684,6 +695,7 @@ describe('Menu Item', () => {
             await viewTasktemplatePo.clickOnEditLink();
             await editTasktemplatePo.selectLabel(labelActive1);
             await editTasktemplatePo.clickOnSaveButton();
+            await viewTasktemplatePo.clickBackArrowBtn();
             //expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
 

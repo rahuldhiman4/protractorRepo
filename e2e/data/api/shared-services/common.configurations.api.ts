@@ -57,4 +57,12 @@ export const COMMON_CONFIG_PAYLOAD = {
         "NEXT_REVIEW_PERIOD Value": "2629743",
         "ID": null
     }
+};
+
+export const COMMON_CONFIG_GET = {
+    "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand",
+    "processDefinitionName": "com.bmc.dsm.shared-services-lib:Application Configuration - Get",
+    "processInputValues": {
+        "ID": "AGGADGJYIH7F6AQO1KAYQO1KAYHK32"
+    }
 }

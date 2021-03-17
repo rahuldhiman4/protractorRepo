@@ -80,7 +80,7 @@ class ConsoleNotesTemplate {
     }
 
     async getGuidValue(): Promise<string> {
-        return await utilityGrid.getFirstGridRecordColumnValue(this.selectors.gridGuid, 'ID');
+        return await utilityGrid.getFirstGridRecordColumnValue('ID', this.selectors.gridGuid);
     }
 
     async addColumns(columnNames: string[]): Promise<void> {

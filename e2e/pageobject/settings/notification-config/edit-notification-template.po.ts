@@ -130,7 +130,7 @@ class EditNotificationTemplate {
     }
 
     async isEmailSubjectMessageDisabled(): Promise<boolean> {
-        return await $(this.selectors.emailSubjectBox).getAttribute('readonly') == 'true';
+        return await $$(this.selectors.emailSubjectBox).get(1).isPresent();
     }
 
     async isEmailBodyMessageDisabled(): Promise<boolean> {

@@ -287,8 +287,8 @@ describe('Copy Case Template', () => {
         let taskTemplateDataSet, casetemplatePetramco, newCaseTemplate1, manualTaskTemplate;
         beforeAll(async () => {
             taskTemplateDataSet = {
-                "templateName": 'taskTemplateName' + randomStr,
-                "templateSummary": 'taskTemplateSummary' + randomStr,
+                "templateName": "taskTemplateName" + randomStr,
+                "templateSummary": "taskTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "buisnessUnit": "United States Support",
@@ -298,9 +298,10 @@ describe('Copy Case Template', () => {
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3"
             }
+
             casetemplatePetramco = {
-                "templateName": 'caseTemplateName' + randomStr,
-                "templateSummary": 'caseTemplateSummary' + randomStr,
+                "templateName": "caseTemplateName" + randomStr,
+                "templateSummary": "caseTemplateSummary" + randomStr,
                 "templateStatus": "Active",
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
@@ -313,8 +314,8 @@ describe('Copy Case Template', () => {
                 "assignee": "qkatawazi",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3",
-                "lineOfBuisness": "US Support 3"
             }
+
             await apiHelper.apiLogin('qkatawazi');
             newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco);
             manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
