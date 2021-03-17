@@ -69,7 +69,7 @@ class CopyCaseTemplate {
 
     async getValueOfCaseCompany(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCompanyValueOnCopy)));
-        return await $$(this.selectors.caseCompanyValueOnCopy).getText();
+        return await $$(this.selectors.caseCompanyValueOnCopy).first().getText();
     }
 
     async getValueOfSupportCompany(): Promise<string> {

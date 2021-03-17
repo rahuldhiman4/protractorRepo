@@ -398,10 +398,6 @@ class CaseEditPage {
         await $(this.selectors.dynamicBooleanValue).click();
     }
 
-    async setDateTimeDynamicFieldValue(value: string): Promise<void> {
-        await utilityCommon.setDateField(value, '376ec3d3-9381-4613-bb06-1e8dbbaf6b18');
-    }
-
     async setInvalidDateTimeDynamicField(value: string): Promise<void> {
         await $('bwf-datetime-field input.form-control.i-date-time').sendKeys(value);
     }
