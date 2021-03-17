@@ -206,11 +206,11 @@ describe('Knowledge Create Search', () => {
             await createKnowledgePage.addTextInKnowlegeTitleField('Knowledge' + randomStr);
             await createKnowledgePage.setReferenceValue('KnowledgeReference' + randomStr)
             await createKnowledgePage.selectKnowledgeSet('HR');
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
             await createKnowledgePage.selectCategoryTier1Option('Applications');
             await createKnowledgePage.selectCategoryTier2Option('Social');
             await createKnowledgePage.selectCategoryTier3Option('Chatter');
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
             await createKnowledgePage.clickOnSaveKnowledgeButton();
             await previewKnowledgePo.clickGoToArticleButton();
             expect(await viewKnowledgeArticlePo.getCategoryTier1Value()).toBe('Applications');

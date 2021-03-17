@@ -2,7 +2,7 @@ import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import viewCaseTemplatePage from '../../pageobject/settings/case-management/view-casetemplate.po';
 import processEditorPage from '../../pageobject/ticketing/process-editor.po';
 import editCaseTemplatePage from '../../pageobject/settings/case-management/edit-casetemplate.po';
@@ -16,6 +16,7 @@ import createCaseTemplatePage from '../../pageobject/settings/case-management/cr
 import previewTaskTemplatePo from '../../pageobject/settings/task-management/preview-task-template.po';
 import taskTemplateConsolePage from '../../pageobject/settings/task-management/console-tasktemplate.po';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentPo from "../../pageobject/common/change-assignment.po";
 
 xdescribe('Conditional Task', () => {
     beforeAll(async () => {
@@ -49,8 +50,8 @@ xdescribe('Conditional Task', () => {
             await apiHelper.createCaseTemplate(inactiveCaseTemplatePetramcoData);
 
             manualTaskTemplateData = {
-                "templateName": `DRDMV14901 Manual ${randomStr}`,
-                "templateSummary": `DRDMV14901 Manual${randomStr}`,
+                "templateName": `${randomStr}DRDMV14901 Manual`,
+                "templateSummary": `${randomStr}DRDMV14901 Manual`,
                 "templateStatus": "Active",
                 "category1": 'Applications',
                 "category2": 'Help Desk',
@@ -68,8 +69,8 @@ xdescribe('Conditional Task', () => {
             await apiHelper.createDynamicDataOnTemplate(manualTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
 
             externalTaskTemplateData = {
-                "templateName": `DRDMV14901 External ${randomStr}`,
-                "templateSummary": `DRDMV14901 External${randomStr}`,
+                "templateName": `${randomStr}DRDMV14901 External`,
+                "templateSummary": `${randomStr}DRDMV14901 External`,
                 "templateStatus": "Active",
                 "category1": 'Applications',
                 "category2": 'Help Desk',
@@ -87,8 +88,8 @@ xdescribe('Conditional Task', () => {
             await apiHelper.createDynamicDataOnTemplate(externalTasktemplateResponse.id, 'TASK_TEMPLATE__DYNAMIC_FIELDS');
 
             automatedTaskTemplateData = {
-                "templateName": `DRDMV14901 Automated ${randomStr}`,
-                "templateSummary": `DRDMV14901 Automated${randomStr}`,
+                "templateName": `${randomStr}DRDMV14901 Automated`,
+                "templateSummary": `${randomStr}RDMV14901 Automated`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "category1": 'Applications',
@@ -157,7 +158,7 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.getAssigneeFieldValue()).toBe('Qadim Katawazi');
             await processEditorPage.clickOnBackButton();
 
-            // //Validate all field labels of External Task Template
+            //Validate all field labels of External Task Template
             await processEditorPage.searchAndOpenTaskTemplate(externalTaskTemplateData.templateName);
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskSummary,'Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskCompany,'Task Company')).toBeTruthy('Task Company is not getting displayed');
@@ -233,14 +234,16 @@ xdescribe('Conditional Task', () => {
 
         });
         afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await taskTemplatePreview.clickOnBackButton();
-            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await processEditorPage.clickOnBackButton();
+            await processEditorPage.clickCancelOnTemplateSelectBlade();
+            await processEditorPage.clickGoBackToTemplateBtn();
+            await processEditorPage.clickOnWarningOk();
+            await viewCaseTemplatePage.clickBackArrowBtn(); 
         });
 
     });
 
-    //asahitya
+    //asahitya-check with tushar
     describe('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let draftCaseTemplatePetramcoData, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData;
@@ -408,8 +411,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Global Draft task
             globalDraftTask = {
-                "templateName": `globalDraftTemplate${randomStr}`,
-                "templateSummary": `globalDraftTemplate${randomStr}`,
+                "templateName": `${randomStr}globalDraftTemplate`,
+                "templateSummary": `${randomStr}globalDraftTemplate`,
                 "templateStatus": "Draft",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -420,8 +423,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Global Active task
             globalActiveTask = {
-                "templateName": `globalActiveTemplate${randomStr}`,
-                "templateSummary": `globalActiveTemplate${randomStr}`,
+                "templateName": `${randomStr}globalActiveTemplate`,
+                "templateSummary": `${randomStr}globalActiveTemplate`,
                 "templateStatus": "Active",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -432,8 +435,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Global Inactive task
             globalInactiveTask = {
-                "templateName": `globalInactiveTemplate${randomStr}`,
-                "templateSummary": `globalInactiveTemplate${randomStr}`,
+                "templateName": `${randomStr}globalInactiveTemplate`,
+                "templateSummary": `${randomStr}globalInactiveTemplate`,
                 "templateStatus": "Inactive",
                 "taskCompany": '- Global -',
                 "ownerCompany": "Petramco",
@@ -444,8 +447,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Petramco Draft task
             petramcoDraftTask = {
-                "templateName": `petramcoDraftTemplate${randomStr}`,
-                "templateSummary": `petramcoDraftTemplate${randomStr}`,
+                "templateName": `${randomStr}petramcoDraftTemplate`,
+                "templateSummary": `${randomStr}petramcoDraftTemplate`,
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -456,8 +459,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Petramco Active task
             petramcoActiveTask = {
-                "templateName": `petramcoActiveTemplate${randomStr}`,
-                "templateSummary": `petramcoActiveTemplate${randomStr}`,
+                "templateName": `${randomStr}petramcoActiveTemplate`,
+                "templateSummary": `${randomStr}petramcoActiveTemplate`,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -468,8 +471,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Petramco Inactive task
             petramcoInactiveTask = {
-                "templateName": `petramcoInactiveTemplate${randomStr}`,
-                "templateSummary": `petramcoInactiveTemplate${randomStr}`,
+                "templateName": `${randomStr}petramcoInactiveTemplate`,
+                "templateSummary": `${randomStr}petramcoInactiveTemplate`,
                 "templateStatus": "Inactive",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -480,8 +483,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Psilon Draft task
             psilonDraftTask = {
-                "templateName": `psilonDraftTemplate${randomStr}`,
-                "templateSummary": `psilonDraftTemplate${randomStr}`,
+                "templateName": `${randomStr}psilonDraftTemplate`,
+                "templateSummary": `${randomStr}psilonDraftTemplate`,
                 "templateStatus": "Draft",
                 "taskCompany": 'Psilon',
                 "ownerCompany": "Psilon",
@@ -492,8 +495,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Psilon Active task
             psilonActiveTask = {
-                "templateName": `psilonActiveTemplate${randomStr}`,
-                "templateSummary": `psilonActiveTemplate${randomStr}`,
+                "templateName": `${randomStr}psilonActiveTemplate`,
+                "templateSummary": `${randomStr}psilonActiveTemplate`,
                 "templateStatus": "Active",
                 "taskCompany": 'Psilon',
                 "ownerCompany": "Psilon",
@@ -504,8 +507,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Manual Psilon Inactive task
             psilonInactiveTask = {
-                "templateName": `psilonInactiveTemplate${randomStr}`,
-                "templateSummary": `psilonInactiveTemplate${randomStr}`,
+                "templateName": `${randomStr}psilonInactiveTemplate`,
+                "templateSummary": `${randomStr}psilonInactiveTemplate`,
                 "templateStatus": "Inactive",
                 "taskCompany": 'Psilon',
                 "ownerCompany": "Psilon",
@@ -516,8 +519,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Automated Global Active task
             globalActiveAutomatedTask = {
-                "templateName": `globalActiveAutomatedTemplate${randomStr}`,
-                "templateSummary": `globalActiveAutomatedTempate${randomStr}`,
+                "templateName": `${randomStr}globalActiveAutomatedTemplate`,
+                "templateSummary": `${randomStr}globalActiveAutomatedTempate`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces1' + randomStr,
@@ -533,8 +536,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Automated Petramco Active task
             petramcoActiveAutomatedTask = {
-                "templateName": `petramcoActiveAutomatedTemplate${randomStr}`,
-                "templateSummary": `petramcoActiveAutomatedTempate${randomStr}`,
+                "templateName": `${randomStr}petramcoActiveAutomatedTemplate`,
+                "templateSummary": `${randomStr}petramcoActiveAutomatedTempate`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces2' + randomStr,
@@ -549,8 +552,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Automated Psilon Active task
             psilonActiveAutomatedTask = {
-                "templateName": `psilonActiveAutomatedTemplate${randomStr}`,
-                "templateSummary": `psilonActiveAutomatedTempate${randomStr}`,
+                "templateName": `${randomStr}psilonActiveAutomatedTemplate`,
+                "templateSummary": `${randomStr}psilonActiveAutomatedTempate`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces3' + randomStr,
@@ -565,8 +568,8 @@ xdescribe('Conditional Task', () => {
 
             //Create External Global Active task
             globalActiveExternalTask = {
-                "templateName": `globalActiveExternalTemplate${randomStr}`,
-                "templateSummary": `globalActiveExternalTemplate${randomStr}`,
+                "templateName": `${randomStr}globalActiveExternalTemplate`,
+                "templateSummary": `${randomStr}globalActiveExternalTemplate`,
                 "templateStatus": "Active",
                 "taskCompany": "- Global -",
                 "ownerCompany": "Petramco",
@@ -579,8 +582,8 @@ xdescribe('Conditional Task', () => {
 
             //Create External Petramco Active task
             petramcoActiveExternalTask = {
-                "templateName": `petramcoActiveExternalTemplate${randomStr}`,
-                "templateSummary": `petramcoActiveExternalTemplate${randomStr}`,
+                "templateName": `${randomStr}petramcoActiveExternalTemplate`,
+                "templateSummary": `${randomStr}petramcoActiveExternalTemplate`,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -593,8 +596,8 @@ xdescribe('Conditional Task', () => {
 
             //Create External Psilon Active task
             psilonActiveExternalTask = {
-                "templateName": `psilonActiveExternalTemplate${randomStr}`,
-                "templateSummary": `psilonActiveExternalTemplate${randomStr}`,
+                "templateName": `${randomStr}psilonActiveExternalTemplate`,
+                "templateSummary": `${randomStr}psilonActiveExternalTemplate`,
                 "templateStatus": "Active",
                 "taskCompany": "Psilon",
                 "ownerCompany": "Psilon",
@@ -607,8 +610,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Global Case Template with Draft status
             globalCaseTemplateData = {
-                "templateName": `globalDraftCaseTemplate${randomStr}`,
-                "templateSummary": `globalDraftCaseTemplate${randomStr}`,
+                "templateName": `${randomStr}globalDraftCaseTemplate`,
+                "templateSummary": `${randomStr}globalDraftCaseTemplate`,
                 "templateStatus": "Draft",
                 "company": "- Global -",
                 "businessUnit": "United States Support",
@@ -620,8 +623,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Petramco Case Template with Draft status
             petramcoCaseTemplateData = {
-                "templateName": `petramcoDraftCaseTemplate${randomStr}`,
-                "templateSummary": `petramcoDraftCaseTemplate${randomStr}`,
+                "templateName": `${randomStr}petramcoDraftCaseTemplate`,
+                "templateSummary": `${randomStr}petramcoDraftCaseTemplate`,
                 "templateStatus": "Draft",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
@@ -633,8 +636,8 @@ xdescribe('Conditional Task', () => {
 
             //Create Psilon Case Template with Draft status
             psilonCaseTemplateData = {
-                "templateName": `psilonDraftCaseTemplate${randomStr}`,
-                "templateSummary": `psilonDraftCaseTemplate${randomStr}`,
+                "templateName": `${randomStr}psilonDraftCaseTemplate`,
+                "templateSummary": `${randomStr}psilonDraftCaseTemplate`,
                 "templateStatus": "Draft",
                 "company": "Psilon",
                 "businessUnit": "Psilon Support Org1",
@@ -673,11 +676,11 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
             await processEditorPage.clickCancelOnTemplateSelectBlade();
             await processEditorPage.clickGoBackToTemplateBtn();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await processEditorPage.clickOnWarningOk();
             await viewCaseTemplatePage.clickBackArrowBtn();
         });
 
-        it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
+        xit('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             //Verify on Petramco Template
             await utilityGrid.searchAndOpenHyperlink(`petramcoDraftCaseTemplate${randomStr}`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
@@ -704,7 +707,7 @@ xdescribe('Conditional Task', () => {
             await viewCaseTemplatePage.clickBackArrowBtn();
         });
 
-        it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
+        xit('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             //Verify on Psilon Template
             await utilityGrid.searchAndOpenHyperlink(`psilonDraftCaseTemplate${randomStr}`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
@@ -843,7 +846,7 @@ xdescribe('Conditional Task', () => {
         });
     });
 
-    //asahitya
+    //asahitya-copy task issue
     describe('[4497]: [Task] Copy Case Template', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramcoData, newCaseTemplate, manualTaskTemplateData, externalTaskTemplateData;
@@ -908,7 +911,7 @@ xdescribe('Conditional Task', () => {
             await createCaseTemplatePage.setOwnerCompanyValue('Psilon');
             await createCaseTemplatePage.setOwnerOrgDropdownValue('Psilon Support Org1');
             await createCaseTemplatePage.setOwnerGroupDropdownValue('Psilon Support Group1');
-            await createCaseTemplatePage.clickOnClearAssignmentButton();
+            await changeAssignmentPo.setDropDownValue("Company", 'None');
             await createCaseTemplatePage.clickSaveCaseTemplate();
             await viewCaseTemplatePage.clickOnTaskBox(externalTaskTemplateData.templateName);
             expect(await previewTaskTemplatePo.getTaskCompany()).toBe('Psilon');
