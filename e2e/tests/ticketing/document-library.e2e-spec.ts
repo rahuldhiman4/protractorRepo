@@ -459,9 +459,6 @@ describe('Document Library', () => {
             await docLibReadAccessTab.selectAddCompanyDropDownOfReadAccess('Petramco');
             await docLibReadAccessTab.selectAddSupportGroupDropDownOfReadAccess('US Support 3');
             await docLibReadAccessTab.clickOnReadAccessAddButton('Add Support Group');
-            await docLibReadAccessTab.selectAddCompanyDropDownOfReadAccess('Petramco');
-            await docLibReadAccessTab.selectAddSupportGroupDropDownOfReadAccess('US Support 3');
-            await docLibReadAccessTab.clickOnReadAccessAddButton('Add Support Group');
             expect(await editDocumentLibraryPo.sameSupportGroupErrorMessageDisplayed('The group already exists in the access list. To modify the access permissions, remove the group from the access list and add it again.')).toBeTruthy();
         });
         afterAll(async () => {

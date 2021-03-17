@@ -15,6 +15,7 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Case Status Change', () => {
     let statusNew: string = "New";
@@ -770,7 +771,8 @@ describe('Case Status Change', () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
+        await changeAssignmentPo.setDropDownValue("AssignedGroup", "US Support 3");
+        await changeAssignmentPo.setDropDownValue("Assignee", "Qadim Katawazi");
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -787,7 +789,7 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
         expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
         expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
-        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
+        expect(await editCasePage.getAssigneeValue()).toBe('Qadim Katawazi');
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.')).toBeTruthy();
@@ -803,7 +805,8 @@ describe('Case Status Change', () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
+        await changeAssignmentPo.setDropDownValue("AssignedGroup", "US Support 3");
+        await changeAssignmentPo.setDropDownValue("Assignee", "Qadim Katawazi");
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -824,7 +827,8 @@ describe('Case Status Change', () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
+        await changeAssignmentPo.setDropDownValue("AssignedGroup", "US Support 3");
+        await changeAssignmentPo.setDropDownValue("Assignee", "Qadim Katawazi");
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -841,7 +845,8 @@ describe('Case Status Change', () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
+        await changeAssignmentPo.setDropDownValue("AssignedGroup", "US Support 3");
+        await changeAssignmentPo.setDropDownValue("Assignee", "Qadim Katawazi");
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -858,7 +863,8 @@ describe('Case Status Change', () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
+        await changeAssignmentPo.setDropDownValue("AssignedGroup", "US Support 3");
+        await changeAssignmentPo.setDropDownValue("Assignee", "Qadim Katawazi");
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -876,7 +882,8 @@ describe('Case Status Change', () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
+        await changeAssignmentPo.setDropDownValue("AssignedGroup", "US Support 3");
+        await changeAssignmentPo.setDropDownValue("Assignee", "Qadim Katawazi");
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -889,7 +896,7 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
         expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
         expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
-        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Description not present');
+        expect(await editCasePage.getAssigneeValue()).toBe('Qadim Katawazi');
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');
@@ -905,7 +912,8 @@ describe('Case Status Change', () => {
         await navigationPage.gotoCreateCase();
         await createCasePage.selectRequester("adam");
         await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
+        await changeAssignmentPo.setDropDownValue("AssignedGroup", "US Support 3");
+        await changeAssignmentPo.setDropDownValue("Assignee", "Qadim Katawazi");
         await createCasePage.setContactName('qtao');
         await createCasePage.clickSaveCaseButton();
         await previewCasePo.clickGoToCaseButton();
@@ -921,7 +929,7 @@ describe('Case Status Change', () => {
         expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
         expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
         expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
-        expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Assignee not present');
+        expect(await editCasePage.getAssigneeValue()).toBe('Qadim Katawazi');
         await editCasePage.clearCaseSummary();
         await editCasePage.clickSaveCase();
         expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');

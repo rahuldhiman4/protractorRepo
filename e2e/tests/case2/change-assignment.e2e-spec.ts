@@ -19,6 +19,7 @@ import accessTabPo from '../../pageobject/common/access-tab.po';
 import viewKnowledgeArticlePo from '../../pageobject/knowledge/view-knowledge-article.po';
 import editKnowledgePo from '../../pageobject/knowledge/edit-knowledge.po';
 import statusBladeKnowledgeArticlePo from '../../pageobject/knowledge/status-blade-knowledge-article.po';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe("Change Assignment", () => {
 
@@ -139,7 +140,8 @@ describe("Change Assignment", () => {
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary');
-            await createCasePo.clickAssignToMeButton();
+            await changeAssignmentPo.setDropDownValue("AssignedGroup", "US Support 3");
+            await changeAssignmentPo.setDropDownValue("Assignee", "Qadim Katawazi");
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickEditCaseButton();
@@ -215,7 +217,7 @@ describe("Change Assignment", () => {
         await createCasePo.selectRequester('adam');
         expect(await createCasePo.getLineOfBusinessValue()).toBe('Human Resource');
         await createCasePo.clickCancelButton();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");      
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await changeAssignmentPage.setDropDownValue("Assignee", 'Adam Pavlik');
@@ -223,10 +225,10 @@ describe("Change Assignment", () => {
         expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
         await createCasePo.selectLineOfBusiness('Facilities');
         await createCasePo.clickCancelButton();
-        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");       
+        await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
-        await createCasePo.setSummary('Summary');      
+        await createCasePo.setSummary('Summary');
         await createCasePo.selectLineOfBusiness('Facilities');
         await changeAssignmentPage.setDropDownValue("Assignee", 'Fritz Schulz');
         expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Facilities');
@@ -247,7 +249,7 @@ describe("Change Assignment", () => {
         expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
         expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
     });
-    
+
     describe('[4000006]:Verify on clearing or reselecting of any field should clear the Child fields but not the Parent field', async () => {
         it('[4000006]:Verify on clearing or reselecting of any field should clear the Child fields but not the Parent field', async () => {
             await navigationPo.signOut();
@@ -345,7 +347,7 @@ describe("Change Assignment", () => {
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qadim Katawazi');
         });
     });
-    
+
     //Raised defect: DRDMV-25147
     describe('[4000007]:Verify that if Agent has only Read only access on Case/Task/Knowledge', async () => {
         let caseID, KADetails, taskData, articleData, randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
