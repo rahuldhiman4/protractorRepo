@@ -416,6 +416,7 @@ export class GridOperations {
                 await utilityCommon.setDateField(textValue, guid);
                 break;
             }
+
             case "counter": {
                 if (textValue.includes('-')) {
                     let counterValues = (textValue.split('-'));
@@ -426,6 +427,13 @@ export class GridOperations {
                 else await $$(this.selectors.filterCounterInput).first().sendKeys(textValue);
                 break;
             }
+
+            case "raw": {
+                await $('.advanced-filter__popover-header .adapt-mt-wrapper').click();
+                await $('.advanced-filter__popover-header .adapt-mt-wrapper input').sendKeys(textValue + protractor.Key.ENTER);
+                break;
+            }
+
             default: {
                 await $('.card[aria-selected="true"] .adapt-mt input').sendKeys(textValue + protractor.Key.ENTER);
                 break;
