@@ -509,9 +509,9 @@ describe('Menu Item', () => {
             expect(await createCasePage.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await createCasePage.clickAssignToMeButton();
             expect(await createCasePage.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
-            await createCasePage.clickAssignToMeButton();
             await createCasePage.setLabel(labelActive1);
             await createCasePage.setSummary(summary);
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();
@@ -524,9 +524,9 @@ describe('Menu Item', () => {
             expect(await adhoctaskTemplate.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
             await adhoctaskTemplate.clickAssignToMeButton();
             expect(await adhoctaskTemplate.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
-            await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.selectLabel(labelActive1);
             await adhoctaskTemplate.setSummary(summary);
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await adhoctaskTemplate.clickSaveAdhoctask();
             await manageTask.clickCloseButton();
         });
@@ -622,6 +622,7 @@ describe('Menu Item', () => {
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateLabel(labelInactive);
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
             await editCasePo.updateLabel(labelDeprecated);
@@ -741,7 +742,7 @@ describe('Menu Item', () => {
             await consoleReadAcess.searchAndOpenReadAccess(title);
             await editReadAccessConfigPo.setLabel(labelActive1);
             await editReadAccessConfigPo.clickOnSave();
-            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+           // expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
     });
 });

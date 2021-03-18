@@ -81,6 +81,10 @@ class CreateDynamicGroupLibrary {
         await $(this.selectors.dynamicGroupSaveBtn).click();
     }
 
+    async isSaveButtonDisabled(): Promise<string> {
+       return await $(this.selectors.dynamicGroupSaveBtn).getAttribute("disabled");
+    }
+
     async clickOnDynamicGroupCancelButton(): Promise<void> {
         await $(this.selectors.dynamicGroupCancelBtn).click();
     }
