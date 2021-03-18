@@ -7,7 +7,7 @@ class ProcessEditor {
         selectTemplateBtn: '[data-field*="taskTemplateId"] .rx-new-expression-link',
         templateSelectionGridCancelBtn: '[rx-view-component-id="ba0bd5fe-391a-4885-8f0c-56cfead43ebd"] button',
         goBackToTemplateBtn: 'a.rx-editor-header__back',
-        gridLink: '.ui-grid__link',
+        gridLink: 'div.ui-grid-row',
         templateSaveBtn: '[rx-view-component-id="b7f9f666-5c22-463a-bc86-4cb66e26fa35"] button',
         processSaveBtn: 'button.rx-editor-header__button_save',
         pallete: 'a.rx-blade-toggle',
@@ -18,7 +18,8 @@ class ProcessEditor {
         taskPriorityValue: '[rx-view-component-id="f4a0b2ba-433c-471f-89b1-e94d0c0f3b43"] .d-textfield p',
         fieldParentLocator: '[rx-configuration="configuration"] .d-textfield',
         assigneeFieldValue: '.person-main a',
-        backButton: '[rx-view-component-id="cbb794a3-d696-4fff-81df-27e73e1438d8"] button'
+        backButton: '[rx-view-component-id="cbb794a3-d696-4fff-81df-27e73e1438d8"] button',
+        warningOk: '.modal-footer button[class*="d-button d-button_primary"], .d-modal__footer button[class*="d-button d-button_primary"]'
     }
 
     async dragDropCreateTask(): Promise<void> {
@@ -61,12 +62,30 @@ class ProcessEditor {
         await browser.waitForAngularEnabled(true);
     }
 
-    async isTemplatePresent(templateName: string): Promise<boolean> {
+    async isTemplatePresent(templateName: string, guid?: string): Promise<boolean> {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
         await browser.sleep(1000); // sleep required for proper frame switch
-        await utilityGrid.clearSearchBox();
-        await utilityGrid.searchRecord(templateName);
+        let searchBoxInput: string = '[rx-id="search-text-input"]';
+        let gridRefreshButton: string = 'button.d-icon-refresh';
+        let gridSearchIcon: string = '[rx-id="submit-search-button"]';
+        if (guid) {
+            searchBoxInput = `[rx-view-component-id="${guid}"] ` + searchBoxInput;
+            gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
+            gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
+        }
+        for (let i: number = 0; i < 7; i++) {
+            console.log(templateName, "search angularJs grid count: ", i);
+            await $(searchBoxInput).clear();
+            await $(gridRefreshButton).click();
+            await $(searchBoxInput).sendKeys(templateName);
+            await browser.sleep(3000);
+            await $(gridSearchIcon).click();
+            let gridRecordCount: number = await await $$('.ui-grid-render-container-body .ui-grid-row').count();
+            if (gridRecordCount == 0) {
+                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
+            } else break;
+        }
         let recordLocator: ElementFinder = await element(by.cssContainingText(this.selectors.gridLink, templateName));
         let isTemplate = await recordLocator.isPresent().then(async (result) => {
             if (result) return await recordLocator.isDisplayed();
@@ -172,7 +191,7 @@ class ProcessEditor {
                 await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
         }
-        await element(by.cssContainingText('.ui-grid__link', searchValue)).click();
+        await element(by.linkText(searchValue)).click();
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
@@ -282,7 +301,18 @@ class ProcessEditor {
         await browser.switchTo().defaultContent();
         await browser.waitForAngularEnabled(true);
     }
-
+    async clickOnWarningOk(): Promise<void> {
+        await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); 
+        await $(this.selectors.warningOk).isPresent().then(async (result) => {
+            if (result) {
+                await $(this.selectors.warningOk).click();
+                await browser.switchTo().defaultContent();
+                await browser.waitForAngularEnabled(true);
+            }
+        });
+    }
 }
 
 export default new ProcessEditor();

@@ -69,7 +69,7 @@ class CopyCaseTemplate {
 
     async getValueOfCaseCompany(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.caseCompanyValueOnCopy)));
-        return await $$(this.selectors.assigneeValueOnCopy).first().getText();
+        return await $$(this.selectors.caseCompanyValueOnCopy).first().getText();
     }
 
     async getValueOfSupportCompany(): Promise<string> {
@@ -79,7 +79,7 @@ class CopyCaseTemplate {
 
     async getValueOfSupportGroup(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.supportGroupValueOnCopy)));
-        return await $$(this.selectors.assigneeValueOnCopy).get(2).getText();
+        return await $$(this.selectors.assigneeValueOnCopy).get(0).getText();
     }
 
     async getValueOfBuisnessUnit(): Promise<string> {
@@ -92,7 +92,7 @@ class CopyCaseTemplate {
 
     async getValueOfAssignee(): Promise<string> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.assigneeValueOnCopy)));
-        return await $$(this.selectors.assigneeValueOnCopy).get(3).getText();
+        return await $$(this.selectors.assigneeValueOnCopy).get(1).getText();
     }
 
     async getValueOfFlowset(): Promise<string> {

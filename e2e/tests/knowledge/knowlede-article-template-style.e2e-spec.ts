@@ -183,7 +183,7 @@ describe('Knowledge article template style', () => {
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectFont("Times");
-            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family", "times")).toBeTruthy('Text Displayed in Font Family');
+            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family", "Times")).toBeTruthy('Text Displayed in Font Family');
             await articleTemplateStylePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 
@@ -240,7 +240,7 @@ describe('Knowledge article template style', () => {
 
             await articleTemplateStylePo.clickAddNewStyle();
             await articleTemplateStylePo.selectFont("Times");
-            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family", "times")).toBeTruthy('Text Displayed in Font Family');
+            expect(await articleTemplateStylePo.isFontStylDetailsDisplayed("Font Family", "Times")).toBeTruthy('Text Displayed in Font Family');
             await articleTemplateStylePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
 

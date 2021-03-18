@@ -171,7 +171,8 @@ describe('Menu Item', () => {
     });
 
     //kgaikwad
-    describe('[4305,4304]: Verify Multiple records with same name', async () => {
+    // this test case steps should be modified due to 21.02 changes
+    xdescribe('[4305,4304]: Verify Multiple records with same name', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let label = 'label' + randomStr;
         let labelActive1 = 'labelActive1' + randomStr;
@@ -632,6 +633,7 @@ describe('Menu Item', () => {
             await editCasePo.updateLabel(labelDeprecated);
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            await utilityCommon.closePopUpMessage();
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });

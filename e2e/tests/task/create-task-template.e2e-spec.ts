@@ -1,5 +1,4 @@
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
@@ -7,8 +6,7 @@ import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import changeAssignmentOldBladePo from '../../pageobject/common/change-assignment-old-blade.po';
-import changeAssignmentBlade from '../../pageobject/common/change-assignment.po'
+import changeAssignmentBlade from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -28,7 +26,6 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 describe('Create Task Template', () => {
-    let businessData, departmentData, suppGrpData, personData;
 
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
@@ -151,12 +148,12 @@ describe('Create Task Template', () => {
 
     //ankagraw-done
     describe('[4939]: Case BA from task template owner group can update the template', async () => {
-        let randomStr = Math.floor(Math.random() * 1000000);
+        let templateData1, randomStr = Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
             //Manual task Template
-            let templateData1 = {
-                "templateName": 'manualTaskTemplate' + randomStr,
-                "templateSummary": 'manualTaskSummary' + randomStr,
+            templateData1 = {
+                "templateName": 'manualTaskTemplate4939' + randomStr,
+                "templateSummary": 'manualTaskSummary4939' + randomStr,
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -167,18 +164,21 @@ describe('Create Task Template', () => {
             await apiHelper.createManualTaskTemplate(templateData1);
         });
         it('[4939]: Create Manual Task template', async () => {
+            let summary = 'updateSummary' + randomStr;
+            let description = 'Description' + randomStr;
+
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-            await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr);
+            await selectTaskTemplate.searchAndOpenTaskTemplate(templateData1.templateName);
             await viewTaskTemplate.clickOnEditLink();
-            await editTaskTemplate.setSummary('updateSummary' + randomStr);
-            await editTaskTemplate.setDescription('Description' + randomStr);
+            await editTaskTemplate.setSummary(summary);
+            await editTaskTemplate.setDescription(description);
             await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
             await editTaskTemplate.selectTaskCategoryTier2('Compensation');
             await editTaskTemplate.clickOnSaveButton();
             //verify the updated Field
-            expect(await viewTaskTemplate.getSummaryValue()).toBe('updateSummary' + randomStr);
-            expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe('Description' + randomStr);
+            expect(await viewTaskTemplate.getSummaryValue()).toBe(summary);
+            expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description);
             expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Employee Relations");
             expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Compensation");
             await viewTaskTemplate.clickBackArrowBtn();
@@ -187,11 +187,13 @@ describe('Create Task Template', () => {
 
     //ankagraw-done
     it('[4943]: Task template submitter from same company of owner group can edit the task template', async () => {
-        let randomStr = Math.floor(Math.random() * 1000000);
+        let templateData1, randomStr = Math.floor(Math.random() * 1000000);
+        let summary = 'updateSummary' + randomStr;
+        let description = 'Description' + randomStr;
         //Manual task Template
-        let templateData1 = {
-            "templateName": 'manualTaskTemplate' + randomStr,
-            "templateSummary": 'manualTaskSummary' + randomStr,
+        templateData1 = {
+            "templateName": 'manualTaskTemplate4943' + randomStr,
+            "templateSummary": 'manualTaskSummary4943' + randomStr,
             "templateStatus": "Draft",
             "taskCompany": 'Petramco',
             "ownerCompany": "Petramco",
@@ -202,20 +204,20 @@ describe('Create Task Template', () => {
         await apiHelper.createManualTaskTemplate(templateData1);
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-        await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr)
+        await selectTaskTemplate.searchAndOpenTaskTemplate(templateData1.templateName)
         await viewTaskTemplate.clickOnEditLink();
-        await editTaskTemplate.setSummary('updateSummary' + randomStr);
-        await editTaskTemplate.setDescription('Description' + randomStr);
+        await editTaskTemplate.setSummary(summary);
+        await editTaskTemplate.setDescription(description);
         await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
         await editTaskTemplate.selectTaskCategoryTier2('Compensation');
         await editTaskTemplate.clickOnSaveButton();
         //verify the updated Field
-        expect(await viewTaskTemplate.getSummaryValue()).toBe('updateSummary' + randomStr);
-        expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe('Description' + randomStr);
+        expect(await viewTaskTemplate.getSummaryValue()).toBe(summary);
+        expect(await viewTaskTemplate.getTaskDescriptionNameValue()).toBe(description);
         expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Employee Relations");
         expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Compensation");
         await viewTaskTemplate.clickBackArrowBtn();
-    });//, 220 * 1000);
+    });
 
     //ankagraw - issue
     describe('[5801]: [Task Template Console] Filter menu verification', async () => {
@@ -223,10 +225,10 @@ describe('Create Task Template', () => {
         let taskTemplateName = 'taskTemplateWithYesResolve' + randomStr;
         let taskTemplateSummary = 'taskSummaryYesResolved' + randomStr;
         let createdDate = new Date();
-        let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        let dateFormateValue: string = month[createdDate.getMonth()];
-        let dateFormateNew: string = dateFormateValue.substring(0, 3);
-        let dateFormate: string = dateFormateNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
+        let month = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+        let dateFormatValue: string = month[createdDate.getMonth()];
+        let dateFormatNew: string = dateFormatValue.substring(0, 3);
+        let dateFormat: string = dateFormatNew + " " + createdDate.getDate() + ", " + createdDate.getFullYear() + " " + createdDate.toLocaleTimeString();
         let taskTemplateId = '';
         let addColoumn: string[] = ['Display ID'];
         it('[5801]: Create task template ', async () => {
@@ -260,7 +262,7 @@ describe('Create Task Template', () => {
             let modifiedDate = new Date();
             let monthValue: string = month[modifiedDate.getMonth()];
             let modifiedMonthValue = monthValue.substring(0, 3);
-            let modifiedDateFormate = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
+            let modifiedDateFormat = modifiedMonthValue + " " + modifiedDate.getDate() + ", " + modifiedDate.getFullYear() + " " + modifiedDate.toLocaleTimeString();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilityGrid.clearFilter();
@@ -268,7 +270,7 @@ describe('Create Task Template', () => {
             await utilityGrid.addFilter("Support Group", 'US Support 3', 'text');
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy('US Support 3 support group template not present');
             await utilityGrid.clearFilter();
-            await utilityGrid.addFilter("Modified Date", dateFormate + "-" + modifiedDateFormate, 'date');
+            await utilityGrid.addFilter("Modified Date", `Modified Date: ${dateFormat} - ${modifiedDateFormat}`, 'raw');
             expect(await utilityGrid.isGridRecordPresent(taskTemplateName)).toBeTruthy(taskTemplateName);
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter("Template Name", taskTemplateName, 'text');
@@ -331,16 +333,16 @@ describe('Create Task Template', () => {
             // verify LOB is there
             expect(await taskTemplate.getLobValue()).toBe("Facilities");
             await taskTemplate.clickOnSaveTaskTemplate();
-            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.', 2)).toBeTruthy("Success message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // open the record and verify LOB is on edit screen
             await viewTaskTemplate.clickBackArrowBtn();
             await selectTaskTemplate.searchAndOpenTaskTemplate(taskTemplateName);
             expect(await viewTaskTemplate.getLobValue()).toBe("Facilities");
-            await viewTaskTemplate.clickBackArrowBtn();
-            await utilityGrid.selectLineOfBusiness('Human Resource');
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await viewTaskTemplate.clickBackArrowBtn();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -474,7 +476,7 @@ describe('Create Task Template', () => {
             await utilityCommon.closeAllBlades();
         });
     });
-    
+
     describe('[5675]: [Tasks] Tasks status when resolving the case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, tasktemp, tasktemp1, tasktemp2, manualTemplateData;
@@ -583,7 +585,7 @@ describe('Create Task Template', () => {
             await navigationPage.gotoTaskConsole();
             await taskConsolePo.searchAndOpenTask('manualTaskSummary' + randomStr);
             await viewTask.clickOnEditTask();
-            await editTaskPo.clickOnAssignToMe(); 
+            await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
         });
         it('[5675]: Change the task to complete', async () => {
@@ -615,7 +617,7 @@ describe('Create Task Template', () => {
             await loginPage.login("qkatawazi");
         });
     });
-//done
+    //done
     describe('[4987,4988,4989]: Verify Company, Business Unit, Department and Support Group selection hierarchy in Change Owner.', async () => {
         let randomStr = 'Manual  task' + Math.floor(Math.random() * 1000000);
         it('[4987,4988,4989]: Create Case tempate template', async () => {
@@ -653,7 +655,7 @@ describe('Create Task Template', () => {
             await viewTaskTemplate.clickBackArrowBtn();
         });
     });
-//done
+    //done
     describe('[5791]: [Task Workspace] Filter menu verification', async () => {
         let tempIdClosed, tempIdCanceled, tempIdCompleted, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase1, tempIdLow, tempIdMedium, tempIdHigh, tempIdCritical, exactDate;

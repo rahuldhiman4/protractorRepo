@@ -372,7 +372,7 @@ describe("Notification Template", () => {
         expect(await notificationTempGridPage.areColumnHeaderMatches(defaultColumns)).toBeTruthy('Default Columns are not matching');
         await utilityGrid.sortGridColumn('Description', 'descending');
         await utilityGrid.sortGridColumn('Description', 'ascending');
-        expect(await notificationTempGridPage.isGridColumnSorted('Template Name')).toBeTruthy('Template Name column is not sorted');
+        expect(await notificationTempGridPage.isGridColumnSorted('Description')).toBeTruthy('Template Name column is not sorted');
         await notificationTempGridPage.addGridColumns(columns);
         expect(await notificationTempGridPage.areColumnHeaderMatches(allColumns)).toBeTruthy('Columns are not matching');
         await notificationTempGridPage.removeGridColumns(columns);

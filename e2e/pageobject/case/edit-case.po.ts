@@ -72,7 +72,7 @@ class CaseEditPage {
         dynamciFieldDownLoadIcon: '.bwf-text-color-active',
         lobValue: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] button',
         lineofbusiness: '[rx-view-component-id="694535e8-ab22-4ddc-8d2a-ceb017cf4fbf"] .adapt-select',
-        assigneeValue: '[rx-view-component-id="7f1c67bf-9c39-4c46-b9ff-8d21ebaff4cb"] button',
+        assigneeValue: '[rx-view-component-id="13635426-50b0-4b53-8026-a1682ab656e8"] button div.rx-select__search-button-title',
         dynamicFields: '.simple-field .form-control-label',
     }
 
@@ -398,10 +398,6 @@ class CaseEditPage {
         await $(this.selectors.dynamicBooleanValue).click();
     }
 
-    async setDateTimeDynamicFieldValue(value: string): Promise<void> {
-        await utilityCommon.setDateField(value, '376ec3d3-9381-4613-bb06-1e8dbbaf6b18');
-    }
-
     async setInvalidDateTimeDynamicField(value: string): Promise<void> {
         await $('bwf-datetime-field input.form-control.i-date-time').sendKeys(value);
     }
@@ -431,7 +427,7 @@ class CaseEditPage {
     }
 
     async getAssigneeValue(): Promise<string> {
-        return await $(this.selectors.assigneeValue).getText();
+        return await $$(this.selectors.assigneeValue).last().getText();
     }
 
     async clickDownloadDynamicFile(downloadButtonNumber: number): Promise<void> {

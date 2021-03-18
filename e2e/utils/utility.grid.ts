@@ -48,7 +48,7 @@ export class GridOperations {
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
         }
         await this.clearFilter();
-        await this.loopGridSearch(searchValue, searchTextBoxLocator, gridRecordsLocator);
+        await this.loopGridSearch(searchValue, searchTextBoxLocator, gridRecordsLocator,guid);
     }
 
     async searchRecordWithoutClearFilter(searchValue: string, guid?: string): Promise<void> {
@@ -58,14 +58,15 @@ export class GridOperations {
             searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
             gridRecordsLocator = `[rx-view-component-id='${guid}'] ` + gridRecordsLocator;
         }
-        await this.loopGridSearch(searchValue, searchTextBoxLocator, gridRecordsLocator);
+        await this.loopGridSearch(searchValue, searchTextBoxLocator, gridRecordsLocator,guid);
     }
 
-    async loopGridSearch(searchValue: string, searchTextBoxLocator: string, gridRecordsLocator: string): Promise<void> {
+    async loopGridSearch(searchValue: string, searchTextBoxLocator: string, gridRecordsLocator: string,guid?:string): Promise<void> {
         for (let i: number = 0; i < 5; i++) {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
+            this.clickRefreshIcon(guid);
             let gridRecordCount: number = await $$(gridRecordsLocator).count();
             console.log("grid records found: ", gridRecordCount);
             if (gridRecordCount == 0) {
@@ -415,6 +416,7 @@ export class GridOperations {
                 await utilityCommon.setDateField(textValue, guid);
                 break;
             }
+
             case "counter": {
                 if (textValue.includes('-')) {
                     let counterValues = (textValue.split('-'));
@@ -425,6 +427,13 @@ export class GridOperations {
                 else await $$(this.selectors.filterCounterInput).first().sendKeys(textValue);
                 break;
             }
+
+            case "raw": {
+                await $('.advanced-filter__popover-header .adapt-mt-wrapper').click();
+                await $('.advanced-filter__popover-header .adapt-mt-wrapper input').sendKeys(textValue + protractor.Key.ENTER);
+                break;
+            }
+
             default: {
                 await $('.card[aria-selected="true"] .adapt-mt input').sendKeys(textValue + protractor.Key.ENTER);
                 break;
