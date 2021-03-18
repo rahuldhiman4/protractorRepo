@@ -757,8 +757,8 @@ describe('Dynamic data', () => {
         it('[4825]: [-ve] [Dynamic Data] - Task UI with dynamic data having long description/labels with large data in different fields', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
-            await createCasePo.clickAssignToMeButton();
             await createCasePo.setSummary('new cases');
+            await changeAssignmentPage.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             caseId = await viewCasePo.getCaseID();
@@ -778,7 +778,7 @@ describe('Dynamic data', () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setDynamicFieldValue(dynamicfield1, dynamicfield2);
             await editTaskPo.setDynamicFieldValue(dynamicfield2, dynamicfield1);
-            await editTaskPo.clickOnAssignToMe();
+            await changeAssignmentPage.setAssignee("US Support 3", "Qadim Katawazi");
             await editTaskPo.setDynamicFieldValue(dynamicfield4, '100');
             await editTaskPo.setDynamicFieldValue(dynamicfield3, dynamicfield4);
             await editTaskPo.clickOnSaveButton();
@@ -803,7 +803,7 @@ describe('Dynamic data', () => {
             await viewTaskPo.clickOnEditTask();
             await editTaskPo.setDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered', '200');
             await editTaskPo.setDynamicFieldValue('theSecondExternalDynamicFieldsIsgettingMouseOveredMouseOvered', 'temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered');
-            await editTaskPo.clickOnAssignToMe();
+            await changeAssignmentPage.setAssignee("US Support 3", "Qadim Katawazi");
             await editTaskPo.clickOnSaveButton();
             //verify input field values are peresent are not 
             expect(await viewTaskPo.getDynamicFieldValue('temp1theNewExternalDynamicFieldsIsgettingMouseOveredMouseOvered')).toContain('200');
@@ -1013,7 +1013,7 @@ describe('Dynamic data', () => {
             await editTaskPo.setDateValueInDynamicField('2020-03-01');
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
             await editTaskPo.setDynamicFieldValue('temp', 'sssssss');
-            await editTaskPo.clickOnAssignToMe();
+            await changeAssignmentPage.setAssignee("US Support 3", "Qadim Katawazi");
             await editTaskPo.clickOnSaveButton();
             //verify update values on case view
             expect(await viewTaskPo.getDynamicFieldValue('temp2')).toBe('Jan 20, 2020');
@@ -1034,7 +1034,7 @@ describe('Dynamic data', () => {
             await editTaskPo.setDateValueInDynamicField('2020-03-01');
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
             await editTaskPo.setDynamicFieldValue('externalText', 'sssssss');
-            await editTaskPo.clickOnAssignToMe();
+            await changeAssignmentPage.setAssignee("US Support 3", "Qadim Katawazi");
             await editTaskPo.clickOnSaveButton();
             //verify update values on case view
             expect(await viewTaskPo.getDynamicFieldValue('externalDate')).toBe('Jan 20, 2020');
@@ -1044,8 +1044,7 @@ describe('Dynamic data', () => {
         it('[4827]: [-ve] [UI] [Dynamic Data] - Update Task dynamic fields with invalid data', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickEditCaseButton();
-            await changeAssignmentPage.setDropDownValue('AssignedGroup', "US Support 3");
-            await changeAssignmentPage.setDropDownValue('Assignee', "Qadim Katawazi");
+            await changeAssignmentPage.setAssignee("US Support 3", "Qadim Katawazi");
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeStatus('In Progress');

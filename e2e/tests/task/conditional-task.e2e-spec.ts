@@ -118,7 +118,7 @@ xdescribe('Conditional Task', () => {
             await processEditorPage.clickSelectTemplateBtn();
 
             //Validate all field labels of Manual Task Template
-            await processEditorPage.searchAndOpenTaskTemplate(manualTaskTemplateData.templateName);
+            await processEditorPage.searchAndOpenTaskTemplate(manualTaskTemplateData.templateName, 'da1ffbb0-567a-4199-b94f-413bee7f149b');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskSummary,'Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskCompany,'Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskPriority,'Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -134,15 +134,15 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Group')).toBeTruthy('Support Group is not getting displayed1');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Company')).toBeTruthy('Support Company is not getting displayed1');
             //Not visible on UI
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp')).toBeTruthy('temp is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp1')).toBeTruthy('temp1 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp2')).toBeTruthy('temp2 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp3')).toBeTruthy('temp3 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp4')).toBeTruthy('temp4 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp5')).toBeTruthy('temp5 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment1')).toBeTruthy('attachment1 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment2')).toBeTruthy('attachment2 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment3')).toBeTruthy('attachment3 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp')).toBeTruthy('temp is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp1')).toBeTruthy('temp1 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp2')).toBeTruthy('temp2 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp3')).toBeTruthy('temp3 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp4')).toBeTruthy('temp4 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp5')).toBeTruthy('temp5 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment1')).toBeTruthy('attachment1 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment2')).toBeTruthy('attachment2 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment3')).toBeTruthy('attachment3 is not getting displayed');
 
             //Validate field values of Manual Task Template
             expect(await processEditorPage.getTaskTemplateName()).toBe(manualTaskTemplateData.templateName);
@@ -175,15 +175,15 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Group')).toBeTruthy('Support Group is not getting displayed1');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Company')).toBeTruthy('Support Company is not getting displayed1');
             //Not visible on UI
-            //expect(await taskTemplatePreview.isFieldLabelDisplayed('temp')).toBeTruthy('temp is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp1')).toBeTruthy('temp1 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp2')).toBeTruthy('temp2 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp3')).toBeTruthy('temp3 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp4')).toBeTruthy('temp4 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp5')).toBeTruthy('temp5 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp')).toBeTruthy('temp is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp1')).toBeTruthy('temp1 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp2')).toBeTruthy('temp2 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp3')).toBeTruthy('temp3 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp4')).toBeTruthy('temp4 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp5')).toBeTruthy('temp5 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
 
             //Validate field values of External Task Template
             expect(await processEditorPage.getTaskTemplateName()).toBe(externalTaskTemplateData.templateName);
@@ -212,15 +212,15 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.labelGuid,'Label')).toBeTruthy('Label is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskDescription,'Task Description')).toBeTruthy('Task Description is not getting displayed');
             //Not visible on UI
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp')).toBeTruthy('temp is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp1')).toBeTruthy('temp1 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp2')).toBeTruthy('temp2 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp3')).toBeTruthy('temp3 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp4')).toBeTruthy('temp4 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp5')).toBeTruthy('temp5 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp')).toBeTruthy('temp is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp1')).toBeTruthy('temp1 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp2')).toBeTruthy('temp2 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp3')).toBeTruthy('temp3 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp4')).toBeTruthy('temp4 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('temp5')).toBeTruthy('temp5 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
+            expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
 
             //Validate field values of Automated Task Template
             expect(await processEditorPage.getTaskTemplateName()).toBe(automatedTaskTemplateData.templateName);
