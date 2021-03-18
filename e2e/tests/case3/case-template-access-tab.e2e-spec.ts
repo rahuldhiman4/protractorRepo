@@ -82,11 +82,6 @@ describe('Case Edit Backlog Test', () => {
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickToExpandAccessEntitiyByGroup('Confidential Access');
 
-            // await accessTabPo.clickToExpandAccessEntitiyByGroup('Case Access');
-            // await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            // await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
-            // await accessTabPo.clickAccessEntitiyAddButton('Support Group');
-
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
@@ -104,11 +99,6 @@ describe('Case Edit Backlog Test', () => {
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickToExpandAccessEntitiyByGroup('Confidential Access');
-
-            // await accessTabPo.clickToExpandAccessEntitiyByGroup('Case Access');
-            // await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            // await accessTabPo.selectAccessEntityDropDown('US Support 2', 'Select Support Group');
-            // await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
