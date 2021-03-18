@@ -37,8 +37,8 @@ describe('Failed Task', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramco = {
-                "templateName": 'caseTemplateName 5310' + randomStr,
-                "templateSummary": 'caseTemplateName 5310' + randomStr,
+                "templateName": randomStr + 'caseTemplateName5310',
+                "templateSummary": randomStr + 'caseTemplateName5310',
                 "templateStatus": "Active",
                 "casePriority": "Low",
                 "caseStatus": "New",
@@ -53,8 +53,8 @@ describe('Failed Task', () => {
             newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplatePetramco);
 
             manualTaskTemplateData = {
-                "templateName": 'Manual task10057' + randomStr,
-                "templateSummary": 'Manual task10057' + randomStr,
+                "templateName": randomStr + 'Manual task10057',
+                "templateSummary": randomStr + 'Manual task10057',
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -67,8 +67,8 @@ describe('Failed Task', () => {
             manualTaskTemplate = await apiHelper.createManualTaskTemplate(manualTaskTemplateData);
 
             let automatedTaskTemplateData = {
-                "templateName": 'Automated1 task10057' + randomStr,
-                "templateSummary": 'Automated1 task10057' + randomStr,
+                "templateName": randomStr + 'Automated1 task10057',
+                "templateSummary": randomStr + 'Automated1 task10057',
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces1' + randomStr,
