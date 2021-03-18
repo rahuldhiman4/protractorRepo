@@ -2760,7 +2760,6 @@ class ApiHelper {
         let commonConfigGuid = await apiCoreUtil.getCommonConfigurationId(configName);
         let commonConfigGetPayload = cloneDeep(COMMON_CONFIG_GET);
         commonConfigGetPayload.processInputValues.ID = commonConfigGuid;
-        console.log('commonConfigGetPayload:', commonConfigGetPayload);
         const getResponse = await axios.post(
             commandUri,
             commonConfigGetPayload
@@ -3224,10 +3223,12 @@ class ApiHelper {
 
     async addRelationShip(relationshipName: string, reverseRelationshipName: string, relationshipType: string): Promise<boolean> {
         let relationship = cloneDeep(RELATIONSHIPS);
+        relationship.fieldInstances[450000152].valueByLocale["en-US"] = relationshipName;
         relationship.fieldInstances[450000152].value = relationshipName;
         relationship.fieldInstances[450000154].value = relationshipName;
         relationship.fieldInstances[450000155].value = reverseRelationshipName;
         relationship.fieldInstances[450000156].value = reverseRelationshipName;
+        relationship.fieldInstances[450000156].valueByLocale["en-US"] = reverseRelationshipName;
         relationship.fieldInstances[450000153].value = relationship.fieldInstances[450000153].value + relationshipType;
         if(await apiCoreUtil.isRelationshipPresent(relationshipName, relationship.fieldInstances[450000153].value)) {
             console.log("Relationship already present");
