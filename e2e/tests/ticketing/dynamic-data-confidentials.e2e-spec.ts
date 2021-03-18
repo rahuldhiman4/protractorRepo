@@ -26,6 +26,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Dynamic Confidentials Data', () => {
     beforeAll(async () => {
@@ -276,6 +277,7 @@ describe('Dynamic Confidentials Data', () => {
             await consoleCasetemplatePo.searchAndselectCaseTemplate(randomStr + 'caseTemplateName');
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCasetemplatePo.setTemplateName(randomStr + "Copy Case Template");
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await copyCasetemplatePo.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Case Access');

@@ -106,7 +106,7 @@ class CreateDynamicGroupLibrary {
     }
 
     async getDynamicGroupLineOfBusiness(): Promise<string> {
-        return await $(this.selectors.lineOfBusinessInput).getText();
+        return await $(this.selectors.lineOfBusinessInput).getAttribute("placeholder");
     }
 
     async getDynamicGroupStatusValue(): Promise<string> {

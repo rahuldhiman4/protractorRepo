@@ -175,7 +175,7 @@ class ChangeAssignmentBlade {
     async clickAssignToMeBtn(guid?: string): Promise<void> {
         let locator = this.selectors.changeAssignmentComponent;
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
-        await $$(locator).get(4).click();
+        await $$(locator).get(2).click();
     }
 
     async isPersonAvailableOnAssignBlade(name: string): Promise<boolean> {

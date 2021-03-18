@@ -13,7 +13,7 @@ class CreateEmailTemplate {
         descriptionGuid: '3cf801e-fc2f-4d74-a57b-77e4ebf2bde6',
         description: '[rx-view-component-id="13cf801e-fc2f-4d74-a57b-77e4ebf2bde6"] input',
         subjectGuid: '9e4a103d-82c3-4e2f-aba8-587ff987c98c',
-        subject: '[rx-view-component-id="9e4a103d-82c3-4e2f-aba8-587ff987c98c"] textarea',
+        subject: '[rx-view-component-id="9e4a103d-82c3-4e2f-aba8-587ff987c98c"] input',
         body: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_editable',
         insertField: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_button__rtfexpressioneditor_icon',
         fieldValueInBody: '[rx-view-component-id="d898362f-92bb-495f-8d98-03f480c4864b"] .cke_wysiwyg_div span',
