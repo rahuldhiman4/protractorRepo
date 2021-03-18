@@ -403,23 +403,24 @@ describe('Person Profile test', () => {
         it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
-            await relatedTabPage.clickRelatedPersonName('Qiang Du');
+            await addRelatedPopupPage.addPerson('Qiao Feng', 'Parent');
+            await relatedTabPage.clickRelatedPersonName('Qiao Feng');
             await utilityCommon.switchToNewTab(1);
             await activityTabPage.addActivityNote("4128");
             await activityTabPage.clickOnPostButton();
             await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
-            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on qdu's activity");
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on qfeng's activity");
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on his own activity");
         });
         it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.signOut();
-            await loginPage.login("qdu");
+            await loginPage.login("qfeng");
+
             await navigationPage.gotoPersonProfile();
-            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Qiang Du cannot see post on his own activity");
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Qiao Feng cannot see post on his own activity");
         });
         it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.signOut();
@@ -427,8 +428,8 @@ describe('Person Profile test', () => {
             await navigationPage.gotoPersonProfile();
             expect(await activityTabPage.isTextPresentInNote("4128")).toBeFalsy("Qadim can see post on his own activity");
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qiang Du', 'Parent');
-            await relatedTabPage.clickRelatedPersonName('Qiang Du');
+            await addRelatedPopupPage.addPerson('Qiao Feng', 'Parent');
+            await relatedTabPage.clickRelatedPersonName('Qiao Feng');
             await utilityCommon.switchToNewTab(1);
             expect(await activityTabPage.isTextPresentInNote("4128")).toBeFalsy("Qadim can see post on qdu's activity");
         });
@@ -710,10 +711,11 @@ describe('Person Profile test', () => {
             caseResponse = await apiHelper.createCase(caseData);
             await apiHelper.apiLogin('qtao');
             await apiHelper.createAdhocTask(caseResponse.id, taskData);
-            await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQdu);
+            
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQstrong);
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQliu);
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQcespedes);
+            await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQdu);
         });
 
         it('[59946]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
@@ -979,6 +981,9 @@ describe('Person Profile test', () => {
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
+            await navigationPage.signOut();
+            await loginPage.login('elizabeth');
+
         });
     });
 
@@ -1055,6 +1060,8 @@ describe('Person Profile test', () => {
 
     //asahitya Filter Issue -DRDMV-25321
     it('[4594]: Verify Requested Cases tab of My Profile console', async () => {
+        await navigationPage.signOut();
+        await loginPage.login('elizabeth');
         await navigationPage.gotoPersonProfile();
         await personProfile.clickOnTab("Requested Cases ");
         await apiHelper.apiLogin("qtao");
