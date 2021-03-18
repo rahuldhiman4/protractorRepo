@@ -373,9 +373,12 @@ export class Utility {
     }
 
     async setDateField(dateValue: string, guid?: string): Promise<void> {
+        let guidId: string = "";
+        if (guid) {
+            guidId = `[rx-view-component-id="${guid}"] `;
+        }
         //expects dateValue as format 04-01-2023 06:11 PM  -  DD-MM-YYYY HH:MM PM/AM
         if (dateValue.includes(":") && dateValue.includes("-")) { // validates correct date format
-
             let currentDate = new Date();
             let currentMonth = currentDate.getMonth() + 1;      //incrementing 1 because getmonth() function returns 0 for jan and 11 for dec
             let arr = dateValue.split(" ");
@@ -389,9 +392,8 @@ export class Utility {
             let minutes: number = +time[1];
             let yearDifference = year - currentDate.getFullYear();
             let monthDifference = month - currentMonth;
-            let dateFieldGuid = await $(`[rx-view-component-id='${guid}']`);
-            let dateFieldElement = await dateFieldGuid.$(this.selectors.dateFieldPicker);
-            await dateFieldElement.click();
+            let dateFieldGuid = await $(guidId + this.selectors.dateFieldPicker);
+            await dateFieldGuid.click();
             if (yearDifference > 0) {
                 for (let i = 0; i < yearDifference; i++) {
                     await dateFieldGuid.$(this.selectors.yearDate).$(this.selectors.rightNavigation).click();

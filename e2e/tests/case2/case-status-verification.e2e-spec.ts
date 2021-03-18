@@ -7,14 +7,13 @@ import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCaseTemplateBlade from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
 import accessTabPo from '../../pageobject/common/access-tab.po';
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import changeAssignmentPage from '../../pageobject/common/change-assignment.po';
 
 describe('Case Status Verification', () => {
     let statusNew: string = "New";
@@ -84,7 +83,7 @@ describe('Case Status Verification', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Summary');
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeStatus('Resolved');
@@ -109,7 +108,7 @@ describe('Case Status Verification', () => {
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
@@ -151,7 +150,7 @@ describe('Case Status Verification', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('case1_Summary');
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
@@ -178,7 +177,7 @@ describe('Case Status Verification', () => {
             await createCasePage.setSummary('case2_Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate3);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
@@ -200,7 +199,7 @@ describe('Case Status Verification', () => {
             await createCasePage.setSummary('case3_Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(CaseTemplate4);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg1: reopen button is missing');
@@ -223,7 +222,7 @@ describe('Case Status Verification', () => {
         expect(await viewCasePage.getTextOfStatus()).toBe(statusNew, 'FailureMsg1: New status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg2: Case Reopen link displayed');
         await viewCasePage.clickEditCaseButton();
-        await editCasePo.clickOnAssignToMe();
+        await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
         await editCasePo.clickSaveCase();
         expect(await viewCasePage.getTextOfStatus()).toBe(statusAssigned, 'FailureMsg3: Assigned status is missing');
         expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy('FailureMsg4: Case Reopen link displayed');
@@ -252,8 +251,7 @@ describe('Case Status Verification', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case1_Summary');
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
+            await changeAssignmentPo.setAssignee("CA Support 3", "Quigley Heroux");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             case1 = await viewCasePage.getCaseID();
@@ -283,8 +281,7 @@ describe('Case Status Verification', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary('Case2_Summary');
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quigley Heroux');
+            await changeAssignmentPo.setAssignee("CA Support 3", "Quigley Heroux");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             case2 = await viewCasePage.getCaseID();

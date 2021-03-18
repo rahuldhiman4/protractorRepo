@@ -13,7 +13,7 @@ class ArticleTemplateStyle {
         stylesName: '.bwf-left-align [name="templateName"]',
         saveButton: 'button[btn-type="primary"]',
         styleNameRequired: 'adapt-textfield[name="templateName"] input.form-control',
-        cancelButton: '.action-panel__cancel-btn',
+        cancelButton: '.btn-secondary.btn-primary span',
         sectionTitle: 'adapt-accordion-tab .text-direction span',
         boldIcon: 'button .d-icon-bold',
         italicIcon: 'button .d-icon-italic',
@@ -23,11 +23,11 @@ class ArticleTemplateStyle {
         justifyAlignIcon: 'button .d-icon-lines',
         strikeOutIcon: 'button .d-icon-strikeout',
         centeralAlignIcon: 'button .d-icon-align_center',
-        previewBox: 'textarea.create-ticket__item',
-        fontDropdown: 'select[ng-model="selected_css.fontFamily.value"]',
-        fontDropdownValue: 'select[ng-model="selected_css.fontFamily.value"] option',
-        textColor: 'input[ng-model="selected_css.color.value"]',
-        backGroundColor: 'input[ng-model="selected_css.backgroundColor.value"]'
+        previewBox: '.label_control-wrap [name="textarea"]',
+        fontDropdown: 'button[aria-label="Font"]',
+        fontDropdownValue: 'div.rx-select__options .rx-select__option-content div',
+        textColor: '.bwf-left-align .adapt-cp-input-wrapper div',
+        backGroundColor: '.bwf-right-align .adapt-cp-input-wrapper'
     }
 
     async clickSaveButton(): Promise<void> {
@@ -128,42 +128,42 @@ class ArticleTemplateStyle {
     async isTextDisplayedInPreviewBox(styleName: string): Promise<boolean> {
         switch (styleName) {
             case "Bold": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes('font-weight: bold;');
                 break;
             }
             case "Italic": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes('font-style: italic;');
                 break;
             }
             case "Underline": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes('text-decoration: underline;');
                 break;
             }
             case "Strikethrough": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes('text-decoration: line-through;');
                 break;
             }
             case "Align Center": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes('text-align: center;');
                 break;
             }
             case "Align Left": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes('text-align: left;');
                 break;
             }
             case "Align Right": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes('text-align: right;');
                 break;
             }
             case "Justify": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes('text-align: justify;');
                 break;
             }
@@ -176,17 +176,17 @@ class ArticleTemplateStyle {
     async isFontStylDetailsDisplayed(styleName: string, value: string): Promise<boolean> {
         switch (styleName) {
             case "Font Family": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes(`font-family: ${value};`);
                 break;
             }
             case "Text Color": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes(`color: ${value};`);
                 break;
             }
             case "Background Color": {
-                let textAttribute: string = await $$(this.selectors.previewBox).getAttribute('style');
+                let textAttribute: string = await $$(this.selectors.previewBox).last().getAttribute('style');
                 return textAttribute.includes(`background-color: ${value};`);
                 break;
             }
@@ -203,10 +203,12 @@ class ArticleTemplateStyle {
     }
 
     async selectTextColor(value: string): Promise<void> {
+        await $$(this.selectors.textColor).last().click();
         await $$(this.selectors.textColor).last().sendKeys(value);
     }
 
     async selectBackgroundColor(value: string): Promise<void> {
+        await $$(this.selectors.backGroundColor).last().click();
         await $$(this.selectors.backGroundColor).last().sendKeys(value);
     }
 }

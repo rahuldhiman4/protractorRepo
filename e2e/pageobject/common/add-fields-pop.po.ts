@@ -3,12 +3,13 @@ import { $, browser, by, element, protractor, ProtractorExpectedConditions, $$ }
 class AddField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        fieldVariable: '.rx-data-dictionary-item-value',
-        parentFields: '.modal-body .a-tree__content .a-tree__toggle',
+        fieldVariable: '.expression-node-label',
+        plusSymbol: 'button.d-icon-plus_circle',
+        parentFields: 'rx-data-dictionary-node adapt-highlight',
         okButtonOnEditor: '.modal-footer .btn-primary',
-        cancelButtonOnEditor: '.rx-expression-editor-action-buttons .d-button_secondary',
+        cancelButtonOnEditor: 'button[rx-id="cancel-button"]',
         addField: '.rx-expression-editor-dictionary h5',
-        groupName: '.rx-data-dictionary-item div',
+        groupName: 'div.data-dictionary-container  span.a-tree__toggle',
         allNodesParent: '[rx-id="node"]',
         nodeName: 'adapt-highlight',
         nodeButton: 'button'
@@ -18,9 +19,9 @@ class AddField {
         return await $(this.selectors.addField).getText();
     }
 
-    async navigateToDynamicFieldInCaseTemplate(caseTemplate: string) {
-        let option = await element.all(by.cssContainingText(this.selectors.parentFields, 'Additional Fields from Case Template')).click();
-        let templateName = await element.all(by.cssContainingText(this.selectors.parentFields, caseTemplate)).click();
+    async navigateToDynamicFieldInCaseTemplate(caseTemplate: string): Promise<void> {
+        await $('.data-dictionary-container input[role="searchbox"]').clear();
+        await $('.data-dictionary-container input[role="searchbox"]').sendKeys(caseTemplate);
     }
 
     async navigateToDynamicFieldInTaskTemplate(fromTemplate: string) {
@@ -67,20 +68,23 @@ class AddField {
     }
 
     async selectDynamicField(value: string): Promise<void> {
-        let allPersonNum: number = await $$(this.selectors.allNodesParent).count();
-        for (let i = 0; i < allPersonNum; i++) {
-            let parentNode = await $$(this.selectors.allNodesParent).get(i);
-            let nm: string = await parentNode.$(this.selectors.nodeName).getText();
-            if (nm == value) {
-                parentNode = await $$(this.selectors.allNodesParent).get(i);
-                await parentNode.$(this.selectors.nodeButton).click();
+        let taskBoxesCount: number = await $$(this.selectors.fieldVariable).count();
+        for (let i: number = 0; i < taskBoxesCount; i++) {
+            if (await $$(this.selectors.fieldVariable).get(i).getText() == value) {
+                await $$(this.selectors.plusSymbol).get(i).click();
                 break;
             }
         }
     }
 
     async clickOnGroupName(groupvalue: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.groupName, groupvalue)).click();
+        let taskBoxesCount: number = await $$(this.selectors.parentFields).count();
+        for (let i: number = 0; i < taskBoxesCount; i++) {
+            if (await $$(this.selectors.parentFields).get(i).getText() == groupvalue) {
+                await $$(this.selectors.groupName).get(i).click();
+                break;
+            }
+        }
     }
 
     async isCaseTemplatePresent(caseTemplateValue: string): Promise<boolean> {

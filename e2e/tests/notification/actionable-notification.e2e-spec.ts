@@ -670,7 +670,7 @@ describe("Actionable Notifications", () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let articleResponse = undefined;
         beforeAll(async () => {
-            await apiHelper.apiLogin('tadmin');
+            await apiHelper.apiLogin('demo');
             await apiHelper.updateReviewDueDateRule();
             await apiHelper.apiLogin('tadmin');
             await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', '1_MINUTE');

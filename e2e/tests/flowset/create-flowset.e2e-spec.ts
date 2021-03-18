@@ -251,7 +251,7 @@ describe('Create Flowset', () => {
 
         it('[6278]: Verify if flowset is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('cbarton');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');
@@ -365,7 +365,7 @@ describe('Create Flowset', () => {
 
         it('[5640]: Verify if flowset is accessible to Case Manager user having access to multiple LOB', async () => {
             await navigationPage.signOut();
-            await loginPage.login('cbarton');
+            await loginPage.login('qyuan');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Manage Flowsets--Define Flowsets', BWF_PAGE_TITLES.MANAGE_FLOWSETS.DEFINE_FLOWSETS);
             await utilityGrid.selectLineOfBusiness('Human Resource');

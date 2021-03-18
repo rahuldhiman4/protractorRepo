@@ -114,12 +114,11 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplateAllFields.categoryTier3);
             expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(caseTemplateAllFields.allowCaseReopen);
             expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateName);
-            expect(await copyCaseTemplate.getValueOfCaseCompany()).toBe(caseTemplateAllFields.company);
+            expect(await copyCaseTemplate.getValueOfCaseCompany()).toContain(caseTemplateAllFields.company);
             expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateAllFields.assignmentMethod);
             expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateAllFields.taskFailureConfiguration);
             expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
             expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplateAllFields.caseStatus);
-            expect(await copyCaseTemplate.getValueOfSupportCompany()).toBe(caseTemplateAllFields.company);
             expect(await copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplateAllFields.assignee);
             expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplateAllFields.supportGroup);
             expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateAllFields.ownerCompany);
@@ -160,14 +159,13 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplateRequiredFields.categoryTier3);
             expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(caseTemplateRequiredFields.allowCaseReopen);
             expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateRequiredFields.templateName);
-            expect(await copyCaseTemplate.getValueOfCaseCompany()).toBe(caseTemplateRequiredFields.company);
+            expect(await copyCaseTemplate.getValueOfCaseCompany()).toContain(caseTemplateRequiredFields.company);
             expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateRequiredFields.ownerCompany);
             expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain('US Support 3');
             expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateRequiredFields.assignmentMethod);
             expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateRequiredFields.taskFailureConfiguration);
             expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
             expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplateRequiredFields.caseStatus);
-            expect(await copyCaseTemplate.getValueOfSupportCompany()).toBe(caseTemplateRequiredFields.company);
             expect(await copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplateRequiredFields.assignee);
             expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplateRequiredFields.supportGroup);
             await copyCaseTemplate.clickSaveCaseTemplate();
@@ -211,7 +209,6 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateRequiredFields.taskFailureConfiguration);
             expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
             expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplateRequiredFields.caseStatus);
-            expect(await copyCaseTemplate.getValueOfSupportCompany()).toBe(caseTemplateRequiredFields.company);
             expect(await copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplateRequiredFields.assignee);
             expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplateRequiredFields.supportGroup);
             expect(await copyCaseTemplate.isOwnerGroupEmpty()).toBeTruthy();
@@ -277,7 +274,6 @@ describe('Copy Case Template', () => {
         expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
         expect(await copyCaseTemplate.getValueOfAssignee()).toBe('Qadim Katawazi');
         expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe('US Support 3');
-        expect(await copyCaseTemplate.getValueOfBuisnessUnit()).toBe('United States Support');
         await copyCaseTemplate.clickCancelCaseTemplate();
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
