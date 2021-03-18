@@ -8,6 +8,7 @@ import createCasePage from '../../pageobject/case/create-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePo from '../../pageobject/case/view-case.po';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 import localizeValuePopPo from '../../pageobject/common/localize-value-pop.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -38,7 +39,6 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Menu Item', () => {
     beforeAll(async () => {
@@ -742,7 +742,7 @@ describe('Menu Item', () => {
             await consoleReadAcess.searchAndOpenReadAccess(title);
             await editReadAccessConfigPo.setLabel(labelActive1);
             await editReadAccessConfigPo.clickOnSave();
-           // expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
+            expect(await utilityCommon.isPopUpMessagePresent('The Label you have selected is either Inactive or Deprecated. Please select a valid Label.')).toBeTruthy('Popup message not present');
         });
     });
 });

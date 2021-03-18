@@ -152,8 +152,8 @@ describe('Create Task Template', () => {
         beforeAll(async () => {
             //Manual task Template
             templateData1 = {
-                "templateName": 'manualTaskTemplate4939' + randomStr,
-                "templateSummary": 'manualTaskSummary4939' + randomStr,
+                "templateName": randomStr + 'manualTaskTemplate4939',
+                "templateSummary": randomStr + 'manualTaskSummary4939',
                 "templateStatus": "Draft",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -192,8 +192,8 @@ describe('Create Task Template', () => {
         let description = 'Description' + randomStr;
         //Manual task Template
         templateData1 = {
-            "templateName": 'manualTaskTemplate4943' + randomStr,
-            "templateSummary": 'manualTaskSummary4943' + randomStr,
+            "templateName": randomStr + 'manualTaskTemplate4943',
+            "templateSummary": randomStr + 'manualTaskSummary4943',
             "templateStatus": "Draft",
             "taskCompany": 'Petramco',
             "ownerCompany": "Petramco",
@@ -479,11 +479,15 @@ describe('Create Task Template', () => {
 
     describe('[5675]: [Tasks] Tasks status when resolving the case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, tasktemp, tasktemp1, tasktemp2, manualTemplateData;
+        let newCase, tasktemp, tasktemp1, tasktemp2, manualTemplateData, caseTemplateData;
+        let manualTemplateName1 = randomStr + '5675manualTaskTemplate1';
+        let manualTemplateSummary1 = randomStr + '5675manualTaskSummary1';
+        let manualTemplateName2 = randomStr + '5675manualTaskTemplate2';
+        let manualTemplateSummary2 = randomStr + '5675manualTaskSummary2';
         beforeAll(async () => {
             //adhoc task Template
             let templateData = {
-                "taskName": 'manualTaskTemplateAssigned' + randomStr,
+                "taskName": randomStr + 'manualTaskTemplateAssigned5675',
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
@@ -497,9 +501,9 @@ describe('Create Task Template', () => {
                 "Support Group": "US Support 3",
                 "Assignee": "qkatawazi"
             }
-            let caseTemplateData = {
-                "templateName": 'caseTemplateName' + randomStr,
-                "templateSummary": 'casTemplateSummary' + randomStr,
+            caseTemplateData = {
+                "templateName": randomStr + 'caseTemplateName5675',
+                "templateSummary": randomStr + 'casTemplateSummary5675',
                 "caseStatus": "Assigned",
                 "resolveCaseonLastTaskCompletion": "1",
                 "templateStatus": "Active",
@@ -509,28 +513,27 @@ describe('Create Task Template', () => {
                 "ownerGroup": "US Support 3",
             }
             manualTemplateData = {
-                "templateName": 'manualTaskTemplate' + randomStr,
-                "templateSummary": 'manualTaskSummary' + randomStr,
+                "templateName": manualTemplateName1,
+                "templateSummary": manualTemplateSummary1,
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "assignee": "qfeng",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3"
-
             }
 
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
-            manualTemplateData.templateName = 'manualTaskTemplate1' + randomStr;
-            manualTemplateData.templateSummary = 'manualTaskSummary1' + randomStr;
+            manualTemplateData.templateName = manualTemplateName2;
+            manualTemplateData.templateSummary = manualTemplateSummary2;
             await apiHelper.createManualTaskTemplate(manualTemplateData);
             await apiHelper.createCaseTemplate(caseTemplateData);
             newCase = await apiHelper.createCase(caseData1);
             tasktemp = await apiHelper.createAdhocTask(newCase.id, templateData);
-            templateData.taskName = 'manualTaskTemplateInProgress' + randomStr;
+            templateData.taskName = randomStr + 'manualTaskTemplateInProgress5675';
             tasktemp1 = await apiHelper.createAdhocTask(newCase.id, templateData);
-            templateData.taskName = 'manualTaskTemplatePending' + randomStr;
+            templateData.taskName = randomStr + 'manualTaskTemplatePending5675';
             tasktemp2 = await apiHelper.createAdhocTask(newCase.id, templateData);
             await apiHelper.updateCaseStatus(newCase.id, 'InProgress');
             await apiHelper.updateTaskStatus(tasktemp.id, 'Assigned');
@@ -566,36 +569,36 @@ describe('Create Task Template', () => {
         it('[5675]: Create second case and validate it', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
-            await createCasePage.setSummary('caseTemplateName' + randomStr);
+            await createCasePage.setSummary(caseTemplateData.templateName);
             await createCasePage.clickSelectCaseTemplateButton();
-            await selectCasetemplateBladePo.selectCaseTemplate('caseTemplateName' + randomStr);
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
         });
         it('[5675]: Add the task on the case', async () => {
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate('manualTaskTemplate' + randomStr);
-            await manageTask.addTaskFromTaskTemplate('manualTaskTemplate1' + randomStr);
-            await manageTask.clickTaskLink('manualTaskSummary' + randomStr);
+            await manageTask.addTaskFromTaskTemplate(manualTemplateName1);
+            await manageTask.addTaskFromTaskTemplate(manualTemplateName2);
+            await manageTask.clickTaskLink(manualTemplateSummary1);
             await viewTask.clickOnViewCase();
             await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closeAllBlades();
             await navigationPage.gotoTaskConsole();
-            await taskConsolePo.searchAndOpenTask('manualTaskSummary' + randomStr);
+            await taskConsolePo.searchAndOpenTask(manualTemplateSummary1);
             await viewTask.clickOnEditTask();
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
         });
         it('[5675]: Change the task to complete', async () => {
             await updateStatusBladePo.changeStatus("Completed");
-            await updateStatusBladePo.selectStatusReason("Successful")
+            await updateStatusBladePo.selectStatusReason("Successful");
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closeAllBlades();
             await viewTask.clickOnViewCase();
             await navigationPage.gotoTaskConsole();
-            await taskConsolePo.searchAndOpenTask('manualTaskSummary1' + randomStr);
+            await taskConsolePo.searchAndOpenTask(manualTemplateSummary2);
             await viewTask.clickOnEditTask();
             await editTaskPo.clickOnAssignToMe();
             await editTaskPo.clickOnSaveButton();
