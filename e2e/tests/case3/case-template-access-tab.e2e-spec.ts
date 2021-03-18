@@ -161,6 +161,7 @@ describe('Case Edit Backlog Test', () => {
             expect(await viewCaseTemplate.getCategoryTier1()).toBe(caseTemplateData1.categoryTier1);
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 2', 'Read')).toBeTruthy('FailuerMsg2: Support Group is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 3', 'Write')).toBeTruthy('FailuerMsg2: Support Group is missing');
         })
     });
 });
