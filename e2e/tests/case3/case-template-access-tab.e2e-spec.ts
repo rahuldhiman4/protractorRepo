@@ -151,7 +151,6 @@ describe('Case Edit Backlog Test', () => {
             await createCasetemplatePo.setTemplateName('CopiedTemplate'+randomStr);
             await createCasetemplatePo.clickSaveCaseTemplate();
             await viewCaseTemplate.clickBackArrowBtn();
-            await viewCaseTemplate.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate('CopiedTemplate'+randomStr);
             await viewCaseTemplate.selectTab('Case Access');
             expect(await viewCaseTemplate.getCategoryTier1()).toBe(caseTemplateData1.categoryTier1);
