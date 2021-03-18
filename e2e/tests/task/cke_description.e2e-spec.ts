@@ -732,17 +732,19 @@ describe('CKE Description', () => {
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
-            await createAdhocTaskPo.setSummary(randomString)
+            await createAdhocTaskPo.setSummary(randomString);
+
             // bold
-            await createAdhocTaskPo.updateTaskDescription("this is text");
             await createAdhocTaskPo.clickOnBoldIcon();
             await createAdhocTaskPo.updateTaskDescription(boldText);
             expect(await ckeditorValidationPo.isBoldTextDisplayedInCkEditorTextArea(boldText)).toBeTruthy('Text is not get Bold In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnBoldIcon();
             //italic
             await createAdhocTaskPo.clickOnItalicIcon();
             await createAdhocTaskPo.updateTaskDescription(italicText);
             expect(await ckeditorValidationPo.isItalicTextDisplayedInCkEditorTextArea(italicText)).toBeTruthy('Text is not Italic In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnItalicIcon();
             //underline
             await createAdhocTaskPo.clickOnUnderLineIcon();
@@ -752,33 +754,30 @@ describe('CKE Description', () => {
             await createAdhocTaskPo.clickOnUnderLineIcon();
         });
         it('[3521] Alignment,Bullet Point and Maximum / Minimum with CKE', async () => {
-            //left Align
-            await createAdhocTaskPo.enterNewLineInCKE();
-            await createAdhocTaskPo.clickOnLeftAlignIcon();
-            await createAdhocTaskPo.updateTaskDescription(lefAlignText);
-            expect(await createAdhocTaskPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
-            await createAdhocTaskPo.clickOnLeftAlignIcon();
-            //Right Align
-            await createAdhocTaskPo.enterNewLineInCKE();
-            await createAdhocTaskPo.clickOnRightAlignIcon();
-            await createAdhocTaskPo.updateTaskDescription(rightAlignText);
-            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
-            await createAdhocTaskPo.enterNewLineInCKE();
-            await createAdhocTaskPo.clickOnRightAlignIcon();
             //Center Align
-            await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnCenterAlignIcon();
             await createAdhocTaskPo.updateTaskDescription(centerAlignText);
             expect(await ckeditorValidationPo.isTextCenterAlignInCkEditorTextArea(centerAlignText)).toBeTruthy('Text is not center Align In Ck Editor');
             await createAdhocTaskPo.enterNewLineInCKE();
             await createAdhocTaskPo.clickOnCenterAlignIcon();
-            //set color
+            //left Align
+            await createAdhocTaskPo.clickOnLeftAlignIcon();
+            await createAdhocTaskPo.updateTaskDescription(lefAlignText);
+            expect(await createAdhocTaskPo.isTextLeftAlignInCkEditorTextArea(lefAlignText)).toBeTruthy('Text is not Left Align In Ck Editor');
             await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.clickOnLeftAlignIcon();
+            //Right Align
+            await createAdhocTaskPo.clickOnRightAlignIcon();
+            await createAdhocTaskPo.updateTaskDescription(rightAlignText);
+            expect(await ckeditorValidationPo.isTextRightAlignInCkEditorTextArea(rightAlignText)).toBeTruthy('Text is not right Align In Ck Editor');
+            await createAdhocTaskPo.enterNewLineInCKE();
+            await createAdhocTaskPo.clickOnRightAlignIcon();
+            //set color
             await createAdhocTaskPo.selectColor('Strong Red');
             await createAdhocTaskPo.updateTaskDescription(redColorText);
             expect(await ckeditorValidationPo.isColorTextDisplayedInCkEditorTextArea(redColorText, 'color:#c0392b;')).toBeTruthy('Color is not set In Ck Editor');
-            //checking number list
             await createAdhocTaskPo.enterNewLineInCKE();
+            //checking number list
             await createAdhocTaskPo.setInsertRemoveNumberList('PlusOne');
             expect(await ckeditorValidationPo.isNumberListDisplayedInCkEditorTextArea('PlusOne')).toBeTruthy('Text is not center Align In Ck Editor');
             await createAdhocTaskPo.enterNewLineInCKE();

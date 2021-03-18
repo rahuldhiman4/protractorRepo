@@ -98,7 +98,7 @@ class ViewTask {
     async clickOnChangeStatus(): Promise<void> {
         await $$(this.selectors.taskStatus).get(1).click();
     }
-//need to remove this method - Use updateStatusBladePo.changeStatus
+    //need to remove this method - Use updateStatusBladePo.changeStatus
     async changeTaskStatus(statusValue: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.statusDropDown, statusValue);
     }
@@ -170,18 +170,6 @@ class ViewTask {
 
     async isRequesterMailDisplayed(): Promise<boolean> {
         return await $(this.selectors.requesterMail).isDisplayed();
-    }
-
-    async isCategoryTier1ValueDisplayed(): Promise<boolean> {
-        return await $(this.selectors.categoryTier1Value).isDisplayed();
-    }
-
-    async isCategoryTier2ValueDisplayed(): Promise<boolean> {
-        return await $(this.selectors.categoryTier2Value).isDisplayed();
-    }
-
-    async isCategoryTier3ValueDisplayed(): Promise<boolean> {
-        return await $(this.selectors.categoryTier3Value).isDisplayed();
     }
 
     async isAssigneeNameDisplayed(): Promise<boolean> {
@@ -441,11 +429,11 @@ class ViewTask {
 
     async isDynamicFieldDisplayed(fieldName: string): Promise<boolean> {
         return await element(by.cssContainingText('[class="d-textfield ng-star-inserted"] label', fieldName)).isPresent().then(async (result) => {
-            if(result) return await element(by.cssContainingText('[class="d-textfield ng-star-inserted"] label', fieldName)).isDisplayed();
+            if (result) return await element(by.cssContainingText('[class="d-textfield ng-star-inserted"] label', fieldName)).isDisplayed();
             else return false;
         })
     }
-  
+
     async isEditAssignmentDisabled(): Promise<boolean> {
         return await $(this.selectors.editAssignment).isPresent().then(async (result) => {
             if (result) {

@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, Key, protractor, ProtractorExpectedConditions, $$ } from "protractor";
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import utilityCommon from '../../utils/utility.common';
 import changeAssignmentBladePo from "../common/change-assignment.po";
@@ -271,8 +271,8 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        let leftAlignemntElement = await element(by.css('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu div'));
-        return await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement)
+        let leftAlignemntElement = await $$('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu p').get(8);
+        return await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement);
     }
 
     async setInsertRemoveNumberList(value: string): Promise<void> {
