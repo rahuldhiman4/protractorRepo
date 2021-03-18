@@ -16,6 +16,18 @@ class AccessTab {
         confidencialAccess: '[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] .bwf-access-manager .access-group .btn-title',
         entityDropDown: '.support-group-form button.dropdown-toggle',
         dropDownOption: '.dropdown_select__menu-content button',
+        caseAccessGroup: '.bwf-access-manager .access-group'
+    }
+
+    async clickToExpandAccessEntitiyByGroup(groupName: string) {
+        let count = await $$(this.selectors.caseAccessGroup).count();
+        for(let i=0; i<count; i++) {
+            let groupTitle = await $$(this.selectors.caseAccessGroup).get(i).$('.card-title').getText();
+            if(groupTitle == groupName) {
+                await $$(this.selectors.caseAccessGroup).get(i).$(this.selectors.caseAccess).click();
+                break;
+            }
+        }
     }
 
     async clickToExpandAccessEntitiySearch(accessName: string, moduleName: string): Promise<void> {
