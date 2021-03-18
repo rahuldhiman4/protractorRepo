@@ -1,7 +1,7 @@
 import { browser } from "protractor";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
-import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import viewCaseTemplate from "../../pageobject/settings/case-management/view-casetemplate.po";
 import consoleCasetemplatePo from "../../pageobject/settings/case-management/console-casetemplate.po";
@@ -12,7 +12,7 @@ import viewCasePo from '../../pageobject/case/view-case.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
 import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
-import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
 
 describe('Case Edit Backlog Test', () => {
     beforeAll(async () => {
@@ -136,6 +136,23 @@ describe('Case Edit Backlog Test', () => {
             await viewCasePo.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 2', 'Read')).toBeTruthy('FailuerMsg2: Support Group is missing');
+        })
+        it('[4139]: support group should visible in case access tab after copy case template', async() => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateData1.templateName);
+            await viewCaseTemplate.clickCopycaseTemplate();
+            await createCasetemplatePo.setTemplateName('CopiedTemplate'+randomStr);
+            await createCasetemplatePo.clickSaveCaseTemplate();
+            await viewCaseTemplate.clickBackArrowBtn();
+            await viewCaseTemplate.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate('CopiedTemplate'+randomStr);
+            await viewCaseTemplate.selectTab('Case Access');
+            expect(await viewCaseTemplate.getCategoryTier1()).toBe(caseTemplateData1.categoryTier1);
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 2', 'Read')).toBeTruthy('FailuerMsg2: Support Group is missing');
         })
         afterAll(async () => {
             await navigationPage.signOut();
