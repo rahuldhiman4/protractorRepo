@@ -87,9 +87,6 @@ describe('Case Edit Backlog Test', () => {
             // await accessTabPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
             // await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 2', 'Read')).toBeTruthy('FailuerMsg2: Support Group is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 3', 'Write')).toBeTruthy('FailuerMsg2: Support Group is missing');
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
@@ -113,9 +110,6 @@ describe('Case Edit Backlog Test', () => {
             // await accessTabPo.selectAccessEntityDropDown('US Support 2', 'Select Support Group');
             // await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 2', 'Read')).toBeTruthy('FailuerMsg2: Support Group is missing');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 3', 'Write')).toBeTruthy('FailuerMsg2: Support Group is missing');
             await viewCaseTemplate.clickEditTemplateMetaData();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
@@ -136,6 +130,7 @@ describe('Case Edit Backlog Test', () => {
             await viewCasePo.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 2', 'Read')).toBeTruthy('FailuerMsg2: Support Group is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 3', 'Write')).toBeTruthy('FailuerMsg2: Support Group is missing');
 
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
@@ -144,6 +139,7 @@ describe('Case Edit Backlog Test', () => {
             await viewCasePo.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 2', 'Read')).toBeTruthy('FailuerMsg2: Support Group is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 3', 'Write')).toBeTruthy('FailuerMsg2: Support Group is missing');
         })
         it('[4138, 4139]: support group should visible in case access tab after copy case template', async() => {
             await navigationPage.signOut();
@@ -162,6 +158,7 @@ describe('Case Edit Backlog Test', () => {
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 2', 'Read')).toBeTruthy('FailuerMsg2: Support Group is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('LA Support 3', 'Write')).toBeTruthy('FailuerMsg2: Support Group is missing');
+            await viewCaseTemplate.clickBackArrowBtn();
         })
     });
 });
