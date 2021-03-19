@@ -1,25 +1,27 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import loginPage from "../../pageobject/common/login.po";
-import navigationPage from "../../pageobject/common/navigation.po";
 import { BWF_BASE_URL,  } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
-import createCasePage from "../../pageobject/case/create-case.po";
+import loginPO from "../../pageobject/common/login.po";
+import navigationPO from "../../pageobject/common/navigation.po";
+import createCasePO from "../../pageobject/case/create-case.po";
+import caseConsolePO from "../../pageobject/case/case-console.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePO from '../../pageobject/case/edit-case.po';
-import caseTemplatePage from '../../pageobject/case/select-casetemplate-blade.po';
-import viewCasePage from "../../pageobject/case/view-case.po";
-import activityTabPo from "../../pageobject/social/activity-tab.po";
+import caseTemplatePO from '../../pageobject/case/select-casetemplate-blade.po';
+import viewCasePO from "../../pageobject/case/view-case.po";
+import activityTabPO from "../../pageobject/social/activity-tab.po";
+import utilityGrid from "../../utils/utility.grid";
 
 describe('[4055]: Dynamic Field of Type Attachment Test', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
-        await loginPage.login('qkatawazi');
+        await loginPO.login('qkatawazi');
     });
 
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
-        await navigationPage.signOut();
+        await navigationPO.signOut();
     });
 
     //nipande
@@ -47,25 +49,45 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
         it('[4055]: should create case with existing template with attachments', async function () {
            let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
            let caseSummary = 'Case Summary ' + randomStr;
-           await navigationPage.gotoCreateCase();
-           expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
-           await createCasePage.selectRequester('adam');
-           expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy();
-           await createCasePage.setSummary(caseSummary);
-           expect(await createCasePage.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
-           await createCasePage.clickAssignToMeButton();
-           await createCasePage.clickSaveCaseButton();
+           await navigationPO.gotoCreateCase();
+           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
+           await createCasePO.selectRequester('adam');
+           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
+           await createCasePO.setSummary(caseSummary);
+           expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
+           await createCasePO.clickAssignToMeButton();
+           await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
-           await viewCasePage.clickEditCaseButton();
+           await viewCasePO.clickEditCaseButton();
            expect (await editCasePO.getSelectCaseTemplate()).toBe('Select Case Template');
            await editCasePO.clickOnSelectCaseTemplate();
-           await caseTemplatePage.selectCaseTemplate(caseTemplateData.templateName);
+           await caseTemplatePO.selectCaseTemplate(caseTemplateData.templateName);
            await editCasePO.clickSaveCase();
-           await viewCasePage.clickEditCaseButton();
+           await viewCasePO.clickEditCaseButton();
            await editCasePO.addAttachment('Attachment1_4055', ['../../data/ui/attachment/demo.txt']);
            await editCasePO.addAttachment('Attachment2_4055', ['../../data/ui/attachment/demo.txt']);
            await editCasePO.clickSaveCase();          
-           expect(await activityTabPo.getAllTaskActivity("demo.txt(+)")).toBe("demo.txt(+)");
+           expect(await activityTabPO.getAllTaskActivity("demo.txt(+)")).toBe("demo.txt(+)");
+        });
+    });
+
+    //nipande
+    describe('[5397]: Check Description and Summary should not be updated after template change', async () => {
+        beforeAll(async () => {
+            await apiHelper.apiLogin('qkatawazi');
+        });
+        it('[5397]: Check Description and Summary should not be updated after template change', async function () {
+            await navigationPO.gotoCaseConsole();
+            await utilityGrid.clearFilter();
+            await caseConsolePO.setCaseSearchBoxValue('New');
+            await caseConsolePO.clickFirstLinkInCaseSearchGrid();
+            await viewCasePO.clickEditCaseButton();
+            expect (await editCasePO.getSelectCaseTemplate()).toBe('Select Case Template');
+            await editCasePO.clickOnSelectCaseTemplate();
+            await caseTemplatePO.clickOnRecommendedTemplateTab();
+            await caseTemplatePO.selectFirstRecommendedTemplate();
+            await caseTemplatePO.clickRecommendedApplyBtn();
+            await editCasePO.clickSaveCase(); 
         });
     });
 });
