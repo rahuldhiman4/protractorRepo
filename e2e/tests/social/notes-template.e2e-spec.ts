@@ -35,7 +35,6 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
-import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 let tableRowFieldIndex = 0;
 let tableColumnFieldIndex = 1;
@@ -1152,7 +1151,7 @@ describe('Notes template', () => {
             await createAdhocTaskPo.setSummary('AdhocTask_DRDMV_16045');
             await createAdhocTaskPo.setDescription("Description");
             await createAdhocTaskPo.selectPriority('Low');
-            await changeAssignmentPo.clickAssignToMeBtn();
+            await createAdhocTaskPo.clickAssignToMeButton();
             await createAdhocTaskPo.clickSaveAdhoctask(4);
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closeAllBlades();
