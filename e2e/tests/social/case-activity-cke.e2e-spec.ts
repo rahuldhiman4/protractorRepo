@@ -19,7 +19,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import changeAssignmentPo from 'e2e/pageobject/common/change-assignment.po';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Case Activity CKE', () => {
 

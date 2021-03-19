@@ -1469,7 +1469,7 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw..not fixed
-    fdescribe('[6088]: [Edit Task] Update summary, status, description and assignment', async () => {
+    describe('[6088]: [Edit Task] Update summary, status, description and assignment', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
         let month = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
