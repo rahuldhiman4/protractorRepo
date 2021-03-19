@@ -93,7 +93,7 @@ describe('Create Adhoc Task', () => {
     });
 
     //Data issue
-    fdescribe('[6105]: [Permissions] Navigating to case from the task', async () => {
+    describe('[6105]: [Permissions] Navigating to case from the task', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, taskTemplateData;
         beforeAll(async () => {
