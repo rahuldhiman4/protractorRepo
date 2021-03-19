@@ -31,55 +31,27 @@ describe('Create Adhoc task', () => {
         await navigationPage.signOut();
     });
 
-    it('[5794,6296]: Adhoc Task Create view (UI verification)', async () => {
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        //Create Case
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
+    describe('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+        let taskSummary = 'Adhoc task Summary' + Math.floor(Math.random() * 1000000);
+        let caseSummary = 'Case Summary' + Math.floor(Math.random() * 1000000);
+        it('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+            //Create Case
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary(caseSummary);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
-        expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
-
-        expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
-        expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy("status");
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.selectPriority('High');
-        await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
-        await adhoctaskTemplate.selectCategoryTier2('Compensation');
-        await adhoctaskTemplate.selectCategoryTier3('Bonus');
-        await adhoctaskTemplate.clickSaveAdhoctask();
-        await utilityCommon.closePopUpMessage();
-        expect(await manageTask.isTaskLinkPresent(summary)).toBeTruthy();
-        await manageTask.clickCloseButton();
-    });
-
-    describe('[5793,5566,6087,4977]: Adhoc Task details validation', async () => {
-        let summary = 'Adhoc task ' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, caseData;
-        beforeAll(async () => {
-            caseData = {
-                "Requester": "apavlik",
-                "Summary": "5793 " + summary,
-            }
-            await apiHelper.apiLogin('qtao');
-            newCase = await apiHelper.createCase(caseData);
-        });
-        it('[5793,5566,6087,4977]: Create Adhoc Task', async () => {
-            await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(newCase.displayId);
             //Adhoc task validation
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
+            expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
+            expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
+            expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy("status");
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
-            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setSummary(taskSummary);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
@@ -90,8 +62,8 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
         });
-        it('[5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
-            await manageTask.clickTaskLink(summary);
+        it('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+            await manageTask.clickTaskLink(taskSummary);
             expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy("Process field seen");
             expect(await viewTask.getTaskTypeValue()).toBe('Manual');
             expect(await viewTask.isProcessNameValue()).toBeFalsy("Process name seen");
@@ -113,12 +85,13 @@ describe('Create Adhoc task', () => {
             expect(await viewTask.isAssignCompanyDisplayed()).toBeTruthy("Assigned company not seen");
             expect(await viewTask.clickOnTab('Activity')); // validation to check activity tab is present
             await viewTask.clickOnViewCase();
-            expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);
+            expect(await viewCasePage.getCaseSummary()).toBe(caseSummary);
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
     });
+
     //Data issue
     describe('[6105]: [Permissions] Navigating to case from the task', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -143,8 +116,8 @@ describe('Create Adhoc task', () => {
                 "Summary": 'Summary ' + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(taskTemplateData);

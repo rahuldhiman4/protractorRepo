@@ -1549,7 +1549,6 @@ describe('Create Case Task', () => {
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
             expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
-            expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy("company");
             expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy("assigned group");
             await adhoctaskTemplate.setSummary("Summary" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
