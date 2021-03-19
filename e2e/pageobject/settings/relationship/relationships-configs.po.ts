@@ -10,6 +10,7 @@ class RelationshipConfigsPage {
         relationshipFields: 'input',
         saveButton: '.bwf-footer button.btn-primary',
         relationshipNameOrReverseRelationshipName: '.textfield__wrapper input',
+        relationCard: 'adapt-accordion button.card-title'
     }
 
     async isAddRelationButtonDisabled(): Promise<boolean> {
@@ -97,6 +98,10 @@ class RelationshipConfigsPage {
     async setNewRelationshipStatus(status: string): Promise<void> {
         await $$(this.selectors.relations).last().$$('.dropdown-toggle').last().click();
         await element(by.cssContainingText('.adapt-accordion .card .dropdown-item', status)).click();
+    }
+
+    async clickFirstCardTitle(): Promise<void> {
+        await $$(this.selectors.relationCard).first().click();
     }
 }
 
