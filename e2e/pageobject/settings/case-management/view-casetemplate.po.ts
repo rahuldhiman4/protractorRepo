@@ -63,6 +63,7 @@ class ViewCaseTemplate {
     }
 
     async clickOneTask(): Promise<void> {
+        await  utilityCommon.scrollToElement($(this.selectors.oneTask));
         await $(this.selectors.oneTask).click();
     }
 
