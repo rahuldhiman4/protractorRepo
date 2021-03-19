@@ -6,7 +6,7 @@ import caseConsolePo from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
 import viewCasePage from "../../pageobject/case/view-case.po";
-import changeAssignmentBladePo from '../../pageobject/common/change-assignment.po';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
@@ -20,7 +20,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
-describe('Create Adhoc task', () => {
+describe('Create Adhoc Task', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qtao');
@@ -31,67 +31,39 @@ describe('Create Adhoc task', () => {
         await navigationPage.signOut();
     });
 
-    it('[5794,6296]: Adhoc Task Create view (UI verification)', async () => {
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        //Create Case
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
+    describe('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+        let taskSummary = 'Adhoc task Summary' + Math.floor(Math.random() * 1000000);
+        let caseSummary = 'Case Summary' + Math.floor(Math.random() * 1000000);
+        it('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+            //Create Case
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary(caseSummary);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
-        expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
-
-        expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
-        expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy("status");
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.selectPriority('High');
-        await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
-        await adhoctaskTemplate.selectCategoryTier2('Compensation');
-        await adhoctaskTemplate.selectCategoryTier3('Bonus');
-        await adhoctaskTemplate.clickSaveAdhoctask();
-        await utilityCommon.closePopUpMessage();
-        expect(await manageTask.isTaskLinkPresent(summary)).toBeTruthy();
-        await manageTask.clickCloseButton();
-    });
-
-    describe('[5793,5566,6087,4977]: Adhoc Task details validation', async () => {
-        let summary = 'Adhoc task ' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, caseData;
-        beforeAll(async () => {
-            caseData = {
-                "Requester": "apavlik",
-                "Summary": "5793 " + summary,
-            }
-            await apiHelper.apiLogin('qtao');
-            newCase = await apiHelper.createCase(caseData);
-        });
-        it('[5793,5566,6087,4977]: Create Adhoc Task', async () => {
-            await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(newCase.displayId);
             //Adhoc task validation
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
+            expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
+            expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
+            expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy("status");
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
-            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setSummary(taskSummary);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
             await adhoctaskTemplate.selectCategoryTier2('Compensation');
             await adhoctaskTemplate.selectCategoryTier3('Bonus');
             await adhoctaskTemplate.selectCategoryTier4('GICP');
-            await adhoctaskTemplate.clickAssignToMeButton();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
         });
-        it('[5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
-            await manageTask.clickTaskLink(summary);
+        it('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+            await manageTask.clickTaskLink(taskSummary);
             expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy("Process field seen");
             expect(await viewTask.getTaskTypeValue()).toBe('Manual');
             expect(await viewTask.isProcessNameValue()).toBeFalsy("Process name seen");
@@ -113,21 +85,22 @@ describe('Create Adhoc task', () => {
             expect(await viewTask.isAssignCompanyDisplayed()).toBeTruthy("Assigned company not seen");
             expect(await viewTask.clickOnTab('Activity')); // validation to check activity tab is present
             await viewTask.clickOnViewCase();
-            expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);
+            expect(await viewCasePage.getCaseSummary()).toBe(caseSummary);
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
     });
+
     //Data issue
-    describe('[6105]: [Permissions] Navigating to case from the task', async () => {
+    fdescribe('[6105]: [Permissions] Navigating to case from the task', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, taskTemplateData;
         beforeAll(async () => {
             // create manual task template
             taskTemplateData = {
-                "templateName": `${randomStr} Manual task`,
-                "templateSummary": `${randomStr} Manual task summary`,
+                "templateName": `${randomStr} Manual task 6105`,
+                "templateSummary": `${randomStr} Manual task summary 6105`,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "buisnessUnit": "Australia Support",
@@ -372,7 +345,7 @@ describe('Create Adhoc task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary("test" + summary);
-            await adhoctaskTemplate.clickAssignButton();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTask.addTaskFromTaskTemplate(templateData1.templateSummary);
@@ -385,28 +358,28 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Assignee validation2', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('Assignee', "Priscilla Presley");
+            await changeAssignmentPo.setDropDownValue('Assignee', "Priscilla Presley");
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Priscilla Presley');
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getAllTaskActivity('Priscilla Presley')).toBe('Priscilla Presley');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.clickAssignToMeBtn();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
         });
         it('[5658]: Assignee validation3', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentPo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup");
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
+            await changeAssignmentPo.isDropDownDisplayed("AssignedGroup");
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
@@ -414,16 +387,16 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: Assignee validation4', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnAssignToMe(); // Failing due to slow API response, check with dev
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentPo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
@@ -439,28 +412,28 @@ describe('Create Adhoc task', () => {
             await utilityCommon.closePopUpMessage();
             expect((await viewTask.getAssigneeText()).trim()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('Assignee', "Priscilla Presley");
+            await changeAssignmentPo.setDropDownValue('Assignee', "Priscilla Presley");
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Priscilla Presley');
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.getAllTaskActivity('Priscilla Presley')).toBe('Priscilla Presley');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.clickAssignToMeBtn();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
         });
         it('[5658]: Second Task validation2', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentPo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.isDropDownDisplayed("AssignedGroup");
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qadim Katawazi');
+            await changeAssignmentPo.isDropDownDisplayed("AssignedGroup");
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'US Support 3');
+            await changeAssignmentPo.setDropDownValue('Assignee', 'Qadim Katawazi');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await activityTabPo.getAllTaskActivity('Qadim Katawazi')).toBe('Qadim Katawazi');
@@ -468,16 +441,16 @@ describe('Create Adhoc task', () => {
         });
         it('[5658]: [Assignment] Changing the Assignment when editing the task by the member of one Support Group', async () => {
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getAssigneeText()).toBe('Qianru Tao');
             await viewTask.clickOnEditTask();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 1');
+            await changeAssignmentPo.setDropDownValue('AssignedGroup', 'US Support 1');
             await editTask.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
-            expect(await changeAssignmentBladePo.getAssignedGroupText()).toBe('US Support 1');
+            expect(await changeAssignmentPo.getAssignedGroupText()).toBe('US Support 1');
             await viewTask.clickOnEditTask();
             await editTask.clickOnAssignToMe();
             await editTask.clickOnSaveButton();

@@ -23,6 +23,7 @@ import manageTask from '../../pageobject/task/manage-task-blade.po';
 import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES, DropDownType } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Document Library Consume Permission', () => {
     let filePath1 = 'e2e/data/ui/attachment/bwfJpg.jpg';
@@ -292,7 +293,7 @@ describe('Document Library Consume Permission', () => {
             await attachDocumentBladePo.searchRecord(publish[0]);
             await attachDocumentBladePo.selectDocument(publish[0]);
             await attachDocumentBladePo.clickOnAttachButton();
-            await adhoctaskTemplate.clickAssignToMeButton();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTask.clickTaskLink(adhocTaskSummary1);
