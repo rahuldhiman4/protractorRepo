@@ -11,7 +11,7 @@ import caseTemplatePage from '../../pageobject/case/select-casetemplate-blade.po
 import viewCasePage from "../../pageobject/case/view-case.po";
 import activityTabPo from "../../pageobject/social/activity-tab.po";
 
-describe('Dynamic Field of Type Attachment Test', () => {
+describe('[4055]: Dynamic Field of Type Attachment Test', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -22,7 +22,7 @@ describe('Dynamic Field of Type Attachment Test', () => {
         await navigationPage.signOut();
     });
 
-    //ashastra
+    //nipande
     describe('[4055]: Adding Dynamic Groups', async () => {
         let caseTemplateData;
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -44,7 +44,7 @@ describe('Dynamic Field of Type Attachment Test', () => {
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'CASE_TEMPLATE_WITH_ATTACHMENT_FIELDS');
         });
         
-        it('[4055] should create case with existing template with attachments', async function () {
+        it('[4055]: should create case with existing template with attachments', async function () {
            let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
            let caseSummary = 'Case Summary ' + randomStr;
            await navigationPage.gotoCreateCase();
@@ -65,7 +65,6 @@ describe('Dynamic Field of Type Attachment Test', () => {
            await editCasePO.addAttachment('Attachment1_4055', ['../../data/ui/attachment/demo.txt']);
            await editCasePO.addAttachment('Attachment2_4055', ['../../data/ui/attachment/demo.txt']);
            await editCasePO.clickSaveCase();          
-           expect(await activityTabPo.getAllTaskActivity("demo.txt(+)")).toBe("demo.txt(+)");
            expect(await activityTabPo.getAllTaskActivity("demo.txt(+)")).toBe("demo.txt(+)");
         });
     });
