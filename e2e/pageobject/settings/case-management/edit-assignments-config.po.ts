@@ -5,7 +5,7 @@ class AssignmentConfigEditPage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        editAssignmentMappingFields: '[rx-view-component-id="64a33e3d-2657-4b94-b357-ab0192d7f187"] .form-control-label',
+        editAssignmentMappingFields: '[rx-view-component-id="64a33e3d-2657-4b94-b357-ab0192d7f187"] .form-control-label span',
         editName: '[rx-view-component-id="b268be04-346e-424c-be99-7ad16da78037"] input',
         defaultToggle: '[rx-view-component-id="7ca691fd-c299-411f-90fa-9639cbe083c1"] button',
         saveButton: '[rx-view-component-id="0661b9a6-3c08-455c-9972-a2b6f9ca2c0e"] button',
@@ -19,7 +19,7 @@ class AssignmentConfigEditPage {
         categoryTier4Guid: 'ac87041f-3b96-497a-b314-d540908378df',
         labelValue: '[rx-view-component-id="42098f05-304f-4c07-b5c1-4d12e1f9c717"] .dropdown-toggle',
         labelGuid: '42098f05-304f-4c07-b5c1-4d12e1f9c717',
-        lobValue: '[rx-view-component-id="168c91ba-ee0e-4f79-8287-a6859be12778"] .pull-left'
+        lobValue: '[rx-view-component-id="c18c4e95-a388-44a5-91d2-249888ea7d40"] .rx-select__search-button-title'
     }
 
     async isEditAssignmentNameDisabled(): Promise<boolean> {
@@ -52,7 +52,9 @@ class AssignmentConfigEditPage {
         let fieldsCount: number = await $$(this.selectors.editAssignmentMappingFields).count();
         for (let i = 0; i < fieldsCount; i++) {
             let labelTxt: string = await $$(this.selectors.editAssignmentMappingFields).get(i).getText();
-            arr[i] = labelTxt;
+            if(labelTxt != '(required)') {
+                arr[i] = labelTxt;
+            }
         }
         arr = arr.sort();
         arr = arr.filter(v => v != '');

@@ -628,7 +628,7 @@ describe("Attachment", () => {
             await createAssignmentsConfigPo.setAssignmentMapName(title);
             await createAssignmentsConfigPo.setCompany("Petramco");
             await createAssignmentsConfigPo.setSupportCompany("Petramco");
-            await createAssignmentsConfigPo.setBusinessUnit('Canada Support');
+            await createAssignmentsConfigPo.setSupportOrg('Canada Support');
             await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
             await createAssignmentsConfigPo.setCategoryTier1(categName1);
             await createAssignmentsConfigPo.setCategoryTier2(categName2);
