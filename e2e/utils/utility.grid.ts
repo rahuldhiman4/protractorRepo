@@ -746,7 +746,10 @@ export class GridOperations {
     }
 
     async clearFilterNameOnEditPresetFilter(): Promise<void> {
-        await $$('.advanced-filter__editing-container .rx-form-control').get(0).clear();
+        for (let j: number = 0; j < 17; j++) {
+            await $$('.advanced-filter__editing-container .rx-form-control').get(0).sendKeys(protractor.Key.BACK_SPACE);
+             }
+        //await $$('.advanced-filter__editing-container .rx-form-control').get(0).clear();
     }
 
     async isValidationMessageDisplayedOnEditPresetFilter(validationMessage): Promise<boolean> {
