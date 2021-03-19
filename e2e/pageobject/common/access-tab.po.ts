@@ -59,7 +59,7 @@ class AccessTab {
         }
         else {
             for (let i: number = 0; i < dropDownListCount; i++) {
-                let dropDownName = await $$(dropDownListRows).get(i).$('.dropdown-toggle').getText();
+                let dropDownName = await (await $$(dropDownListRows).get(i).$('.dropdown-toggle')).getText();
                 if (dropDownName == dropDownList) {
                     await $$(dropDownListRows).get(i).$('.dropdown-toggle').click();
                     await $(this.selectors.searchInputField).sendKeys(entityValue);

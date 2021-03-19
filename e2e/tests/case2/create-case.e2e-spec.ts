@@ -296,7 +296,7 @@ describe("Create Case", () => {
     // passed
     describe('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', () => {
         it('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
-            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
+            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed1 ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
             await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
@@ -307,7 +307,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
+            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed2 ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
@@ -319,7 +319,7 @@ describe("Create Case", () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
             await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed ");
+            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed3 ");
             await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
             await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
             await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
@@ -1213,12 +1213,11 @@ describe("Create Case", () => {
     xdescribe('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '1');
             await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1');
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '1');
-            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '1', 'Facilities');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '1', 'Facilities');
         });
         // passed
         it('[3570,3569]:Create a Company specific Configuration for Resolution Code/Description and Check on Case', async () => {
@@ -1236,7 +1235,7 @@ describe("Create Case", () => {
             expect(await updateStatusBladePo.isSaveUpdateStatusButtonEnabled()).toBeFalsy('FailureMsg: Save button is not enabled');
             await updateStatusBladePo.clickCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
             await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
             await navigationPage.signOut();
@@ -1277,12 +1276,11 @@ describe("Create Case", () => {
             expect(await viewCasePage.getTextOfStatus()).toBe('Resolved');
         });
         afterAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('tadmin');
             await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
             await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
-            await apiHelper.apiLogin('fritz');
-            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0');
-            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0');
+            await apiHelper.addCommonConfig('RESOLUTION_CODE_MANDATORY', '0', 'Facilities');
+            await apiHelper.addCommonConfig('RESOLUTION_DESCRIPTION_MANDATORY', '0', 'Facilities');
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
