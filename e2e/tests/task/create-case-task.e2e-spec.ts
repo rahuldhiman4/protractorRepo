@@ -27,6 +27,7 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -1422,7 +1423,7 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
             await adhoctaskTemplate.selectCategoryTier2('Compensation');
             await adhoctaskTemplate.selectCategoryTier3('Bonus');
-            await adhoctaskTemplate.clickAssignToMeButton();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickTaskLink("Summary1" + randomStr);
@@ -1549,7 +1550,6 @@ describe('Create Case Task', () => {
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
             expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
-            expect(await adhoctaskTemplate.isAssignedCompanyRequiredTextPresent()).toBeTruthy("company");
             expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy("assigned group");
             await adhoctaskTemplate.setSummary("Summary" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
@@ -1557,7 +1557,7 @@ describe('Create Case Task', () => {
             await adhoctaskTemplate.selectCategoryTier1(casetemplatePetramco.categoryTier1);
             await adhoctaskTemplate.selectCategoryTier2(casetemplatePetramco.categoryTier2);
             await adhoctaskTemplate.selectCategoryTier3(casetemplatePetramco.categoryTier3);
-            await adhoctaskTemplate.clickAssignToMeButton();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await manageTaskBladePo.clickCloseButton();
@@ -1568,18 +1568,18 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             await viewTask.clickOnEditTask();
-            expect(await editTask.isFieldsDisplyed('Assignment Section')).toBeTruthy();
-            expect(await editTask.isRequesterNameDisplayed('Qianru Tao')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('Requester Mail')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('CategoryTier1Value')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('CategoryTier2Value')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('CategoryTier3Value')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('Assignee Name')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('Assign Company')).toBeTruthy();
-            expect(await editTask.isRequiredTextPresent('Task Summary')).toBeTruthy();
-            expect(await editTask.isRequiredTextPresent('Priority')).toBeTruthy();
-            expect(await editTask.isRequiredTextPresent('Assigned Group')).toBeTruthy();
-            expect(await editTask.isRequiredTextPresent('Assigned Company')).toBeTruthy();
+            expect(await editTask.isFieldsDisplyed('Assignment Section')).toBeTruthy('Assignment Section');
+            expect(await editTask.isRequesterNameDisplayed('Qianru Tao')).toBeTruthy('Qianru Tao');
+            expect(await editTask.isFieldsDisplyed('Requester Mail')).toBeTruthy('Requester Mail');
+            expect(await editTask.isFieldsDisplyed('CategoryTier1Value')).toBeTruthy('CategoryTier1Value');
+            expect(await editTask.isFieldsDisplyed('CategoryTier2Value')).toBeTruthy('CategoryTier2Value');
+            expect(await editTask.isFieldsDisplyed('CategoryTier3Value')).toBeTruthy('CategoryTier3Value');
+            expect(await editTask.isFieldsDisplyed('Assignee Name')).toBeTruthy('Assignee Name');
+            expect(await editTask.isFieldsDisplyed('Assign Company')).toBeTruthy('Assign Company');
+            expect(await editTask.isRequiredTextPresent('Task Summary')).toBeTruthy('Required Task Summary');
+            expect(await editTask.isRequiredTextPresent('Priority')).toBeTruthy('Required Priority');
+            expect(await editTask.isRequiredTextPresent('Assigned Group')).toBeTruthy('Required Assigned Group');
+            expect(await editTask.isRequiredTextPresent('Assigned Company')).toBeTruthy('Required Assigned Group');
             await editTask.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });

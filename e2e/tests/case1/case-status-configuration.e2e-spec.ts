@@ -18,6 +18,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 describe('Case Status Configuration', () => {
     let flowsetPhylumFieldsData = undefined;
@@ -515,7 +516,7 @@ describe('Case Status Configuration', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary("Summary" + randomStr);
-            await createAdhocTaskPo.clickAssignToMeButton();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             await viewTaskPo.clickOnViewCase();
@@ -563,7 +564,7 @@ describe('Case Status Configuration', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await createAdhocTaskPo.setSummary("Summary" + randomStr);
-            await createAdhocTaskPo.clickAssignToMeButton();
+            await changeAssignmentPo.clickAssignToMeBtn();
             await createAdhocTaskPo.clickSaveAdhoctask();
             await manageTaskBladePo.clickTaskLink("Summary" + randomStr);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned"); // stage

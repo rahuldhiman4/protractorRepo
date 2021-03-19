@@ -522,7 +522,7 @@ describe('Menu Item', () => {
             await manageTask.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setDescription("Description");
             expect(await adhoctaskTemplate.isValuePresentInDropdown('Label', labelInactive)).toBeFalsy('Value is present in  label drop down');
-            await adhoctaskTemplate.clickAssignToMeButton();
+            await changeAssignmentPo.clickAssignToMeBtn();
             expect(await adhoctaskTemplate.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await adhoctaskTemplate.selectLabel(labelActive1);
             await adhoctaskTemplate.setSummary(summary);

@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, by, element, Key, protractor, ProtractorExpectedConditions, $$ } from "protractor";
+import { $, $$, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import utilityCommon from '../../utils/utility.common';
 import changeAssignmentBladePo from "../common/change-assignment.po";
@@ -19,7 +19,6 @@ class CreateAdhocTaskTemplatePage {
         categoryTier2: 'cf0b83a7-b47d-4947-9046-2c63674c841e',
         categoryTier3: '50e1c4ab-7ce2-4f8a-bf08-0f172eec713f',
         categoryTier4: 'b0a2be68-aaf0-4a7f-9b70-27020f5b32e7',
-        assignToMeButton: '[rx-view-component-id="0d11a862-c378-49cc-bda8-2d6efbd2beeb"] .d-icon-left-user_plus',
         changeAssignmentButton: '[rx-view-component-id="1b94ca7a-b3e0-49b7-94a3-70c1aff3c8a4"] button',
         saveAdhocTask: '[rx-view-component-id="e971ed74-8ded-44a4-945f-338067be3df9"] button',
         canceladhocTask: '[rx-view-component-id="73fcc0fa-3282-42a2-bf5d-0e4e4de5fcac"] button',
@@ -29,10 +28,7 @@ class CreateAdhocTaskTemplatePage {
         buisnessUnit: '[rx-view-component-id="d290526a-893e-40c8-bbce-0a8e30c934c0"] .dropdown-toggle',
         assignee: '[rx-view-component-id="58085538-2875-4bf0-a880-f977bdeb842a"] .dropdown-toggle',
         department: '[rx-view-component-id="0cfce715-9fa8-4f61-b670-5aff2b0540f3"] .dropdown-toggle',
-        assignedGroup: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .dropdown-toggle',
         taskSummaryRequiredText: '76b6b259-a085-4d9f-91ac-8c5cbb2bc725',
-        assignedCompanyGuid: '0d11a862-c378-49cc-bda8-2d6efbd2beeb',
-        assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
         attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
         description: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"]',
         adHocTaskTextArea: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] .cke_editable_themed',
@@ -99,11 +95,6 @@ class CreateAdhocTaskTemplatePage {
 
     async clickChangeAssignmentButton(): Promise<void> {
         await $(this.selectors.changeAssignmentButton).click();
-
-    }
-
-    async clickAssignToMeButton(): Promise<void> {
-        await $(this.selectors.assignToMeButton).click();
     }
 
     async isAttachmentButtonDisplayed(): Promise<boolean> {
@@ -116,10 +107,6 @@ class CreateAdhocTaskTemplatePage {
 
     async ischangeAssignmentButtonDisplayed(): Promise<boolean> {
         return await $(this.selectors.changeAssignmentButton).isDisplayed();
-    }
-
-    async clickAssignButton(): Promise<void> {
-        await $(this.selectors.assignToMeButton).click();
     }
 
     async clickCancelAdhoctask(): Promise<void> {
@@ -166,10 +153,6 @@ class CreateAdhocTaskTemplatePage {
         return await $(this.selectors.department).getAttribute('class');
     }
 
-    async getAssignedGroupAttribute(): Promise<string> {
-        return await $(this.selectors.assignedGroup).getAttribute('class');
-    }
-
     async getSaveButtonAttribute(attribute: string): Promise<string> {
         return await $(this.selectors.saveAdhocTask).getAttribute(attribute);
     }
@@ -182,16 +165,8 @@ class CreateAdhocTaskTemplatePage {
         return await utilityCommon.isRequiredTagToField(this.selectors.priority);
     }
 
-    async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.assignedCompanyGuid);
-    }
-
     async isAssignedGroupRequiredTextPresent(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.assignedGroupRequiredText);
-    }
-
-    async isAssignToMeButtonDisplayd(): Promise<boolean> {
-        return await $(this.selectors.assignToMeButton).isDisplayed();
+        return await utilityCommon.isRequiredTagPresent(await $$('adapt-rx-select .form-control-required').get(1), "any");
     }
 
     async getchangeAssignmentButtonText(): Promise<string> {
@@ -325,7 +300,7 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isValuePresentInDropDown(dropdown: string, dropDownValue: string): Promise<boolean> {
-        return await changeAssignmentBladePo.isValuePresentInDropDown(dropdown,dropDownValue, this.selectors.assignmentGuid);
+        return await changeAssignmentBladePo.isValuePresentInDropDown(dropdown, dropDownValue, this.selectors.assignmentGuid);
     }
 }
 
