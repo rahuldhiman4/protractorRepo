@@ -6,7 +6,7 @@ class AssignmentConfigCreatePage {
 
     selectors = {
         viewTitle: '.dp-title',
-        addAssignmentMappingFields: '[rx-view-component-id="891fcb4d-84f9-4980-a5eb-0bd69c6d8a00"] .form-control-label',
+        addAssignmentMappingFields: '[rx-view-component-id="891fcb4d-84f9-4980-a5eb-0bd69c6d8a00"] .form-control-label span',
         assignmentMappingName: '[rx-view-component-id="eed6ca5c-8167-4af1-9cdd-6d3d64fcc71e"] .form-control',
         companyDrpDwn: '471bbeb3-3965-46b6-b74d-4f2a10fe3cce',
         flowsetDrpDwn: '70c2a2c9-d0ed-4759-8717-0ff514a76e0e',
@@ -26,7 +26,7 @@ class AssignmentConfigCreatePage {
         assigneeGrpDrpDwn: 'a335c72f-964d-4c55-86c3-44b48ca79433',
         saveButton: '[rx-view-component-id="d7f16b2d-fe68-481b-a0f6-2144bb6403f1"] button',
         cancelButton: '[rx-view-component-id="8956a9fb-4fbd-4e11-96e8-13dc7bb81abe"] button',
-        lobValue: '[rx-view-component-id="ccb87a1e-2ebe-400b-92ff-2d26f4e8a1bb"] .pull-left'
+        lobValue: '[rx-view-component-id="1409518f-f026-490d-bb1e-9c3c098bce89"] .rx-select__search-button-title'
     }
 
     async setAssignmentMapName(mappingName: string) {
@@ -38,7 +38,7 @@ class AssignmentConfigCreatePage {
         await utilityCommon.selectDropDown(this.selectors.companyDrpDwn, company);
     }
 
-    async setBusinessUnit(bu: string) {
+    async setSupportOrg(bu: string) {
         await utilityCommon.selectDropDown(this.selectors.businessUnitDrpDwn, bu);
     }
 
@@ -91,7 +91,9 @@ class AssignmentConfigCreatePage {
         let fieldsCount: number = await $$(this.selectors.addAssignmentMappingFields).count();
         for (let i = 0; i < fieldsCount; i++) {
             let labelTxt: string = await $$(this.selectors.addAssignmentMappingFields).get(i).getText();
-            arr[i] = labelTxt;
+            if(labelTxt != '(required)') {
+                arr[i] = labelTxt;
+            }
         }
         arr = arr.sort();
         arr = arr.filter(v => v != '');
