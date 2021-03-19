@@ -53,7 +53,6 @@ describe("Change Assignment", () => {
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
-        expect(await changeAssignmentPage.isFullHierarchyPresent("SupportOrg", "United States Support", 'Petramco > United States Support')).toBeTruthy('Support Org Full hierarchy is not present');
         expect(await changeAssignmentPage.isFullHierarchyPresent("AssignedGroup", "US Support 3", 'Petramco > United States Support > US Support 3')).toBeTruthy('Assigned Group Full hierarchy is not present');
         await createCasePo.clickCancelButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
@@ -70,12 +69,12 @@ describe("Change Assignment", () => {
     //apurva
     it('[4000003]:Verify on Case Creation, if Assignment fields are enabled only when Requester is selected', async () => {
         await navigationPo.gotoCreateCase();
-        expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeTruthy();
-        expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy();
+        expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeTruthy('Failure1');
+        expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy('Failure2');
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
-        expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeFalsy();
-        expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeFalsy();
+        expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeFalsy('Failure3');
+        expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeFalsy('Failure4');
     });
 
     //apurva

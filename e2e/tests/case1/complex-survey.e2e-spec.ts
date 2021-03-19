@@ -11,8 +11,8 @@ describe('Complex Surveys', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qfeng');
-        // await apiHelper.apiLogin('qkatawazi');
-        // await apiHelper.addCommonConfig('ADD_DWP_SURVEY_ON_CASE','1');
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.addCommonConfig('ADD_DWP_SURVEY_ON_CASE','1');
     });
 
     afterAll(async () => {
