@@ -4376,5 +4376,47 @@ export const BULK_DYNAMIC_FIELDS_INSIDE_OUTSIDE_GROUP = {
     ]
 };
 
-
-
+export const CASE_TEMPLATE_WITH_ATTACHMENT_FIELDS = {
+    "attributeDefinitions": [
+        {
+            "name": "Group1",
+            "description": "Group1",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "externalId": "",
+            "published": false,
+            "shouldPublish": false.valueOf,
+            "attributes": [{​
+                "name": "Attachment1_4055",
+                "description": "Attachment1_4055",
+                "dataType": "ATTACHMENT",
+                "required": false,
+                "confidential": false,
+                "dataProviderUserRole": "Agent",
+            }​]
+        }​,
+        {​
+            "name": "Group2",
+            "description": "Group2",
+            "externalId": "",
+            "type": "GROUP_FIELD",
+            "active": true,
+            "published": false,
+            "shouldPublish": false,
+            "attributes": [{​
+                "name": "Attachment2_4055",
+                "description": "Attachment2_4055",
+                "dataType": "ATTACHMENT",
+                "required": false,
+                "confidential": false,
+                "dataProviderUserRole": "Agent",
+            }​]
+     }​],
+        "name": null,
+        "processDocumentDefinitionId": null,
+        "processInputDocName": null,
+        "processName": null,
+        "templateId": "AGGADG28DD4ZZAQQFLCUQQFLCUB4M7",
+        "templateRecordDefinition": null,
+        "lineOfBusiness": "HumanResource"
+}
