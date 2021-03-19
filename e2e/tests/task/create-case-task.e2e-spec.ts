@@ -778,7 +778,6 @@ describe('Create Case Task', () => {
         });
     });
 
-    // Extra error message on create case page
     describe('[5544]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
         let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'caseTemplateName5544';
@@ -803,10 +802,10 @@ describe('Create Case Task', () => {
                 "templateSummary": casTemplateSummary,
                 "caseStatus": "InProgress",
                 "templateStatus": "Active",
-                "assignee": "qkatawazi",
+                "assignee": "qtao",
                 "ownerCompany": "Petramco",
                 "ownerBU": "United States Support",
-                "ownerGroup": "US Support 3",
+                "ownerGroup": "US Support 1",
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(caseTemplateData);
@@ -817,11 +816,10 @@ describe('Create Case Task', () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester('qtao');
+            await createCasePage.selectRequester('Allen');
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
-            await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
@@ -1477,8 +1475,8 @@ describe('Create Case Task', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             casetemplatePetramco = {
-                "templateName": 'caseTemplateName' + randomStr,
-                "templateSummary": 'caseTemplateName' + randomStr,
+                "templateName": randomStr + 'caseTemplateName19011',
+                "templateSummary": randomStr + 'caseTemplateSummary19011',
                 "templateStatus": "Active",
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
@@ -1494,8 +1492,8 @@ describe('Create Case Task', () => {
             }
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplatePetramco);
             templateData = {
-                "templateName": 'Manual task19011' + randomStr,
-                "templateSummary": 'Manual task19011' + randomStr,
+                "templateName": randomStr + 'Manual task19011',
+                "templateSummary": randomStr + 'Manual task19011',
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -1507,8 +1505,8 @@ describe('Create Case Task', () => {
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(templateData);
             externaltemplateData = {
-                "templateName": 'External task19011' + randomStr,
-                "templateSummary": 'External task19011' + randomStr,
+                "templateName": randomStr + 'External task19011',
+                "templateSummary": randomStr + 'External task19011',
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
@@ -1520,8 +1518,8 @@ describe('Create Case Task', () => {
             }
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externaltemplateData);
             automatedtemplateData = {
-                "templateName": 'Automated task19011' + randomStr,
-                "templateSummary": 'Automated task19011' + randomStr,
+                "templateName": randomStr + 'Automated task19011',
+                "templateSummary": randomStr + 'Automated task19011',
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces' + randomStr,
@@ -1716,5 +1714,4 @@ describe('Create Case Task', () => {
             await loginPage.login('qkatawazi');
         });
     });
-    //12124 test case is not valid after 21.02
 });

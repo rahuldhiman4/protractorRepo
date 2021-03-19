@@ -145,6 +145,7 @@ describe("Notification Template", () => {
             await loginPage.login('qkatawazi');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteEmailOrNotificationTemplate(notificationTemplateName);
+            await apiHelper.deleteEmailOrNotificationTemplate(notificationTemplateNameUpdated);
         });
     });
 
@@ -481,10 +482,12 @@ describe("Notification Template", () => {
             expect(await editNotificationTemplate.isRecipientDisplayed('SG - Australia Support - AU Support 1')).toBeTruthy('AU Support 1 is not present in Recipient list');
         });
         afterAll(async () => {
+            await editNotificationTemplate.clickCancelButtonAddRecipient();
             await utilityCommon.closeAllBlades();
+
         });
     });
-    //Fix
+    
     describe('[4371]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
         it('[4371]: Verify Able to define Notification template which allow to be used for Email based approval', async () => {
             await notificationTempGridPage.clickOnCreateNotificationTemplate();
@@ -507,7 +510,7 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-    //Fix
+
     describe('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
         it('[4357]: Verify Notification method selected as alert will throw an error on save if Email based approval is selcted', async () => {
             await navigationPage.gotoSettingsPage();
@@ -537,7 +540,7 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-    //Fix
+    
     it('[4356]: Verify OOB Notification Event and Template for Email based Approval', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);

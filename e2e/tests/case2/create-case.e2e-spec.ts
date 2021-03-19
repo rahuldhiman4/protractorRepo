@@ -251,7 +251,7 @@ describe("Create Case", () => {
             await createCasePage.selectCategoryTier2('Social');
             await createCasePage.selectCategoryTier3('Chatter');
             await createCasePage.addDescriptionAttachment(['../../data/ui/attachment/demo.txt']);
-            await changeAssignmentPage.clickAssignToMeBtn();
+            await changeAssignmentPage.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePage.getCaseSummary()).toBe(caseSummary);
@@ -473,7 +473,7 @@ describe("Create Case", () => {
             await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
             //await utilityCommon.closePopUpMessage();
             await createCasePage.setSummary(caseSummary);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPage.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await expect(await viewCasePage.getCaseStatusValue()).toBe('Assigned');
@@ -558,7 +558,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary' + randomStr);
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplateName);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPage.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             let caseId = await viewCasePage.getCaseID();
@@ -878,7 +878,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPage.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeStatus('In Progress');
@@ -1169,7 +1169,7 @@ describe("Create Case", () => {
             await createCasePage.setSummary('Summary');
             await createCasePage.clickSelectCaseTemplateButton();
             await selectCaseTemplateBlade.selectCaseTemplate(caseTemplate1);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPage.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await updateStatusBladePo.changeStatus('In Progress');

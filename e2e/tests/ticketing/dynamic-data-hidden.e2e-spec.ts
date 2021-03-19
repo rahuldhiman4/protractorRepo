@@ -270,7 +270,7 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('fritz');
             await createCasePage.setSummary('Summary' + randomStr);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.getCaseID();
@@ -955,14 +955,14 @@ describe('Dynamic Hidden Data', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('adam');
             await createCasePage.setSummary("test the 4852");
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnSelectCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate1);
-            await editCasePo.clickOnAssignToMe();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('externalNumber')).toBeTruthy();
@@ -973,13 +973,12 @@ describe('Dynamic Hidden Data', () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.setDynamicFieldValue('FieldGroup1', 'test');
             await editCasePo.clickSaveCase();
-
         });
         it('[4852]: [Dynamic Data] - Change Case Template having dynamic fields and groups from Case', async () => {
             await viewCasePo.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate2);
-            await editCasePo.clickOnAssignToMe();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await editCasePo.clickSaveCase();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeTruthy();
             expect(await viewCasePo.isDynamicFieldDisplayed('externalDate')).toBeTruthy();
