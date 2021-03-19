@@ -35,7 +35,7 @@ describe("Notifications", () => {
     });
 
     //asahitya
-    xdescribe('[4355]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
+    describe('[4355]: Verify that Case Agent is notified for status(Customized one) change in Case life cycle once Case Agent follow the case status change', () => {
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('mcarney');
@@ -176,7 +176,7 @@ describe("Notifications", () => {
         }
     });
 
-    xdescribe('[59944]: Formatting for notifications-multi line data appearing in notification', () => {
+    describe('[59944]: Formatting for notifications-multi line data appearing in notification', () => {
         let caseData = {
             "Description": "Notification check",
             "Requester": "qkatawazi",
@@ -205,39 +205,41 @@ describe("Notifications", () => {
             await notificationTempGridPage.clickCopyTemplate();
             await copyNotificationTemplatePage.setCompanyValue('Petramco');
             await copyNotificationTemplatePage.clickOnCreateCopyButton();
+            await utilityCommon.closePopUpMessage();
+            await editNotificationTemplatePage.clickOnCancelButton();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilityGrid.addFilter('Company', 'Petramco', 'text');
-            await utilityGrid.searchAndOpenHyperlink('Case Agent Assignment');
+            await utilityGrid.searchAndOpenHyperlinkWithoutRemovingFilter('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
             await browser.sleep(2000); // required to load edit message tab completely
             await editNotificationTemplatePage.updateAlertEmailMsgs('Hi' + Key.ENTER + 'Hello' + Key.ENTER + 'Hey' + Key.ENTER);
-            await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
-            await addFieldsPopup.clickOnCase();
+            await editNotificationTemplatePage.clickOnInsertFieldOfAlert();
+            await addFieldsPopup.clickOnGroupName('Case');
             await addFieldsPopup.selectDynamicField('Description');
             await addFieldsPopup.clickOnOkButtonOfEditor();
-            await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
-            await addFieldsPopup.clickOnCase();
+            await editNotificationTemplatePage.clickOnInsertFieldOfAlert();
+            await addFieldsPopup.clickOnGroupName('Case');
             await addFieldsPopup.selectDynamicField('Resolution Description');
             await addFieldsPopup.clickOnOkButtonOfEditor();
             await editMessageTextBladePo.clickOnSaveButton();
             await editNotificationTemplatePage.clickOnEmailTab();
             await editNotificationTemplatePage.openEmailBodyEditMessageText();
-            await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
-            await addFieldsPopup.clickOnCase();
+            await editNotificationTemplatePage.clickOnInsertFieldOfAlert();
+            await addFieldsPopup.clickOnGroupName('Case');
             await addFieldsPopup.selectDynamicField('Description');
             await addFieldsPopup.clickOnOkButtonOfEditor();
-            await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
-            await addFieldsPopup.clickOnCase();
+            await editNotificationTemplatePage.clickOnInsertFieldOfAlert();
+            await addFieldsPopup.clickOnGroupName('Case');
             await addFieldsPopup.selectDynamicField('Resolution Description');
             await addFieldsPopup.clickOnOkButtonOfEditor();
-            await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
-            await addFieldsPopup.clickOnCase();
+            await editNotificationTemplatePage.clickOnInsertFieldOfAlert();
+            await addFieldsPopup.clickOnGroupName('Case');
             await addFieldsPopup.selectDynamicField('Display ID');
             await addFieldsPopup.clickOnOkButtonOfEditor();
             await editMessageTextBladePo.clickOnSaveButton();
             await editNotificationTemplatePage.clickOnCancelButton();
-            await utilityGrid.searchAndOpenHyperlink('Case Agent Assignment');
+            await utilityGrid.searchAndOpenHyperlinkWithoutRemovingFilter('Case Agent Assignment');
             await editNotificationTemplatePage.openAlertEditMessageText();
             expect(await editMessageTextBladePo.getMessageBody()).toContain('Hello');
             expect(await editMessageTextBladePo.getMessageBody()).toContain('Hey');
@@ -254,7 +256,6 @@ describe("Notifications", () => {
             await editCasePage.updateResolutionCode('hfg' + Key.ENTER + 'lmn');
             await editCasePage.clickSaveCase();
             await viewCasePage.clickEditCaseButton();
-            await editCasePage.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('US Support 3', 'Qiao Feng');
             await editCasePage.clickSaveCase();
             await navigationPage.signOut();

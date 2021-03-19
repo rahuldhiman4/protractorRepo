@@ -161,7 +161,7 @@ describe('Case Status Change', () => {
             expect(await $(editCasePage.selectors.categoryTier1Drpbox).isPresent()).toBeTruthy('Categ1 not present');
             expect(await $(editCasePage.selectors.categoryTier2Drpbox).isPresent()).toBeTruthy('Categ2 not present');
             expect(await $(editCasePage.selectors.categoryTier3Drpbox).isPresent()).toBeTruthy('Categ3 not present');
-            expect(await $(editCasePage.selectors.assigneee).isPresent()).toBeTruthy('Assignee not present');
+            expect(await changeAssignmentPo.isDropDownDisplayed('Assignee')).toBeTruthy('Assignee not present');
             await editCasePage.clearCaseSummary();
             await editCasePage.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Resolve the field validation errors and then try again.');

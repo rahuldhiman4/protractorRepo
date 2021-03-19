@@ -18,7 +18,7 @@ import taskTemplateConsolePage from '../../pageobject/settings/task-management/c
 import utilityGrid from '../../utils/utility.grid';
 import changeAssignmentPo from "../../pageobject/common/change-assignment.po";
 
-xdescribe('Conditional Task', () => {
+describe('Conditional Task', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('qkatawazi');
@@ -118,7 +118,7 @@ xdescribe('Conditional Task', () => {
             await processEditorPage.clickSelectTemplateBtn();
 
             //Validate all field labels of Manual Task Template
-            await processEditorPage.searchAndOpenTaskTemplate(manualTaskTemplateData.templateName);
+            await processEditorPage.searchAndOpenTaskTemplate(manualTaskTemplateData.templateName, 'da1ffbb0-567a-4199-b94f-413bee7f149b');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskSummary,'Task Summary')).toBeTruthy('Task Summary is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskCompany,'Task Company')).toBeTruthy('Task Company is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskPriority,'Task Priority')).toBeTruthy('Task Priority is not getting displayed');
@@ -129,20 +129,17 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskType,'Task Type')).toBeTruthy('Task Type is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.labelGuid,'Label')).toBeTruthy('Label is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskDescription,'Task Description')).toBeTruthy('Task Description is not getting displayed');
-            //Not visible on UI
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Assignee')).toBeTruthy('Assignee is not getting displayed1');
-            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Group')).toBeTruthy('Support Group is not getting displayed1');
-            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Company')).toBeTruthy('Support Company is not getting displayed1');
-            //Not visible on UI
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp')).toBeTruthy('temp is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp1')).toBeTruthy('temp1 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp2')).toBeTruthy('temp2 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp3')).toBeTruthy('temp3 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp4')).toBeTruthy('temp4 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp5')).toBeTruthy('temp5 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment1')).toBeTruthy('attachment1 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment2')).toBeTruthy('attachment2 is not getting displayed');
-            // expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment3')).toBeTruthy('attachment3 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Company > Support Organization > Support Group')).toBeTruthy('Support Group is not getting displayed1');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp')).toBeTruthy('temp is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp1')).toBeTruthy('temp1 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp2')).toBeTruthy('temp2 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp3')).toBeTruthy('temp3 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp4')).toBeTruthy('temp4 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp5')).toBeTruthy('temp5 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment1')).toBeTruthy('attachment1 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment2')).toBeTruthy('attachment2 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment3')).toBeTruthy('attachment3 is not getting displayed');
 
             //Validate field values of Manual Task Template
             expect(await processEditorPage.getTaskTemplateName()).toBe(manualTaskTemplateData.templateName);
@@ -150,11 +147,10 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.getTaskCompany()).toBe("Petramco");
             expect(await processEditorPage.getTaskPriority()).toBe('Medium');
             expect(await processEditorPage.getTaskType()).toBe('Manual');
-            expect(await processEditorPage.getFieldValue('Task Category Tier 1')).toBe(manualTaskTemplateData.category1);
-            expect(await processEditorPage.getFieldValue('Task Category Tier 2')).toBe(manualTaskTemplateData.category2);
-            expect(await processEditorPage.getFieldValue('Task Category Tier 3')).toBe(manualTaskTemplateData.category3);
-            expect(await processEditorPage.getFieldValue('Support Group')).toBe(manualTaskTemplateData.supportGroup);
-            expect(await processEditorPage.getFieldValue('Support Company')).toBe(manualTaskTemplateData.ownerCompany);
+            expect(await processEditorPage.getTaskCategoryTier1()).toBe(manualTaskTemplateData.category1);
+            expect(await processEditorPage.getTaskCategoryTier2()).toBe(manualTaskTemplateData.category2);
+            expect(await processEditorPage.getTaskCategoryTier3()).toBe(manualTaskTemplateData.category3);
+            expect(await processEditorPage.getSupportGroup()).toBe('Petramco > United States Support > US Support 3');
             expect(await processEditorPage.getAssigneeFieldValue()).toBe('Qadim Katawazi');
             await processEditorPage.clickOnBackButton();
 
@@ -170,20 +166,17 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskType,'Task Type')).toBeTruthy('Task Type is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.labelGuid,'Label')).toBeTruthy('Label is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskDescription,'Task Description')).toBeTruthy('Task Description is not getting displayed');
-            //Not visible on UI
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Assignee')).toBeTruthy('Assignee is not getting displayed1');
-            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Group')).toBeTruthy('Support Group is not getting displayed1');
-            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Company')).toBeTruthy('Support Company is not getting displayed1');
-            //Not visible on UI
-            //expect(await taskTemplatePreview.isFieldLabelDisplayed('temp')).toBeTruthy('temp is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp1')).toBeTruthy('temp1 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp2')).toBeTruthy('temp2 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp3')).toBeTruthy('temp3 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp4')).toBeTruthy('temp4 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp5')).toBeTruthy('temp5 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'Support Company > Support Organization > Support Group')).toBeTruthy('Support Group is not getting displayed1');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp')).toBeTruthy('temp is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp1')).toBeTruthy('temp1 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp2')).toBeTruthy('temp2 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp3')).toBeTruthy('temp3 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp4')).toBeTruthy('temp4 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp5')).toBeTruthy('temp5 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment1')).toBeTruthy('attachment1 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment2')).toBeTruthy('attachment2 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment3')).toBeTruthy('attachment3 is not getting displayed');
 
             //Validate field values of External Task Template
             expect(await processEditorPage.getTaskTemplateName()).toBe(externalTaskTemplateData.templateName);
@@ -191,11 +184,10 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.getTaskCompany()).toBe("Petramco");
             expect(await processEditorPage.getTaskPriority()).toBe('Medium');
             expect(await processEditorPage.getTaskType()).toBe('External');
-            expect(await processEditorPage.getFieldValue('Task Category Tier 1')).toBe(externalTaskTemplateData.category1);
-            expect(await processEditorPage.getFieldValue('Task Category Tier 2')).toBe(externalTaskTemplateData.category2);
-            expect(await processEditorPage.getFieldValue('Task Category Tier 3')).toBe(externalTaskTemplateData.category3);
-            expect(await processEditorPage.getFieldValue('Support Group')).toBe(externalTaskTemplateData.supportGroup);
-            expect(await processEditorPage.getFieldValue('Support Company')).toBe(externalTaskTemplateData.ownerCompany);
+            expect(await processEditorPage.getTaskCategoryTier1()).toBe(externalTaskTemplateData.category1);
+            expect(await processEditorPage.getTaskCategoryTier2()).toBe(externalTaskTemplateData.category2);
+            expect(await processEditorPage.getTaskCategoryTier3()).toBe(externalTaskTemplateData.category3);
+            expect(await processEditorPage.getSupportGroup()).toBe('Petramco > United States Support > US Support 3');
             expect(await processEditorPage.getAssigneeFieldValue()).toBe('Qadim Katawazi');
             await processEditorPage.clickOnBackButton();
 
@@ -211,16 +203,15 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskType,'Task Type')).toBeTruthy('Task Type is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.labelGuid,'Label')).toBeTruthy('Label is not getting displayed');
             expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.taskDescription,'Task Description')).toBeTruthy('Task Description is not getting displayed');
-            //Not visible on UI
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp')).toBeTruthy('temp is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp1')).toBeTruthy('temp1 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp2')).toBeTruthy('temp2 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp3')).toBeTruthy('temp3 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp4')).toBeTruthy('temp4 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('temp5')).toBeTruthy('temp5 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment1')).toBeTruthy('attachment1 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment2')).toBeTruthy('attachment2 is not getting displayed');
-            // expect(await taskTemplatePreview.isFieldLabelDisplayed('attachment3')).toBeTruthy('attachment3 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp')).toBeTruthy('temp is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp1')).toBeTruthy('temp1 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp2')).toBeTruthy('temp2 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp3')).toBeTruthy('temp3 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp4')).toBeTruthy('temp4 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'temp5')).toBeTruthy('temp5 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment1')).toBeTruthy('attachment1 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment2')).toBeTruthy('attachment2 is not getting displayed');
+            expect(await processEditorPage.isFieldLabelDisplayed(taskTemplatePreview.selectors.previewBladeGuid,'attachment3')).toBeTruthy('attachment3 is not getting displayed');
 
             //Validate field values of Automated Task Template
             expect(await processEditorPage.getTaskTemplateName()).toBe(automatedTaskTemplateData.templateName);
@@ -228,9 +219,9 @@ xdescribe('Conditional Task', () => {
             expect(await processEditorPage.getTaskCompany()).toBe("Petramco");
             expect(await processEditorPage.getTaskPriority()).toBe('Medium');
             expect(await processEditorPage.getTaskType()).toBe('Automated');
-            expect(await processEditorPage.getFieldValue('Task Category Tier 1')).toBe(automatedTaskTemplateData.category1);
-            expect(await processEditorPage.getFieldValue('Task Category Tier 2')).toBe(automatedTaskTemplateData.category2);
-            expect(await processEditorPage.getFieldValue('Task Category Tier 3')).toBe(manualTaskTemplateData.category3);
+            expect(await processEditorPage.getTaskCategoryTier1()).toBe(automatedTaskTemplateData.category1);
+            expect(await processEditorPage.getTaskCategoryTier2()).toBe(automatedTaskTemplateData.category2);
+            expect(await processEditorPage.getTaskCategoryTier3()).toBe(manualTaskTemplateData.category3);
 
         });
         afterAll(async () => {
@@ -244,7 +235,7 @@ xdescribe('Conditional Task', () => {
     });
 
     //asahitya-check with tushar
-    describe('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', () => {
+    xdescribe('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let draftCaseTemplatePetramcoData, manualTaskTemplateData, externalTaskTemplateData, automatedTaskTemplateData;
         beforeAll(async () => {
@@ -400,7 +391,7 @@ xdescribe('Conditional Task', () => {
     });
 
     //asahitya
-    describe('[4542]: [Task] - Task Template availability when adding it into Case Template', () => {
+    xdescribe('[4542]: [Task] - Task Template availability when adding it into Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let globalDraftTask, globalActiveTask, globalInactiveTask, petramcoDraftTask, petramcoActiveTask, petramcoInactiveTask, psilonDraftTask, psilonActiveTask, psilonInactiveTask;
         let globalActiveAutomatedTask, petramcoActiveAutomatedTask, psilonActiveAutomatedTask, globalActiveExternalTask, petramcoActiveExternalTask, psilonActiveExternalTask;
@@ -847,7 +838,7 @@ xdescribe('Conditional Task', () => {
     });
 
     //asahitya-copy task issue
-    describe('[4497]: [Task] Copy Case Template', () => {
+    xdescribe('[4497]: [Task] Copy Case Template', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramcoData, newCaseTemplate, manualTaskTemplateData, externalTaskTemplateData;
         beforeAll(async () => {

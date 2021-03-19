@@ -146,7 +146,7 @@ describe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
         });
         it('[5197,5190,5196,5195]: [Approval Mapping] - Create a new Approval Mapping with all fields', async () => {
-            // await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
+            await approvalMappingConsolePage.clickCreateApprovalMappingBtn();
             await createApprovalMappingPage.setApprovalMappingName(approvalMappingName2);
             await createApprovalMappingPage.selectCompany('Petramco');
             await createApprovalMappingPage.isSelectFlowsetDropDownOptionsMatches("Human Resources");

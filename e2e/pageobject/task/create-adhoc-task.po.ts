@@ -1,5 +1,5 @@
 import { resolve } from "path";
-import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, Key, protractor, ProtractorExpectedConditions } from "protractor";
 import ckeditorValidationPo from '../../pageobject/common/ck-editor/ckeditor-validation.po';
 import utilityCommon from '../../utils/utility.common';
 import changeAssignmentBladePo from "../common/change-assignment.po";
@@ -31,7 +31,6 @@ class CreateAdhocTaskTemplatePage {
         department: '[rx-view-component-id="0cfce715-9fa8-4f61-b670-5aff2b0540f3"] .dropdown-toggle',
         assignedGroup: '[rx-view-component-id="6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d"] .dropdown-toggle',
         taskSummaryRequiredText: '76b6b259-a085-4d9f-91ac-8c5cbb2bc725',
-        assignedCompanyGuid: '0d11a862-c378-49cc-bda8-2d6efbd2beeb',
         assignedGroupRequiredText: '6a22a1f6-8bb2-4f28-8e91-399b3fa6c08d',
         attachmentField: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] input[type="file"]',
         description: '[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"]',
@@ -99,7 +98,6 @@ class CreateAdhocTaskTemplatePage {
 
     async clickChangeAssignmentButton(): Promise<void> {
         await $(this.selectors.changeAssignmentButton).click();
-
     }
 
     async clickAssignToMeButton(): Promise<void> {
@@ -180,10 +178,6 @@ class CreateAdhocTaskTemplatePage {
 
     async isPriorityRequiredTextPresent(): Promise<boolean> {
         return await utilityCommon.isRequiredTagToField(this.selectors.priority);
-    }
-
-    async isAssignedCompanyRequiredTextPresent(): Promise<boolean> {
-        return await utilityCommon.isRequiredTagToField(this.selectors.assignedCompanyGuid);
     }
 
     async isAssignedGroupRequiredTextPresent(): Promise<boolean> {
@@ -271,8 +265,8 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        let leftAlignemntElement = await element(by.css('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu div'));
-        return await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement)
+        let leftAlignemntElement = await $$('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu p').get(8);
+        return await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement);
     }
 
     async setInsertRemoveNumberList(value: string): Promise<void> {
@@ -325,7 +319,7 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isValuePresentInDropDown(dropdown: string, dropDownValue: string): Promise<boolean> {
-        return await changeAssignmentBladePo.isValuePresentInDropDown(dropdown,dropDownValue, this.selectors.assignmentGuid);
+        return await changeAssignmentBladePo.isValuePresentInDropDown(dropdown, dropDownValue, this.selectors.assignmentGuid);
     }
 }
 

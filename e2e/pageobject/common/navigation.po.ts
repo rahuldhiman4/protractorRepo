@@ -65,8 +65,8 @@ class NavigationPage {
             await $$(this.selectors.closeHambergerMenu).get(1).click();
             return caseConsole;
         } else {
-            await element(by.cssContainingText(this.selectors.menu, /^Workspace$/)).click();
-            return await element(by.cssContainingText(this.selectors.menu, /^Case$/)).isDisplayed();
+            await (await element(by.cssContainingText(this.selectors.menu, /^Workspace$/))).click();
+            return await (await element(by.cssContainingText(this.selectors.menu, /^Case$/))).isDisplayed();
         }
     }
 

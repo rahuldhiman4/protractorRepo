@@ -31,92 +31,67 @@ describe('Create Adhoc task', () => {
         await navigationPage.signOut();
     });
 
-    it('[5794,6296]: Adhoc Task Create view (UI verification)', async () => {
-        let summary = 'Adhoc task' + Math.floor(Math.random() * 1000000);
-        //Create Case
-        await navigationPage.gotoCreateCase();
-        await createCasePage.selectRequester("adam");
-        await createCasePage.setSummary('Summary ' + summary);
-        await createCasePage.clickAssignToMeButton();
-        await createCasePage.clickSaveCaseButton();
-        await previewCasePo.clickGoToCaseButton();
+    describe('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+        let taskSummary = 'Adhoc task Summary' + Math.floor(Math.random() * 1000000);
+        let caseSummary = 'Case Summary' + Math.floor(Math.random() * 1000000);
+        it('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+            //Create Case
+            await navigationPage.gotoCreateCase();
+            await createCasePage.selectRequester("adam");
+            await createCasePage.setSummary(caseSummary);
+            await createCasePage.clickAssignToMeButton();
+            await createCasePage.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
 
-        //Adhoc task validation
-        await viewCasePage.clickAddTaskButton();
-        await manageTask.clickAddAdhocTaskButton();
-        expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
-        expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
-
-        expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
-        expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy("status");
-        await adhoctaskTemplate.setSummary(summary);
-        await adhoctaskTemplate.setDescription("Description");
-        await adhoctaskTemplate.selectPriority('High');
-        await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
-        await adhoctaskTemplate.selectCategoryTier2('Compensation');
-        await adhoctaskTemplate.selectCategoryTier3('Bonus');
-        await adhoctaskTemplate.clickSaveAdhoctask();
-        await utilityCommon.closePopUpMessage();
-        expect(await manageTask.isTaskLinkPresent(summary)).toBeTruthy();
-        await manageTask.clickCloseButton();
-    });
-
-    describe('[5793,5566,6087,4977]: Adhoc Task details validation', async () => {
-        let summary = 'Adhoc task ' + [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let newCase, caseData;
-        beforeAll(async () => {
-            caseData = {
-                "Requester": "apavlik",
-                "Summary": "5793 " + summary,
-            }
-            await apiHelper.apiLogin('qtao');
-            newCase = await apiHelper.createCase(caseData);
-        });
-        it('[5793,5566,6087,4977]: Create Adhoc Task', async () => {
-            await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(newCase.displayId);
             //Adhoc task validation
             await viewCasePage.clickAddTaskButton();
             await manageTask.clickAddAdhocTaskButton();
+            expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
+            expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
+            expect(await adhoctaskTemplate.getSaveButtonAttribute('disabled')).toBeFalsy();
+            expect(await adhoctaskTemplate.getStatusAttribute()).toBeTruthy("status");
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
-            await adhoctaskTemplate.setSummary(summary);
+            await adhoctaskTemplate.setSummary(taskSummary);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.selectPriority('High');
             await adhoctaskTemplate.selectCategoryTier1('Employee Relations');
             await adhoctaskTemplate.selectCategoryTier2('Compensation');
             await adhoctaskTemplate.selectCategoryTier3('Bonus');
+            await adhoctaskTemplate.selectCategoryTier4('GICP');
             await adhoctaskTemplate.clickAssignToMeButton();
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
         });
-        it('[5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
-            await manageTask.clickTaskLink(summary);
-            expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy();
+        it('[5794,6296,5793,5566,6087,4977]: Adhoc Task details view (UI verification)', async () => {
+            await manageTask.clickTaskLink(taskSummary);
+            expect(await adhoctaskTemplate.isProcessFieldPresent()).toBeFalsy("Process field seen");
             expect(await viewTask.getTaskTypeValue()).toBe('Manual');
-            expect(await viewTask.isProcessNameValue()).toBeFalsy();
-            expect(await viewTask.isTaskSummaryDisplayed()).toBeTruthy();
-            expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy();
-            expect(await viewTask.isTaskIconDisplayed()).toBeTruthy();
-            expect(await viewTask.isTaskPriorityDisplayed()).toBeTruthy();
-            expect(await viewTask.isTaskTimeDetailsDisplayed()).toBeTruthy();
-            expect(await viewTask.isCaseSummaryDisplayed()).toBeTruthy();
-            expect(await viewTask.isRequesterNameDisplayed()).toBeTruthy();
-            expect(await viewTask.isRequesterContactDisplayed()).toBeTruthy();
-            expect(await viewTask.isRequesterMailDisplayed()).toBeTruthy();
-            expect(await viewTask.isEditLinkDisplayed()).toBeTruthy();
-            expect(await viewTask.isCategoryTier1ValueDisplayed()).toBeTruthy();
-            expect(await viewTask.isCategoryTier2ValueDisplayed()).toBeTruthy();
-            expect(await viewTask.isCategoryTier3ValueDisplayed()).toBeTruthy();
-            expect(await viewTask.isAssigneeNameDisplayed()).toBeTruthy();
-            expect(await viewTask.isAssignCompanyDisplayed()).toBeTruthy();
+            expect(await viewTask.isProcessNameValue()).toBeFalsy("Process name seen");
+            expect(await viewTask.isTaskSummaryDisplayed()).toBeTruthy("Summary not seen");
+            expect(await viewTask.isTaskIdTextDisplayed()).toBeTruthy("Task ID not seen");
+            expect(await viewTask.isTaskIconDisplayed()).toBeTruthy("Task Icon not seen");
+            expect(await viewTask.isTaskPriorityDisplayed()).toBeTruthy("Task Prioriy not seen");
+            expect(await viewTask.isTaskTimeDetailsDisplayed()).toBeTruthy("Task Time not seen");
+            expect(await viewTask.isCaseSummaryDisplayed()).toBeTruthy("Case Summary not seen");
+            expect(await viewTask.isRequesterNameDisplayed()).toBeTruthy("Requester Name not seen");
+            expect(await viewTask.isRequesterContactDisplayed()).toBeTruthy("Requester Contact not seen");
+            expect(await viewTask.isRequesterMailDisplayed()).toBeTruthy("Requester mail not seen");
+            expect(await viewTask.isEditLinkDisplayed()).toBeTruthy("Edit link not seen");
+            expect(await viewTask.getCategoryTier1Value()).toBe("Employee Relations");
+            expect(await viewTask.getCategoryTier2Value()).toBe("Compensation");
+            expect(await viewTask.getCategoryTier3Value()).toBe("Bonus");
+            expect(await viewTask.getCategoryTier4Value()).toBe("GICP");
+            expect(await viewTask.isAssigneeNameDisplayed()).toBeTruthy("Assignee Name not seen");
+            expect(await viewTask.isAssignCompanyDisplayed()).toBeTruthy("Assigned company not seen");
             expect(await viewTask.clickOnTab('Activity')); // validation to check activity tab is present
             await viewTask.clickOnViewCase();
-            expect(await viewCasePage.getCaseSummary()).toBe(caseData.Summary);
+            expect(await viewCasePage.getCaseSummary()).toBe(caseSummary);
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();
         });
     });
+
     //Data issue
     describe('[6105]: [Permissions] Navigating to case from the task', async () => {
         let randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -141,8 +116,8 @@ describe('Create Adhoc task', () => {
                 "Summary": 'Summary ' + randomStr,
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
+                "Support Group": "US Support 1",
+                "Assignee": "qtao"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(taskTemplateData);
@@ -205,6 +180,7 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.addAttachment([filePath]);
             await adhoctaskTemplate.clickSaveAdhoctask();
+            let finalDate: string = await utilityCommon.getCurrentDate();
             await utilityCommon.closePopUpMessage();
             await manageTask.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
@@ -218,7 +194,6 @@ describe('Create Adhoc task', () => {
             await viewTask.clickOnViewCase();
             await viewCasePage.clickAttachmentsLink();
             await attachmentBladePo.clickFileName('demo');
-            let finalDate: string = await utilityCommon.getCurrentDate();
             expect(await attachmentInformationBladePo.isDownloadButtonDisplayed()).toBeTruthy('download button is missing');
             expect(await attachmentInformationBladePo.isCloseButtonDisplayed()).toBeTruthy('close button is missing');
             expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: demo', 'FileName is missing');

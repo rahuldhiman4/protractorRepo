@@ -41,7 +41,9 @@ class EditNotificationTemplate {
         emailSubject: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
-        emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.btn-primary'
+        emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.btn-primary',
+        cancelButtonAddRecipient: '.float-right button.btn-secondary',
+        alertInsertField: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .cke_button__rtfexpressioneditor_icon'
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
@@ -54,6 +56,13 @@ class EditNotificationTemplate {
 
     async clickOnCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
+    }
+
+    async clickCancelButtonAddRecipient(): Promise<void> {
+        await $(this.selectors.cancelButtonAddRecipient).isPresent().then(async (result) =>{
+            if(result) await $(this.selectors.cancelButtonAddRecipient).click();
+            else console.log("Cancel Button is not present")
+        })
     }
 
     async clickOnSaveButton(): Promise<void> {
@@ -357,6 +366,10 @@ class EditNotificationTemplate {
         }
         await utilityCommon.selectDropDown(dropDownElement, dropDownValue, DropDownType.WebElement);
     }
+    async clickOnInsertFieldOfAlert(): Promise<void> {
+        await $(this.selectors.alertInsertField).click();
+    }
+
 
 }
 export default new EditNotificationTemplate();

@@ -26,6 +26,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
 
 
 describe('Dynamic Library Configuration', () => {
@@ -458,7 +459,7 @@ describe('Dynamic Library Configuration', () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary' + randomStr);
-            await createCasePo.clickAssignToMeButton();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePo.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
@@ -475,7 +476,7 @@ describe('Dynamic Library Configuration', () => {
             await editTaskPo.setTimeInDynamicField('02');
             await editTaskPo.selectValueFromList('listvalues');
             await editTaskPo.setDateTimeDynamicFieldValue('04-01-2022 05:11 PM');
-            await editTaskPo.clickOnAssignToMe();
+            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await editTaskPo.clickOnSaveButton();
         });
         it('[4834]: [Dynamic Data] [UI] - Behavior of different dynamic fields from Task Edit view', async () => {
@@ -875,11 +876,9 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
 
             await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
-            await createDynamicGroupLibraryConfigPo.expandDynamicField();
             await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
             await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
-            await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Dynamic group with same name and line of business already exists.')).toBeTruthy("Error message absent");
+            expect(await createDynamicGroupLibraryConfigPo.isSaveButtonDisabled()).toBeTruthy();
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -894,7 +893,6 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupLocalizedVaueSaveButton();
 
             await createDynamicGroupLibraryConfigPo.clickOnAddDynamicField();
-            await createDynamicGroupLibraryConfigPo.expandDynamicField();
             await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
             await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();

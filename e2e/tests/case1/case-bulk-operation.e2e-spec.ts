@@ -79,6 +79,7 @@ describe('Case Bulk Operation', () => {
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee('US Support 3', "Qiao Feng");
+        await changeAssignmentBladePo.clickOnAssignButton();
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
         await utilityCommon.closePopUpMessage();
         for (let i: number = 0; i < 3; i++) {
@@ -103,8 +104,9 @@ describe('Case Bulk Operation', () => {
         let caseDataForTest;
         beforeAll(async () => {
             caseDataForTest = caseData['bulkCaseAssignee_New'];
+            caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             await apiHelper.apiLogin(qfengStr);
-            caseDataForTest.Summary = "4383 Bulk Case Assignee";
+            // caseDataForTest.Summary = "4383 Bulk Case Assignee";
             for (let k: number = 0; k < 3; k++) {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[k] = response.displayId;
@@ -117,10 +119,12 @@ describe('Case Bulk Operation', () => {
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee('US Support 1', "Qianru Tao");
+            await changeAssignmentBladePo.clickOnAssignButton();
             await utilityCommon.closePopUpMessage();
             await utilityGrid.clickCheckBoxOfValueInGrid(caseId[2]);
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(usSupportGroup3Str, "Qiao Feng");
+            await changeAssignmentBladePo.clickOnAssignButton();
             await utilityCommon.closePopUpMessage();
             await navigationPage.signOut();
             await loginPage.login("qtao");
@@ -169,6 +173,7 @@ describe('Case Bulk Operation', () => {
             await utilityGrid.clickCheckBoxOfValueInGrid(newCase2.displayId);
             await caseConsolePage.clickOnChangeAssignmentButton();
             await changeAssignmentBladePo.setAssignee(usSupportGroup3Str, 'Qiao Feng');
+            await changeAssignmentBladePo.clickOnAssignButton();
             expect(await utilityCommon.isPopUpMessagePresent('You do not have permission to perform this operation. Please contact your system administrator.', 1)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
         }
@@ -188,7 +193,7 @@ describe('Case Bulk Operation', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin(qfengStr);
             caseDataForTest = caseData['bulkCaseAssignee_New'];
-            caseDataForTest.Summary = "4387 Bulk Case Assignee";
+            caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
             for (let i: number = 0; i < 3; i++) {
                 let response = await apiHelper.createCase(caseDataForTest)
                 caseId[i] = response.displayId;
@@ -220,7 +225,7 @@ describe('Case Bulk Operation', () => {
             for (let i: number = 0; i < 1; i++) {
                 await utilityGrid.searchAndOpenHyperlink(caseId[i]);
                 expect(await activityPo.isTextPresentInActivityLog("Qiao Feng")).toBeTruthy("Text is not present in activiy tab1");
-                expect(await activityPo.isTextPresentInActivityLog("changed the following case fields")).toBeTruthy("Text is not present in activiy tab2");
+                expect(await activityPo.isTextPresentInActivityLog("changed the case assignment")).toBeTruthy("Text is not present in activiy tab2");
                 expect(await activityPo.isTextPresentInActivityLog("Assignee")).toBeTruthy("Text is not present in activiy tab");
                 expect(await activityPo.isTextPresentInActivityLog("Qianru Tao")).toBeTruthy("Text is not present in activiy tab4");
                 await activityPo.applyActivityFilter("Assignment Change");
@@ -247,6 +252,7 @@ describe('Case Bulk Operation', () => {
         }
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee(usSupportGroup3Str, "Qadim Katawazi");
+        await changeAssignmentBladePo.clickOnAssignButton();
         expect(await utilityCommon.isPopUpMessagePresent('The selected case(s) have been successfully assigned.', 1)).toBeTruthy();
 
         await utilityCommon.closePopUpMessage();
@@ -288,8 +294,7 @@ describe('Case Bulk Operation', () => {
                 await apiHelper.updateCaseAccess(caseGuid[i], caseReadAccessDataQtao);
             }
             await caseConsolePage.clickOnChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 3');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiang Du');
+            await changeAssignmentBladePo.setAssignee('CA Support 3', 'Qiang Du');
             await changeAssignmentBladePo.clickOnAssignButton();
             expect(await utilityCommon.isPopUpMessagePresent(`New Assignee 'Qiang Du' has been added to the Case Access List.`)).toBeTruthy();
             await utilityCommon.closePopUpMessage();
@@ -367,7 +372,7 @@ describe('Case Bulk Operation', () => {
         let caseId: string[] = [];
 
         let caseDataForTest = caseData['bulkCaseAssignee_New'];
-        caseDataForTest.Summary = "4303 Bulk Case Assignee";
+        caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         for (let i = 0; i < 2; i++) {
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[i] = response.displayId;
@@ -387,6 +392,7 @@ describe('Case Bulk Operation', () => {
 
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee("US Support 3", 'Qadim Katawazi');
+        await changeAssignmentBladePo.clickOnAssignButton();
         expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.', 1)).toBeTruthy();
         await caseConsolePage.selectAllCases();
     });
@@ -454,6 +460,7 @@ describe('Case Bulk Operation', () => {
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[0]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee("US Support 3", 'Qadim Katawazi');
+        await changeAssignmentBladePo.clickOnAssignButton();
         expect(await utilityCommon.isPopUpMessagePresent('Cases that are pending approval can only be manually moved to canceled status.', 1)).toBeTruthy();
         await utilityCommon.closePopUpMessage();
 
@@ -462,6 +469,7 @@ describe('Case Bulk Operation', () => {
         await utilityGrid.clickCheckBoxOfValueInGrid(caseId[1]);
         await caseConsolePage.clickOnChangeAssignmentButton();
         await changeAssignmentBladePo.setAssignee("US Support 3", 'Qadim Katawazi');
+        await changeAssignmentBladePo.clickOnAssignButton();
         expect(await utilityCommon.isPopUpMessagePresent('Cases in closed or canceled status cannot be modified. Please update the selected cases.', 1)).toBeTruthy();
     });
 });

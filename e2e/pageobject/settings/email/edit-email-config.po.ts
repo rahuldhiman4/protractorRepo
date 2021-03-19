@@ -285,20 +285,11 @@ export class EditEmailConfig {
     }
 
     async isDefaultCaseTemplatePresentinDropDown(template: string): Promise<boolean> {
-        await $(this.selectors.defaultCaseTemplateToUse).click();
-        await $(this.selectors.searchDefaultCaseTemplateToUse).sendKeys(template);
-        let count = await $$(this.selectors.defaultCaseTemplatelist).count();
-        if (count >= 1) { return true; } else { return false; }
+       return await utilityCommon.isValuePresentInDropDown(this.selectors.defaultCaseTemplateGuid,template);
     }
 
     async isAcknowledgementPresentInDropDown(template: string): Promise<boolean> {
-        await $(this.selectors.acknowledgementTemplateList).click();
-        await $(this.selectors.inputFieldAcknowledgementTemplate).clear();
-        await $(this.selectors.inputFieldAcknowledgementTemplate).sendKeys(template);
-        return await element(by.cssContainingText(this.selectors.acknowledgementTemplateList,template)).isPresent().then(async (present) => {
-            if (present) return await element(by.cssContainingText(this.selectors.acknowledgementTemplateList,template)).isDisplayed();
-            else return false;
-        });
+      return await utilityCommon.isValuePresentInDropDown(this.selectors.acknowledgementTemplateGuid,template);
     }
     async isAddNewRuleBtnDisabled(): Promise<string> {
         return await $(this.selectors.newExclusiveSubjects).getAttribute("disabled");

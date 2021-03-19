@@ -55,7 +55,7 @@ describe("Case General Approval Tests", () => {
             let caseTemplateDataWithMatchingCriteria = {
                 "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
                 "templateSummary": 'Automated Level Up Approval without process',
-                "categoryTier1": 'Applications',
+                "categoryTier1": 'Talent Management',
                 "casePriority": "Critical",
                 "templateStatus": "Active",
                 "company": "Petramco",
@@ -84,7 +84,7 @@ describe("Case General Approval Tests", () => {
             await apiHelper.associateTemplateWithApprovalMapping(caseModule, caseTemplateWithMatchingSummaryResponse.id, approvalMappingId.id);
 
             caseData = {
-                "Requester": 'qkatawazi',
+                "Requester": 'zculloden',
                 "Summary": "Automated Self Approval with process",
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
@@ -113,7 +113,7 @@ describe("Case General Approval Tests", () => {
             await approvalConfigurationPage.clickOnMenuItem('Case');
             await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await approvalConfigurationPage.setExpressionValueForParameter('"Applications"');
+            await approvalConfigurationPage.setExpressionValueForParameter('"Talent Management"');
             await approvalConfigurationPage.clickModelOkButton();
 
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
