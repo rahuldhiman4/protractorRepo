@@ -185,6 +185,7 @@ describe('Case Manager Read-only Config', () => {
 
     // asahitya-passing locally
     it('[3993]: Check Case manager is not able to perform Create Update operation on Configure Data Source', async () => {
+        await navigationPage.gotoCaseConsole();
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.CONFIGURE_DATA_SOURCE);
         expect(await configureDataSourceConfigConsole.isConfigDataSourceBtnVisible()).toBeFalsy("Add button is visible");
@@ -273,6 +274,8 @@ describe('Case Manager Read-only Config', () => {
     it('[DRDMV-18077]: Check Case manager is not able to perform Create Update operation on Case to Case Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Case', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_CASE);
+        await relationshipsConfigsPage.clickFirstCardTitle();
+        await relationshipsConfigsPage.clickFirstCardTitle();
         expect(await relationshipsConfigsPage.isAddRelationButtonDisabled()).toBeTruthy('Add Button is enabled');
         expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Parent')).toBeFalsy('Parent name is enabled');
         expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
@@ -282,6 +285,8 @@ describe('Case Manager Read-only Config', () => {
     it('[DRDMV-18078]: Check Case manager is not able to perform Create Update operation on Case to Person Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Case to Person', BWF_PAGE_TITLES.RELATIONSHIPS.CASE_TO_PERSON);
+        await relationshipsConfigsPage.clickFirstCardTitle();
+        await relationshipsConfigsPage.clickFirstCardTitle();
         expect(await relationshipsConfigsPage.isAddRelationButtonDisabled()).toBeTruthy('Add Button is enabled');
         expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Witness')).toBeFalsy('Witness name is enabled');
         expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
@@ -291,6 +296,8 @@ describe('Case Manager Read-only Config', () => {
     it('[DRDMV-18079]: Check Case manager is not able to perform Create Update operation on Person to Person Relationship', async () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
+        await relationshipsConfigsPage.clickFirstCardTitle();
+        await relationshipsConfigsPage.clickFirstCardTitle();
         expect(await relationshipsConfigsPage.isAddRelationButtonDisabled()).toBeTruthy('Add Button is enabled');
         expect(await relationshipsConfigsPage.isRelationshipNameFieldEnabled('Former Manager')).toBeFalsy('Former Manager name is enabled');
         expect(await relationshipsConfigsPage.isSaveButtonEnabled()).toBeFalsy('Save button is enabled');
