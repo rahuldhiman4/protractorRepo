@@ -66,11 +66,13 @@ export class GridOperations {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
+            await browser.sleep(2000); // wait until grid records loaded
             this.clickRefreshIcon(guid);
+            await browser.sleep(1000); // wait until grid records loaded
             let gridRecordCount: number = await $$(gridRecordsLocator).count();
             console.log("grid records found: ", gridRecordCount);
             if (gridRecordCount == 0) {
-                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
+                await browser.sleep(2000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
         }
     }
@@ -746,7 +748,10 @@ export class GridOperations {
     }
 
     async clearFilterNameOnEditPresetFilter(): Promise<void> {
-        await $$('.advanced-filter__editing-container .rx-form-control').get(0).clear();
+        for (let j: number = 0; j < 17; j++) {
+            await $$('.advanced-filter__editing-container .rx-form-control').get(0).sendKeys(protractor.Key.BACK_SPACE);
+             }
+        //await $$('.advanced-filter__editing-container .rx-form-control').get(0).clear();
     }
 
     async isValidationMessageDisplayedOnEditPresetFilter(validationMessage): Promise<boolean> {

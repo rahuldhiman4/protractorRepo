@@ -729,6 +729,7 @@ describe('Case Data Store', () => {
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterNonConfidentialDesc')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskListOfDataNameDesc')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicFieldDisplayed('TaskOuterConfidentialDesc')).toBeTruthy();
+            previewTaskTemplateCasesPo.clickOnBackButton();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();

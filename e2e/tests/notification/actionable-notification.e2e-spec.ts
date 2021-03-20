@@ -26,6 +26,7 @@ import addFieldsPopPo from '../../pageobject/common/add-fields-pop.po';
 import caseConsole from '../../pageobject/case/case-console.po';
 import caseWatchlist from '../../pageobject/case/case-watchlist-blade.po';
 import editCasePo from '../../pageobject/case/edit-case.po';
+import viewTasktemplatePo from "../../pageobject/settings/task-management/view-tasktemplate.po";
 
 const caseData = require('../../data/ui/case/case.ui.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
@@ -929,10 +930,12 @@ describe("Actionable Notifications", () => {
             await createTaskTemplatePage.selectTemplateStatus('Active');
             await createTaskTemplatePage.clickOnSaveTaskTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewTasktemplatePo.clickBackArrowBtn();
 
             //Create Notification Event
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Events', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_EVENTS);
+            await browser.sleep(3000); //Manage Ebvents page to load completely
             await notificationEventConsolePage.clickAddNotificationEventBtn();
             await createNotificationEventPage.setEventName('Actionable Notification Event');
             await createNotificationEventPage.setCompanyValue('- Global -');
@@ -947,11 +950,11 @@ describe("Actionable Notifications", () => {
             await createNotificationTemplatePage.setTemplateName('Actionable Notification');
             await createNotificationTemplatePage.selectModuleName('Cases');
             await createNotificationTemplatePage.setDescription('Actionable Notification Template'),
-                await createNotificationTemplatePage.selectEvent('Actionable Notification Event');
+            await createNotificationTemplatePage.selectEvent('Actionable Notification Event');
             await editNotificationTemplatePage.clickRecipientsCheckbox('Assignee', 'TO');
             await createNotificationTemplatePage.setAlertMessage('Actionable Alert check for Case ID: ');
             await createNotificationTemplatePage.clickOnInsertFieldOfAlert();
-            await addFieldsPopPo.clickOnCase();
+            await addFieldsPopPo.clickOnGroupName('Case');
             await addFieldsPopPo.selectDynamicField('Display ID');
             await addFieldsPopPo.clickOnOkButtonOfEditor();
             await createNotificationTemplatePage.clickOnGenerateClickableLinkIconOnAlert();
@@ -959,20 +962,19 @@ describe("Actionable Notifications", () => {
             await createNotificationTemplatePage.setSubject('Notification Template Email Subject ');
             await createNotificationTemplatePage.setEmailBody('Notification Template Email Body Actionable Link: ');
             await createNotificationTemplatePage.clickOnInsertFieldOfEmail();
-            await addFieldsPopPo.clickOnCase();
+            await addFieldsPopPo.clickOnGroupName('Case');
             await addFieldsPopPo.selectDynamicField('Display ID');
             await addFieldsPopPo.clickOnOkButtonOfEditor();
             await createNotificationTemplatePage.clickOnGenerateClickableLinkIconOnEmail();
             await createNotificationTemplatePage.clickOnSaveButton();
+            await editNotificationTemplatePage.clickOnCancelButton();
 
             //Create new case
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("Allen");
             await createCasePage.setSummary("4285");
-            await createCasePage.clickChangeAssignmentButton();
             await assignmentBladePO.setDropDownValue('AssignedGroup', 'US Support 3');
             await assignmentBladePO.setDropDownValue('Assignee', 'Qiao Feng');
-            await assignmentBladePO.clickOnAssignButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             caseDisplayId = await viewCasePage.getCaseID();

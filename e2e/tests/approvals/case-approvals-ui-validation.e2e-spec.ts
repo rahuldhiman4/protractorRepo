@@ -799,15 +799,13 @@ describe("Case Approval UI Validations", () => {
             let caseTemplateData = {
                 "templateName": 'caseTemplateName' + randomStr,
                 "templateSummary": 'caseTemplateSummary' + randomStr,
-                "categoryTier1": 'Applications',
-                "categoryTier2": 'Social',
-                "categoryTier3": 'Chatter',
+                "categoryTier1": 'Projectors',
                 "casePriority": "Low",
                 "templateStatus": "Active",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "assignee": "qfeng",
+                "assignee": "qkatawazi",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
@@ -833,7 +831,7 @@ describe("Case Approval UI Validations", () => {
             let approvalFlowData = {
                 "flowName": `Bulk Operation ${randomStr}`,
                 "approver": "qkatawazi",
-                "qualification": `'Category Tier 3' = "Chatter"`
+                "qualification": `'Category Tier 1' = "Projectors"`
             }
             await apiHelper.createApprovalFlow(approvalFlowData, caseModule);
 

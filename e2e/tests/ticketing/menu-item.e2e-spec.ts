@@ -570,7 +570,7 @@ describe('Menu Item', () => {
             await createAssignmentsConfigPo.setCompany("Petramco");
             expect(await createAssignmentsConfigPo.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await createAssignmentsConfigPo.setSupportCompany("Petramco");
-            await createAssignmentsConfigPo.setBusinessUnit('Canada Support');
+            await createAssignmentsConfigPo.setSupportOrg('Canada Support');
             await createAssignmentsConfigPo.setSupportGroup("CA Support 1");
             await createAssignmentsConfigPo.setLabel(labelActive1);
             await createAssignmentsConfigPo.clickonSaveButton();

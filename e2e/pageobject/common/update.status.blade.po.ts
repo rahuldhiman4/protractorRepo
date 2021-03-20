@@ -108,7 +108,7 @@ class UpdateStatus {
     }
 
     async isRequiredTagToResolutionCode(): Promise<boolean> {
-        let loc = await $('[rx-view-component-id="113d5ef8-fee9-4a4e-b033-6cb9b44941f9"] .form-control-label span');
+        let loc = await $('[rx-view-component-id="113d5ef8-fee9-4a4e-b033-6cb9b44941f9"] .form-control-label');
         return await utilityCommon.isRequiredTagPresent(loc);
     }
 
