@@ -10,7 +10,6 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePO from '../../pageobject/case/edit-case.po';
 import caseTemplatePO from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePO from "../../pageobject/case/view-case.po";
-import utilityGrid from "../../utils/utility.grid";
 import changeAssignmentPo from "../../pageobject/common/change-assignment.po";
 import accessTabPo from "../../pageobject/common/access-tab.po";
 
@@ -56,61 +55,55 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
            await createCasePO.setSummary(caseSummary);
            expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
-           await createCasePO.clickAssignToMeButton();
+           await createCasePO.clickSelectCaseTemplateButton();
+           await caseTemplatePO.clickOnAllTemplateTab();
+           await caseTemplatePO.selectCaseTemplate(caseTemplateData.templateName);
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
            await viewCasePO.clickEditCaseButton();
-           expect (await editCasePO.getSelectCaseTemplate()).toBe('Select Case Template');
-           await editCasePO.clickOnSelectCaseTemplate();
-           await caseTemplatePO.selectCaseTemplate(caseTemplateData.templateName);
-           await editCasePO.clickSaveCase();
-           await viewCasePO.clickEditCaseButton();
            await editCasePO.addAttachment('Attachment1_4055', ['../../data/ui/attachment/demo.txt']);
            await editCasePO.addAttachment('Attachment2_4055', ['../../data/ui/attachment/demo.txt']);
-          await editCasePO.clickSaveCase();  
+           await editCasePO.clickSaveCase();  
+           await viewCasePO.clickAttachmentsLink();
            expect(await caseConsolePO.getCountAttachedFiles('demo.txt')).toBe(2);           
         });
     });
 
-    //nipande
+    // //nipande
     describe('[5397]: Check Description and Summary should not be updated after template change', async () => {
-        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let summary; let description;
+        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
         });
         it('[5397]: Check Description and Summary should not be updated after template change', async function () {
-            await navigationPO.gotoCaseConsole();
-            await utilityGrid.clearFilter();
-            await caseConsolePO.setCaseSearchBoxValue('New');
-            await caseConsolePO.clickFirstLinkInCaseSearchGrid();
-            summary = await viewCasePO.getCaseSummary();
-            description = await viewCasePO.getCaseDescriptionText();
+            await navigationPO.gotoCreateCase();
+            await createCasePO.selectRequester('adam');
+            await createCasePO.setSummary(caseSummary);
+            await createCasePO.clickSaveCaseButton(); 
+            await previewCasePo.clickGoToCaseButton();
             await viewCasePO.clickEditCaseButton();
             expect (await editCasePO.getSelectCaseTemplate()).toBe('Select Case Template');
             await editCasePO.clickOnSelectCaseTemplate();
             await caseTemplatePO.clickOnAllTemplateTab();
             await caseTemplatePO.selectFirstFromAllTemplate();
             await caseTemplatePO.clickOnApplyButton();
-            await editCasePO.clickSaveCase(); 
-            expect (await viewCasePO.getCaseSummary()).toBe(summary);
+            let description = await viewCasePO.getCaseDescriptionText();
+            await editCasePO.clickSaveCase();
+            expect (await viewCasePO.getCaseSummary()).toBe(caseSummary);
             expect (await viewCasePO.getCaseDescriptionText()).toBe(description);
 
-           let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
-           let caseSummary = 'Case Summary ' + randomStr;
            await navigationPO.gotoCreateCase();
-           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
            await createCasePO.selectRequester('adam');
-           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
            await createCasePO.setSummary(caseSummary);
-           expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
            await createCasePO.clickSelectCaseTemplateButton();
            await caseTemplatePO.clickOnAllTemplateTab();
            await caseTemplatePO.selectFirstFromAllTemplate();
            await caseTemplatePO.clickOnApplyButton();
+           description = await viewCasePO.getCaseDescriptionText();
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
            expect (await viewCasePO.getCaseSummary()).toBe(caseSummary);
+           expect (await viewCasePO.getCaseDescriptionText()).toBe(description);
         });
     });
 
@@ -122,14 +115,11 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
             await loginPO.login('qtao');
         });
         it('[6224]: [Case visibility] Error messages handling]', async function () {
-           let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
            let caseSummary = 'Case Summary ' + randomStr;
            await navigationPO.gotoCreateCase();
            expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
            await createCasePO.selectRequester('adam');
-           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
            await createCasePO.setSummary(caseSummary);
-           expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
            await changeAssignmentPo.setAssignee("US Support 3", "");
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
@@ -139,11 +129,9 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            expect(await utilityCommon.isPopUpMessagePresent('To remove the Assigned Support Group please assign the Case to an Agent first.'))
 
            await navigationPO.gotoCreateCase();
-           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
            await createCasePO.selectRequester('adam');
            expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
            await createCasePO.setSummary(caseSummary);
-           expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
            await changeAssignmentPo.setAssignee("US Support 3", "Ruhi Verma");
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
@@ -152,6 +140,9 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            await accessTabPo.clickRemoveAccess("Ruhi Verma");
            await accessTabPo.clickAccessRemoveWarningBtn("Yes");
            expect(await utilityCommon.isPopUpMessagePresent('The Assignee cannot be removed from the Case Access List.'));
-        });
+           
+           await accessTabPo.clickRemoveAccess("US Support 3");
+           await accessTabPo.clickAccessRemoveWarningBtn("Yes");
+           expect(await accessTabPo.isAccessEntityDisplayed('US Support 3', 'Case')).toBeFalsy();        });
     });   
 });

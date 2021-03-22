@@ -87,7 +87,7 @@ class SelectCaseTemplateBlade {
         await $$('div[role="checkbox"]').get(0).click();
     }
     async selectFirstFromAllTemplate(): Promise<void> {
-        await $$('div[role="radio"]').get(0).click();
+        await $$('input[type="radio"]').get(0).click();
     }
 
     async isApplyButtonEnabled(): Promise<boolean> {
