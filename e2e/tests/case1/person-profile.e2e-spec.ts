@@ -202,7 +202,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //asahitya Fail DRDMV-25335
+    //Fix
     describe('[4203]: Person profile display for Contact', () => {
         let response = undefined;
         afterEach(async () => {
@@ -336,10 +336,9 @@ describe('Person Profile test', () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Peter Kahn', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Peter Kahn');
-            await utilityCommon.switchToNewTab(2);
+            await utilityCommon.switchToNewTab(1);
             await browser.sleep(5000); //Takes time to redirect to person profile on new tab
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qiang Du', 'Manager')).toBeTruthy('Relation is not matching');
-            await utilityCommon.switchToNewTab(1);
             await relatedTabPage.removeRelatedPerson('Peter Kahn');
 
             await navigationPage.signOut();
@@ -440,7 +439,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    describe('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', () => {
+   describe('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', () => {
         it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
             // await apiHelper.apiLogin('tadmin');
             // await apiHelper.updateFoundationEntity('Person', 'qheroux', { functionalRole: 'Person Activity Read' });
@@ -471,6 +470,7 @@ describe('Person Profile test', () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
+            await browser.sleep(5000); //Wait for new tab to load properly
             await activityTabPage.addActivityNote("4126");
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInActivityLog('4126')).toBeTruthy('4126 log activity is not visible to qheroux');
@@ -485,6 +485,7 @@ describe('Person Profile test', () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
+            await browser.sleep(5000); //Wait for new tab to load properly
             await activityTabPage.addActivityNote("4126");
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInActivityLog('4126')).toBeFalsy('4126 log activity is present');
@@ -893,7 +894,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //expect conditions failing due to defect - different relation not present Fail DRDMV-25335
+    
     describe('[4197]: Configuration - person-to-person relationship', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4197]: Configuration - person-to-person relationship', async () => {
