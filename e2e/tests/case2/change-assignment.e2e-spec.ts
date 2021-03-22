@@ -53,7 +53,7 @@ describe("Change Assignment", () => {
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
-        expect(await changeAssignmentPage.isFullHierarchyPresent("AssignedGroup", "US Support 3", 'Petramco > United States Support > US Support 3')).toBeTruthy('Assigned Group Full hierarchy is not present');
+        expect(await changeAssignmentPage.isFullHierarchyPresent("AssignedGroup", "US Support 3", 'Petramco > United States Support')).toBeTruthy('Assigned Group Full hierarchy is not present');
         await createCasePo.clickCancelButton();
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await navigationPo.gotoCreateCase();
@@ -73,7 +73,7 @@ describe("Change Assignment", () => {
         expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy('Failure2');
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
-        expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeFalsy('Failure3');
+        expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeTruthy('Failure3');
         expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeFalsy('Failure4');
     });
 
@@ -115,7 +115,7 @@ describe("Change Assignment", () => {
             await manageTaskBladePo.clickAddAdhocTaskButton();
             await adhoctaskTemplate.setSummary("AdHocSummary2" + randVal);
             await adhoctaskTemplate.setDescription("Description");
-            expect(await adhoctaskTemplate.getAssignedGroupText()).toBe('Compensation and Benefits');
+            expect(await adhoctaskTemplate.getAssignedGroupText()).toBe('Workforce Administration');
             expect(await adhoctaskTemplate.getAssigneeValue()).toBe('Select');
             await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
@@ -123,7 +123,7 @@ describe("Change Assignment", () => {
             await utilityCommon.closePopUpMessage();
             await navigationPo.gotoTaskConsole();
             await utilityGrid.searchRecord("AdHocSummary2" + randVal);
-            expect(await utilityGrid.getFirstGridRecordColumnValue('Assigned Group')).toBe("Compensation and Benefits", "Assigned Group NOT displayed in Task console");
+            expect(await utilityGrid.getFirstGridRecordColumnValue('Assigned Group')).toBe("Workforce Administration", "Assigned Group NOT displayed in Task console");
             expect(await utilityGrid.getFirstGridRecordColumnValue('Assignee')).toBe("", "Assigned Group NOT displayed in Task console");
         });
         afterAll(async () => {
@@ -179,15 +179,18 @@ describe("Change Assignment", () => {
             await navigationPo.gotoCreateCase();
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
+            await changeAssignmentPage.setDropDownValue("AssignedGroup", 'US Support 3');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.setDropDownValue("Assignee", 'Adam Pavlik');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
         });
+ 
         it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'None');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-        });
-        it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
             await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
@@ -219,6 +222,8 @@ describe("Change Assignment", () => {
         await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
+        expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy('Failure1');
+        await changeAssignmentPage.setDropDownValue("AssignedGroup", 'US Support 3');
         await changeAssignmentPage.setDropDownValue("Assignee", 'Adam Pavlik');
         expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
         expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
@@ -229,11 +234,13 @@ describe("Change Assignment", () => {
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
         await createCasePo.selectLineOfBusiness('Facilities');
+        expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy('Failure2');
+        await changeAssignmentPage.setDropDownValue("AssignedGroup", 'Facilities');
         await changeAssignmentPage.setDropDownValue("Assignee", 'Fritz Schulz');
         expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Facilities');
         expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Fritz Schulz');
     });
-
+    
     it('[12302]:Verify Assignee Behaviour After Change LOB Of Person', async () => {
         await navigationPo.signOut();
         await loginPo.login("qyuan");
@@ -241,6 +248,7 @@ describe("Change Assignment", () => {
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
         expect(await createCasePo.getLineOfBusinessValue()).toBe('Human Resource');
+        await changeAssignmentPage.setDropDownValue("AssignedGroup", 'US Support 3');
         await changeAssignmentPage.setDropDownValue("Assignee", 'Adam Pavlik');
         expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
         expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
@@ -257,62 +265,56 @@ describe("Change Assignment", () => {
             await createCasePo.selectRequester('adam');
             await createCasePo.setSummary('Summary');
             // When all the fields are filled 
-            await changeAssignmentPage.setDropDownValue("Assignee", 'Adam Pavlik');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
-            await changeAssignmentPage.setDropDownValue("Assignee", 'Kyle Kohri');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Kyle Kohri');
+            await changeAssignmentPage.setDropDownValue("AssignedGroup", 'Budgeting & Forecasting');
+            await changeAssignmentPage.setDropDownValue("Assignee", 'Monika Andrade');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Budgeting & Forecasting');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Monika Andrade');
+            await changeAssignmentPage.setDropDownValue("AssignedGroup", 'Budgeting & Forecasting');
+            await changeAssignmentPage.setDropDownValue("Assignee", 'Moses Werner');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Budgeting & Forecasting');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Moses Werner');
             await changeAssignmentPage.setDropDownValue("Assignee", 'None');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Budgeting & Forecasting');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            await changeAssignmentPage.setDropDownValue("Assignee", 'Adam Warlock');
-            await changeAssignmentPage.setDropDownValue("AssignedGroup", 'AU Support 2');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('AU Support 2');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Budgeting & Forecasting');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
+            
+            await changeAssignmentPage.setDropDownValue("AssignedGroup", 'Accounts Receivable (AR)');
+            await changeAssignmentPage.setDropDownValue("Assignee", 'Moses Werner');
+            
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Receivable (AR)');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Moses Werner');
             await changeAssignmentPage.clickAssignToMeBtn();
             await changeAssignmentPage.setDropDownValue("AssignedGroup", 'None');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
         });
         it('[4000006]:Verify on clearing or reselecting of any field should clear the Child fields but not the Parent field', async () => {
             //When Assignee is blank 
             await changeAssignmentPage.clickAssignToMeBtn();
             await changeAssignmentPage.setDropDownValue("Assignee", 'None');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.setDropDownValue("AssignedGroup", 'None');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
             await changeAssignmentPage.clickAssignToMeBtn();
             await changeAssignmentPage.setDropDownValue("Assignee", 'None');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            await changeAssignmentPage.setDropDownValue("AssignedGroup", 'US Support 1');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 1');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
+            await changeAssignmentPage.setDropDownValue("AssignedGroup", 'Accounts Receivable (AR)');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Receivable (AR)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Receivable (AR)');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
         });
         it('[4000006]:Verify on clearing or reselecting of any field should clear the Child fields but not the Parent field', async () => {
             //When SG and Assignee are blank
@@ -320,31 +322,33 @@ describe("Change Assignment", () => {
             await changeAssignmentPage.setDropDownValue("AssignedGroup", 'None');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
             await changeAssignmentPage.clickAssignToMeBtn();
             await changeAssignmentPage.setDropDownValue("AssignedGroup", 'None');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
             //When user reselects Same Details --> All Children remain populated as it is
-            await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qadim Katawazi');
-            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qadim Katawazi');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qadim Katawazi');
-            await changeAssignmentPage.setDropDownValue('Assignee', 'Qadim Katawazi');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Qadim Katawazi');
+            
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'Phylum Support Group2');
+            await changeAssignmentPage.setDropDownValue("Assignee", 'Morwenna Rosales');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Phylum Support Group2');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
+            
+            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'DE Support 3');
+            await changeAssignmentPage.setDropDownValue('Assignee', 'Alexei Stukov');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('DE Support 3');
+            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Alexei Stukov');
         });
+        afterAll(async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+        });
+
     });
 
     //Raised defect: DRDMV-25147
