@@ -10,7 +10,6 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePO from '../../pageobject/case/edit-case.po';
 import caseTemplatePO from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePO from "../../pageobject/case/view-case.po";
-import activityTabPO from "../../pageobject/social/activity-tab.po";
 import utilityGrid from "../../utils/utility.grid";
 import changeAssignmentPo from "../../pageobject/common/change-assignment.po";
 import accessTabPo from "../../pageobject/common/access-tab.po";
@@ -68,13 +67,15 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            await viewCasePO.clickEditCaseButton();
            await editCasePO.addAttachment('Attachment1_4055', ['../../data/ui/attachment/demo.txt']);
            await editCasePO.addAttachment('Attachment2_4055', ['../../data/ui/attachment/demo.txt']);
-           await editCasePO.clickSaveCase();          
-           expect(await activityTabPO.getAllTaskActivity("demo.txt(+)")).toBe("demo.txt(+)");
+          await editCasePO.clickSaveCase();  
+           expect(await caseConsolePO.getCountAttachedFiles('demo.txt')).toBe(2);           
         });
     });
 
     //nipande
     describe('[5397]: Check Description and Summary should not be updated after template change', async () => {
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let summary; let description;
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
         });
@@ -83,13 +84,33 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
             await utilityGrid.clearFilter();
             await caseConsolePO.setCaseSearchBoxValue('New');
             await caseConsolePO.clickFirstLinkInCaseSearchGrid();
+            summary = await viewCasePO.getCaseSummary();
+            description = await viewCasePO.getCaseDescriptionText();
             await viewCasePO.clickEditCaseButton();
             expect (await editCasePO.getSelectCaseTemplate()).toBe('Select Case Template');
             await editCasePO.clickOnSelectCaseTemplate();
-            await caseTemplatePO.clickOnRecommendedTemplateTab();
-            await caseTemplatePO.selectFirstRecommendedTemplate();
-            await caseTemplatePO.clickRecommendedApplyBtn();
+            await caseTemplatePO.clickOnAllTemplateTab();
+            await caseTemplatePO.selectFirstFromAllTemplate();
+            await caseTemplatePO.clickOnApplyButton();
             await editCasePO.clickSaveCase(); 
+            expect (await viewCasePO.getCaseSummary()).toBe(summary);
+            expect (await viewCasePO.getCaseDescriptionText()).toBe(description);
+
+           let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
+           let caseSummary = 'Case Summary ' + randomStr;
+           await navigationPO.gotoCreateCase();
+           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
+           await createCasePO.selectRequester('adam');
+           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
+           await createCasePO.setSummary(caseSummary);
+           expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
+           await createCasePO.clickSelectCaseTemplateButton();
+           await caseTemplatePO.clickOnAllTemplateTab();
+           await caseTemplatePO.selectFirstFromAllTemplate();
+           await caseTemplatePO.clickOnApplyButton();
+           await createCasePO.clickSaveCaseButton();
+           await previewCasePo.clickGoToCaseButton();
+           expect (await viewCasePO.getCaseSummary()).toBe(caseSummary);
         });
     });
 
@@ -110,12 +131,12 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            await createCasePO.setSummary(caseSummary);
            expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
            await changeAssignmentPo.setAssignee("US Support 3", "");
-           await createCasePO.clickAssignToMeButton();
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
            await viewCasePO.clickOnTab('Case Access');
            await accessTabPo.clickRemoveAccess("US Support 3");
            await accessTabPo.clickAccessRemoveWarningBtn("Yes");
+           expect(await utilityCommon.isPopUpMessagePresent('To remove the Assigned Support Group please assign the Case to an Agent first.'))
 
            await navigationPO.gotoCreateCase();
            expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
@@ -124,13 +145,13 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            await createCasePO.setSummary(caseSummary);
            expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
            await changeAssignmentPo.setAssignee("US Support 3", "Ruhi Verma");
-           await createCasePO.clickAssignToMeButton();
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
            await viewCasePO.clickOnTab('Case Access');
            await accessTabPo.selectAgent('Ruhi Verma', 'Agent');
            await accessTabPo.clickRemoveAccess("Ruhi Verma");
            await accessTabPo.clickAccessRemoveWarningBtn("Yes");
+           expect(await utilityCommon.isPopUpMessagePresent('The Assignee cannot be removed from the Case Access List.'));
         });
     });   
 });
