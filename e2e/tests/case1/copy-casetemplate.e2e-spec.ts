@@ -339,7 +339,7 @@ describe('Copy Case Template', () => {
             expect(await viewCasetemplatePo.getIdentityValdationValue()).toBe('Enforced');
             expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplateAllFields.resolutionCode);
             expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
-            await viewCasetemplatePo.clickOneTask();
+            await viewCasetemplatePo.clickOnTaskBox(taskTemplateDataSet.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(taskTemplateDataSet.templateName);
             await utilityCommon.closeAllBlades();
             await viewCasetemplatePo.clickBackArrowBtn();

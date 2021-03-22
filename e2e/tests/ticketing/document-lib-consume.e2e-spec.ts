@@ -205,7 +205,7 @@ describe('Document Library Consume UI', () => {
                 "resolveCaseonLastTaskCompletion": "1",
                 "assignee": "qgeorge",
                 "businessUnit": "United States Support",//New
-                "supportGroup": "US Support 3"
+                "supportGroup": "US Support 2"
             }
 
             taskTemplateDataSet = {
@@ -215,10 +215,10 @@ describe('Document Library Consume UI', () => {
                 "taskCompany": 'Petramco',
                 "assignee": "qgeorge",
                 "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
+                "supportGroup": "US Support 2",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 3"
+                "ownerGroup": "US Support 2"
             }
 
             await apiHelper.apiLogin('tadmin');
