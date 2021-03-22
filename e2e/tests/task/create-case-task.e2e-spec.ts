@@ -1174,7 +1174,7 @@ describe('Create Case Task', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
+            expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible");
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickCloseButton();
@@ -1707,10 +1707,6 @@ describe('Create Case Task', () => {
             await utilityGrid.searchAndOpenHyperlink("AdHocSummary" + randomStr);
             await viewTask.clickOnEditTask();
             expect(await editTask.isRequesterNameDisplayed('Qianru Tao')).toBeTruthy();
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 });
