@@ -361,9 +361,15 @@ describe('Case Activity Multi Logs', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'qkatawazi');
             await editTaskPo.clickOnSaveButton();
+            await activityTabPage.applyActivityFilter('Assignment Change');
+            await browser.sleep(2000); // Need wait to load/fetch logs  as per filter
             await activityTabPage.clickOnShowMore();
-            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change',3)).toBeTruthy('FailureMsg: multiple field log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg: multiple field lock icon missing');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change',1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg: multiple field lock icon missing');
+            await activityTabPage.removeFilterList();
+            await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(2000); // Need wait to load/fetch logs after fiter removed.
+            await activityTabPage.clickOnShowMore();
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log');
@@ -451,14 +457,17 @@ describe('Case Activity Multi Logs', () => {
             await viewTaskPo.clickOnEditTask();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'qkatawazi');
+            await activityTabPage.applyActivityFilter('Assignment Change');
             await editTaskPo.clickOnSaveButton();
             await activityTabPage.clickOnShowMore();
-            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change',3)).toBeTruthy('FailureMsg: multiple field log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg: multiple field lock icon missing');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change',1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg: multiple field lock icon missing');
+            await activityTabPage.removeFilterList();
+            await activityTabPage.clickOnShowMore();
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Support Organization')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('United States Support')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log');
