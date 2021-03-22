@@ -28,7 +28,8 @@ class ApprovalsConsole {
         expressionValueOptionSelector: 'button.d-dropdown__trigger[aria-expanded="true"] + ul a[role="menuitem"]',
         selectLink: '.select-title-btn',
         foundataDataSaveButton: 'button[rx-id="foundation-data-save-btn"]',
-        newApprovalFlowSaveButton: 'button[rx-id="save-button"]',
+        approversSaveButton: '[aria-label*="Select approvers: "] button[rx-id="save-button"]',
+        newApprovalFlowSaveButton: '[aria-label="Approval configurations"] button[rx-id="save-button"]',
         approvalFlowSaveButton: 'button.save-button',
         approvalFlowCloseButton: 'button[rx-id="close-button"]',
         editApprovalFlowCloseButton: '.modal-footer button.d-button_large',
@@ -56,7 +57,7 @@ class ApprovalsConsole {
         selectSelfApprovals: '.ui-grid-selection-row-header-buttons',
         selfApprovalDeleteIcon: '.d-icon-left-trash',
         GeneralApprovalDeleteIcon: '.d-collapse-panel[aria-expanded="true"] div.button-open-action .d-icon-right-trash',
-        saveModalButton: '.modal-footer [rx-id="save-button"]',
+        saveModalButton: '[aria-label="Edit expression"] .modal-footer [rx-id="save-button"]',
         cancelModalButton: '.modal-footer [rx-id="cancel-button"]',
         moveApprovalButton: 'button.move-button',
         approvalTypeDropdown: '[rx-id="approver-type"] button',
@@ -141,7 +142,7 @@ class ApprovalsConsole {
         for (let i = 0; i < countChild; i++) {
             let getTextofChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').get(i).getAttribute('title');
             if (getTextofChild == fieldOption) {
-                await $$('.modal-body .ui-tree-selectable .d-icon-plus_circle').get(i).click();
+                await $$('.modal-body .ui-tree-selectable .expression-node-button').get(i).click();
                 break;
             }
         }
@@ -182,6 +183,10 @@ class ApprovalsConsole {
     async clickNewApprovalFlowSaveButton(): Promise<void> {
         await $(this.selectors.newApprovalFlowSaveButton).click();
     }
+
+    async clickApproversSaveButton(): Promise<void> {
+        await $(this.selectors.approversSaveButton).click();
+    } 
 
     async clickApprovalFlowCloseButton(): Promise<void> {
         await $(this.selectors.approvalFlowCloseButton).click();
@@ -269,7 +274,7 @@ class ApprovalsConsole {
                 await $('div.user-list .adapt-rx-search__input').sendKeys(approver);
                 await $$(this.selectors.selectFunctionalRolesCheckbox).last().click();
                 await $(this.selectors.moveApprovalButton).click();
-                await this.clickModelOkButton();
+                await this.clickApproversSaveButton();
                 break;
             }
             case "Fields Identifying Approval": {
