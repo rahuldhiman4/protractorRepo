@@ -10,8 +10,8 @@ import previewCasePo from '../../pageobject/case/case-preview.po';
 import editCasePO from '../../pageobject/case/edit-case.po';
 import caseTemplatePO from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePO from "../../pageobject/case/view-case.po";
-import changeAssignmentPo from "../../pageobject/common/change-assignment.po";
-import accessTabPo from "../../pageobject/common/access-tab.po";
+import changeAssignmentPO from "../../pageobject/common/change-assignment.po";
+import accessTabPO from "../../pageobject/common/access-tab.po";
 
 describe('[4055]: Dynamic Field of Type Attachment Test', () => {
     beforeAll(async () => {
@@ -120,29 +120,29 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
            await createCasePO.selectRequester('adam');
            await createCasePO.setSummary(caseSummary);
-           await changeAssignmentPo.setAssignee("US Support 3", "");
+           await changeAssignmentPO.setAssignee("US Support 3", "");
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
            await viewCasePO.clickOnTab('Case Access');
-           await accessTabPo.clickRemoveAccess("US Support 3");
-           await accessTabPo.clickAccessRemoveWarningBtn("Yes");
+           await accessTabPO.clickRemoveAccess("US Support 3");
+           await accessTabPO.clickAccessRemoveWarningBtn("Yes");
            expect(await utilityCommon.isPopUpMessagePresent('To remove the Assigned Support Group please assign the Case to an Agent first.'))
 
            await navigationPO.gotoCreateCase();
            await createCasePO.selectRequester('adam');
            expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
            await createCasePO.setSummary(caseSummary);
-           await changeAssignmentPo.setAssignee("US Support 3", "Ruhi Verma");
+           await changeAssignmentPO.setAssignee("US Support 3", "Ruhi Verma");
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
            await viewCasePO.clickOnTab('Case Access');
-           await accessTabPo.selectAgent('Ruhi Verma', 'Agent');
-           await accessTabPo.clickRemoveAccess("Ruhi Verma");
-           await accessTabPo.clickAccessRemoveWarningBtn("Yes");
+           await accessTabPO.selectAgent('Ruhi Verma', 'Agent');
+           await accessTabPO.clickRemoveAccess("Ruhi Verma");
+           await accessTabPO.clickAccessRemoveWarningBtn("Yes");
            expect(await utilityCommon.isPopUpMessagePresent('The Assignee cannot be removed from the Case Access List.'));
            
-           await accessTabPo.clickRemoveAccess("US Support 3");
-           await accessTabPo.clickAccessRemoveWarningBtn("Yes");
-           expect(await accessTabPo.isAccessEntityDisplayed('US Support 3', 'Case')).toBeFalsy();        });
+           await accessTabPO.clickRemoveAccess("US Support 3");
+           await accessTabPO.clickAccessRemoveWarningBtn("Yes");
+           expect(await accessTabPO.isAccessEntityDisplayed('US Support 3', 'Case')).toBeFalsy();        });
     });   
 });
