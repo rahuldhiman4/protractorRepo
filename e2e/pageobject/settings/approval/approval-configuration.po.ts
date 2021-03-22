@@ -141,7 +141,7 @@ class ApprovalsConsole {
         for (let i = 0; i < countChild; i++) {
             let getTextofChild = await $$('.modal-body .ui-tree-selectable .expression-node-label').get(i).getAttribute('title');
             if (getTextofChild == fieldOption) {
-                await $$('.modal-body .ui-tree-selectable .d-icon-plus_circle').get(i).click();
+                await $$('.modal-body .ui-tree-selectable .expression-node-button').get(i).click();
                 break;
             }
         }
