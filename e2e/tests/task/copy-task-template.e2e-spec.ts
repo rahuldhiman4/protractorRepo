@@ -228,8 +228,8 @@ describe('Copy Task Template', () => {
         let templateData, newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
         beforeAll(async () => {
             templateData = {
-                "templateName": 'DRDMV14217Automationtask' + randomStr,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateName": randomStr + 'DRDMV14217Automationtask',
+                "templateSummary": randomStr + 'AutomatedTaskTemplateDRDMV14217',
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process ${randomStr}`,
