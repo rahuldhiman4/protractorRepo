@@ -12,6 +12,8 @@ import caseTemplatePO from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePO from "../../pageobject/case/view-case.po";
 import activityTabPO from "../../pageobject/social/activity-tab.po";
 import utilityGrid from "../../utils/utility.grid";
+import changeAssignmentPo from "../../pageobject/common/change-assignment.po";
+import accessTabPo from "../../pageobject/common/access-tab.po";
 
 describe('[4055]: Dynamic Field of Type Attachment Test', () => {
     beforeAll(async () => {
@@ -90,4 +92,45 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
             await editCasePO.clickSaveCase(); 
         });
     });
+
+    //nipande
+    describe('[6224]: [Case visibility] Error messages handling]', async () => {
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await navigationPO.signOut();
+            await loginPO.login('qtao');
+        });
+        it('[6224]: [Case visibility] Error messages handling]', async function () {
+           let prioirtyValue: string[] = ["Critical", "High", "Medium", "Low"];
+           let caseSummary = 'Case Summary ' + randomStr;
+           await navigationPO.gotoCreateCase();
+           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
+           await createCasePO.selectRequester('adam');
+           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
+           await createCasePO.setSummary(caseSummary);
+           expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
+           await changeAssignmentPo.setAssignee("US Support 3", "");
+           await createCasePO.clickAssignToMeButton();
+           await createCasePO.clickSaveCaseButton();
+           await previewCasePo.clickGoToCaseButton();
+           await viewCasePO.clickOnTab('Case Access');
+           await accessTabPo.clickRemoveAccess("US Support 3");
+           await accessTabPo.clickAccessRemoveWarningBtn("Yes");
+
+           await navigationPO.gotoCreateCase();
+           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
+           await createCasePO.selectRequester('adam');
+           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
+           await createCasePO.setSummary(caseSummary);
+           expect(await createCasePO.allPriorityOptionsPresent(prioirtyValue)).toBeTruthy('Priority is not present');
+           await changeAssignmentPo.setAssignee("US Support 3", "Ruhi Verma");
+           await createCasePO.clickAssignToMeButton();
+           await createCasePO.clickSaveCaseButton();
+           await previewCasePo.clickGoToCaseButton();
+           await viewCasePO.clickOnTab('Case Access');
+           await accessTabPo.selectAgent('Ruhi Verma', 'Agent');
+           await accessTabPo.clickRemoveAccess("Ruhi Verma");
+           await accessTabPo.clickAccessRemoveWarningBtn("Yes");
+        });
+    });   
 });
