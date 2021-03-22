@@ -42,7 +42,8 @@ class EditNotificationTemplate {
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
         emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.btn-primary',
-        cancelButtonAddRecipient: '.float-right button.btn-secondary'
+        cancelButtonAddRecipient: '.float-right button.btn-secondary',
+        alertInsertField: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .cke_button__rtfexpressioneditor_icon'
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
@@ -365,6 +366,10 @@ class EditNotificationTemplate {
         }
         await utilityCommon.selectDropDown(dropDownElement, dropDownValue, DropDownType.WebElement);
     }
+    async clickOnInsertFieldOfAlert(): Promise<void> {
+        await $(this.selectors.alertInsertField).click();
+    }
+
 
 }
 export default new EditNotificationTemplate();

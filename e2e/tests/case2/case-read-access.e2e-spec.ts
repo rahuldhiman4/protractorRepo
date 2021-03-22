@@ -474,7 +474,7 @@ describe("Case Read Access", () => {
             await utilityCommon.closePopUpMessage();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg2: Support Group Name is missing');
             await navigationPo.signOut();
             await loginPage.login('qkatawazi');
             await navigationPo.gotoQuickCase();
@@ -484,7 +484,9 @@ describe("Case Read Access", () => {
             await utilityCommon.closePopUpMessage();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
+            await accessTabPo.clickToExpandAccessEntitiyByGroup('Support Group Access');
+            await accessTabPo.clickToExpandAccessEntitiyByGroup('Support Group Access');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg3: Support Group Name is missing');
         });
         // success
         it('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {

@@ -267,6 +267,7 @@ describe('Document Library Consume UI', () => {
             await createCasePo.setSummary(randomStr);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
+            await createCasePo.clickAssignToMeButton();
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickOnTaskLink(taskTemplateDataSet.templateSummary);

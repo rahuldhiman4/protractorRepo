@@ -420,7 +420,7 @@ describe("Notification Template", () => {
             await utilityCommon.closeAllBlades();
         });
     });
-    //log defect-first check with tushar
+    //Defect
     describe('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
         it('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
             let eventData = {

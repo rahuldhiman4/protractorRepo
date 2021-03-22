@@ -225,20 +225,12 @@ class ChangeAssignmentBlade {
         let locator = this.selectors.changeAssignmentComponent;
         if (guid) locator = `bwf-change-assignment[rx-view-component-id="${guid}"] button`;
         switch (dropDownName) {
-            case "Company": {
+            case "AssignedGroup": {
                 dropDownElement = await $$(locator).get(0);
                 break;
             }
-            case "SupportOrg": {
-                dropDownElement = await $$(locator).get(1);
-                break;
-            }
-            case "AssignedGroup": {
-                dropDownElement = await $$(locator).get(2);
-                break;
-            }
             case "Assignee": {
-                dropDownElement = await $$(locator).get(3);
+                dropDownElement = await $$(locator).get(1);
                 break;
             }
             default: {

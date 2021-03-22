@@ -582,7 +582,7 @@ describe("Case Level Up Approval Tests", () => {
         });
 
         it('[6218,6219]:Create a case and verify Show Approvers Blade information', async () => {
-            await apiHelper.apiLogin('qfeng');
+            await apiHelper.apiLogin('qkatawazi');
             let response = await apiHelper.createCase(caseData);
             caseId = response.displayId;
             await navigationPage.signOut();
@@ -820,7 +820,6 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
-            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Closed')).toContain('Closed'); // ??
             expect(await showApproversBladePo.isClosedApproverIconDisplayedFromActivity()).toBeTruthy('Closed icon button on Approver List blade is not displayed'); // ??
             expect(await showApproversBladePo.isApprovedApproverIconDisplayedFromActivity()).toBeTruthy('Approved button on Approver List blade is not displayed');
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
@@ -831,6 +830,7 @@ describe("Case Level Up Approval Tests", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(caseModule);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -973,7 +973,6 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
-            expect(await showApproversBladePo.getClosedApprovalStatusLabelFromActivity('Closed')).toContain('Closed'); // ???
             expect(await showApproversBladePo.isClosedApproverIconDisplayedFromActivity()).toBeTruthy('Closed icon button on Approver List blade is not displayed'); // ???
             expect(await showApproversBladePo.isApprovedApproverIconDisplayedFromActivity()).toBeTruthy('Approved button on Approver List blade is not displayed');
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');

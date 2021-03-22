@@ -76,7 +76,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
             let taskId = await manageTask.getTaskDisplayId();
             await manageTask.clickCloseButton();
             await navigationPage.gotoCaseConsole();
@@ -228,8 +228,8 @@ describe('Copy Task Template', () => {
         let templateData, newAutomationTaskTemplate = 'NewAutomationtaskDRDMV14217' + randomStr;
         beforeAll(async () => {
             templateData = {
-                "templateName": 'DRDMV14217Automationtask' + randomStr,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateName": randomStr + 'DRDMV14217Automationtask',
+                "templateSummary": randomStr + 'AutomatedTaskTemplateDRDMV14217',
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process ${randomStr}`,
@@ -269,16 +269,15 @@ describe('Copy Task Template', () => {
         });
     });
 
-    //check
     describe('[4742,4731]: Case Business Analyst can create a copy of Task Template type Manual', () => {
-        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let manualTaskTemplateName2 = randomStr + 'DRDMV13540ManualTaskName2';
-        let manualTaskTemplateSummary2 = randomStr + 'DRDMV13540ManualTaskSummary2';
+        const randomStr = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let manualTaskTemplateName2 = randomStr + 'Name2';
+        let manualTaskTemplateSummary2 = randomStr + 'Summary2';
         let templateData;
         beforeAll(async () => {
             templateData = {
-                "templateName": randomStr + 'DRDMV13540ManualTaskName1',
-                "templateSummary": randomStr + 'DRDMV13540ManualTaskSummary1',
+                "templateName": randomStr + 'Name1',
+                "templateSummary": randomStr + 'Summary1',
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -312,15 +311,15 @@ describe('Copy Task Template', () => {
 
     //Done
     describe('[4569]: Create Copy of an automated Task and check execution', () => {
-        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        const randomStr = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData, newCase;
-        let newProcessName = randomStr + 'NewProcessDRDMV14215';
-        let updatedTaskTemplate = randomStr + 'UpdatedTaskDRDMV14215';
-        let updatedTaskSummary = randomStr + 'UpdatedSummaryDRDMV14215';
+        let newProcessName = randomStr + 'NewProcess';
+        let updatedTaskTemplate = randomStr + 'UpdatedTask';
+        let updatedTaskSummary = randomStr + 'UpdatedSummary';
         beforeAll(async () => {
             templateData = {
-                "templateName": randomStr + 'DRDMV14215AutomationTask',
-                "templateSummary": `${randomStr}AutomatedTaskTemplateActive`,
+                "templateName": randomStr + 'TaskName',
+                "templateSummary": randomStr + 'TaskSummary',
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": randomStr + 'DRDMV14215Process',
@@ -331,7 +330,7 @@ describe('Copy Task Template', () => {
             }
             let caseData = {
                 "Requester": "apavlik",
-                "Summary": randomStr + 'Summary ',
+                "Summary": randomStr + 'Summary',
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 1",
@@ -359,7 +358,7 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
-            await manageTask.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTask.addTaskFromTaskTemplate(templateData.templateName);
             let taskId = await manageTask.getTaskDisplayId();
             await manageTask.clickCloseButton();
             await navigationPage.gotoCaseConsole();
@@ -370,6 +369,9 @@ describe('Copy Task Template', () => {
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTask.getTaskStatusValue()).toBe('Completed');
+        });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
         });
     });
 

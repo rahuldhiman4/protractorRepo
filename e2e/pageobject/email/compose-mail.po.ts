@@ -18,7 +18,6 @@ class ComposeMail {
         popupInfo: '.dropdown-menu .popup-info',
         emailBody: '.cke_editable_themed',
         firstClickInEmail: '.cke_editable_themed br',
-        attachmentName: '.rx-attachment-view-name',
         getsubject: '.subject-name span',
         toOrCcEmailgetText: 'div.adapt-mt-field-wrapper .flexi-type-ahead-person-tag',
         subjectInput: '.subject-name input',

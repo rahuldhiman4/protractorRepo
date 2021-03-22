@@ -53,7 +53,6 @@ class CaseEditPage {
         assigneeCompany: '[rx-view-component-id="196878af-30b3-4ae2-ae7f-4c65baa5d951"] button',
         assigneeCompanyGuid: '196878af-30b3-4ae2-ae7f-4c65baa5d951',
         department: '[rx-view-component-id="3265d389-cd00-45ca-b65a-8335c67582b7"] adapt-select',
-        assigneee: '.assignee button',
         buisnessUnit: '[rx-view-component-id="54e4d84f-daca-4988-b064-d79084ab9421"] button',
         assignedGroup: '[rx-view-component-id="116edc77-c040-42db-8a32-dc836e4cb254"] button',
         assignedGroupGuid: '116edc77-c040-42db-8a32-dc836e4cb254',
@@ -288,10 +287,6 @@ class CaseEditPage {
 
     async getDepartmentCompanyReadable(): Promise<string> {
         return await $(this.selectors.department).getAttribute('aria-disabled');
-    }
-
-    async getAssigneeReadable(): Promise<string> {
-        return await $(this.selectors.assigneee).getAttribute('aria-disabled');
     }
 
     async getBuisnessUnitReadable(): Promise<string> {
