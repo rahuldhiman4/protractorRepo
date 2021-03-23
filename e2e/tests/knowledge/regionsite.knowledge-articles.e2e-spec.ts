@@ -655,8 +655,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
     });
 //done
     describe('[3833]:Verify the document search based on Region and Site from attachments', () => {
-        let caseSummary = `Case for Document Search-${new Date().valueOf()}`;
-        let title = `Document-${new Date().valueOf()}`;
+        let caseSummary = `${new Date().valueOf()}Case for Document Search`;
+        let title = `${new Date().valueOf()}Document`;
 
         beforeAll(async () => {
             await navigationPage.signOut();
@@ -682,8 +682,8 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);
             expect(await editDocumentLibraryPo.getSiteGrpSelectedValue()).toBe(siteGroupVal);
             expect(await editDocumentLibraryPo.getSiteSelectedValue()).toBe(siteFieldVal);
-            await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
-            await createDocumentLibraryPage.saveUpdatedDocument();
+            await editDocumentLibraryPo.selectStatus(documentLibraryStatus);
+            await editDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
             await editDocumentLibraryPo.clickOnCancelButton();
             await browser.sleep(30000); // To Wait For Document Library Record Updates And Display Console Page.
