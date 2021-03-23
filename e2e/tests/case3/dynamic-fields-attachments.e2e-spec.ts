@@ -63,46 +63,79 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            await viewCasePO.clickEditCaseButton();
            await editCasePO.addAttachment('Attachment1_4055', ['../../data/ui/attachment/demo.txt']);
            await editCasePO.addAttachment('Attachment2_4055', ['../../data/ui/attachment/demo.txt']);
+           expect(await caseConsolePO.getCountAttachedFiles('demo.txt')).toBe(2);           
            await editCasePO.clickSaveCase();  
            await viewCasePO.clickAttachmentsLink();
            expect(await caseConsolePO.getCountAttachedFiles('demo.txt')).toBe(2);           
         });
     });
 
-    // //nipande
+    //nipande
     describe('[5397]: Check Description and Summary should not be updated after template change', async () => {
-        let caseSummary = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateDatawithSG5397; let templateDataWitoutSG5397
         beforeAll(async () => {
+            templateDatawithSG5397 = {
+                "templateName": "templateDatawithSG5396 " + randomStr,
+                "templateSummary": "templateDatawithSG5396 summary " + randomStr,
+                "templateStatus": "Active",
+            }
+            templateDataWitoutSG5397 = {
+                "templateName": "templateDataWitoutSG5396 " + randomStr,
+                "templateSummary": "templateDataWitoutSG5396 summary " + randomStr,
+                "categoryTier1": "Purchasing Card",
+                "categoryTier2": "Policies",
+                "categoryTier3": "Card Issuance",
+                "casePriority": "Low",
+                "templateStatus": "Active",
+                "company": "Petramco",
+                "ownerCompany": "Petramco",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 1",
+                "assigneeCompany": "Petramco",
+                "assigneeBU": "United States Support",
+                "assigneeSupportGroup": "US Support 1",
+                "assignee": "qtao",
+            }
+
             await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(templateDatawithSG5397);
+            await apiHelper.createCaseTemplate(templateDataWitoutSG5397);
         });
         it('[5397]: Check Description and Summary should not be updated after template change', async function () {
             await navigationPO.gotoCreateCase();
             await createCasePO.selectRequester('adam');
-            await createCasePO.setSummary(caseSummary);
+            await createCasePO.setSummary(templateDatawithSG5397.templateSummary);
             await createCasePO.clickSaveCaseButton(); 
             await previewCasePo.clickGoToCaseButton();
+            let description = await viewCasePO.getCaseDescriptionText();
             await viewCasePO.clickEditCaseButton();
             expect (await editCasePO.getSelectCaseTemplate()).toBe('Select Case Template');
             await editCasePO.clickOnSelectCaseTemplate();
             await caseTemplatePO.clickOnAllTemplateTab();
-            await caseTemplatePO.selectFirstFromAllTemplate();
-            await caseTemplatePO.clickOnApplyButton();
-            let description = await viewCasePO.getCaseDescriptionText();
+            await caseTemplatePO.selectCaseTemplate(templateDatawithSG5397.templateName);
             await editCasePO.clickSaveCase();
-            expect (await viewCasePO.getCaseSummary()).toBe(caseSummary);
+            
+            expect (await viewCasePO.getCaseSummary()).toBe(templateDatawithSG5397.templateSummary);
             expect (await viewCasePO.getCaseDescriptionText()).toBe(description);
 
            await navigationPO.gotoCreateCase();
            await createCasePO.selectRequester('adam');
-           await createCasePO.setSummary(caseSummary);
+           await createCasePO.setSummary(templateDataWitoutSG5397.templateSummary);
            await createCasePO.clickSelectCaseTemplateButton();
            await caseTemplatePO.clickOnAllTemplateTab();
            await caseTemplatePO.selectFirstFromAllTemplate();
            await caseTemplatePO.clickOnApplyButton();
-           description = await viewCasePO.getCaseDescriptionText();
            await createCasePO.clickSaveCaseButton();
            await previewCasePo.clickGoToCaseButton();
-           expect (await viewCasePO.getCaseSummary()).toBe(caseSummary);
+           description = await viewCasePO.getCaseDescriptionText();
+           await viewCasePO.clickEditCaseButton();
+           await editCasePO.clickOnChangeCaseTemplate();
+           await caseTemplatePO.clickOnAllTemplateTab();
+           await caseTemplatePO.selectCaseTemplate(templateDataWitoutSG5397.templateName);
+           await editCasePO.clickSaveCase();
+           await utilityCommon.closeAllBlades();
+           expect (await viewCasePO.getCaseSummary()).toBe(templateDataWitoutSG5397.templateSummary);
            expect (await viewCasePO.getCaseDescriptionText()).toBe(description);
         });
     });
@@ -117,7 +150,6 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
         it('[6224]: [Case visibility] Error messages handling]', async function () {
            let caseSummary = 'Case Summary ' + randomStr;
            await navigationPO.gotoCreateCase();
-           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy("Save button is enabled");
            await createCasePO.selectRequester('adam');
            await createCasePO.setSummary(caseSummary);
            await changeAssignmentPO.setAssignee("US Support 3", "");
@@ -130,7 +162,6 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
 
            await navigationPO.gotoCreateCase();
            await createCasePO.selectRequester('adam');
-           expect(await createCasePO.isSaveCaseButtonEnabled()).toBeFalsy();
            await createCasePO.setSummary(caseSummary);
            await changeAssignmentPO.setAssignee("US Support 3", "Ruhi Verma");
            await createCasePO.clickSaveCaseButton();
@@ -143,6 +174,7 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            
            await accessTabPO.clickRemoveAccess("US Support 3");
            await accessTabPO.clickAccessRemoveWarningBtn("Yes");
-           expect(await accessTabPO.isAccessEntityDisplayed('US Support 3', 'Case')).toBeFalsy();        });
-    });   
+           expect(await accessTabPO.isAccessEntityDisplayed('US Support 3', 'Case')).toBeFalsy();        
+        });
+    });  
 });
