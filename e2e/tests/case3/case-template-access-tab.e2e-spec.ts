@@ -20,6 +20,12 @@ import relatedCaseTabPo from '../../pageobject/common/related-case-tab.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import updateStatusBladePo from '../..//pageobject/common/update.status.blade.po';
 import statusConfigPo from '../../pageobject/settings/common/status-config.po';
+import viewCasetemplatePo from '../../pageobject/settings/case-management/view-casetemplate.po';
+import { ICaseTemplate } from '../../data/interface/template.interface';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
+import createCasePo from '../../pageobject/case/create-case.po';
+import quickCasePo from '../../pageobject/case/quick-case.po';
+import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
 
 describe('Case Edit Backlog Test', () => {
     beforeAll(async () => {
@@ -205,7 +211,7 @@ describe('Case Edit Backlog Test', () => {
         });
     });
 
-    describe('[4326,4374]: closed case if reoped will follow new case status configuration cycle ', async() => {
+    describe('[4326,4374,4391]: closed case if reoped will follow new case status configuration cycle ', async() => {
         let caseTemplate, caseId;
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async() => {
@@ -232,7 +238,7 @@ describe('Case Edit Backlog Test', () => {
             let template = await apiHelper.createCaseTemplate(caseTemplate);
             let caseData = {
                 "Requester": "mcarney",
-                "Summary": "Test case for 4326,4374 " + randomStr,
+                "Summary": "Test case for 4326,4374,4391 " + randomStr,
                 "Assigned Company": "Phylum",
                 "Business Unit": "Phylum Support Org1",
                 "Support Group": "Phylum Support Group1",
@@ -245,18 +251,20 @@ describe('Case Edit Backlog Test', () => {
             caseId = newCase1.displayId;
         })
 
-        it('[4326,4374]: change case status to closed using case agent', async() => {
+        it('[4326,4374,4391]: change case status to closed using case agent', async() => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
+            expect(await viewCasePo.isCaseReopenLinkPresent()).toBeFalsy();
             await updateStatusBladePo.changeStatus('Resolved');
             await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
+            expect(await viewCasePo.isCaseReopenLinkPresent()).toBeTruthy();
         })
 
-        it('[4326,4374]:add custom status in case using case BA', async() => {
+        it('[4326,4374,4391]:add custom status in case using case BA', async() => {
             await navigationPage.signOut();
             await loginPage.login('jmilano'); // case BA
             await navigationPage.gotoSettingsPage();
@@ -266,7 +274,7 @@ describe('Case Edit Backlog Test', () => {
             await statusConfigPo.addCustomStatus("In Progress", "Resolved", "customStatus");
         })
 
-        it('[4326,4374]:Reopen the closed case and follows the case status lifecycle', async() => {
+        it('[4326,4374,4391]:Reopen the closed case and follows the case status lifecycle', async() => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickOnReopenCaseLink();
@@ -284,7 +292,7 @@ describe('Case Edit Backlog Test', () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         })
 
-        it('[4326,4374]:delete added customStatus from case', async() => {
+        it('[4326,4374,4391]:delete added customStatus from case', async() => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'case');
@@ -293,6 +301,170 @@ describe('Case Edit Backlog Test', () => {
             expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
             await statusConfigPo.clickOnDeleteButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        })
+    });
+
+    fdescribe('[3992]: case is remained in new status, if after case asignee is empty', async() => {
+        let caseTemplate1: ICaseTemplate, caseTemplate2: ICaseTemplate, flowset1, flowset2;
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async() => {
+
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+
+            flowset1 = {
+                "flowsetName": "Flowset1"+randomStr,
+                "flowsetStatus": 10,
+                "company": "Petramco",
+                "description": "Test Flowset name description",
+                "lineOfBusiness": "Human Resource"
+            }
+            flowset2 = {
+                "flowsetName": "Flowset2"+randomStr,
+                "flowsetStatus": 10,
+                "company": "Petramco",
+                "description": "Test Flowset name description",
+                "lineOfBusiness": "Human Resource"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createNewFlowset(flowset1);
+            await apiHelper.createNewFlowset(flowset2);
+
+            caseTemplate1 = {
+                "templateName": 'caseTemplateForFlowset1' + randomStr,
+                "templateSummary": 'case summary',
+                "description": "case description",
+                "categoryTier1": "Applications",
+                "casePriority": "High",
+                "templateStatus": "Draft",
+                "caseStatus": "New",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness": "Human Resource"
+            }
+
+            caseTemplate2 = {
+                "templateName": 'caseTemplateForFlowset2' + randomStr,
+                "templateSummary": 'case summary',
+                "description": "case description",
+                "categoryTier1": "Applications",
+                "casePriority": "High",
+                "templateStatus": "Draft",
+                "caseStatus": "New",
+                "company": "Petramco",
+                "businessUnit": "United States Support",
+                "supportGroup": "US Support 3",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
+                "lineOfBusiness": "Human Resource"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.createCaseTemplate(caseTemplate1);
+            await apiHelper.createCaseTemplate(caseTemplate2);
+        })
+
+        it('[3992]: add custom status for flowset1 in case', async() => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
+            await assignmentsConfigConsolePo.clearFilter();
+            await assignmentsConfigConsolePo.addFilter('Company', '- Global -', 'text')
+            await assignmentsConfigConsolePo.deleteFilteredAssignmentConfig();
+
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
+            await statusConfigPo.setCompanyDropdown('Petramco', 'case');
+            await statusConfigPo.selectFlowset(flowset1.flowsetName)
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("New", "Assigned", "Ready");
+        })
+
+        it('[3992]: modify case template ready status for flowset1 and new status for flowset2', async() => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1.templateName);
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.changeFlowsetValue(flowset1.flowsetName);
+            await editCasetemplatePo.changeCaseStatusValue('Ready');
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            await utilityCommon.closePopUpMessage();
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate2.templateName);
+            await viewCasetemplatePo.clickOnEditCaseTemplateButton();
+            await editCasetemplatePo.changeFlowsetValue(flowset2.flowsetName);
+            await editCasetemplatePo.clickSaveCaseTemplate();
+            await utilityCommon.closePopUpMessage();
+            await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
+            await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCasetemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.clickBackArrowBtn();
+        })
+
+        it('[3992]: login with case agent and create case from create case and quick case without assignee and without template', async() => {
+            await navigationPage.signOut();
+            await loginPage.login('qtao');
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('qfeng');
+            await createCasePo.setSummary('Summary for case 3');
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssigneeText()).toBe('None');
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.updateCasePriority('High');
+            await editCasePo.updateDescription('Test1')
+            await editCasePo.clickSaveCase();
+            expect(await viewCasePo.getTextOfStatus()).toBe('New');
+
+            await navigationPage.gotoQuickCase();
+            await quickCasePo.selectRequesterName('hhaas');
+            await quickCasePo.setCaseSummary('Summary for case 2');
+            await quickCasePo.createCaseButton();
+            await quickCasePo.gotoCaseButton();
+            expect(await viewCasePo.getAssigneeText()).toBe('None');
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.updateCasePriority('Medium');
+            await editCasePo.updateDescription('Test2')
+            await editCasePo.clickSaveCase();
+            expect(await viewCasePo.getTextOfStatus()).toBe('New');
+        })
+
+        it('[3992]: create case using template1 with flowset1 and update some fields and check case stautus', async() => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('apavlik');
+            await createCasePo.setSummary('Summary for case template with flowset1');
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate1.templateName);
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssigneeText()).toBe('None');
+            expect(await viewCasePo.getTextOfStatus()).toBe('Ready');
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.updateCasePriority('Low');
+            await editCasePo.updateDescription('Test3')
+            await editCasePo.clickSaveCase();
+            expect(await viewCasePo.getTextOfStatus()).toBe('Ready');
+        })
+
+        it('[3992]: create case using template2 with flowset2 and update some fields and check case stautus', async() => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('apavlik');
+            await createCasePo.setSummary('Summary for case template with flowset2');
+            await createCasePo.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate2.templateName);
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            expect(await viewCasePo.getAssigneeText()).toBe('None');
+            expect(await viewCasePo.getTextOfStatus()).toBe('New');
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.updateCasePriority('High');
+            await editCasePo.updateDescription('Test4')
+            await editCasePo.clickSaveCase();
+            expect(await viewCasePo.getTextOfStatus()).toBe('New');
         })
     });
 });
