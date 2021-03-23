@@ -304,7 +304,7 @@ describe('Case Edit Backlog Test', () => {
         })
     });
 
-    fdescribe('[3992]: case is remained in new status, if after case asignee is empty', async() => {
+    describe('[3992]: case is remained in new status, if after case asignee is empty', async() => {
         let caseTemplate1: ICaseTemplate, caseTemplate2: ICaseTemplate, flowset1, flowset2;
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async() => {
