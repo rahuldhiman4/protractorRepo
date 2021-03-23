@@ -90,9 +90,9 @@ class CreateTaskTemplatePage {
     }
 
     async selectTaskCategoryTier2(category2: string): Promise<void> {
-        let locator = await $('[rx-view-component-id="f0dcc3ef-9842-4e3c-bd32-7278885496f3"] button');
-        await utilityCommon.selectDropDown(locator, category2, DropDownType.WebElement);
-        // await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
+        //let locator = await $('[rx-view-component-id="f0dcc3ef-9842-4e3c-bd32-7278885496f3"] button');
+        //await utilityCommon.selectDropDown(locator, category2, DropDownType.WebElement);
+        await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
     }
 
     async selectTaskCategoryTier3(category3: string): Promise<void> {

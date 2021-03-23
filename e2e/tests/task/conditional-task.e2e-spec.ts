@@ -350,7 +350,7 @@ describe('Conditional Task', () => {
             await previewCaseTemplatePage.clickOnBackButton();
             await utilityCommon.closeAllBlades();
         });
-        it('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
+        xit('[4539,4538]: [Task] [UI]- Task Flow Process display in Case Template > Task section', async () => {
             //Validate the Case Template Preview from Quick Case
             await navigationPage.gotoQuickCase();
             await quickCasePage.selectRequesterName('qfeng');
@@ -391,7 +391,7 @@ describe('Conditional Task', () => {
     });
 
     //asahitya
-    xdescribe('[4542]: [Task] - Task Template availability when adding it into Case Template', () => {
+    describe('[4542]: [Task] - Task Template availability when adding it into Case Template', () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let globalDraftTask, globalActiveTask, globalInactiveTask, petramcoDraftTask, petramcoActiveTask, petramcoInactiveTask, psilonDraftTask, psilonActiveTask, psilonInactiveTask;
         let globalActiveAutomatedTask, petramcoActiveAutomatedTask, psilonActiveAutomatedTask, globalActiveExternalTask, petramcoActiveExternalTask, psilonActiveExternalTask;
@@ -528,7 +528,7 @@ describe('Conditional Task', () => {
             //Create Automated Petramco Active task
             petramcoActiveAutomatedTask = {
                 "templateName": `${randomStr}petramcoActiveAutomatedTemplate`,
-                "templateSummary": `${randomStr}petramcoActiveAutomatedTempate`,
+                "templateSummary": `${randomStr}petramcoActiveAutomatedTemplate`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces2' + randomStr,
@@ -544,7 +544,7 @@ describe('Conditional Task', () => {
             //Create Automated Psilon Active task
             psilonActiveAutomatedTask = {
                 "templateName": `${randomStr}psilonActiveAutomatedTemplate`,
-                "templateSummary": `${randomStr}psilonActiveAutomatedTempate`,
+                "templateSummary": `${randomStr}psilonActiveAutomatedTemplate`,
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": 'Auto Proces3' + randomStr,
@@ -646,86 +646,86 @@ describe('Conditional Task', () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
 
             //Verify on Global Template
-            await utilityGrid.searchAndOpenHyperlink(`globalDraftCaseTemplate${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(`${randomStr}globalDraftCaseTemplate`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
-            expect(await processEditorPage.isTemplatePresent(`globalDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`globalInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveAutomatedTemplate`)).toBeTruthy(); //fail
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveAutomatedTemplate`)).toBeTruthy(); //fail
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveAutomatedTemplate`)).toBeTruthy(); //fail
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveExternalTemplate`)).toBeTruthy(); //fail
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveExternalTemplate`)).toBeTruthy(); //fail
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveExternalTemplate`)).toBeTruthy(); //fail
+        });
+
+        it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             await processEditorPage.clickCancelOnTemplateSelectBlade();
             await processEditorPage.clickGoBackToTemplateBtn();
             await processEditorPage.clickOnWarningOk();
             await viewCaseTemplatePage.clickBackArrowBtn();
-        });
-
-        xit('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
             //Verify on Petramco Template
-            await utilityGrid.searchAndOpenHyperlink(`petramcoDraftCaseTemplate${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(`${randomStr}petramcoDraftCaseTemplate`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
-            expect(await processEditorPage.isTemplatePresent(`globalDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`globalInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            await processEditorPage.clickCancelOnTemplateSelectBlade();
-            await processEditorPage.clickGoBackToTemplateBtn();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await viewCaseTemplatePage.clickBackArrowBtn();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveAutomatedTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveAutomatedTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveAutomatedTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveExternalTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveExternalTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveExternalTemplate`)).toBeTruthy();
         });
 
-        xit('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
+        it('[4542]: [Task] - Task Template availability when adding it into Case Template', async () => {
+            await processEditorPage.clickCancelOnTemplateSelectBlade();
+            await processEditorPage.clickGoBackToTemplateBtn();
+            await processEditorPage.clickOnWarningOk();
+            await viewCaseTemplatePage.clickBackArrowBtn();
             //Verify on Psilon Template
-            await utilityGrid.searchAndOpenHyperlink(`psilonDraftCaseTemplate${randomStr}`);
+            await utilityGrid.searchAndOpenHyperlink(`${randomStr}psilonDraftCaseTemplate`);
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
-            expect(await processEditorPage.isTemplatePresent(`globalDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`globalInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonDraftTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonInactiveTemplate${randomStr}`)).toBeFalsy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveAutomatedTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`globalActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`petramcoActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            expect(await processEditorPage.isTemplatePresent(`psilonActiveExternalTemplate${randomStr}`)).toBeTruthy();
-            await processEditorPage.clickCancelOnTemplateSelectBlade();
-            await processEditorPage.clickGoBackToTemplateBtn();
-            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
-            await viewCaseTemplatePage.clickBackArrowBtn();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonDraftTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonInactiveTemplate`)).toBeFalsy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveAutomatedTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveAutomatedTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveAutomatedTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveExternalTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}petramcoActiveExternalTemplate`)).toBeTruthy();
+            expect(await processEditorPage.isTemplatePresent(`${randomStr}psilonActiveExternalTemplate`)).toBeTruthy();
         });
 
         afterAll(async () => {
+            await processEditorPage.clickCancelOnTemplateSelectBlade();
+            await processEditorPage.clickGoBackToTemplateBtn();
+            await processEditorPage.clickOnWarningOk();
+            await viewCaseTemplatePage.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -837,7 +837,7 @@ describe('Conditional Task', () => {
         });
     });
 
-    //asahitya-copy task issue
+    //asahitya-getting error on copy(check with tushar)
     xdescribe('[4497]: [Task] Copy Case Template', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramcoData, newCaseTemplate, manualTaskTemplateData, externalTaskTemplateData;
@@ -902,7 +902,6 @@ describe('Conditional Task', () => {
             await createCaseTemplatePage.setOwnerCompanyValue('Psilon');
             await createCaseTemplatePage.setOwnerOrgDropdownValue('Psilon Support Org1');
             await createCaseTemplatePage.setOwnerGroupDropdownValue('Psilon Support Group1');
-            await changeAssignmentPo.setDropDownValue("Company", 'None');
             await createCaseTemplatePage.clickSaveCaseTemplate();
             await viewCaseTemplatePage.clickOnTaskBox(externalTaskTemplateData.templateName);
             expect(await previewTaskTemplatePo.getTaskCompany()).toBe('Psilon');

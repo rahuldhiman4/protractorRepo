@@ -249,7 +249,7 @@ class EditKnowledgePage {
     }
 
     async getReviewerValue(): Promise<string> {
-        return await $$(this.selectors.knowledgeReviewerValue).get(3).getText()
+        return await $$(this.selectors.knowledgeReviewerValue).get(1).getText()
     }
 
     async isArticleEditOptionDisplayed(editOption: string): Promise<boolean> {

@@ -1,4 +1,4 @@
-import {$, element, by } from "protractor";
+import { $, element, by } from "protractor";
 
 class EditKnowledgeSet {
 
@@ -7,7 +7,7 @@ class EditKnowledgeSet {
         saveButton: '[rx-view-component-id="9845bc7c-ac13-4989-aba2-4751bbba8c6c"] button',
         cancelButton: '[rx-view-component-id="0720cb03-bcfd-405f-810f-85c5191b8de6"] button',
         knowledgeSetInput: '[rx-view-component-id="19901ec7-e019-4c63-a5c5-c02074086645"] input',
-        lobValue: '[rx-view-component-id="28753d8c-c1a7-48f0-8e9d-7997762aedd4"] .pull-left'
+        lobValue: '[rx-view-component-id="17b05757-ac57-41ce-b26c-49b52911d674"]'
     }
 
     async isApplicationNameListed(applicationName: string): Promise<boolean> {
@@ -21,11 +21,11 @@ class EditKnowledgeSet {
         await element(by.xpath(`//span[contains(text(),"${applicationID}")]//../parent::ul/following-sibling::button`)).click();
     }
 
-    async clickSaveButton():Promise<void>{
+    async clickSaveButton(): Promise<void> {
         await $(this.selectors.saveButton).click();
     }
 
-    async clickCancelButton():Promise<void>{
+    async clickCancelButton(): Promise<void> {
         await $(this.selectors.cancelButton).click();
     }
 
@@ -34,7 +34,10 @@ class EditKnowledgeSet {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(`${this.selectors.lobValue} button`).isPresent().then(async (buttonLob) => {
+            if (buttonLob) return await $(`${this.selectors.lobValue} button`).getText();
+            else return await $(`${this.selectors.lobValue} input`).getAttribute("placeholder");
+        });
     }
 
 }

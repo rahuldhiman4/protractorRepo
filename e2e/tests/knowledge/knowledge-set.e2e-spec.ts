@@ -158,7 +158,7 @@ describe('Knowledge Article Set', () => {
       await createKnowledgeSetPo.setCompanyValue('Petramco');
       await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
       await createKnowledgeSetPo.clickSaveBtn();
-      expect(await utilityCommon.isPopUpMessagePresent(`Knowledge Set with name ${knowledgesetFacilities} already exists for selected company.`)).toBeTruthy('Error message absent');
+      expect(await utilityCommon.isPopUpMessagePresent(`Knowledge Set with name   already exists for selected company.`)).toBeTruthy('Error message absent');
       await createKnowledgeSetPo.clickCancelBtn();
       await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
       await utilityCommon.closePopUpMessage();
@@ -170,13 +170,13 @@ describe('Knowledge Article Set', () => {
       await createKnowledgeSetPo.setKnowledgeSetName(knowledgesetFacilities);
       await createKnowledgeSetPo.setCompanyValue('Petramco');
       await createKnowledgeSetPo.setDescriptionValue('Sample Description1' + randomStr);
-      await createKnowledgeSetPo.clickSaveBtn();
       // verify LOB is there
       expect(await createKnowledgeSetPo.getLobValue()).toBe('Human Resource');
       await createKnowledgeSetPo.clickSaveBtn();
       expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('success message absent');
       // open the record and verify LOB is on edit screen
       await utilityCommon.closePopUpMessage();
+      await editKnowledgeSet.clickCancelButton();
       await utilityGrid.searchAndOpenHyperlink(knowledgesetFacilities);
       expect(await editKnowledgeSet.getLobValue()).toBe('Human Resource');
       await editKnowledgeSet.clickCancelButton();

@@ -642,7 +642,7 @@ describe("Quick Case", () => {
         });
     });
 
-    //ankagraw KA Issue
+    //ankagraw
     describe('[6383]: [Quick Case] Resources preview', async () => {
         let caseTemplateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let commonName = randomStr + "Case DRDMV796";
@@ -700,7 +700,7 @@ describe("Quick Case", () => {
         });
         it('[6383]: Creating case with template/Knowledge selection', async () => {
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName('adam');
+            await quickCasePo.selectRequesterName('pavlik');
             await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
             await quickCasePo.clickArrowFirstRecommendedCaseTemplate();
             expect(await previewCaseTemplateCasesPo.getCaseSummary()).toBe(caseTemplateData.templateSummary);
@@ -1008,6 +1008,8 @@ describe("Quick Case", () => {
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
                 "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
             }
             templateData2 = {
                 "templateName": randomStr + "CaseTemplate2",
@@ -1017,6 +1019,8 @@ describe("Quick Case", () => {
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
                 "assignee": "qkatawazi",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3",
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateData1);
@@ -1033,6 +1037,8 @@ describe("Quick Case", () => {
             await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
             expect(await templateAccessTabPo.isSupportGroupReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
@@ -1046,6 +1052,8 @@ describe("Quick Case", () => {
             await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
             expect(await templateAccessTabPo.isSupportGroupReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
             expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
