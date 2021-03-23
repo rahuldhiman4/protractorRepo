@@ -1549,6 +1549,7 @@ describe('Create Case Task', () => {
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
             expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
+            //required not visible
             expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy("assigned group");
             await adhoctaskTemplate.setSummary("Summary" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
@@ -1573,8 +1574,8 @@ describe('Create Case Task', () => {
             expect(await editTask.isFieldsDisplyed('CategoryTier1Value')).toBeTruthy();
             expect(await editTask.isFieldsDisplyed('CategoryTier2Value')).toBeTruthy();
             expect(await editTask.isFieldsDisplyed('CategoryTier3Value')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('Assignee Name')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('Assign Company')).toBeTruthy();
+            expect(await utilityCommon.isFieldLabelDisplayed('691c7524-167e-434b-acac-c11571c53409','Assignee')).toBeTruthy();
+           
             expect(await editTask.isRequiredTextPresent('Task Summary')).toBeTruthy();
             expect(await editTask.isRequiredTextPresent('Priority')).toBeTruthy();
             expect(await editTask.isRequiredTextPresent('Assigned Group')).toBeTruthy();
@@ -1590,10 +1591,8 @@ describe('Create Case Task', () => {
             await editTask.selectPriorityValue('Low');
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('Description' + randomStr);
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Workforce Administration');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.gotoCaseConsole();
@@ -1616,10 +1615,8 @@ describe('Create Case Task', () => {
             await editTask.selectPriorityValue('Low');
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('UpdatedDescription' + randomStr);
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Workforce Administration');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             let modifiedDate = new Date();
             let monthValue: string = month[modifiedDate.getMonth()];
@@ -1649,10 +1646,8 @@ describe('Create Case Task', () => {
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await expect(viewCasePage.getContactPersonName()).toBe('Elizabeth Peters');
             await viewCasePage.clickEditCaseButton();
-            await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiao Feng');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();
