@@ -18,6 +18,8 @@ import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import personProfilePage from '../../pageobject/common/person-profile.po';
 import relatedCaseTabPo from '../../pageobject/common/related-case-tab.po';
 import activityTabPo from '../../pageobject/social/activity-tab.po';
+import updateStatusBladePo from '../..//pageobject/common/update.status.blade.po';
+import statusConfigPo from '../../pageobject/settings/common/status-config.po';
 
 describe('Case Edit Backlog Test', () => {
     beforeAll(async () => {
@@ -201,5 +203,96 @@ describe('Case Edit Backlog Test', () => {
             await personProfilePage.clickOnTab('Related Cases');
             expect(await relatedCaseTabPo.isCasePresent(caseId)).toBeFalsy();
         });
+    });
+
+    describe('[4326,4374]: closed case if reoped will follow new case status configuration cycle ', async() => {
+        let caseTemplate, caseId;
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async() => {
+            await navigationPage.signOut();
+            await loginPage.login('jmilano'); // should be case agent
+            caseTemplate = {
+                "templateName": 'caseTemplate' + randomStr,
+                "templateSummary": 'case summary',
+                "description": "case description",
+                "categoryTier1": "Accounts Payable",
+                "casePriority": "High",
+                "templateStatus": "Active",
+                "caseStatus": "New",
+                "company": "Phylum",
+                "businessUnit": "Phylum Support Org1",
+                "supportGroup": "Phylum Support Group1",
+                "ownerBU": "Phylum Support Org1",
+                "Assignee": "mcarney",
+                "ownerGroup": "Phylum Support Group1",
+                "lineOfBusiness": "Finance",
+                "allowCaseReopen": "true"
+            }
+            await apiHelper.apiLogin('jmilano');
+            let template = await apiHelper.createCaseTemplate(caseTemplate);
+            let caseData = {
+                "Requester": "mcarney",
+                "Summary": "Test case for 4326,4374 " + randomStr,
+                "Assigned Company": "Phylum",
+                "Business Unit": "Phylum Support Org1",
+                "Support Group": "Phylum Support Group1",
+                "Assignee": "jmilano",
+                "Case Template ID": template.id,
+                "lineOfBusiness": "Finance"
+            }
+            await apiHelper.apiLogin('jmilano');
+            let newCase1 = await apiHelper.createCase(caseData);
+            caseId = newCase1.displayId;
+        })
+
+        it('[4326,4374]: change case status to closed using case agent', async() => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeStatus('Closed');
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
+        })
+
+        it('[4326,4374]:add custom status in case using case BA', async() => {
+            await navigationPage.signOut();
+            await loginPage.login('jmilano'); // case BA
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
+            await statusConfigPo.setCompanyDropdown('Phylum', 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.addCustomStatus("In Progress", "Resolved", "customStatus");
+        })
+
+        it('[4326,4374]:Reopen the closed case and follows the case status lifecycle', async() => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
+            await viewCasePo.clickOnReopenCaseLink();
+            await activityTabPo.clickOnRefreshButton();
+            expect(await viewCasePo.getTextOfStatus()).toBe('In Progress', 'FailureMsg1: In-Progress status is missing');
+            expect(await activityTabPo.isTextPresentInActivityLog('Jeanne Milano reopened the case')).toBeTruthy('FailureMsg2: Text is missing');
+            expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg3: Text is missing');
+            await updateStatusBladePo.changeStatus('customStatus');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeStatus('Resolved');
+            await updateStatusBladePo.selectStatusReason('Auto Resolved');
+            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.changeStatus('Closed');
+            await updateStatusBladePo.clickSaveStatus();
+            expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
+        })
+
+        it('[4326,4374]:delete added customStatus from case', async() => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
+            await statusConfigPo.setCompanyDropdown('Phylum', 'case');
+            await statusConfigPo.clickEditLifeCycleLink();
+            await statusConfigPo.clickEditStatus("customStatus");
+            expect(await statusConfigPo.isDeleteButtonDisplayed()).toBeTruthy();
+            await statusConfigPo.clickOnDeleteButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+        })
     });
 });
