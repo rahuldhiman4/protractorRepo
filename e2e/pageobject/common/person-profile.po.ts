@@ -7,7 +7,7 @@ class PersonProfilePage {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
         personName: '[rx-view-component-id="bfa03a3b-cc7c-4d33-95d5-2c63a882aaeb"] .ac-person-full-name, .ac-person-full-name',
-        personImage: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] .person-badge .d-icon-user_circle',
+        personImage: '.a-hamburger__wrapper .a-profile__menu span[style]',
         managerImage: '[rx-view-component-id="6f4a19be-2c96-4c58-b9c7-a49e2beb0c7b"] img',
         companyName: '[rx-view-component-id="5098446d-2f2c-4ea0-b7bf-c48add2dfaa9"] .person-organization span, [rx-view-component-id="8aa9b555-01a0-411b-990f-e46541354b18"] .person-organization span',
         phone: '[rx-view-component-id="dfb11922-8df4-405b-8d7a-2e0664897f2a"] .person-phone-link',
@@ -45,9 +45,15 @@ class PersonProfilePage {
     }
 
     async isPersonProfileImageDisplayed(): Promise<boolean> {
-        if (await navigationPage.isHambergerIconPresent()) await $(navigationPage.selectors.hamburgerIcon).click();
-        let len: string = await $(this.selectors.personImage).getAttribute("style");
-        await utilityCommon.closeAllBlades();
+        let len: string = undefined;
+        if (await navigationPage.isHambergerIconPresent()) {
+            await $(navigationPage.selectors.hamburgerIcon).click();
+            len = await $(this.selectors.personImage).getAttribute("style");
+            await utilityCommon.closeAllBlades();
+        }
+        else {
+            len = await $('div[adaptdropdown].a-profile span[style]').getAttribute("style");
+        }
         return len.includes('url');
     }
 
@@ -157,8 +163,8 @@ class PersonProfilePage {
     }
 
     async isCaseAvailableOnRelatedCases(caseId: string): Promise<boolean> {
-        return await element(by.cssContainingText(this.selectors.relatedCasesDisplayId, caseId)).isPresent().then( async (result) => {
-            if(result) return await element(by.cssContainingText(this.selectors.relatedCasesDisplayId, caseId)).isDisplayed();
+        return await element(by.cssContainingText(this.selectors.relatedCasesDisplayId, caseId)).isPresent().then(async (result) => {
+            if (result) return await element(by.cssContainingText(this.selectors.relatedCasesDisplayId, caseId)).isDisplayed();
         })
     }
 

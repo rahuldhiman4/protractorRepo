@@ -41,12 +41,12 @@ describe('Create Case Task', () => {
 
     //ankagraw
     describe('[5552,5560]: Update Task Type field for any task', async () => {
-        let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTaskTemplateData, autoTaskTemplateData, caseID = "";
         beforeAll(async () => {
             manualTaskTemplateData = {
-                "templateName": `manualTaskTemplateDraft ${randomStr}`,
-                "templateSummary": `manualTaskTemplateDraft ${randomStr}`,
+                "templateName": randomStr + 'manualTaskName',
+                "templateSummary": randomStr + 'manualTaskSummary',
                 "templateStatus": "Active",
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
@@ -54,8 +54,8 @@ describe('Create Case Task', () => {
                 "ownerGroup": "US Support 1"
             }
             autoTaskTemplateData = {
-                "templateName": `AutomatedTaskTemplateActive ${randomStr}`,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateName": randomStr + 'AutomatedTaskTemplateName',
+                "templateSummary": randomStr + 'AutomatedTaskTemplateSummary',
                 "templateStatus": "Active",
                 "processBundle": "com.bmc.dsm.case-lib",
                 "processName": `Case Process 1 ${randomStr}`,
@@ -88,8 +88,8 @@ describe('Create Case Task', () => {
             await viewCasePage.clickAddTaskButton();
 
             //Add Manual task and Automation Task in Case
-            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateSummary);
-            await manageTaskBladePo.addTaskFromTaskTemplate(autoTaskTemplateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(manualTaskTemplateData.templateName);
+            await manageTaskBladePo.addTaskFromTaskTemplate(autoTaskTemplateData.templateName);
             await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(2);
             expect(await manageTaskBladePo.isTaskLinkPresent(manualTaskTemplateData.templateSummary)).toBeTruthy(manualTaskTemplateData.templateSummary + ' Task is not added to case');
             expect(await manageTaskBladePo.isTaskLinkPresent(autoTaskTemplateData.templateSummary)).toBeTruthy(autoTaskTemplateData.templateSummary + ' Task is not added to case');
@@ -122,11 +122,11 @@ describe('Create Case Task', () => {
 
     // categ2 not populated
     describe('[5559,5565,6425,6386]: Automatic Task data validation once Task is created', async () => {
-        let menuItem, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let autmationTaskTemplateWithRequiredData = 'Automatic task With Required Field' + Math.floor(Math.random() * 1000000);
-        let autmationTaskSummaryWithRequiredData = 'Automatic task Summary With Required Field' + Math.floor(Math.random() * 1000000);
-        let automationTaskTemplateWithallField = 'Automation task with All field' + Math.floor(Math.random() * 1000000);
-        let automationTaskSummaryWithallField = 'Automation task Summary with All field' + Math.floor(Math.random() * 1000000) + 1;
+        let menuItem, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let autmationTaskTemplateWithRequiredData = randomStr + 'AutomationTaskRequiredField' + Math.floor(Math.random() * 1000000);
+        let autmationTaskSummaryWithRequiredData = randomStr + 'AutomationTaskSummaryRequiredField' + Math.floor(Math.random() * 1000000);
+        let automationTaskTemplateWithAllField = randomStr + 'AutomationTaskAllField' + Math.floor(Math.random() * 1000000);
+        let automationTaskSummaryWithallField = randomStr + 'AutomationTaskSummaryAllField' + Math.floor(Math.random() * 1000000);
         beforeAll(async () => {
             menuItem = cloneDeep(SAMPLE_MENU_ITEM);
             menuItem.menuItemName = "TestMenuItemName" + randomStr;
@@ -152,7 +152,7 @@ describe('Create Case Task', () => {
         it('[5559,5565,6425,6386]: Create manual task template', async () => {
             //Automation Task template
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
-            await taskTemplate.setTemplateName(automationTaskTemplateWithallField);
+            await taskTemplate.setTemplateName(automationTaskTemplateWithAllField);
             await taskTemplate.setTaskSummary(automationTaskSummaryWithallField);
             await taskTemplate.setTaskDescription('All field get added in this task template');
             await taskTemplate.selectCompanyByName('Petramco');
@@ -181,11 +181,11 @@ describe('Create Case Task', () => {
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(autmationTaskTemplateWithRequiredData);
-            await manageTaskBladePo.addTaskFromTaskTemplate(automationTaskTemplateWithallField);
+            await manageTaskBladePo.addTaskFromTaskTemplate(automationTaskTemplateWithAllField);
 
             //Add Automation Task templates in Case
             expect(await manageTaskBladePo.isTaskLinkPresent(autmationTaskSummaryWithRequiredData)).toBeTruthy(autmationTaskTemplateWithRequiredData + ' Task is not added to case');
-            expect(await manageTaskBladePo.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithallField + ' Task is not added to case');
+            expect(await manageTaskBladePo.isTaskLinkPresent(automationTaskSummaryWithallField)).toBeTruthy(automationTaskTemplateWithAllField + ' Task is not added to case');
         });
         it('[5559,5565,6425,6386]: Validate manual task', async () => {
             await manageTaskBladePo.clickTaskLink(automationTaskSummaryWithallField);
@@ -511,10 +511,10 @@ describe('Create Case Task', () => {
     //ankagraw
     describe('[5558]: [Automatic Task] - Automated Task Status transition validation', async () => {
         let randomStr = Math.floor(Math.random() * 1000000);
-        let automationTaskTemplate = 'Automatic task' + randomStr;
-        let automationTaskSummary = 'Summary' + randomStr;
-        let createCase = 'Create Case task' + randomStr;
-        let processName = 'process' + randomStr;
+        let automationTaskTemplate = randomStr + 'AutomaticTask';
+        let automationTaskSummary = randomStr + 'Summary';
+        let createCase = randomStr + 'Create Case task';
+        let processName = randomStr + 'process';
         let status: string[] = ["Completed", "Canceled", "Closed"];
         beforeAll(async () => {
             let templateData = {
@@ -543,7 +543,7 @@ describe('Create Case Task', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(automationTaskSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(automationTaskTemplate);
             await manageTaskBladePo.clickCloseButton();
         });
         it('[5558]: Verify the task status', async () => {
@@ -871,7 +871,7 @@ describe('Create Case Task', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await updateStatusBladePo.changeStatus('Pending');
@@ -1158,7 +1158,7 @@ describe('Create Case Task', () => {
             await utilityCommon.closePopUpMessage();
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
@@ -1174,9 +1174,9 @@ describe('Create Case Task', () => {
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
-            expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
+            expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible");
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
@@ -1190,7 +1190,7 @@ describe('Create Case Task', () => {
             await caseConsolePage.searchAndOpenCase(inProgress);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
@@ -1204,7 +1204,7 @@ describe('Create Case Task', () => {
             await caseConsolePage.searchAndOpenCase(pending);
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
-            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateSummary);
+            await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
@@ -1707,10 +1707,6 @@ describe('Create Case Task', () => {
             await utilityGrid.searchAndOpenHyperlink("AdHocSummary" + randomStr);
             await viewTask.clickOnEditTask();
             expect(await editTask.isRequesterNameDisplayed('Qianru Tao')).toBeTruthy();
-        });
-        afterAll(async () => {
-            await navigationPage.signOut();
-            await loginPage.login('qkatawazi');
         });
     });
 });

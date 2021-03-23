@@ -584,21 +584,21 @@ describe('Document Library', () => {
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await createDocumentLibraryPo.openAddNewDocumentBlade();
             for (let i: number = 0; i < fileName1.length; i++) {
+                await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
                 await createDocumentLibraryPo.setTitle(titleRandVal);
                 await createDocumentLibraryPo.selectCompany('Petramco');
                 await createDocumentLibraryPo.selectSupportOrg('HR Support');
                 await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
-                await createDocumentLibraryPo.addAttachment(`../../../data/ui/attachment/${fileName1[i]}`);
                 await createDocumentLibraryPo.clickOnSaveButton();
                 await createDocumentLibraryPo.openAddNewDocumentBlade();
             }
         });
         it('[4923]: Verify document creation with Nonsupported and Supported attachment types', async () => {
+            await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.setTitle(titleRandVal);
             await createDocumentLibraryPo.selectCompany('Petramco');
             await createDocumentLibraryPo.selectSupportOrg('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
-            await createDocumentLibraryPo.addAttachment(filePath);
             await createDocumentLibraryPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent("The file type is not supported. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
         });
@@ -640,8 +640,8 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.clickOnSaveButton();
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await viewDocumentLibraryPo.clickOnEditDocument();
-            await editDocumentLibraryPo.selectSupportOrg('Latin America Support');
-            await editDocumentLibraryPo.selectOwnerGroup('LA Support 3');
+            await editDocumentLibraryPo.selectSupportOrg('HR Support');
+            await editDocumentLibraryPo.selectOwnerGroup('Employee Relations');
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
             //This validation is alredy covered at 4882 hence commented
@@ -656,7 +656,7 @@ describe('Document Library', () => {
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPo.selectSupportOrg('Australia Support');
             //await editDocumentLibraryPo.selectStatus('Published');
-            await editDocumentLibraryPo.selectOwnerGroup('AU Support 3');
+            await editDocumentLibraryPo.selectOwnerGroup('AU Support 1');
             await editDocumentLibraryPo.clickOnSaveButton();
             await editDocumentLibraryPo.clickOnCancelButton();
             await navigationPage.signOut();

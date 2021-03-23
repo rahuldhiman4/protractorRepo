@@ -21,7 +21,8 @@ class EditNotificationTemplate {
         addRecipientsBtn: '[rx-view-component-id="73a718fa-c683-48b0-b211-97b3744d7c3f"] button',
         addLocalizedMessageBtn: '[rx-view-component-id="92468fc7-a2b9-46b4-8ad9-c2cfe12c9d8b"] button',
         alertMessageBox: 'a.cke_button',
-        emailSubjectBox: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        emailSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        emailSubjectBox: '[rx-view-component-id="ffb54436-9f83-437a-8606-94deb68c85f3"] input',
         emailBodyMessageBox: '.cke_contents div',
         cancelEmailSubjectBlade: '[rx-view-component-id="8335618d-2a88-49d1-9002-e5b7601b7674"] button',
         cancelEmailBodyBlade: '[rx-view-component-id="780514cc-7344-44a5-88af-5af509619ab0"] button',
@@ -42,7 +43,8 @@ class EditNotificationTemplate {
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
         emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.btn-primary',
-        cancelButtonAddRecipient: '.float-right button.btn-secondary'
+        cancelButtonAddRecipient: '.float-right button.btn-secondary',
+        alertInsertField: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .cke_button__rtfexpressioneditor_icon'
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
@@ -138,7 +140,7 @@ class EditNotificationTemplate {
     }
 
     async isEmailSubjectMessageDisabled(): Promise<boolean> {
-        return await $$(this.selectors.emailSubjectBox).get(1).isPresent();
+        return await $(this.selectors.emailSubjectBox).getAttribute('readonly') =='true';
     }
 
     async isEmailBodyMessageDisabled(): Promise<boolean> {
@@ -365,6 +367,10 @@ class EditNotificationTemplate {
         }
         await utilityCommon.selectDropDown(dropDownElement, dropDownValue, DropDownType.WebElement);
     }
+    async clickOnInsertFieldOfAlert(): Promise<void> {
+        await $(this.selectors.alertInsertField).click();
+    }
+
 
 }
 export default new EditNotificationTemplate();

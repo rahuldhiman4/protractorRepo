@@ -1,4 +1,4 @@
-import { $, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
 
 class SelectEmailTemplateBlad {
@@ -56,6 +56,8 @@ class SelectEmailTemplateBlad {
     }
 
     async searchAndSelectEmailTemplate(templateName: string): Promise<void> {
+        //wait added due to email template not searching
+        await browser.sleep(5000);
         await utilityGrid.searchAndSelectGridRecord(templateName, this.selectors.gridGuid);
     }
 

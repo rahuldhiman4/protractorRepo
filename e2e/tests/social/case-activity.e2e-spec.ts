@@ -1176,9 +1176,6 @@ describe('Case Activity', () => {
             await apiHelper.apiLogin('qstrong');
             let newCase = await apiHelper.createCase(caseData);
             caseId = newCase.displayId;
-
-            await apiHelper.apiLogin('tadmin');
-            await apiHelper.setDefaultNotificationForUser('qkatawazi', "Alert");
         });
         it('[4010]: Open Case And Social Comment ', async () => {
             await navigationPage.signOut();
@@ -1192,7 +1189,7 @@ describe('Case Activity', () => {
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
             await notificationPo.clickOnNotificationIcon();
-            await expect(await notificationPo.isAlertPresent('Qiao Feng added a note to ' + caseId)).toBeTruthy('Alert message is not present');
+            await expect(await notificationPo.isAlertPresent('Quin Strong added a note to ' + caseId)).toBeTruthy('Alert message is not present');
         });
         afterAll(async () => {
             await navigationPage.signOut();

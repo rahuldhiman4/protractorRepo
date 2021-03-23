@@ -19,7 +19,7 @@ class CreateKnowledgeSet {
         selectBtn: '[rx-view-component-id="c2ce9041-fee1-46f4-ba92-9808055976a9"] button',
         saveBtn: '[rx-view-component-id="ba009fba-499a-49c6-b5a5-0de6e6c8e402"] button',
         cancelBtn: '[rx-view-component-id="4bd4c11d-1c58-4674-8a11-4bafce192e1e"] button',
-        lobValue: '[rx-view-component-id="28753d8c-c1a7-48f0-8e9d-7997762aedd4"] .pull-left'
+        lobValue: '[rx-view-component-id="ab4a334d-63a1-4791-9dcd-80c194250627"]'
     }
 
     async clickCreateNewApplicationCancelBtn(): Promise<void> {
@@ -139,7 +139,10 @@ class CreateKnowledgeSet {
     }
 
     async getLobValue(): Promise<string> {
-        return await $(this.selectors.lobValue).getText();
+        return await $(`${this.selectors.lobValue} button`).isPresent().then(async (buttonLob) => {
+            if (buttonLob) return await $(`${this.selectors.lobValue} button`).getText();
+            else return await $(`${this.selectors.lobValue} input`).getAttribute("placeholder");
+        });
     }
 }
 

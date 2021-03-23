@@ -841,7 +841,7 @@ describe('Preset Filter Funcational Verification', () => {
         });
     });
 
-    //kgaikwad (with keep blank required field filter gets saved and not shows validatoin)-clear issue
+    //kgaikwad - Fixed
     describe('[12072]: Verify mandatary fields with verify validation on edit custom fields', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase;

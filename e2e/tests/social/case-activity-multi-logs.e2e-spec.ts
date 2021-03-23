@@ -155,7 +155,7 @@ describe('Case Activity Multi Logs', () => {
     });
 
     //kgaikwad
-    xdescribe('[4229]: All type of social activities are displayed correctly in Task Activity tab', async () => {
+    describe('[4229]: All type of social activities are displayed correctly in Task Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let manualTemplateSummary, autoTemplateData, externalTemplateSummary, newCase;
 
@@ -296,7 +296,7 @@ describe('Case Activity Multi Logs', () => {
             await manageTaskBladePo.clickTaskLink(manualTemplateSummary);
             // Create Task Activity 
             expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 3)).toBeTruthy('FailureMsg2: log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi created the task', 3)).toBeTruthy('FailureMsg4: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(manualTemplateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
@@ -361,13 +361,19 @@ describe('Case Activity Multi Logs', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'qkatawazi');
             await editTaskPo.clickOnSaveButton();
-            expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
-            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
+            await activityTabPage.applyActivityFilter('Assignment Change');
+            await browser.sleep(2000); // Need wait to load/fetch logs  as per filter
+            await activityTabPage.clickOnShowMore();
+            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change',1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg: multiple field lock icon missing');
+            await activityTabPage.removeFilterList();
+            await activityTabPage.clickOnRefreshButton();
+            await browser.sleep(2000); // Need wait to load/fetch logs after fiter removed.
+            await activityTabPage.clickOnShowMore();
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Support Organization')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('United States Support')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log');
@@ -384,8 +390,8 @@ describe('Case Activity Multi Logs', () => {
             await viewCasePo.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(externalTemplateSummary);
             // // Verify Create Task Activity 
-            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 2)).toBeTruthy('FailureMsg2: log icon is missing');
-            expect(await activityTabPage.isLockIconDisplayedInActivity(2)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus',3)).toBeTruthy('FailureMsg2: log icon is missing');
+            expect(await activityTabPage.isLockIconDisplayedInActivity(3)).toBeTruthy('FailureMsg3: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi created the task')).toBeTruthy('FailureMsg4: log title is missing');
             expect(await activityTabPage.isTextPresentInActivityLog('Summary')).toBeTruthy('FailureMsg5: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(externalTemplateSummary)).toBeTruthy('FailureMsg6: Text is missing in activity log');
@@ -451,14 +457,17 @@ describe('Case Activity Multi Logs', () => {
             await viewTaskPo.clickOnEditTask();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 3');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'qkatawazi');
+            await activityTabPage.applyActivityFilter('Assignment Change');
             await editTaskPo.clickOnSaveButton();
-            expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg: show more button is missing');
-            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
+            await activityTabPage.clickOnShowMore();
+            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change',1)).toBeTruthy('FailureMsg: multiple field log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg: multiple field lock icon missing');
+            await activityTabPage.removeFilterList();
+            await activityTabPage.clickOnShowMore();
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg: Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Support Organization')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('United States Support')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('US Support 3')).toBeTruthy('FailureMsg: Text is missing in activity log');
@@ -694,8 +703,9 @@ describe('Case Activity Multi Logs', () => {
             }
         });
     });
+
     //kgaikwad
-    xdescribe('[4241]: All type of social activities are displayed correctly in Case Activity tab', async () => {
+    describe('[4241]: All type of social activities are displayed correctly in Case Activity tab', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseData = undefined;
         let caseId: string;
@@ -709,10 +719,10 @@ describe('Case Activity Multi Logs', () => {
         let externalTaskTemplateDetails;
         let caseApprovalRecordDefinition = 'com.bmc.dsm.case-lib:Case';
         let caseResponseDetails;
-        let categName1 = 'Emplopyee Relations';
+        let categName1 = 'Employee Relations';
         let categName2 = 'Compensation';
         let categName3 = 'Bonus';
-        let categName4 = 'Retentions Bonus';
+        let categName4 = 'Retention Bonus';
         let manualTaskId;
         let approvalStr = "Automated Self Approval without process " + randomStr;
         let confidentialSupportGroup = "Employee Relations Sensitive Data Access";
@@ -793,6 +803,7 @@ describe('Case Activity Multi Logs', () => {
             tasktemplateData.templateSummary = externalTaskTemplateSummary;
             externalTaskTemplateDetails = await apiHelper.createExternalTaskTemplate(tasktemplateData);
 
+            await apiHelper.associateCaseTemplateWithThreeTaskTemplate(caseTemplateWithMatchingSummaryResponse.displayId,automatedTaskTemplateDetails.displayId, manualTaskTemplateDetails.displayId, externalTaskTemplateDetails.displayId);
             // create case json
             caseData = {
                 "Requester": "qdu",
@@ -807,23 +818,23 @@ describe('Case Activity Multi Logs', () => {
             await navigationPage.gotoSettingsMenuItem('Approvals--Approval Configuration', BWF_PAGE_TITLES.APPROVALS.APPROVAL_CONFIGURATION);
             await approvalConfigurationPage.searchAndOpenApprovalConfiguration(caseApprovalRecordDefinition);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit Approval Flow');
-            await approvalConfigurationPage.clickApprovalConfigurationTab('Self Approval');
-            await approvalConfigurationPage.clickNewSelfApprovalFlowButton();
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Approval configurations');
+            await approvalConfigurationPage.clickApprovalConfigurationTab('Self approval');
+            await approvalConfigurationPage.clickSelfApprovalQualificationLink();
+            await browser.sleep(3000);
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Approval Flow');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(5000); //sleep added for expression builder loading
-            await approvalConfigurationPage.searchExpressionFieldOption('Summary');
-            await approvalConfigurationPage.clickRecordOption('Record Definition');
-            await approvalConfigurationPage.clickRecordOption('Case');
+            await approvalConfigurationPage.clickOnMenuItem('Record definition');
+            await approvalConfigurationPage.clickOnMenuItem('Case');
             await approvalConfigurationPage.selectExpressionFieldOption('Category Tier 1');
-            await browser.sleep(1000); //sleep added for expression builder loading
             await approvalConfigurationPage.selectExpressionOperator('=');
-            await browser.sleep(1000); //sleep added for expression builder loading
-            await approvalConfigurationPage.setExpressionValueForParameter(`"${approvalStr}"`);
-            await approvalConfigurationPage.clickNextbuttonOnSelfApproval();
+            await approvalConfigurationPage.setExpressionValueForParameter('"Applications"');
+            await approvalConfigurationPage.clickModelOkButton();
+            
+            await approvalConfigurationPage.setSelfApprovalPrecendenceValue('1');
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
-            await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
+            await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
 
@@ -833,11 +844,14 @@ describe('Case Activity Multi Logs', () => {
             caseId = caseResponseDetails.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
-            await activityTabPage.applyActivityFilter('Approvals');
+            await activityTabPage.clickOnFilterButton();
+            await activityTabPage.selectFilterCheckBox('Approvals');
+            await activityTabPage.clickOnFilterApplyButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('check_circle', 1)).toBeTruthy('FailureMsg11: log icon is missing');
-            expect(await activityTabPage.isTextPresentInActivityLog('Case was auto-approved')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
+            expect(await activityTabPage.getFirstPostContent()).toContain('Case was auto-approved');
             await activityTabPage.removeFilterList();
         });
 
@@ -846,6 +860,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLogIconDisplayedInActivity('filePlus', 1)).toBeTruthy('FailureMsg11: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg12: lock icon missing in activity logs');
             await activityTabPage.removeFilterList();
+            await activityTabPage.scrollToActivity(5);
             await activityTabPage.clickOnShowMore();
             expect(await activityTabPage.isTextPresentInActivityLog(approvalStr)).toBeTruthy(`FailureMsg23: ${approvalStr} Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('Status ')).toBeTruthy('FailureMsg23: Status  Text is missing in activity log');
@@ -856,7 +871,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('Vancouver')).toBeTruthy('FailureMsg23: Vancouver Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Company')).toBeTruthy('FailureMsg23: Assigned Company Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Petramco')).toBeTruthy('FailureMsg23: Petramco Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg23: Assigned Business Unit Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Support Organization')).toBeTruthy('FailureMsg23: Assigned Business Unit Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('United States Support')).toBeTruthy('FailureMsg23: United States Support Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Description')).toBeTruthy('FailureMsg23: Description  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Case Template description')).toBeTruthy('FailureMsg23: Case Template description Text is missing in activity log');
@@ -928,15 +943,14 @@ describe('Case Activity Multi Logs', () => {
             await updateStatusBladePo.selectStatusReason('Auto Resolved');
             await updateStatusBladePo.clickSaveStatus('Resolved');
             expect(await viewCasePo.getCaseStatusValue()).toBe('Resolved', 'FailureMsg19: Case status not displayed');
-
             expect(await activityTabPage.isLogIconDisplayedInActivity('arrow_squares', 1)).toBeTruthy('FailureMsg19: log icon is missing');
+            await browser.sleep(3000);
+            await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed the case status')).toBeTruthy('FailureMsg23: Qiao Feng changed the case status Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Resolved')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Status Reason')).toBeTruthy('FailureMsg23: Status Reason Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Auto Resolved')).toBeTruthy('FailureMsg23: Auto Resolved Text is missing in activity log');
-
             await viewCasePo.clickOnReopenCaseLink();
-
             expect(await activityTabPage.isLogIconDisplayedInActivity('right-refresh', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTitleTextDisplayedInActivity('Qiao Feng reopened the case', 1)).toBeTruthy('FailureMsg21: log title is missing');
@@ -958,21 +972,17 @@ describe('Case Activity Multi Logs', () => {
 
         it('[4241]:Verify social activity with change asssignment', async () => {
             await viewCasePo.clickEditCaseButton();
-            await editCasePo.clickChangeAssignmentButton();
-            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'CA Support 1');
-            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiang Du');
-            await changeAssignmentBladePo.clickOnAssignButton();
+            await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
+            await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quanah George');
             await editCasePo.clickSaveCase();
             await activityTabPage.clickOnShowMore();
             expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed the following case fields')).toBeTruthy('FailureMsg23: Qiao Feng changed the following case fields Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg23: Assignee Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Qiang Du ')).toBeTruthy('FailureMsg23: Qiang Du  Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Assigned Business Unit')).toBeTruthy('FailureMsg23: Assigned Business Unit Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Canada Support')).toBeTruthy('FailureMsg23: Canada Support Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Quanah George ')).toBeTruthy('FailureMsg23: Quanah George  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg23: Assigned Group Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('CA Support 1')).toBeTruthy('FailureMsg23: CA Support 1  Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('US Support 2')).toBeTruthy('FailureMsg23: US Support 2  Text is missing in activity log');
         });
 
         it('[4241]:Verify social activity with status change activity', async () => {
@@ -1103,7 +1113,8 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng sent an email')).toBeTruthy('FailureMsg21: Qiao Feng sent an email Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg22: Qadim Katawazi Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog(`${caseId}:${manualTaskId}:${manualTaskTemplateSummary}`)).toBeTruthy(`FailureMsg23: ${manualTaskId}:${manualTaskTemplateSummary} Text is missing in activity log`);
+            await activityTabPage.clickOnShowMore();
+            expect(await activityTabPage.isTextPresentInActivityLog(`Subject:${caseId}:${manualTaskId}:${manualTaskTemplateSummary}`)).toBeTruthy(`FailureMsg23: ${manualTaskId}:${manualTaskTemplateSummary} Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('------ While replying, please do not add information below this line -----')).toBeTruthy('FailureMsg24: ------ While replying, please do not add information below this line ----- Text is missing in activity log');
         });
     });

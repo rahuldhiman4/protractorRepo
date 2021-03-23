@@ -676,11 +676,8 @@ describe('Email Configuration', () => {
             await utilityGrid.searchAndOpenHyperlink(emailID);
             expect(await editEmailConfigPo.isCreateEmailTemplpateLinkDisplayed()).toBeTruthy();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateNameDraft')).toBeFalsy();
-            await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateNameInactive')).toBeFalsy();
-            await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             expect(await editEmailConfigPo.isDefaultCaseTemplatePresentinDropDown(randomStr + 'caseTemplateName')).toBeTruthy();
-            await editEmailConfigPo.clearDefaultCaseTemplateToUseField();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
             expect(await editEmailConfigPo.isListAvailableExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeFalsy("AvailableExclusionsSubject");
             expect(await editEmailConfigPo.isListAssociatedExclusionsSubjectInAssociatePublicExclusionSubjectsPresent()).toBeTruthy("AssociatedExclusionsSubject");

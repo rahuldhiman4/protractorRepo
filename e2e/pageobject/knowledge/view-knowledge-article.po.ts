@@ -7,7 +7,7 @@ class ViewKnowledgePage {
         editLinkKnowledgeMetadata: '[rx-view-component-id="56cc9627-6ef9-46f8-9b76-728349193ed2"] .btn-link',
         editLinkOnKA: '[rx-view-component-id="ee521675-2407-4b2a-9470-013bfb328b30"] [btn-type="tertiary"]',
         unflagButton: '[rx-view-component-id="b54365bf-0ead-4c54-8c8b-42aced61690e"] button',
-        falgButton: '[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"] button',
+        flagButton: '[rx-view-component-id="89dd2264-1895-4a7b-a0a4-01a4834a403b"] button',
         assigneeName: '[rx-view-component-id="5dd97fc5-a7ad-4d6a-8687-c0bb11db88d9"] .read-only-content',
         kAUsefulYesButton: '[rx-view-component-id="9d4c48c9-fbd8-4e91-bc61-0e395f52bbe7"] button',
         kAUsefulNoButton: '[rx-view-component-id="21f93bfd-53e2-4983-9b15-162e7dd12a31"] button',
@@ -135,19 +135,32 @@ class ViewKnowledgePage {
         });
     }
 
-
-
-
     async clickOnUnFlagButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.unflagButton)));
-        await $(this.selectors.unflagButton).click();
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
+        await $(this.selectors.unflagButton).isPresent().then(async (present) => {
+            if(present) {
+                await $(this.selectors.unflagButton).isDisplayed().then(async (displayed) => {
+                    if(displayed) await $(this.selectors.unflagButton).click();
+                });
+            }
+            else{
+                await browser.sleep(1000);
+                await $(this.selectors.unflagButton).click();
+            }
+        });
     }
 
     async clickOnFlagButton(): Promise<void> {
-        //        await browser.wait(this.EC.elementToBeClickable($(this.selectors.falgButton)));
-        await $(this.selectors.falgButton).click();
-        //        await browser.wait(this.EC.visibilityOf($(this.selectors.flagBlade)));
+        await $(this.selectors.flagButton).isPresent().then(async (present) => {
+            if(present) {
+                await $(this.selectors.flagButton).isDisplayed().then(async (displayed) => {
+                    if(displayed) await $(this.selectors.flagButton).click();
+                });
+            }
+            else{
+                await browser.sleep(1000);
+                await $(this.selectors.flagButton).click();
+            }
+        });
     }
 
 
@@ -177,7 +190,17 @@ class ViewKnowledgePage {
     }
 
     async clickReviewPendingLink(): Promise<void> {
-        await $(this.selectors.reviewPending).click();
+        await $(this.selectors.reviewPending).isPresent().then(async (present) => {
+            if(present) {
+                await $(this.selectors.reviewPending).isDisplayed().then(async (displayed) => {
+                    if(displayed) await $(this.selectors.reviewPending).click();
+                });
+            }
+            else{
+                await browser.sleep(1000);
+                await $(this.selectors.reviewPending).click();
+            }
+        });
     }
 
     async isArticleVersionDisplayed(): Promise<boolean> {

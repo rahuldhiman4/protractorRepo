@@ -285,10 +285,7 @@ export class EditEmailConfig {
     }
 
     async isDefaultCaseTemplatePresentinDropDown(template: string): Promise<boolean> {
-        await $(this.selectors.defaultCaseTemplateToUse).click();
-        await $(this.selectors.searchDefaultCaseTemplateToUse).sendKeys(template);
-        let count = await $$(this.selectors.defaultCaseTemplatelist).count();
-        if (count >= 1) { return true; } else { return false; }
+       return await utilityCommon.isValuePresentInDropDown(this.selectors.defaultCaseTemplateGuid,template);
     }
 
     async isAcknowledgementPresentInDropDown(template: string): Promise<boolean> {

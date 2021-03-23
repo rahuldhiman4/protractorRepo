@@ -1252,6 +1252,7 @@ describe('Notes template', () => {
             await utilityGrid.searchRecord(notesTemplateInactiveData.templateName);
             expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(1);
             templateGuid = await consoleNotesTemplatePo.getGuidValue();
+            await utilityGrid.clearFilter();
             await utilityGrid.clearSearchBox();
             expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
             await utilityGrid.clearFilter();

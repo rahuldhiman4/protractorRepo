@@ -38,11 +38,11 @@ describe('Complex Surveys', () => {
             await utilityGrid.searchAndOpenHyperlink(response.displayId);
             expect(await activityTabPage.getRatingTextOnActivityTab()).toBe("Rating: 4 (out of 5)", "Rating does not match");
             expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
-            expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("Sat Dec 14 2019 2:56:00 PM");
+            expect(await activityTabPage.getAllSurveyTextOnActivityTab()).toContain("Fri Dec 13 2019 9:26:00 PM");
             await activityTabPage.openSurveyReport();
             expect(await activityTabPage.getRatingText()).toBe("Rating: 4 (out of 5)", "Rating does not match");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(1)).toBe("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
-            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(1)).toBe("Sat Dec 14 2019 2:56:00 PM");
+            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(1)).toBe("Fri Dec 13 2019 9:26:00 PM");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(2)).toBe("How likely is it that you would recommend this Service to a friend or colleague? (This is Text Field type question, please describe in single line comment)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(2)).toBe("This is an answer to check text field type question in DWP Survey. Response in this field is received in single line without any line break but in display you may see response in multiline based in display width.");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(3)).toBe("Overall, how satisfied or dissatisfied are you with our company? (This is Text Area type question, please describe in multiline comment)");
@@ -76,7 +76,7 @@ describe('Complex Surveys', () => {
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(1)).toBe("How would you rate the knowledge of our SMEs ? (This is Radio Button question, User can select only one option)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(1)).toBe("Extremely Well");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(2)).toBe("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
-            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(2)).toBe("Sat Dec 14 2019 2:50:00 PM");
+            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(2)).toBe("Fri Dec 13 2019 9:20:00 PM");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(3)).toBe("How likely is it that you would recommend this Service to a friend or colleague? (This is Text Field type question, please describe in single line comment)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(3)).toBe("This is an answer to check text field type question in DWP Survey. Response in this field is received in single line without any line break but in display you may see response in multiline based in display width.");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(4)).toBe("Overall, how satisfied or dissatisfied are you with our company? (This is Text Area type question, please describe in multiline comment)");
@@ -112,7 +112,7 @@ describe('Complex Surveys', () => {
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(2)).toBe("How would you rate the knowledge of our SMEs ? (This is Radio Button question, User can select only one option)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(5)).toBe("Extremely Well");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(3)).toBe("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
-            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(6)).toBe("Sat Dec 14 2019 2:50:00 PM");
+            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(6)).toBe("Fri Dec 13 2019 9:20:00 PM");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(4)).toBe("How likely is it that you would recommend this Service to a friend or colleague? (This is Text Field type question, please describe in single line comment)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(7)).toBe("This is an answer to check text field type question in DWP Survey. Response in this field is received in single line without any line break but in display you may see response in multiline based in display width.");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(5)).toBe("Overall, how satisfied or dissatisfied are you with our company? (This is Text Area type question, please describe in multiline comment)");
@@ -147,7 +147,7 @@ describe('Complex Surveys', () => {
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(3)).toBe("How would you rate the knowledge of our SMEs ? (This is Radio Button question, User can select only one option)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(6)).toBe("Extremely Well");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(4)).toBe("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
-            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(7)).toBe("Sat Dec 14 2019 2:50:00 PM");
+            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(7)).toBe("Fri Dec 13 2019 9:20:00 PM");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(5)).toBe("How likely is it that you would recommend this Service to a friend or colleague? (This is Text Field type question, please describe in single line comment)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(8)).toBe("This is an answer to check text field type question in DWP Survey. Response in this field is received in single line without any line break but in display you may see response in multiline based in display width.");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(6)).toBe("Overall, how satisfied or dissatisfied are you with our company? (This is Text Area type question, please describe in multiline comment)");
@@ -181,7 +181,7 @@ describe('Complex Surveys', () => {
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(4)).toBe("How would you rate the knowledge of our SMEs ? (This is Radio Button question, User can select only one option)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(7)).toBe("Extremely Well");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(5)).toBe("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
-            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(8)).toBe("Sat Dec 14 2019 2:56:00 PM");
+            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(8)).toBe("Fri Dec 13 2019 9:20:00 PM");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(6)).toBe("Overall, how satisfied or dissatisfied are you with our company? (This is Text Area type question, please describe in multiline comment)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(9)).toBe("This is an answer in multiline format to check display in BWF.\n1. Very Satisfied\n2. Somewhat satisfied\n3. Neither satisfied nor dissatisfied\n4. Somewhat dissatisfied\n5. Very Satisfied");
             await activityTabPage.closeSurveyInformation();
@@ -215,7 +215,7 @@ describe('Complex Surveys', () => {
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(5)).toBe("How would you rate the knowledge of our SMEs ? (This is Radio Button question, User can select only one option)");
             expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(8)).toBe("Extremely Well");
             expect(await activityTabPage.getSurveyQuestionTextOnSurveyInfo(6)).toBe("By what time did you expect resolution for this service ? (This is Date Time type question, Please select date and time)");
-            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(9)).toBe("Sat Dec 14 2019 2:56:00 PM");
+            expect(await activityTabPage.getSurveyAnswerTextOnSurveyInfo(9)).toBe("Fri Dec 13 2019 9:20:00 PM");
             await activityTabPage.closeSurveyInformation();
         });
     });

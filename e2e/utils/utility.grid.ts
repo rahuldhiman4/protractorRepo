@@ -62,15 +62,22 @@ export class GridOperations {
     }
 
     async loopGridSearch(searchValue: string, searchTextBoxLocator: string, gridRecordsLocator: string,guid?:string): Promise<void> {
-        for (let i: number = 0; i < 5; i++) {
+        for (let i: number = 0; i < 6; i++) {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
+            if(searchValue.startsWith('KA-') || searchValue.startsWith('TASK-')) //Workaround for Search Task and Knowledge Console issue
+            {
+                let idArray: string[]= searchValue.split('-');
+                searchValue = idArray[1];
+            }
             await $(searchTextBoxLocator).sendKeys(searchValue + protractor.Key.ENTER);
+            await browser.sleep(2000); // wait until grid records loaded
             this.clickRefreshIcon(guid);
+            await browser.sleep(1000); // wait until grid records loaded
             let gridRecordCount: number = await $$(gridRecordsLocator).count();
             console.log("grid records found: ", gridRecordCount);
             if (gridRecordCount == 0) {
-                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
+                await browser.sleep(2000); // workaround for performance issue, this can be removed when issue fixed
             } else break;
         }
     }
@@ -84,14 +91,11 @@ export class GridOperations {
 
     async isGridRecordPresent(searchRecord: string, guid?: string): Promise<boolean> {
         let booleanVal: boolean = false;
-        let searchTextBoxLocator: string = this.selectors.searchTextBox;
         let gridRowLocator: string = '.at-data-cell';
         if (guid) {
-            searchTextBoxLocator = `[rx-view-component-id="${guid}"] ` + searchTextBoxLocator;
             gridRowLocator = `[rx-view-component-id="${guid}"] ` + gridRowLocator;
         }
-        await $(searchTextBoxLocator).clear();
-        await $(searchTextBoxLocator).sendKeys(searchRecord + protractor.Key.ENTER);
+        await this.searchRecordWithoutClearFilter(searchRecord, guid);
         return await $(gridRowLocator).isPresent().then(async (isRecordPresent) => {
             if (isRecordPresent) {
                 let recordCount = await $$(gridRowLocator).count();
@@ -746,7 +750,10 @@ export class GridOperations {
     }
 
     async clearFilterNameOnEditPresetFilter(): Promise<void> {
-        await $$('.advanced-filter__editing-container .rx-form-control').get(0).clear();
+        for (let j: number = 0; j < 17; j++) {
+            await $$('.advanced-filter__editing-container .rx-form-control').get(0).sendKeys(protractor.Key.BACK_SPACE);
+             }
+        //await $$('.advanced-filter__editing-container .rx-form-control').get(0).clear();
     }
 
     async isValidationMessageDisplayedOnEditPresetFilter(validationMessage): Promise<boolean> {

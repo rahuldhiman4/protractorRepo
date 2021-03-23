@@ -871,7 +871,7 @@ describe("Compose Email", () => {
                 "Assignee": "qkatawazi"
             }
             publishDocData = {
-                docLibTitle: 'Holiday Calender',
+                docLibTitle: summary+'Calender',
                 company: 'Petramco',
                 businessUnit: "United States Support",
                 ownerGroup: "US Support 3",

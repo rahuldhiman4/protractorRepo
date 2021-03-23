@@ -161,7 +161,7 @@ describe('Case Bulk Operation', () => {
         let caseWriteAccessDataQstrong = {
             "operation": operation['addAccess'],
             "type": type['user'],
-            "security": security['writeAccess'],
+            "security": security['witeAccess'],
             "username": 'qstrong'
         }
         await apiHelper.updateCaseAccess(newCase2.id, caseWriteAccessDataQstrong);

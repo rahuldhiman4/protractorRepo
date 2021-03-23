@@ -217,10 +217,10 @@ describe('Document Library Consume Permission', () => {
                 "templateStatus": "Active",
                 "assignee": "qgeorge",
                 "company": "Petramco",
-                "businessUnit": "Canada Support",
-                "ownerBU": "Canada Support",
-                "supportGroup": "CA Support 3",
-                "ownerGroup": "CA Support 3"
+                "businessUnit": "United States Support",
+                "ownerBU": "United States Support",
+                "supportGroup": "US Support 2",
+                "ownerGroup": "US Support 2"
             }
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(templateData);
@@ -234,10 +234,10 @@ describe('Document Library Consume Permission', () => {
                 "taskCompany": 'Petramco',
                 "assignee": "qgeorge",
                 "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
+                "supportGroup": "US Support 2",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 3"
+                "ownerGroup": "US Support 2"
             }
             let manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId);
@@ -276,6 +276,7 @@ describe('Document Library Consume Permission', () => {
             await createCasePo.setSummary(caseSummary);
             await createCasePo.clickSelectCaseTemplateButton();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
+       
             await createCasePo.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePo.clickAddTaskButton();
@@ -424,9 +425,9 @@ describe('Document Library Consume Permission', () => {
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToOpen();
 
-            await utilityCommon.selectDropDown('Site', 'Canberra', DropDownType.Label);
+            await utilityCommon.selectDropDown('Site', 'Mexico City', DropDownType.Label);
             await utilityCommon.selectDropDown('Operational Category Tier 1', 'Employee Relations', DropDownType.Label);
-            await utilityCommon.selectDropDown('Region', 'Australia', DropDownType.Label);
+            await utilityCommon.selectDropDown('Region', 'Americas', DropDownType.Label);
             await resourcesTabPo.clickOnAdvancedSearchFiltersButton('Apply');
             await attachDocumentBladePo.selectDocument();
             await attachDocumentBladePo.clickOnAttachButton();
@@ -738,9 +739,6 @@ describe('Document Library Consume Permission', () => {
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quanah George');
             await editCasePo.clickSaveCase();
             expect(await utilityCommon.getAllPopupMsg()).toContain('Saved successfully.');
-            await navigationPage.signOut();
-            await loginPage.login('qgeorge');
-            await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.isAttachedDocumentPresent('bwfJpg.jpg')).toBeFalsy('FailureMsg: bwfJpg.jpg Attached Document is displayed');
             expect(await viewCasePo.isAttachedDocumentPresent('bwfPdf.pdf')).toBeFalsy('FailureMsg: bwfPdf.pdf Attached Document is displayed');
         });

@@ -684,6 +684,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             expect(await editDocumentLibraryPo.getSiteSelectedValue()).toBe(siteFieldVal);
             await createDocumentLibraryPage.selectStatus(documentLibraryStatus);
             await createDocumentLibraryPage.saveUpdatedDocument();
+            await utilityCommon.closePopUpMessage();
             await editDocumentLibraryPo.clickOnCancelButton();
             await browser.sleep(30000); // To Wait For Document Library Record Updates And Display Console Page.
         });
