@@ -318,7 +318,7 @@ describe('Complex Surveys', () => {
         await activityTabPage.addActivityNote("hello");
         await activityTabPage.clickOnPostButton();
         await activityTabPage.clickOnFilterButton();
-        await activityTabPage.selectFilterCheckBox('Surveys');
+        await activityTabPage.selectFilterCheckBox('Survey');
         await activityTabPage.clickOnFilterApplyButton();
         expect(await activityTabPage.isOnlySurveyRecordFiltered()).toBeTruthy("Multiple records are present");
     });

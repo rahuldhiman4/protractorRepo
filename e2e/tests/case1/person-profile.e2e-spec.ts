@@ -34,7 +34,6 @@ describe('Person Profile test', () => {
         await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
         await navigationPage.gotoPersonProfile();
     });
-
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
@@ -439,7 +438,7 @@ describe('Person Profile test', () => {
         });
     });
 
-   describe('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', () => {
+    describe('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', () => {
         it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
             // await apiHelper.apiLogin('tadmin');
             // await apiHelper.updateFoundationEntity('Person', 'qheroux', { functionalRole: 'Person Activity Read' });
@@ -712,7 +711,7 @@ describe('Person Profile test', () => {
             caseResponse = await apiHelper.createCase(caseData);
             await apiHelper.apiLogin('qtao');
             await apiHelper.createAdhocTask(caseResponse.id, taskData);
-            
+
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQliu);
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQcespedes);
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQdu);
@@ -894,7 +893,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    
+
     describe('[4197]: Configuration - person-to-person relationship', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4197]: Configuration - person-to-person relationship', async () => {
@@ -1045,6 +1044,7 @@ describe('Person Profile test', () => {
         }
         catch (ex) { throw ex; }
         finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
+        await browser.sleep(2000); //To wait for completely loading of default page
         await relatedTabPage.removeRelatedPerson('Qianru Tao');
         try {
             await navigationPage.signOut();
