@@ -46,7 +46,7 @@ class ChangeAssignmentBlade {
                 return await $$(locator).get(1).getAttribute("aria-disabled") == "true";
             }
             case "AssignToMe": {
-                return await $$(locator).get(2).getAttribute("aria-disabled") == "true";
+                return await $$(locator).get(2).getAttribute("disabled") == "true";
             }
             default: {
                 console.log('Dropdown Not Available');
