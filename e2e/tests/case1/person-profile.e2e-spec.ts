@@ -34,7 +34,6 @@ describe('Person Profile test', () => {
         await apiHelper.addRelationShip('Guardian', 'Student', 'Person to Person');
         await navigationPage.gotoPersonProfile();
     });
-
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
@@ -202,7 +201,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //asahitya Fail DRDMV-25335
+    //Fix
     describe('[4203]: Person profile display for Contact', () => {
         let response = undefined;
         afterEach(async () => {
@@ -336,10 +335,9 @@ describe('Person Profile test', () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Peter Kahn', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Peter Kahn');
-            await utilityCommon.switchToNewTab(2);
+            await utilityCommon.switchToNewTab(1);
             await browser.sleep(5000); //Takes time to redirect to person profile on new tab
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Qiang Du', 'Manager')).toBeTruthy('Relation is not matching');
-            await utilityCommon.switchToNewTab(1);
             await relatedTabPage.removeRelatedPerson('Peter Kahn');
 
             await navigationPage.signOut();
@@ -471,6 +469,7 @@ describe('Person Profile test', () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
+            await browser.sleep(3000); //Wait for new tab to load properly
             await activityTabPage.addActivityNote("4126");
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInActivityLog('4126')).toBeTruthy('4126 log activity is not visible to qheroux');
@@ -485,6 +484,7 @@ describe('Person Profile test', () => {
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
             await relatedTabPage.clickRelatedPersonName('Quin Strong');
+            await browser.sleep(3000); //Wait for new tab to load properly
             await activityTabPage.addActivityNote("4126");
             await activityTabPage.clickOnPostButton();
             expect(await activityTabPage.isTextPresentInActivityLog('4126')).toBeFalsy('4126 log activity is present');
@@ -680,7 +680,7 @@ describe('Person Profile test', () => {
         let updateCaseAccessDataQdu = {
             "operation": operation['addAccess'],
             "type": type['user'],
-            "security": security['writeAccess'],
+            "security": security['witeAccess'],
             "username": 'qdu'
         }
 
@@ -694,14 +694,14 @@ describe('Person Profile test', () => {
         let updateCaseAccessDataQliu = {
             "operation": operation['addAccess'],
             "type": type['user'],
-            "security": security['writeAccess'],
+            "security": security['witeAccess'],
             "username": 'qliu'
         }
 
         let updateCaseAccessDataQcespedes = {
             "operation": operation['addAccess'],
             "type": type['user'],
-            "security": security['writeAccess'],
+            "security": security['witeAccess'],
             "username": 'qcespedes'
         }
 
@@ -711,11 +711,11 @@ describe('Person Profile test', () => {
             caseResponse = await apiHelper.createCase(caseData);
             await apiHelper.apiLogin('qtao');
             await apiHelper.createAdhocTask(caseResponse.id, taskData);
-            
-            await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQstrong);
+
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQliu);
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQcespedes);
             await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQdu);
+            await apiHelper.updateCaseAccess(caseResponse.id, updateCaseAccessDataQstrong);
         });
 
         it('[59946]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
@@ -893,7 +893,7 @@ describe('Person Profile test', () => {
         });
     });
 
-    //expect conditions failing due to defect - different relation not present Fail DRDMV-25335
+
     describe('[4197]: Configuration - person-to-person relationship', () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[4197]: Configuration - person-to-person relationship', async () => {
@@ -1020,7 +1020,7 @@ describe('Person Profile test', () => {
         expect(await personProfile.getCorporateID()).toBe('200003', 'Corporate Id does not match');
         expect(await personProfile.getEmployeeTypeValue()).toBe('Office-Based Employee', 'Employee Type value does not match');
         expect(await personProfile.getLoginID()).toBe('Elizabeth', 'Login Id does not match');
-        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach,Human Resource,Case Catalog Administrator,Case Business Analyst');
+        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach,Case Business Analyst,Case Catalog Administrator,Human Resource');
         expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
         expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
         expect(await personProfile.getContactNumber()).toBe("1 925 5553456", "Phone number mismatch");
@@ -1044,6 +1044,7 @@ describe('Person Profile test', () => {
         }
         catch (ex) { throw ex; }
         finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
+        await browser.sleep(2000); //To wait for completely loading of default page
         await relatedTabPage.removeRelatedPerson('Qianru Tao');
         try {
             await navigationPage.signOut();

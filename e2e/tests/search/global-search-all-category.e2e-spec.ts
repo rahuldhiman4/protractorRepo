@@ -561,8 +561,8 @@ describe('Global Search All Category', () => {
             if (date1 <= 9) date = '0' + date1.toString();
             else date = date1.toString();
             currentfinalDate = date + '/' + month + '/' + year;
-            createdDate = `Created Date: ${currentfinalDate} 12:01:00 AM - ${currentfinalDate} 11:59:00 PM`;
-            modifiedDate = `Modified Date: ${currentfinalDate} 12:01:00 AM - ${currentfinalDate} 11:59:00 PM`;
+            createdDate = `Created Date: ${currentfinalDate} 12:10:00 AM - ${currentfinalDate} 11:50:00 PM`;
+            modifiedDate = `Modified Date: ${currentfinalDate} 12:10:00 AM - ${currentfinalDate} 11:50:00 PM`;
 
             await apiHelper.apiLogin('elizabeth');
             // Create Case

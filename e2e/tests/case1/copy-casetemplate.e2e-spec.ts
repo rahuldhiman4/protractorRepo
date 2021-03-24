@@ -93,12 +93,14 @@ describe('Copy Case Template', () => {
 
     //ptidke-done
     describe('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
-        let casetemplateNew, caseTemplateName: string = caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
+        let casetemplateNew, caseTemplateName: string = Math.floor(Math.random() * 100000) + "Original";
+        let ctemp;
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         it('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            caseTemplateAllFields.templateName = caseTemplateName;
+            ctemp = cloneDeep(caseTemplateAllFields);
+            ctemp.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateAllFields);
             casetemplateNew = await editCaseTemplate.getCaseTemplateID();
         });
@@ -108,43 +110,45 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             //verify all values copied from template 1 to template 2   
-            expect(await copyCaseTemplate.isValueOfCasePriorityPresent(caseTemplateAllFields.casePriority)).toBeTruthy();
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(caseTemplateAllFields.categoryTier1);
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplateAllFields.categoryTier2);
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplateAllFields.categoryTier3);
-            expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(caseTemplateAllFields.allowCaseReopen);
+            expect(await copyCaseTemplate.isValueOfCasePriorityPresent(ctemp.casePriority)).toBeTruthy();
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(ctemp.categoryTier1);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(ctemp.categoryTier2);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(ctemp.categoryTier3);
+            expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(ctemp.allowCaseReopen);
             expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateName);
-            expect(await copyCaseTemplate.getValueOfCaseCompany()).toContain(caseTemplateAllFields.company);
-            expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateAllFields.assignmentMethod);
-            expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateAllFields.taskFailureConfiguration);
+            expect(await copyCaseTemplate.getValueOfCaseCompany()).toContain(ctemp.company);
+            expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(ctemp.assignmentMethod);
+            expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(ctemp.taskFailureConfiguration);
             expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
-            expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplateAllFields.caseStatus);
-            expect(await copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplateAllFields.assignee);
-            expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplateAllFields.supportGroup);
-            expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateAllFields.ownerCompany);
-            expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain(caseTemplateAllFields.supportGroup);
+            expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(ctemp.caseStatus);
+            expect(await copyCaseTemplate.getValueOfAssignee()).toBe(ctemp.assignee);
+            expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(ctemp.supportGroup);
+            expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(ctemp.ownerCompany);
+            expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain(ctemp.supportGroup);
             await copyCaseTemplate.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(copyCaseTemplateName);
-            expect(await copyCaseTemplate.getValueOfStatusReason()).toBe(caseTemplateAllFields.statusReason);
-            expect(await copyCaseTemplate.getValueOfCaseDescription()).toContain(caseTemplateAllFields.templateDescription);
-            expect(await copyCaseTemplate.getValueOfCaseSummary()).toBe(caseTemplateAllFields.templateSummary);
+            expect(await copyCaseTemplate.getValueOfStatusReason()).toBe(ctemp.statusReason);
+            expect(await copyCaseTemplate.getValueOfCaseDescription()).toContain(ctemp.templateDescription);
+            expect(await copyCaseTemplate.getValueOfCaseSummary()).toBe(ctemp.templateSummary);
             let copiedCasetemplateFromNew = await editCaseTemplate.getCaseTemplateID();
             expect(copiedCasetemplateFromNew == casetemplateNew).toBeFalsy();
-            expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplateAllFields.resolutionCode);
-            expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
+            expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(ctemp.resolutionCode);
+            expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(ctemp.resolutionDescription);
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
 
     //ptidke-done
     describe('[4739,4732]: Create a Copy of Case template by Case Business Analyst that belongs to Support Group,Case Template console grid should show Newly created copied template', async () => {
+        let ctemp;
         it('[4739,4732]: Create a Copy of Case template', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            let caseTemplateName: string = caseTemplateRequiredFields.templateName + Math.floor(Math.random() * 100000);
-            caseTemplateRequiredFields.templateName = caseTemplateName;
-            await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateRequiredFields);
+            let caseTemplateName: string = Math.floor(Math.random() * 100000) + 'Original';
+            ctemp = cloneDeep(caseTemplateRequiredFields);
+            ctemp.templateName = caseTemplateName;
+            await createCaseTemplate.createCaseTemplateWithAllFields(ctemp);
             await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
         });
@@ -153,25 +157,25 @@ describe('Copy Case Template', () => {
             let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             //verify all values copied from template 1 to template 2
-            expect(await copyCaseTemplate.isValueOfCasePriorityPresent(caseTemplateRequiredFields.casePriority)).toBeTruthy();
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(caseTemplateRequiredFields.categoryTier1);
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplateRequiredFields.categoryTier2);
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplateRequiredFields.categoryTier3);
-            expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(caseTemplateRequiredFields.allowCaseReopen);
-            expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateRequiredFields.templateName);
-            expect(await copyCaseTemplate.getValueOfCaseCompany()).toContain(caseTemplateRequiredFields.company);
-            expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateRequiredFields.ownerCompany);
+            expect(await copyCaseTemplate.isValueOfCasePriorityPresent(ctemp.casePriority)).toBeTruthy();
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(ctemp.categoryTier1);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(ctemp.categoryTier2);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(ctemp.categoryTier3);
+            expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(ctemp.allowCaseReopen);
+            expect(await copyCaseTemplate.getValueOfFlowset()).toBe(ctemp.templateName);
+            expect(await copyCaseTemplate.getValueOfCaseCompany()).toContain(ctemp.company);
+            expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(ctemp.ownerCompany);
             expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain('US Support 3');
-            expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateRequiredFields.assignmentMethod);
-            expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateRequiredFields.taskFailureConfiguration);
+            expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(ctemp.assignmentMethod);
+            expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(ctemp.taskFailureConfiguration);
             expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
-            expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplateRequiredFields.caseStatus);
-            expect(await copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplateRequiredFields.assignee);
-            expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplateRequiredFields.supportGroup);
+            expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(ctemp.caseStatus);
+            expect(await copyCaseTemplate.getValueOfAssignee()).toBe(ctemp.assignee);
+            expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(ctemp.supportGroup);
             await copyCaseTemplate.clickSaveCaseTemplate();
-            expect(await copyCaseTemplate.getValueOfStatusReason()).toBe(caseTemplateRequiredFields.statusReason);
-            expect(await copyCaseTemplate.getValueOfCaseDescription()).toContain(caseTemplateRequiredFields.templateDescription);
-            expect(await copyCaseTemplate.getValueOfCaseSummary()).toBe(caseTemplateRequiredFields.templateSummary);
+            expect(await copyCaseTemplate.getValueOfStatusReason()).toBe(ctemp.statusReason);
+            expect(await copyCaseTemplate.getValueOfCaseDescription()).toContain(ctemp.templateDescription);
+            expect(await copyCaseTemplate.getValueOfCaseSummary()).toBe(ctemp.templateSummary);
             await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndselectCaseTemplate(copyCaseTemplateName);
             expect(await consoleCasetemplatePo.getCaseTemplateNamePresentOnGrid(copyCaseTemplateName)).toBe(copyCaseTemplateName);
@@ -283,8 +287,8 @@ describe('Copy Case Template', () => {
         let taskTemplateDataSet, casetemplatePetramco, newCaseTemplate1, manualTaskTemplate;
         beforeAll(async () => {
             taskTemplateDataSet = {
-                "templateName": "taskTemplateName" + randomStr,
-                "templateSummary": "taskTemplateSummary" + randomStr,
+                "templateName": "taskTemplateName4717" + randomStr,
+                "templateSummary": "taskTemplateSummary4717" + randomStr,
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "buisnessUnit": "United States Support",
@@ -296,8 +300,8 @@ describe('Copy Case Template', () => {
             }
 
             casetemplatePetramco = {
-                "templateName": "caseTemplateName" + randomStr,
-                "templateSummary": "caseTemplateSummary" + randomStr,
+                "templateName": "caseTemplateName4717" + randomStr,
+                "templateSummary": "caseTemplateSummary4717" + randomStr,
                 "templateStatus": "Active",
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
@@ -312,15 +316,16 @@ describe('Copy Case Template', () => {
                 "ownerGroup": "US Support 3",
             }
 
-            await apiHelper.apiLogin('qkatawazi');
+            await apiHelper.apiLogin('jbarnes');
             newCaseTemplate1 = await apiHelper.createCaseTemplate(casetemplatePetramco);
             manualTaskTemplate = await apiHelper.createManualTaskTemplate(taskTemplateDataSet);
             await browser.sleep(3000); // hardwait to reflect manual task template
+            // await apiHelper.apiLogin('tadmin');
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
         });
         it('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
             await utilityGrid.searchAndOpenHyperlink(casetemplatePetramco.templateName);
             await editCaseTemplate.clickOnEditCaseTemplateMetadata();
             await editCaseTemplate.changeTemplateStatusDropdownValue('Draft');
@@ -339,7 +344,7 @@ describe('Copy Case Template', () => {
             expect(await viewCasetemplatePo.getIdentityValdationValue()).toBe('Enforced');
             expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplateAllFields.resolutionCode);
             expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
-            await viewCasetemplatePo.clickOneTask();
+            await viewCasetemplatePo.clickOnTaskBox(taskTemplateDataSet.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(taskTemplateDataSet.templateName);
             await utilityCommon.closeAllBlades();
             await viewCasetemplatePo.clickBackArrowBtn();

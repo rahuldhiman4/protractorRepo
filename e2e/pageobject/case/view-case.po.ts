@@ -623,6 +623,14 @@ class ViewCasePage {
         });
     }
 
+        async isEditAssignmentDisplayed(): Promise<boolean> {
+        return await $(this.selectors.editAssignment).isPresent().then(async (result) => {
+            if (result) {
+                return await $(this.selectors.editAssignment).isDisplayed();
+            } else return false;
+        });
+    }
+
     async isAssignToMeDisabled(): Promise<boolean> {
         return await $(this.selectors.assignToMe).isPresent().then(async (result) => {
             if (result) {

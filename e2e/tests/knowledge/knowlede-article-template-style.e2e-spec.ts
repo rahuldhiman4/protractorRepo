@@ -57,9 +57,11 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.setStyleName(randomStr);
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await articleTemplateStylePo.clickDeleteButton();
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy();
             await browser.navigate().back();
         });
@@ -73,9 +75,11 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.setStyleName(randomStr);
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await articleTemplateStylePo.clickDeleteButton();
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy('');
         });
 
@@ -103,9 +107,11 @@ describe('Knowledge article template style', () => {
         utilityCommon.clickOnApplicationWarningYesNoButton('No');
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        await utilityCommon.closePopUpMessage();
         await articleTemplateStylePo.clickDeleteButton();
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
+        await utilityCommon.closePopUpMessage();
     });
 
     describe('[5722,5717]: [Template Styles] Availability of default styles on custom templates', () => {

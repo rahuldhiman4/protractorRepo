@@ -161,7 +161,7 @@ describe('Case Bulk Operation', () => {
         let caseWriteAccessDataQstrong = {
             "operation": operation['addAccess'],
             "type": type['user'],
-            "security": security['writeAccess'],
+            "security": security['witeAccess'],
             "username": 'qstrong'
         }
         await apiHelper.updateCaseAccess(newCase2.id, caseWriteAccessDataQstrong);
@@ -372,7 +372,7 @@ describe('Case Bulk Operation', () => {
         let caseId: string[] = [];
 
         let caseDataForTest = caseData['bulkCaseAssignee_New'];
-        caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "4303bulkCaseAssignee";
         for (let i = 0; i < 2; i++) {
             let response = await apiHelper.createCase(caseDataForTest);
             caseId[i] = response.displayId;
@@ -439,7 +439,7 @@ describe('Case Bulk Operation', () => {
 
         let caseData = {
             "Requester": "qkatawazi",
-            "Summary": "All Categories selected 4385",
+            "Summary": "All Categories selected 4385" +randomStr,
             "Origin": "Agent",
             "Case Template ID": caseTemplateDisplayId
         }

@@ -62,11 +62,6 @@ class ViewCaseTemplate {
         await $(this.selectors.showMoreDescriptionLink).click();
     }
 
-    async clickOneTask(): Promise<void> {
-        await  utilityCommon.scrollToElement($(this.selectors.oneTask));
-        await $(this.selectors.oneTask).click();
-    }
-
     async clickEditTemplateMetaData(): Promise<void> {
         await $(this.selectors.editTemplateMetaData).click();
     }

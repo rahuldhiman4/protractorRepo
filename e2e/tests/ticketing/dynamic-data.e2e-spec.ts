@@ -582,8 +582,8 @@ describe('Dynamic data', () => {
         const filesToUpload2 = fileName2.map((file) => { return `../../data/ui/attachment/${file}` });
         let caseTemplateName = randomStr + 'caseTemplateDRDMV13948';
         let caseTemaplateSummary = randomStr + 'caseTemplateDRDMV13948';
-        let taskTemplateName = randomStr + 'ManualtaskDRDMV13948';
-        let manualTaskSummary = randomStr + 'ManualSummaryDRDMV13948';
+        let taskTemplateName = randomStr + 'DRDMV13948';
+        let manualTaskSummary = randomStr + 'DRDMV13948';
         //delete existing files
         beforeAll(async () => {
             for (let i: number = 0; i <= fileName1.length; i++) {

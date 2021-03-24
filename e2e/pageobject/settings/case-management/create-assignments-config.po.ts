@@ -18,6 +18,7 @@ class AssignmentConfigCreatePage {
         labelDrpDwn: 'e96e5a26-840f-483e-b62a-797f13fb386c',
         regionDrpDwn: 'f2083fbb-ee65-4c20-8958-dfb2979f3b56',
         siteDrpDwn: 'ee0a257d-5577-494b-a286-d553fbf18e44',
+        siteGrpDrpDwn: '2aef036b-c61b-4612-9937-512d642df8ef',
         defaultToggle: '[rx-view-component-id="d52b16e7-3cd4-4ef1-a31b-922eac1007c1"] .d-icon-circle_slash_o',
         supportCompanyDrpDwn: 'e20294a1-3a95-4fbd-9640-15a325db82ab',
         businessUnitDrpDwn: '110ab90c-0907-413d-8b13-a6aa2ee2c566',
@@ -113,6 +114,10 @@ class AssignmentConfigCreatePage {
 
     async setRegion(Region: string) {
         await utilityCommon.selectDropDown(this.selectors.regionDrpDwn, Region);
+    }
+
+    async setSiteGroup(siteGroup: string) {
+        await utilityCommon.selectDropDown(this.selectors.siteGrpDrpDwn, siteGroup);
     }
 
     async setSite(Site: string) {

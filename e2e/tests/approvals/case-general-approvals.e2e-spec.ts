@@ -227,6 +227,7 @@ describe("Case General Approval Tests", () => {
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.selectFilterCheckBox('Approvals');
             await activityTabPage.clickOnFilterApplyButton();
+            await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.getFirstPostContent()).toContain('Case was cancelled');
         });
 

@@ -94,7 +94,7 @@ class AssignmentConfigEditPage {
     }
 
     async getCategoryTier4(): Promise<string> {
-        return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] .ui-select-match-text`).getText();
+        return await $(`[rx-view-component-id="${this.selectors.categoryTier4Guid}"] .rx-select__search-button-title`).getText();
     }
 
     async isLabelValueDisplayed(labelName: string): Promise<boolean> {

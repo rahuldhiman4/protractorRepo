@@ -174,7 +174,7 @@ describe('Create Task Template', () => {
             await editTaskTemplate.setSummary(summary);
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
-            await editTaskTemplate.selectTaskCategoryTier2('Compensation');
+            await editTaskTemplate.selectTaskCategoryTier2_v('Compensation');
             await editTaskTemplate.clickOnSaveButton();
             //verify the updated Field
             expect(await viewTaskTemplate.getSummaryValue()).toBe(summary);
@@ -209,7 +209,7 @@ describe('Create Task Template', () => {
         await editTaskTemplate.setSummary(summary);
         await editTaskTemplate.setDescription(description);
         await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
-        await editTaskTemplate.selectTaskCategoryTier2('Compensation');
+        await editTaskTemplate.selectTaskCategoryTier2_v('Compensation');
         await editTaskTemplate.clickOnSaveButton();
         //verify the updated Field
         expect(await viewTaskTemplate.getSummaryValue()).toBe(summary);

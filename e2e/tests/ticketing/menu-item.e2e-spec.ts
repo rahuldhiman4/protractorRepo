@@ -526,7 +526,6 @@ describe('Menu Item', () => {
             expect(await adhoctaskTemplate.isValuePresentInDropdown('Label', labelDeprecated)).toBeFalsy('Value is present in  label drop down');
             await adhoctaskTemplate.selectLabel(labelActive1);
             await adhoctaskTemplate.setSummary(summary);
-            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await adhoctaskTemplate.clickSaveAdhoctask();
             await manageTask.clickCloseButton();
         });
@@ -543,6 +542,7 @@ describe('Menu Item', () => {
             await createCasetemplatePo.setPriorityValue('Low');
             await createCasetemplatePo.setLabelValue(labelActive1);
             await createCasetemplatePo.clickSaveCaseTemplate();
+            await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickBackArrowBtn();
         });
 
@@ -558,6 +558,7 @@ describe('Menu Item', () => {
             await createTasktemplatePo.selectCompanyByName('Petramco');
             await createTasktemplatePo.selectLabel(labelActive1);
             await createTasktemplatePo.clickOnSaveTaskTemplate();
+            await utilityCommon.closePopUpMessage();
             await viewTasktemplatePo.clickBackArrowBtn();
         });
 

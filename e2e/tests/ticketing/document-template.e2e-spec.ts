@@ -267,9 +267,8 @@ describe('Document Template', () => {
             await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate('Case');
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Application BundleID')).toBeTruthy("Application BundleID is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Approver List')).toBeTruthy("Approver List is missing");
-            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Assigned Business Unit')).toBeTruthy("Assigned Business Unit is missing");
-            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('ASSIGNED COMPANY_ID')).toBeTruthy("ASSIGNED COMPANY_ID is missing");
-            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Assigned Department')).toBeTruthy("Assigned Department is missing");
+            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Assignee Support Organization')).toBeTruthy("Assigned Business Unit is missing");
+            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Assigned Company')).toBeTruthy("Assigned Company is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Assigned Group')).toBeTruthy("Assigned Group is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Assignee')).toBeTruthy("Assignee is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Assignee GUID')).toBeTruthy("Assignee GUID is missing");
@@ -290,7 +289,7 @@ describe('Document Template', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Dynamic Data DefinitionID')).toBeTruthy("Dynamic Data DefinitionID is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Dynamic Data Parameter')).toBeTruthy("Dynamic Data Parameter is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Email Context')).toBeTruthy("Email Context is missing");
-            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('External Email ID')).toBeTruthy("External Email ID is missing");
+            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('External Requester Email ID')).toBeTruthy("External Requester Email ID is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Flowset')).toBeTruthy("Flowset is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GUID')).toBeTruthy("GUID is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('ID')).toBeTruthy("ID is missing");
@@ -304,7 +303,7 @@ describe('Document Template', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Origin')).toBeTruthy("Origin is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Previous Case Status Value')).toBeTruthy("Previous Case Status Value is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Priority')).toBeTruthy("Priority is missing");
-            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('REGION_ID')).toBeTruthy("REGION_ID is missing");
+            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Region')).toBeTruthy("Region is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Reopened')).toBeTruthy("Reopened is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Reopened Counter')).toBeTruthy("Reopened Counter is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Requester')).toBeTruthy("Requester is missing");
@@ -315,7 +314,7 @@ describe('Document Template', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Service Request Display ID')).toBeTruthy("Service Request Display ID is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Service Request GUID')).toBeTruthy("Service Request GUID is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Site Change Reason')).toBeTruthy("Site Change Reason is missing");
-            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('SITE_ID')).toBeTruthy("SITE_ID is missing");
+            expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Site')).toBeTruthy("SITE_ID is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Status')).toBeTruthy("Status is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Status Changed Date')).toBeTruthy("Status Changed Date is missing");
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('Status Reason')).toBeTruthy("Status Reason is missing");

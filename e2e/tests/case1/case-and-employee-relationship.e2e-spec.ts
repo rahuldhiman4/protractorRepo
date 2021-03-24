@@ -415,7 +415,7 @@ describe('Case And Employee Relationship', () => {
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
                 "Support Group": "US Support 3",
-                "Assignee": "qfeng",
+                "Assignee": "qkatawazi",
             }
             for (let i = 0; i < 6; i++) {
                 let response = await apiHelper.createCase(caseData);

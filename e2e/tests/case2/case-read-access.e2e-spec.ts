@@ -459,11 +459,12 @@ describe("Case Read Access", () => {
         it('[5592,5589,5024,5037]: [Read Access] Configuring a Default Read Access', async () => {
             await navigationPo.signOut();
             await loginPage.login('qtao');
-            await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName('qkatawazi');
-            await quickCasePo.selectCaseTemplate(caseTemplateData.templateName);
-            await quickCasePo.saveCase();
-            await utilityCommon.closePopUpMessage();
+            await navigationPo.gotoCreateCase();
+            await createCasePage.selectRequester('adam');
+            await createCasePage.setSummary('set summary');
+            await createCasePage.clickSelectCaseTemplateButton();
+            await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
+            await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');

@@ -68,8 +68,8 @@ exports.config = {
 
     var width = 1300;
     var height = 750;
-    // browser.driver.manage().window().setSize(width, height);
-    browser.driver.manage().window().maximize();
+    browser.driver.manage().window().setSize(width, height);
+    // browser.driver.manage().window().maximize();
 
     // Disable NG&css animation
     // var disableAnimation = function () {

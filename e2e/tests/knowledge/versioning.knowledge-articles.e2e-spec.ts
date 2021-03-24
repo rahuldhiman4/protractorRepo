@@ -51,7 +51,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     const knowledgeSetTitleStrPsilon = 'versionedKnowledgeSetPsilon_' + randomStr;
     const knowledgeSetTitleStrPhylum = 'versionedKnowledgeSetPhylum_' + randomStr;
     const knowledgeTemplateStr = 'VersionedArticleTemplate_' + randomStr;
-    const attachmentFilePath = 'data/ui/attachment/articleStatus.png';
+    const attachmentFilePath = 'e2e/data/ui/attachment/articleStatus.png';
     const minorEditHelpText = `Submitting your changes will edit the existing Version 1`;
     const majorEditHelpText = `Submitting your changes will create Version 2`;
 
@@ -110,7 +110,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         expect(actualVersion).toBe(expectedVersion);
     });
 
-    //skhobrag
+    //skhobrag-Defect
     describe('[3708]: Verify the functionality of Edit article with Minor Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
@@ -262,7 +262,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
     });
 
-    //skhobrag
+    //skhobrag-log defect
     describe('[3705]: Verify the search based on version on knowledge article console', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let versionFieldColumn: string[] = ["Version"];
@@ -418,7 +418,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
     });
 
-    //skhobrag
+    //skhobrag-pass
     describe('[3700]: Verify the search functionality of articles with versions from Case Edit > Resources screen', () => {
         beforeAll(async () => {
             let articleData1 = {
@@ -498,6 +498,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await browser.sleep(3000); // To Wait Until Assignee Displayed On Page.
             await createCasePage.clickSaveCaseButton();
+            await utilityCommon.closePopUpMessage();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab(resourcesTabStr);
 
@@ -551,7 +552,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
     });
 
-    //skhobrag
+    //skhobrag-defect
     describe('[3707,3712]: Verify the functionality of Edit article with Major Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleAccessPermission: string[] = [
@@ -755,7 +756,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
     });
 
-    //skhobrag
+    //skhobrag-pass
     describe('[3706]: Verify the article status of previous version articles when the new versioned article is moved to Published status', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -872,7 +873,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
     });
 
-    //skhobrag
+    //skhobrag-pass
     describe('[3702]: Verify the behavior when the user who does not have access to view current article version and he tries to create or update existing version', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -1006,7 +1007,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
     });
 
-    //skhobrag
+    //skhobrag-pass
     describe('[3714]: Verify that the newly created article with version displays on knowledge grid console', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -1132,7 +1133,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
     });
 
-    //skhobrag
+    //skhobrag-defect
     describe('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
@@ -1374,7 +1375,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
     });
 
-    //skhobrag
+    //skhobrag-pass
     describe('[3704]:  Verify whether the user with appropriate knowledge permission roles can able to update the article with updated / new version', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleData = undefined;
