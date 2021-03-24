@@ -353,28 +353,9 @@ describe("Change Assignment", () => {
 
     //Raised defect: DRDMV-25147
     describe('[4000007]:Verify that if Agent has only Read only access on Case/Task/Knowledge', async () => {
-        let caseID, KADetails, taskData, articleData, randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseID, KADetails, articleData, randVal = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
-            let caseData1 = {
-                "Requester": "apavlik",
-                "Summary": "Test case for inProgress task",
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qkatawazi"
-            }
-            taskData = {
-                "taskName": randVal + "manualTask",
-                "company": "Petramco",
-                "priority": "Low",
-                "businessUnit": "United States Support",
-                "supportGroup": "US Support 3",
-                "assignee": "qkatawazi",
-            }
             await apiHelper.apiLogin('qkatawazi');
-            let newCase = await apiHelper.createCase(caseData1);
-            caseID = newCase.displayId;
-            await apiHelper.createAdhocTask(newCase.id, taskData);
             articleData = {
                 "knowledgeSet": "HR",
                 "title": 'knowledge' + randVal,
@@ -385,15 +366,32 @@ describe("Change Assignment", () => {
                 "assignee": "qkatawazi"
             }
             KADetails = await apiHelper.createKnowledgeArticle(articleData);
-            //Read access to qtao
-            let caseAccessDataQtao = {
-                "operation": operation['addAccess'],
-                "type": type['user'],
-                "security": security['readAccess'],
-                "username": 'qtao'
-            }
-            await apiHelper.updateCaseAccess(newCase.id, caseAccessDataQtao);
         });
+
+        it('[4000007]:Create case and add task', async () => {
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('apavlik');
+            await createCasePo.setSummary('Test case for inProgress task');
+            await changeAssignmentPage.setAssignee("US Support 3", "qkatawazi");
+            await createCasePo.clickSaveCaseButton();
+            await previewCasePo.clickGoToCaseButton();
+            caseID = await viewCasePo.getCaseID();
+
+            await viewCasePo.clickOnTab('Case Access');
+            await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
+            await accessTabPo.selectAgent('qtao', 'Agent');
+            await accessTabPo.clickAccessEntitiyAddButton('Agent');
+
+            await viewCasePo.clickOnTab('Tasks');
+            await viewCasePo.clickAddTaskButton();
+            await manageTaskBladePo.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary(randVal + "manualTask");
+            await adhoctaskTemplate.selectPriority('Low');
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closePopUpMessage();
+            await manageTaskBladePo.clickCloseButton(); 
+        });
+
         it('[4000007]:Verify that if Agent has only Read only access on Case/Task/Knowledge', async () => {
             await navigationPo.gotoCaseConsole();
             await utilityGrid.clearFilter();
@@ -407,7 +405,7 @@ describe("Change Assignment", () => {
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPo.gotoTaskConsole();
-            await utilityGrid.searchAndOpenHyperlink(taskData.taskName);
+            await utilityGrid.searchAndOpenHyperlink(randVal + "manualTask");
             expect(await viewTaskPo.isEditAssignmentDisabled()).toBeFalsy();
             expect(await viewTaskPo.isAssignToMeDisabled()).toBeFalsy();
             await viewTaskPo.clickOnEditTask();
@@ -437,20 +435,21 @@ describe("Change Assignment", () => {
             await editKnowledgePo.clickCancelStatusBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
+
         it('[4000007]:Verify that if Agent has only Read only access on Case/Task/Knowledge', async () => {
             await navigationPo.signOut();
             await loginPo.login("qtao");
             await navigationPo.gotoCaseConsole();
             await utilityGrid.clearFilter();
             await utilityGrid.searchAndOpenHyperlink(caseID);
-            await viewCasePo.clickOnTaskLink(taskData.taskName);
-            expect(await viewTaskPo.isEditAssignmentDisabled()).toBeTruthy();
+            await viewCasePo.clickOnTaskLink(randVal + "manualTask");
+            expect(await viewTaskPo.isEditAssignmentDisplayed()).toBeFalsy();
             expect(await viewTaskPo.isAssignToMeDisabled()).toBeTruthy();
             await viewTaskPo.clickOnEditTask();
             expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeTruthy();
             expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy();
             expect(await changeAssignmentPage.isFieldDisabled("AssignToMe")).toBeTruthy();
-            await editCasePo.clickOnCancelCaseButton();
+            await editTaskPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickEditCaseButton();
@@ -459,7 +458,8 @@ describe("Change Assignment", () => {
             expect(await changeAssignmentPage.isFieldDisabled("AssignToMe")).toBeTruthy();
             await editCasePo.clickOnCancelCaseButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            expect(await viewCasePo.isEditAssignmenetDisabled()).toBeTruthy();
+            expect(await viewCasePo.isEditAssignmentDisplayed()).toBeFalsy();
+
             expect(await viewCasePo.isAssignToMeDisabled()).toBeTruthy();
             await navigationPo.gotoKnowledgeConsole();
             await utilityGrid.clearFilter();
@@ -468,11 +468,6 @@ describe("Change Assignment", () => {
             expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeTruthy();
             expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy();
             expect(await changeAssignmentPage.isFieldDisabled("AssignToMe")).toBeTruthy();
-        });
-        afterAll(async () => {
-            await utilityCommon.closeAllBlades();
-            await navigationPo.signOut();
-            await loginPo.login('qkatawazi');
         });
     });
 });

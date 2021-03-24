@@ -37,7 +37,7 @@ class RelatedPersonPage {
         for (let i = 0; i < allPersonNum; i++) {
             let person = await $$(this.selectors.allRelatedPersons).get(i);
             let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
-            let rel: string = await person.$(this.selectors.relations).getText();
+            let rel: string = (await (await person.$(this.selectors.relations)).getText()).trim();
             if (nm == relatedName && rel == relation) {
                 status = true;
                 break;
@@ -160,9 +160,9 @@ class RelatedPersonPage {
         let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
         for (let i = 0; i < allCasesNum; i++) {
             let person = await $$(this.selectors.allRelatedPersons).get(i);
-            let nm: string = await person.$(this.selectors.relatedPersonNames).getText();
+            let nm: string = await (await person.$(this.selectors.relatedPersonNames)).getText();
             if (nm == personName) {
-                await person.$(this.selectors.removePersonCrossIcon).click();
+                await (await person.$(this.selectors.removePersonCrossIcon)).click();
                 await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
                 break;
             }
@@ -171,7 +171,7 @@ class RelatedPersonPage {
 
     async isRelatedPersonPresent(personName: string): Promise<boolean> {
         let status: boolean = false;
-        if (await $(this.selectors.allRelatedPersons).isPresent) {
+        if (await (await $(this.selectors.allRelatedPersons)).isPresent()) {
             let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
             for (let i = 0; i < allCasesNum; i++) {
                 let nm: string = await $$(this.selectors.allRelatedPersons).get(i).$(this.selectors.relatedPersonNames).getText();

@@ -334,6 +334,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
             await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('qstrong reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             // await activityTabPo.clickOnShowMore();
@@ -350,6 +351,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg8: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
             await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('qstrong reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
             // await activityTabPo.clickOnShowMore();
@@ -372,6 +374,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusResolved, 'FailureMsg2: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
             await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('qheroux reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             // await activityTabPo.clickOnShowMore();
@@ -384,6 +387,7 @@ describe('Case Status Verification', () => {
             expect(await viewCasePage.getTextOfStatus()).toBe(statusClosed, 'FailureMsg8: Resolved status is missing');
             await viewCasePage.clickOnReopenCaseLink();
             await utilityCommon.closePopUpMessage();
+            await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('qheroux reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
             // await activityTabPo.clickOnShowMore();

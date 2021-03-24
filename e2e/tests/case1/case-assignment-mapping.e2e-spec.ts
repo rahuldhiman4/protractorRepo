@@ -730,7 +730,7 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    // pending
+    // pending (data issue)
     describe('[4444]:[Permissions] Location based assignment with multiple companies', async () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "4444 " + randomStr;
@@ -746,11 +746,13 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
             await assignmentConfigCreatePage.setCategoryTier1("Accounts Payable");
             await assignmentConfigCreatePage.setCompany("Petramco");
+            await assignmentConfigCreatePage.setCategoryTier1("Accounts Payable");
             await assignmentConfigCreatePage.setPriority('Critical');
             await assignmentConfigCreatePage.setRegion('Asia-Pac');
             await assignmentConfigCreatePage.setSupportCompany("Psilon");
             await assignmentConfigCreatePage.setSiteGroup('Engineering');
             await assignmentConfigCreatePage.setSite('Canberra');
+            await assignmentConfigCreatePage.setSupportCompany("Psilon");
             await assignmentConfigCreatePage.setSupportOrg('Psilon Support Org1');
             await assignmentConfigCreatePage.setSupportGroup("Psilon Support Group1");
             await assignmentConfigCreatePage.setAssignee("Glit Deruno");
@@ -764,6 +766,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
             await assignmentConfigCreatePage.setCategoryTier1("Accounts Payable");
             await assignmentConfigCreatePage.setCompany("- Global -");
+            await assignmentConfigCreatePage.setCategoryTier1("Local Statutory Support");
             await assignmentConfigCreatePage.setPriority('Critical');
             await assignmentConfigCreatePage.setRegion('Asia-Pac');
             await assignmentConfigCreatePage.setSupportCompany("Psilon");
@@ -793,7 +796,7 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.setSummary("5418 Case Summary1");
             await createCasePage.setPriority('Critical');
             await createCasePage.selectSite('Canberra');
-            await createCasePage.selectCategoryTier1("Accounts Payable");
+            await createCasePage.selectCategoryTier1("Local Statutory Support");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupValue()).toBe('Psilon Support Group1');
@@ -808,11 +811,11 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    // pending
+    // pending (data issue)
     describe('[4525]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let region: string[] = ['AMER', 'APAC', 'Australia', 'Caribbean', 'Central America', 'Central Asia', 'China', 'Chūbu', 'Chūgoku', 'EMEA', 'East Asia', 'Hokkaidō', 'Japan', 'Kansai', 'Kantō', 'Kyūshū', 'North America', 'Shikoku', 'South America', 'South Asia', 'Southeast Asia', 'Tōhoku'];
-        let site: string[] = [' ', 'Canberra', 'Macquarie Park', 'Melbourne', 'Wellington'];
+        let region: string[] = ['Americas', 'Asia-Pac', 'Europe', 'None'];
+        let site: string[] = ['Aichi','Bangalore','Bangkok','Beijing','Canberra','Hong Kong','Macquarie Park','Melbourne','Mumbai','New Delhi','None','Osaka','Petaling Jaya','Petramco Site5','Pune','Shanghai','Shenzhen','Shivaji Nagar','Singapore','Tokyo','Wellington'];
         it('[4525]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
@@ -1005,6 +1008,7 @@ describe("Create Case Assignment Mapping", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData1.assignmentMappingName);
             await apiHelper.deleteReadAccessOrAssignmentMapping(assignmentData2.assignmentMappingName);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('mcarney');
         });
