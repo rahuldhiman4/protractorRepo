@@ -152,16 +152,16 @@ describe('Create Case Task', () => {
         it('[5559,5565,6425,6386]: Create manual task template', async () => {
             //Automation Task template
             await selectTaskTemplate.clickOnAutomationTaskTemplateButton();
+            await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.setTemplateName(automationTaskTemplateWithAllField);
             await taskTemplate.setTaskSummary(automationTaskSummaryWithallField);
             await taskTemplate.setTaskDescription('All field get added in this task template');
-            await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.setNewProcessName(`Get Request Status Data2 ${randomStr}`);
             await taskTemplate.selectLabel(menuItem.menuItemName);
             await taskTemplate.selectTaskCategoryTier1('Employee Relations');
-            await taskTemplate.selectTaskCategoryTier2('Compensation');
-            await taskTemplate.selectTaskCategoryTier3('Bonus');
-            await taskTemplate.selectTaskCategoryTier4('Retention Bonus');
+            await taskTemplate.selectTaskCategoryTier2_v('Compensation');
+            await taskTemplate.selectTaskCategoryTier3_v('Bonus');
+            await taskTemplate.selectTaskCategoryTier4_v('Retention Bonus');
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 1');
@@ -369,10 +369,10 @@ describe('Create Case Task', () => {
             await taskTemplate.setTemplateName(TaskTemplate);
             await taskTemplate.setTaskSummary(TaskSummary);
             await taskTemplate.setTaskDescription('Description');
-            await taskTemplate.selectCompanyByName('Global');
             await taskTemplate.selectTaskCategoryTier1('Employee Relations');
-            await taskTemplate.selectTaskCategoryTier2('Compensation');
-            await taskTemplate.selectTaskCategoryTier3('Bonus');
+            await taskTemplate.selectTaskCategoryTier2_v('Compensation');
+            await taskTemplate.selectTaskCategoryTier3_v('Bonus');
+            await taskTemplate.selectCompanyByName('Global');
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 1');
@@ -444,8 +444,8 @@ describe('Create Case Task', () => {
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTasktemplatePo.clickOnEditLink();
             await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
-            await editTaskTemplate.selectTaskCategoryTier2('Compensation');
-            await editTaskTemplate.selectTaskCategoryTier3('Bonus');
+            await editTaskTemplate.selectTaskCategoryTier2_v('Compensation');
+            await editTaskTemplate.selectTaskCategoryTier3_v('Bonus');
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.clickOnSaveButton();
         });
@@ -1549,6 +1549,7 @@ describe('Create Case Task', () => {
             expect(await adhoctaskTemplate.isAttachmentButtonDisplayed()).toBeTruthy();
             expect(await adhoctaskTemplate.isTaskSummaryRequiredTextPresent()).toBeTruthy("Summary");
             expect(await adhoctaskTemplate.isPriorityRequiredTextPresent()).toBeTruthy("priority");
+            //required not visible
             expect(await adhoctaskTemplate.isAssignedGroupRequiredTextPresent()).toBeTruthy("assigned group");
             await adhoctaskTemplate.setSummary("Summary" + randomStr);
             await adhoctaskTemplate.setDescription("Description");
@@ -1573,8 +1574,8 @@ describe('Create Case Task', () => {
             expect(await editTask.isFieldsDisplyed('CategoryTier1Value')).toBeTruthy();
             expect(await editTask.isFieldsDisplyed('CategoryTier2Value')).toBeTruthy();
             expect(await editTask.isFieldsDisplyed('CategoryTier3Value')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('Assignee Name')).toBeTruthy();
-            expect(await editTask.isFieldsDisplyed('Assign Company')).toBeTruthy();
+            expect(await utilityCommon.isFieldLabelDisplayed('691c7524-167e-434b-acac-c11571c53409','Assignee')).toBeTruthy();
+           
             expect(await editTask.isRequiredTextPresent('Task Summary')).toBeTruthy();
             expect(await editTask.isRequiredTextPresent('Priority')).toBeTruthy();
             expect(await editTask.isRequiredTextPresent('Assigned Group')).toBeTruthy();
@@ -1590,10 +1591,8 @@ describe('Create Case Task', () => {
             await editTask.selectPriorityValue('Low');
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('Description' + randomStr);
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Workforce Administration');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await navigationPage.gotoCaseConsole();
@@ -1616,10 +1615,8 @@ describe('Create Case Task', () => {
             await editTask.selectPriorityValue('Low');
             await editTask.updateTaskSummary('UpdatedSummary' + randomStr);
             await editTask.setDescription('UpdatedDescription' + randomStr);
-            await editTask.clickOnChangeAssignementButton();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'Workforce Administration');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Peter Kahn');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editTask.clickOnSaveButton();
             let modifiedDate = new Date();
             let monthValue: string = month[modifiedDate.getMonth()];
@@ -1649,10 +1646,8 @@ describe('Create Case Task', () => {
             await viewCasePage.clickOnContactPersonerDrpDwn();
             await expect(viewCasePage.getContactPersonName()).toBe('Elizabeth Peters');
             await viewCasePage.clickEditCaseButton();
-            await editCasePo.clickChangeAssignmentButton();
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Qiao Feng');
-            await changeAssignmentBladePo.clickOnAssignButton();
             await editCasePo.clickSaveCase();
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickAddAdhocTaskButton();

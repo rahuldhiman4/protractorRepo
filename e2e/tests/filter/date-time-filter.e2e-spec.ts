@@ -239,12 +239,12 @@ describe('Date and Time Preset Filter', () => {
             await utilityGrid.clickFilterField("Created Date");
             await dateTimeSelectorPo.selectPreviousMonthUsingAngularIcon(month);
             await dateTimeSelectorPo.selectPreviousYearUsingAngularIcon(year);
-            await dateTimeSelectorPo.selectDateOnCalender(date);
+            await dateTimeSelectorPo.selectDateOnCalender(date-1);
             await dateTimeSelectorPo.selectTimeToggle();
             expect(await dateTimeSelectorPo.getActiveTimeUnit()).toBe('HH');
-            await dateTimeSelectorPo.setHour('12');
-            await dateTimeSelectorPo.setMinute(1);
-            await dateTimeSelectorPo.clickMeridianValue("AM");
+            await dateTimeSelectorPo.setHour('11');
+            await dateTimeSelectorPo.setMinute(59);
+            await dateTimeSelectorPo.clickMeridianValue("PM");
 
             await dateTimeSelectorPo.selectTimeToggle();
             await dateTimeSelectorPo.clickEndDateTab();

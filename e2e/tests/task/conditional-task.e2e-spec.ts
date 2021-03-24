@@ -116,6 +116,8 @@ describe('Conditional Task', () => {
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
+            await browser.sleep(2000); //Wait required for Page to Load
+            await utilityCommon.closePopUpMessage();
 
             //Validate all field labels of Manual Task Template
             await processEditorPage.searchAndOpenTaskTemplate(manualTaskTemplateData.templateName, 'da1ffbb0-567a-4199-b94f-413bee7f149b');
@@ -650,6 +652,8 @@ describe('Conditional Task', () => {
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
+            await browser.sleep(2000); //Wait required for Page to Load
+            await utilityCommon.closePopUpMessage();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalDraftTemplate`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveTemplate`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalInactiveTemplate`)).toBeFalsy();
@@ -677,6 +681,8 @@ describe('Conditional Task', () => {
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
+            await browser.sleep(2000); //Wait required for Page to Load
+            await utilityCommon.closePopUpMessage();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalDraftTemplate`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveTemplate`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalInactiveTemplate`)).toBeFalsy();
@@ -704,6 +710,8 @@ describe('Conditional Task', () => {
             await viewCaseTemplatePage.clickTaskFlowBtn();
             await processEditorPage.dragDropCreateTask();
             await processEditorPage.clickSelectTemplateBtn();
+            await browser.sleep(2000); //Wait required for Page to Load
+            await utilityCommon.closePopUpMessage();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalDraftTemplate`)).toBeFalsy();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalActiveTemplate`)).toBeTruthy();
             expect(await processEditorPage.isTemplatePresent(`${randomStr}globalInactiveTemplate`)).toBeFalsy();
@@ -837,7 +845,7 @@ describe('Conditional Task', () => {
         });
     });
 
-    //asahitya-getting error on copy(check with tushar)
+    //asahitya-check manually
     xdescribe('[4497]: [Task] Copy Case Template', () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramcoData, newCaseTemplate, manualTaskTemplateData, externalTaskTemplateData;
