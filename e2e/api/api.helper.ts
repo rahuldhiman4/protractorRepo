@@ -1342,7 +1342,6 @@ class ApiHelper {
                 break;
             }
         }
-        console.log('templateData>>>>>>>>>>>>..',templateData);
         const notesTemplateResponse = await axios.post(
             commandUri,
             templateData
