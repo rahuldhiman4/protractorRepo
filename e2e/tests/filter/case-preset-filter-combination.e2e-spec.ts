@@ -80,7 +80,6 @@ describe('Case Console Filter Combinations', () => {
 
         it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             //Verify the fetched records with filter Assigned Group = "Employee Relations" and Status = "New"
-
             await navigationPage.gotoCaseConsole();
             await utilityGrid.addFilter('Assigned Group', 'Employee Relations', 'text');
             await utilityGrid.addFilter('Status', 'New', 'text');
@@ -88,6 +87,8 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 4; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
+        });
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
@@ -95,7 +96,6 @@ describe('Case Console Filter Combinations', () => {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
-
         it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             //Verify all the fetched records with Assignee = NULL "$NULL$"
             await utilityGrid.clearFilter();
