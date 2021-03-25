@@ -93,7 +93,6 @@ describe("Task Approval UI Validations", () => {
             await approvalConfigurationPage.clickApprovalConfigurationTab('Approval flows ');
             await approvalConfigurationPage.clickApprovalGroup('Task Group');
             await approvalConfigurationPage.clickAddGeneralFlowButton();
-            await approvalConfigurationPage.clickAddGeneralFlowButton();
             expect(await approvalConfigurationPage.getNewApprovalFlowDefaultTitle()).toBe('General flow');
             await approvalConfigurationPage.editNewApprovalFlowDefaultTitle(approvalFlowName);
             await approvalConfigurationPage.selectMultipleApproversDropDownOption('One must approve');
