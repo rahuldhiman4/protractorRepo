@@ -62,7 +62,7 @@ export class GridOperations {
     }
 
     async loopGridSearch(searchValue: string, searchTextBoxLocator: string, gridRecordsLocator: string,guid?:string): Promise<void> {
-        for (let i: number = 0; i < 6; i++) {
+        for (let i: number = 0; i < 5; i++) {
             console.log(searchValue, "search angular grid count: ", i);
             await $(searchTextBoxLocator).clear();
             if(searchValue.startsWith('KA-') || searchValue.startsWith('TASK-')) //Workaround for Search Task and Knowledge Console issue

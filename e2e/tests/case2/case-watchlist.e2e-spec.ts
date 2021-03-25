@@ -1072,7 +1072,7 @@ describe('Case Watchlist', () => {
         let caseId: string[] = [];
         let caseGuid: string[] = [];
         let caseDataForTest = caseData['caseWatchlist'];
-        caseDataForTest.Summary = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        caseDataForTest.Summary = [...Array(7)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + '4341';
         beforeAll(async () => {
             await apiHelper.apiLogin(qtaoStr);
             for (let i: number = 0; i < 2; i++) {

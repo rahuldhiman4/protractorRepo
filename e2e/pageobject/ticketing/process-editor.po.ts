@@ -121,7 +121,18 @@ class ProcessEditor {
         await browser.waitForAngularEnabled(false);
         await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
         await browser.sleep(1000); // sleep required for proper frame switch
-
+        let searchBoxInput: string = 'input[type="search"]';
+        let gridRefreshButton: string = 'button.d-icon-refresh';
+        let gridSearchIcon: string = 'button.adapt-search-button';
+        let selectCheckbox = '.ui-chkbox-box';
+        let selectRadioButton = '.radio__label input';
+        if (guid) {
+            searchBoxInput = `[rx-view-component-id="${guid}"] ` + searchBoxInput;
+            gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
+            gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
+            selectCheckbox = `[rx-view-component-id="${guid}"] ` + selectCheckbox;
+            selectRadioButton = `[rx-view-component-id="${guid}"] ` + selectRadioButton;
+        }
         //Drag and Drop first Create task
         await browser.sleep(5000); // Required For Drag And Drop Operation
         let source = await $('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner');
@@ -149,18 +160,6 @@ class ProcessEditor {
 
         //await utilityGrid.searchAndSelectGridRecord(temp1);
         await browser.switchTo().frame(0);
-        let searchBoxInput: string = 'input[type="search"]';
-        let gridRefreshButton: string = 'button.d-icon-refresh';
-        let gridSearchIcon: string = 'button.adapt-search-button';
-        let selectCheckbox = '.ui-chkbox-box';
-        let selectRadioButton = '.radio__label input';
-        if (guid) {
-            searchBoxInput = `[rx-view-component-id="${guid}"] ` + searchBoxInput;
-            gridRefreshButton = `[rx-view-component-id="${guid}"] ` + gridRefreshButton;
-            gridSearchIcon = `[rx-view-component-id="${guid}"] ` + gridSearchIcon;
-            selectCheckbox = `[rx-view-component-id="${guid}"] ` + selectCheckbox;
-            selectRadioButton = `[rx-view-component-id="${guid}"] ` + selectRadioButton;
-        }
         for (let i: number = 0; i < 7; i++) {
             console.log(temp1, "search angularJs grid count: ", i);
             await $(searchBoxInput).clear();
@@ -178,23 +177,68 @@ class ProcessEditor {
         if (await checkboxLocator.isPresent()) await checkboxLocator.click();
         else await radioButtonLocator.click();
 
-        await this.saveTemplateBtn();
+        //await this.saveTemplateBtn();
+        await $(this.selectors.templateSaveBtn).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true); await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         await browser.actions().dragAndDrop(source1, await $$('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner').get(3)).perform();
 
         //Connect second create block to third create block
         await browser.actions().mouseMove(await $$('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner').get(3)).click().perform();
         await this.clickSelectTemplateBtn();
-        await utilityGrid.searchAndSelectGridRecord(temp2);
+        await browser.sleep(3000);
+        //await utilityGrid.searchAndSelectGridRecord(temp2);
+        await browser.switchTo().frame(0);
+        for (let i: number = 0; i < 7; i++) {
+            console.log(temp1, "search angularJs grid count: ", i);
+            await $(searchBoxInput).clear();
+            await $(gridRefreshButton).click();
+            await $(searchBoxInput).sendKeys(temp1 + protractor.Key.ENTER);
+            //await $(gridSearchIcon).click();
+            let gridRecordCount: number = await $$('[rx-view-component-id="da1ffbb0-567a-4199-b94f-413bee7f149b"] table .at-data-row').count();
+            if (gridRecordCount == 0) {
+                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
+            } else break;
+        }
+        if (await checkboxLocator.isPresent()) await checkboxLocator.click();
+        else await radioButtonLocator.click();
 
         //await this.saveTemplateBtn();
         await $(this.selectors.templateSaveBtn).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true); await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         await browser.actions().dragAndDrop(source1, await $$('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner').get(1)).perform();
 
         //Connect third create block to End Event
         await browser.actions().mouseMove(await $$('[data-type="rx.CallActivity.com.bmc.dsm.task-lib.Create Task"] .body.inner').get(1)).click().perform();
         await this.clickSelectTemplateBtn();
-        await utilityGrid.searchAndSelectGridRecord(temp3);
-        await this.saveTemplateBtn();
+        await browser.sleep(3000);
+        // await utilityGrid.searchAndSelectGridRecord(temp3);
+        // await this.saveTemplateBtn();
+        await browser.switchTo().frame(0);
+        for (let i: number = 0; i < 7; i++) {
+            console.log(temp1, "search angularJs grid count: ", i);
+            await $(searchBoxInput).clear();
+            await $(gridRefreshButton).click();
+            await $(searchBoxInput).sendKeys(temp1, + protractor.Key.ENTER);
+            // await $(gridSearchIcon).click();
+            let gridRecordCount: number = await $$('[rx-view-component-id="da1ffbb0-567a-4199-b94f-413bee7f149b"] table .at-data-row').count();
+            if (gridRecordCount == 0) {
+                await browser.sleep(5000); // workaround for performance issue, this can be removed when issue fixed
+            } else break;
+        }
+        if (await checkboxLocator.isPresent()) await checkboxLocator.click();
+        else await radioButtonLocator.click();
+
+        await $(this.selectors.templateSaveBtn).click();
+        await browser.switchTo().defaultContent();
+        await browser.waitForAngularEnabled(true); await browser.waitForAngularEnabled(false);
+        await browser.switchTo().frame($('rx-process-designer-frame iframe').getWebElement());
+        await browser.sleep(1000); // sleep required for proper frame switch
         await browser.actions().dragAndDrop(source1, await $$('.rotatable image[data-icon-type="transparent"]').get(3)).perform();
         await $(this.selectors.processSaveBtn).click();
         await browser.switchTo().defaultContent();
@@ -231,6 +275,7 @@ class ProcessEditor {
             console.log(searchValue, "search angularJs grid count: ", i);
             await $(searchBoxInput).clear();
             await $(gridRefreshButton).click();
+            await browser.sleep(5000); // for Template console grid to load
             await $(searchBoxInput).sendKeys(searchValue);
             await browser.sleep(3000);
             await $(gridSearchIcon).click();

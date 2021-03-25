@@ -498,6 +498,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await createCasePage.clickAssignToMeButton();
             await browser.sleep(3000); // To Wait Until Assignee Displayed On Page.
             await createCasePage.clickSaveCaseButton();
+            await utilityCommon.closePopUpMessage();
             await previewCasePo.clickGoToCaseButton();
             await viewCasePage.clickOnTab(resourcesTabStr);
 

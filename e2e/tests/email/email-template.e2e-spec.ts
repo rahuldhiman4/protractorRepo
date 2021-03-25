@@ -213,11 +213,13 @@ describe('Email Template', () => {
             expect(await consoleEmailTemplatePo.areGridColumnHeaderMatches(arr2)).toBeTruthy('Column header not matches');
             await utilityGrid.sortGridColumn('Subject', 'descending');
             await utilityGrid.sortGridColumn('Subject', 'ascending');
-            expect(await consoleEmailTemplatePo.isGridColumnSorted('Label', 'ascending')).toBeTruthy('Label column is not sorted correctly with descending order');
+            
             // 5096
             await consoleEmailTemplatePo.addFilter('Template Name', templateName1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Template Name')).toBe(templateName1, 'Filter Template Name is missing in column');
             await consoleEmailTemplatePo.clearGridFilter();
+            await utilityGrid.sortGridColumn('Label', 'ascending');
+            expect(await consoleEmailTemplatePo.isGridColumnSorted('Label', 'ascending')).toBeTruthy('Label column is not sorted correctly with descending order');
             await consoleEmailTemplatePo.addFilter('Label', label1, 'text');
             expect(await consoleEmailTemplatePo.getSelectedGridRecordValue('Label')).toBe(label1, ' Filter Label is missing in column');
             await consoleEmailTemplatePo.clearGridFilter();

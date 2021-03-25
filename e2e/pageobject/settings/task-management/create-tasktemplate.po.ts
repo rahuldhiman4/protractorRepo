@@ -1,5 +1,5 @@
 import utilityCommon from "../../../utils/utility.common";
-import { $, $$, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, browser, by, element, ElementFinder, protractor, ProtractorExpectedConditions } from "protractor";
 import { DropDownType } from "../../../utils/constants";
 
 class CreateTaskTemplatePage {
@@ -95,12 +95,30 @@ class CreateTaskTemplatePage {
         await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
     }
 
+    async selectTaskCategoryTier2_v(category2: string): Promise<void> {
+        await $('[rx-view-component-id="f0dcc3ef-9842-4e3c-bd32-7278885496f3"] .dropdown-toggle').click();
+        await browser.sleep(2000);
+        await (await element(by.cssContainingText('[rx-view-component-id="f0dcc3ef-9842-4e3c-bd32-7278885496f3"] button.dropdown-item', category2))).click();
+    }
+
     async selectTaskCategoryTier3(category3: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown3, category3);
     }
 
+    async selectTaskCategoryTier3_v(category2: string): Promise<void> {
+        await $('[rx-view-component-id="f3673351-44ed-476a-a53c-0e0f13475981"] .dropdown-toggle').click();
+        await browser.sleep(2000);
+        await (await element(by.cssContainingText('[rx-view-component-id="f3673351-44ed-476a-a53c-0e0f13475981"] button.dropdown-item', category2))).click();
+    }
+
     async selectTaskCategoryTier4(category4: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown4, category4);
+    }
+
+    async selectTaskCategoryTier4_v(category2: string): Promise<void> {
+        await $('[rx-view-component-id="869c4d62-7526-4b1b-87a2-eb5633ed43be"] .dropdown-toggle').click();
+        await browser.sleep(2000);
+        await (await element(by.cssContainingText('[rx-view-component-id="869c4d62-7526-4b1b-87a2-eb5633ed43be"] button.dropdown-item', category2))).click();
     }
 
     async selectTemplateStatus(status: string): Promise<void> {
