@@ -56,7 +56,7 @@ xdescribe("Task Approval Tests", () => {
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "assignee": "qfeng",
+                "assignee": "qkatawazi",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
