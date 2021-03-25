@@ -101,6 +101,7 @@ class ManageTaskBlade {
 
     async addTaskFromTaskTemplate(templateName: string, expectedTaskCount?: number): Promise<void> {
         await this.clickAddTaskFromTemplateButton();
+        await utilityGrid.clearFilter();
         await utilityGrid.searchAndSelectGridRecord(templateName);
         await this.clickTaskGridSaveButton();
         if (expectedTaskCount) await this.waitUntilNumberOfTaskLinkAppear(expectedTaskCount);
