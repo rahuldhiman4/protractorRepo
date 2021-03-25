@@ -702,6 +702,9 @@ describe('Case Activity Multi Logs', () => {
                 expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi added a note', k)).toBeTruthy(`Changed the following case fields is missing ${k}`);
             }
         });
+        afterAll(async () => {
+            await navigationPage.gotoCaseConsole();
+        });
     });
 
     //kgaikwad
@@ -1065,14 +1068,13 @@ describe('Case Activity Multi Logs', () => {
         it('[4241]:Verify social activity with sendimg email to other than requester', async () => {
             await viewCasePo.clickOnEmailLink();
             await browser.sleep(2000); // Sleep till open conmpose email pop up
-            await composeMailPo.setToOrCCInputTextbox('To', 'qdu');
+            await composeMailPo.setToOrCCInputTextbox('To', 'qstrong');
             await composeMailPo.clickOnSendButton();
             await activityTabPage.clickOnRefreshButton();
-
             expect(await activityTabPage.isLogIconDisplayedInActivity('envelope', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
             expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng sent an email')).toBeTruthy('FailureMsg21: Qiao Feng sent an email Text is missing in activity log');
-            expect(await activityTabPage.isTextPresentInActivityLog('Qiang Du')).toBeTruthy('FailureMsg22: Qiang Du Text is missing in activity log');
+            expect(await activityTabPage.isTextPresentInActivityLog('Quin Strong')).toBeTruthy('FailureMsg22: Quin Strong Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog(`${caseId}:caseSummary`)).toBeTruthy(`FailureMsg23: ${caseId}:caseSummary Text is missing in activity log`);
             expect(await activityTabPage.isTextPresentInActivityLog('------ While replying, please do not add information below this line -----')).toBeTruthy('FailureMsg24: ------ While replying, please do not add information below this line ----- Text is missing in activity log');
         });
