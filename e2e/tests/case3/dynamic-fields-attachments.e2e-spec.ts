@@ -75,12 +75,12 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateDatawithSG5397; let templateDataWitoutSG5397
         beforeAll(async () => {
-            templateDatawithSG5397 = {
+            templateDataWitoutSG5397 = {
                 "templateName": "templateDatawithSG5396 " + randomStr,
                 "templateSummary": "templateDatawithSG5396 summary " + randomStr,
                 "templateStatus": "Active",
             }
-            templateDataWitoutSG5397 = {
+            templateDatawithSG5397 = {
                 "templateName": "templateDataWitoutSG5396 " + randomStr,
                 "templateSummary": "templateDataWitoutSG5396 summary " + randomStr,
                 "categoryTier1": "Purchasing Card",
@@ -97,7 +97,8 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
                 "assigneeSupportGroup": "US Support 1",
                 "assignee": "qtao",
             }
-
+            await navigationPO.signOut();
+            await loginPO.login('qtao');
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createCaseTemplate(templateDatawithSG5397);
             await apiHelper.createCaseTemplate(templateDataWitoutSG5397);
@@ -176,5 +177,5 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            await accessTabPO.clickAccessRemoveWarningBtn("Yes");
            expect(await accessTabPO.isAccessEntityDisplayed('US Support 3', 'Case')).toBeFalsy();        
         });
-    });  
+    });     
 });
