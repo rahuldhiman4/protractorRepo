@@ -630,7 +630,7 @@ describe("Task Self Approval Tests", () => {
             await loginPage.login('qkatawazi');
         });
     });
-//Fail -DRDMV-25358
+
     describe('[3471,3470]:Tiggered the Approval on Task and check Task View screen by Approver should show Approval component', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, manualTaskDisplayId, approvalMappingResponse, approvalMappingData;
@@ -671,7 +671,7 @@ describe("Task Self Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "approver": "U:qliu;U:qstrong",
+                "approver": "qliu;qstrong",
                 "isLevelUp": false,
                 "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,
@@ -786,7 +786,7 @@ describe("Task Self Approval Tests", () => {
             await loginPage.login('qkatawazi');
         });
     });
-//Fail -DRDMV-25358
+
     describe('[3502]:[Approval] Verify precedence will be given to company specific approval mapping if we have global approval mapping with Same name when task enters approval cycle', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId, caseData, automatedTaskDisplayId, approvalMappingResponse, approvalMappingData, globalApprovalMappingData;
@@ -829,7 +829,7 @@ describe("Task Self Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "approver": "U:qliu;U:qstrong",
+                "approver": "qliu;qstrong",
                 "isLevelUp": false,
                 "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
                 "precedence": 0,
