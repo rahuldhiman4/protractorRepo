@@ -16,7 +16,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 
-xdescribe('PIN Validation Quick Case', () => {
+describe('PIN Validation Quick Case', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login('gderuno');
@@ -39,7 +39,6 @@ xdescribe('PIN Validation Quick Case', () => {
                 "templateSummary": `${randomStr}1Summary`,
                 "caseStatus": "New",
                 "casePriority": "Low",
-                "categoryTier1": 'Purchasing Card',
                 "company": "Psilon",
                 "businessUnit": "Psilon Support Org1",
                 "supportGroup": "Psilon Support Group1",
@@ -144,7 +143,6 @@ xdescribe('PIN Validation Quick Case', () => {
                 "templateSummary": `${randomStr}2Summary`,
                 "caseStatus": "New",
                 "casePriority": "Low",
-                "categoryTier1": 'Purchasing Card',
                 "company": "Psilon",
                 "businessUnit": "Psilon Support Org1",
                 "supportGroup": "Psilon Support Group1",
@@ -269,7 +267,6 @@ xdescribe('PIN Validation Quick Case', () => {
                 "templateSummary": `${randomStr}2Casetemplate`,
                 "caseStatus": "New",
                 "casePriority": "Low",
-                "categoryTier1": 'Purchasing Card',
                 "company": "Psilon",
                 "businessUnit": "Psilon Support Org1",
                 "supportGroup": "Psilon Support Group1",
@@ -416,7 +413,6 @@ xdescribe('PIN Validation Quick Case', () => {
                 "templateSummary": `${randomStr}2Casetemplate`,
                 "caseStatus": "New",
                 "casePriority": "Low",
-                "categoryTier1": 'Purchasing Card',
                 "company": "Psilon",
                 "businessUnit": "Psilon Support Org1",
                 "supportGroup": "Psilon Support Group1",

@@ -189,10 +189,10 @@ describe('Date and Time Preset Filter', () => {
             let objDate: Date = new Date();
             year = objDate.getFullYear();
 
-            let numMonth: number = objDate.getUTCMonth() + 1;
+            let numMonth: number = objDate.getMonth() + 1;
             let monthArr: string[] = ["Null", "Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
             month = monthArr[numMonth];
-            date = objDate.getUTCDate();
+            date = objDate.getDate();
             updatedDate = month + " " + date + ", " + year;
 
             actualDate = await viewKnowledgeArticlePo.formatDate();

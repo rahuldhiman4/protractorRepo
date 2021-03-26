@@ -46,8 +46,8 @@ class ArticleTemplateStyle {
         await $(this.selectors.addNewStyle).click();
     }
 
-    async clickDeleteButton(): Promise<void> {
-        await $$('.bwf-templateStyles').last().$(this.selectors.deleteButtonIcon).click();
+    async clickDeleteButton(styleName: string): Promise<void> {
+        await element.all(by.cssContainingText('.bwf-templateStyles', styleName)).first().$(this.selectors.deleteButtonIcon).click();
     }
 
     async isSaveButtonEnabled(): Promise<boolean> {
