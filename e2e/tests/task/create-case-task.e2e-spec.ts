@@ -492,11 +492,13 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
             await editTaskTemplate.clickOnSaveMetadata();
+            await utilityCommon.closePopUpMessage();
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectOwnerCompany('Psilon');
             await editTaskTemplate.selectBusinessUnit('Psilon Support Org2');
             await editTaskTemplate.selectOwnerGroup('Psilon Support Group2');
             await editTaskTemplate.clickOnSaveMetadata();
+            await utilityCommon.closePopUpMessage();
             await viewTasktemplatePo.clickOnEditLink();
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.clickOnSaveButton();
