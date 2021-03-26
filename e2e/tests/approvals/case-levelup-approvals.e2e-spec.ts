@@ -820,7 +820,6 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
-            expect(await showApproversBladePo.isClosedApproverIconDisplayedFromActivity()).toBeTruthy('Closed icon button on Approver List blade is not displayed'); // ??
             expect(await showApproversBladePo.isApprovedApproverIconDisplayedFromActivity()).toBeTruthy('Approved button on Approver List blade is not displayed');
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);
@@ -973,7 +972,6 @@ describe("Case Level Up Approval Tests", () => {
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
-            expect(await showApproversBladePo.isClosedApproverIconDisplayedFromActivity()).toBeTruthy('Closed icon button on Approver List blade is not displayed'); // ???
             expect(await showApproversBladePo.isApprovedApproverIconDisplayedFromActivity()).toBeTruthy('Approved button on Approver List blade is not displayed');
             await showApproversBladePo.clickApproversTabFromActivity('Pending Approval');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(0);

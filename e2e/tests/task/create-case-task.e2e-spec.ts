@@ -1398,8 +1398,8 @@ describe('Create Case Task', () => {
                 // "caseStatus": "New",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
-                "supportGroup": "US Support 1",
-                "assignee": "qtao",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
@@ -1485,8 +1485,8 @@ describe('Create Case Task', () => {
                 "caseStatus": "New",
                 "company": "Petramco",
                 "businessUnit": "United States Support",
-                "supportGroup": "US Support 1",
-                "assignee": "qtao",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
@@ -1513,8 +1513,8 @@ describe('Create Case Task', () => {
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3",
                 "businessUnit": "United States Support",
-                "supportGroup": "US Support 1",
-                "assignee": "qtao",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let externalTaskTemplate = await apiHelper.createExternalTaskTemplate(externaltemplateData);
             automatedtemplateData = {
@@ -1528,8 +1528,8 @@ describe('Create Case Task', () => {
                 "ownerBusinessUnit": "United States Support",
                 "ownerGroup": "US Support 3",
                 "businessUnit": "United States Support",
-                "supportGroup": "US Support 1",
-                "assignee": "qtao",
+                "supportGroup": "US Support 3",
+                "assignee": "qkatawazi",
             }
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
             await apiHelper.associateCaseTemplateWithThreeTaskTemplate(newCaseTemplate.displayId, manualTaskTemplate.displayId, externalTaskTemplate.displayId, automatedTaskTemplate.displayId);

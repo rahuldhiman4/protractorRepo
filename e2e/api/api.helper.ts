@@ -1327,7 +1327,7 @@ class ApiHelper {
             }
             case "People": {
                 templateData.processInputValues["Module"] = "Person";
-                templateData.processInputValues["Source Definition Name"] = "com.bmc.arsys.rx.foundation:Person";
+                templateData.processInputValues["Source Definition Name"] = "CTM:People";
                 templateData.processInputValues["Description"] = "PersonActivity Notes Template";
                 break;
             }

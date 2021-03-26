@@ -58,7 +58,7 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
-            await articleTemplateStylePo.clickDeleteButton();
+            await articleTemplateStylePo.clickDeleteButton(randomStr);
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
@@ -76,7 +76,7 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
-            await articleTemplateStylePo.clickDeleteButton();
+            await articleTemplateStylePo.clickDeleteButton(randomStr);
             await articleTemplateStylePo.clickSaveButton()
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
             await utilityCommon.closePopUpMessage();
@@ -108,7 +108,7 @@ describe('Knowledge article template style', () => {
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
-        await articleTemplateStylePo.clickDeleteButton();
+        await articleTemplateStylePo.clickDeleteButton(randomStr);
         await articleTemplateStylePo.clickSaveButton();
         expect(await utilityCommon.isPopUpMessagePresent('Saved successfully')).toBeTruthy();
         await utilityCommon.closePopUpMessage();
@@ -183,7 +183,7 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.clickOnCenterAlignIcon();
             expect(await articleTemplateStylePo.isTextDisplayedInPreviewBox('Align Center')).toBeTruthy('Text Displayed in Align Center');
             await articleTemplateStylePo.clickSaveButton();
-            await articleTemplateStylePo.clickDeleteButton();
+            await articleTemplateStylePo.clickDeleteButton(randomStr);
             await articleTemplateStylePo.clickSaveButton();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy('');
 
@@ -240,7 +240,7 @@ describe('Knowledge article template style', () => {
             await articleTemplateStylePo.clickOnCenterAlignIcon();
             expect(await articleTemplateStylePo.isTextDisplayedInPreviewBox('Align Center')).toBeTruthy('Text Displayed in Align Center');
             await articleTemplateStylePo.clickSaveButton();
-            await articleTemplateStylePo.clickDeleteButton();
+            await articleTemplateStylePo.clickDeleteButton(randomStr);
             await articleTemplateStylePo.clickSaveButton();
             expect(await articleTemplateStylePo.isAddedStyleDeleted(randomStr)).toBeFalsy('');
 
