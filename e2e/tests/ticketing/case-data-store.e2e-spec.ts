@@ -719,6 +719,9 @@ describe('Case Data Store', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
+            await browser.sleep(2000);
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
             await viewCasetemplatePo.clickOnTaskBox(templateData.templateName);
             expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();
