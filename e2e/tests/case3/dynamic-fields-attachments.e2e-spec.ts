@@ -12,6 +12,10 @@ import caseTemplatePO from '../../pageobject/case/select-casetemplate-blade.po';
 import viewCasePO from "../../pageobject/case/view-case.po";
 import changeAssignmentPO from "../../pageobject/common/change-assignment.po";
 import accessTabPO from "../../pageobject/common/access-tab.po";
+import activityTabPo from "../../pageobject/social/activity-tab.po";
+import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
+import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
+import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 
 describe('[4055]: Dynamic Field of Type Attachment Test', () => {
     beforeAll(async () => {
@@ -178,4 +182,97 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            expect(await accessTabPO.isAccessEntityDisplayed('US Support 3', 'Case')).toBeFalsy();        
         });
     });     
+    //nipande
+    describe('[5395]: [Negative Testing]- Checking recommended and all templates based on empty, garbage and valid string in summary.', async () => {
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await navigationPO.signOut();
+            await loginPO.login('qtao');
+        });
+        it('[5395]: [Negative Testing]- Checking recommended and all templates based on empty, garbage and valid string in summary.', async function () {
+            let caseSummary = 'Case Summary ' + randomStr;
+            await navigationPO.gotoCreateCase();
+            await createCasePO.selectRequester('adam');
+            await createCasePO.setSummary(caseSummary);
+            await createCasePO.clickSaveCaseButton(); 
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePO.clickEditCaseButton();
+            await editCasePO.setCaseSummary(' ');
+            await editCasePO.clickOnSelectCaseTemplate();
+            expect(await caseTemplatePO.getCountOfTemplates()).toBe(0);
+            await caseTemplatePO.clickRecommendedCancelBtn();
+            await editCasePO.setCaseSummary('asd@asd');
+            await editCasePO.clickOnSelectCaseTemplate();
+            expect(await caseTemplatePO.getCountOfTemplates()).toBe(0);
+            await caseTemplatePO.clickRecommendedCancelBtn();
+            await editCasePO.setCaseSummary('case summary');
+            await editCasePO.clickOnSelectCaseTemplate();
+            expect(await caseTemplatePO.isApplyButtonEnabled()).toBeFalsy('Apply button is enabled');
+            await caseTemplatePO.selectFirstRecommendedTemplate();
+            expect(await caseTemplatePO.isApplyButtonEnabled()).toBeTruthy();
+            await caseTemplatePO.clickRecommendedApplyBtn();
+            await navigationPO.signOut();
+        });
+    }); 
+    //nipande
+    describe('[5402]: Checking Activities Blade to see new activity being updated for new case status', async () => {
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let templateData5402;
+        beforeAll(async () => {
+            templateData5402 = {
+                "templateName": "templateData5402 " + randomStr,
+                "templateSummary": "templateData5402 summary " + randomStr,
+                "templateStatus": "Active",
+            }
+            await navigationPO.signOut();
+            await loginPO.login('qtao');
+            await apiHelper.apiLogin('qtao');
+            await apiHelper.createCaseTemplate(templateData5402);
+        });
+        it('[5402]: Checking Activities Blade to see new activity being updated for new case status', async function () {
+            await navigationPO.gotoCreateCase();
+            await createCasePO.selectRequester('adam');
+            await createCasePO.setSummary(templateData5402.templateSummary);
+            await createCasePO.clickSaveCaseButton(); 
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePO.clickEditCaseButton();
+            expect (await editCasePO.getSelectCaseTemplate()).toBe('Select Case Template');
+            await editCasePO.clickOnSelectCaseTemplate();
+            await caseTemplatePO.clickOnAllTemplateTab();
+            await caseTemplatePO.selectCaseTemplate(templateData5402.templateName);
+            await editCasePO.clickSaveCase();
+            expect(await activityTabPo.getFirstPostContent()).toContain('Qianru Tao applied the template ' + templateData5402.templateName);
+        });
+    });
+    //nipande
+    describe('[5052]: Upload attachment from task console & verify all attachments grid', async () => {
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await navigationPO.signOut();
+            await loginPO.login('qtao'); 
+        });
+        it('[5052]: Upload attachment from task console & verify all attachments grid', async function () {
+            let caseSummary = 'Case Summary ' + randomStr;
+            let taskName = 'Task5062 ' + randomStr; 
+            await navigationPO.gotoCreateCase();
+            await createCasePO.selectRequester('adam');
+            await createCasePO.setSummary(caseSummary);
+            await createCasePO.clickSaveCaseButton(); 
+            await previewCasePo.clickGoToCaseButton();
+            expect(await viewCasePO.isAddtaskButtonDisplayed()).toBeTruthy();
+            await viewCasePO.clickAddTaskButton();
+            await manageTaskPo.clickAddAdhocTaskButton();
+            await adhoctaskTemplate.setSummary(taskName);
+            await adhoctaskTemplate.addAttachment(['../../data/ui/attachment/demo.txt']);
+            await adhoctaskTemplate.clickSaveAdhoctask();
+            await utilityCommon.closeAllBlades();
+            await viewCasePO.clickAttachmentsLink();
+            expect(await attachmentBladePo.isColumnHeaderPresent('Attachments')).toBeTruthy('Attachment column header is missing');
+            expect(await attachmentBladePo.isColumnHeaderPresent('Attached to')).toBeTruthy('Attached to column header is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attached to')).includes('Task')).toBeTruthy();
+            await attachmentBladePo.searchAndSelectCheckBox('demo');
+            await attachmentBladePo.clickDownloadButton();
+            expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+        });
+    });
 });
