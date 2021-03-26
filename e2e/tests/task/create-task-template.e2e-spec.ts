@@ -56,14 +56,15 @@ describe('Create Task Template', () => {
             expect(await taskTemplate.isTaskCategoryTier2TitlePresent('Task Category Tier 2')).toBeTruthy('Task Category Tier 2 not present');
             expect(await taskTemplate.isTaskCategoryTier3TitlePresent('Task Category Tier 3')).toBeTruthy('Task Category Tier 3 not present');
             expect(await taskTemplate.isTaskCategoryTier4TitlePresent('Task Category Tier 4')).toBeTruthy('Task Category Tier 4 not present');
-            await taskTemplate.setTemplateName("manualTaskTemplate" + randomStr);
-            await taskTemplate.setTaskSummary("manualTaskSummary" + randomStr);
+            await taskTemplate.setTemplateName(randomStr+"manualTaskTemplate");
+            await taskTemplate.setTaskSummary(randomStr+"manualTaskSummary");
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 3');
             await taskTemplate.clickOnSaveTaskTemplate();
+            await utilityCommon.closePopUpMessage();
             expect(await viewTaskTemplate.isTaskSummaryTitlePresent('Task Summary')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskTypeTitlePresent('Task Type')).toBeTruthy();
             expect(await viewTaskTemplate.isTaskCompanyTitlePresent('Task Company')).toBeTruthy();
@@ -79,6 +80,8 @@ describe('Create Task Template', () => {
             expect(await viewTaskTemplate.isAssigneeTitlePresent('Assignee')).toBeTruthy();
             expect(await viewTaskTemplate.isSupportGuidTitlePresent('Support Group')).toBeTruthy();
             expect(await viewTaskTemplate.isEditButtonPresent()).toBeTruthy();
+        });
+        afterAll(async () => {
             await viewTaskTemplate.clickBackArrowBtn();
         });
     });
@@ -90,14 +93,15 @@ describe('Create Task Template', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
         await selectTaskTemplate.clickOnManualTaskTemplateButton();
-        await taskTemplate.setTemplateName('manualTaskTemplate' + randomStr);
-        await taskTemplate.setTaskSummary("manualTaskSummary" + randomStr);
+        await taskTemplate.setTemplateName(randomStr+'manualTaskTemplate');
+        await taskTemplate.setTaskSummary(randomStr+"manualTaskSummary");
         await taskTemplate.setTaskDescription('Description in manual task');
         await taskTemplate.selectCompanyByName('Petramco');
         await taskTemplate.clickOnSaveTaskTemplate();
         await viewTaskTemplate.clickOnEditLink();
         await editTaskTemplate.selectTaskCompany('Global');
         await editTaskTemplate.clickOnSaveButton();
+        await utilityCommon.closePopUpMessage();
         expect(await viewTaskTemplate.getTaskCompanyNameValue()).toBe('- Global -');
         await viewTaskTemplate.clickOnEditLink();
         await editTaskTemplate.selectTaskCompany('Petramco');
@@ -115,8 +119,8 @@ describe('Create Task Template', () => {
             try {
                 let randomStr = Math.floor(Math.random() * 1000000);
                 let templateData1 = {
-                    "templateName": 'manualTaskTemplate' + randomStr,
-                    "templateSummary": 'manualTaskSummary' + randomStr,
+                    "templateName": randomStr+'manualTaskTemplate',
+                    "templateSummary": randomStr+'manualTaskSummary',
                     "templateStatus": "Active",
                     "taskCompany": 'Petramco',
                     "ownerCompany": "Petramco",
@@ -130,7 +134,7 @@ describe('Create Task Template', () => {
                 await loginPage.login('qliu');
                 await navigationPage.gotoSettingsPage();
                 await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
-                await selectTaskTemplate.searchAndOpenTaskTemplate('manualTaskTemplate' + randomStr);
+                await selectTaskTemplate.searchAndOpenTaskTemplate(randomStr+'manualTaskTemplate');
                 await editTaskTemplate.clickOnEditMetadataLink();
                 expect(await editTaskTemplate.isTemplateStatusDisabled()).toBeTruthy("Template status is enabled");
                 await editTaskTemplate.clickOnCancelMetadataButton();
@@ -182,6 +186,9 @@ describe('Create Task Template', () => {
             expect(await viewTaskTemplate.getCategoryTier1Value()).toBe("Employee Relations");
             expect(await viewTaskTemplate.getCategoryTier2Value()).toBe("Compensation");
             await viewTaskTemplate.clickBackArrowBtn();
+        });
+        afterAll(async () => {
+            await editTaskTemplate.clickOnCancelButton();
         });
     });
 

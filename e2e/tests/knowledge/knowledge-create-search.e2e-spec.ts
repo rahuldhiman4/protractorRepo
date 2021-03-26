@@ -435,7 +435,7 @@ describe('Knowledge Create Search', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('elizabeth');
             let caseTemplateData = {
-                "templateName": 'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority' + randomStr,
+                "templateName": randomStr+'caseTemplateForSelfApprovalWithoutProcessWithCriticalPriority',
                 "templateSummary": 'Automated One must Approval Case',
                 "categoryTier1": 'Applications',
                 "casePriority": "Critical",
@@ -463,9 +463,9 @@ describe('Knowledge Create Search', () => {
             }
             let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplateData);
             let caseTemplateDisplayId: string = caseTemplateResponse.displayId;
-            articleData.title = "bonus" + "_" + randomStr;
+            articleData.title = randomStr + "_" +"bonus";
             knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(articleData);
-            articleData.title = "compensation" + "_" + randomStr;
+            articleData.title = randomStr + "_" +"compensation";
             knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(articleData);
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
@@ -473,7 +473,7 @@ describe('Knowledge Create Search', () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with Published status not updated.");
             caseData = {
                 "Requester": "qdu",
-                "Summary": "bonus" + "_" + randomStr,
+                "Summary": randomStr + "_" +"bonus",
                 "Case Template ID": caseTemplateDisplayId
             }
             createCaseResponse = await apiHelper.createCase(caseData);
@@ -485,12 +485,12 @@ describe('Knowledge Create Search', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(createCaseResponse.displayId);
             await viewCasePage.clickOnTab('Resources');
-            await browser.sleep(5000); // hardwait to populate resource tab data
+            await browser.sleep(7000); // hardwait to populate resource tab data
             expect(await resources.getAdvancedSearchResultForParticularSection(caseData.Summary)).toEqual(caseData.Summary);
             await resources.pinRecommendedKnowledgeArticles(1);
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await viewCasePage.clickEditCaseButton();
-            await editCasePo.setCaseSummary('Updated Summary' + randomStr);
+            await editCasePo.setCaseSummary(randomStr+'Updated Summary');
             await editCasePo.clickSaveCase();
             expect(await resources.isFirstPinnedArticleDisplayed()).toBeTruthy();
             await navigationPage.gotoCaseConsole();
@@ -506,12 +506,12 @@ describe('Knowledge Create Search', () => {
         });
         it('[6286,6285,6309,5939]:[Knowledge Article Search] Knowledge Articles are searched based on Case Summary and  in the Resources tab', async () => {
             await viewCasePage.clickEditCaseButton();
-            await editCasePo.setCaseSummary("compensation" + "_" + randomStr);
+            await editCasePo.setCaseSummary(randomStr + "_" + "compensation");
             await editCasePo.clickSaveCase();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.waitUntilPopUpDisappear();
             await viewCasePage.clickOnTab('Resources');
-            expect(await resources.getAdvancedSearchResultForParticularSection("compensation" + "_" + randomStr)).toEqual("compensation" + "_" + randomStr);
+            expect(await resources.getAdvancedSearchResultForParticularSection(randomStr + "_" + "compensation")).toEqual(randomStr + "_" + "compensation");
             await resources.clickOnAdvancedSearchOptions();
             await resources.enterAdvancedSearchText("Knowledge Articles");
             await resources.clickOnAdvancedSearchSettingsIconToOpen();
@@ -522,7 +522,7 @@ describe('Knowledge Create Search', () => {
             await resources.pinRecommendedKnowledgeArticles(2);
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(2);
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink("compensation" + "_" + randomStr);
+            await utilityGrid.searchAndOpenHyperlink(randomStr + "_" + "compensation");
             await viewCasePage.clickOnTab('Resources');
             expect(await resources.getCountOfPinKnowledgeArticles()).toBe(4);
         });

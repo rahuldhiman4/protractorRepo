@@ -97,7 +97,7 @@ class CreateTaskTemplatePage {
 
     async selectTaskCategoryTier2_v(category2: string): Promise<void> {
         await $('[rx-view-component-id="f0dcc3ef-9842-4e3c-bd32-7278885496f3"] .dropdown-toggle').click();
-        await browser.sleep(2000);
+        await browser.sleep(3000);
         await (await element(by.cssContainingText('[rx-view-component-id="f0dcc3ef-9842-4e3c-bd32-7278885496f3"] button.dropdown-item', category2))).click();
     }
 
@@ -107,7 +107,7 @@ class CreateTaskTemplatePage {
 
     async selectTaskCategoryTier3_v(category2: string): Promise<void> {
         await $('[rx-view-component-id="f3673351-44ed-476a-a53c-0e0f13475981"] .dropdown-toggle').click();
-        await browser.sleep(2000);
+        await browser.sleep(3000);
         await (await element(by.cssContainingText('[rx-view-component-id="f3673351-44ed-476a-a53c-0e0f13475981"] button.dropdown-item', category2))).click();
     }
 
@@ -117,7 +117,7 @@ class CreateTaskTemplatePage {
 
     async selectTaskCategoryTier4_v(category2: string): Promise<void> {
         await $('[rx-view-component-id="869c4d62-7526-4b1b-87a2-eb5633ed43be"] .dropdown-toggle').click();
-        await browser.sleep(2000);
+        await browser.sleep(3000);
         await (await element(by.cssContainingText('[rx-view-component-id="869c4d62-7526-4b1b-87a2-eb5633ed43be"] button.dropdown-item', category2))).click();
     }
 
