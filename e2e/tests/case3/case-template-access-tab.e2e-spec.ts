@@ -26,6 +26,9 @@ import casePreviewPo from '../../pageobject/case/case-preview.po';
 import createCasePo from '../../pageobject/case/create-case.po';
 import quickCasePo from '../../pageobject/case/quick-case.po';
 import assignmentsConfigConsolePo from '../../pageobject/settings/case-management/assignments-config-console.po';
+import consoleNotificationTemplatePo from '../../pageobject/settings/notification-config/console-notification-template.po';
+import utilityGrid from '../../utils/utility.grid';
+import editNotificationTemplatePo from '../../pageobject/settings/notification-config/edit-notification-template.po';
 
 describe('Case Edit Backlog Test', () => {
     beforeAll(async () => {
@@ -211,10 +214,11 @@ describe('Case Edit Backlog Test', () => {
         });
     });
 
-    describe('[4326,4374,4391]: closed case if reoped will follow new case status configuration cycle ', async() => {
+    //ashastra
+    describe('[4326,4374,4391]: closed case if reoped will follow new case status configuration cycle ', async () => {
         let caseTemplate, caseId;
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async() => {
+        beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('jmilano'); // should be case agent
             caseTemplate = {
@@ -251,7 +255,7 @@ describe('Case Edit Backlog Test', () => {
             caseId = newCase1.displayId;
         })
 
-        it('[4326,4374,4391]: change case status to closed using case agent', async() => {
+        it('[4326,4374,4391]: change case status to closed using case agent', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             expect(await viewCasePo.isCaseReopenLinkPresent()).toBeFalsy();
@@ -264,7 +268,7 @@ describe('Case Edit Backlog Test', () => {
             expect(await viewCasePo.isCaseReopenLinkPresent()).toBeTruthy();
         })
 
-        it('[4326,4374,4391]:add custom status in case using case BA', async() => {
+        it('[4326,4374,4391]:add custom status in case using case BA', async () => {
             await navigationPage.signOut();
             await loginPage.login('jmilano'); // case BA
             await navigationPage.gotoSettingsPage();
@@ -274,7 +278,7 @@ describe('Case Edit Backlog Test', () => {
             await statusConfigPo.addCustomStatus("In Progress", "Resolved", "customStatus");
         })
 
-        it('[4326,4374,4391]:Reopen the closed case and follows the case status lifecycle', async() => {
+        it('[4326,4374,4391]:Reopen the closed case and follows the case status lifecycle', async () => {
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickOnReopenCaseLink();
@@ -292,7 +296,7 @@ describe('Case Edit Backlog Test', () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('Closed');
         })
 
-        it('[4326,4374,4391]:delete added customStatus from case', async() => {
+        it('[4326,4374,4391]:delete added customStatus from case', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfigPo.setCompanyDropdown('Phylum', 'case');
@@ -304,23 +308,24 @@ describe('Case Edit Backlog Test', () => {
         })
     });
 
-    describe('[3992]: case is remained in new status, if after case asignee is empty', async() => {
+    //ashastra
+    describe('[3992]: case is remained in new status, if after case asignee is empty', async () => {
         let caseTemplate1: ICaseTemplate, caseTemplate2: ICaseTemplate, flowset1, flowset2;
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async() => {
+        beforeAll(async () => {
 
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
 
             flowset1 = {
-                "flowsetName": "Flowset1"+randomStr,
+                "flowsetName": "Flowset1" + randomStr,
                 "flowsetStatus": 10,
                 "company": "Petramco",
                 "description": "Test Flowset name description",
                 "lineOfBusiness": "Human Resource"
             }
             flowset2 = {
-                "flowsetName": "Flowset2"+randomStr,
+                "flowsetName": "Flowset2" + randomStr,
                 "flowsetStatus": 10,
                 "company": "Petramco",
                 "description": "Test Flowset name description",
@@ -366,7 +371,7 @@ describe('Case Edit Backlog Test', () => {
             await apiHelper.createCaseTemplate(caseTemplate2);
         })
 
-        it('[3992]: add custom status for flowset1 in case', async() => {
+        it('[3992]: add custom status for flowset1 in case', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentsConfigConsolePo.clearFilter();
@@ -380,7 +385,7 @@ describe('Case Edit Backlog Test', () => {
             await statusConfigPo.addCustomStatus("New", "Assigned", "Ready");
         })
 
-        it('[3992]: modify case template ready status for flowset1 and new status for flowset2', async() => {
+        it('[3992]: modify case template ready status for flowset1 and new status for flowset2', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplate1.templateName);
@@ -405,7 +410,7 @@ describe('Case Edit Backlog Test', () => {
             await viewCasetemplatePo.clickBackArrowBtn();
         })
 
-        it('[3992]: login with case agent and create case from create case and quick case without assignee and without template', async() => {
+        it('[3992]: login with case agent and create case from create case and quick case without assignee and without template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoCreateCase();
@@ -433,7 +438,7 @@ describe('Case Edit Backlog Test', () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('New');
         })
 
-        it('[3992]: create case using template1 with flowset1 and update some fields and check case stautus', async() => {
+        it('[3992]: create case using template1 with flowset1 and update some fields and check case stautus', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('apavlik');
             await createCasePo.setSummary('Summary for case template with flowset1');
@@ -450,7 +455,7 @@ describe('Case Edit Backlog Test', () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('Ready');
         })
 
-        it('[3992]: create case using template2 with flowset2 and update some fields and check case stautus', async() => {
+        it('[3992]: create case using template2 with flowset2 and update some fields and check case stautus', async () => {
             await navigationPage.gotoCreateCase();
             await createCasePo.selectRequester('apavlik');
             await createCasePo.setSummary('Summary for case template with flowset2');
@@ -467,4 +472,30 @@ describe('Case Edit Backlog Test', () => {
             expect(await viewCasePo.getTextOfStatus()).toBe('New');
         })
     });
+
+    //ashastra
+    describe('[4407]: case site is editable on create/edit case view', async () => {
+        let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        beforeAll(async () => {
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
+        })
+
+        it('[4407]: case site is editable on create/edit case view', async () => {
+            await navigationPage.gotoCreateCase();
+            await createCasePo.selectRequester('apavlik');
+            await createCasePo.setSummary('Test for case site');
+            await createCasePo.selectSite('Austin');
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            expect(await viewCasePo.getCaseSite()).toBe('Austin');
+            await viewCasePo.clickEditCaseButton();
+            await editCasePo.updateCaseSite('Aichi');
+            await editCasePo.updateSiteChangeReason('site change for test');
+            await editCasePo.clickSaveCase();
+            expect(await viewCasePo.getCaseSite()).toBe('Aichi');
+        })
+    });
+
+
 });
