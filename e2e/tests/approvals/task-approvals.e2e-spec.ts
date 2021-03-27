@@ -16,7 +16,7 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
 let userData1 = undefined;
-xdescribe("Task Approval Tests", () => {
+describe("Task Approval Tests", () => {
     const taskModule = 'Task';
 
     beforeAll(async () => {
@@ -39,7 +39,7 @@ xdescribe("Task Approval Tests", () => {
     afterAll(async () => {
         await utilityCommon.closeAllBlades();
         await navigationPage.signOut();
-    });
+    }); 
 
     describe('[3590]:[Task Approval] - Case General Approval - All Must Sign', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -56,7 +56,7 @@ xdescribe("Task Approval Tests", () => {
                 "company": "Petramco",
                 "businessUnit": "United States Support",
                 "supportGroup": "US Support 3",
-                "assignee": "qfeng",
+                "assignee": "qkatawazi",
                 "ownerBU": "United States Support",
                 "ownerGroup": "US Support 3"
             }
@@ -84,7 +84,7 @@ xdescribe("Task Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "approver": "U:qliu;U:qkatawazi",
+                "approver": "qliu;qkatawazi",
                 "isLevelUp": false,
                 "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,
@@ -502,7 +502,7 @@ xdescribe("Task Approval Tests", () => {
             // Create Approval Flow through API
             let approvalFlows = {
                 "flowName": 'Approval Flow1' + randomStr,
-                "approver": "U:qliu;U:qkatawazi",
+                "approver": "qliu;qkatawazi",
                 "isLevelUp": false,
                 "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,

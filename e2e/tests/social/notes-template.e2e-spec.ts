@@ -35,6 +35,9 @@ import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import selectCasetemplateBladePo from '../../pageobject/case/select-casetemplate-blade.po';
+import navigationPo from '../../pageobject/common/navigation.po';
+import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
+import viewCasePo from '../../pageobject/case/view-case.po';
 
 let tableRowFieldIndex = 0;
 let tableColumnFieldIndex = 1;
@@ -1254,6 +1257,7 @@ describe('Notes template', () => {
             templateGuid = await consoleNotesTemplatePo.getGuidValue();
             await utilityGrid.clearFilter();
             await utilityGrid.clearSearchBox();
+            await browser.sleep(2000);//wait untile records load on console
             expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', 'text');
@@ -2078,22 +2082,17 @@ describe('Notes template', () => {
     });
     
     describe('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
-        let templateName: string, caseData, newCase, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        beforeAll(async () => {
-            await apiHelper.apiLogin('qkatawazi');
-            caseData = {
-                "Requester": "qtao",
-                "Summary": "Test case for inProgress task",
-                "Assigned Company": "Petramco",
-                "Business Unit": "United States Support",
-                "Support Group": "US Support 3",
-                "Assignee": "qfeng"
-            };
-            newCase = await apiHelper.createCase(caseData);
+        let templateName: string, caseData, caseID, randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
+            await navigationPo.gotoCreateCase();
+            await createCasePo.selectRequester('qtao');
+            await createCasePo.setSummary('Test case for inProgress task');
+            await changeAssignmentPo.setAssignee("US Support 3", "qfeng");
+            await createCasePo.clickSaveCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
+            caseID = await viewCasePo.getCaseID();
         });
         it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
-            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
-
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
@@ -2257,7 +2256,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
+            await utilityGrid.searchAndOpenHyperlink(caseID);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
             await personProfilePo.clickOnTab('Related Cases');
@@ -2288,7 +2287,7 @@ describe('Notes template', () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
             await navigationPage.gotoCaseConsole();
-            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
+            await utilityGrid.searchAndOpenHyperlink(caseID);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
             await activityTabPo.clickOnRefreshButton();

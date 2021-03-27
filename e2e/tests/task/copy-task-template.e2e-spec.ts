@@ -356,13 +356,13 @@ describe('Copy Task Template', () => {
         });
         it('[4569]: Create Copy of an automated Task and check execution', async () => {
             await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await viewCasePage.clickAddTaskButton();
             await manageTask.addTaskFromTaskTemplate(templateData.templateName);
             let taskId = await manageTask.getTaskDisplayId();
             await manageTask.clickCloseButton();
             await navigationPage.gotoCaseConsole();
-            await caseConsolePo.searchAndOpenCase(newCase.displayId);
+            await utilityGrid.searchAndOpenHyperlink(newCase.displayId);
             await updateStatusBladePo.changeStatus("In Progress");
             await updateStatusBladePo.clickSaveStatus('In Progress'); // when case status is changed its not automatically reflected on case view
             await utilityCommon.closePopUpMessage();
@@ -520,21 +520,21 @@ describe('Copy Task Template', () => {
 
     describe('[4719,4564]: Dynamic Field get copied upon creating copy of Task Template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let dynamicFieldName1 = 'DRDMV14220FieldName1' + randomStr;
-        let dynamicFieldName2 = 'DRDMV14220FieldName2' + randomStr;
-        let dynamicFieldDescription1 = 'DRDMV13569FieldDescription1' + randomStr;
-        let dynamicFieldDescription2 = 'DRDMV13569FieldDescription2' + randomStr;
-        let updatedTaskTemplate = 'UpdatedTaskDRDMV13569' + randomStr;
-        let updatedTaskSummary = 'UpdatedSummaryDRDMV13569' + randomStr;
-        let updateProcessName = 'UpdatedProcessDRDMV13569' + randomStr;
+        let dynamicFieldName1 = randomStr+'DRDMV14220FieldName1';
+        let dynamicFieldName2 = randomStr+'DRDMV14220FieldName2';
+        let dynamicFieldDescription1 = randomStr+'DRDMV13569FieldDescription1';
+        let dynamicFieldDescription2 = randomStr+'DRDMV13569FieldDescription2';
+        let updatedTaskTemplate = randomStr+'UpdatedTaskDRDMV13569';
+        let updatedTaskSummary = randomStr+'UpdatedSummaryDRDMV13569';
+        let updateProcessName = randomStr+'UpdatedProcessDRDMV13569';
         let templateData;
         beforeAll(async () => {
             templateData = {
-                "templateName": 'DRDMV13569AutomationTask' + randomStr,
-                "templateSummary": `AutomatedTaskTemplateActive ${randomStr}`,
+                "templateName": randomStr+'DRDMV13569AutomationTask',
+                "templateSummary": `${randomStr}AutomatedTaskTemplateActive`,
                 "templateStatus": "Draft",
                 "processBundle": "com.bmc.dsm.case-lib",
-                "processName": `Case Process ${randomStr}`,
+                "processName": `${randomStr}Case Process`,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",

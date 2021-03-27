@@ -33,7 +33,7 @@ describe('Copy Case Template', () => {
     beforeAll(async () => {
         await browser.get(BWF_BASE_URL);
         await loginPage.login("qkatawazi");
-       // await createNewUsers();
+        // await createNewUsers();
     });
 
     afterAll(async () => {
@@ -93,14 +93,12 @@ describe('Copy Case Template', () => {
 
     //ptidke-done
     describe('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
-        let casetemplateNew, caseTemplateName: string = Math.floor(Math.random() * 100000) + "Original";
-        let ctemp;
+        let casetemplateNew, caseTemplateName: string = caseTemplateAllFields.templateName + Math.floor(Math.random() * 100000);
         let copyCaseTemplateName: string = "copycasetemplate" + Math.floor(Math.random() * 10000000);
         it('[4735,4749]: Create a Copy of Case template where Company is copied properly', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
-            ctemp = cloneDeep(caseTemplateAllFields);
-            ctemp.templateName = caseTemplateName;
+            caseTemplateAllFields.templateName = caseTemplateName;
             await createCaseTemplate.createCaseTemplateWithAllFields(caseTemplateAllFields);
             casetemplateNew = await editCaseTemplate.getCaseTemplateID();
         });
@@ -110,31 +108,31 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
             //verify all values copied from template 1 to template 2   
-            expect(await copyCaseTemplate.isValueOfCasePriorityPresent(ctemp.casePriority)).toBeTruthy();
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(ctemp.categoryTier1);
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(ctemp.categoryTier2);
-            expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(ctemp.categoryTier3);
-            expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(ctemp.allowCaseReopen);
+            expect(await copyCaseTemplate.isValueOfCasePriorityPresent(caseTemplateAllFields.casePriority)).toBeTruthy();
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier1()).toBe(caseTemplateAllFields.categoryTier1);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier2()).toBe(caseTemplateAllFields.categoryTier2);
+            expect(await copyCaseTemplate.getValueofCaseCategoryTier3()).toBe(caseTemplateAllFields.categoryTier3);
+            expect(await copyCaseTemplate.getValueOfAllowReopen()).toBe(caseTemplateAllFields.allowCaseReopen);
             expect(await copyCaseTemplate.getValueOfFlowset()).toBe(caseTemplateName);
-            expect(await copyCaseTemplate.getValueOfCaseCompany()).toContain(ctemp.company);
-            expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(ctemp.assignmentMethod);
-            expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(ctemp.taskFailureConfiguration);
+            expect(await copyCaseTemplate.getValueOfCaseCompany()).toContain(caseTemplateAllFields.company);
+            expect(await copyCaseTemplate.getValueOfAssignementMethod()).toBe(caseTemplateAllFields.assignmentMethod);
+            expect(await copyCaseTemplate.getValueOfTaskFailureConfiguration()).toBe(caseTemplateAllFields.taskFailureConfiguration);
             expect(await copyCaseTemplate.getValueOfTemplateStatus()).toBe('Draft');
-            expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(ctemp.caseStatus);
-            expect(await copyCaseTemplate.getValueOfAssignee()).toBe(ctemp.assignee);
-            expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(ctemp.supportGroup);
-            expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(ctemp.ownerCompany);
-            expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain(ctemp.supportGroup);
+            expect(await copyCaseTemplate.getValueOfcaseStatus()).toBe(caseTemplateAllFields.caseStatus);
+            expect(await copyCaseTemplate.getValueOfAssignee()).toBe(caseTemplateAllFields.assignee);
+            expect(await copyCaseTemplate.getValueOfSupportGroup()).toBe(caseTemplateAllFields.supportGroup);
+            expect(await copyCaseTemplate.getValueOfOwnerCompany()).toBe(caseTemplateAllFields.ownerCompany);
+            expect(await copyCaseTemplate.getValueOfOwnerGroup()).toContain(caseTemplateAllFields.supportGroup);
             await copyCaseTemplate.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(copyCaseTemplateName);
-            expect(await copyCaseTemplate.getValueOfStatusReason()).toBe(ctemp.statusReason);
-            expect(await copyCaseTemplate.getValueOfCaseDescription()).toContain(ctemp.templateDescription);
-            expect(await copyCaseTemplate.getValueOfCaseSummary()).toBe(ctemp.templateSummary);
+            expect(await copyCaseTemplate.getValueOfStatusReason()).toBe(caseTemplateAllFields.statusReason);
+            expect(await copyCaseTemplate.getValueOfCaseDescription()).toContain(caseTemplateAllFields.templateDescription);
+            expect(await copyCaseTemplate.getValueOfCaseSummary()).toBe(caseTemplateAllFields.templateSummary);
             let copiedCasetemplateFromNew = await editCaseTemplate.getCaseTemplateID();
             expect(copiedCasetemplateFromNew == casetemplateNew).toBeFalsy();
-            expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(ctemp.resolutionCode);
-            expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(ctemp.resolutionDescription);
+            expect(await copyCaseTemplate.getValueOfResolutionCode()).toBe(caseTemplateAllFields.resolutionCode);
+            expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
@@ -247,7 +245,7 @@ describe('Copy Case Template', () => {
         await copyCaseTemplate.clickCancelCaseTemplate();
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
-//done
+    //done
     it('[4703]: Create a Copy of Case template where Support Group belongs to Business Unit ', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName1 = 'caseTemplateNameCase3' + randomStr;
@@ -281,14 +279,14 @@ describe('Copy Case Template', () => {
         await copyCaseTemplate.clickCancelCaseTemplate();
         await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
     });
-//Defect - DRDMV-25229 -check with tushar Task Click issue
+    //Defect - DRDMV-25229 -check with tushar Task Click issue-check
     describe('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let taskTemplateDataSet, casetemplatePetramco, newCaseTemplate1, manualTaskTemplate;
         beforeAll(async () => {
             taskTemplateDataSet = {
-                "templateName": "taskTemplateName4717" + randomStr,
-                "templateSummary": "taskTemplateSummary4717" + randomStr,
+                "templateName": randomStr + "taskTemplateName4717",
+                "templateSummary": randomStr + "taskTemplateSummary4717",
                 "templateStatus": "Active",
                 "taskCompany": "Petramco",
                 "buisnessUnit": "United States Support",
@@ -300,8 +298,8 @@ describe('Copy Case Template', () => {
             }
 
             casetemplatePetramco = {
-                "templateName": "caseTemplateName4717" + randomStr,
-                "templateSummary": "caseTemplateSummary4717" + randomStr,
+                "templateName": randomStr + "caseTemplateName4717",
+                "templateSummary": randomStr + "caseTemplateSummary4717",
                 "templateStatus": "Active",
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
@@ -347,15 +345,17 @@ describe('Copy Case Template', () => {
             await viewCasetemplatePo.clickOnTaskBox(taskTemplateDataSet.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(taskTemplateDataSet.templateName);
             await utilityCommon.closeAllBlades();
+        });
+        afterAll(async () => {
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
-//done
+    //done
     describe('[4730]: Permission Check to verify who can edit the Case/Task template', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let copyCaseTemplateName: string = "copycasetemplate" + randomStr;
-        let copytaskTemplateName: string = "copyTasktemplate" + randomStr;
-        let caseTemplateName = "caseTemplateName" + randomStr;
+        let copyCaseTemplateName: string = randomStr + "copycasetemplate";
+        let copytaskTemplateName: string = randomStr + "copyTasktemplate";
+        let caseTemplateName = randomStr + "caseTemplateName";
         it('[4730]: Permission Check to verify who can edit the Case Template', async () => {
             await navigationPage.signOut();
             await loginPage.login('qheroux');
@@ -364,12 +364,14 @@ describe('Copy Case Template', () => {
             await consoleCasetemplatePo.clickOnCreateCaseTemplateButton();
             await createCaseTemplate.setTemplateName(caseTemplateName);
             await createCaseTemplate.setCompanyName("Psilon");
-            await createCaseTemplate.setCaseSummary("caseTemplateSummary1" + randomStr);
+            await createCaseTemplate.setCaseSummary(randomStr + "caseTemplateSummary1");
             await createCaseTemplate.setOwnerCompanyValue('Psilon');
             await createCaseTemplate.setOwnerOrgDropdownValue("Psilon Support Org2");
             await createCaseTemplate.setOwnerGroupDropdownValue("Psilon Support Group2");
             await createCaseTemplate.clickSaveCaseTemplate();
             await viewCasetemplatePo.clickBackArrowBtn();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndselectCaseTemplate(caseTemplateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCaseTemplate.setTemplateName(copyCaseTemplateName);
@@ -391,6 +393,9 @@ describe('Copy Case Template', () => {
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickOnEditCaseTemplateButton();
             expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is non editable");
+            await editCaseTemplate.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
@@ -400,20 +405,24 @@ describe('Copy Case Template', () => {
             expect(await editCaseTemplate.isCaseSummaryReadOnly()).toBeFalsy("Copy Case Template is editable");
         });
         it('[4730]: Permission Check to verify who can edit the Task Template', async () => {
+            await editCaseTemplate.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await selectTaskTemplate.clickOnManualTaskTemplateButton();
-            await taskTemplatePo.setTemplateName('manualTaskTemplate' + randomStr);
-            await taskTemplatePo.setTaskSummary('manualTaskSummary' + randomStr);
+            await taskTemplatePo.setTemplateName(randomStr + 'manualTaskTemplate');
+            await taskTemplatePo.setTaskSummary(randomStr + 'manualTaskSummary');
             await taskTemplatePo.selectCompanyByName('Psilon');
             await taskTemplatePo.selectOwnerCompany("Psilon");
             await taskTemplatePo.selectBuisnessUnit("Psilon Support Org2");
             await taskTemplatePo.selectOwnerGroup("Psilon Support Group2");
             await taskTemplatePo.clickOnSaveTaskTemplate();
             await viewTaskTemplatePo.clickBackArrowBtn();
-            await selectTaskTemplate.searchAndSelectTaskTemplate('manualTaskTemplate' + randomStr);
+            await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
+            await selectTaskTemplate.searchAndSelectTaskTemplate(randomStr + 'manualTaskTemplate');
             await selectTaskTemplate.clickOnCopyTaskTemplateButton();
             await copyTasktemplatePo.setTemplateName(copytaskTemplateName);
             await copyTasktemplatePo.selectOwnerCompany('Psilon');
@@ -423,6 +432,7 @@ describe('Copy Case Template', () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[4730]: Permission Check to verify who can edit the Task Template', async () => {
+            await viewTaskTemplatePo.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login("rscoyfol");
             await navigationPage.gotoSettingsPage();
@@ -433,22 +443,31 @@ describe('Copy Case Template', () => {
             await utilityCommon.closePopUpMessage();
             await viewTaskTemplatePo.clickOnEditLink();
             expect(await editTasktemplatePo.isCaseSummaryReadOnly()).toBeTruthy("Copy Case Template is editable");
+            await editTasktemplatePo.clickOnCancelButton();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
+            await viewTaskTemplatePo.clickBackArrowBtn();
             await navigationPage.signOut();
             await loginPage.login('qheroux');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(copytaskTemplateName);
             await viewTaskTemplatePo.clickOnEditLink();
-            await editTasktemplatePo.setSummary("UpdatedTaskSummary");
+            await editTasktemplatePo.setSummary(randomStr + "UpdatedTaskSummary");
             await editTasktemplatePo.clickOnSaveButton();
-            expect(await viewTaskTemplatePo.getSummaryValue()).toBe('UpdatedTaskSummary');
+            await utilityCommon.closePopUpMessage();
+            expect(await viewTaskTemplatePo.getSummaryValue()).toBe(randomStr + "UpdatedTaskSummary");
         });
         afterAll(async () => {
+            try {
+                await viewTaskTemplatePo.clickBackArrowBtn();
+            } catch (error) {
+                console.log('Back button Not Found');
+            }
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
     });
-//passing on CI/CD stack
+    //passing on CI/CD stack
     describe('[4718]: Dynamic Field get copied upon creating copy of Case Template', () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let updatedCaseTemplate = 'UpdatedCaseDRDMV13570' + randomStr;
@@ -521,7 +540,7 @@ describe('Copy Case Template', () => {
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });
-//check
+    //check
     describe('[4627,4628]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, newCaseTemplate, templateData, externaltemplateData, automatedtemplateData, copyCaseTemplateName: string = "copycaseTemplateName" + randomStr;
@@ -618,9 +637,9 @@ describe('Copy Case Template', () => {
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
             expect(await previewTaskTemplateCasesPo.getAssigneeText()).toBe('Glit Deruno');
             await previewTaskTemplateCasesPo.clickOnBackButton();
-            await viewCasetemplatePo.clickBackArrowBtn();
         });
         it('[4627,4628]: Copy a Case Template for Company not same as Original Template, Where all Tasks belongs Same Company', async () => {
+            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchRecord(casetemplatePetramco.templateName);
@@ -639,6 +658,7 @@ describe('Copy Case Template', () => {
             await utilityCommon.closePopUpMessage();
             await copyCaseTemplate.clickCancelCaseTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.removeColumnFromGrid(column1);
         });
         afterAll(async () => {
@@ -646,7 +666,7 @@ describe('Copy Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-//issue
+    //issue
     describe('[4625,4623]: Copy a Case Template for Company not same as Original Template, Where Same Task is present for different Company', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplatePetramco, manualTemplateData, automatedTemplateData, externalTemplateData;
@@ -755,7 +775,7 @@ describe('Copy Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-//issue
+    //issue
     describe('[4626]: Copy a Case Template for Company not same as Original Template, Where Tasks are Global', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let casetemplatePetramco, templateData, externaltemplateData, automatedtemplateData;
@@ -863,7 +883,7 @@ describe('Copy Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-//issue
+    //issue
     describe('[4619]: Execution of Automated task for Copy Case Template when Company is changed while creating Copy of Case Template', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let copyCaseTemplateName: string = "copycasetemplate_4619" + randomStr;
@@ -921,6 +941,8 @@ describe('Copy Case Template', () => {
             expect(await previewTaskTemplateCasesPo.getTaskSummary()).toBe(automatedtemplateData.templateSummary);
             expect(await previewTaskTemplateCasesPo.getTaskCompany()).toBe('Psilon');
             await previewTaskTemplateCasesPo.clickOnBackButton();
+        });
+        it('[4619]: Execution of Automated task for Copy Case Template when Company is changed while creating Copy of Case Template', async () => {
             await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
@@ -932,7 +954,7 @@ describe('Copy Case Template', () => {
             await loginPage.login('qkatawazi');
         });
     });
-//done
+    //done
     describe('[4425]: Verify For Copy template, Category Tier 4 and Label Data also get copied', () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateData, taskTemplateData, label: string = undefined;

@@ -1061,6 +1061,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let expectedVersion = "Version " + "1" + " - " + actualDate;
             expect(actualVersion).toBe(expectedVersion);
             await editKnowledgePage.setKnowledgeStatus('Draft');
+            await utilityCommon.closePopUpMessage();
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');
