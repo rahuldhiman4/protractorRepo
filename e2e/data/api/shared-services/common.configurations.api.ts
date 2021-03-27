@@ -55,7 +55,8 @@ export const COMMON_CONFIG_PAYLOAD = {
         "IDENTITY_VALIDATION Value": "2",
         "Integer Value": "0",
         "NEXT_REVIEW_PERIOD Value": "2629743",
-        "ID": null
+        "ID": null,
+        "Description": "Enable the automatic resolution of cases after the completion of the last task in the case"
     }
 };
 
