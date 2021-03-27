@@ -5,7 +5,6 @@ import { DropDownType } from '../../utils/constants';
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        dynamicField: 'bwf-dynamic-field-group-selector button.d-icon-left-plus',
         fieldName: '.textfield__wrapper .textfield-padding-transition',
         fieldDescription: '.textfield-padding-transition',
         saveButton: 'button[btn-type="primary"]',
@@ -35,7 +34,7 @@ class DynamicField {
     }
 
     async clickOnDynamicField(): Promise<void> {
-        await $(this.selectors.dynamicField).click();
+        await element(by.buttonText('Dynamic Field')).click();
     }
 
     async clickOnDeleteField(): Promise<void> {
@@ -43,15 +42,15 @@ class DynamicField {
     }
 
     async isDynamicFieldDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.dynamicField).first().isDisplayed();
+        return await element(by.buttonText('Dynamic Field')).isDisplayed();
     }
 
     async clickOnAddDynamicGroup(): Promise<void> {
-        await $$(this.selectors.dynamicField).last().click();
+        await element(by.buttonText('Dynamic Group')).click();
     }
 
     async isAddDynamicGroupDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.dynamicField).last().isDisplayed();
+        return await element(by.buttonText('Dynamic Group')).isDisplayed();
     }
 
     async clickOnDownArrow(): Promise<void> {
