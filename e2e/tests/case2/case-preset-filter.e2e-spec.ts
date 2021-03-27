@@ -120,7 +120,8 @@ describe('Case Console Preset Filter', () => {
             for (let i: number = 0; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
-
+        });
+        it('[3687]: Validate the My Open Cases filter after applying and removing the filter', async () => {
             for (let i: number = 5; i < 11; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
@@ -316,7 +317,8 @@ describe('Case Console Preset Filter', () => {
             for (let i: number = 7; i < 12; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
-
+        });
+        it('[3679]: Validate the High Priority Open Cases filter after applying and removing the filter', async () => {
             for (let i: number = 0; i < 7; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
@@ -386,12 +388,14 @@ describe('Case Console Preset Filter', () => {
             for (let i: number = 7; i < 12; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
-
-            for (let i: number = 0; i < 7; i++) {
+            for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
         });
         it('[3677]: Validate the Critical Priority Open Cases filter after applying and removing the filter', async () => {
+            for (let i: number = 4; i < 7; i++) {
+                expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
+            }
             await utilityGrid.clearFilter();
 
             for (let i: number = 0; i < 12; i++) {
@@ -478,6 +482,8 @@ describe('Case Console Preset Filter', () => {
 
             //Waiting for SVT to Breached
             await browser.sleep(160000);
+        });
+        it('[3674]: Validate the All Open Breached Cases filter after applying and removing the filter', async () => {
             for (let i: number = 0; i < 3; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
@@ -546,6 +552,8 @@ describe('Case Console Preset Filter', () => {
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
+        });
+        it('[3508]: Validate the My Open Breached Cases filter after applying and removing the filter', async () => {
             for (let i: number = 4; i < 9; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
