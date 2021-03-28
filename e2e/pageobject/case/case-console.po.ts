@@ -1,5 +1,5 @@
 import utilityCommon from '../../utils/utility.common';
-import { $, $$, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import utilityGrid from '../../utils/utility.grid';
 
 
@@ -12,6 +12,7 @@ class CaseConsolePage {
         recommendedCaseCheckBox: '.ui-chkbox-box',
         filter: '.d-icon-left-filter',
         availableFilterDrpDown: '.card-title',
+        AttachedfileName: '.bwf-attachment-container__file-name',
         addToWatchlist: '[rx-view-component-id="10a1551f-f216-4af7-8d62-cc79ad19f8c3"] button span',
         watchlistIcon: '[rx-view-component-id="deafbff6-199a-46f5-b7bf-642cda73c5f1"] button',
         caseTitle: '[rx-view-component-id="72f24e08-7a88-4479-8eb1-d254dde49c6c"] span',
@@ -145,6 +146,9 @@ class CaseConsolePage {
 
     async isFieldLabelDisplayed(labelName: string): Promise<boolean> {
         return await utilityCommon.isFieldLabelDisplayed(this.selectors.guid, labelName);
+    }
+    async getCountAttachedFiles(fileName: string): Promise<number> {
+        return await element.all(by.cssContainingText(this.selectors.AttachedfileName, fileName)).count();
     }
 }
 

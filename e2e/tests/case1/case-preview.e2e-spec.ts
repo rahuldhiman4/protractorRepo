@@ -174,7 +174,6 @@ describe("Case Preview", () => {
         await createCasePo.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.setLabel(menuItemData.menuItemName);
-        await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
         expect(await casePreviewPo.isCaseSummaryDisplayed('caseSummary ' + randomStr)).toBeTruthy('Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('Case ID is missing');

@@ -957,9 +957,11 @@ describe('Dynamic Hidden Data', () => {
             await createCasePage.setSummary("test the 4852");
             await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await createCasePage.clickSaveCaseButton();
+            await utilityCommon.closePopUpMessage();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('FieldGroup1')).toBeFalsy();
             await viewCasePo.clickEditCaseButton();
+            await browser.sleep(1000);
             await editCasePo.clickOnSelectCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplate1);
             await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");

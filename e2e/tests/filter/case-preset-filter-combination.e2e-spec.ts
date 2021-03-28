@@ -70,7 +70,8 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 2; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
-
+        });
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             await utilityGrid.clearFilter();
 
             for (let i: number = 0; i < 8; i++) {
@@ -107,6 +108,8 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
+        });
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             for (let i: number = 5; i < 8; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
@@ -128,7 +131,8 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 0; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
-
+        });
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Assigned Group', 'US Support 1', 'text');
             await utilityGrid.addFilter('Assigned Group\n(1 selected)', 'US Support 2', 'text');
@@ -158,7 +162,8 @@ describe('Case Console Filter Combinations', () => {
             for (let i: number = 7; i < 8; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeTruthy(caseId[i] + ' :Record is not available');
             }
-
+        });
+        it('[12089]: Verify records are fetched on case console with Assignee, Assigned Group, Status combinations', async () => {
             for (let i: number = 0; i < 7; i++) {
                 expect(await utilityGrid.isGridRecordPresent(caseId[i])).toBeFalsy(caseId[i] + ' :Record is available');
             }
@@ -202,7 +207,7 @@ describe('Case Console Filter Combinations', () => {
             let response5 = await apiHelper.createCase(caseData.Case_Pending_FILTER_8);
             caseId.push(response5.displayId);
         });
-        
+
         it('[12088]:Verify records are fetched on case console with case Site, Region, Status combinations', async () => {
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Status', 'New', 'text');

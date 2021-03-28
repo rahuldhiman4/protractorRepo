@@ -22,6 +22,7 @@ class ManageTaskBlade {
     }
 
     async clickAddTaskFromTemplateButton(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(await $(this.selectors.addTaskFromTemplateButton)), 4000);
         await $(this.selectors.addTaskFromTemplateButton).isPresent().then(async (link) => {
             if (link) await $(this.selectors.addTaskFromTemplateButton).click();
             else console.log('AddTaskFromTemplate button not found');
@@ -101,6 +102,7 @@ class ManageTaskBlade {
 
     async addTaskFromTaskTemplate(templateName: string, expectedTaskCount?: number): Promise<void> {
         await this.clickAddTaskFromTemplateButton();
+        await utilityGrid.clearFilter();
         await utilityGrid.searchAndSelectGridRecord(templateName);
         await this.clickTaskGridSaveButton();
         if (expectedTaskCount) await this.waitUntilNumberOfTaskLinkAppear(expectedTaskCount);

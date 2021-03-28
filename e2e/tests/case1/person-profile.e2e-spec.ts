@@ -1,6 +1,4 @@
-import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from "../../api/api.helper";
 import addRelatedPopupPage from '../../pageobject/case/add-relation-pop.po';
 import viewCasePage from '../../pageobject/case/view-case.po';
@@ -10,6 +8,7 @@ import personProfile from "../../pageobject/common/person-profile.po";
 import relatedTabPage from '../../pageobject/common/related-person-tab.po';
 import relationshipsConfigsPage from '../../pageobject/settings/relationship/relationships-configs.po';
 import activityTabPage from '../../pageobject/social/activity-tab.po';
+import manageTaskBladePo from "../../pageobject/task/manage-task-blade.po";
 import viewTaskPage from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES, operation, security, type } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
@@ -1011,52 +1010,52 @@ describe('Person Profile test', () => {
         expect(await personProfile.isPersonManagerImageDisplayed()).toBeTruthy("Person Manager image is not displayed");
     });
 
-    //asahitya-falling due to person imag not set Fail DRDMV-25335
-    it('[4596,4198,4586]: Verify My Profile Console', async () => {
-        await navigationPage.gotoCaseConsole();
-        await navigationPage.gotoPersonProfile();
-        expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
-        expect(await personProfile.getJobTitle()).toBe('HR Business Analyst', 'Job tite does not match');
-        expect(await personProfile.getCorporateID()).toBe('200003', 'Corporate Id does not match');
-        expect(await personProfile.getEmployeeTypeValue()).toBe('Office-Based Employee', 'Employee Type value does not match');
-        expect(await personProfile.getLoginID()).toBe('Elizabeth', 'Login Id does not match');
-        expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach,Case Business Analyst,Case Catalog Administrator,Human Resource');
-        expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
-        expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
-        expect(await personProfile.getContactNumber()).toBe("1 925 5553456", "Phone number mismatch");
-        expect(await personProfile.getEmail()).toBe("elizabeth@bwflabs.localdomain", "Email mismatch");
-        expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States ", "Site mismatch");
-        expect(await personProfile.isPersonProfileImageDisplayed()).toBeTruthy("Person Profile image is not displayed");
-        await personProfile.clickOnTab("Requested Cases");
-        await personProfile.clickOnTab("Assigned Cases");
-        await personProfile.clickOnTab("Support Groups");
-        await personProfile.clickOnTab("Related Cases");
-        await personProfile.clickOnTab("Related Persons");
+    describe('[4596,4198,4586]: Verify My Profile Console', async () => {
+        it('[4596,4198,4586]: Verify My Profile Console', async () => {
+            await navigationPage.gotoCaseConsole();
+            await navigationPage.gotoPersonProfile();
+            expect(await personProfile.getPersonType()).toBe('Employee', 'Person type does not match');
+            expect(await personProfile.getJobTitle()).toBe('HR Business Analyst', 'Job tite does not match');
+            expect(await personProfile.getCorporateID()).toBe('200003', 'Corporate Id does not match');
+            expect(await personProfile.getEmployeeTypeValue()).toBe('Office-Based Employee', 'Employee Type value does not match');
+            expect(await personProfile.getLoginID()).toBe('Elizabeth', 'Login Id does not match');
+            expect(await personProfile.getFunctionalRoles()).toContain('Knowledge Coach,Case Business Analyst,Case Catalog Administrator,Human Resource');
+            expect(await personProfile.isVIPTagPresent()).toBeTruthy('VIP tag is not present');
+            expect(await personProfile.getCompany()).toContain("Petramco", "Company name mismatch");
+            expect(await personProfile.getContactNumber()).toBe("1 925 5553456", "Phone number mismatch");
+            expect(await personProfile.getEmail()).toBe("elizabeth@bwflabs.localdomain", "Email mismatch");
+            expect(await personProfile.getSite()).toBe("Rochester\n70 Linden Oaks, Rochester, New York, 14625, United States ", "Site mismatch");
+            expect(await personProfile.isPersonProfileImageDisplayed()).toBeTruthy("Person Profile image is not displayed");
+            await personProfile.clickOnTab("Requested Cases");
+            await personProfile.clickOnTab("Assigned Cases");
+            await personProfile.clickOnTab("Support Groups");
+            await personProfile.clickOnTab("Related Cases");
+            await personProfile.clickOnTab("Related Persons");
 
-        expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Hannah Haas', 'Manager')).toBeTruthy('Manager is not Hannah');
-        await relatedTabPage.addRelatedPerson();
-        await addRelatedPopupPage.addPerson('Qianru Tao', 'Related to');
-        await relatedTabPage.clickRelatedPersonName('Qianru Tao');
-        await browser.sleep(3000); //Takes time to redirect to person profile on new tab
-        try {
-            await utilityCommon.switchToNewTab(1);
-            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Related to')).toBeTruthy('Related to is not available');
-        }
-        catch (ex) { throw ex; }
-        finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
-        await browser.sleep(2000); //To wait for completely loading of default page
-        await relatedTabPage.removeRelatedPerson('Qianru Tao');
-        try {
+            expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Hannah Haas', 'Manager')).toBeTruthy('Manager is not Hannah');
+            await relatedTabPage.addRelatedPerson();
+            await addRelatedPopupPage.addPerson('Qianru Tao', 'Related to');
+        });
+        it('[4596,4198,4586]: Verify My Profile Console', async () => {
+            await relatedTabPage.clickRelatedPersonName('Qianru Tao');
+            await browser.sleep(3000); //Takes time to redirect to person profile on new tab
+            try {
+                await utilityCommon.switchToNewTab(1);
+                expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Related to')).toBeTruthy('Related to is not available');
+            }
+            catch (ex) { throw ex; }
+            finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
+            await browser.sleep(2000); //To wait for completely loading of default page
+            await relatedTabPage.removeRelatedPerson('Qianru Tao');
             await navigationPage.signOut();
             await loginPage.login('qtao');
             await navigationPage.gotoPersonProfile();
             expect(await relatedTabPage.isRelatedPersonPresent('Elizabeth Peters')).toBeFalsy('Elizabeth is still Present');
-        }
-        catch (ex) { throw ex; }
-        finally {
+        });
+        afterAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
-        }
+        });
     });
 
     //asahitya Filter Issue -DRDMV-25321

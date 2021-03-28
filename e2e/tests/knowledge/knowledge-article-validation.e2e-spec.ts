@@ -295,6 +295,7 @@ describe('Knowledge Article Validation', () => {
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await browser.sleep(5000); //Time required for KA to be visible on Console 
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh();  // Refresh needed to reflect status changes.
@@ -303,8 +304,6 @@ describe('Knowledge Article Validation', () => {
             await navigationPage.signOut();
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile1 = 'knowledgeContributor3093' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData1 = {
@@ -317,6 +316,8 @@ describe('Knowledge Article Validation', () => {
                 "assignee": "kkohri"
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh(); // Refresh needed to reflect status changes.
@@ -328,8 +329,6 @@ describe('Knowledge Article Validation', () => {
         it('[5871]: Submitter can cancel the article from In Progress status_Submitter is assignee', async () => {
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher3093' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData2 = {
@@ -342,6 +341,8 @@ describe('Knowledge Article Validation', () => {
                 "assignee": "KMills"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh(); // Refresh needed to reflect status changes.
@@ -350,8 +351,6 @@ describe('Knowledge Article Validation', () => {
             await navigationPage.signOut();
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser3093' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
             let articleData3 = {
@@ -364,6 +363,8 @@ describe('Knowledge Article Validation', () => {
                 "assignee": "KWilliamson"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Request Cancelation');
             await utilityCommon.refresh(); // Refresh needed to reflect status changes.
@@ -400,6 +401,7 @@ describe('Knowledge Article Validation', () => {
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await browser.sleep(5000); //Time required for KA to be visible on Console 
             await utilityGrid.searchAndOpenHyperlink(KADetails.displayId);
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(KADetails.displayId);
@@ -435,8 +437,6 @@ describe('Knowledge Article Validation', () => {
         it('[5969]: [Flag an Article] Flag an article and post a comment', async () => {
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher2586' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData2 = {
@@ -449,6 +449,9 @@ describe('Knowledge Article Validation', () => {
                 "assignee": "KMills"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
+            await browser.sleep(5000); //Time required for KA to be visible on Console 
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kmillsId.displayId);
@@ -461,8 +464,6 @@ describe('Knowledge Article Validation', () => {
         it('[5969]: [Flag an Article] Flag an article and post a comment', async () => {
             //login with publisher
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser2586' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
             let articleData3 = {
@@ -475,6 +476,9 @@ describe('Knowledge Article Validation', () => {
                 "assignee": "KWilliamson"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
+            await browser.sleep(5000); //Time required for KA to be visible on Console 
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
             await viewKnowledgeArticlePo.clickOnFlagButton();
             await flagUnflagKnowledgePo.setTextInTellUsMore(kWilliamsonId.displayId);

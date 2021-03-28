@@ -111,6 +111,7 @@ describe('Case Bulk Operation', () => {
                 let response = await apiHelper.createCase(caseDataForTest);
                 caseId[k] = response.displayId;
             }
+            await browser.sleep(5000); //Need to wait since Case is taking time to be displayed in Console and can be removed if performance is improved
             await utilityGrid.clickRefreshIcon();
         });
         it('[4383]: Verify that once Assignee is changed from Bulk operation then respective support groups get the notification', async () => {
@@ -240,7 +241,7 @@ describe('Case Bulk Operation', () => {
     it('[4386]: Verify that Agent is able to change the Assignee if status is Assigned or In Progress or Resolved', async () => {
         await apiHelper.apiLogin(qfengStr);
         let caseDataForTest = caseData['bulkCaseAssignee_New'];
-        caseDataForTest.Summary = "4386 Bulk Case Assignee";
+        caseDataForTest.Summary = [...Array(6)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseId: string[] = [];
         caseId[0] = (await apiHelper.createCase(caseDataForTest)).displayId;
         caseId[1] = (await apiHelper.createCase(caseDataForTest)).displayId;
