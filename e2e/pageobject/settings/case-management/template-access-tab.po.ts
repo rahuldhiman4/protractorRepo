@@ -14,6 +14,7 @@ class TemplateAccessTab {
         buisnessUnitList: '.bwf-selection-group.ac-business-unit-field li',
         addButton: '.support-group-form button[class*="add"]',
         assignWriteAccess: '.checkbox__input',
+        agents: '.dropdown-menu button'
     }
 
     async clickOnAccessButton(agentName: string): Promise<void> {
@@ -42,8 +43,7 @@ class TemplateAccessTab {
             if (accessName == agentInput) {
                 await $$(agentList).get(i).$('input.form-control').clear();
                 await $$(agentList).get(i).$('input.form-control').sendKeys(agentName);
-                // await $$(this.selectors.agents).first().click();
-                await $$('.dropdown-menu button').first().click();
+                await $$(this.selectors.agents).first().click();
             }
         }
     }
