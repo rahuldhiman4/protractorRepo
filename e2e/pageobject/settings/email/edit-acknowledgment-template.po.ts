@@ -18,7 +18,7 @@ class EditAcknowledgementTemplate {
         localizeMessage: '[rx-view-component-id="d80f1ed8-5f3a-4ad1-bd5a-aa4b68879cc2"] button',
         editButton: '.d-icon-left-pencil',
         body: '.cke_wysiwyg_div',
-        editMessageTextBladeSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        editMessageTextBladeSubjectMessage: '[rx-view-component-id="87825f39-f76b-4a2b-9d04-1e521562dc00"] input',
         newLocalizeMessageEmailMessageSubject: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
         newLocalizeMessageEmailMessageLocalizeDropDownGuid: '1389f79d-65df-4090-9bd5-76bd2981a775',
         saveButton: '.rx-action-button_primary .btn-primary',

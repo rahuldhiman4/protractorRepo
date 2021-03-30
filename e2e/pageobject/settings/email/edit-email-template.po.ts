@@ -16,7 +16,7 @@ class CreateEmailTemplateBlade {
         searchButtonClick: '[rx-view-component-id="8b59641c-2fca-4d96-8395-03e232cf05de"] .d-icon-search',
         editButton: '.d-icon-left-pencil',
         body: '.cke_wysiwyg_div',
-        editMessageTextBladeSubjectMessage: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        editMessageTextBladeSubjectMessage: '[rx-view-component-id="87825f39-f76b-4a2b-9d04-1e521562dc00"] input',
         newLocalizeMessageEmailMessageSubject: '[rx-view-component-id="31bcbb1a-0420-481c-8233-d9d9e117b230"] input',
         newLocalizeMessageEmailMessageLocalizeDropDownGuid: '1389f79d-65df-4090-9bd5-76bd2981a775',
         saveButton: '[rx-view-component-id="2a376fd7-bf9c-459b-bdf1-52456c5f972c"] button',
