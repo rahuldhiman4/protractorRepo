@@ -281,11 +281,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
                 "categoryTier3": "Bonus",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
