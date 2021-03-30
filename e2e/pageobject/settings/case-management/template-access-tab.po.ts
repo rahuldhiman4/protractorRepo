@@ -5,7 +5,7 @@ class TemplateAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
 
     selectors = {
-        removeSupportWarningYes: '.ac-remove-group-yes',
+        removeSupportWarningYes: '.btn-primary',
         agentAccess: '[rx-view-component-id="30ed35ec-487c-4bc2-8e96-2b3565d77adc"] .access-group .btn-link',
         dropDownType: '[rx-view-component-id="30ed35ec-487c-4bc2-8e96-2b3565d77adc"] .rx-select__search-button-title',
         searchType: '[placeholder="Filter options"]',
@@ -14,6 +14,7 @@ class TemplateAccessTab {
         buisnessUnitList: '.bwf-selection-group.ac-business-unit-field li',
         addButton: '.support-group-form button[class*="add"]',
         assignWriteAccess: '.checkbox__input',
+        agents: '.dropdown-menu button'
     }
 
     async clickOnAccessButton(agentName: string): Promise<void> {
@@ -34,26 +35,29 @@ class TemplateAccessTab {
         });
     }
     
-    async selectBusinessUnit(businessUnitValue: string, dropDownList: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.dropDownType, dropDownList)).click();
-        await $(this.selectors.searchType).sendKeys(businessUnitValue);
-        await element(by.cssContainingText("li[ng-repeat*='option']", businessUnitValue)).isDisplayed().then(async (displayed) => {
-            if (displayed) await element(by.cssContainingText(".is-open li[ng-repeat*='option']", businessUnitValue)).click();
-        });
+    async selectAgent(agentName: string, agentInput: string): Promise<void> {
+        let agentList = '.bwf-flexi-type-ahead';
+        let agentCount: number = await $$('.bwf-flexi-type-ahead').count();
+        for (let i: number = 0; i < agentCount; i++) {
+            let accessName = await $$(agentList).get(i).$('.form-control-label').getText();
+            if (accessName == agentInput) {
+                await $$(agentList).get(i).$('input.form-control').clear();
+                await $$(agentList).get(i).$('input.form-control').sendKeys(agentName);
+                await $$(this.selectors.agents).first().click();
+            }
+        }
     }
+
     
     async clickOnReadAccessAddButton(dropdownName: string): Promise<void> {
         switch (dropdownName) {
-            case "Add Business Unit": {
-                await $(this.selectors.addButton).click();
-                break;
-            }
-            case "Add Support Department": {
-                await $(this.selectors.addButton).click();
-                break;
-            }
             case "Add Support Group": {
                 await $$(this.selectors.addButton).get(1).click();
+                break;
+            }
+
+            case "Add Agent": {
+                await $('.agent-wrapper  button[class*="add"]').click();
                 break;
             }
             default: {
@@ -65,19 +69,14 @@ class TemplateAccessTab {
     
     async clickOnWriteAccessAddButton(dropdownName: string): Promise<void> {
         switch (dropdownName) {
-            case "Add Business Unit": {
+            case "Add Company": {
                 await $$(this.selectors.assignWriteAccess).get(0).click();
-                await $(this.selectors.addButton).click();
-                break;
-            }
-            case "Add Support Department": {
-                await $$(this.selectors.assignWriteAccess).get(1).click();
-                await $(this.selectors.addButton).click();
+                await $$(this.selectors.addButton).get(0).click();
                 break;
             }
             case "Add Support Group": {
-                await $$(this.selectors.assignWriteAccess).get(2).click();
-                await $(this.selectors.addButton).click();
+                await $$(this.selectors.assignWriteAccess).get(1).click();
+                await $$(this.selectors.addButton).get(1).click();
                 break;
             }
             default: {
@@ -92,13 +91,13 @@ class TemplateAccessTab {
         for (let i: number = 0; i < crossIcon.length; i++) {
             let templateAccessName = await crossIcon[i].getText();
             if (templateAccessName == accessName) {
-                await $$('[class="d-icon-cross"]').get(i).click();
+                await $$('.d-icon-cross').get(i).click();
             }
         }
         await $(this.selectors.removeSupportWarningYes).click();
     }
     
-    async isSupportGroupWriteAccessDisplayed(supportGroupText: string): Promise<boolean> {
+    async isSupportGroupOrAgentWriteAccessDisplayed(supportGroupText: string): Promise<boolean> {
         let accessParent = await $$('.badge-content');
         let status = false;
         for(let i=0; i<accessParent.length; i++) {
@@ -110,7 +109,7 @@ class TemplateAccessTab {
         return status;
     }
 
-    async isSupportGroupReadAccessDisplayed(supportGroupText: string): Promise<boolean> {
+    async isSupportGroupOrAgentReadAccessDisplayed(supportGroupText: string): Promise<boolean> {
         let accessParent = await $$('.badge-content');
         let status = false;
         for(let i=0; i<accessParent.length; i++) {

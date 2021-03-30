@@ -1,3 +1,4 @@
+import createCasetemplatePo from '../../pageobject/settings/case-management/create-casetemplate.po';
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
@@ -21,6 +22,7 @@ import activityPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import editCasetemplatePo from '../../pageobject/settings/case-management/edit-casetemplate.po';
 
 describe("Quick Case", () => {
     const requester = "The requester of the case";
@@ -995,7 +997,6 @@ describe("Quick Case", () => {
         expect(await quickCasePo.isSummOrDescPopulatedAtSmartTextArea(caseData[expectedJsonName].description)).not.toBe(-1);
     });
 
-    //Assignment Dropdown issue
     describe('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let templateData1, templateData2;
@@ -1035,13 +1036,29 @@ describe("Quick Case", () => {
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
             await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
             await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
-            expect(await templateAccessTabPo.isSupportGroupReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
-            await viewCasetemplatePo.clickBackArrowBtn();
-            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            
+            await templateAccessTabPo.clickOnAccessButton('Agent Access');
+            await templateAccessTabPo.selectAgent('Qianru Tao', 'Agent');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Agent');
+
             await viewCasetemplatePo.clickEditTemplateMetaData();
+            
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Qianru Tao')).toBeTruthy('Qianru Tao does not have read access');
+            
+            await utilityCommon.refresh();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Qianru Tao')).toBeTruthy('Qianru Tao does not have read access');
+
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
@@ -1050,8 +1067,8 @@ describe("Quick Case", () => {
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
             await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
             await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
-            expect(await templateAccessTabPo.isSupportGroupReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
             await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
@@ -1092,6 +1109,7 @@ describe("Quick Case", () => {
             expect(await casePreviewPo.isCaseTemplateDisplayed(templateData2.templateName)).toBeTruthy('Case Template is missing');
             await casePreviewPo.clickGoToCaseButton();
         });
+
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
@@ -1112,8 +1130,8 @@ describe("Quick Case", () => {
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
-            await templateAccessTabPo.deleteTemplateAccess('Human Resource');
             await viewCasetemplatePo.clickBackArrowBtn();
+
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
@@ -1125,7 +1143,75 @@ describe("Quick Case", () => {
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            // Verify template is accesible with Readaccess support group user
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is present');
+            await quickCasePo.clickStartOverButton
+
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is present');
         });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            //Restored the support group and validate
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Draft');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.clickOnAccessButton('Support Group Access');
+            await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
+            await templateAccessTabPo.selectSupportGroup('Employee Relations', 'Select Support Group');
+            await templateAccessTabPo.clickOnReadAccessAddButton('Add Support Group');
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            // Verify template is accesible with Readaccess support group user
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is not present');
+            await quickCasePo.clickStartOverButton
+
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is not present');
+        });
+
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
@@ -1135,7 +1221,7 @@ describe("Quick Case", () => {
             expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy('template is present');
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
-            await navigationPo.gotoQuickCase();
+            await quickCasePo.clickStartOverButton();
             await quickCasePo.selectRequesterName("adam");
             expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeFalsy('template is present');
         });
@@ -1152,11 +1238,10 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await templateAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit');
             await templateAccessTabPo.selectSupportGroup('Compensation and Benefits', 'Select Support Group');
             await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
             await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
@@ -1164,8 +1249,8 @@ describe("Quick Case", () => {
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
         });
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await viewCasetemplatePo.clickBackArrowBtn();
@@ -1181,11 +1266,10 @@ describe("Quick Case", () => {
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
-            await templateAccessTabPo.selectBusinessUnit('HR Support', 'Select Business Unit');
             await templateAccessTabPo.selectSupportGroup('Compensation and Benefits', 'Select Support Group');
             await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
             await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
@@ -1193,8 +1277,57 @@ describe("Quick Case", () => {
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
-            expect(await templateAccessTabPo.isSupportGroupWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+        });
+
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
+            // Verify With Remove LOB
+            await navigationPo.signOut();
+            await loginPo.login('qkatawazi');
+            await navigationPo.gotoSettingsPage();
+            await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Human Resource');
+
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
+            await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Human Resource');
+
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+
+
+            await viewCasetemplatePo.clickBackArrowBtn();
+            // Verify template is accessible with reporter user
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is present');
+
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeTruthy('template is present');
+
+            // Verify template is accesible with Readaccess support group user
+            await navigationPo.signOut();
+            await loginPo.login('elizabeth');
+
+            await navigationPo.gotoQuickCase();
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeFalsy('template is present');
+            await quickCasePo.clickStartOverButton
+
+            await quickCasePo.selectRequesterName("qdu");
+            expect(await quickCasePo.selectCaseTemplate(templateData2.templateName)).toBeFalsy('template is present');
         });
         afterAll(async () => {
             await viewCasetemplatePo.clickBackArrowBtn();
