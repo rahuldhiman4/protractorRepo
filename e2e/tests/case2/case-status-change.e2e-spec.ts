@@ -297,6 +297,7 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
+            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
             await manageTask.clickTaskLink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
         });

@@ -250,6 +250,7 @@ describe('Case Console', () => {
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(newCase1.displayId);
             await viewCasePo.clickEditCaseButton(); 
+
             await editCasePo.clickOnSelectCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData1.templateName);
             await editCasePo.updateCaseSite('Austin');
@@ -318,6 +319,8 @@ describe('Case Console', () => {
             await utilityGrid.addFilter('Assigned Group', "US Support 1", 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase2.displayId)).toBeTruthy('Record1 is not filtered on the basis of Assigned Group');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeFalsy('Record2 is not filtered on the basis of Assigned Group');
+        });
+        it('[5531]:[Case Workspace] Cases search using filters 4', async () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Requester', 'Qiang Du', 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Requester');
@@ -331,6 +334,7 @@ describe('Case Console', () => {
             await utilityGrid.searchRecordWithoutClearFilter(newCase1.displayId);
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record is not filtered on the basis of Modified date');
         });
+
         it('[5531]:[Case Workspace] Cases search using filters 5', async () => {
             await caseConsolePo.removeColumns(defaultCaseColumns);
             await caseConsolePo.addColumns(arr1);
@@ -340,6 +344,8 @@ describe('Case Console', () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Region', 'Americas', 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record is not filtered on the basis of Region');
+        });
+        it('[5531]:[Case Workspace] Cases search using filters 5', async () => {
             await utilityGrid.searchRecord(newCase1.displayId);
             await utilityGrid.addFilter('Case Site', 'Austin', 'text');
             expect(await utilityGrid.isGridRecordPresent(newCase1.displayId)).toBeTruthy('Record1 is not filtered on the basis of Case Site');

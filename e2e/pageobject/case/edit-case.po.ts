@@ -326,7 +326,7 @@ class CaseEditPage {
     }
 
     async clickOnSelectCaseTemplate(): Promise<void> {
-        return await $(this.selectors.selectCaseTemplate).click();
+        await $(this.selectors.selectCaseTemplate).click();
     }
 
     async getChangeCaseTemplate(): Promise<string> {
