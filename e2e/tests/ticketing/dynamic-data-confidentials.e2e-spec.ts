@@ -436,7 +436,7 @@ describe('Dynamic Confidentials Data', () => {
             await viewTasktemplatePo.clickOnManageDynamicFieldLink();
             await dynamicField.clickOnDynamicField();
             expect(await dynamicField.isConfidentialsRadioButtonDisplayed()).toBeTruthy();
-            await dynamicField.clickEnabledConfidentialsRadioButton
+            await dynamicField.clickEnabledConfidentialsRadioButton();
             await dynamicField.setFieldName("test" + randomStr);
             await dynamicField.setDescriptionName("test 123" + randomStr);
             await dynamicField.clickEnabledConfidentialsRadioButton();
