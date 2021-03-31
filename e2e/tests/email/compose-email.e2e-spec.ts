@@ -179,6 +179,7 @@ describe("Compose Email", () => {
         afterAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteEmailOrNotificationTemplate('Case Status Change', 'Petramco');
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login("qtao");
         });
