@@ -1282,7 +1282,6 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('HR Support', 'Select Business Unit');
             await accessTabPo.selectAccessEntityDropDown('Employee Relations', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();

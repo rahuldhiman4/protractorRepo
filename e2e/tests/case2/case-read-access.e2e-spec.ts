@@ -674,7 +674,6 @@ describe("Case Read Access", () => {
             await viewCasePage.clickOnTab('Case Access');
             //Bulk Read Access
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('LA Support 1', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickToExpandAccessEntitiySearch('Agent Access', 'Case');
@@ -686,7 +685,6 @@ describe("Case Read Access", () => {
         });
         it('[3457]: Bulk Case Access update clicking Reset to default.', async () => {
             //Bulk Write Access // behaviour corrected
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('LA Support 2', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
