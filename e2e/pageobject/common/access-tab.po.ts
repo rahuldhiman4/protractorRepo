@@ -8,7 +8,7 @@ class AccessTab {
         dropdownList: '.rx-select__option-content div',
         searchInputField: '[placeholder="Filter options"]',
         resetToDefault: 'button[aria-label="Reset to Default"]',
-        confidentialSupportGroupGuid: 'b1606736-7480-4368-aac6-a8273f0ff0d5',
+        confidentialSupportGroupGuid: '34ea58f1-269e-4235-870d-41ba90c46e4d',
         removeAccessOptionYes: '.alert-warning button[btn-type="primary"]',
         removeAccessOptionNo: '.alert-warning button[btn-type="secondary"]',
         closeKnowledgeAccessBlade: '[rx-view-component-id="0d8d9c7d-7e85-4277-9452-64fbba8df10d"] button',
@@ -16,7 +16,10 @@ class AccessTab {
         confidencialAccess: '[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] .bwf-access-manager .access-group .btn-title',
         entityDropDown: '.support-group-form button.dropdown-toggle',
         dropDownOption: '.dropdown_select__menu-content button',
-        caseAccessGroup: '.bwf-access-manager .access-group'
+        caseAccessGroup: '.bwf-access-manager .access-group',
+        confidentialSupportGroup: '[aria-label="Support Group"]',
+        dropdownElement: 'button.rx-select__option strong',
+        supportGroupWarningText: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] .alert-content'
     }
 
     async clickToExpandAccessEntitiyByGroup(groupName: string) {
@@ -237,5 +240,30 @@ class AccessTab {
             }
         }
     }
+    async isConfidentialSupportGroupDropDownPresent(drop: string): Promise<boolean> {
+        await $(this.selectors.confidentialSupportGroup).click();
+        return await element(by.cssContainingText(this.selectors.dropdownElement, drop)).isPresent().then(async (link) => {
+            if (link) {
+                let valuePresent =  await element(by.cssContainingText(this.selectors.dropdownElement, drop)).isDisplayed();
+                await $(this.selectors.confidentialSupportGroup).click();
+                return valuePresent;
+            } else{
+                await $(this.selectors.confidentialSupportGroup).click();
+                return false;
+            }
+            
+        });
+    }
+    async isConfidentialSupportGroupAccessAbsent(): Promise<boolean> {
+        return await $('[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] bwf-collapse[hidden]').isPresent().then(async (link) => {
+            if (link) {
+                return await $('[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] bwf-collapse[hidden]').isDisplayed();
+            } else return false;
+        });
+    }
+    async getSupportGroupWarningMessage(): Promise<string> {
+        return await $(this.selectors.supportGroupWarningText).getText();
+    }
+    
 }
 export default new AccessTab();
