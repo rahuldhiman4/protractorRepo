@@ -68,13 +68,14 @@ describe("Change Assignment", () => {
 
     //apurva
     it('[4000003]:Verify on Case Creation, if Assignment fields are enabled only when Requester is selected', async () => {
+       await navigationPo.gotoCaseConsole();
         await navigationPo.gotoCreateCase();
         expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeTruthy('Failure1');
         expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy('Failure2');
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
-        expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeTruthy('Failure3');
-        expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeFalsy('Failure4');
+        expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeFalsy('Failure3');
+        expect(await changeAssignmentPage.isFieldDisabled("Assignee")).toBeTruthy('Failure4');
     });
 
     //apurva
@@ -290,24 +291,24 @@ describe("Change Assignment", () => {
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounting & Reporting (Controller Group)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
         });
         it('[4000006]:Verify on clearing or reselecting of any field should clear the Child fields but not the Parent field', async () => {
             //When Assignee is blank 
             await changeAssignmentPage.clickAssignToMeBtn();
             await changeAssignmentPage.setDropDownValue("Assignee", 'None');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounting & Reporting (Controller Group)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.setDropDownValue("AssignedGroup", 'None');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounting & Reporting (Controller Group)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
             await changeAssignmentPage.clickAssignToMeBtn();
             await changeAssignmentPage.setDropDownValue("Assignee", 'None');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounting & Reporting (Controller Group)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.setDropDownValue("AssignedGroup", 'Accounts Receivable (AR)');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Receivable (AR)');
@@ -323,14 +324,14 @@ describe("Change Assignment", () => {
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounting & Reporting (Controller Group)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
             await changeAssignmentPage.clickAssignToMeBtn();
             await changeAssignmentPage.setDropDownValue("AssignedGroup", 'None');
             expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
             await changeAssignmentPage.clickAssignToMeBtn();
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounts Payable (AP)');
+            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Accounting & Reporting (Controller Group)');
             expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Morwenna Rosales');
             //When user reselects Same Details --> All Children remain populated as it is
             

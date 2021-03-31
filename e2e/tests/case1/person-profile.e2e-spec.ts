@@ -865,7 +865,6 @@ describe('Person Profile test', () => {
             let personToPersonReverseRelation = 'HR P2P Reverse';
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Relationships--Person to Person', BWF_PAGE_TITLES.RELATIONSHIPS.PERSON_TO_PERSON);
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await relationshipsConfigsPage.clickAddRelationshipButton();
             await relationshipsConfigsPage.setNewRelationshipName(personToPersonRelation);
             await relationshipsConfigsPage.setNewReverseRelationshipName(personToPersonReverseRelation);
@@ -878,17 +877,6 @@ describe('Person Profile test', () => {
             // verify error
             expect(await utilityCommon.isPopUpMessagePresent('Relationship Type already exists.')).toBeTruthy("Error message absent");
             await utilityCommon.closePopUpMessage();
-            //expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("Other LOB relation present");
-            // verify HR LOB record not present
-            await utilityGrid.selectLineOfBusiness('Facilities');
-            expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("Other LOB relation present"); // Defect
-            await relationshipsConfigsPage.clickAddRelationshipButton();
-            await relationshipsConfigsPage.setNewRelationshipName(personToPersonRelation);
-            await relationshipsConfigsPage.setNewReverseRelationshipName(personToPersonReverseRelation);
-            await relationshipsConfigsPage.saveConfig();
-            expect(await utilityCommon.isPopUpMessagePresent('Saved Successfully')).toBeTruthy("Success message absent");
-            await utilityCommon.closePopUpMessage();
-            //expect(await relationshipsConfigsPage.isRelationshipPresent(personToPersonRelation)).toBeFalsy("same name relation created");
         });
     });
 
@@ -1034,21 +1022,23 @@ describe('Person Profile test', () => {
 
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Hannah Haas', 'Manager')).toBeTruthy('Manager is not Hannah');
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qianru Tao', 'Related to');
+            await addRelatedPopupPage.addPerson('Qing Yuan', 'Related to');
         });
         it('[4596,4198,4586]: Verify My Profile Console', async () => {
-            await relatedTabPage.clickRelatedPersonName('Qianru Tao');
+            await relatedTabPage.clickRelatedPersonName('Qing Yuan');
             await browser.sleep(3000); //Takes time to redirect to person profile on new tab
             try {
                 await utilityCommon.switchToNewTab(1);
+                await personProfile.clickOnTab("Related Cases");
+                await personProfile.clickOnTab("Related Persons");
                 expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Related to')).toBeTruthy('Related to is not available');
             }
             catch (ex) { throw ex; }
             finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
             await browser.sleep(2000); //To wait for completely loading of default page
-            await relatedTabPage.removeRelatedPerson('Qianru Tao');
+            await relatedTabPage.removeRelatedPerson('Qing Yuan');
             await navigationPage.signOut();
-            await loginPage.login('qtao');
+            await loginPage.login('qyuan');
             await navigationPage.gotoPersonProfile();
             expect(await relatedTabPage.isRelatedPersonPresent('Elizabeth Peters')).toBeFalsy('Elizabeth is still Present');
         });
