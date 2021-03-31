@@ -556,13 +556,12 @@ xdescribe('Operating Orgnization Data Model Tests', () => {
         it('[12083]:[Operating Organization][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            expect(await accessTabPo.isOptionsPresent('United States Support', 'Select Business Unit')).toBeFalsy();
+            expect(await accessTabPo.isOptionsPresent('Pantry Service', 'Select Support Group')).toBeFalsy();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Facilities Support', 'Select Business Unit');
-            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
-            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Facilities Support', 'Read')).toBeTruthy('FailuerMsg1: Agent Name is missing');
+            await accessTabPo.selectAccessEntityDropDown('Pantry Service', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
+            expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Pantry Service', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
             expect(await accessTabPo.isOptionsPresent(confidentialSupportGroup, 'Select Support Group', true)).toBeFalsy();
         });

@@ -655,10 +655,8 @@ describe("Create Case Assignment Mapping", () => {
         });
         it('[5001]:Verify Company, Business Unit , Department and Support group selection hierarchy in Case  Access.', async () => {
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('LA Support 1', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('LA Support 2', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 

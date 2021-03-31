@@ -727,10 +727,6 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await editKnowledgePo.cancelKnowledgeMedataDataChanges();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
-            // expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
-            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeFalsy();
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
 
@@ -917,10 +913,6 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await editKnowledgePo.cancelKnowledgeMedataDataChanges();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Australia Support')).toBeTruthy();
-            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Facilities Support')).toBeFalsy();
-            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
 

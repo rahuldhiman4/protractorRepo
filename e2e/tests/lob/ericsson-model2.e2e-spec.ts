@@ -1339,10 +1339,6 @@ xdescribe('Ericsson Model Test Extended', () => {
             await editKnowledgePo.cancelKnowledgeMedataDataChanges();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
-            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
-            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
-            await accessTabPo.selectAccessEntityDropDown('Ericsson HR Support', 'Select Business Unit');
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
 
@@ -1530,10 +1526,6 @@ xdescribe('Ericsson Model Test Extended', () => {
             await editKnowledgePo.cancelKnowledgeMedataDataChanges();
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
-            await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
-            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson HR Support')).toBeTruthy();
-            expect(await accessTabPo.isValuePresentInDropdown('Business Unit', 'Ericsson Asset Management - India')).toBeFalsy();
-            await accessTabPo.selectAccessEntityDropDown('Ericsson HR Support', 'Select Business Unit');
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco HR')).toBeTruthy();
             expect(await accessTabPo.isValuePresentInDropdown('Support Group', 'Petramco Facilities')).toBeFalsy();
 
