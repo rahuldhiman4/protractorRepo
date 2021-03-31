@@ -17,7 +17,7 @@ class AssignmentConfigCreatePage {
         priorityDrpDwn: '790dfab1-2353-4b06-909d-741ebbc896d5',
         labelDrpDwn: 'e96e5a26-840f-483e-b62a-797f13fb386c',
         regionDrpDwn: 'f2083fbb-ee65-4c20-8958-dfb2979f3b56',
-        siteDrpDwn: 'ee0a257d-5577-494b-a286-d553fbf18e44',
+        siteDrpDwn: '13c01687-f249-418b-84a5-4421005312ed',
         siteGrpDrpDwn: '2aef036b-c61b-4612-9937-512d642df8ef',
         defaultToggle: '[rx-view-component-id="d52b16e7-3cd4-4ef1-a31b-922eac1007c1"] .d-icon-circle_slash_o',
         supportCompanyDrpDwn: 'e20294a1-3a95-4fbd-9640-15a325db82ab',
