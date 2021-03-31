@@ -16,6 +16,8 @@ import activityTabPo from "../../pageobject/social/activity-tab.po";
 import manageTaskPo from "../../pageobject/task/manage-task-blade.po";
 import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
+import viewTaskPo from "../../pageobject/task/view-task.po";
+import editTaskPo from "../../pageobject/task/edit-task.po";
 
 describe('[4055]: Dynamic Field of Type Attachment Test', () => {
     beforeAll(async () => {
@@ -73,7 +75,6 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            expect(await caseConsolePO.getCountAttachedFiles('demo.txt')).toBe(2);           
         });
     });
-
     //nipande
     describe('[5397]: Check Description and Summary should not be updated after template change', async () => {
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -144,7 +145,6 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
            expect (await viewCasePO.getCaseDescriptionText()).toBe(description);
         });
     });
-
     //nipande
     describe('[6224]: [Case visibility] Error messages handling]', async () => {
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -273,6 +273,19 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
             await attachmentBladePo.searchAndSelectCheckBox('demo');
             await attachmentBladePo.clickDownloadButton();
             expect(await utilityCommon.isFileDownloaded('demo.txt')).toBeTruthy('File is not downloaded.');
+            await utilityCommon.closeAllBlades();
+            await caseConsolePO.searchAndOpenCase(caseSummary)
+            await viewCasePO.clickOnTaskLink(taskName);
+            await viewTaskPo.clickOnEditTask();
+            await editTaskPo.addAttachment(['../../data/ui/attachment/bwfPdf.pdf']);
+            await editTaskPo.clickOnSaveButton();
+            await viewTaskPo.clickOnViewCase();
+            await viewCasePO.clickAttachmentsLink();
+            expect(await attachmentBladePo.isColumnHeaderPresent('Attachments')).toBeTruthy('Attachment column header is missing');
+            expect(await attachmentBladePo.isColumnHeaderPresent('Attached to')).toBeTruthy('Attached to column header is missing');
+            expect(await (await attachmentBladePo.getGridColumnValues('Attached to')).includes('Task')).toBeTruthy();
+            expect(await attachmentBladePo.isAttachmentPresent('bwfPdf')).toBeTruthy();
+            expect(await attachmentBladePo.isAttachmentPresent('demo')).toBeTruthy();
         });
     });
 });
