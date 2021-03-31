@@ -160,6 +160,25 @@ describe("Case Preview", () => {
 
     //kgaikwad
     it('[4664]: UI Validation for Fields on Case Preview Page', async () => {
+        let caseTemplateName = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('') + "Preview";
+        let templateData = {
+            "templateName": caseTemplateName,
+            "templateSummary": 'My legal name has changed and I need it updated.',
+            "categoryTier1": "Employee Relations",
+            "categoryTier2": "Compensation",
+            "categoryTier3": "Bonus",
+            "casePriority": "Medium",
+            "templateStatus": "Active",
+            "company": "Petramco",
+            "businessUnit": "United States Support",
+            "supportGroup": "US Support 3",
+            "assignee": "qkatawazi",
+            "ownerBU": "United States Support",
+            "ownerGroup": "US Support 3"
+        }
+        await apiHelper.apiLogin('qkatawazi');
+        await apiHelper.createCaseTemplate(templateData);
+
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let menuItemData = cloneDeep(SAMPLE_MENU_ITEM);
         menuItemData.menuItemName = menuItemData.menuItemName + randomStr;
@@ -174,7 +193,6 @@ describe("Case Preview", () => {
         await createCasePo.clickSelectCaseTemplateButton();
         await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateName);
         await createCasePo.setLabel(menuItemData.menuItemName);
-        await createCasePo.clickAssignToMeButton();
         await createCasePo.clickSaveCaseButton();
         expect(await casePreviewPo.isCaseSummaryDisplayed('caseSummary ' + randomStr)).toBeTruthy('Summary is missing');
         expect(await casePreviewPo.isCaseIdDisplayed()).toBeTruthy('Case ID is missing');

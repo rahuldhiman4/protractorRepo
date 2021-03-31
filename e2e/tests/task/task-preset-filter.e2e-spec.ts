@@ -180,9 +180,9 @@ describe('Task Console Preset Filter', () => {
             for (let i: number = 5; i < 11; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
-
+        });
+        it('[3673]: Validate the My Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.clearFilter();
-
             for (let i: number = 0; i < 11; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
@@ -281,9 +281,9 @@ describe('Task Console Preset Filter', () => {
             for (let i: number = 5; i < 9; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
-
+        });
+        it('[3672]: Validate the All Open Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.clearFilter();
-
             for (let i: number = 0; i < 9; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
@@ -400,13 +400,15 @@ describe('Task Console Preset Filter', () => {
             for (let i: number = 8; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
-
-            for (let i: number = 0; i < 8; i++) {
+            for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
-
+        });
+        it('[3671]: Validate the High Priority Open Tasks filter after applying and removing the filter', async () => {
+            for (let i: number = 4; i < 8; i++) {
+                expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
+            }
             await utilityGrid.clearFilter();
-
             for (let i: number = 0; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
@@ -525,13 +527,15 @@ describe('Task Console Preset Filter', () => {
             for (let i: number = 8; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
-
-            for (let i: number = 0; i < 8; i++) {
+            for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
-
+        });
+        it('[3670]: Validate the Critical Priority Open Tasks filter after applying and removing the filter', async () => {
+            for (let i: number = 4; i < 8; i++) {
+                expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
+            }
             await utilityGrid.clearFilter();
-
             for (let i: number = 0; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
@@ -672,9 +676,9 @@ describe('Task Console Preset Filter', () => {
             for (let i: number = 0; i < 4; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
-
+        });
+        it('[3667]: Validate the All Open Breached Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.clearFilter();
-
             for (let i: number = 0; i < 7; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
@@ -765,7 +769,6 @@ describe('Task Console Preset Filter', () => {
             await utilityGrid.applyPresetFilter('My Open Breached Tasks');
             let openBreachedTaskFilter: string[] = ['My Open Breached Tasks'];
             expect(await utilityGrid.isAppliedFilterMatches(openBreachedTaskFilter)).toBeTruthy();
-
         });
         it('[3465]: Validate the My Open Breached Tasks filter after applying and removing the filter', async () => {
             await browser.sleep(140000); // required to breach SLA
@@ -773,13 +776,14 @@ describe('Task Console Preset Filter', () => {
             for (let i: number = 5; i < 8; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }
-
+        });
+        it('[3465]: Validate the My Open Breached Tasks filter after applying and removing the filter', async () => {
             for (let i: number = 0; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeFalsy(taskId[i] + ' :Record is available');
             }
-
+        });
+        it('[3465]: Validate the My Open Breached Tasks filter after applying and removing the filter', async () => {
             await utilityGrid.clearFilter();
-
             for (let i: number = 0; i < 7; i++) {
                 expect(await utilityGrid.isGridRecordPresent(taskId[i])).toBeTruthy(taskId[i] + ' :Record is not available');
             }

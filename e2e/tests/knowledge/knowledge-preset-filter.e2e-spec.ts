@@ -210,11 +210,14 @@ describe('Knowledge Console Preset Filter', () => {
             for (let i: number = 0; i < 5; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
             }
-
-            for (let i: number = 5; i < 14; i++) {
+            for (let i: number = 5; i < 10; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is available');
             }
-
+        });
+        it('[3664]: Validate the My Open Articles filter after applying and removing the filter', async () => {
+            for (let i: number = 10; i < 14; i++) {
+                expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is available');
+            }
             await utilityGrid.clearFilter();
             for (let i: number = 0; i < 14; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
@@ -369,11 +372,14 @@ describe('Knowledge Console Preset Filter', () => {
             for (let i: number = 11; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');
             }
-
-            for (let i: number = 0; i < 11; i++) {
+            for (let i: number = 0; i < 6; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is available');
             }
-
+        });
+        it('[3666]: Validate the All Published Articles filter after applying and removing the filter', async () => {
+            for (let i: number = 6; i < 11; i++) {
+                expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeFalsy(knowledgeId[i] + ' :Record is available');
+            }
             await utilityGrid.clearFilter();
             for (let i: number = 0; i < 13; i++) {
                 expect(await utilityGrid.isGridRecordPresent(knowledgeId[i])).toBeTruthy(knowledgeId[i] + ' :Record is not available');

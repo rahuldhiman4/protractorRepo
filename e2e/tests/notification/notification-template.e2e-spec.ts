@@ -424,13 +424,13 @@ describe("Notification Template", () => {
     describe('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
         it('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
             let eventData = {
-                eventName: '4588' + randomStr
+                eventName: randomStr+'4588'
             }
             let notificationData = {
                 description: '4588 desc',
                 module: 'Cases',
-                eventName: '4588' + randomStr,
-                templateName: '4588 name' + randomStr,
+                eventName: randomStr+'4588',
+                templateName: randomStr+'4588 name',
                 alertMessage: 'Alert Message text',
                 emailBody: 'Email Body text',
                 emailSubject: 'Email Subject text'
@@ -443,45 +443,35 @@ describe("Notification Template", () => {
 
             await utilityGrid.searchAndOpenHyperlink(eventData.eventName);
             await editNotificationTemplate.clickAddRecipientsBtn();
-            expect(await editNotificationTemplate.isSearchRecipientDispalyed()).toBeTruthy('Search Recipient field is not dispalyed');
             expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Recipient Type');
-            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Company');
-            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Support Organization');
-            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Support Group');
+            expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Search Recipient');
             expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Save');
             expect(await editNotificationTemplate.getAllFieldsLabel()).toContain('Cancel');
-
-            await editNotificationTemplate.setDropDownValue('Company', 'Petramco');
-            await editNotificationTemplate.setDropDownValue('SupportOrg', 'HR Support');
-            await editNotificationTemplate.setDropDownValue('AssignedGroup', 'Compensation and Benefits');
         });
         // added due to defect failed reaming test cases
         it('[4588]: Add new recipient as Individual/Group and availability of fields on Add recipient screen', async () => {
-            await editNotificationTemplate.clickApplyButton();
-            await editNotificationTemplate.selectIndividualRecipient('Elizabeth Peters');
+            await editNotificationTemplate.searchRecipient('Elizabeth Peters');
             await editNotificationTemplate.saveAddRecipients();
 
             await editNotificationTemplate.clickAddRecipientsBtn();
-            await editNotificationTemplate.selectRecipientType('Group');
-            await editNotificationTemplate.setDropDownValue('Company', 'Petramco');
-            await editNotificationTemplate.setDropDownValue('SupportOrg', 'Australia Support');
-            await editNotificationTemplate.clickApplyButton();
-            await editNotificationTemplate.selectIndividualRecipient('AU Support 1');
+            await editNotificationTemplate.setDropDownValue('RecipientType', 'Group');
+            await editNotificationTemplate.setDropDownValue('AssignedGroup', 'AU Support 1');
             await editNotificationTemplate.saveAddRecipients();
             await editNotificationTemplate.clickRecipientsCheckbox('Elizabeth Peters', 'TO');
-            await editNotificationTemplate.clickRecipientsCheckbox('SG - Australia Support - AU Support 1', 'CC');
+            await editNotificationTemplate.clickRecipientsCheckbox('Petramco > Australia Support > AU Support 1', 'CC');
             await editNotificationTemplate.clickOnSaveButton();
 
-            await utilityGrid.searchAndOpenHyperlink('4588 name' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink(randomStr+'4588 name');
             await editNotificationTemplate.clickRecipientsCheckbox('Elizabeth Peters', 'TO');
-            await editNotificationTemplate.clickRecipientsCheckbox('SG - Australia Support - AU Support 1', 'CC');
+            await editNotificationTemplate.clickRecipientsCheckbox('Petramco > Australia Support > AU Support 1', 'CC');
             await editNotificationTemplate.clickOnSaveButton();
 
-            await utilityGrid.searchAndOpenHyperlink('4588 name' + randomStr);
+            await utilityGrid.searchAndOpenHyperlink(randomStr+'4588 name');
             expect(await editNotificationTemplate.isRecipientDisplayed('Elizabeth Peters')).toBeTruthy('Elizabeth is not present in Recipient list');
-            expect(await editNotificationTemplate.isRecipientDisplayed('SG - Australia Support - AU Support 1')).toBeTruthy('AU Support 1 is not present in Recipient list');
+            expect(await editNotificationTemplate.isRecipientDisplayed('Petramco > Australia Support > AU Support 1')).toBeTruthy('AU Support 1 is not present in Recipient list');
         });
         afterAll(async () => {
+            await editNotificationTemplate.clickOnCancelButton();
             await editNotificationTemplate.clickCancelButtonAddRecipient();
             await utilityCommon.closeAllBlades();
 

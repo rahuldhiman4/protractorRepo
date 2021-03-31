@@ -1,7 +1,5 @@
-import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
 import caseConsolePage from '../../pageobject/case/case-console.po';
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from '../../pageobject/case/create-case.po';
@@ -122,17 +120,12 @@ describe('Create Case Task', () => {
 
     // categ2 not populated
     describe('[5559,5565,6425,6386]: Automatic Task data validation once Task is created', async () => {
-        let menuItem, randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomStr = [...Array(15)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let autmationTaskTemplateWithRequiredData = randomStr + 'AutomationTaskRequiredField' + Math.floor(Math.random() * 1000000);
         let autmationTaskSummaryWithRequiredData = randomStr + 'AutomationTaskSummaryRequiredField' + Math.floor(Math.random() * 1000000);
         let automationTaskTemplateWithAllField = randomStr + 'AutomationTaskAllField' + Math.floor(Math.random() * 1000000);
         let automationTaskSummaryWithallField = randomStr + 'AutomationTaskSummaryAllField' + Math.floor(Math.random() * 1000000);
-        beforeAll(async () => {
-            menuItem = cloneDeep(SAMPLE_MENU_ITEM);
-            menuItem.menuItemName = "TestMenuItemName" + randomStr;
-            await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createNewMenuItem(menuItem);
-        });
+        
         it('[5559,5565,6425,6386]: Create manual task template', async () => {
             //Automated task Template with Required Data
             await navigationPage.gotoSettingsPage();
@@ -157,7 +150,7 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskSummary(automationTaskSummaryWithallField);
             await taskTemplate.setTaskDescription('All field get added in this task template');
             await taskTemplate.setNewProcessName(`Get Request Status Data2 ${randomStr}`);
-            await taskTemplate.selectLabel(menuItem.menuItemName);
+            await taskTemplate.selectLabel('POSH');
             await taskTemplate.selectTaskCategoryTier1('Employee Relations');
             await taskTemplate.selectTaskCategoryTier2_v('Compensation');
             await taskTemplate.selectTaskCategoryTier3_v('Bonus');
@@ -192,7 +185,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.lob.human-resource:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
-            expect(await viewTask.getLabelValue()).toBe(menuItem.menuItemName);
+            expect(await viewTask.getLabelValue()).toBe('POSH');
             expect(await viewTask.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewTask.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewTask.getCategoryTier3Value()).toBe('Bonus');
@@ -492,11 +485,13 @@ describe('Create Case Task', () => {
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectTemplateStatus('Draft');
             await editTaskTemplate.clickOnSaveMetadata();
+            await utilityCommon.closePopUpMessage();
             await editTaskTemplate.clickOnEditMetadataLink();
             await editTaskTemplate.selectOwnerCompany('Psilon');
             await editTaskTemplate.selectBusinessUnit('Psilon Support Org2');
             await editTaskTemplate.selectOwnerGroup('Psilon Support Group2');
             await editTaskTemplate.clickOnSaveMetadata();
+            await utilityCommon.closePopUpMessage();
             await viewTasktemplatePo.clickOnEditLink();
             await editTaskTemplate.setDescription(description);
             await editTaskTemplate.clickOnSaveButton();
@@ -588,8 +583,8 @@ describe('Create Case Task', () => {
     //ankagraw
     it('[5803]: [Task Template Console] Task Template Console verification', async () => {
         let addColoumn: string[] = ['Label'];
-        let allColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Assignee', 'Support Group', 'Modified Date', 'Task Company'];
-        let updateAllColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Assignee', 'Support Group', 'Modified Date', 'Task Company', 'Label'];
+        let allColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Task Company','Support Group','Task Assignee', 'Owner Group', 'Modified Date'];
+        let updateAllColoumn: string[] = ['Template Name', 'Template Status', 'Task Type', 'Task Category Tier 1', 'Task Category Tier 2', 'Task Company','Support Group','Task Assignee', 'Owner Group', 'Modified Date', 'Label'];
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Task Management--Templates', BWF_PAGE_TITLES.TASK_MANAGEMENT.TEMPLATES);
         expect(await selectTaskTemplate.isAllColumnTitleDisplayed(allColoumn)).toBeTruthy("All Coloumn is not present");
@@ -924,7 +919,7 @@ describe('Create Case Task', () => {
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester('qtao');
             await createCasePage.setSummary('Summary' + randomStr);
-            await createCasePage.clickAssignToMeButton();
+            await changeAssignmentBladePo.setAssignee('US Support 3','Qadim Katawazi');
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();

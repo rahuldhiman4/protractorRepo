@@ -281,11 +281,12 @@ describe('Knowledge Articles - Versioning Tests', () => {
                 "categoryTier1": "Employee Relations",
                 "categoryTier2": "Compensation",
                 "categoryTier3": "Bonus",
-                "region": "Australia",
+                "region": "Asia-Pac",
+                "siteGroup": "Engineering",
                 "site": "Canberra",
                 "assignedCompany": "Petramco",
                 "assigneeBusinessUnit": "United Kingdom Support",
-                "assigneeSupportGroup": "GB Support 1",
+                "assigneeSupportGroup": "GB Support 2",
                 "assignee": "KMills",
                 "articleDesc": `${knowledgeTitleStr} Desc`
             }
@@ -1061,6 +1062,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
             let expectedVersion = "Version " + "1" + " - " + actualDate;
             expect(actualVersion).toBe(expectedVersion);
             await editKnowledgePage.setKnowledgeStatus('Draft');
+            await utilityCommon.closePopUpMessage();
             expect(await editKnowledgePage.getStatusValue()).toContain('Draft', 'Article is updated with Draft status.');
             await viewKnowledgeArticlePo.clickOnEditLink();
             expect(await editKnowledgePage.isArticleEditOptionDisplayed(minorEditOption)).toBeFalsy('Minor Edit Option is displayed for Draft Knowledge Article.');

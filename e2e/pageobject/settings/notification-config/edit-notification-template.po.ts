@@ -30,7 +30,7 @@ class EditNotificationTemplate {
         eventNameText: '[rx-view-component-id="f535976d-f547-460a-8fa6-f959eb485d38"] button div',
         searchRecipient: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .adapt-search',
         applyButton: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .filter-list [btn-type="primary"]',
-        fieldLabels: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .form-control-label span, [rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .bwf-footer button',
+        fieldLabels: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .form-control-label span, [rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .bwf-footer button, [rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .border-top button',
         recipientTypeSelect: '[id="adapt-select-37"] .dropdown-toggle',
         selectRecipient: '.rx-recipients-assignment-person-fullName, .rx-recipients-assignment-person-structure',
         recipientList: '.body tr td',
@@ -44,7 +44,10 @@ class EditNotificationTemplate {
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
         emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.btn-primary',
         cancelButtonAddRecipient: '.float-right button.btn-secondary',
-        alertInsertField: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .cke_button__rtfexpressioneditor_icon'
+        alertInsertField: '[rx-view-component-id="f86522e1-87a9-4c7b-9e1e-a940deec8b24"] .cke_button__rtfexpressioneditor_icon',
+        searchRecipeint: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .rx-form-control',
+        searchRecipeintList: '[rx-view-component-id="115b11c9-9847-4747-8285-7689088705da"] .rx-typeahead-popup-content button',
+        saveButtonAddRecipient: '.float-right button.btn-primary',
     }
 
     async selectCheckBoxOfBody(): Promise<void> {
@@ -56,7 +59,11 @@ class EditNotificationTemplate {
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await $(this.selectors.cancelButton).click();
+      //  await $(this.selectors.cancelButton).click();
+        await $(this.selectors.cancelButtonAddRecipient).isPresent().then(async (result) =>{
+            if(result) await $(this.selectors.cancelButton).click();
+            else console.log("Cancel Button is not present");
+        })
     }
 
     async clickCancelButtonAddRecipient(): Promise<void> {
@@ -193,7 +200,7 @@ class EditNotificationTemplate {
     }
 
     async saveAddRecipients(): Promise<void> {
-        await element(by.cssContainingText(this.selectors.fieldLabels, 'Save')).click();
+        await $(this.selectors.saveButtonAddRecipient).click();
     }
 
     async clickRecipientsCheckbox(recipientName: string, recipientOption: string) {
@@ -348,16 +355,8 @@ class EditNotificationTemplate {
                 dropDownElement = await $$(locator).get(0);
                 break;
             }
-            case "Company": {
-                dropDownElement = await $$(locator).get(1);
-                break;
-            }
-            case "SupportOrg": {
-                dropDownElement = await $$(locator).get(2);
-                break;
-            }
             case "AssignedGroup": {
-                dropDownElement = await $$(locator).get(3);
+                dropDownElement = await $$(locator).get(1);
                 break;
             }
             default: {
@@ -369,6 +368,12 @@ class EditNotificationTemplate {
     }
     async clickOnInsertFieldOfAlert(): Promise<void> {
         await $(this.selectors.alertInsertField).click();
+    }
+
+    async searchRecipient(requester: string): Promise<void> {
+        await $(this.selectors.searchRecipeint).clear();
+        await $(this.selectors.searchRecipeint).sendKeys(requester);
+        await $$(this.selectors.searchRecipeintList).first().click();
     }
 
 

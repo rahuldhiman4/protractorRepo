@@ -23,7 +23,7 @@ class CopyCaseTemplate {
         caseStatusValueOnCopy: '[rx-view-component-id="6b1d1112-129e-4c27-82b2-2248f12dc09a"] .dropdown-toggle',
         resolutionCodeValueOnCopy: '[rx-view-component-id="c3d9b91a-0198-4b61-b13a-59d46d3b0103"] .read-only-content',
         resoltuionDescriptionValueOnCopy: '[rx-view-component-id="b5b2d17e-e6b1-44e9-bbd5-23d74b3f1a2a"] .read-only-content',
-        caseDescriptionValueOnCopy: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] .bwf-description-read-state .field-value div p',
+        caseDescriptionValueOnCopy: '[rx-view-component-id="3b3506af-b9a2-47bd-88f7-032092bc1264"] .field-value div.bwf-expand div.ng-star-inserted',
         copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
         cancelButton: '[rx-view-component-id="be371341-8b3f-4433-93fa-33d242984010"] button',

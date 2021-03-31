@@ -135,7 +135,9 @@ class EditTaskTemplate {
     }
 
     async clickOnCancelButton(): Promise<void> {
-        await $(this.selectors.cancelButton).click();
+        await $(this.selectors.cancelButton).isPresent().then(async (present) => {
+            if (present) await $(this.selectors.cancelButton).click();
+        })
     }
 
     async getTaskTypeValue(): Promise<string> {

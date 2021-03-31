@@ -5,19 +5,14 @@ import { DropDownType } from '../../utils/constants';
 class DynamicField {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
-        dynamicField: 'bwf-dynamic-field-group-selector button.d-icon-left-plus',
         fieldName: '.textfield__wrapper .textfield-padding-transition',
         fieldDescription: '.textfield-padding-transition',
         saveButton: 'button[btn-type="primary"]',
         cancelButton: '.modal-footer button[btn-type="secondary"]',
         fieldValueType: '.col-md-6 .dropdown button',
         informationSource: '.col-md-6 .dropdown button',
-        enabledHiddenField: '[class="mt-4 ng-star-inserted"] button[aria-label="True"]',
-        disabledhiddenField: '[class="mt-4 ng-star-inserted"] button[aria-label="False"]',
         enabledRequiredField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="True"]',
         disabledRequiredField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="False"]',
-        enabledConfidentialsField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="True"]',
-        disabledConfidentialsField: '[class="ng-untouched ng-pristine ng-valid"] button[aria-label="False"]',
         enabledPublishInLibrary: '[class="d-textfield_required ng-star-inserted"] button[aria-label="True"]',
         allHeaders: 'div[id="selected-field-group-list"] .form-control-label',
         groupName: 'bwf-add-dynamic-group-data .textfield-padding-transition',
@@ -35,7 +30,7 @@ class DynamicField {
     }
 
     async clickOnDynamicField(): Promise<void> {
-        await $(this.selectors.dynamicField).click();
+        await element(by.buttonText('Dynamic Field')).click();
     }
 
     async clickOnDeleteField(): Promise<void> {
@@ -43,15 +38,15 @@ class DynamicField {
     }
 
     async isDynamicFieldDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.dynamicField).first().isDisplayed();
+        return await element(by.buttonText('Dynamic Field')).isDisplayed();
     }
 
     async clickOnAddDynamicGroup(): Promise<void> {
-        await $$(this.selectors.dynamicField).last().click();
+        await element(by.buttonText('Dynamic Group')).click();
     }
 
     async isAddDynamicGroupDisplayed(): Promise<boolean> {
-        return await $$(this.selectors.dynamicField).last().isDisplayed();
+        return await element(by.buttonText('Dynamic Group')).isDisplayed();
     }
 
     async clickOnDownArrow(): Promise<void> {
@@ -144,13 +139,13 @@ class DynamicField {
     }
 
     async clickEnabledConfidentialsRadioButton(): Promise<void> {
-        await $(this.selectors.enabledConfidentialsField).click();
+        await $$(this.selectors.enabledRequiredField).get(1).click();
     }
 
 
     async isConfidentialsRadioButtonDisplayed(): Promise<boolean> {
-        return await $(this.selectors.enabledConfidentialsField).isPresent().then(async (result) => {
-            if (result) return await $(this.selectors.enabledConfidentialsField).isDisplayed();
+        return await $$(this.selectors.enabledRequiredField).get(1).isPresent().then(async (result) => {
+            if (result) return await $$(this.selectors.enabledRequiredField).get(1).isDisplayed();
             else return false;
         });
     }
@@ -164,7 +159,7 @@ class DynamicField {
     }
 
     async clickDisabledConfidentialsRadioButton(): Promise<void> {
-        await $(this.selectors.disabledConfidentialsField).click();
+        await $$(this.selectors.disabledRequiredField).get(1).click();
     }
 
     async isEnabledTextPresent(value: string): Promise<boolean> {
@@ -172,11 +167,11 @@ class DynamicField {
     }
 
     async clickEnabledHiddenRadioButton(): Promise<void> {
-        await $(this.selectors.enabledHiddenField).click();
+        await $$(this.selectors.enabledRequiredField).get(2).click();
     }
 
     async clickDisabledHiddenRadioButton(): Promise<void> {
-        await $(this.selectors.disabledhiddenField).click();
+        await $$(this.selectors.disabledRequiredField).get(2).click();
     }
 
     async isDynamicFieldPresentInDynamicSection(value: string): Promise<boolean> {
