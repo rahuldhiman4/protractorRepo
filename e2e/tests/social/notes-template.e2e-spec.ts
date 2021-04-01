@@ -1250,15 +1250,14 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.clearFilter();
+            await utilityGrid.clearSearchBox();
+            expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
+
             let columnNameArray:string[] =['Label', 'ID'];
             await consoleNotesTemplatePo.addColumns(columnNameArray);
             await utilityGrid.searchRecord(notesTemplateInactiveData.templateName);
             expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(1);
             templateGuid = await consoleNotesTemplatePo.getGuidValue();
-            await utilityGrid.clearFilter();
-            await utilityGrid.clearSearchBox();
-            await browser.sleep(2000);//wait untile records load on console
-            expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', 'text');
             expect(await utilityGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Petramco Company Filter is not applied');
