@@ -823,6 +823,7 @@ describe("Create Case Assignment Mapping", () => {
             expect(await assignmentConfigCreatePage.isRegionAllDropDownValuesMatches(region)).toBeTruthy('FailureMsg: Region options mismatch');
             await assignmentConfigCreatePage.setSupportCompany("Petramco");
             await assignmentConfigCreatePage.setRegion('Asia-Pac');
+            await assignmentConfigCreatePage.setSiteGroup('Engineering');
             expect(await assignmentConfigCreatePage.isSiteAllDropDownValuesMatches(site)).toBeTruthy('FailureMsg: Site options mismatch');
             await assignmentConfigCreatePage.setPriority('Critical');
             await assignmentConfigCreatePage.setSiteGroup('Engineering');
@@ -840,6 +841,7 @@ describe("Create Case Assignment Mapping", () => {
             expect(await assignmentConfigCreatePage.isRegionAllDropDownValuesMatches(region)).toBeTruthy('FailureMsg: Region options mismatch');
             await assignmentConfigCreatePage.setSupportCompany("Petramco");
             await assignmentConfigCreatePage.setRegion('Asia-Pac');
+            await assignmentConfigCreatePage.setSiteGroup('Engineering');
             expect(await assignmentConfigCreatePage.isSiteAllDropDownValuesMatches(site)).toBeTruthy('FailureMsg: Site options mismatch');
             await assignmentConfigCreatePage.setPriority('Critical');
             await assignmentConfigCreatePage.setSiteGroup('Engineering');
@@ -852,6 +854,7 @@ describe("Create Case Assignment Mapping", () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping("1DRDMV14935 " + randomStr);
             await apiHelper.deleteReadAccessOrAssignmentMapping("2DRDMV14935 " + randomStr);
+            await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
         });
@@ -1023,24 +1026,29 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.deleteDefaultAssignmentConfig();
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName("1DRDMV8968 " + randomStr);
+            await console.log("1DRDMV8968 " + randomStr);
             await assignmentConfigCreatePage.setCompany("Phylum");
             await assignmentConfigCreatePage.setPriority("Critical");
+            await assignmentConfigCreatePage.setLabel('Accounts');
             await assignmentConfigCreatePage.setCategoryTier1("Accounts Receivable");
             await assignmentConfigCreatePage.setSupportCompany("Phylum");
             await assignmentConfigCreatePage.setSupportOrg('Phylum Support Org1');
             await assignmentConfigCreatePage.setSupportGroup('Phylum Support Group1');
-            await assignmentConfigCreatePage.setAssignee("Morwenna Rosales");
+            await assignmentConfigCreatePage.setAssignee("Jeanne Milano");
             await assignmentConfigCreatePage.clickonSaveButton();
             await utilityCommon.closePopUpMessage();
+            await utilityGrid.searchRecord("1DRDMV8968 " + randomStr);
+            expect (await utilityGrid.isGridRecordPresent("1DRDMV8968 " + randomStr)).toBeTruthy(`1DRDMV8968  + ${randomStr} Missing`);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("mcarney");
             await createCasePage.setSummary("5418 Case Summary1");
             await createCasePage.setPriority("Critical");
+            await createCasePage.setLabel('Accounts');
             await createCasePage.selectCategoryTier1("Accounts Receivable");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupValue()).toBe('Phylum Support Group1');
-            expect(await viewCasePo.getAssigneeText()).toBe("Roland Flanagan");
+            expect(await viewCasePo.getAssigneeText()).toBe("Jeanne Milano");
         });
         it('[5418]:[Assignment Mapping] Categories partial match', async () => {
             await navigationPage.gotoSettingsPage();
@@ -1053,12 +1061,13 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("mcarney");
             await createCasePage.setSummary("5418 Case Summary2");
             await createCasePage.setPriority("Critical");
+            await createCasePage.setLabel('Accounts');
             await createCasePage.selectCategoryTier1("Accounts Receivable");
             await createCasePage.selectCategoryTier2("Collection");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupValue()).toBe('Phylum Support Group1');
-            expect(await viewCasePo.getAssigneeText()).toBe("Roland Flanagan");
+            expect(await viewCasePo.getAssigneeText()).toBe("Jeanne Milano");
         });
         it('[5418]:[Assignment Mapping] Categories partial match', async () => {
             await navigationPage.gotoSettingsPage();
@@ -1071,13 +1080,14 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.selectRequester("mcarney");
             await createCasePage.setSummary("5418 Case Summary3");
             await createCasePage.setPriority("Critical");
+            await createCasePage.setLabel('Accounts');
             await createCasePage.selectCategoryTier1("Accounts Receivable");
             await createCasePage.selectCategoryTier2("Collection");
             await createCasePage.selectCategoryTier3("Payment Plans");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
             expect(await viewCasePo.getAssignedGroupValue()).toBe('Phylum Support Group1');
-            expect(await viewCasePo.getAssigneeText()).toBe("Roland Flanagan");
+            expect(await viewCasePo.getAssigneeText()).toBe("Jeanne Milano");
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');

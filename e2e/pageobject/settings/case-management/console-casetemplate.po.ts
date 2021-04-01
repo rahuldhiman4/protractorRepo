@@ -17,7 +17,7 @@ class CaseTemplateConsole {
     async clickOnCreateCaseTemplateButton(): Promise<void> {
         //        await browser.wait(this.EC.visibilityOf($(this.selectors.createCaseTemplate)));
         await $(this.selectors.createCaseTemplate).click();
-        await browser.sleep(2000); //Need this sleep becoz default owner group/organization/company loading let and case template not gets save
+        await browser.sleep(4000); //Defect --> DRDMV-25992  Need this sleep becoz default owner group/organization/company loading let and case template not gets save
     }
 
     async isCreateCaseTemplateEnabled(): Promise<boolean> {

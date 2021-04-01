@@ -1290,6 +1290,7 @@ describe("Quick Case", () => {
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.deleteTemplateAccess('Human Resource');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Human Resource')).toBeFalsy('Support Group does not have read access');
 
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
@@ -1300,12 +1301,12 @@ describe("Quick Case", () => {
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
             await templateAccessTabPo.deleteTemplateAccess('Human Resource');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Human Resource')).toBeFalsy('Support Group does not have read access');
 
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilityCommon.closePopUpMessage();
-
 
             await viewCasetemplatePo.clickBackArrowBtn();
             // Verify template is accessible with reporter user
