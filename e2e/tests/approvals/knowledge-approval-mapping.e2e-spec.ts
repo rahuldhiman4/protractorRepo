@@ -102,7 +102,7 @@ describe("Knowledge Approval Mapping Tests", () => {
             await createApprovalMappingKnowledgePo.selectCompany('Petramco');
             await createApprovalMappingKnowledgePo.selectStatusTrigger('Retire Approval');
             await createApprovalMappingKnowledgePo.clickSaveApprovalMappingBtn();
-            expect(await utilityCommon.isPopUpMessagePresent('The value(s) for this entry violate a unique index that has been defined for this record definition.')).toBeTruthy("Error message absent");
+            expect(await utilityCommon.isPopUpMessagePresent('The Approval Mapping Name already exists. Please select a different name.')).toBeTruthy("Error message absent");
             await createApprovalMappingKnowledgePo.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
             await utilityCommon.closePopUpMessage();

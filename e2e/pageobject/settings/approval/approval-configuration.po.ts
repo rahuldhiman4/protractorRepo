@@ -1,6 +1,7 @@
 import utilityCommon from "../../../utils/utility.common";
 import { $, protractor, ProtractorExpectedConditions, element, by, $$, browser, ElementFinder } from "protractor";
 import utilityGrid from '../../../utils/utility.grid';
+import { DropDownType } from '../../../utils/constants';
 
 class ApprovalsConsole {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -208,8 +209,10 @@ class ApprovalsConsole {
         await $(this.selectors.auditInformationTextField).sendKeys(auditInfo);
     }
 
-    async selectSelfApprovalProcess(): Promise<void> {
-        await $(this.selectors.sampleSelfApprovalCheckbox).click();
+    async selectSelfApprovalProcess(dropDownValue:string): Promise<void> {
+        let dropDownElement: ElementFinder;
+        dropDownElement = await $(`[formcontrolname="process"] button`);
+        await utilityCommon.selectDropDown(dropDownElement, dropDownValue, DropDownType.WebElement);
     }
 
     async selectMultipleApproversDropDownOption(multipleApproverFlow: string): Promise<void> {

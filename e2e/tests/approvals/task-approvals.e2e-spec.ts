@@ -786,7 +786,7 @@ describe("Task Approval Tests", () => {
             await apiHelper.associateTemplateWithApprovalMapping(taskModule, externalTaskTemplate.id, approvalMappingResponse.id);
 
             caseData = {
-                "Requester": userData1.userId,
+                "Requester": "zculloden",
                 "Summary": "Automated One must Approval Case" + randomStr,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplate.displayId
@@ -797,7 +797,7 @@ describe("Task Approval Tests", () => {
             caseId = newCase.displayId;
 
             caseData1 = {
-                "Requester": userData1.userId,
+                "Requester":"zculloden",
                 "Summary": "Automated One must Approval Case" + randomStr,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplate1.displayId
