@@ -72,7 +72,9 @@ describe('Knowledge Articles - Versioning Tests', () => {
         await apiHelper.createKnowledgeSet(knowledgeSetDataPsilon);
 
         await apiHelper.apiLogin('elizabeth');
-        await apiHelper.createKnowledgeSet(knowledgeSetData);
+        let knowledgeSetResponse = await apiHelper.createKnowledgeSet(knowledgeSetData);
+        await apiHelper.giveReadAccessToKnowledgeSet(knowledgeSetResponse);
+        console.log(knowledgeSetData.knowledgeSetTitle);
 
         let knowledgeArticleTemplateData = {
             templateName: knowledgeTemplateStr,
@@ -110,10 +112,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
         expect(actualVersion).toBe(expectedVersion);
     });
 
-    //skhobrag-Defect
+    //skhobrag Defect DRDMV-26009
     describe('[3708]: Verify the functionality of Edit article with Minor Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -262,7 +264,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
     });
 
-    //skhobrag-log defect
+    //skhobrag
     describe('[3705]: Verify the search based on version on knowledge article console', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let versionFieldColumn: string[] = ["Version"];
@@ -553,14 +555,13 @@ describe('Knowledge Articles - Versioning Tests', () => {
 
     });
 
-    //skhobrag-defect
+    //skhobrag-Defect DRDMV-26009
     describe('[3707,3712]: Verify the functionality of Edit article with Major Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
         let articleAccessPermission: string[] = [
           "GB Support 2",
           "Petramco",
           "Kane Williamson",
-          "Qianru Tao"
         ];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
@@ -1135,10 +1136,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
         });
     });
 
-    //skhobrag-defect
+    //skhobrag-Defect DRDMV-26009
     describe('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
         let updatedArticleAccessPermission: string[] = ['GB Support 2', 'Employee Relations', 'Petramco', 'Kane Williamson'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
