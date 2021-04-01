@@ -1423,7 +1423,7 @@ describe('Notes template', () => {
             await navigationPage.gotoQuickCase();
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qiang Du', 'Manager');
+            await addRelatedPopupPage.addPerson('qdu', 'Manager');
             await relatedTabPage.clickRelatedPersonName('Qiang Du');
             await utilityCommon.switchToNewTab(1);
             await browser.sleep(3000); //Wait untile redirect to  person profile page

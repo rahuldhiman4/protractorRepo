@@ -400,7 +400,7 @@ describe('Person Profile test', () => {
         it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qiao Feng', 'Parent');
+            await addRelatedPopupPage.addPerson('qfeng', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Qiao Feng');
             await utilityCommon.switchToNewTab(1);
             await activityTabPage.addActivityNote("4128");
@@ -425,7 +425,7 @@ describe('Person Profile test', () => {
             await navigationPage.gotoPersonProfile();
             expect(await activityTabPage.isTextPresentInNote("4128")).toBeFalsy("Qadim can see post on his own activity");
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qiao Feng', 'Parent');
+            await addRelatedPopupPage.addPerson('qfeng', 'Parent');
             await relatedTabPage.clickRelatedPersonName('Qiao Feng');
             await utilityCommon.switchToNewTab(1);
             expect(await activityTabPage.isTextPresentInNote("4128")).toBeFalsy("Qadim can see post on qdu's activity");
@@ -1022,7 +1022,7 @@ describe('Person Profile test', () => {
 
             expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Hannah Haas', 'Manager')).toBeTruthy('Manager is not Hannah');
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qing Yuan', 'Related to');
+            await addRelatedPopupPage.addPerson('qyuan', 'Related to');
         });
         it('[4596,4198,4586]: Verify My Profile Console', async () => {
             await relatedTabPage.clickRelatedPersonName('Qing Yuan');
@@ -1037,12 +1037,14 @@ describe('Person Profile test', () => {
             finally { await utilityCommon.switchToDefaultWindowClosingOtherTabs(); }
             await browser.sleep(2000); //To wait for completely loading of default page
             await relatedTabPage.removeRelatedPerson('Qing Yuan');
+            await utilityCommon.closePopUpMessage(); // remove when error message defect fixed
             await navigationPage.signOut();
             await loginPage.login('qyuan');
             await navigationPage.gotoPersonProfile();
             expect(await relatedTabPage.isRelatedPersonPresent('Elizabeth Peters')).toBeFalsy('Elizabeth is still Present');
         });
         afterAll(async () => {
+            await utilityCommon.closePopUpMessage(); // remove when error message defect fixed
             await navigationPage.signOut();
             await loginPage.login('elizabeth');
         });
