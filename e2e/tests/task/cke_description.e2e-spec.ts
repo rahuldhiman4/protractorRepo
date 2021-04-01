@@ -722,7 +722,7 @@ describe('CKE Description', () => {
     });
 
     //ptidke
-    fdescribe('[3521]:Verify Task description fields with CK editor functionality on Adhoc task	', async () => {
+    describe('[3521]:Verify Task description fields with CK editor functionality on Adhoc task	', async () => {
         let randomString = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         it('[3521] Create task template bold , italic and underline with CKE', async () => {
             await navigationPage.gotoQuickCase();
