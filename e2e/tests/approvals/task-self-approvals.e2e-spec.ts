@@ -245,6 +245,7 @@ describe("Task Self Approval Tests", () => {
             await approvalConfigurationPage.clickModelOkButton();
             await approvalConfigurationPage.setSelfApprovalPrecendenceValue('1');
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
+            await approvalConfigurationPage.selectSelfApprovalProcess('Task - Sample Self Approval');
             await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
         });
@@ -831,7 +832,7 @@ describe("Task Self Approval Tests", () => {
                 "flowName": 'Approval Flow1' + randomStr,
                 "approver": "qliu;qstrong",
                 "isLevelUp": false,
-                "qualification": "'Category Tier 1' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.662dc43aa1b2ada8eefe9dfb6aec1413d9d6b92f119132f2f8fbe01d771768f4c674c03062fa2ce190b9b6889e7a73c5b94501a79b2f50b4a488d63252c05920.304405421} AND 'Category Tier 2' = ${recordInstanceContext._recordinstance.com.bmc.arsys.rx.foundation:Operational Category.5264bb516ca8f271f6740d23ef297f8ad20245a7ab732f732c86f72180b26473dae7afcaa103d196e9a5c2d948a9a2d42a74200859284322111b7ded9666eae9.304405421}",
+                "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                 "precedence": 0,
                 "signingCriteria": 0,
             }
@@ -908,7 +909,7 @@ describe("Task Self Approval Tests", () => {
             expect(await showApproversBladePo.getApprovalsHelpTextOnShowApproversBlade()).toContain('One of following people must approve this case:');
             expect(await showApproversBladePo.getApproversCount()).toBe(2);
             expect(await showApproversBladePo.getApproversName('Quin Strong')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversName('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversName('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isApproverPersonIconDisplayed('Quin Strong')).toBeTruthy('Approver Person Icon is not displayed');
             expect(await showApproversBladePo.isAwaitingApproverIconDisplayed()).toBeTruthy('Awaiting approver icon is not displayed');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
@@ -941,7 +942,7 @@ describe("Task Self Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
             expect(await showApproversBladePo.getApproversNameFromActivity('Quin Strong')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
@@ -1004,7 +1005,7 @@ describe("Task Self Approval Tests", () => {
             expect(await showApproversBladePo.getApproversTabLabelFromActivity('Approval Decision')).toContain('Approval Decision (1)');
             expect(await showApproversBladePo.getApproversCountFromActivity()).toBe(2);
             expect(await showApproversBladePo.getApproversNameFromActivity('Quin Strong')).toBeTruthy('Approver not present');
-            expect(await showApproversBladePo.getApproversNameFromActivity('RA3 Liu')).toBeTruthy('Approver not present');
+            expect(await showApproversBladePo.getApproversNameFromActivity('Qiwei Liu')).toBeTruthy('Approver not present');
             expect(await showApproversBladePo.isBackButtonOnApprovalBladeDisplayed()).toBeTruthy('Back button on Approver List blade is not displayed');
             expect(await showApproversBladePo.getApproversCompanyFromActivity('Petramco')).toBeTruthy('Approver Company is not displayed');
             expect(await showApproversBladePo.getApprovedApprovalStatusLabelFromActivity()).toContain('Approved');
