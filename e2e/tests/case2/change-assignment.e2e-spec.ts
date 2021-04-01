@@ -34,7 +34,7 @@ describe("Change Assignment", () => {
     });
 
     //apurva
-    it('[12179]:Verify that all the values are sorted for Company, Support Org, SG and Company Dropdown', async () => {
+    it('[12179]:Verify Assignement Drop Down Values With Ascending Order', async () => {
         await navigationPo.gotoCreateCase();
         await createCasePo.selectRequester('adam');
         await createCasePo.setSummary('Summary');
@@ -63,11 +63,10 @@ describe("Change Assignment", () => {
         let newArray: string = nth(await changeAssignmentPage.getAllDropDownValues("Assignee"), 1);
         expect(await newArray.includes('Adam Pavlik')).toBeTruthy('Adam Palvik Name is not available in Assignee');
         expect(await newArray.includes('apavlik@petramco.com')).toBeTruthy('Adam Palvik Email is not available in Assignee');
-        expect(await newArray.includes('Petramco > United States Support > US Support 3')).toBeTruthy('Adam Palvik Full hierarchy is not available in Assignee');
     });
 
     //apurva
-    it('[4000003]:Verify on Case Creation, if Assignment fields are enabled only when Requester is selected', async () => {
+    it('[12300]:Verify on Case Creation, if Assignment fields are enabled only when Requester is selected', async () => {
        await navigationPo.gotoCaseConsole();
         await navigationPo.gotoCreateCase();
         expect(await changeAssignmentPage.isFieldDisabled("AssignedGroup")).toBeTruthy('Failure1');
@@ -168,44 +167,6 @@ describe("Change Assignment", () => {
             expect(await changeAssignmentPage.isDropDownListSorted("Assignee")).toBeTruthy();
             await editTaskPo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-        });
-        afterAll(async () => {
-            await navigationPo.signOut();
-            await loginPo.login('qkatawazi');
-        });
-    });
-
-    describe('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
-        it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
-            await navigationPo.gotoCreateCase();
-            await createCasePo.selectRequester('adam');
-            await createCasePo.setSummary('Summary');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            await changeAssignmentPage.setDropDownValue("AssignedGroup", 'US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            await changeAssignmentPage.setDropDownValue("Assignee", 'Adam Pavlik');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
-        });
- 
-        it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
-            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'None');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('Select');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            await changeAssignmentPage.setDropDownValue('Assignee', 'Adam Pavlik');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('US Support 3');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Adam Pavlik');
-        });
-        it('[12182]:Verify if child field is selected, all the parent fields are Auto selected and parent fields are partially selected then remaining fields are Auto selected', async () => {
-            await changeAssignmentPage.setDropDownValue('AssignedGroup', 'AU Support 1');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('AU Support 1');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Select');
-            await changeAssignmentPage.setDropDownValue('Assignee', 'Anju Joshi');
-            expect(await changeAssignmentPage.getDropDownValue("AssignedGroup")).toBe('AU Support 1');
-            expect(await changeAssignmentPage.getDropDownValue("Assignee")).toBe('Anju Joshi');
         });
         afterAll(async () => {
             await navigationPo.signOut();
@@ -471,4 +432,45 @@ describe("Change Assignment", () => {
             expect(await changeAssignmentPage.isFieldDisabled("AssignToMe")).toBeTruthy();
         });
     });
+
+    it('[12181,12297]:Verify Assignement Drop Down Values Displayed According to Parent Drop Down', async () => {
+        await navigationPo.gotoCaseConsole();
+        await navigationPo.gotoCreateCase();
+        await createCasePo.selectRequester('adam');
+        await createCasePo.setSummary('Summary');
+        await changeAssignmentPage.setDropDownValue('AssignedGroup', 'US Support 3');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Qadim Katawazi')).toBeTruthy('Assignee is not present');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Qianru Tao')).toBeFalsy('Assignee is present');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Qadim')).toBeTruthy('Assignee is not searchable with First Name');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Katawazi')).toBeTruthy('Assignee is not searchable with Last Name');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'qkatawazi')).toBeTruthy('Assignee is not searchable with login id');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'qkatawazi@petramco.com')).toBeFalsy('Assignee is not searchable with email');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'adim')).toBeTruthy('Assignee is not searchable with Last 4 characters of Name');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Qad')).toBeTruthy('Assignee is not searchable with first 3 characters of Name');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'tawaz')).toBeTruthy('Assignee is not searchable with middle characters');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Qadima')).toBeFalsy('Assignee is searchable with Wrong name');
+        await changeAssignmentPage.setDropDownValue('AssignedGroup', 'None');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("AssignedGroup", 'US Support 1')).toBeTruthy('Assigned Group is not searchable with name');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("AssignedGroup", 'US')).toBeTruthy('Assigned Group is not searchable with first characters');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("AssignedGroup", 'Support')).toBeTruthy('Assigned Group is not searchable with middle word');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("AssignedGroup", 'upport 1')).toBeTruthy('Assigned Group is not searchable with last characters');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("AssignedGroup", '1')).toBeTruthy('Assigned Group is not searchable with last word');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("AssignedGroup", 'port')).toBeTruthy('Assigned Group is not searchable with middle characters');
+    });
+
+    it('[12303]:Verify User behaviour With Assignment and Associated Configuration', async () => {
+        await navigationPo.gotoCaseConsole();
+        await navigationPo.gotoCreateCase();
+        await createCasePo.selectRequester('adam');
+        await createCasePo.setSummary('Summary');
+
+        //Validating the Agent is not available if Assignment Availability is set as NO for that Agent
+        await changeAssignmentPage.setDropDownValue('AssignedGroup', 'Petramco Support Group3');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Polar White')).toBeFalsy('Assignee is searchable');
+
+        //Validating the Agent is not available if Assignment Availability of Agent is set to Yes but for SG, Assignment Availability of Agent is set to NO
+        await changeAssignmentPage.setDropDownValue('AssignedGroup', 'Risk Management');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Quin Strong')).toBeFalsy('Assignee is searchable');
+    });
+    
 });
