@@ -248,6 +248,10 @@ export class EditEmailConfig {
         return await utilityGrid.isGridRecordPresent(gridValue, this.selectors.exclusiveSubjectGuid);
     }
 
+    async searchandSelectRecordInExclusiveGrid(gridValue: string): Promise<void> {
+        await utilityGrid.searchAndSelectGridRecord(gridValue, this.selectors.exclusiveSubjectGuid);
+   }
+
     async isRecordPresentInAcknowledgementTemplateGrid(gridValue: string): Promise<boolean> {
         return await utilityGrid.isGridRecordPresent(gridValue, this.selectors.acknowledgementTemplateGridGuid);
     }

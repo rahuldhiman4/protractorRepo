@@ -48,7 +48,10 @@ describe('Dynamic data', () => {
     describe('[3861]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
         const randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = 'caseTemplate' + randomStr;
-        let globalcaseTemplateName, globalTaskTemplateName, taskTemplateName, caseTemaplateSummary = 'caseTemplate' + randomStr;
+        let caseTemaplateSummary = 'caseTemplate' + randomStr;
+        let globalcaseTemplateName = 'globalcasetempalte' + randomStr;
+        let globalTaskTemplateName = 'Global  task' + randomStr;
+        let  taskTemplateName = 'Manual  task' + randomStr;
         beforeAll(async () => {
             let eventData = {
                 eventName: petramcoEventName,
@@ -72,7 +75,7 @@ describe('Dynamic data', () => {
             await apiHelper.apiLogin('qkatawazi');
             let newCaseTemplate = await apiHelper.createCaseTemplate(casetemplateData);
             await apiHelper.createDynamicDataOnTemplate(newCaseTemplate.id, 'SAVE_EXISTING_AND_NEW_CASE_DYNAMIC_DATA_DEFINITION');
-            globalcaseTemplateName = 'globalcasetempalte' + randomStr;
+            
             let gloablcaseTemaplateSummary = 'gloabalcasetemplate' + randomStr;
             let globaltemplateData = {
                 "templateName": `${globalcaseTemplateName}`,
@@ -83,7 +86,6 @@ describe('Dynamic data', () => {
             let globaltemplate = await apiHelper.createCaseTemplate(globaltemplateData);
             await apiHelper.createDynamicDataOnTemplate(globaltemplate.id, 'GLOBAL_DYNAMIC_DATA_CASE_TEMPLATE');
 
-            taskTemplateName = 'Manual  task' + randomStr;
             let manualTaskSummary = 'ManualSummary' + randomStr;
             let templateData = {
                 "templateName": `${taskTemplateName}`,
@@ -96,7 +98,6 @@ describe('Dynamic data', () => {
             }
             let tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'DYNAMIC_DATA_FOR_TASK_TEMPLATE');
-            globalTaskTemplateName = 'Global  task' + randomStr;
             let globalmanualTaskSummary = 'GlobalTaskSummary' + randomStr;
             let gloabalTaskData = {
                 "templateName": `${globalTaskTemplateName}`,

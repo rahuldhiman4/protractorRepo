@@ -600,7 +600,8 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectSupportOrg('HR Support');
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
-            expect(await utilityCommon.isPopUpMessagePresent("The file type is not supported. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
+            expect(await utilityCommon.isPopUpMessagePresent("File is not allowed to be uploaded. com.bmc.dsm.knowledge:Knowledge Article : Attachment 1 : Test.exe")).toBeTruthy('Error msg not present');
+            await utilityCommon.closePopUpMessage();
         });
         afterAll(async () => {
             await utilityCommon.closeAllBlades();

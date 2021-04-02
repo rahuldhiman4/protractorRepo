@@ -114,7 +114,7 @@ class DynamicField {
 
     async removeField(): Promise<void> {
         await $(this.selectors.deleteButton).isPresent().then(async (result) => {
-            if (result) return await $(this.selectors.deleteButton).click();
+            if (result) return await $$(this.selectors.deleteButton).first().click();
             else return console.log("delete button not present");
         });
     }
