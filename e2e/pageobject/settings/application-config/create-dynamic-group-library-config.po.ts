@@ -17,7 +17,7 @@ class CreateDynamicGroupLibrary {
         localizedValueSaveBtn: 'button[rx-id="save-button"]',
         localizedValueCancelBtn: 'button[rx-id="cancel-button"]',
         dynamicGroupWarningMsg: '.alert-warning',
-        status: 'd17e9d98-3760-4c7f-b0d9-9ae40a3cab72',
+        status: 'a3d16f46-16aa-4309-b376-f5807b0d4eb4',
         dynamicFieldNameInput: 'bwf-dynamic-field-data input.textfield-padding-transition',
         dynamicFieldDescriptionInput: 'bwf-dynamic-field-data input.textfield-padding-transition',
         dynamicGroupSaveBtn: '[rx-view-component-id="063a9878-3e83-4e00-84a8-793bde3fc704"] button',

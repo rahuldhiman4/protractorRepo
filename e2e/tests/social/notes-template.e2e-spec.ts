@@ -1250,15 +1250,14 @@ describe('Notes template', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
             await utilityGrid.clearFilter();
+            await utilityGrid.clearSearchBox();
+            expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
+
             let columnNameArray:string[] =['Label', 'ID'];
             await consoleNotesTemplatePo.addColumns(columnNameArray);
             await utilityGrid.searchRecord(notesTemplateInactiveData.templateName);
             expect(await utilityGrid.getNumberOfRecordsInGrid()).toEqual(1);
             templateGuid = await consoleNotesTemplatePo.getGuidValue();
-            await utilityGrid.clearFilter();
-            await utilityGrid.clearSearchBox();
-            await browser.sleep(2000);//wait untile records load on console
-            expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
             await utilityGrid.clearFilter();
             await utilityGrid.addFilter('Company', 'Petramco', 'text');
             expect(await utilityGrid.isGridRecordPresent(notesTemplatePetramcoData.templateName)).toBeTruthy('Petramco Company Filter is not applied');
@@ -1423,7 +1422,7 @@ describe('Notes template', () => {
             await navigationPage.gotoQuickCase();
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('Qiang Du', 'Manager');
+            await addRelatedPopupPage.addPerson('qdu', 'Manager');
             await relatedTabPage.clickRelatedPersonName('Qiang Du');
             await utilityCommon.switchToNewTab(1);
             await browser.sleep(3000); //Wait untile redirect to  person profile page
@@ -1758,7 +1757,6 @@ describe('Notes template', () => {
 
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('GB Support 2', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
@@ -2010,7 +2008,6 @@ describe('Notes template', () => {
             await viewKnowledgeArticlePo.clickEditKnowledgeAccess();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Knowledge');
             await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
-            await accessTabPo.selectAccessEntityDropDown('Australia Support', 'Select Business Unit');
             await accessTabPo.selectAccessEntityDropDown('AU Support 3', 'Select Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             await accessTabPo.clickCloseKnowledgeAccessBlade();
@@ -2095,12 +2092,10 @@ describe('Notes template', () => {
         it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('CA Support 3', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
-            await accessTabPo.selectAccessEntityDropDown('Petramco', 'Select Company');
             await accessTabPo.selectAccessEntityDropDown('Staffing', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');

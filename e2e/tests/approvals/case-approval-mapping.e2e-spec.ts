@@ -433,6 +433,7 @@ describe("Case Approval Mapping Tests", () => {
             expect(await utilityCommon.isPopUpMessagePresent('The combination of Company, Line of Business, Flowset and Status to trigger already exists for this record definition. Please enter unique values for these fie...')).toBeTruthy('Invalid error message');
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
+            await utilityCommon.closePopUpMessage();
         });
         it('[5193,6267]: Case approval mapping access for Psilon user, Case Manager', async () => {
             await navigationPage.signOut();
@@ -687,11 +688,11 @@ describe("Case Approval Mapping Tests", () => {
     describe('[3509]:Case Global Approval Mapping behavior', async () => {
         const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let approvalMappingName = 'Approval Mapping' + randomStr;
-        let globalCaseTemplateStr = 'Case Template for Global company_' + randomStr;
-        let petramcoCaseTemplateStr = 'Case Template for Petramco company_' + randomStr;
-        let psilonCaseTemplateStr = 'Case Template for Psilon company_' + randomStr;
-        let draftCaseTemplateStr = 'Case Template for Petramco company for draft status_' + randomStr;
-        let inactiveCaseTemplateStr = 'Case Template for Petramco company for inactive status_' + randomStr;
+        let globalCaseTemplateStr = 'CTGlobal_' + randomStr;
+        let petramcoCaseTemplateStr = 'CTPetramco_' + randomStr;
+        let psilonCaseTemplateStr = 'CTPsilon_' + randomStr;
+        let draftCaseTemplateStr = 'CTPetramcoDraft_' + randomStr;
+        let inactiveCaseTemplateStr = 'CTPetramcoInactive_' + randomStr;
 
         beforeAll(async () => {
 
@@ -815,7 +816,7 @@ describe("Case Approval Mapping Tests", () => {
         });
 
         it('[3509]: verify updated details on approval mapping', async () => {
-            await editApprovalMappingPage.searchCaseTemplate('Case Template for ');
+            await editApprovalMappingPage.searchCaseTemplate('CT');
             await editApprovalMappingPage.selectMultipleCaseTemplateCheckbox();
             await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
             await editApprovalMappingPage.clickCancelApprovalMappingBtn();
@@ -845,12 +846,13 @@ describe("Case Approval Mapping Tests", () => {
         });
 
         it('[3509]: Verify case template selection for approval mapping with global organization', async () => {
+            await editApprovalMappingPage.setCaseCreatedUsingTemplateGoInApprovalToggle(true);
             await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
             expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(globalCaseTemplateStr);
             await editApprovalMappingPage.searchCaseTemplate(petramcoCaseTemplateStr);
             expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(petramcoCaseTemplateStr);
             await editApprovalMappingPage.searchCaseTemplate(psilonCaseTemplateStr);
-            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe(psilonCaseTemplateStr);
+            expect(await editApprovalMappingPage.getSearchedCaseTemplate()).toBe('');
             expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalLeftArrawBtnEnabled()).toBeFalsy('Left Arrow button to select case template is enabled');
             expect(await editApprovalMappingPage.isSelectCaseTemplateforApprovalRightArrawBtnEnabled()).toBeFalsy('Right Arrow button to select case template is enabled');
             await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
@@ -863,7 +865,7 @@ describe("Case Approval Mapping Tests", () => {
             await editApprovalMappingPage.selectCaseTemplateCheckbox();
             await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
             expect(await editApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy('Save button is enabled');
-            await editApprovalMappingPage.searchCaseTemplate(psilonCaseTemplateStr);
+            await editApprovalMappingPage.searchCaseTemplate(globalCaseTemplateStr);
             await editApprovalMappingPage.selectCaseTemplateCheckbox();
             await editApprovalMappingPage.clickCaseTemplateforApprovalRightArrawBtn();
 

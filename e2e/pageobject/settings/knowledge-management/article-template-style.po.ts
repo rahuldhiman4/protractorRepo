@@ -26,8 +26,8 @@ class ArticleTemplateStyle {
         previewBox: '.label_control-wrap [name="textarea"]',
         fontDropdown: 'button[aria-label="Font"]',
         fontDropdownValue: 'div.rx-select__options .rx-select__option-content div',
-        textColor: '.bwf-left-align .adapt-cp-input-wrapper div',
-        backGroundColor: '.bwf-right-align .adapt-cp-input-wrapper'
+        textColor: '.bwf-left-align .adapt-cp-input-wrapper div input',
+        backGroundColor: '.bwf-right-align .adapt-cp-input-wrapper div input'
     }
 
     async clickSaveButton(): Promise<void> {
@@ -204,11 +204,13 @@ class ArticleTemplateStyle {
 
     async selectTextColor(value: string): Promise<void> {
         await $$(this.selectors.textColor).last().click();
+        await $$(this.selectors.textColor).last().clear();
         await $$(this.selectors.textColor).last().sendKeys(value);
     }
 
     async selectBackgroundColor(value: string): Promise<void> {
         await $$(this.selectors.backGroundColor).last().click();
+        await $$(this.selectors.backGroundColor).last().clear();
         await $$(this.selectors.backGroundColor).last().sendKeys(value);
     }
 }

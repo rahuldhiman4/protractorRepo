@@ -231,7 +231,11 @@ class EditApprovalMapping {
     }
 
     async getSearchedCaseTemplate(): Promise<string> {
-        return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).getText();
+        return $('.list-item').isPresent().then(async (link) => {
+            if (link) {
+                return await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.searchedCaseTemplateText).getText();
+            }else return '';
+        });
     }
 
     async getAssociatedCaseTemplate(): Promise<string> {
@@ -253,7 +257,12 @@ class EditApprovalMapping {
     }
 
     async selectCaseTemplateCheckbox(): Promise<void> {
-        await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.selectCaseTemplate).click();
+        await await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.selectCaseTemplate).isPresent().then(async (link) => {
+            console.log(link);            
+            if (link) {
+                await $$(this.selectors.caseTemplateSelectionArea).first().$(this.selectors.selectCaseTemplate).click();
+            }else null;
+        });
     }
 
     async selectMultipleCaseTemplateCheckbox(): Promise<void> {

@@ -1236,12 +1236,14 @@ describe("Quick Case", () => {
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
             await templateAccessTabPo.selectSupportGroup('Compensation and Benefits', 'Select Support Group');
             await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
             expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
             expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeFalsy('Support Group does not have read access');
             await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
@@ -1264,12 +1266,14 @@ describe("Quick Case", () => {
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Employee Relations');
             await templateAccessTabPo.clickOnAccessButton('Support Group Access');
             await templateAccessTabPo.selectCompany('Petramco', 'Select Company');
             await templateAccessTabPo.selectSupportGroup('Compensation and Benefits', 'Select Support Group');
             await templateAccessTabPo.clickOnWriteAccessAddButton('Add Support Group');
             expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
             expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Employee Relations')).toBeFalsy('Support Group does not have read access');
             await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('elizabeth');
@@ -1289,7 +1293,10 @@ describe("Quick Case", () => {
             await navigationPo.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData1.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Compensation and Benefits');
             await templateAccessTabPo.deleteTemplateAccess('Human Resource');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Human Resource')).toBeFalsy('Support Group does not have read access');
 
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
@@ -1299,13 +1306,15 @@ describe("Quick Case", () => {
 
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(templateData2.templateName);
             await viewCasetemplatePo.selectTab('Template Access');
+            await templateAccessTabPo.deleteTemplateAccess('Compensation and Benefits');
             await templateAccessTabPo.deleteTemplateAccess('Human Resource');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
+            expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Human Resource')).toBeFalsy('Support Group does not have read access');
 
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
             await utilityCommon.closePopUpMessage();
-
 
             await viewCasetemplatePo.clickBackArrowBtn();
             // Verify template is accessible with reporter user

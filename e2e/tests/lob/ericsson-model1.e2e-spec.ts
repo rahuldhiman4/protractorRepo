@@ -163,12 +163,11 @@ xdescribe('Ericsson Data Model Tests', () => {
         it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
-            expect(await accessTabPo.isOptionsPresent('Ericsson Asset Management - India', 'Select Business Unit')).toBeFalsy();
+            expect(await accessTabPo.isOptionsPresent('Ericsson Asset Management - India', 'Select Support Group')).toBeFalsy();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Ericsson HR Support', 'Select Business Unit');
-            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Ericsson HR Support', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Ericsson HR Support', 'Read')).toBeTruthy('FailuerMsg1: Agent Name is missing');
         });
         it('[60209]:[Ericsson Model][Create Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
@@ -232,12 +231,11 @@ xdescribe('Ericsson Data Model Tests', () => {
             await quickCasePo.gotoCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Ericsson HR', 'Select Company');
-            expect(await accessTabPo.isOptionsPresent('Ericsson Asset Management - India', 'Select Business Unit')).toBeTruthy();
+            expect(await accessTabPo.isOptionsPresent('Ericsson Asset Management - India', 'Select Support Group')).toBeTruthy();
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
-            await accessTabPo.selectAccessEntityDropDown('Ericsson Asset Management - India', 'Select Business Unit');
-            await accessTabPo.clickAccessEntitiyAddButton('Business Unit');
+            await accessTabPo.selectAccessEntityDropDown('Ericsson Asset Management - India', 'Select Support Group');
+            await accessTabPo.clickAccessEntitiyAddButton('Support Group');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Ericsson Asset Management - India', 'Read')).toBeTruthy('FailuerMsg1: Agent Name is missing');
         });
         afterAll(async () => {

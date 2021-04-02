@@ -329,10 +329,10 @@ describe("Task Approval Mapping Tests", () => {
             expect(await createApprovalMappingPage.isApprovalMappingNameFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isCompanyFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isStatusTriggerFieldMandatory()).toBeTruthy();
-            expect(await createApprovalMappingPage.isStatusMappingApprovedFieldMandatory()).toBeFalsy();
-            expect(await createApprovalMappingPage.isStatusMappingRejectedFieldMandatory()).toBeFalsy();
-            expect(await createApprovalMappingPage.isStatusMappingNoApproverFoundFieldMandatory()).toBeFalsy();
-            expect(await createApprovalMappingPage.isStatusMappingErrorFieldMandatory()).toBeFalsy();
+            expect(await createApprovalMappingPage.isStatusMappingApprovedFieldMandatory()).toBeTruthy();
+            expect(await createApprovalMappingPage.isStatusMappingRejectedFieldMandatory()).toBeTruthy();
+            expect(await createApprovalMappingPage.isStatusMappingNoApproverFoundFieldMandatory()).toBeTruthy();
+            expect(await createApprovalMappingPage.isStatusMappingErrorFieldMandatory()).toBeTruthy();
             expect(await createApprovalMappingPage.isSaveApprovalMappingBtnEnabled()).toBeFalsy();
             expect(await createApprovalMappingPage.getApprovalMappingStatusTriggerMessage()).toBe(approvalTriggerMsg);
             expect(await createApprovalMappingPage.getApprovalMappingStatusMappingLabelText()).toBe(approvalStatusMappingLabel);

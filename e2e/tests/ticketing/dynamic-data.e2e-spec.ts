@@ -122,6 +122,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
             expect(await addFieldsPopPo.isCaseTemplatePresent(caseTemplateName)).toBeFalsy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
             await createNotificationTemplatePo.selectEvent(petramcoEventName);
             await createNotificationTemplatePo.selectModuleName('Cases');
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
@@ -129,6 +130,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('casePetramco1')).toBeTruthy();
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('casePetramco2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
         });
         it('[3861]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
@@ -136,6 +138,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField1')).toBeTruthy();
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
             await createNotificationTemplatePo.selectEvent('Agent Assignment');
             await createNotificationTemplatePo.selectModuleName('Tasks');
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
@@ -144,6 +147,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalTaskField2')).toBeTruthy();
             expect(await addFieldsPopPo.isCaseTemplatePresent(taskTemplateName)).toBeFalsy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
             await createNotificationTemplatePo.selectEvent(petramcoEventName);
             await createNotificationTemplatePo.selectModuleName('Tasks');
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
@@ -151,6 +155,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('ddfield1')).toBeTruthy();
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('ddfield2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
         });
         it('[3861]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
             await createNotificationTemplatePo.clickOnInsertFieldOfAlert();
@@ -158,6 +163,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalTaskField1')).toBeTruthy();
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalTaskField2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
             await createNotificationTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await browser.navigate().back();
@@ -172,6 +178,7 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
             expect(await addFieldsPopPo.isCaseTemplatePresent(caseTemplateName)).toBeFalsy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
         });
         it('[3861]: Accessibility of Dynamic Fields in Notification and Dynamic Templates', async () => {
             await createDocumentTemplatePo.setCompany('Petramco');
@@ -180,14 +187,20 @@ describe('Dynamic data', () => {
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('casePetramco1')).toBeTruthy();
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('casePetramco2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
             await createDocumentTemplatePo.clickOnInsertFieldOfDocumentBody();
             await addFieldsPopPo.navigateToDynamicFieldInCaseTemplate(globalcaseTemplateName);
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField1')).toBeTruthy();
             expect(await addFieldsPopPo.isDynamicFieldPresentInTemplate('GlobalField2')).toBeTruthy();
             await addFieldsPopPo.clickOnOkButtonOfEditor();
+            await utilityCommon.closePopUpMessage();
             await createDocumentTemplatePo.clickOnCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+    
     });
 
     describe('[3875]: Associated and Dynamic fields usage on Notification/Email/Activity Templates', async () => {
@@ -1232,7 +1245,7 @@ describe('Dynamic data', () => {
         beforeAll(async () => {
             await apiHelper.apiLogin('qkatawazi');
             caseTemplatePetramcoWithTaskFlowData = {
-                "templateName": `TaskFlow ${randomStr}`,
+                "templateName":randomStr+ `TaskFlow`,
                 "templateSummary": randomStr + ' caseTemplate with TF',
                 "templateStatus": "Active",
                 "casePriority": "Low",
@@ -1246,7 +1259,7 @@ describe('Dynamic data', () => {
             let caseTemplateResponse = await apiHelper.createCaseTemplate(caseTemplatePetramcoWithTaskFlowData);
 
             caseTemplatePetramcoWithoutTaskFlowData = {
-                "templateName": `Simple flow ${randomStr}`,
+                "templateName": `SimpleFlow${randomStr}`,
                 "templateSummary": randomStr + ' caseTemplate without TF',
                 "templateStatus": "Active",
                 "casePriority": "Low",

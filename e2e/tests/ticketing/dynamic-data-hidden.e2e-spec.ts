@@ -1103,7 +1103,7 @@ describe('Dynamic Hidden Data', () => {
     });
 
     //ankagraw
-    describe('[3486]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
+    xdescribe('[3486]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
         it('[3486]: [PDF Config] - Date Time common config are available OOB and BA can add remove config', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Application Configuration--Common Configurations', BWF_PAGE_TITLES.APPLICATION_CONFIGURATIONS.COMMON_CONFIGURATION);
@@ -1221,7 +1221,10 @@ describe('Dynamic Hidden Data', () => {
             await applicationConfigPo.clickRemoveButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
-
+        afterAll(async () => {
+            await utilityCommon.closeAllBlades();
+        });
+    
     });
 
     //ptidke

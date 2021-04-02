@@ -62,7 +62,7 @@ class ActivityTabPage {
         lockIcon: '.d-icon-lock',
         activityLogList: '.activity .activity__wrapper',
         alignmentTextCkEditorTextArea: '.cke_enable_context_menu',
-        activityLogBody: '.activity__wrapper .collapse-block div div[style="position: relative;"],.activity__body',
+        activityLogBody: '.activities .activity__wrapper',
         showApproversLink: '.activity__wrapper button.btn-sm',
         alertTooltipMessage: '.alert-content',
         alertTooltipIcon: '.d-icon-info_circle',
@@ -136,7 +136,7 @@ class ActivityTabPage {
             }
 
             case "files_change": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isDisplayed();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('d-icon-user_arrow_o').isDisplayed();
             }
 
             case "check_circle": {
@@ -731,7 +731,7 @@ class ActivityTabPage {
     }
 
     async isCenterAlignTextDisplayedInActivity(bodyText: string, activityNumber: number): Promise<boolean> {
-        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('p[style="text-align: center;"]').getText();
+        let getTextmsg = await $$(this.selectors.activityLogBody).get(activityNumber - 1).$('div[style="text-align: center;"]').getText();
         if (getTextmsg.trim().includes(bodyText)) {
             return true;
         } else return false;

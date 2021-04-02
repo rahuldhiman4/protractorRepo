@@ -1623,8 +1623,7 @@ describe('Case Template', () => {
         });
         it('[3797]: Case behavior when Case Template is changed', async () => {
             await utilityCommon.closePopUpMessage();
-            await viewCasePo.openTaskCard(1);
-            await manageTaskBladePo.clickTaskLink(ManualTaskTempSummary);
+            await viewCasePo.clickOnTaskLink(ManualTaskTempSummary);
             await viewTaskPo.clickOnChangeStatus();
             await viewTaskPo.changeTaskStatus('Completed');
             await updateStatusBladePo.selectStatusReason('Successful');

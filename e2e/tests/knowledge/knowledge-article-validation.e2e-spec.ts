@@ -121,9 +121,8 @@ describe('Knowledge Article Validation', () => {
         let displayID = undefined;
         beforeAll(async () => {
             await apiHelper.apiLogin("tadmin");
-            apiHelper.deleteApprovalMapping(knowledgeModule);
+            await apiHelper.deleteApprovalMapping(knowledgeModule);
             let knowledgeTitile = 'knowledge3095' + randomStr;
-            await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData = {
                 "knowledgeSet": 'HR',
                 "title": `${knowledgeTitile}`,
@@ -133,6 +132,7 @@ describe('Knowledge Article Validation', () => {
                 "assigneeSupportGroup": "US Support 1",
                 "assignee": "kayo"
             }
+            await apiHelper.apiLogin(knowledgeCandidateUser);
             let KADetails = await apiHelper.createKnowledgeArticle(articleData);
             displayID = KADetails.displayId;
         });
@@ -142,6 +142,7 @@ describe('Knowledge Article Validation', () => {
             await loginPage.login(knowledgeCandidateUser);
             await navigationPage.switchToApplication(knowledgeManagementApp);
             expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
+            await browser.sleep(3000); //Time required for KA t populate
             await utilityGrid.searchAndOpenHyperlink(displayID);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();
@@ -157,8 +158,6 @@ describe('Knowledge Article Validation', () => {
         it('[5870]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
             //login with contributor
             await loginPage.login(knowledgeContributorUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile1 = 'knowledgeContributor3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCandidateUser);
             let articleData1 = {
@@ -171,6 +170,8 @@ describe('Knowledge Article Validation', () => {
                 "assignee": "kkohri"
             }
             let kkohriId = await apiHelper.createKnowledgeArticle(articleData1);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(kkohriId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();
@@ -186,8 +187,6 @@ describe('Knowledge Article Validation', () => {
         it('[5870]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
             //login with publisher
             await loginPage.login(knowledgePublisherUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile2 = 'knowledgePublisher3095' + randomStr;
             await apiHelper.apiLogin(knowledgePublisherUser);
             let articleData2 = {
@@ -200,6 +199,8 @@ describe('Knowledge Article Validation', () => {
                 "assignee": "KMills"
             }
             let kmillsId = await apiHelper.createKnowledgeArticle(articleData2);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(kmillsId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();
@@ -215,8 +216,6 @@ describe('Knowledge Article Validation', () => {
         it('[5870]: Submitter can cancel the article from Draft status_Submitter is assignee', async () => {
             //login with coach
             await loginPage.login(knowledgeCoachUser);
-            await navigationPage.switchToApplication(knowledgeManagementApp);
-            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             let knowledgeTitile3 = 'knowledgeCoachUser3095' + randomStr;
             await apiHelper.apiLogin(knowledgeCoachUser);
             let articleData3 = {
@@ -229,6 +228,8 @@ describe('Knowledge Article Validation', () => {
                 "assignee": "KWilliamson"
             }
             let kWilliamsonId = await apiHelper.createKnowledgeArticle(articleData3);
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            expect(await knowledgeArticlesConsolePo.getKnowledgeArticleConsoleTitle()).toEqual(knowledgeArticlesTitleStr);
             await utilityGrid.searchAndOpenHyperlink(kWilliamsonId.displayId);
             await editKnowledgePage.setKnowledgeStatus('Draft');
             await utilityCommon.closePopUpMessage();

@@ -265,7 +265,7 @@ class CreateAdhocTaskTemplatePage {
     }
 
     async isTextLeftAlignInCkEditorTextArea(bodyText: string): Promise<boolean> {
-        let leftAlignemntElement = await $$('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu p').get(8);
+        let leftAlignemntElement = await $$('[rx-view-component-id="84ebb434-1cf8-4363-94d2-c77d9c9e2f68"] div.cke_enable_context_menu div').get(1);
         return await ckeditorValidationPo.isTextLeftAlignInCkEditorTextArea(bodyText, leftAlignemntElement);
     }
 
