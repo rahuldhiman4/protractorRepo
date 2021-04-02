@@ -946,6 +946,9 @@ describe("Create Case", () => {
             await createTaskTemplate.selectTaskCategoryTier1(globalCategName);
             await createTaskTemplate.selectTaskCategoryTier2(categName2);
             await createTaskTemplate.selectTaskCategoryTier3(categName3);
+            await createTaskTemplate.selectOwnerCompany('Petramco');
+            await createTaskTemplate.selectBuisnessUnit('United States Support');
+            await createTaskTemplate.selectOwnerGroup('US Support 3');
             await createTaskTemplate.selectTemplateStatus('Active');
             await createTaskTemplate.clickOnSaveTaskTemplate();
             await expect(viewTasktemplatePage.getOwnerCompanyValue()).toBe("Petramco");

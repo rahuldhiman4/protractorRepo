@@ -924,6 +924,8 @@ describe("Case Approval UI Validations", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(viewCasePo.getStatusReason("Approval")).toContain("Approval");
             await viewCasePo.clickOnApproveLink();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Resolved");
         });
 
@@ -935,6 +937,8 @@ describe("Case Approval UI Validations", () => {
             expect(await viewCasePo.getTextOfStatus()).toBe("Pending");
             expect(viewCasePo.getStatusReason("Approval")).toBe("Approval");
             await viewCasePo.clickOnRejectLink();
+            await navigationPage.gotoCaseConsole();
+            await utilityGrid.searchAndOpenHyperlink(caseId.displayId);
             expect(await viewCasePo.getTextOfStatus()).toBe("Canceled");
             expect(await viewCasePo.getStatusReason("Approval Rejected")).toBe("Approval Rejected");
         });
