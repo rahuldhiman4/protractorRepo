@@ -569,7 +569,7 @@ describe("Compose Email", () => {
         });
         afterAll(async () => {
             await composeMail.clickOnDiscardButton();
-            expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?', 'Warning Email message is missing');
+            expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });

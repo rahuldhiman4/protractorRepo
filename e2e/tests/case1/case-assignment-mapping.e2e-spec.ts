@@ -1,8 +1,7 @@
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
 import apiHelper from '../../api/api.helper';
-import { flowsetGlobalFieldsWithFacilities, flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
-import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
+import { flowsetGlobalFields, flowsetGlobalFieldsWithFacilities } from '../../data/ui/flowset/flowset.ui';
 import caseConsolePage from "../../pageobject/case/case-console.po";
 import previewCasePo from '../../pageobject/case/case-preview.po';
 import createCasePage from "../../pageobject/case/create-case.po";
@@ -808,7 +807,7 @@ describe("Create Case Assignment Mapping", () => {
     describe('[4525]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let region: string[] = ['Americas', 'Asia-Pac', 'Europe', 'None'];
-        let site: string[] = ['Aichi','Bangalore','Bangkok','Beijing','Canberra','Hong Kong','Macquarie Park','Melbourne','Mumbai','New Delhi','None','Osaka','Petaling Jaya','Petramco Site5','Pune','Shanghai','Shenzhen','Shivaji Nagar','Singapore','Tokyo','Wellington'];
+        let site: string[] = ['Aichi', 'Bangalore', 'Bangkok', 'Beijing', 'Canberra', 'Hong Kong', 'Macquarie Park', 'Melbourne', 'Mumbai', 'New Delhi', 'None', 'Osaka', 'Petaling Jaya', 'Petramco Site5', 'Pune', 'Shanghai', 'Shenzhen', 'Shivaji Nagar', 'Singapore', 'Tokyo', 'Wellington'];
         it('[4525]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
@@ -827,6 +826,14 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
             await assignmentConfigCreatePage.clickonSaveButton();
         });
+        it('[4525]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
+            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
+            await assignmentConfigCreatePage.setAssignmentMapName("2DRDMV14935 " + randomStr);
+            await assignmentConfigCreatePage.setCompany("- Global -");
+            expect(await assignmentConfigCreatePage.isRegionAllDropDownValuesMatches(['None'])).toBeTruthy('FailureMsg: Region options mismatch');// Global company not linked to any of the location data
+        });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteReadAccessOrAssignmentMapping("1DRDMV14935 " + randomStr);
@@ -842,7 +849,7 @@ describe("Create Case Assignment Mapping", () => {
         let assignmentMapping1, id, label, assignmentData1, assignmentData2, randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let arr1: string[] = ["Department", "Flowset", "Business Unit", "Label", "Category Tier 4", "ID"];
         let defaultCaseAssignmentColumns: string[] = ["Case Priority", "Company", "Category Tier 1", "Category Tier 2", "Category Tier 3", "Region", "Site", "Support Company", "Support Group", "Default Mapping"];
-        
+
         beforeAll(async () => {
             label = "Accounts";
             assignmentData1 = {
@@ -862,7 +869,7 @@ describe("Create Case Assignment Mapping", () => {
                 "label": label,
                 "lineOfBusiness": "Finance",
             }
-            
+
             assignmentData2 = {
                 "assignmentMappingName": randomStr + "24449",
                 "company": "Phylum",
@@ -920,7 +927,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Default Mapping', 'True', 'radioButton');
             await utilityGrid.searchRecordWithoutClearFilter(assignmentData1.assignmentMappingName);
-            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Default Mapping')).toContain("True", 'Filter Default Mapping is missing in column');        
+            expect(await assignmentConfigConsolePage.getSelectedGridRecordValue('Default Mapping')).toContain("True", 'Filter Default Mapping is missing in column');
         });
         // passed
         it('[4449]: Assignment mapping search using filters', async () => {
@@ -1015,7 +1022,7 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigCreatePage.clickonSaveButton();
             await utilityCommon.closePopUpMessage();
             await utilityGrid.searchRecord("1DRDMV8968 " + randomStr);
-            expect (await utilityGrid.isGridRecordPresent("1DRDMV8968 " + randomStr)).toBeTruthy(`1DRDMV8968  + ${randomStr} Missing`);
+            expect(await utilityGrid.isGridRecordPresent("1DRDMV8968 " + randomStr)).toBeTruthy(`1DRDMV8968  + ${randomStr} Missing`);
             await navigationPage.gotoCreateCase();
             await createCasePage.selectRequester("mcarney");
             await createCasePage.setSummary("5418 Case Summary1");
