@@ -59,7 +59,13 @@ class AttachmentBlade {
     }
 
     async clickColumnHeader(columnHeader: string): Promise<void> {
-        await element(by.cssContainingText(this.selectors.columnnHeader, columnHeader)).click();
+        let getCountHeaders = await $$('.c-header__separator').count();
+        for(let i = 0; i<getCountHeaders; i++){
+            let getTextColumnHeader = await $$('.c-header__separator').get(i).getText();
+            if (columnHeader == getTextColumnHeader){
+                await $$('.ui-sortable-column').get(i).click();
+            }
+        }
     }
 
     async isAttachmentPresent(attachmentName: string): Promise<boolean> {

@@ -987,6 +987,7 @@ describe('Case Activity', () => {
             await expect(await personProfilePo.getCaseViewCount('Viewed the ' + caseId)).toEqual(1);
         });
         afterAll(async () => {
+            await utilityCommon.closePopUpMessage();
             await utilityCommon.closeAllBlades();
             await navigationPage.signOut();
             await loginPage.login('qkatawazi');
