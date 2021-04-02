@@ -30,6 +30,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Dynamic data', () => {
     const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
@@ -867,7 +868,7 @@ describe('Dynamic data', () => {
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePo.clickEditCaseButton();
             await editTaskPo.setDateTimeDynamicFieldValue('2020-03-04');
             await editCasePo.setDynamicFieldValue('temp', 'newtemp');
@@ -1169,7 +1170,7 @@ describe('Dynamic data', () => {
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(caseTemplateName);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.isDynamicFieldDisplayed('temp')).toBeTruthy('dynamic fields not present');
             expect(await viewCasePo.isDynamicFieldDisplayed('temp1')).toBeTruthy('dynamic fields not present');
             expect(await viewCasePo.isDynamicFieldDisplayed('temp2')).toBeTruthy('dynamic fields not present');

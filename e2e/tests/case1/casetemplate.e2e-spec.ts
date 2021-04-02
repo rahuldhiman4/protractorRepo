@@ -25,6 +25,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Case Template', () => {
     beforeAll(async () => {
@@ -1194,7 +1195,7 @@ describe('Case Template', () => {
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(templateDataDraft.templateName);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseTemplateText()).toBe(templateDataDraft.templateName);
         });
         it('[6290]: [Case Template] Template status lifecycle', async () => {

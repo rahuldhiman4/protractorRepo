@@ -14,6 +14,7 @@ import navigationPage from "../../pageobject/common/navigation.po";
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 let supportGroupDataHR, supportGroupDataFacilities, userData0, userData1, userData2, userData3;
 
@@ -576,7 +577,7 @@ xdescribe('Operating Orgnization Data Model Tests', () => {
             await quickCasePo.setCaseSummary('new case');
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Confidential Group');
             expect(await accessTabPo.isOptionsPresent(confidentialSupportGroup, 'Select Support Group', true)).toBeTruthy();

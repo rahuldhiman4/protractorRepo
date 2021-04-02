@@ -178,7 +178,7 @@ describe("Quick Case", () => {
             expect(await casePreviewPo.isRequesterNameDisplayed('Kye Petersen')).toBeTruthy('Requester Name is not displayed');
             expect(await casePreviewPo.isContactNameDisplayed('Allen Allbrook')).toBeTruthy('Contact Name is name displayed');
             //await browser.sleep(10000000);
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         afterAll(async () => {
             await navigationPo.signOut();
@@ -191,7 +191,7 @@ describe("Quick Case", () => {
         await quickCasePo.selectRequesterName('Mary');
         await quickCasePo.setCaseSummary('caseSummary');
         await quickCasePo.createCaseButton();
-        await quickCasePo.gotoCaseButton();
+        await casePreviewPo.clickGoToCaseButton();
         expect(await viewCasePo.getRequesterName()).toBe('Mary Mann');
     });
 
@@ -635,7 +635,7 @@ describe("Quick Case", () => {
             await quickCasePo.selectRequesterName('qtao');
             await quickCasePo.selectCaseTemplate(templateData.templateName);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getCaseTemplateText()).toBe(templateData.templateName);
         });
         afterAll(async () => {
@@ -778,7 +778,7 @@ describe("Quick Case", () => {
             await quickCasePo.setCaseSummary('new case creation');
             await quickCasePo.selectSourceValue(activeSourceUI);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getSourceValue()).toContain(activeSourceUI);
         });
         it('[6428]: [Quick Case] UI validation including Source field in Quick Case', async () => {
@@ -799,7 +799,7 @@ describe("Quick Case", () => {
         await quickCasePo.setCaseSummary('new case');
         await quickCasePo.createCaseButton();
         await utilityCommon.closePopUpMessage();
-        await quickCasePo.gotoCaseButton();
+        await casePreviewPo.clickGoToCaseButton();
         let quickCaseId: string = await viewCasePo.getCaseID();
         await viewCasePo.clickOnEmailLink();
         expect(await composeMailPo.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');

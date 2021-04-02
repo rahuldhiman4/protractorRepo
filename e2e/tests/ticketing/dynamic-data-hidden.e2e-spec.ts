@@ -36,6 +36,7 @@ import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import changeAssignmentPo from '../../pageobject/common/change-assignment.po';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Dynamic Hidden Data', () => {
     beforeAll(async () => {
@@ -1257,7 +1258,7 @@ describe('Dynamic Hidden Data', () => {
             await quickCasePo.selectRequesterName('qkatawazi');
             await quickCasePo.selectCaseTemplate(casetemplateData.templateName);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[4846]: Validate the dymaic field with values', async () => {
             //verify fields shoule be empty values on case view

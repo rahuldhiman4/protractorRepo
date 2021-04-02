@@ -166,9 +166,19 @@ class CasePreview {
         } else { return await $(this.selectors.assignee + ' .ac-person-absent').getText() == assignee ? true : false; }
     }
 
+
     async clickGoToCaseButton(): Promise<void> {
-        await $(this.selectors.gotoCaseButton).click();
-        await browser.wait(this.EC.invisibilityOf($('rx-runtime-view-modal')), 5000);
+        await $(this.selectors.gotoCaseButton).isPresent().then(async (present) => {
+            if(present) {
+                await $(this.selectors.gotoCaseButton).isDisplayed().then(async (displayed) => {
+                    if(displayed) await $(this.selectors.gotoCaseButton).click();
+                });
+            }
+            else{
+                await browser.sleep(1000);
+                await $(this.selectors.gotoCaseButton).click();
+            }
+        });
     }
 
     async isCreateNewCaseButtonDisplayed(): Promise<boolean> {

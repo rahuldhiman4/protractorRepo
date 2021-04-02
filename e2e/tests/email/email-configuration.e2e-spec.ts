@@ -206,14 +206,14 @@ describe('Email Configuration', () => {
         it('[5474,5473,5472,5471,5470,5469]: Set the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Global' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('update' + randomStr)).toBeTruthy();
-            await editEmailConfigPo.searchandSelectRecordInExclusiveGrid('update' + randomStr);
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('update' + randomStr);
             await editEmailConfigPo.editExclusiveSubjectsButton();
             await editExclusiveSubjectPo.setSubject('updated123' + randomStr);
             await editExclusiveSubjectPo.clickSaveButton();
         });
         it('[5474,5473,5472,5471,5470,5469]: Verify the exclusion details ', async () => {
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeTruthy();
-            await editEmailConfigPo.searchandSelectRecordInExclusiveGrid('Delete' + randomStr);
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Delete' + randomStr);
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('updated123' + randomStr)).toBeTruthy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Delete' + randomStr)).toBeFalsy();
@@ -422,11 +422,11 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.setSortOrder('20');
             await newExclusiveSubjectPo.clickSaveButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
-            await editEmailConfigPo.searchandSelectRecordInExclusiveGrid('Out Of Office');
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeTruthy();
-            await editEmailConfigPo.searchandSelectRecordInExclusiveGrid("Private" + randomStr);
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid("Private" + randomStr);
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid("Private" + randomStr)).toBeFalsy();
         });
@@ -476,7 +476,7 @@ describe('Email Configuration', () => {
             await newExclusiveSubjectPo.setSortOrder('20');
             await newExclusiveSubjectPo.clickSaveButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
-            await editEmailConfigPo.searchandSelectRecordInExclusiveGrid('Out Of Office');
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
@@ -491,7 +491,7 @@ describe('Email Configuration', () => {
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await utilityGrid.searchAndOpenHyperlink("bwfqa2019@gmail.com");
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
-            await editEmailConfigPo.searchandSelectRecordInExclusiveGrid('Out Of Office');
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
             await editEmailConfigPo.clickNewAvailableGlobalSubjects();
@@ -515,7 +515,7 @@ describe('Email Configuration', () => {
             await navigationPage.gotoSettingsMenuItem('Email--Configuration', BWF_PAGE_TITLES.EMAIL.CONFIGURATION);
             await utilityGrid.searchAndOpenHyperlink("psilon@gmail.com");
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeTruthy();
-            await editEmailConfigPo.searchandSelectRecordInExclusiveGrid('Out Of Office');
+            await editEmailConfigPo.searchAndSelectRecordInExclusiveGrid('Out Of Office');
             await editEmailConfigPo.removeExclusiveSubjectsButton();
             expect(await editEmailConfigPo.isRecordPresentInExclusiveGrid('Out Of Office')).toBeFalsy();
         });

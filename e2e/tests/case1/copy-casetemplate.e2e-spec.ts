@@ -1,10 +1,9 @@
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import { ALL_FIELD, MANDATORY_FIELD } from '../../data/ui/case/casetemplate.data.ui';
 import { SAMPLE_MENU_ITEM } from '../../data/ui/ticketing/menu.item.ui';
-import changeAssignmentOldPage from '../../pageobject/common/change-assignment-old-blade.po';
+import changeAssignmentBlade from '../../pageobject/common/change-assignment.po';
 import dynamicField from "../../pageobject/common/dynamic-fields.po";
 import loginPage from "../../pageobject/common/login.po";
 import navigationPage from "../../pageobject/common/navigation.po";
@@ -22,7 +21,6 @@ import viewTaskTemplatePo from "../../pageobject/settings/task-management/view-t
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
-import changeAssignmentBlade from '../../pageobject/common/change-assignment.po';
 
 let caseTemplateAllFields = ALL_FIELD;
 let caseTemplateRequiredFields = MANDATORY_FIELD;
@@ -332,7 +330,7 @@ describe('Copy Case Template', () => {
             await editCaseTemplate.changeIdentityValidationValue('Enforced');
             await editCaseTemplate.setResolutionCodeRequired(true);
             await editCaseTemplate.setResolutionDescriptionRequired(true);
-            await editCaseTemplate.clickSaveCaseTemplate();
+            await editCaseTemplate.clickSaveCaseTemplate();// set status to active and see another defect
             await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndselectCaseTemplate(casetemplatePetramco.templateName);
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();

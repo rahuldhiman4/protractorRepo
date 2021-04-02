@@ -31,6 +31,7 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 
 let supportGroupDataHR, supportGroupDataFacilities, userData0, userData1, userData2, userData3;
@@ -296,7 +297,7 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('adam');
             await quickCasePo.selectCaseTemplate(randomStr + "FacilitiesDRDMV23488");
@@ -304,7 +305,7 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Facilities');
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[60204,60214]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB with diff Company', async () => {
             await navigationPage.signOut();
@@ -316,7 +317,7 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('gderuno');
             expect(await quickCasePo.selectCaseTemplate(caseTemplateData.templateName)).toBeTruthy('template is present');
@@ -1144,7 +1145,7 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Human Resource');
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Phones')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Field is enabled');
@@ -1177,7 +1178,7 @@ xdescribe('Operating Orgnization Data Model Extended Tests', () => {
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Facilities');
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[12082]:[Operating Organization][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();

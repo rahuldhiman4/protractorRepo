@@ -26,6 +26,7 @@ import viewTaskPo from '../../pageobject/task/view-task.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Case Activity', () => {
     const randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1051,7 +1052,7 @@ describe('Case Activity', () => {
             await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.clickOnCaseSummaryInRecommendedCases(caseData.Summary);
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.getCaseViewCount('Quanah George viewed the case.')).toEqual(1);
@@ -1059,7 +1060,7 @@ describe('Case Activity', () => {
             await quickCasePo.selectRequesterName('qdu');
             await quickCasePo.setCaseSummary(caseData.Summary);
             await quickCasePo.saveCase();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await navigationPage.gotoCaseConsole();
             await caseConsolePo.searchAndOpenCase(caseId);
             await expect(await viewCasePo.isEmailLinkPresent()).toBeTruthy('FailuerMsg: Email Link is not present');

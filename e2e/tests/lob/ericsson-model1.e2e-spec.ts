@@ -21,6 +21,7 @@ import manageTaskBladePo from '../../pageobject/task/manage-task-blade.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 xdescribe('Ericsson Data Model Tests', () => {
     beforeAll(async () => {
@@ -209,7 +210,7 @@ xdescribe('Ericsson Data Model Tests', () => {
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await previewCasePage.getLineOfBusinessValue()).toBe('Ericsson HR');
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickEditCaseButton();
             await editCasePo.clickOnChangeCaseTemplate();
             await selectCasetemplateBladePo.selectCaseTemplate(caseTemplateData.templateName);
@@ -228,7 +229,7 @@ xdescribe('Ericsson Data Model Tests', () => {
             await quickCasePo.setCaseSummary('new case');
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
             await accessTabPo.clickToExpandAccessEntitiySearch('Support Group Access', 'Case');
             expect(await accessTabPo.isOptionsPresent('Ericsson Asset Management - India', 'Select Support Group')).toBeTruthy();

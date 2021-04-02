@@ -1,4 +1,4 @@
-import { $, $$, browser, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 
 class ViewTask {
@@ -28,7 +28,7 @@ class ViewTask {
         caseIdText: '.rx-record-preview-card__field .rx-record-preview-card__value',
         caseSummary: '.rx-card-fields .rx-card-field-value',
         taskSummary: '[rx-view-component-id="fa66e566-757c-4d10-a850-9ea3bd037707"] span',
-        taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] span',
+        taskStatus: '[rx-view-component-id="1437179f-34be-4cb3-8f85-cf0ac6a83394"] span:not([class])',
         requesterName: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-name .person-link',
         requesterContact: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .person-phone-link',
         requesterMail: '[rx-view-component-id="3a7ac43c-0c25-4a46-abc6-9d59c2da09f7"] .bwf-person-email button',
@@ -96,7 +96,7 @@ class ViewTask {
     }
 
     async clickOnChangeStatus(): Promise<void> {
-        await $$(this.selectors.taskStatus).get(1).click();
+        await $(this.selectors.taskStatus).click();
     }
     //need to remove this method - Use updateStatusBladePo.changeStatus
     async changeTaskStatus(statusValue: string): Promise<void> {
@@ -148,8 +148,7 @@ class ViewTask {
     }
 
     async getTaskStatusValue(): Promise<string> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.taskStatus)), 4000);
-        return await (await $$(this.selectors.taskStatus).get(0).getText()).trim();
+        return (await $(this.selectors.taskStatus).getText()).trim();
     }
 
     async isEditLinkDisplayed(): Promise<boolean> {

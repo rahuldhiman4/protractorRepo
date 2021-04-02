@@ -1,4 +1,4 @@
-import { $, by, element, Key, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, Key, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityGrid from '../../../utils/utility.grid';
 
 class TaskTemplateGridPage {
@@ -52,6 +52,7 @@ class TaskTemplateGridPage {
 
     async clickOnAutomationTaskTemplateButton(): Promise<void> {
         await $(this.selectors.automationtaskTemplateButton).click();
+        await browser.sleep(4000); //Defect --> DRDMV-25992  Need this sleep becoz default owner group/organization/company loading let and case template not gets save
     }
 
     async isAutomationTaskTemplateButtonEnabled(): Promise<boolean> {

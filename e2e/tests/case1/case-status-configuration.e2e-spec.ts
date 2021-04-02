@@ -543,7 +543,7 @@ describe('Case Status Configuration', () => {
             await utilityGrid.searchAndOpenHyperlink(taskId);
             expect(await viewTaskPo.getTaskStatusValue()).toBe("customStatus");
             await updateStatusBladePo.changeStatus('Assigned');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Assigned');
             expect(await viewTaskPo.getTaskStatusValue()).toBe("Assigned");
         });
         it('[4608]:Delete non mandatory and custom status 5', async () => {
