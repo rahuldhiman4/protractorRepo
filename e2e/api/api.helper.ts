@@ -1997,6 +1997,24 @@ class ApiHelper {
         };
     }
 
+    async giveReadAccessToKnowledgeSet(knowledgeSetInfo: IIDs): Promise<boolean> {
+        let KnowledgeSetAccessPayload = {
+            "processDefinitionName": "com.bmc.dsm.knowledge:Knowledge Set - Set Access",
+            "processInputValues": {
+              "Operation": "ADD",
+              "Type": "GROUP",
+              "Value": 2000000004,
+              "Security Type": "READ",
+              "Record Instance ID": "AGGADGGYC3VHQAQQVMYWQQVMYW8CK2"
+            },
+            "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand"
+          };
+        KnowledgeSetAccessPayload['processInputValues']['Record Instance ID'] = knowledgeSetInfo.id;
+        const knowledgeSetAccessResponse = await axios.post(commandUri, KnowledgeSetAccessPayload);
+        console.log('Read Access Doc Lib API Status =============>', knowledgeSetAccessResponse.status);
+        return knowledgeSetAccessResponse.status == 201;
+    }
+
     async createKnowledgeArticleTemplate(data: IKnowledgeArticleTemplate): Promise<boolean> {
         let knowledgeSetTemplateData = cloneDeep(KNOWLEDGEARTICLE_TEMPLATE);
         knowledgeSetTemplateData.templateName = data.templateName;

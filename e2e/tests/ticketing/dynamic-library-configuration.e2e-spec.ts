@@ -363,7 +363,7 @@ describe('Dynamic Library Configuration', () => {
             expect(await viewTasktemplatePo.isDynamicFieldPresent('ATTACHMENT' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('DATE_TIME' + randomStr)).toBeTruthy();
             expect(await viewTasktemplatePo.isDynamicFieldPresent('TIME' + randomStr)).toBeTruthy();
-           await viewTasktemplatePo.clickBackArrowBtn();
+            await viewTasktemplatePo.clickBackArrowBtn();
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateData.templateName);
@@ -571,12 +571,13 @@ describe('Dynamic Library Configuration', () => {
             await dynamicFieldsPage.removeField();
             await dynamicFieldsPage.clickSaveButton();
             expect(await viewCasetemplatePo.isDynamicFieldDisplayed("FieldGroup1")).toBeFalsy();
-            await viewCasetemplatePo.clickBackArrowBtn();
+
         });
         afterAll(async () => {
-           await utilityCommon.closeAllBlades();
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await utilityCommon.closeAllBlades();
+        });
     });
-});
 
     describe('[4863]: [Dynamic Data]- Add Dynamic Fields and Groups to Case Template', async () => {
         let caseTemplate, casetemplateData, randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');

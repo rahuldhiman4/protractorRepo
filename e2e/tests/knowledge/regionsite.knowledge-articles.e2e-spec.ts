@@ -491,6 +491,7 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSiteGroup(siteGroupVal);
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
+            await browser.sleep(3000); //Time required for Document library to be visible on console 
             await utilityGrid.searchAndOpenHyperlink(title);
             await editDocumentLibraryPo.clickOnEditButton();
             expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);

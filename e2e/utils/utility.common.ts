@@ -173,7 +173,8 @@ export class Utility {
             await guid.click();
             await $$('input').last().sendKeys(value);
             count = await $$(this.selectors.dropDownOption).count();
-            await guid.click();
+            try { await guid.click() }
+            catch(ex) { await $('body').sendKeys(protractor.Key.ESCAPE); }
         }
         if (count >= 1) { return true; } else { return false; }
     }

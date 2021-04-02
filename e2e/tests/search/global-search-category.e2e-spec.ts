@@ -871,13 +871,8 @@ describe('Global Search Category Validation', () => {
         it('[4297]: Verify vesion 2 with publish status ', async () => {
             await navigationPage.gotoSearch();
             await searchPo.searchRecord(summary5);
-            expect(await searchPo.isModuleTitleDisplayed(summary5, 'Knowledge Articles (2)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
+            expect(await searchPo.isModuleTitleDisplayed(summary5, 'Knowledge Articles (1)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
             await searchPo.clickOnLeftPannelRecord(kaDisplayId6, KAModule);
-            expect(await knowledgeArticlePreview.getArticleVersion()).toBe(expectedVersion1, 'FailureMsg24: version 1 is displayed');
-
-            await searchPo.searchRecord(summary5);
-            expect(await searchPo.isModuleTitleDisplayed(summary5, 'Knowledge Articles (2)', KAModule)).toBeTruthy('FailureMsg47: KA module title is missing');
-            await searchPo.clickOnLeftPannelRecord(kaDisplayId6, KAModule, 2);
             expect(await knowledgeArticlePreview.getArticleVersion()).not.toBe(expectedVersion1, 'FailureMsg24: version 1 is displayed');
             expect(await knowledgeArticlePreview.getArticleVersion()).toBe(expectedVersion2, 'FailureMsg24: version 2 is missing on KA preview');
             expect(await knowledgeArticlePreview.getStatusOfKA()).toBe('Published', 'FailureMsg26: version 2 is missing on KA preview');

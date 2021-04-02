@@ -1185,10 +1185,18 @@ describe('Knowledge Create Search', () => {
     });
 
     describe('[6418]:[Advanced Search] [Pin/Unpin] Relate Knowledge Article on Knowledge Edit view from Advanced search', async () => {
+        const randomStr = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        const knowledgeSetTitleStrPetramco = 'versionedKnowledgeSetPetramco_' + randomStr;
         it('[6418]:[Advanced Search] Knowledge Creation', async () => {
             await apiHelper.apiLogin('qkatawazi');
+            let knowledgeSetData = {
+                knowledgeSetTitle: `${knowledgeSetTitleStrPetramco}`,
+                knowledgeSetDesc: `${knowledgeSetTitleStrPetramco}_Desc`,
+                company: 'Petramco'
+            }
+            await apiHelper.createKnowledgeSet(knowledgeSetData);
             let articleData = {
-                "knowledgeSet": "HR",
+                "knowledgeSet": `${knowledgeSetTitleStrPetramco}`,
                 "title": randomStr + 'DRDMV753KnowledgeArticleKA',
                 "templateId": "AGGAA5V0HGVMIAOK2JE7O965BK1BJW",
                 "assignedCompany": "Petramco",
