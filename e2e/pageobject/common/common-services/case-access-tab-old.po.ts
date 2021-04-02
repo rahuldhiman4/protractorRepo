@@ -1,7 +1,13 @@
+import utilityCommon from "../../../utils/utility.common";
 import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 class CaseOldAccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
     selectors = {
+        confidentialSupportGroupGuid: 'b1606736-7480-4368-aac6-a8273f0ff0d5',
+        dropdownList: '.rx-select__option-content div',
+        searchInputField: '[placeholder="Filter options"]',
+        supportGroupAccess :'[rx-view-component-id="1101ae47-297b-429f-ac0e-ac48d666899d"] button.btn-title',
+        supportGroupSearchBox: '[rx-view-component-id="1101ae47-297b-429f-ac0e-ac48d666899d"] input[type="text"]',
         confidentialSupportGroupAccess: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] button.btn-title',
         confidentialSupportGroup: '[aria-label="Support Group"]',
         confidentialSupportGroupAssignToMe: '[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] input[type="checkbox"]',
@@ -23,6 +29,9 @@ class CaseOldAccessTab {
 
     async clickConfidentialSupportGroupAccess(): Promise<void> {
         await $(this.selectors.confidentialSupportGroupAccess).click();
+    }
+    async clickSupportGroupAccess(): Promise<void> {
+        await $(this.selectors.supportGroupAccess).click();
     }
 
     async isConfidentialSupportGroupAccessAbsent(): Promise<boolean> {
@@ -63,6 +72,45 @@ class CaseOldAccessTab {
                 return await element(by.cssContainingText(this.selectors.dropdownElement, drop)).isDisplayed();
             } else return false;
         });
+    }
+
+    async clickAccessEntitiyAddButton(dropdownName: string): Promise<void> {
+        let accessList = 'ux-access-manager .access-group div.d-flex.flex-row';
+        let accessCount: number = await $$('ux-access-manager .access-group div.d-flex.flex-row').count();
+        for (let i: number = 0; i < accessCount; i++) {
+            let accessName = await $$(accessList).get(i).$('.form-control-label').getText();
+            if (accessName == dropdownName) {
+                return await $$(accessList).get(i).$('.input-group-btn button').click();
+            }
+        }
+    }
+    async selectAccessEntityDropDown(entityValue: string, dropDownList: string, isConfidential?: boolean): Promise<void> {
+        let dropDownListRows = 'ux-access-manager .support-group-form div.d-flex.flex-row';
+        let dropDownListCount: number = await $$('ux-access-manager .support-group-form div.d-flex.flex-row').count();
+        if (isConfidential) {
+            await utilityCommon.selectDropDown(this.selectors.confidentialSupportGroupGuid, entityValue);
+        }
+        else {
+            for (let i: number = 0; i < dropDownListCount; i++) {
+                let dropDownName = await $$(dropDownListRows).get(i).$('.dropdown-toggle').getText();
+                if (dropDownName == dropDownList) {
+                    await $$(dropDownListRows).get(i).$('.dropdown-toggle').click();
+                    await $(this.selectors.searchInputField).sendKeys(entityValue);
+                    let option = element(by.cssContainingText(this.selectors.dropdownList, entityValue));
+                    option.click();
+                }
+            }
+        }
+    }
+    async clickAssignWriteAccessCheckbox(dropdownName: string): Promise<void> {
+        let accessList = 'ux-access-manager .access-group div.d-flex.flex-row';
+        let accessCount: number = await $$('ux-access-manager .access-group div.d-flex.flex-row').count();
+        for (let i: number = 0; i < accessCount; i++) {
+            let accessName = await $$(accessList).get(i).$('.form-control-label').getText();
+            if (accessName == dropdownName) {
+                return await $$(accessList).get(i).$('input.checkbox__input').click();
+            }
+        }
     }
 
 }

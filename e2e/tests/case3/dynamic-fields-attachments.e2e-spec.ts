@@ -1,6 +1,6 @@
 import { browser } from "protractor";
 import apiHelper from "../../api/api.helper";
-import { BWF_BASE_URL,  } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES,  } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import loginPO from "../../pageobject/common/login.po";
 import navigationPO from "../../pageobject/common/navigation.po";
@@ -18,6 +18,10 @@ import adhoctaskTemplate from "../../pageobject/task/create-adhoc-task.po";
 import attachmentBladePo from '../../pageobject/attachment/attachment-blade.po';
 import viewTaskPo from "../../pageobject/task/view-task.po";
 import editTaskPo from "../../pageobject/task/edit-task.po";
+import viewCasetemplatePo from "../../pageobject/settings/case-management/view-casetemplate.po";
+import consoleCasetemplatePo from "../../pageobject/settings/case-management/console-casetemplate.po";
+import editCaseTemplatePo from "../../pageobject/settings/case-management/edit-casetemplate.po";
+import caseAccessTabOldPo from "../../pageobject/common/common-services/case-access-tab-old.po";
 
 describe('[4055]: Dynamic Field of Type Attachment Test', () => {
     beforeAll(async () => {
@@ -217,19 +221,65 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
     //nipande
     describe('[5402]: Checking Activities Blade to see new activity being updated for new case status', async () => {
         let randomStr = [...Array(8)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let templateData5402;
+        let templateData5402, caseTemplateDataWithReadAccess, caseTemplateData;
         beforeAll(async () => {
             templateData5402 = {
                 "templateName": "templateData5402 " + randomStr,
                 "templateSummary": "templateData5402 summary " + randomStr,
                 "templateStatus": "Active",
             }
+            caseTemplateData = {
+                "templateName": 'caseTemplateName' + randomStr,
+                "templateSummary": 'caseTemplateName' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "company": "Petramco",
+                "supportGroup": "US Support 3",
+                "templateStatus": "Draft",
+            }
+            caseTemplateDataWithReadAccess = {
+                "templateName": 'caseTemplateNameForReadAccess' + randomStr,
+                "templateSummary": 'caseForReadAccess' + randomStr,
+                "categoryTier1": 'Workforce Administration',
+                "company": "Petramco",
+                "supportGroup": "US Support 3",
+                "templateStatus": "Draft",
+            }
             await navigationPO.signOut();
             await loginPO.login('qtao');
             await apiHelper.apiLogin('qtao');
             await apiHelper.createCaseTemplate(templateData5402);
+            await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.createCaseTemplate(caseTemplateDataWithReadAccess);
         });
         it('[5402]: Checking Activities Blade to see new activity being updated for new case status', async function () {
+            await navigationPO.gotoSettingsPage();
+            await navigationPO.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateData.templateName);
+            await viewCasetemplatePo.selectTab('Case Access');
+            await caseAccessTabOldPo.clickSupportGroupAccess();
+            await caseAccessTabOldPo.selectAccessEntityDropDown('US Support 2', 'Select Support Group');
+            await caseAccessTabOldPo.clickAssignWriteAccessCheckbox('Support Group');
+            await caseAccessTabOldPo.clickAccessEntitiyAddButton('Support Group');
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(caseTemplateDataWithReadAccess.templateName);
+            await viewCasetemplatePo.selectTab('Case Access');
+            await caseAccessTabOldPo.clickSupportGroupAccess();
+            await caseAccessTabOldPo.selectAccessEntityDropDown('US Support 1', 'Select Support Group');
+            await caseAccessTabOldPo.clickAccessEntitiyAddButton('Support Group');
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await viewCasetemplatePo.clickEditTemplateMetaData();
+            await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
+            await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
+            await utilityCommon.closePopUpMessage();
+            await viewCasetemplatePo.clickBackArrowBtn();
+            
             await navigationPO.gotoCreateCase();
             await createCasePO.selectRequester('adam');
             await createCasePO.setSummary(templateData5402.templateSummary);
@@ -242,6 +292,24 @@ describe('[4055]: Dynamic Field of Type Attachment Test', () => {
             await caseTemplatePO.selectCaseTemplate(templateData5402.templateName);
             await editCasePO.clickSaveCase();
             expect(await activityTabPo.getFirstPostContent()).toContain('Qianru Tao applied the template ' + templateData5402.templateName);
+            
+            await navigationPO.gotoCreateCase();
+            await createCasePO.selectRequester('adam');
+            await createCasePO.setSummary(caseTemplateData.templateSummary);
+            await createCasePO.clickSelectCaseTemplateButton();
+            await caseTemplatePO.clickOnAllTemplateTab();
+            await caseTemplatePO.selectCaseTemplate(caseTemplateData.templateName);
+            await createCasePO.clickSaveCaseButton(); 
+            await previewCasePo.clickGoToCaseButton();
+            await viewCasePO.clickEditCaseButton();
+            await editCasePO.clickOnChangeCaseTemplate();
+            await caseTemplatePO.clickOnAllTemplateTab();
+            await caseTemplatePO.selectCaseTemplate(caseTemplateDataWithReadAccess.templateName);
+            await editCasePO.clickSaveCase();
+            await caseConsolePO.searchAndOpenCase('caseForReadAccessd238wip8');
+            await activityTabPo.clickOnRefreshButton();
+            expect(await activityTabPo.isTextPresentInActivityLog('granted read access to US Support 1')).toBeTruthy();
+            expect(await activityTabPo.isTextPresentInActivityLog('revoked write access of US Support 2')).toBeTruthy();
         });
     });
     //nipande
