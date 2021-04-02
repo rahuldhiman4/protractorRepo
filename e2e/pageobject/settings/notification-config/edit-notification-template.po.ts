@@ -39,7 +39,7 @@ class EditNotificationTemplate {
         recipientsCheckboxInput: '.body tr td label span input',
         notificationMethod: '[rx-view-component-id="c80f9de5-1a84-46fa-949d-fc073d65ebd8"] .dropdown',
         emailBasedApprovalFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button',
-        emailSubject: '[rx-view-component-id="2edd6ab4-d1e5-456e-879c-f8ca22bfbb32"] textarea',
+        emailSubject: '[rx-view-component-id="87825f39-f76b-4a2b-9d04-1e521562dc00"] input',
         saveAlertEmailSubjectBody: '[rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button, [rx-view-component-id="cd6ddce5-4729-4cc9-a5a4-6f76e967de03"] button, [rx-view-component-id="498a2cf3-8866-4303-996a-61dc33e4a400"] button',
         emailBody: '.cke_editable_themed p, .cke_editable_themed p u, .cke_editable_themed p span i',
         emailBasedApplrovalTrueFlag: '[rx-view-component-id="99cd2540-80fa-4dbe-96b9-bbadc2fcc93c"] button.btn-primary',
@@ -60,7 +60,7 @@ class EditNotificationTemplate {
 
     async clickOnCancelButton(): Promise<void> {
       //  await $(this.selectors.cancelButton).click();
-        await $(this.selectors.cancelButtonAddRecipient).isPresent().then(async (result) =>{
+        await $(this.selectors.cancelButton).isPresent().then(async (result) =>{
             if(result) await $(this.selectors.cancelButton).click();
             else console.log("Cancel Button is not present");
         })

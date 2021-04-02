@@ -943,7 +943,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh(); // Refresh needed to reflect changes.
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
             await apiHelper.apiLogin('tadmin');
             await apiHelper.updateKnowledgeArticleViewAndHelpFulCounter(articleDetails.id, articleHelpFulCounterData);
@@ -1079,7 +1082,10 @@ describe('Knowledge Articles - Versioning Tests', () => {
             await viewKnowledgeArticlePo.clickReviewPendingLink();
             await reviewCommentsPo.setTextInTellUsMore(articleDetails.displayId);
             await reviewCommentsPo.clickApprovedButton();
-            await utilityCommon.refresh(); // Refresh needed to reflect status changes.
+            await utilityCommon.closePopUpMessage();
+            await utilityCommon.switchToDefaultWindowClosingOtherTabs();
+            await navigationPage.switchToApplication(knowledgeManagementApp);
+            await utilityGrid.searchAndOpenHyperlink(articleDetails.displayId);
             expect(await editKnowledgePage.getStatusValue()).toContain('Published', 'Article is updated with Published status.');
         });
 
