@@ -336,7 +336,7 @@ describe('Case Status Verification', () => {
             await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
-            expect(await activityTabPo.isTextPresentInActivityLog('qstrong reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
+            expect(await activityTabPo.isTextPresentInActivityLog('Quin Strong reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg6: Text is missing');
@@ -353,7 +353,7 @@ describe('Case Status Verification', () => {
             await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
-            expect(await activityTabPo.isTextPresentInActivityLog('qstrong reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
+            expect(await activityTabPo.isTextPresentInActivityLog('Quin Strong reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
             // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 1 time')).toBeTruthy('FailureMsg12: Text is missing');
@@ -376,7 +376,7 @@ describe('Case Status Verification', () => {
             await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg3: In-Progress status is missing');
-            expect(await activityTabPo.isTextPresentInActivityLog('qheroux reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
+            expect(await activityTabPo.isTextPresentInActivityLog('Quigley Heroux reopened the case')).toBeTruthy('FailureMsg4: Text is missing');
             // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusResolved)).toBeTruthy('FailureMsg5: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg6: Text is missing');
@@ -389,7 +389,7 @@ describe('Case Status Verification', () => {
             await utilityCommon.closePopUpMessage();
             await activityTabPo.clickOnRefreshButton();
             expect(await viewCasePage.getTextOfStatus()).toBe(statusInProgress, 'FailureMsg9: In Progress status is missing');
-            expect(await activityTabPo.isTextPresentInActivityLog('qheroux reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
+            expect(await activityTabPo.isTextPresentInActivityLog('Quigley Heroux reopened the case')).toBeTruthy('FailureMsg10: Text is missing');
             // await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isTextPresentInActivityLog(statusClosed)).toBeTruthy('FailureMsg11: Text is missing');
             expect(await activityTabPo.isTextPresentInActivityLog('The case was reopened for 2 time')).toBeTruthy('FailureMsg12: Text is missing');

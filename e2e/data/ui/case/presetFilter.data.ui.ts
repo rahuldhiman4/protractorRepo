@@ -60,7 +60,7 @@ export const ASSIGNED_NONVIP_DRDMV_20843_5 = {
 
 export const PENDING_NONVIP_DRDMV_20843_6 = {
     "Description": "3687-2-Desc",
-    "Requester": "rflanagan",
+    "Requester": "aotero",
     "Summary": "3687-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
@@ -180,7 +180,7 @@ export const AFTERRESOLVED_NONVIP_DRDMV_20850_6 = {
 //Test Data for 3680
 export const NEW_NONVIP_DRDMV_20874_1 = {
     "Description": "3680-1-Desc",
-    "Requester": "jmilano",
+    "Requester": "aotero",
     "Summary": "3680-Summary",
     "Assigned Company": "Phylum",
     "Business Unit": "Phylum Support Org1",
