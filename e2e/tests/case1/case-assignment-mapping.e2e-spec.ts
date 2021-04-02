@@ -728,13 +728,9 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    // pending (data issue)
     describe('[4444]:[Permissions] Location based assignment with multiple companies', async () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let assignmentMappingName = "4444 " + randomStr;
-        beforeAll(async () => {
-            // await createNewUsers();
-        });
         it('[4444]:[Permissions] Location based assignment with multiple companies', async () => {
             await navigationPage.signOut();
             await loginPage.login('morwenna');
@@ -742,18 +738,18 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
-            await assignmentConfigCreatePage.setCategoryTier1("Accounts Payable");
+            await assignmentConfigCreatePage.setCategoryTier1("Project Accounting");
             await assignmentConfigCreatePage.setCompany("Petramco");
-            await assignmentConfigCreatePage.setCategoryTier1("Accounts Payable");
+            await assignmentConfigCreatePage.setCategoryTier1("Project Accounting");
             await assignmentConfigCreatePage.setPriority('Critical');
             await assignmentConfigCreatePage.setRegion('Asia-Pac');
-            await assignmentConfigCreatePage.setSupportCompany("Psilon");
+            await assignmentConfigCreatePage.setSupportCompany("Phylum");
             await assignmentConfigCreatePage.setSiteGroup('Engineering');
             await assignmentConfigCreatePage.setSite('Canberra');
-            await assignmentConfigCreatePage.setSupportCompany("Psilon");
-            await assignmentConfigCreatePage.setSupportOrg('Psilon Support Org1');
-            await assignmentConfigCreatePage.setSupportGroup("Psilon Support Group1");
-            await assignmentConfigCreatePage.setAssignee("Glit Deruno");
+            await assignmentConfigCreatePage.setSupportCompany("Phylum");
+            await assignmentConfigCreatePage.setSupportOrg('Phylum Support Org1');
+            await assignmentConfigCreatePage.setSupportGroup("Phylum Support Group1");
+            await assignmentConfigCreatePage.setAssignee("Morwenna Rosales");
             await assignmentConfigCreatePage.clickonSaveButton();
             await utilityCommon.closePopUpMessage();
         });
@@ -761,18 +757,18 @@ describe("Create Case Assignment Mapping", () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
-            await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName);
-            await assignmentConfigCreatePage.setCategoryTier1("Accounts Payable");
-            await assignmentConfigCreatePage.setCompany("- Global -");
+            await assignmentConfigCreatePage.setAssignmentMapName(assignmentMappingName + '2');
+            await assignmentConfigCreatePage.setCategoryTier1("Project Accounting");
+            await assignmentConfigCreatePage.setCompany("Phylum");
             await assignmentConfigCreatePage.setCategoryTier1("Local Statutory Support");
             await assignmentConfigCreatePage.setPriority('Critical');
             await assignmentConfigCreatePage.setRegion('Asia-Pac');
-            await assignmentConfigCreatePage.setSupportCompany("Psilon");
+            await assignmentConfigCreatePage.setSupportCompany("Phylum");
             await assignmentConfigCreatePage.setSiteGroup('Engineering');
-            await assignmentConfigCreatePage.setSite('Canberra');
-            await assignmentConfigCreatePage.setSupportOrg('Psilon Support Org1');
-            await assignmentConfigCreatePage.setSupportGroup("Psilon Support Group1");
-            await assignmentConfigCreatePage.setAssignee("Glit Deruno");
+            await assignmentConfigCreatePage.setSite('Phylum Site5');
+            await assignmentConfigCreatePage.setSupportOrg('Phylum Support Org1');
+            await assignmentConfigCreatePage.setSupportGroup("Phylum Support Group1");
+            await assignmentConfigCreatePage.setAssignee("Morwenna Rosales");
             await assignmentConfigCreatePage.clickonSaveButton();
             await utilityCommon.closePopUpMessage();
         });
@@ -782,23 +778,23 @@ describe("Create Case Assignment Mapping", () => {
             await createCasePage.setSummary("5418 Case Summary1");
             await createCasePage.setPriority('Critical');
             await createCasePage.selectSite('Canberra');
-            await createCasePage.selectCategoryTier1("Accounts Payable");
+            await createCasePage.selectCategoryTier1("Project Accounting");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupValue()).toBe('Psilon Support Group1');
-            expect(await viewCasePo.getAssigneeText()).toBe('Glit Deruno');
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('Phylum Support Group1');
+            expect(await viewCasePo.getAssigneeText()).toBe('Morwenna Rosales');
         });
         it('[4444]:[Permissions] Location based assignment with multiple companies', async () => {
             await navigationPage.gotoCreateCase();
-            await createCasePage.selectRequester("adam");
-            await createCasePage.setSummary("5418 Case Summary1");
+            await createCasePage.selectRequester("mcarney");
+            await createCasePage.setSummary("5418 Case Summary2");
             await createCasePage.setPriority('Critical');
-            await createCasePage.selectSite('Canberra');
+            await createCasePage.selectSite('Phylum Site5');
             await createCasePage.selectCategoryTier1("Local Statutory Support");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            expect(await viewCasePo.getAssignedGroupValue()).toBe('Psilon Support Group1');
-            expect(await viewCasePo.getAssigneeText()).toBe('Glit Deruno');
+            expect(await viewCasePo.getAssignedGroupValue()).toBe('Phylum Support Group1');
+            expect(await viewCasePo.getAssigneeText()).toBe('Morwenna Rosales');
         });
         afterAll(async () => {
             await apiHelper.apiLogin('tadmin');
@@ -809,7 +805,6 @@ describe("Create Case Assignment Mapping", () => {
         });
     });
 
-    // pending (data issue)
     describe('[4525]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
         let randomStr: string = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let region: string[] = ['Americas', 'Asia-Pac', 'Europe', 'None'];
@@ -820,24 +815,6 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
             await assignmentConfigCreatePage.setAssignmentMapName("1DRDMV14935 " + randomStr);
             await assignmentConfigCreatePage.setCompany("Petramco");
-            expect(await assignmentConfigCreatePage.isRegionAllDropDownValuesMatches(region)).toBeTruthy('FailureMsg: Region options mismatch');
-            await assignmentConfigCreatePage.setSupportCompany("Petramco");
-            await assignmentConfigCreatePage.setRegion('Asia-Pac');
-            await assignmentConfigCreatePage.setSiteGroup('Engineering');
-            expect(await assignmentConfigCreatePage.isSiteAllDropDownValuesMatches(site)).toBeTruthy('FailureMsg: Site options mismatch');
-            await assignmentConfigCreatePage.setPriority('Critical');
-            await assignmentConfigCreatePage.setSiteGroup('Engineering');
-            await assignmentConfigCreatePage.setSite('Canberra');
-            await assignmentConfigCreatePage.setSupportOrg('Australia Support');
-            await assignmentConfigCreatePage.setSupportGroup("AU Support 1");
-            await assignmentConfigCreatePage.clickonSaveButton();
-        });
-        it('[4525]:Verify the values belonging to a perticular company for the fields Region and Site are according to logged in user permission', async () => {
-            await navigationPage.gotoSettingsPage();
-            await navigationPage.gotoSettingsMenuItem('Case Management--Assignments', BWF_PAGE_TITLES.CASE_MANAGEMENT.ASSIGNMENTS);
-            await assignmentConfigConsolePage.clickOnCreateAssignmentConfiguration();
-            await assignmentConfigCreatePage.setAssignmentMapName("2DRDMV14935 " + randomStr);
-            await assignmentConfigCreatePage.setCompany("- Global -");
             expect(await assignmentConfigCreatePage.isRegionAllDropDownValuesMatches(region)).toBeTruthy('FailureMsg: Region options mismatch');
             await assignmentConfigCreatePage.setSupportCompany("Petramco");
             await assignmentConfigCreatePage.setRegion('Asia-Pac');
