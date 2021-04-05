@@ -36,6 +36,7 @@ class CaseTemplateConsole {
     }
 
     async searchAndselectCaseTemplate(caseTemplateValue: string): Promise<void> {
+        await browser.sleep(5000); //Unable to search record in given time frame
         await utilityGrid.searchAndSelectGridRecord(caseTemplateValue, this.selectors.gridGUID);
     }
 

@@ -151,14 +151,14 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskSummary(automationTaskSummaryWithallField);
             await taskTemplate.setTaskDescription('All field get added in this task template');
             await taskTemplate.setNewProcessName(`Get Request Status Data2 ${randomStr}`);
-            await taskTemplate.selectLabel('POSH');
+            await taskTemplate.selectBuisnessUnit('United States Support');
+            await taskTemplate.selectOwnerGroup('US Support 1');
+            await taskTemplate.selectLabel('Benefits');
             await taskTemplate.selectTaskCategoryTier1('Employee Relations');
             await taskTemplate.selectTaskCategoryTier2_v('Compensation');
             await taskTemplate.selectTaskCategoryTier3_v('Bonus');
             await taskTemplate.selectTaskCategoryTier4_v('Retention Bonus');
             await taskTemplate.selectTemplateStatus('Active');
-            await taskTemplate.selectBuisnessUnit('United States Support');
-            await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.clickOnSaveTaskTemplate();
             expect(await viewTasktemplatePo.getTaskCompanyNameValue()).toBe("Petramco");
             await viewTasktemplatePo.clickBackArrowBtn();
@@ -186,7 +186,7 @@ describe('Create Case Task', () => {
             expect(await viewTask.getTaskTypeValue()).toBe('Automated');
             expect(await viewTask.getProcessNameValue()).toBe(`com.bmc.dsm.lob.human-resource:Get Request Status Data2 ${randomStr}`);
             expect((await viewTask.getDescriptionValue()).trim()).toBe('All field get added in this task template');
-            expect(await viewTask.getLabelValue()).toBe('POSH');
+            expect(await viewTask.getLabelValue()).toBe('Benefits');
             expect(await viewTask.getCategoryTier1Value()).toBe('Employee Relations');
             expect(await viewTask.getCategoryTier2Value()).toBe('Compensation');
             expect(await viewTask.getCategoryTier3Value()).toBe('Bonus');

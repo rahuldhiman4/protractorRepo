@@ -181,6 +181,7 @@ describe('Create Adhoc task', () => {
             await adhoctaskTemplate.addAttachment([filePath]);
             await adhoctaskTemplate.clickSaveAdhoctask();
             let finalDate: string = await utilityCommon.getCurrentDate();
+            let beforeFinalDate: string = await utilityCommon.getPreviousDate();
             await utilityCommon.closePopUpMessage();
             await manageTask.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
@@ -199,7 +200,7 @@ describe('Create Adhoc task', () => {
             expect(await attachmentInformationBladePo.getValuesOfInformation('File Name')).toBe('File Name: demo', 'FileName is missing');
             expect(await attachmentInformationBladePo.getValuesOfInformation('Task')).toBe('Type: Task', 'Type is missing');
             expect(await attachmentInformationBladePo.getValuesOfInformation('text/plain')).toBe('Media type: text/plain', 'Media Type is missing');
-            expect(await attachmentInformationBladePo.getValuesOfInformation('Created date')).toContain(finalDate);
+            expect((await attachmentInformationBladePo.getValuesOfInformation('Created date')).includes(finalDate) || (await attachmentInformationBladePo.getValuesOfInformation('Created date')).includes(beforeFinalDate)).toBeTruthy('Dates are not matching');
             expect(await attachmentInformationBladePo.getValuesOfInformation(' Qianru Tao')).toBe('Created by: Qianru Tao', 'Created by is missing');
             expect(await attachmentInformationBladePo.isTitleNameDisplayed()).toBeTruthy('Title is missing');
             expect(await utilityCommon.deleteAlreadyDownloadedFile('demo.txt')).toBeTruthy('File is delete sucessfully');

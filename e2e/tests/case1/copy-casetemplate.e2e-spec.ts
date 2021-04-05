@@ -318,6 +318,7 @@ describe('Copy Case Template', () => {
             await browser.sleep(3000); // hardwait to reflect manual task template
             // await apiHelper.apiLogin('tadmin');
             await apiHelper.associateCaseTemplateWithOneTaskTemplate(newCaseTemplate1.displayId, manualTaskTemplate.displayId);
+            await apiHelper.createDynamicDataOnTemplate(newCaseTemplate1.id, 'SAVE_EXISTING_AND_NEW_CASE_DYNAMIC_DATA_DEFINITION');
         });
         it('[4717]: Fields copied while creating copy of Case template which has linked task templates', async () => {
             await navigationPage.gotoSettingsPage();
@@ -342,9 +343,10 @@ describe('Copy Case Template', () => {
             expect(await copyCaseTemplate.getValueOfResolutionDescription()).toBe(caseTemplateAllFields.resolutionDescription);
             await viewCasetemplatePo.clickOnTaskBox(taskTemplateDataSet.templateName);
             expect(await previewTaskTemplateCasesPo.getTaskTemplateName()).toBe(taskTemplateDataSet.templateName);
-            await utilityCommon.closeAllBlades();
+            await previewTaskTemplateCasesPo.clickOnBackButton();
         });
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await viewCasetemplatePo.clickBackArrowBtn();
         });
     });

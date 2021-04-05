@@ -373,6 +373,32 @@ export class Utility {
         return date + '/' + month + '/' + year;
     }
 
+    async getPreviousDate(): Promise<string> {
+        let month: string;
+        let date: string;
+
+        let objDate: Date = new Date();
+        objDate.setDate(objDate.getDate() -1);
+        let numYear: number = objDate.getFullYear();
+        let year: string = new Number(numYear).toString();
+
+        let numMonth: number = objDate.getUTCMonth() + 1;
+        let month1 = new Number(numMonth);
+        if (month1 <= 9) {
+            month = '0' + month1.toString();
+        } else {
+            month = month1.toString();
+        }
+        let numDate: number = objDate.getUTCDate();
+        let date1 = new Number(numDate);
+        if (date1 <= 9) {
+            date = '0' + date1.toString();
+        } else {
+            date = date1.toString();
+        }
+        return date + '/' + month + '/' + year;
+    }
+
     async setDateField(dateValue: string, guid?: string): Promise<void> {
         let guidId: string = "";
         if (guid) {

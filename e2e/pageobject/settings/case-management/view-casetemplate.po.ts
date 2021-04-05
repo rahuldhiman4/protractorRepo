@@ -204,7 +204,7 @@ class ViewCaseTemplate {
         await browser.wait(this.EC.or(async () => {
             let count = await $$(this.selectors.taskBoxLocator).count();
             return count >= 1;
-        }), 3000);
+        }), 5000);
         const taskBoxesCount = await $$(this.selectors.taskBoxLocator).count();
         for (let i: number = 0; i < taskBoxesCount; i++) {
             let taskBoxText: string = await $$(this.selectors.taskBoxLocator).get(i).$(this.selectors.taskBoxname).isPresent().then(async (present) => {
@@ -223,6 +223,7 @@ class ViewCaseTemplate {
     }
 
     async clickBackArrowBtn(): Promise<void> {
+        await browser.wait(this.EC.elementToBeClickable(await $(this.selectors.backArrowButton)),5000);
         let backArrow = await $$(this.selectors.backArrowButton).count();
         for (let i = 0; i < backArrow; i++) {
             await $$(this.selectors.backArrowButton).last().click();

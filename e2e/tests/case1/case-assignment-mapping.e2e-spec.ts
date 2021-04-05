@@ -914,6 +914,8 @@ describe("Create Case Assignment Mapping", () => {
             await assignmentConfigConsolePage.addFilter('Region', 'Americas', 'text');
             await utilityGrid.searchRecordWithoutClearFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeTruthy(assignmentData1.assignmentMappingName);
+        });
+        it('[4449]: Assignment mapping search using filters', async () => {
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Site', 'Phylum Site2', 'text');
             await utilityGrid.searchRecordWithoutClearFilter(assignmentData2.assignmentMappingName);
@@ -946,6 +948,8 @@ describe("Create Case Assignment Mapping", () => {
             await utilityGrid.searchRecordWithoutClearFilter(assignmentData2.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData1.assignmentMappingName)).toBeFalsy(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(assignmentData2.assignmentMappingName)).toBeTruthy(assignmentData2.assignmentMappingName);
+        });
+        it('[4449]: Assignment mapping search using filters', async () => {
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Category Tier 3', "Payment Plans", 'text');
             await utilityGrid.searchRecordWithoutClearFilter(assignmentData1.assignmentMappingName);
@@ -975,6 +979,8 @@ describe("Create Case Assignment Mapping", () => {
             await utilityGrid.addFilter("ID", id, "text");
             await utilityGrid.searchRecordWithoutClearFilter(assignmentData1.assignmentMappingName);
             expect(await utilityGrid.isGridRecordPresent(id)).toBeTruthy(id + ' not present');
+        });
+        it('[4449]: Assignment mapping search using filters', async () => {
             await assignmentConfigConsolePage.clearFilter();
             await assignmentConfigConsolePage.addFilter('Category Tier 4', "Retention Bonus", 'text');
             await utilityGrid.searchRecordWithoutClearFilter(assignmentData1.assignmentMappingName);
