@@ -772,7 +772,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    describe('[12090]: Verify Thai Character On Multiple Screens', async () => {
+    fdescribe('[12090]: Verify Thai Character On Multiple Screens', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTempateName = 'caseTemplateNameDRDMV23413' + randomStr;
         let newCase1;
@@ -782,7 +782,7 @@ describe("Attachment", () => {
         let docLibTitle = 'docLibTitleDRDMV23413' + randomStr;
         let knowledgeArticleData;
         let newCaseTemplate;
-        let fileName1 = '1!@#$%^&()+_-={}[}.,123.jpg';
+        let fileName1 = '1!@#$%^&()+_-={}[}.,123.jpg';  
         let fileName2 = '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf';
         let fileName3 = '1ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx';
         let fileName4 = '1Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx';
@@ -796,6 +796,21 @@ describe("Attachment", () => {
         let fileName10 = '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf';
         let fileName11 = '3ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ.docx';
         let fileName12 = '3Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google.xlsx';
+
+        let fileName01 = '1!@#$%^&()+_-={}[}.,123';
+        let fileName02 = '1ทรัพยากรมนุษย์ นโยบายการแพทย์';
+        let fileName03 = '1ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ';
+        let fileName04 = '1Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google';
+
+        let fileName05 = '2!@#$%^&()+_-={}[}.,123';
+        let fileName06 = '2ทรัพยากรมนุษย์ นโยบายการแพทย์';
+        let fileName07 = '2ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ';
+        let fileName08 = '2Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google';
+
+        let fileName09 = '3!@#$%^&()+_-={}[}.,123';
+        let fileName010 = '3ทรัพยากรมนุษย์ นโยบายการแพทย์';
+        let fileName011 = '3ทรัพยากรมนุษย์-นโยบายการแพทย์-รายงานการต__รวจสอบ';
+        let fileName012 = '3Google+Translate+เป็นบริการแปลระบบประสาทด้วยเครื่องฟรีหลายภาษาที่พัฒนาโดย+Google';
 
         let addNoteRandomText = 'addNoteDRDMV23413' + randomStr;
 
@@ -884,9 +899,9 @@ describe("Attachment", () => {
             await viewCasePo.clickOnAttachedDocumentFile(`${fileName1}`);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
 
-            expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
+            expect(await utilityCommon.deleteAlreadyDownloadedFile(fileName2)).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
             await viewCasePo.clickOnAttachedDocumentFile(`${fileName2}`);
-            expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
+            expect(await utilityCommon.isFileDownloaded(fileName2)).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
             await viewCasePo.clickOnAttachedDocumentFile(`${fileName3}`);
@@ -897,28 +912,29 @@ describe("Attachment", () => {
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
 
             await viewCasePo.clickAttachmentsLink();
+
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName01);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName01);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName02);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName02);
             expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName03);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName03);
             expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName04);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName04);
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
             await attachmentBladePo.clickCloseButton();
         });
@@ -952,27 +968,27 @@ describe("Attachment", () => {
 
             await viewCasePo.clickAttachmentsLink();
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(5);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName05);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(5);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName05);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(6);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName06);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(6);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName06);
             expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(7);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName07);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(7);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName07);
             expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(8);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName08);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(8);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName08);
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
             await attachmentBladePo.clickCloseButton();
         });
@@ -1016,21 +1032,21 @@ describe("Attachment", () => {
             expect(await attachmentBladePo.isCheckBoxSelected(fileName12)).toBeFalsy(`${fileName12} CheckBox is selected`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(9);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName09);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(9);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName09);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(10);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName010);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(10);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName010);
             expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(11);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName011);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(11);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName011);
             expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
@@ -1145,79 +1161,78 @@ describe("Attachment", () => {
         it('[12090]: Verify Files On Attachment Blade ', async () => {
             await viewTaskPo.clickOnViewCase();
             await viewCasePo.clickAttachmentsLink();
-
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName01);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName01);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: ${fileName2} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName02);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName02);
             expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName03);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName03);
             expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName04);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName04);
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(5);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName05);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(5);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName05);
             expect(await utilityCommon.isFileDownloaded(`${fileName5}`)).toBeTruthy(`FailuerMsg: ${fileName5} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(6);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName06);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(6);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName06);
             expect(await utilityCommon.isFileDownloaded('2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '2ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(7);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName07);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(7);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName07);
             expect(await utilityCommon.isFileDownloaded(`${fileName7}`)).toBeTruthy(`FailuerMsg: ${fileName7} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(8);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName08);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(8);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName08);
             expect(await utilityCommon.isFileDownloaded(`${fileName8}`)).toBeTruthy(`FailuerMsg: ${fileName8} File is not downloaded.`);
 
             expect(await attachmentBladePo.isCheckBoxSelected(fileName12)).toBeFalsy(`${fileName12} CheckBox is selected`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(9);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName09);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(9);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName09);
             expect(await utilityCommon.isFileDownloaded(`${fileName9}`)).toBeTruthy(`FailuerMsg: ${fileName9} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(10);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName010);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(10);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName010);
             expect(await utilityCommon.isFileDownloaded('3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '3ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(11);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName011);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(11);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName011);
             expect(await utilityCommon.isFileDownloaded(`${fileName11}`)).toBeTruthy(`FailuerMsg: ${fileName11} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(12);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName012);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(12);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName012);
             expect(await utilityCommon.isFileDownloaded(`${fileName12}`)).toBeTruthy(`FailuerMsg: ${fileName12} File is not downloaded.`);
             await attachmentBladePo.clickCloseButton();
         });
@@ -1328,9 +1343,12 @@ describe("Attachment", () => {
             await editCasetemplatePo.clickOnMangeDyanmicLink();
             await browser.sleep(3000); // Wait for attach elements gets load.
             await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName5}`], 1);
-            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName6}`], 2);
-            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName7}`], 3);
-            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName8}`], 4);
+            await browser.sleep(1000);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName6}`], 1);
+            await browser.sleep(1000);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName7}`], 1);
+            await browser.sleep(1000);
+            await dynamicFieldsPo.addAttachment([`../../data/ui/attachment/${fileName8}`], 1);
             await dynamicFieldsPo.clickSaveButton();
             await editCasetemplatePo.clickOnEditCaseTemplateMetadata();
             await editCasetemplatePo.changeTemplateStatusDropdownValue('Active');
@@ -1403,27 +1421,27 @@ describe("Attachment", () => {
         it('[12090]: Verify Dynamic Fields On Attachment', async () => {
             await viewCasePo.clickAttachmentsLink();
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName01);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(1);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName01);
             expect(await utilityCommon.isFileDownloaded(`${fileName1}`)).toBeTruthy(`FailuerMsg: ${fileName1} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: 1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf file is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName02);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(2);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName02);
             expect(await utilityCommon.isFileDownloaded('1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf')).toBeTruthy(`FailuerMsg: '1ทรัพยากรมนุษย์ นโยบายการแพทย์.pdf' File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName03);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(3);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName03);
             expect(await utilityCommon.isFileDownloaded(`${fileName3}`)).toBeTruthy(`FailuerMsg: ${fileName3} File is not downloaded.`);
 
             expect(await utilityCommon.deleteAlreadyDownloadedFile(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is delete sucessfully`);
-            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName04);
             await attachmentBladePo.clickDownloadButton();
-            await attachmentBladePo.selectCheckBox(4);
+            await attachmentBladePo.searchAndSelectCheckBox(fileName04);
             expect(await utilityCommon.isFileDownloaded(`${fileName4}`)).toBeTruthy(`FailuerMsg: ${fileName4} File is not downloaded.`);
             await attachmentBladePo.clickCloseButton();
         });

@@ -1155,7 +1155,7 @@ describe('Notes template', () => {
             await createAdhocTaskPo.setDescription("Description");
             await createAdhocTaskPo.selectPriority('Low');
             await createAdhocTaskPo.clickAssignToMeButton();
-            await createAdhocTaskPo.clickSaveAdhoctask(4);
+            await createAdhocTaskPo.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
             await utilityCommon.closeAllBlades();
             await viewCasePage.clickAddTaskButton();
@@ -1245,13 +1245,9 @@ describe('Notes template', () => {
             notesTemplateWithLabelData.templateName = notesTemplateWithLabelData.templateName + randomStr;
             await apiHelper.createNotesTemplate("Case", notesTemplateWithLabelData);
         });
-
         it('[4373]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Notes Template', BWF_PAGE_TITLES.CASE_MANAGEMENT.NOTES_TEMPLATES);
-            await utilityGrid.clearFilter();
-            await utilityGrid.clearSearchBox();
-            expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
 
             let columnNameArray:string[] =['Label', 'ID'];
             await consoleNotesTemplatePo.addColumns(columnNameArray);
@@ -1286,7 +1282,12 @@ describe('Notes template', () => {
             expect(await utilityGrid.isGridRecordPresent(notesTemplateWithLabelData.templateName)).toBeFalsy('ID Filter is not applied');
             await consoleNotesTemplatePo.removeColumns(['Label', 'ID']);
         });
-
+        it('[4373]: [DesignTime] Verify "Case Notes templates", grid operation searching , sorting columns and filter on company', async () => {
+            await utilityGrid.clearSearchBox();
+            await utilityGrid.clearFilter();
+            expect(await consoleNotesTemplatePo.isGridColumnSorted('Status')).toBeTruthy('Column is not sorted');
+            expect(await consoleNotesTemplatePo.isGridColumnSorted('Template Name')).toBeTruthy('Column is not sorted');
+        });
         afterAll(async () => {
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await utilityCommon.closeAllBlades();

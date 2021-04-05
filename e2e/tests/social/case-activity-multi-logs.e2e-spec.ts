@@ -370,7 +370,7 @@ describe('Case Activity Multi Logs', () => {
             await activityTabPage.clickOnRefreshButton();
             await browser.sleep(2000); // Need wait to load/fetch logs after fiter removed.
             await activityTabPage.clickOnShowMore();
-            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
+            expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi changed the following task fields')).toBeTruthy('FailureMsg: Assignment change field log header');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Support Organization')).toBeTruthy('FailureMsg: Text is missing in activity log');
@@ -464,7 +464,7 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg: multiple field lock icon missing');
             await activityTabPage.removeFilterList();
             await activityTabPage.clickOnShowMore();
-            expect(await activityTabPage.isTitleTextDisplayedInActivity('Qadim Katawazi changed the following task fields', 1)).toBeTruthy('FailureMsg: Assignment change field log header');
+            expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi changed the following task fields')).toBeTruthy('FailureMsg: Assignment change field log header');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Qadim Katawazi')).toBeTruthy('FailureMsg: Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Support Organization')).toBeTruthy('FailureMsg: Text is missing in activity log');
@@ -961,7 +961,6 @@ describe('Case Activity Multi Logs', () => {
             expect(await activityTabPage.isTextPresentInActivityLog('In Progress')).toBeTruthy('FailureMsg23: In Progress Text is missing in activity log');
         });
 
-        // add defect for error in following it block
         it('[4241]:Verify social activity with change priority', async () => {
             let updatePriority = { "casePriority": "Low" };
             await apiHelper.updateCase(caseResponseDetails.id, updatePriority);
@@ -1011,6 +1010,8 @@ describe('Case Activity Multi Logs', () => {
         });
 
         it('[4241]:Verify social activity with multiple activity', async () => {
+            await navigationPage.gotoCaseConsole();
+            await caseConsolePo.searchAndOpenCase(caseId);
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateCasePriority('High');
             await editCasePo.setCaseSummary('caseSummary');
@@ -1071,6 +1072,7 @@ describe('Case Activity Multi Logs', () => {
             await browser.sleep(2000); // Sleep till open conmpose email pop up
             await composeMailPo.setToOrCCInputTextbox('To', 'qstrong');
             await composeMailPo.clickOnSendButton();
+            await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.isLogIconDisplayedInActivity('envelope', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');

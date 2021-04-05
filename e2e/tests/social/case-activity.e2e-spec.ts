@@ -27,6 +27,7 @@ import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
+import ckeditorOpsPo from "../../pageobject/common/ck-editor/ckeditor-ops.po";
 
 describe('Case Activity', () => {
     const randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
@@ -1208,6 +1209,7 @@ describe('Case Activity', () => {
         let randomValues4 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues5 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues6 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomValues7 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let addNoteBodyText1 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}`;
         let addNoteBodyText2 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}\n${randomValues6}`;
         let caseId;
@@ -1286,6 +1288,9 @@ describe('Case Activity', () => {
         });
         it('[4240]: Verify Logs With More Than 5 Lines With More Than 4 Attachment ', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
+            await ckeditorOpsPo.clickOnBoldIcon();
+            await activityTabPage.addActivityNote('\n'+randomValues7);
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnRefreshButton();
@@ -1293,12 +1298,12 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnRefreshButton();
 
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2+'\n'+randomValues7, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2+'\n'+randomValues7, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
             await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing');
             await activityTabPage.clickOnRefreshButton();
             await browser.sleep(2000);//wait until record load after refresh
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg26: BodyText is missing');
+            await expect(await activityTabPage.isBoldTextDisplayed(randomValues7)).toBeFalsy('FailureMsg26: BodyText is missing');
 
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);
@@ -1340,6 +1345,8 @@ describe('Case Activity', () => {
         let randomValues4 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues5 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let randomValues6 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomValues7 = [...Array(30)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+
         let addNoteBodyText1 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}`;
         let addNoteBodyText2 = `${randomValues1}\n${randomValues2}\n${randomValues3}\n${randomValues4}\n${randomValues5}\n${randomValues6}`;
 
@@ -1413,6 +1420,9 @@ describe('Case Activity', () => {
         });
         it('[4219]: Verify Logs With More Than 5 Lines With More Than 4 Attachment', async () => {
             await activityTabPage.addActivityNote(addNoteBodyText2);
+            await ckeditorOpsPo.clickOnBoldIcon();
+            await activityTabPage.addActivityNote('\n'+randomValues7);
+            await ckeditorOpsPo.clickOnBoldIcon();
             await activityTabPage.addAttachment([filePath7, filePath8, filePath9, filePath10, filePath11]);
             await activityTabPage.clickOnPostButton();
             await activityTabPage.clickOnRefreshButton();
@@ -1420,12 +1430,12 @@ describe('Case Activity', () => {
             await activityTabPage.clickOnRefreshButton();
             await expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg23: Show More missing for body text');
 
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2+'\n'+randomValues7, 1)).toBeTruthy('FailureMsg22: BodyText is missing');
+            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2+'\n'+randomValues7, 1)).toBeTruthy('FailureMsg25: BodyText is missing');
             await expect(activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg43: ShowLess link is missing');
             await activityTabPage.clickOnRefreshButton();
             await browser.sleep(2000); //Wait until record load
-            await expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeFalsy('FailureMsg26: BodyText is missing');
+            await expect(await activityTabPage.isBoldTextDisplayed(randomValues7)).toBeFalsy('FailureMsg26: BodyText is missing');
 
             await expect(await activityTabPage.clickShowMoreLinkInAttachmentActivity(1)).toBeTruthy('FailureMsg24: Show more link for attachment is missing')
             await expect(await activityTabPage.isAttachedFileNameDisplayed('bwfJson1.json')).toBeTruthy(`FailureMsg27: ${filePath7} is missing`);

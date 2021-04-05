@@ -920,8 +920,9 @@ describe('Case Activity CKE', () => {
             await adhoctaskTemplate.setSummary(adhocTaskSummary);
             await adhoctaskTemplate.setDescription("Description");
             await adhoctaskTemplate.clickAssignToMeButton();
-            await adhoctaskTemplate.clickSaveAdhoctask(4);
+            await adhoctaskTemplate.clickSaveAdhoctask();
             await utilityCommon.closePopUpMessage();
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(4);
             await manageTaskBladePo.clickTaskLink(adhocTaskSummary);
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(notesTemplateTaskData.templateName);

@@ -23,7 +23,7 @@ class DynamicField {
         upArrow: '.right-header-block .d-icon-angle_up',
         searchField: '.bwf-dynamic-field-group .adapt-search-field',
         deleteButton: '.d-icon-right-cross',
-        attachmentField: 'input[type="file"]',
+        attachmentField: '.bwf-attachment-button input[type="file"]',
         columnValue: '[class="bwf-dynamic-field-simple"] .pl-1',
         dropdownvalue: '.rx-select__option-content div',
         globalFieldHeader: '[id="field-list"] span[class="ml-1"]'

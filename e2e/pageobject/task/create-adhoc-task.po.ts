@@ -91,9 +91,8 @@ class CreateAdhocTaskTemplatePage {
         await $(this.selectors.taskSummary).sendKeys(summary);
     }
 
-    async clickSaveAdhoctask(expectedTaskCount?: number): Promise<void> {
+    async clickSaveAdhoctask(): Promise<void> {
         await $(this.selectors.saveAdhocTask).click();
-        if (expectedTaskCount) await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(expectedTaskCount);
     }
 
     async clickChangeAssignmentButton(): Promise<void> {

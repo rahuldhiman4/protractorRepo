@@ -792,6 +792,13 @@ class ActivityTabPage {
             else return false;
         })
     }
+
+    async isBoldTextDisplayed(textName: string): Promise<boolean> {
+        return await element(by.cssContainingText('.activities .activity__wrapper strong', textName)).isPresent().then(async (link) => {
+            if (link) return await element(by.cssContainingText('.activities .activity__wrapper strong', textName)).isDisplayed();
+            else return false;
+        });
+    }
 }
 
 export default new ActivityTabPage();

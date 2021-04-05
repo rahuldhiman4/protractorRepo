@@ -436,6 +436,7 @@ describe('Multi Search Validation', () => {
 
         it('[4291]: Create Case With API', async () => {
             for (let a = 1; a <= 5; a++) {
+                browser.sleep(1000);
                 caseDetails = await createCase(caseSummary, commonSearchAll);
                 caseDisplayId[a] = caseDetails.displayId;
             }
@@ -523,12 +524,12 @@ describe('Multi Search Validation', () => {
         });
 
         it('[4291]: Verify Documents Displayed On Left Pannel', async () => {
-            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg2: Document module title is missing');
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 1)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 1 Document is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 2)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 2 Document is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 3)).toBeTruthy(`FailureMsg5: ${commonSearchAll} 3 Document is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 4)).toBeTruthy(`FailureMsg6: ${commonSearchAll} 4 Document is missing`);
-            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 5)).toBeTruthy(`FailureMsg7: ${commonSearchAll} 5 Document is missing`);
+            expect(await searchPo.isModuleTitleDisplayed(commonSearchAll, 'Documents (5)', documentModule)).toBeTruthy('FailureMsg1: Document module title is missing');
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 1)).toBeTruthy(`FailureMsg2: ${commonSearchAll} 1 Document is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 2)).toBeTruthy(`FailureMsg3: ${commonSearchAll} 2 Document is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 3)).toBeTruthy(`FailureMsg4: ${commonSearchAll} 3 Document is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 4)).toBeTruthy(`FailureMsg5: ${commonSearchAll} 4 Document is missing`);
+            expect(await searchPo.isRecordDisplayedOnLeftPannel(commonSearchAll, documentModule, 5)).toBeTruthy(`FailureMsg6: ${commonSearchAll} 5 Document is missing`);
         });
 
         it('[4291]: Verify People Displayed On Left Pannel', async () => {
