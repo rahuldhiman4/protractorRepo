@@ -492,6 +492,9 @@ describe('Knowledge Articles - Location (Region / Site) Tests', () => {
             await createDocumentLibraryPage.selectSite(siteFieldVal);
             await createDocumentLibraryPage.saveNewDocument();
             await browser.sleep(3000); //Time required for Document library to be visible on console 
+            await utilityCommon.closePopUpMessage();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await utilityGrid.searchAndOpenHyperlink(title);
             await editDocumentLibraryPo.clickOnEditButton();
             expect(await editDocumentLibraryPo.getRegionSelectedValue()).toBe(regionFieldVal);

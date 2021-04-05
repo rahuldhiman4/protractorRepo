@@ -58,7 +58,8 @@ describe("Notification Template", () => {
             await browser.sleep(1000);
             await editNotificationTemplate.clickOnCancelButton();
             //Validate if the new copied template is created
-            await utilityGrid.clickCheckBoxOfValueInGrid("Task SLA Missed");
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Notification Configuration--Manage Templates', BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);
             await utilityGrid.clearFilter();
             expect(await utilityGrid.isGridRecordPresent(notificationTemplateName)).toBeTruthy("Notification template not copied");
         });

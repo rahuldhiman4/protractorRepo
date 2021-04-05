@@ -500,6 +500,8 @@ describe('Task and Knowledge Console Filter Combinations', () => {
         });
         afterAll(async () => {
             await utilityGrid.clearFilter();
+            await apiHelper.apiLogin('tadmin');
+            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', '1_MONTH');
         });
     });
 });

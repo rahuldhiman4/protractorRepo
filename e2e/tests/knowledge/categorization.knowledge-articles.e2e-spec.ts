@@ -760,7 +760,7 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await loginPage.login('elizabeth');
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
-            title = "3913Case " + title;
+            title = randomStr + "3913Case_" + title;
             await createDocumentLibraryPage.openAddNewDocumentBlade();
             await createDocumentLibraryPage.addAttachment(filePath);
             await createDocumentLibraryPage.setTitle(title);
@@ -771,6 +771,9 @@ describe('Knowledge Articles - Categorization Tests', () => {
             await createDocumentLibraryPage.selectCategoryTier2(categoryTier2FieldVal);
             await createDocumentLibraryPage.selectCategoryTier3(categoryTier3FieldVal);
             await createDocumentLibraryPage.saveNewDocument();
+            await utilityCommon.closePopUpMessage();
+            await navigationPage.gotoSettingsPage();
+            await navigationPage.gotoSettingsMenuItem('Document Management--Library', BWF_PAGE_TITLES.DOCUMENT_MANAGEMENT.LIBRARY);
             await documentLibraryConsolePage.searchAndOpenDocumentLibrary(title);
             await viewDocumentLibraryPo.clickOnEditDocument();
             await editDocumentLibraryPage.selectStatus(documentLibraryStatus);
