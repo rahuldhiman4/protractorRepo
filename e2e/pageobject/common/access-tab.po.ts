@@ -1,5 +1,5 @@
+import { $, $$, by, element, protractor, ProtractorExpectedConditions } from "protractor";
 import { DropDownType } from "../../utils/constants";
-import { $, $$, by, element, protractor, ProtractorExpectedConditions, browser, ElementFinder } from "protractor";
 import utilityCommon from '../../utils/utility.common';
 class AccessTab {
     EC: ProtractorExpectedConditions = protractor.ExpectedConditions;
@@ -25,9 +25,9 @@ class AccessTab {
 
     async clickToExpandAccessEntitiyByGroup(groupName: string) {
         let count = await $$(this.selectors.caseAccessGroup).count();
-        for(let i=0; i<count; i++) {
+        for (let i = 0; i < count; i++) {
             let groupTitle = await $$(this.selectors.caseAccessGroup).get(i).$('.card-title').getText();
-            if(groupTitle == groupName) {
+            if (groupTitle == groupName) {
                 await $$(this.selectors.caseAccessGroup).get(i).$(this.selectors.caseAccess).click();
                 break;
             }
@@ -59,7 +59,7 @@ class AccessTab {
         let dropDownListRows = 'ux-access-manager .support-group-form div.d-flex.flex-row';
         let dropDownListCount: number = await $$('ux-access-manager .support-group-form div.d-flex.flex-row').count();
         if (isConfidential) {
-            await utilityCommon.selectDropDown(await $('[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] button.dropdown-toggle,[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] button.dropdown-toggle'), entityValue,DropDownType.WebElement);
+            await utilityCommon.selectDropDown(await $('[rx-view-component-id="b1606736-7480-4368-aac6-a8273f0ff0d5"] button.dropdown-toggle,[rx-view-component-id="34ea58f1-269e-4235-870d-41ba90c46e4d"] button.dropdown-toggle'), entityValue, DropDownType.WebElement);
         }
         else {
             for (let i: number = 0; i < dropDownListCount; i++) {
@@ -74,21 +74,19 @@ class AccessTab {
         }
     }
 
-    async isAccessTypeOfEntityDisplayed(accessEntityName:string, accessType: string): Promise<boolean> {
+    async isAccessTypeOfEntityDisplayed(accessEntityName: string, accessType: string): Promise<boolean> {
         switch (accessType) {
             case "Read": {
                 return await element(by.css(`span[aria-label="${accessEntityName}"] ~ span.d-icon-eye`)).isPresent().then(async (result) => {
                     if (result) return await element(by.css(`span[aria-label="${accessEntityName}"] ~ span.d-icon-eye`)).isDisplayed();
                     else return false;
                 });
-                break;
             }
             case "Write": {
                 return await element(by.css(`span[aria-label="${accessEntityName}"] ~ span.d-icon-pencil`)).isPresent().then(async (result) => {
                     if (result) return await element(by.css(`span[aria-label="${accessEntityName}"] ~ span.d-icon-pencil`)).isDisplayed();
                     else return false;
                 });
-                break;
             }
             default: {
                 console.log('Entity does not match');
@@ -149,7 +147,7 @@ class AccessTab {
 
     async clickCloseKnowledgeAccessBlade(): Promise<void> {
         await $(this.selectors.closeKnowledgeAccessBlade).isPresent().then(async (result) => {
-            if (result){
+            if (result) {
                 await $(this.selectors.closeKnowledgeAccessBlade).click();
             } else console.log('Knowledge access close button is missing');
         });
@@ -245,14 +243,14 @@ class AccessTab {
         await $(this.selectors.confidentialSupportGroup).click();
         return await element(by.cssContainingText(this.selectors.dropdownElement, drop)).isPresent().then(async (link) => {
             if (link) {
-                let valuePresent =  await element(by.cssContainingText(this.selectors.dropdownElement, drop)).isDisplayed();
+                let valuePresent = await element(by.cssContainingText(this.selectors.dropdownElement, drop)).isDisplayed();
                 await $(this.selectors.confidentialSupportGroup).click();
                 return valuePresent;
-            } else{
+            } else {
                 await $(this.selectors.confidentialSupportGroup).click();
                 return false;
             }
-            
+
         });
     }
     async isConfidentialSupportGroupAccessAbsent(): Promise<boolean> {
@@ -265,6 +263,6 @@ class AccessTab {
     async getSupportGroupWarningMessage(): Promise<string> {
         return await $(this.selectors.supportGroupWarningText).getText();
     }
-    
+
 }
 export default new AccessTab();

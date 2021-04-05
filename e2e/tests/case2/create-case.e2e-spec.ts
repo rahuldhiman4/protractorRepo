@@ -275,17 +275,17 @@ describe("Create Case", () => {
             await navigationPage.gotoCaseConsole();
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
             await navigationPage.gotoTaskConsole();
-            await expect((await taskConsolepage.getTaskTitle()).trim()).toBe('Tasks', "task title is not displayed in task Console Page");
+            expect((await taskConsolepage.getTaskTitle()).trim()).toBe('Tasks', "task title is not displayed in task Console Page");
             await navigationPage.gotoCaseConsole();
-            await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
             await navigationPage.gotoKnowledgeConsole();
-            await expect((await KnowledgeConsolePage.getKnowledgeArticleTitle()).trim()).toBe('Knowledge Articles', "Knowledge title is not displayed in Knowledge Console Page");
+            expect((await KnowledgeConsolePage.getKnowledgeArticleTitle()).trim()).toBe('Knowledge Articles', "Knowledge title is not displayed in Knowledge Console Page");
             await navigationPage.gotoCreateCase();
-            await expect((await createCasePage.getCreateCaseTitle()).trim()).toBe('Create Case', "Create Case title is not displayed in Create Case Page");
+            expect((await createCasePage.getCreateCaseTitle()).trim()).toBe('Create Case', "Create Case title is not displayed in Create Case Page");
             await navigationPage.gotoCreateKnowledge();
-            await expect((await createKnowledgePage.getCreateKnowledgeHeader()).trim()).toContain('Create Knowledge', "Create Knowledge title is not displayed in Create knowledge Page");
+            expect((await createKnowledgePage.getCreateKnowledgeHeader()).trim()).toContain('Create Knowledge', "Create Knowledge title is not displayed in Create knowledge Page");
         } catch (e) { throw e; }
         finally {
             await navigationPage.signOut();
@@ -296,35 +296,35 @@ describe("Create Case", () => {
     // passed
     describe('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', () => {
         it('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
-            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed1 ");
-            await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
-            await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-            await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+            expect(await navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed1 ");
+            expect(await navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
+            expect(await navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+            expect(await navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
+            expect(await navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
+            expect(await navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed2 ");
-            await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
-            await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-            await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+            expect(await navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed2 ");
+            expect(await navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
+            expect(await navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+            expect(await navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
+            expect(await navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
+            expect(await navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
         });
 
         it('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
-            await expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            await expect(navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed3 ");
-            await expect(navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
-            await expect(navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            await expect(navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            await expect(navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-            await expect(navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
+            expect(await navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed3 ");
+            expect(await navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
+            expect(await navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
+            expect(await navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
+            expect(await navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
+            expect(await navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
         });
 
         afterAll(async () => {
@@ -471,13 +471,13 @@ describe("Create Case", () => {
             // await createCasePage.clickSaveCaseButtonWithoutMessageDisappear();
             // expect(await utilityCommon.isPopUpMessagePresent('Resolve the field validation errors and then try again.').tobeTruthy();
             // await utilityCommon.closePopUpMessage();
-            await expect(createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
+            expect(await createCasePage.isSaveCaseButtonEnabled()).toBeFalsy("Save button is Enabled");
             //await utilityCommon.closePopUpMessage();
             await createCasePage.setSummary(caseSummary);
             await changeAssignmentPage.setAssignee("US Support 1", "Qianru Tao");
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await expect(await viewCasePage.getCaseStatusValue()).toBe('Assigned');
+            expect(await viewCasePage.getCaseStatusValue()).toBe('Assigned');
             await viewCasePage.clickEditCaseButton();
             await editCasePage.updateCasePriority('Low');
             expect(await editCasePage.isSummaryRequiredText()).toBeTruthy("Summary Required text not present");
@@ -517,7 +517,7 @@ describe("Create Case", () => {
             await caseConsolePage.searchAndOpenCase(closed);
             await viewCasePage.clickEditCaseButton();
             await editCasePage.updateCasePriority('Critical');
-            await expect(editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
+            expect(await editCasePage.isSaveCaseEnable()).toBeFalsy("Save button Visible");
         } catch (error) {
             throw error;
         } finally {
@@ -585,7 +585,7 @@ describe("Create Case", () => {
             await activityTabPo.addActivityNote(activityNoteText);
             await activityTabPo.addAttachment([filePath]);
             await activityTabPo.clickOnPostButton();
-            await expect(activityTabPo.isTextPresentInActivityLog(activityNoteText)).toBeTruthy('Private Note is not Added');
+            expect(await activityTabPo.isTextPresentInActivityLog(activityNoteText)).toBeTruthy('Private Note is not Added');
             expect(await activityTabPo.isAttachmentInActivity('bwfPdf.pdf')).toBeTruthy('File is not present on activity');
             await activityTabPo.addActivityNote(randomStr);
             await activityTabPo.clickPublicCheckbox();
@@ -914,7 +914,7 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
-            await expect(viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
         });
 
         afterAll(async () => {
@@ -952,7 +952,7 @@ describe("Create Case", () => {
             await createTaskTemplate.selectOwnerGroup('US Support 3');
             await createTaskTemplate.selectTemplateStatus('Active');
             await createTaskTemplate.clickOnSaveTaskTemplate();
-            await expect(viewTasktemplatePage.getOwnerCompanyValue()).toBe("Petramco");
+            expect(await viewTasktemplatePage.getOwnerCompanyValue()).toBe("Petramco");
             //await utilityCommon.closePopUpMessage();
             //Create Case
             await navigationPage.signOut();
@@ -1120,7 +1120,7 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
-            await expect(viewCasePage.getCaseSummary()).toBe(caseTemplate1);
+            expect(await viewCasePage.getCaseSummary()).toBe(caseTemplate1);
         });
 
         afterAll(async () => {
@@ -1183,7 +1183,7 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
-            await expect(viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeTruthy();
         });
 
         // passed
@@ -1204,7 +1204,7 @@ describe("Create Case", () => {
             await updateStatusBladePo.clickSaveStatus();
             await updateStatusBladePo.changeStatus('Closed');
             await updateStatusBladePo.clickSaveStatus();
-            await expect(viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
+            expect(await viewCasePage.isCaseReopenLinkPresent()).toBeFalsy();
         });
 
         afterAll(async () => {

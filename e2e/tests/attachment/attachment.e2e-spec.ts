@@ -772,7 +772,7 @@ describe("Attachment", () => {
     });
 
     //kgaikwad
-    fdescribe('[12090]: Verify Thai Character On Multiple Screens', async () => {
+    describe('[12090]: Verify Thai Character On Multiple Screens', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTempateName = 'caseTemplateNameDRDMV23413' + randomStr;
         let newCase1;

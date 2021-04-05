@@ -1,6 +1,5 @@
 import { cloneDeep } from 'lodash';
 import { browser } from "protractor";
-import apiCoreUtil from '../../api/api.core.util';
 import apiHelper from '../../api/api.helper';
 import { flowsetGlobalFields } from '../../data/ui/flowset/flowset.ui';
 import casePreviewPo from '../../pageobject/case/case-preview.po';
@@ -29,11 +28,6 @@ import { ICaseTemplate } from '../../data/interface/template.interface';
 let flowsetGlobalFieldsData = undefined;
 
 describe("Case Read Access", () => {
-    const businessDataFile = require('../../data/ui/foundation/businessUnit.ui.json');
-    const supportGrpDataFile = require('../../data/ui/foundation/supportGroup.ui.json');
-    const personDataFile = require('../../data/ui/foundation/person.ui.json');
-    let businessData1, departmentData1, suppGrpData1, businessData2, departmentData2, suppGrpData2;
-    let userData1;
     beforeAll(async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         await browser.get(BWF_BASE_URL);
@@ -49,61 +43,6 @@ describe("Case Read Access", () => {
         await utilityCommon.closeAllBlades();
         await navigationPo.signOut();
     });
-
-    async function foundationData1(company: string) {
-        await apiHelper.apiLogin('tadmin');
-        businessData1 = businessDataFile['BusinessUnitData'];
-        suppGrpData1 = supportGrpDataFile['SuppGrpData'];
-        let personData1 = personDataFile['PersonData'];
-        await apiHelper.createNewUser(personData1);
-        await apiHelper.associatePersonToCompany(personData1.userId, company);
-        businessData1.relatedOrgId = company;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData1);
-        await browser.sleep(5000); // timeout requried to reflect data on UI
-        await apiHelper.createSupportGroup(suppGrpData1);
-        await browser.sleep(5000); // timeout requried to reflect data on UI
-        await apiHelper.associatePersonToSupportGroup(personData1.userId, suppGrpData1.orgName);
-    }
-
-    async function foundationData2(company: string) {
-        await apiHelper.apiLogin('tadmin');
-        businessData2 = businessDataFile['BusinessUnitData19501'];
-        suppGrpData2 = supportGrpDataFile['SuppGrpData19501'];
-        let personData2 = personDataFile['PersonData19501'];
-        await apiHelper.createNewUser(personData2);
-        await apiHelper.associatePersonToCompany(personData2.userId, company);
-        businessData2.relatedOrgId = company;
-        let businessUnitId = await apiHelper.createBusinessUnit(businessData2);
-        await browser.sleep(5000); // timeout requried to reflect data on UI
-        await apiHelper.createSupportGroup(suppGrpData2);
-        await browser.sleep(5000); // timeout requried to reflect data on UI
-        await apiHelper.associatePersonToSupportGroup(personData2.userId, suppGrpData2.orgName);
-    }
-
-    async function createNewUsers() {
-        await apiHelper.apiLogin('tadmin');
-        userData1 = {
-            "firstName": "7605",
-            "lastName": "User1",
-            "userId": "manager",
-            "emailId": "manager@petramco.com",
-            "userPermission": ["Case Manager", "Human Resource"]
-        }
-        await apiHelper.createNewUser(userData1);
-        // userData2 = {
-        //     "firstName": "7605",
-        //     "lastName": "User2",
-        //     "userId": "analyst",
-        //     "emailId": "analyst@petramco.com",
-        //     "userPermission": ["Case Business Analyst", "Human Resource"]
-        // }
-        // await apiHelper.createNewUser(userData2);
-        await apiHelper.associatePersonToCompany(userData1.userId, "Petramco");
-        await apiHelper.associatePersonToCompany(userData1.userId, "Psilon");
-        // await apiHelper.associatePersonToCompany(userData2.userId, "Petramco");
-        // await apiHelper.associatePersonToCompany(userData2.userId, "Psilon");
-        await apiHelper.associatePersonToSupportGroup(userData1.userId, "Psilon Support Group1");
-    }
 
     // #passed
     it('[5011]:[Read Access] Editing Read Access Mappings Company to Global', async () => {
@@ -466,6 +405,7 @@ describe("Case Read Access", () => {
             await createCasePage.clickSaveCaseButton();
             await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickOnTab('Case Access');
+            await browser.sleep(1000); // remove if not needed, wait to populate read access groups
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('Compensation and Benefits', 'Read')).toBeTruthy('FailuerMsg1: Support Group Name is missing');
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
