@@ -36,9 +36,11 @@ class ServiceTargetConfig {
         selectBusinessEntity: `//button//div[text()='Select Business Entity']/parent::button`,
         fieldNameLabel: `//*[contains(@class,'form-control-label')]//span`,
         noMileStonesPresentText: '.adapt-accordion .card .no-record-found',
-        addNewMileStoneBtn: '.adapt-accordion .card button.bwf-button-link span.d-icon-left-plus_circle',
-        goalTypeDropDownInput: '[rx-view-component-id="f80b3d35-e0e4-497b-9656-e01210244572"] button',
-        errorMsg: 'p.form-control-feedback'
+        addNewMileStoneBtn: '.milestone-tab-wrapper button.bwf-button-link',
+        goalTypeDropDownInput: '[rx-view-component-id="9efb3f48-3bc1-4af8-91c4-b4fa3597814a"] input',
+        errorMsg: 'p.form-control-feedback',
+        saveBtnEditSVT: '[rx-view-component-id="baaac71b-d33c-4a09-a2e1-1a8e564d1e9a"] button',
+        cancelBtnEditSVT: '[rx-view-component-id="6615b898-d9cc-478c-97c7-c47f6947d525"] button'
     }
 
     async isServiceTargetBladeDisplayed(): Promise<boolean> {
@@ -296,16 +298,16 @@ class ServiceTargetConfig {
     }
 
     async isGoalTypeCountersDisabled(goalType: string): Promise<boolean> {
-        let chkBox = $$('span.d-textfield__item');
+        let chkBox = $$('.adapt-counter__label--wrp .form-control-label span');
         let cnt: number = 0;
-        for (let i: number = 1; i <= (await chkBox).length; i++) {
+        for (let i: number = 0; i <= (await chkBox).length; i++) {
             let val = await chkBox.get(i).getText();
             if (val == goalType) {
                 cnt++;
                 break;
             }
         }
-        return await $$('span.d-textfield__item + input').get(cnt).getAttribute("disabled") == "true" ? true : false;
+        return await $$('.adapt-counter__content input').get(cnt).getAttribute("disabled") == "true" ? true : false;
     }
 
     async isServiceTargetFieldRequired(fieldName: string): Promise<boolean> {
@@ -336,7 +338,14 @@ class ServiceTargetConfig {
         if (values >= 1) { return true; } else { return false; }
     }
 
+    
+    async clickOnSaveSVTButtonEditSVT() {
+        await $(this.selectors.saveBtnEditSVT).click();
+    }
 
+    async clickOnCancelSVTButtonEditSVT() {
+        await $(this.selectors.cancelBtnEditSVT).click();
+    }
 
 }
 

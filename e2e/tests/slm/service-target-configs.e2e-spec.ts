@@ -608,35 +608,32 @@ describe('Service Target Configs', () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Configure Data Source', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.CONFIGURE_DATA_SOURCE);
             await configureDataSourceConsolePage.clickConfigDataSourceBtn();
-            // await browser.sleep(2000);  // added hard wait to load Add Data Source Blade
             await createConfigureDataSourceConfigPo.setDataSourceDisplayName(dataSourceDisplayName);
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Application Name(required)', 'Case Management Service');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name(required)', 'com.bmc.dsm.case-lib:Case Detail');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field(required)', 'ASSIGNED COMPANY_ID Primary');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Record Definition Name(required)', 'com.bmc.dsm.case-lib:Case Qualification');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Company Field(required)', 'Company');
             expect(await createConfigureDataSourceConfigPo.isSaveBtnDisabled()).toBeFalsy('Save button is found disabled.');
             await createConfigureDataSourceConfigPo.clickDataSourceLink('Show Advanced Settings');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Approval mapping Field - Label');
+            expect(await createConfigureDataSourceConfigPo.isDataSourceAdvancedFieldsDisabled('Dynamic End Time Field')).toBeTruthy('Dynamic End Time Field is enabled on Create Data Source Config screen');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Association Name', 'com.bmc.dsm.case-lib:Case Assignment Mapping Field - Assignee');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Create Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
             await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Edit Qualification View', 'com.bmc.dsm.case-lib:Case Qualification Builder');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Group Primary');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Assigned Business Unit Primary');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date Primary');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Assignee Primary');
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Category Field', 'Category Tier 1 Primary');
-            await createConfigureDataSourceConfigPo.clickUseEndTimeCheckbox();
-            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic End Time Field', 'Created By Primary');
-            await createConfigureDataSourceConfigPo.clickDataSourceLink('Build Expression');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Assigned Group', 'Assigned Group');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Business Entity', 'Assigned Group');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Start Time Field', 'Created Date');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Dynamic Goal Time Field', 'Category Tier 1');
+            await createConfigureDataSourceConfigPo.selectDataSourceFieldOption('Category Field', 'Category Tier 1');
+            await createConfigureDataSourceConfigPo.clickDataSourceLinkBuildExpression('Build Expression');
             expect(await approvalConfigurationPage.isCreateNewApprovalFlowPopUpDisplayed()).toBeTruthy();
-            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Create Expression');
+            expect(await approvalConfigurationPage.getCreateNewApprovalFlowPopUpTitle()).toContain('Edit expression');
             await browser.sleep(3000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.searchExpressionFieldOption('Assignee GUID Primary');
-            await approvalConfigurationPage.clickRecordOption('Record Instance');
+            await approvalConfigurationPage.searchExpressionFieldOption('Assigned Group');
             await browser.sleep(2000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.selectExpressionFieldOption('Assignee GUID Primary');
+            await approvalConfigurationPage.selectExpressionFieldOption('Assigned group');
             await browser.sleep(2000); // sleep added for expression builder loading time
             await approvalConfigurationPage.selectExpressionOperator('=');
             await browser.sleep(1000); // sleep added for expression builder loading time
-            await approvalConfigurationPage.setExpressionValueForParameter('"' + "Petramco" + '"');
+            await approvalConfigurationPage.setExpressionValueForParameter('"' + "Employee Relations" + '"');
             await createConfigureDataSourceConfigPo.clickRegularExpressionSaveButton();
             await createConfigureDataSourceConfigPo.clickSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message is not displayed.');
@@ -661,8 +658,8 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "Status", "=", "Resolved", "Direct");
             await serviceTargetConfig.clickCloseButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-            expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
-            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue?');
+            expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning');
+            expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
 
@@ -689,7 +686,7 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(0, "Status", "=", "Assigned", "Direct");
             await serviceTargetConfig.selectExpressionForMeasurement(1, "Status", "=", "Resolved", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
             await serviceTargetConsole.searchServiceTarget("SVT with mandatory fields");
             await serviceTargetConfig.selectGoalTypeCheckbox('Business Entity');
             await serviceTargetConfig.selectGoalTypeCheckbox('Start Time');
@@ -707,7 +704,7 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Reset Goal for Same Request?')).toBeFalsy('Reset Goal for Same Request? field is disabled.');
             expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Allow Measurement to Re-Open?')).toBeFalsy('Allow Measurement to Re-Open? field is disabled.');
             expect(await serviceTargetConfig.isMeasurementCheckboxDisabled('Enable Team Tracking')).toBeFalsy('Enable Team Tracking field is disabled.');
-            await serviceTargetConfig.clickCloseButton();
+            await serviceTargetConfig.clickOnCancelSVTButtonEditSVT();
         });
 
         afterAll(async () => {
@@ -835,6 +832,7 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Task Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeActive.svtGoalTypeName)).toBeTruthy('Active goal type of Human Resource LOB is not displayed.');
             await serviceTargetConfig.clearGoalTypeDropDownOption();
+            //Failing for the defect
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeInactive.svtGoalTypeName)).toBeFalsy('Inactive goal type of Human Resource LOB is displayed.');
             await serviceTargetConfig.clearGoalTypeDropDownOption();
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeFacilities.svtGoalTypeName)).toBeFalsy('Active goal type of Facilities LOB is displayed.');
@@ -859,9 +857,9 @@ describe('Service Target Configs', () => {
             await milestoneConfig.setMileStoneDescription("SVT Milestone Desc" + randomStr);
             await milestoneConfig.setMileStonePercentage("10");
             await milestoneConfig.clickMileStoneExpression();
-            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'VIP', "=", 'No', "Direct");
             let selectedExpx = await SlmExpressionBuilder.getSelectedExpression();
-            let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
+            let expectedSelectedExp = "'" + "Requester > VIP" + "'" + "=" + '"' + "No" + '"';
             expect(selectedExpx).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
 
@@ -889,9 +887,9 @@ describe('Service Target Configs', () => {
             await milestoneConfig.setMileStoneDescription("SVT Milestone Desc" + randomStr);
             await milestoneConfig.setMileStonePercentage("10");
             await milestoneConfig.clickMileStoneExpression();
-            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'VIP', "=", 'No', "Direct");
             let selectedExpx = await SlmExpressionBuilder.getSelectedExpression();
-            let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
+            let expectedSelectedExp = "'" + "Requester > VIP" + "'" + "=" + '"' + "No" + '"';
             expect(selectedExpx).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await milestoneConfig.clickMileStoneActionsSegment();
@@ -899,9 +897,8 @@ describe('Service Target Configs', () => {
             await milestoneConfig.selectMileStoneActionCondition("New Alert or Email Action");
             expect(await milestoneConfig.isSetMileStoneNotificationActionPopUpDisplayed()).toBeTruthy("SLM Milestone Action Pop up window not displayed");
             await milestoneConfig.setMileStoneNotificationTitle("SVT Notification Action" + randomStr);
-            await milestoneConfig.setMileStoneNotificationDescription("Summary");
             await milestoneConfig.clickOnNotificationTemplateDropDown();
-            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA Missed')).toBeTruthy();
+            //failing for defect
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA - Warning 50%')).toBeTruthy();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(caseNotificationHR)).toBeTruthy();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(caseNotificationFacilities)).toBeFalsy();
@@ -910,14 +907,23 @@ describe('Service Target Configs', () => {
             await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationHR)).toBeFalsy();
             await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
-            await milestoneConfig.setMileStoneNotificationToField('qkatawazi@petramco.com');
+            expect(await milestoneConfig.isNotificationTemplatePresentInDropDown('Case SLA Missed')).toBeTruthy();
+            await milestoneConfig.clickOnNotificationTemplateDropDown();
+            await milestoneConfig.clickCancelMileStoneActionNotification();
+
+            await milestoneConfig.clickAddNewMileStoneActionBtn();
+            await milestoneConfig.selectMileStoneActionCondition("New Alert or Email Action");
+            expect(await milestoneConfig.isSetMileStoneNotificationActionPopUpDisplayed()).toBeTruthy("SLM Milestone Action Pop up window not displayed");
+            await milestoneConfig.setMileStoneNotificationTitle("SVT Notification Action" + randomStr);
+            await milestoneConfig.setMileStoneNotificationDescription("Summary");
             await milestoneConfig.selectMileStoneNotificationDeliveryMethod('Alert');
             await milestoneConfig.selectMileStoneNotificationTemplate(caseNotificationHR);
+            await milestoneConfig.setMileStoneNotificationToField('Assignee');
             await milestoneConfig.clickSaveMileStoneActionNotification();
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
-            await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been updated successfully')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await serviceTargetConfig.clickOnSaveSVTButtonEditSVT();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[5647]: Create a case and verify if the case is updated as per the milestone configurations', async () => {
@@ -952,7 +958,7 @@ describe('Service Target Configs', () => {
 
         it('[5647]: Create a case wit mismatched qualifications and  verify if the case is updated as per the milestone configurations', async () => {
             let caseData = {
-                "Requester": "qtao",
+                "Requester": "mmann",
                 "Summary": "Summary_" + randomStr,
                 "Source": "Agent",
                 "Priority": "High",
@@ -1032,22 +1038,7 @@ describe('Service Target Configs', () => {
         it('[5647]: create same name record in same LOB', async () => {
             await utilityGrid.selectLineOfBusiness('Human Resource');
             await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
-            await SlmExpressionBuilder.clickOnSaveExpressionButton();
-            await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
-            await serviceTargetConfig.selectGoalType('Case Resolution Time');
-            await serviceTargetConfig.selectGoal("3");
-            await serviceTargetConfig.selectMeasurement();
-            await serviceTargetConfig.selectExpressionForMeasurement(0, "Status", "=", "Assigned", "Direct");
-            await serviceTargetConfig.selectExpressionForMeasurement(1, "Status", "=", "Resolved", "Direct");
-            await serviceTargetConfig.selectExpressionForMeasurement(2, "Status", "=", "Pending", "Direct");
-            await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
-        });
-        it('[5647]: create same name record in different LOB', async () => {
-            await utilityGrid.selectLineOfBusiness('Facilities');
-            await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
-            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'SELECTION', 'High');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High', "Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButton();
             await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
             // await serviceTargetConfig.selectGoalType('Case Resolution Time');
@@ -1057,7 +1048,22 @@ describe('Service Target Configs', () => {
             await serviceTargetConfig.selectExpressionForMeasurement(1, "Status", "=", "Resolved", "Direct");
             await serviceTargetConfig.selectExpressionForMeasurement(2, "Status", "=", "Pending", "Direct");
             await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+        });
+        it('[5647]: create same name record in different LOB', async () => {
+            await utilityCommon.closePopUpMessage();
+            await utilityGrid.selectLineOfBusiness('Facilities');
+            await serviceTargetConfig.createServiceTargetConfig(svttile, 'Petramco', 'Case Management');
+            await SlmExpressionBuilder.selectExpressionQualification('Priority', '=', 'High', "Direct");
+            await SlmExpressionBuilder.clickOnSaveExpressionButton();
+            await serviceTargetConfig.enterSVTDescription('SVT with all fields Desc' + randomStr);
+            await serviceTargetConfig.selectGoal("3");
+            await serviceTargetConfig.selectMeasurement();
+            await serviceTargetConfig.selectExpressionForMeasurement(0, "Status", "=", "Assigned", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(1, "Status", "=", "Resolved", "Direct");
+            await serviceTargetConfig.selectExpressionForMeasurement(2, "Status", "=", "Pending", "Direct");
+            await serviceTargetConfig.clickOnSaveSVTButton();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         afterAll(async () => {
@@ -1094,6 +1100,7 @@ describe('Service Target Configs', () => {
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Case Response Time')).toBeTruthy('OOTB goal type is not displayed.');
             await serviceTargetConfig.clearGoalTypeDropDownOption();
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown('Task Resolution Time')).toBeTruthy('OOTB goal type is not displayed.');
+            //Failing for the defect
             await serviceTargetConfig.clearGoalTypeDropDownOption();
             expect(await serviceTargetConfig.isGoalTypeOptionPresentInDropDown(goalTypeInactive.svtGoalTypeName)).toBeFalsy('Inactive goal type of Human Resource LOB is displayed.');
             await serviceTargetConfig.clearGoalTypeDropDownOption();
@@ -1120,7 +1127,7 @@ describe('Service Target Configs', () => {
             await milestoneConfig.setMileStoneDescription("SVT Milestone Desc" + randomStr);
             await milestoneConfig.setMileStonePercentage("10");
             await milestoneConfig.clickMileStoneExpression();
-            await SlmExpressionBuilder.selectExpressionQualification('Task Type', '=', 'SELECTION', 'Manual');
+            await SlmExpressionBuilder.selectExpressionQualificationForTask('Task Type', '=', 'Manual', 'Direct');
             let selectedExp: string = await SlmExpressionBuilder.getSelectedExpression();
             let expectedSelectedExp = "'" + "Task Type" + "'" + "=" + '"' + "Manual" + '"'
             expect(selectedExp).toEqual(expectedSelectedExp);
@@ -1149,9 +1156,9 @@ describe('Service Target Configs', () => {
             await milestoneConfig.setMileStoneDescription("SVT Milestone Desc" + randomStr);
             await milestoneConfig.setMileStonePercentage("10");
             await milestoneConfig.clickMileStoneExpression();
-            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'Email', "=", 'TEXT', "qdu@petramco1.com");
+            await SlmExpressionBuilder.selectSecondLevelExpressionQualification('Requester', 'VIP', "=", 'No', "Direct");
             let selectedExpx = await SlmExpressionBuilder.getSelectedExpression();
-            let expectedSelectedExp = "'" + "Requester > Email" + "'" + "=" + '"' + "qdu@petramco1.com" + '"';
+            let expectedSelectedExp = "'" + "Requester > VIP" + "'" + "=" + '"' + "No" + '"';
             expect(selectedExpx).toEqual(expectedSelectedExp);
             await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();
             await milestoneConfig.clickMileStoneActionsSegment();
@@ -1176,14 +1183,23 @@ describe('Service Target Configs', () => {
             await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
             expect(await milestoneConfig.isNotificationTemplatePresentInDropDown(taskNotificationHR)).toBeTruthy();
             await milestoneConfig.clearNotificationTemplateSelectionFromMilestone();
-            await milestoneConfig.setMileStoneNotificationToField('qkatawazi@petramco.com');
+
+            await milestoneConfig.clickOnNotificationTemplateDropDown();
+            await milestoneConfig.clickCancelMileStoneActionNotification();
+
+            await milestoneConfig.clickAddNewMileStoneActionBtn();
+            await milestoneConfig.selectMileStoneActionCondition("New Alert or Email Action");
+            expect(await milestoneConfig.isSetMileStoneNotificationActionPopUpDisplayed()).toBeTruthy("SLM Milestone Action Pop up window not displayed");
+            await milestoneConfig.setMileStoneNotificationTitle("SVT Notification Action" + randomStr);
+            await milestoneConfig.setMileStoneNotificationDescription("Summary");
             await milestoneConfig.selectMileStoneNotificationDeliveryMethod('Alert');
             await milestoneConfig.selectMileStoneNotificationTemplate(taskNotificationHR);
+            await milestoneConfig.setMileStoneNotificationToField('Assignee');
             await milestoneConfig.clickSaveMileStoneActionNotification();
             await milestoneConfig.selectMileStoneAction();
             await milestoneConfig.clickSaveMileStone();
-            await serviceTargetConfig.clickOnSaveSVTButton();
-            expect(await utilityCommon.isPopUpMessagePresent('Record has been registered successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await serviceTargetConfig.clickOnSaveSVTButtonEditSVT();
+            expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
         });
 
         it('[6028]: Create a task and verify if the case is updated as per the milestone configurations', async () => {
@@ -1194,8 +1210,8 @@ describe('Service Target Configs', () => {
                 "priority": 'High',
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities"
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(manualTemplateData);
@@ -1212,7 +1228,7 @@ describe('Service Target Configs', () => {
             let taskId = await manageTaskBladePo.getTaskDisplayId();
             await manageTaskBladePo.clickTaskLink(manualTemplateData.templateSummary);
 
-            await browser.sleep(40000); // wait added for milestone to trigger and reflect the changes
+            await browser.sleep(30000); // wait added for milestone to trigger and reflect the changes
 
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);
@@ -1233,11 +1249,8 @@ describe('Service Target Configs', () => {
                 "processName": 'Auto Proces' + randomStr,
                 "taskCompany": "Petramco",
                 "ownerCompany": "Petramco",
-                "ownerBusinessUnit": "Facilities Support",
-                "ownerGroup": "Facilities",
-                "businessUnit": "Facilities Support",
-                "supportGroup": "Facilities",
-                "assignee": "Fritz",
+                "ownerBusinessUnit": "United States Support",
+                "ownerGroup": "US Support 3"
             }
             let automatedTaskTemplate = await apiHelper.createAutomatedTaskTemplate(automatedtemplateData);
 
@@ -1255,7 +1268,7 @@ describe('Service Target Configs', () => {
             let taskId = await manageTaskBladePo.getTaskDisplayId();
             await manageTaskBladePo.clickTaskLink(automatedtemplateData.templateSummary);
 
-            await browser.sleep(35000); // wait added for milestone to trigger and reflect the changes
+            await browser.sleep(30000); // wait added for milestone to trigger and reflect the changes
 
             await navigationPage.gotoTaskConsole();
             await utilityGrid.searchAndOpenHyperlink(taskId);

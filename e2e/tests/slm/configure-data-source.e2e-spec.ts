@@ -278,7 +278,6 @@ describe('Data Source Configuration Tests', () => {
         it('[4901]: Create a Task SVT and verify the data source details are enabled', async () => {
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
-            await utilityGrid.selectLineOfBusiness('Human Resource');
             await serviceTargetConfig.createServiceTargetConfig('SVT with all fields', 'Petramco', 'Task Management');
             await SlmExpressionBuilder.selectExpressionQualification('Priority', '=','High', "Direct");
             await SlmExpressionBuilder.clickOnSaveExpressionButtonForTask();

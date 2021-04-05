@@ -68,23 +68,22 @@ class SlmExpressionBuilder {
 
     async areSecondLevelExpressionFieldsMatches(firstLevelExpression: string, data: string[]): Promise<boolean> {
         let arr: string[] = [];
+        let firstLevelField: string = "";
 
-        let listPrimaryOfFields: ElementFinder[] = await $$('.col-sm-4 [class="bwf-field-selector_field"]');
-        for (let i: number = 0; i < listPrimaryOfFields.length; i++) {
-            let field: ElementFinder = await listPrimaryOfFields[i].$('.expanded_field');
-            let primaryElementText: string[] = (await field.getText()).split("\n");
-            for (let k: number = 0; k < primaryElementText.length; k++) {
-                if (primaryElementText[k].trim() == firstLevelExpression) {
-                    let primaryFieldArrow: ElementFinder = await listPrimaryOfFields[i].$('.d-icon-triangle_right');
-                    await primaryFieldArrow.click();
-                    let listOFSecondaryFields: ElementFinder[] = await listPrimaryOfFields[i].$$('.expanded_field .child_field');
-                    for (let j: number = 0; j < listOFSecondaryFields.length; j++) {
-                        let v = await listOFSecondaryFields[j].getText();
-                        arr.push(await listOFSecondaryFields[j].getText());
-                    }
+        for (let i: number = 0; i < data.length; i++) {
+            await $(this.expressionBuilderSelectors.searchField).clear();
+            await $(this.expressionBuilderSelectors.searchField).sendKeys(data[i]);
+            firstLevelField = await $('.col-sm-4 [class="bwf-field-selector_field"]').getText();
+
+            if (firstLevelField.trim() == firstLevelExpression) {
+                if (i == 0) {
+                    await $('.d-icon-triangle_right').click();
                 }
+                await $$(this.expressionBuilderSelectors.selectField).last().getText();
+                arr.push(await $$(this.expressionBuilderSelectors.selectField).last().getText());
             }
         }
+
         arr = arr.sort();
         data = data.sort();
         if ('Company' == firstLevelExpression) {
@@ -128,8 +127,8 @@ class SlmExpressionBuilder {
         await browser.wait(this.EC.elementToBeClickable($(this.expressionBuilderSelectors.selectField)), 4000);
         let allOptionsCount = await $$(this.expressionBuilderSelectors.selectField).count();
         for (let i: number = 0; i <= allOptionsCount; i++) {
-           let optionName= await $$(this.expressionBuilderSelectors.selectField).get(i).getText();
-            if (optionName  === field) {
+            let optionName = await $$(this.expressionBuilderSelectors.selectField).get(i).getText();
+            if (optionName === field) {
                 await $$(this.expressionBuilderSelectors.selectField).get(i).click();
                 break;
             }
@@ -178,9 +177,11 @@ class SlmExpressionBuilder {
             await utilityCommon.selectDropDown(await $(".bwf-expression-values button[role='listbox']"), fieldOptionValue, DropDownType.WebElement);
         } else if (DropDown == "Search") {
             await utilityCommon.selectDropDown(field, fieldOptionValue, DropDownType.Label);
-        }else if (DropDown == "link") {
+        } else if (DropDown == "link") {
             await $('input[aria-label="Requester"]').sendKeys(fieldOptionValue);
             await $('span[class="popup-person"]').click();
+        } else if (DropDown == "Text") {
+            await $('.bwf-expression-values input').sendKeys(fieldOptionValue);
         }
         await $(addBtn).click();
     }
