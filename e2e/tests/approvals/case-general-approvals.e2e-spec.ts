@@ -118,6 +118,7 @@ describe("Case General Approval Tests", () => {
 
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         // ??
@@ -325,6 +326,7 @@ describe("Case General Approval Tests", () => {
             await approvalConfigurationPage.selectApproversForApproverFlow('People', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         // passed
@@ -517,7 +519,7 @@ describe("Case General Approval Tests", () => {
             let approvalFlows = [
                 {
                     "flowName": 'Approval Flow1' + randomStr,
-                    "approvers": "U:qliu;qkatawazi",
+                    "approvers": "qliu;qkatawazi",
                     "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                     "precedence": 1,
                     "signingCriteria": 0,
@@ -527,7 +529,7 @@ describe("Case General Approval Tests", () => {
                 },
                 {
                     "flowName": 'Approval Flow2' + randomStr,
-                    "approvers": "U:qliu;qkatawazi",
+                    "approvers": "qliu;qkatawazi",
                     "qualification": `'Category Tier 1' = "Workforce Administration" AND 'Category Tier 2' = "HR Operations"`,
                     "precedence": 2,
                     "signingCriteria": 0,

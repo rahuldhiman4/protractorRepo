@@ -107,6 +107,7 @@ describe("Case Self Approval Tests", () => {
             await approvalConfigurationPage.setAuditInformationValue('test self approval');
             await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[5160]:Create case and verify self approval without process', async () => {
@@ -227,6 +228,7 @@ describe("Case Self Approval Tests", () => {
             await utilityCommon.selectDropDown('Self approval process', 'Case - Sample Self Approval', DropDownType.Label);
             await approvalConfigurationPage.clickSelfApprovalAddButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[5161]:Create case and verify self approval without process', async () => {

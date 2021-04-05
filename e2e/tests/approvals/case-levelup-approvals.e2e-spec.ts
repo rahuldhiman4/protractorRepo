@@ -105,6 +105,7 @@ describe("Case Level Up Approval Tests", () => {
 
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[4263]:Create a case and verify approval details on case', async () => {
@@ -335,6 +336,7 @@ describe("Case Level Up Approval Tests", () => {
 
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[5149]:Create a case and verify approval details on case', async () => {
@@ -579,6 +581,7 @@ describe("Case Level Up Approval Tests", () => {
 
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[6218,6219]:Create a case and verify Show Approvers Blade information', async () => {
@@ -764,6 +767,7 @@ describe("Case Level Up Approval Tests", () => {
 
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[4982]:Create a case and verify approval mapping trigger preference', async () => {
@@ -915,6 +919,7 @@ describe("Case Level Up Approval Tests", () => {
 
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[4983]:Create a case and verify approval mapping triggered based on global company', async () => {

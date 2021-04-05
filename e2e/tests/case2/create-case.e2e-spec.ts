@@ -391,6 +391,7 @@ describe("Create Case", () => {
             await createCasePage.clickAssignToMeButton();
             await createCasePage.clickSaveCaseButton();
             await previewCasePo.clickGoToCaseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         it('[5454]: [Case Creation] [Template Selection] Case/Task Template preview from Case creation', async () => {
@@ -719,8 +720,8 @@ describe("Create Case", () => {
                 "ownerGroup": "US Support 3"
             }
             await apiHelper.apiLogin('qkatawazi');
-            await apiHelper.createCaseTemplate(templateData1);
-            newCaseTemplate = await apiHelper.createCaseTemplate(templateData2);
+            await apiHelper.createCaseTemplate(templateData2);
+            newCaseTemplate = await apiHelper.createCaseTemplate(templateData1);
             autoTaskTemplateData = {
                 "templateName": "autoTask" + randomStr,
                 "templateSummary": "autoTask" + randomStr,

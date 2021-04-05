@@ -296,9 +296,8 @@ describe('Case Status Change', () => {
             await updateStatusBladePo.selectStatusReason('Third Party');
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
-            await viewCasePage.clickAddTaskButton();
-            await manageTask.waitUntilNumberOfTaskLinkAppear(1);
-            await manageTask.clickTaskLink(manualSummary);
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(manualSummary);
             expect(await viewTask.getTaskStatusValue()).toBe('Assigned', 'Assigned status not found');
         });
         it('[6330]: Updating the case status -Resolved', async () => {

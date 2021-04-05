@@ -326,6 +326,7 @@ class CaseEditPage {
     }
 
     async clickOnSelectCaseTemplate(): Promise<void> {
+        await utilityCommon.scrollToElement($(this.selectors.selectCaseTemplate));
         await $(this.selectors.selectCaseTemplate).click();
     }
 

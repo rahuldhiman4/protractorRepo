@@ -107,6 +107,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.selectApproversForApproverFlow('People', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         // passed
@@ -315,6 +316,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.selectApproversForApproverFlow('People', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         // passed
@@ -535,10 +537,12 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.clickSelectApproversLink();
             await approvalConfigurationPage.selectApproverSectionForGeneralApprovalFlow('Support company');
             await utilityCommon.selectMultiSelectDropDownValues('Support group', ['Staffing']);
+            await browser.sleep(3000); // sleep added for loading dropdown values
             await approvalConfigurationPage.clickMoveButton();
-            await approvalConfigurationPage.clickApproverModalSaveButton();
+            await approvalConfigurationPage.clickApproversSaveButton();
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
 
         // passed
@@ -697,6 +701,7 @@ describe("Case Approval UI Validations", () => {
             await approvalConfigurationPage.selectApproversForApproverFlow('People', 'qliu');
             await approvalConfigurationPage.clickNewApprovalFlowSaveButton();
             await approvalConfigurationPage.clickApprovalFlowCloseButton();
+            await utilityCommon.closePopUpMessage();
         });
         // passed
         it('[3472,3469]:Tiggered the Approval on Case and check Case View screen by Approver should show Approval component', async () => {

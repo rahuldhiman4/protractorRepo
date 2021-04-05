@@ -931,7 +931,7 @@ describe("Task Self Approval Tests", () => {
             expect(await viewTask.isApprovalButtonsPresent('Approve')).toBeTruthy('Show Approvers Banner is not displayed');
             expect(await viewTask.isApprovalButtonsPresent('Reject')).toBeTruthy('Show Approvers Banner is not displayed');
             await viewTask.clickOnApproveLink();
-            await browser.sleep(1000); // Hardwait To Reflect Post Approval Status On UI.
+            await browser.sleep(3000); // Hardwait To Reflect Post Approval Status On UI.
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.getApprovalActivityText('Task was approved')).toBeTruthy();
