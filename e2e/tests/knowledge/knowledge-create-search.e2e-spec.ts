@@ -871,7 +871,6 @@ describe('Knowledge Create Search', () => {
             expect(await resources.isFilterAvailable('Operational Category Tier 1')).toBeTruthy();
             let statusFieldValues: string[] = ["None", "Closed", "Retired", "Canceled", "In Progress", "Draft", "SME Review", "Published", "Publish Approval", "Retire Approval", "Request Cancelation"];
             expect(await resources.isAdvancedSearchFilterOptionDropDownValueDisplayed(statusFieldValues, 0)).toBeTruthy();
-            await utilityCommon.selectDropDown('Status', 'None', DropDownType.Label);
             await resources.clickOnAdvancedSearchFiltersButton('Apply');
         });
         it('[6432]: Advanced Search UI verification on the Quick Case view', async () => {

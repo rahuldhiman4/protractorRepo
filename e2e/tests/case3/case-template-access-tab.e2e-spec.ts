@@ -429,7 +429,7 @@ describe('Case Edit Backlog Test', () => {
             await quickCasePo.selectRequesterName('hhaas');
             await quickCasePo.setCaseSummary('Summary for case 2');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await viewCasePo.getAssigneeText()).toBe('None');
             await viewCasePo.clickEditCaseButton();
             await editCasePo.updateCasePriority('Medium');

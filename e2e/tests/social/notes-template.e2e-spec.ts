@@ -2096,7 +2096,7 @@ describe('Notes template', () => {
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
-            await accessTabPo.selectAccessEntityDropDown('Staffing', 'Select Support Group');
+            await accessTabPo.selectAccessEntityDropDown('IN Support 2', 'Select Support Group');
             await accessTabPo.clickAssignWriteAccessCheckbox('Support Group');
             await accessTabPo.clickAccessEntitiyAddButton('Support Group');
 
@@ -2254,6 +2254,7 @@ describe('Notes template', () => {
             await utilityGrid.searchAndOpenHyperlink(caseID);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
+            await browser.sleep(2000); // wait untile person profile page load.
             await personProfilePo.clickOnTab('Related Cases');
 
             await notesTemplateUsage.clickAddNoteAndAddNoteTemplate(templateName);
@@ -2265,6 +2266,7 @@ describe('Notes template', () => {
             expect(await ckeditorValidationPo.isTableSummaryDisplayedInCkEditorTextArea('tableSummary')).toBeTruthy('Text is not Left Align In Ck Editor');
             await activityTabPo.clickOnPostButton();
             await activityTabPo.clickOnRefreshButton();
+            await browser.sleep(2000);//wait untile show more button visible
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');
             expect(await activityTabPo.isItalicTextDisplayedInActivity(italicText, 1)).toBeTruthy('FailureMsg Italic Text is missing In Activity');
@@ -2280,11 +2282,13 @@ describe('Notes template', () => {
         });
         it('[3448,3444,3440]: Verify CKE functionality on Create and Edit People Notes template', async () => {
             await navigationPage.signOut();
-            await loginPage.login('elizabeth');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoCaseConsole();
+            await utilityGrid.selectLineOfBusiness('Human Resource');
             await utilityGrid.searchAndOpenHyperlink(caseID);
             await viewCasePage.clickAssigneeLink();
             await utilityCommon.switchToNewTab(1);
+            await browser.sleep(2000);//Wait untile person profile page loaded
             await activityTabPo.clickOnRefreshButton();
             await activityTabPo.clickOnShowMore();
             expect(await activityTabPo.isBoldTextDisplayedInActivity(boldText, 1)).toBeTruthy('FailureMsg Bold Text is missing in Activity');

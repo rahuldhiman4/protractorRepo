@@ -26,6 +26,7 @@ import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 let emailTemplateData = require('../../data/ui/email/email.template.api.json');
 const manageNotificationTempNavigation = 'Notification Configuration--Manage Templates';
 let uploadURL = "https://www.google.com/homepage/images/hero-dhp-chrome-win.jpg?mmfb=90bec8294f441f5c41987596ca1b8cff";
@@ -225,7 +226,7 @@ describe("Compose Email", () => {
             await quickCase.setCaseSummary('new case');
             await quickCase.createCaseButton();
             await utilityCommon.closePopUpMessage();
-            await quickCase.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             let quickCaseId: string = await viewCasePo.getCaseID();
             await viewCasePo.clickOnEmailLink();
             expect(await composeMail.isComposeEmailTitlePresent('Compose Email')).toBeTruthy('Compose email title missing');
@@ -569,7 +570,7 @@ describe("Compose Email", () => {
         });
         afterAll(async () => {
             await composeMail.clickOnDiscardButton();
-            expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?'), 'Warning Email message is missing';
+            expect(await composeMail.getTextOfDiscardButtonWarningMessage()).toBe('Email not sent. Do you want to continue?', 'Warning Email message is missing');
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
         });
     });

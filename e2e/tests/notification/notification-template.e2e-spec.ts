@@ -557,7 +557,7 @@ describe("Notification Template", () => {
         await editNotificationTemplate.cancelEmailSubjectBlade();
         await editNotificationTemplate.clickEmailUncheckvalue();
         await editNotificationTemplate.openEmailBodyEditMessageText();
-        await browser.sleep(1000);
+        await browser.sleep(3000); //Email Body Message Text to Load
         expect(await editNotificationTemplate.isEmailBodyContains('Case Details')).toBeTruthy('Case Details is not present');
         expect(await editNotificationTemplate.isEmailBodyContains('Requester')).toBeTruthy('Requester is not present');
         expect(await editNotificationTemplate.isEmailBodyContains('Request Date')).toBeTruthy('Request Date is not present');

@@ -15,6 +15,7 @@ import previewKnowledgePo from '../../pageobject/knowledge/preview-knowledge.po'
 import activityTabPo from '../../pageobject/social/activity-tab.po';
 import { BWF_BASE_URL } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('PIN Validation Quick Case', () => {
     beforeAll(async () => {
@@ -79,7 +80,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await previewCasePo.getAssigneeDetails()).toContain('Psilon');
             expect(await previewCasePo.isRequesterEmailIdDisplayed('gwixillian@psilon.com')).toBeTruthy();
             expect(await previewCasePo.isDescriptionDisplayed('Gleeu Wixillian ' + `${casetemplatePsilon1.templateName}`)).toBeTruthy();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
@@ -98,7 +99,7 @@ describe('PIN Validation Quick Case', () => {
             await pinValidationPo.validatePin("12345");
             expect(await utilityCommon.isPopupMsgsMatches(['Validation of requester is successful.'])).toBeTruthy();
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
@@ -120,7 +121,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeTruthy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
@@ -169,7 +170,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeFalsy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeFalsy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
@@ -189,7 +190,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeTruthy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
@@ -207,7 +208,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeFalsy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeFalsy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
@@ -224,7 +225,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeTruthy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
@@ -245,7 +246,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeTruthy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
@@ -332,7 +333,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeTruthy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeFalsy();
@@ -355,7 +356,7 @@ describe('PIN Validation Quick Case', () => {
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToClose();
             expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(casetemplatePsilon1.templateName)).toEqual(casetemplatePsilon1.templateName);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeFalsy();
         });
@@ -373,7 +374,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeFalsy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeFalsy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('did not validate the PIN of the requester')).toBeTruthy();
@@ -390,7 +391,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeTruthy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
@@ -476,7 +477,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeFalsy('Section is Present');
             await quickCasePo.setCaseSummary('PINValidation' + randomStr);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await browser.sleep(2000); // requird to populate "did not validate the PIN of the requester" in case activity
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeTruthy();
             await activityTabPo.clickOnRefreshButton();
@@ -506,7 +507,7 @@ describe('PIN Validation Quick Case', () => {
             await resourcesTabPo.clickOnAdvancedSearchSettingsIconToClose();
             expect(await resourcesTabPo.getAdvancedSearchResultForParticularSection(casetemplatePsilon1.templateName)).toEqual(casetemplatePsilon1.templateName);
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();
         });
@@ -533,7 +534,7 @@ describe('PIN Validation Quick Case', () => {
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Cases')).toBeTruthy('Section is Present');
             expect(await resourcesTabPo.isSectionTitleDisplayed('Recommended Knowledge')).toBeTruthy('Section is Present');
             await quickCasePo.createCaseButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             expect(await pinValidationPo.isIdentityValidationMessageDisplayed('Requester is not validated for this case.')).toBeFalsy();
             await activityTabPo.clickOnRefreshButton();
             expect(await activityTabPo.isTextPresentInActivityLog('validated the PIN of the requester')).toBeTruthy();

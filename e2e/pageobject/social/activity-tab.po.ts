@@ -136,7 +136,11 @@ class ActivityTabPage {
             }
 
             case "files_change": {
-                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('d-icon-user_arrow_o').isDisplayed();
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-files_change_o').isDisplayed();
+            }
+
+            case "user_arrow": {
+                return await $$(this.selectors.activityLogList).get(activityNumber - 1).$('.d-icon-user_arrow_o').isDisplayed();
             }
 
             case "check_circle": {
@@ -774,7 +778,7 @@ class ActivityTabPage {
 
     async isCKImageDisplayedInActivity(value: string): Promise<boolean> {
         let locator = `.activity img[src='${value}']`;
-        let imageIsDisplayed: boolean = await $(locator).isDisplayed();
+        let imageIsDisplayed: boolean = await $$(locator).first().isDisplayed();
         return imageIsDisplayed;
     }
 

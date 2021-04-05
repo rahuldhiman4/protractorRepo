@@ -978,9 +978,11 @@ describe('Case Activity Multi Logs', () => {
             await changeAssignmentBladePo.setDropDownValue('AssignedGroup', 'US Support 2');
             await changeAssignmentBladePo.setDropDownValue('Assignee', 'Quanah George');
             await editCasePo.clickSaveCase();
-            expect(await activityTabPage.isLogIconDisplayedInActivity('files_change', 1)).toBeTruthy('FailureMsg19: log icon is missing');
+            await activityTabPage.applyActivityFilter('Assignment Change');
+            expect(await activityTabPage.isLogIconDisplayedInActivity('user_arrow', 1)).toBeTruthy('FailureMsg19: log icon is missing');
             expect(await activityTabPage.isLockIconDisplayedInActivity(1)).toBeTruthy('FailureMsg20: lock icon missing in activity logs');
-            expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed case assignment')).toBeTruthy('FailureMsg23: Qiao Feng changed the case assignment Text is missing in activity log');
+            await activityTabPage.removeFilterList();
+            expect(await activityTabPage.isTextPresentInActivityLog('Qiao Feng changed the case assignment')).toBeTruthy('FailureMsg23: Qiao Feng changed the case assignment Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assignee')).toBeTruthy('FailureMsg23: Assignee Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Quanah George ')).toBeTruthy('FailureMsg23: Quanah George  Text is missing in activity log');
             expect(await activityTabPage.isTextPresentInActivityLog('Assigned Group')).toBeTruthy('FailureMsg23: Assigned Group Text is missing in activity log');

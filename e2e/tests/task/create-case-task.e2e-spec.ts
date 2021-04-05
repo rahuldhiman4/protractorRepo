@@ -25,6 +25,7 @@ import viewTask from "../../pageobject/task/view-task.po";
 import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Create Case Task', () => {
     beforeAll(async () => {
@@ -436,7 +437,7 @@ describe('Create Case Task', () => {
             //search above template
             await selectTaskTemplate.searchAndOpenTaskTemplate(TaskTemplate);
             await viewTasktemplatePo.clickOnEditLink();
-            await editTaskTemplate.selectTaskCategoryTier1('Employee Relations');
+            await editTaskTemplate.selectTaskCategoryTier1_v('Employee Relations');
             await editTaskTemplate.selectTaskCategoryTier2_v('Compensation');
             await editTaskTemplate.selectTaskCategoryTier3_v('Bonus');
             await editTaskTemplate.setDescription(description);
@@ -554,7 +555,7 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.clickCancelButton();
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Closed');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Closed');
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getTaskStatusValue()).toBe('Closed');
         });
@@ -608,7 +609,6 @@ describe('Create Case Task', () => {
     });
 
     //ankagraw
-    //Issue with the Filter, scroll option is not present for few of the last fields //DRDMV-25300
     describe('[5564,5570]: [Automatic Task] - Task template selection Console: Verify Task Type column, filter', async () => {
         let randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
@@ -773,7 +773,7 @@ describe('Create Case Task', () => {
         });
     });
 
-    describe('[5544]: Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
+    describe('[5544]: [Automated Task] - Automated Task Activation behavior when Case is created in In Progress status via Case template having Task templates in it', async () => {
         let templateData, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let caseTemplateName = randomStr + 'caseTemplateName5544';
         let casTemplateSummary = randomStr + 'CaseSummaryName5544';
@@ -827,7 +827,7 @@ describe('Create Case Task', () => {
             await quickCase.selectRequesterName('adam');
             await quickCase.selectCaseTemplate(caseTemplateName);
             await quickCase.createCaseButton();
-            await quickCase.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.clickOnTaskLink(templateData.templateSummary);
@@ -871,10 +871,11 @@ describe('Create Case Task', () => {
             await viewCasePage.clickOnRefreshTaskList();
             await updateStatusBladePo.changeStatus('Pending');
             await updateStatusBladePo.selectStatusReason('Customer Response');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Pending');
+            await utilityCommon.closePopUpMessage();
             await updateStatusBladePo.changeStatus('Canceled');
             await updateStatusBladePo.selectStatusReason('Customer Canceled');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Canceled');
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickOnTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
@@ -925,7 +926,9 @@ describe('Create Case Task', () => {
             await utilityCommon.closePopUpMessage();
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(1);
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData1.templateName);
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(2);
             await manageTaskBladePo.clickCloseButton();
             await viewCasePage.clickOnRefreshTaskList();
             await viewCasePage.openTaskCard(1);
@@ -1200,9 +1203,7 @@ describe('Create Case Task', () => {
             expect(await viewCasePage.isAddtaskButtonDisplayed()).toBeTruthy("Add task button not Visible")
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.addTaskFromTaskTemplate(templateData.templateName);
-            await manageTaskBladePo.clickCloseButton();
-            await viewCasePage.clickOnRefreshTaskList();
-            await viewCasePage.openTaskCard(1);
+            await manageTaskBladePo.waitUntilNumberOfTaskLinkAppear(1);
             await manageTaskBladePo.clickTaskLink(templateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
         });
@@ -1339,12 +1340,12 @@ describe('Create Case Task', () => {
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Completed');
             await updateStatusBladePo.selectStatusReason('Successful');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Completed');
             await utilityCommon.closePopUpMessage();
             expect(await viewTask.getTaskStatusValue()).toBe("Completed");
             await viewTask.clickOnChangeStatus();
             await viewTask.changeTaskStatus('Canceled');
-            await updateStatusBladePo.clickSaveStatus();
+            await updateStatusBladePo.clickSaveStatus('Canceled');
             expect(await viewTask.getTaskStatusValue()).toBe("Canceled");
             expect(await viewTask.isChangeStatusButtonDisabled()).toBeTruthy("Button is Enabled");
             await navigationPage.gotoTaskConsole();

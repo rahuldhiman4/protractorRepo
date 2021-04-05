@@ -11,7 +11,6 @@ class QuickCasePage {
         smartSearchTextBox: '[rx-view-component-id="2b9a3989-5461-4196-9cd9-fe7a1cdf6eb2"] .sr-input',
         confirmedItemSelection: '.sr-preview-pane .sr-preview-item-header',
         caseTemplate: '.bwf-selectable-list-item .sr-template-name',
-        gotoCaseButton: '[rx-view-component-id="529287cb-4d9d-4729-aa6c-5676980df72e"] button',
         quickCaseGuid: 'ac36dcad-30f0-4ab0-86a4-11fee7195051',
         smartSearchText: '.smart-recorder-highlightPerfectMatch',
         createCaseButton: '.d-inline-block [rx-view-component-id="8b88c054-4445-43e4-90f0-72f829571fd5"] button',
@@ -122,10 +121,6 @@ class QuickCasePage {
 
     async createCaseButton(): Promise<void> {
         await $(this.selectors.createCaseButton).click();
-    }
-
-    async gotoCaseButton(): Promise<void> {
-        await $(this.selectors.gotoCaseButton).click();
     }
 
     async pinFirstRecommendedCase(): Promise<void> {

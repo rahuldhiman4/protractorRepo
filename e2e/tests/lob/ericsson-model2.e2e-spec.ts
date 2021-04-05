@@ -248,7 +248,7 @@ xdescribe('Ericsson Model Test Extended', () => {
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson SAM');
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             await viewCasePage.clickEditCaseButton();
             expect(await editCasePo.isValuePresentInDropdown("Category Tier 1", 'Employee Relations')).toBeFalsy('Value is present in  Category Tier 1 drop down');
             expect(await editCasePo.isLineOfBusinessReadOnly()).toBeTruthy('Field is enabled');
@@ -274,7 +274,7 @@ xdescribe('Ericsson Model Test Extended', () => {
             await quickCasePo.createCaseButton();
             await utilityCommon.closePopUpMessage();
             expect(await casePreviewPo.getLineOfBusinessValue()).toBe('Ericsson SAM');
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[60194]:[Ericsson Model][Quick Case]: Verify the behavior when the case agent is able to create a case when it has access to single LOB', async () => {
             await navigationPage.gotoQuickCase();

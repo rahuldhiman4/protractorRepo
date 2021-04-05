@@ -574,8 +574,9 @@ describe('Dynamic Library Configuration', () => {
 
         });
         afterAll(async () => {
-            await viewCasetemplatePo.clickBackArrowBtn();
             await utilityCommon.closeAllBlades();
+            await viewCasetemplatePo.clickBackArrowBtn();
+            
         });
     });
 

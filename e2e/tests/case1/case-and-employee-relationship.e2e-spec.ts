@@ -16,6 +16,7 @@ import relationConfigPage from '../../pageobject/settings/relationship/relations
 import { BWF_BASE_URL, BWF_PAGE_TITLES, operation, security, type } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
+import casePreviewPo from '../../pageobject/case/case-preview.po';
 
 describe('Case And Employee Relationship', () => {
     beforeAll(async () => {
@@ -320,7 +321,7 @@ describe('Case And Employee Relationship', () => {
         await quickCase.selectRequesterName('adam');
         await quickCase.setSummaryAndPinRecommandedCase(caseId2, randomStr);
         await quickCase.createCaseButton();
-        await quickCase.gotoCaseButton();
+        await casePreviewPo.clickGoToCaseButton();
         await viewCasePo.clickOnTab('Related Cases');
         await relatedCaseTabPo.isCasePresent(caseId2);
     });

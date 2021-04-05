@@ -147,7 +147,7 @@ describe('Case Data Store', () => {
             expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp11')).toBeTruthy('field not present');
             expect(await requesterResponseBladePo.isDynamicFieldDisplayed('temp12')).toBeTruthy('field not present');
             await requesterResponseBladePo.clickOkButton();
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
         });
         it('[4855]: [Dynamic Data] - Create Case from Quick Case with Template having dynamic fields and also have field with source as Requester', async () => {
             //verify fields shoule be empty values on case view
@@ -518,7 +518,7 @@ describe('Case Data Store', () => {
             for (let i = 0; i < dynamicFields.length; i++) {
                 expect(await casePreviewPo.isDynamicFieldDisplayed(dynamicFields[i])).toBeTruthy('field not present ' + dynamicFields[i]);
             }
-            await quickCasePo.gotoCaseButton();
+            await casePreviewPo.clickGoToCaseButton();
             let caseID = await viewCasePo.getCaseID();
             await navigationPage.gotoQuickCase();
             await quickCasePo.selectRequesterName('qkatawazi');
@@ -652,7 +652,7 @@ describe('Case Data Store', () => {
         await viewTaskTemplate.clickOnEditLink();
         expect(await editTaskTemplate.isAutomatedTaskTypeDisabled()).toBeTruthy('not disabled');
         expect(await editTaskTemplate.isProcessNameDisabled()).toBeTruthy('not disabled');
-        await editTaskTemplate.selectTaskCategoryTier1('Applications');
+        await editTaskTemplate.selectTaskCategoryTier1_v('Applications');
         await editTaskTemplate.setSummary('update' + randomStr);
         await editTaskTemplate.selectPriorityValue('High');
         await editTaskTemplate.clickOnSaveButton();

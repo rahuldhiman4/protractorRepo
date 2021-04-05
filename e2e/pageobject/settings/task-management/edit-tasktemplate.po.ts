@@ -51,6 +51,12 @@ class EditTaskTemplate {
         await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown1, category1);
     }
 
+    async selectTaskCategoryTier1_v(category1: string): Promise<void> {
+        await $('[rx-view-component-id="905759fe-32c2-4a61-a262-749265285bf3"] .dropdown-toggle').click();
+        await browser.sleep(2000);
+        await (await element(by.cssContainingText('[rx-view-component-id="905759fe-32c2-4a61-a262-749265285bf3"] button.dropdown-item', category1))).click();
+    }
+
     async selectTaskCategoryTier2(category2: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.taskCategoryDrpDown2, category2);
     }
