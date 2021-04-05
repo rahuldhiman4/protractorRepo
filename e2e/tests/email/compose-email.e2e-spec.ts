@@ -491,7 +491,7 @@ describe("Compose Email", () => {
         let newCase, emailTemplateDataForTest1, emailTemplateDataForTest2;
         beforeAll(async () => {
             emailTemplateDataForTest1 = await emailTemplateData['emailTemplateWithMandatoryField'];
-            emailTemplateDataForTest1.TemplateName = 'TemplateWithMandatoryField' + randomString;
+            emailTemplateDataForTest1.TemplateName = randomString+'TemplateWithMandatoryField' ;
             emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
             emailTemplateDataForTest2.TemplateName = 'TemplateForSalary' + randomString;
             await apiHelper.apiLogin('qkatawazi');

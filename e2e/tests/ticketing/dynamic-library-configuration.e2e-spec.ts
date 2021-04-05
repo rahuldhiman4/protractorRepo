@@ -539,8 +539,8 @@ describe('Dynamic Library Configuration', () => {
             expect(await dynamicFieldsPage.isEnabledPublishInLibraryButtonDisplayed()).toBeTruthy();
             await dynamicFieldsPage.clickCancelButton();
             await dynamicFieldsPage.clickOnDownArrow();
-            await dynamicFieldsPage.clickOnDownArrow();
             await browser.sleep(1000);
+            await dynamicFieldsPage.clickOnDownArrow();
             expect(await dynamicFieldsPage.isFieldDisplayedInFieldSection('FieldGroup1')).toBeTruthy();
             expect(await dynamicFieldsPage.getFieldNameAttribute('disabled')).toBeTruthy();
             expect(await dynamicFieldsPage.getDescriptionName('disabled')).toBeTruthy();

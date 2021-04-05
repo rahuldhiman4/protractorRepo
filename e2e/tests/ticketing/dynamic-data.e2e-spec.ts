@@ -698,6 +698,8 @@ describe('Dynamic data', () => {
             await editTaskPo.addAttachmentInDynamicField('attachment4', filesToUpload2);
             await editTaskPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
+        });
+        it('[4604]: [Dynamic Data] [Attachment] - Add different type of files in attachment fields', async () => {
             await viewTaskPo.clickOnDownloadFile('bwfJpg.jpg');
             expect(await utilityCommon.isFileDownloaded('bwfJpg.jpg')).toBeTruthy('failureMsg: bwfJpg.jpg File is not downloaded.');
             await viewTaskPo.clickOnDownloadFile('bwfPdf.pdf');

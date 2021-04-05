@@ -722,6 +722,7 @@ describe('Case Data Store', () => {
             await browser.sleep(2000);
             await viewCasetemplatePo.clickBackArrowBtn();
             await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
+            await utilityCommon.refresh();//DRDMV-25404 DUE TO THIS DEFECT IT MAY TAKE TIME
             await viewCasetemplatePo.clickOnTaskBox(templateData.templateName);
             expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();

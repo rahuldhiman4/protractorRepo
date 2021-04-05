@@ -336,7 +336,7 @@ describe('Document Library Consume Permission', () => {
     describe('[4747]: Search and UI Validation of document library search view', async () => {
         let addNoteText = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // create 11 doc lib to see pagination
-        let publish: string[] = ['drdmv13534_publish_document1', 'drdmv13534_publish_document2', 'drdmv13534_publish_document3', 'drdmv13534_publish_document4', 'drdmv13534_publish_document5', 'drdmv13534_publish_document6', 'drdmv13534_publish_document7', 'drdmv13534_publish_document8', 'drdmv13534_publish_document9', 'drdmv13534_publish_document10', 'drdmv13534_publish_document11'];
+        let publish: string[] = ['drdmv13534_publish_document1', 'drdmv13534_publish_document2', 'drdmv13534_publish_document3', 'drdmv13534_publish_document4', 'drdmv13534_publish_document5', 'drdmv13534_publish_document6', 'drdmv13534_publish_document7', 'drdmv13534_publish_document8', 'drdmv13534_publish_document9', 'drdmv13534_publish_document_10', 'drdmv13534_publish_document_11'];
         let files: string[] = [filePath1, filePath2, filePath3, filePath4, filePath5, filePath1, filePath2, filePath3, filePath4, filePath5, filePath1];
         let documentDate;
         beforeAll(async () => {

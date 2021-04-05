@@ -280,7 +280,6 @@ describe('Dynamic Confidentials Data', () => {
             await consoleCasetemplatePo.searchAndselectCaseTemplate(randomStr + 'caseTemplateName');
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
             await copyCasetemplatePo.setTemplateName(randomStr + "Copy Case Template");
-            await changeAssignmentPo.setAssignee("US Support 3", "Qadim Katawazi");
             await copyCasetemplatePo.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.selectTab('Case Access');
