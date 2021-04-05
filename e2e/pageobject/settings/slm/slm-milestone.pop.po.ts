@@ -15,10 +15,11 @@ class ServiceTargetMilestoneConfig {
         mileStoneExpression: 'fieldset[role="document"] button.bwf-button-link',
         mileStoneSaveBtn: 'fieldset[role="document"] button.btn-primary',
         setMileStoneActionPopUp: 'fieldset[role="document"] .dp-title',
-        selectMileStoneActionSegment: '.adapt-accordion .card .tab-caret',
+        selectMileStoneActionSegment: '.milestone-details-modal-wrapper .adapt-accordion .card .tab-caret',
         selectMilestoneAction: '.dropdown-menu button',
+        addNewMileStoneActionBtn: `.adapt-accordion button.dropdown-toggle[aria-label='Add a milestone action']`,
         mileStoneActionTitle: 'fieldset[role="document"] input[placeholder="Enter Action Title"]',
-        mileStoneActionField: 'fieldset[role="document"] button.dropdown-toggle',
+        mileStoneActionField: `fieldset[role="document"] button.dropdown-toggle[aria-label='Field']`,
         mileStoneActionValue: 'fieldset[role="document"] input[placeholder="Enter Value"]',
         mileStoneActionAddFieldBtn: 'fieldset[role="document"] button.btn-primary',
         mileStoneActionSaveBtn: 'fieldset[role="document"] .modal-footer button.btn-primary',
@@ -31,12 +32,13 @@ class ServiceTargetMilestoneConfig {
         mileStoneNotificationForm: 'fieldset[role="document"] .dp-title',
         mileStoneNotificationFormEnterTitleInput: 'fieldset[role="document"] input[placeholder="Enter Action Title"]',
         mileStoneNotificationFormEnterDescInput: 'fieldset[role="document"] input[placeholder="Enter Description"]',
-        mileStoneNotificationFormSelectDeliveryMethod: 'fieldset[role="document"] button.dropdown-toggle',
-        mileStoneNotificationFormEnterToInput: 'fieldset[role="document"] input.adapt-mt-input',
-        mileStoneNotificationFormSelectNotificationTemplate: `(//fieldset[@role='document']//button[contains(@class,'dropdown-toggle')])[2]`,
-        mileStoneNotificationFormSelectNotificationTemplateInput: `(//fieldset[@role='document']//button[contains(@class,'dropdown-toggle')])[2]//following-sibling::div//input[@placeholder="Filter options"]`,
+        mileStoneNotificationFormSelectDeliveryMethod: 'fieldset[role="document"] button[aria-label="Delivery Method"]',
+        mileStoneNotificationFormEnterToInput: 'fieldset[role="document"] input[role="combobox"]',
+        mileStoneNotificationFormSelectNotificationTemplate: `fieldset[role="document"] button[aria-label="Notification Template"]`,
+        mileStoneNotificationFormSelectNotificationTemplateInput: `fieldset[role="document"] input[placeholder="Filter options"]`,
         mileStoneActionNotificationFormSaveBtn: 'fieldset[role="document"] .modal-footer button.btn-primary',
-
+        mileStoneActionNotificationFormCancelBtn: 'fieldset[role="document"] .modal-footer button.btn-secondary',
+        mileStoneNotificationToFieldSelection: '.rx-typeahead-popup-content button',
     }
 
     async isSLMMileStonePopUpDisplayed(): Promise<boolean> {
@@ -125,7 +127,7 @@ class ServiceTargetMilestoneConfig {
     }
 
     async clickAddNewMileStoneActionBtn(): Promise<void> {
-        await $(this.selectors.addNewMileStoneBtn).click();
+        await $(this.selectors.addNewMileStoneActionBtn).click();
     }
 
     //Fields for Milestone Notification Form
@@ -148,16 +150,21 @@ class ServiceTargetMilestoneConfig {
     }
 
     async selectMileStoneNotificationDeliveryMethod(fieldValue: string): Promise<void> {
-        await utilityCommon.selectDropDown($(this.selectors.mileStoneNotificationFormSelectDeliveryMethod), fieldValue, DropDownType.Label);
+        await $(this.selectors.mileStoneNotificationFormSelectDeliveryMethod).click();
+        await $(this.selectors.mileStoneActionFieldSelectionSearch).sendKeys(fieldValue);
+        await element(by.cssContainingText(this.selectors.mileStoneActionFieldSelectionDropDown, fieldValue)).click();
     }
 
     async setMileStoneNotificationToField(mileStoneActionTitle: string): Promise<void> {
         await $(this.selectors.mileStoneNotificationFormEnterToInput).clear();
         await $(this.selectors.mileStoneNotificationFormEnterToInput).sendKeys(mileStoneActionTitle);
+        await element(by.cssContainingText(this.selectors.mileStoneNotificationToFieldSelection, mileStoneActionTitle)).click();
     }
 
     async selectMileStoneNotificationTemplate(fieldValue: string): Promise<void> {
-        await utilityCommon.selectDropDown($(this.selectors.mileStoneNotificationFormSelectNotificationTemplate), fieldValue, DropDownType.Label);
+        await $(this.selectors.mileStoneNotificationFormSelectNotificationTemplate).click();
+        await $(this.selectors.mileStoneActionFieldSelectionSearch).sendKeys(fieldValue);
+        await element(by.cssContainingText(this.selectors.mileStoneActionFieldSelectionDropDown, fieldValue)).click();
     }
 
     async clickOnNotificationTemplateDropDown(): Promise<void> {
@@ -183,6 +190,10 @@ class ServiceTargetMilestoneConfig {
 
     async clickSaveMileStoneActionNotification(): Promise<void> {
         await $(this.selectors.mileStoneActionNotificationFormSaveBtn).click();
+    }
+
+    async clickCancelMileStoneActionNotification(): Promise<void> {
+        await $(this.selectors.mileStoneActionNotificationFormCancelBtn).click();
     }
 
 

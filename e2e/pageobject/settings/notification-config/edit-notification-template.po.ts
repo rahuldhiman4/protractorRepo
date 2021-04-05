@@ -69,7 +69,7 @@ class EditNotificationTemplate {
     async clickCancelButtonAddRecipient(): Promise<void> {
         await $(this.selectors.cancelButtonAddRecipient).isPresent().then(async (result) =>{
             if(result) await $(this.selectors.cancelButtonAddRecipient).click();
-            else console.log("Cancel Button is not present")
+            else console.log("Cancel Button is not present");
         })
     }
 
