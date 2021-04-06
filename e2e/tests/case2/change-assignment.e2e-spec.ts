@@ -465,7 +465,7 @@ describe("Change Assignment", () => {
         await createCasePo.setSummary('Summary');
 
         //Validating the Agent is not available if Assignment Availability is set as NO for that Agent
-        await changeAssignmentPage.setDropDownValue('AssignedGroup', 'Petramco Support Group3');
+        await changeAssignmentPage.setDropDownValue('AssignedGroup', 'Risk Management');
         expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Polar White')).toBeFalsy('Assignee is searchable');
 
         //Validating the Agent is not available if Assignment Availability of Agent is set to Yes but for SG, Assignment Availability of Agent is set to NO
