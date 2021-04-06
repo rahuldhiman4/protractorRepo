@@ -1038,6 +1038,29 @@ export const PROCESS_DOCUMENT = {
   "documentSchema": "{}"
 };
 
+export const DYNAMIC_DATA_DEFINITION = {
+  "resourceType": "com.bmc.arsys.rx.services.record.domain.RecordInstance",
+  "recordDefinitionName": "com.bmc.dsm.ticketing-lib:DynamicDataDefinition",
+  "fieldInstances": {
+      "450000153": {
+          "id": 450000153,
+          "value": "ProvideDocumentGuid"
+      },
+      "450000154": {
+          "id": 450000154,
+          "value": "ProvideCaseTemplateGuid"
+      },
+      "450000156": {
+          "id": 450000156,
+          "value": "[]"
+      },
+      "450000159": {
+          "id": 450000159,
+          "value": "com.bmc.dsm.bwfa:DocName"
+      }
+  }
+}
+
 export const DRDMV_15000 = {
   "name": "com.bmc.dsm.bwfa:ConditionalTemplate",
   "tags": [

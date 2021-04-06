@@ -47,8 +47,8 @@ class ApiCoreUtil {
             + "&pageSize=-1&recorddefinition="
             + recordName
             + "&startIndex=0";
-        
-            let allRecords = await axios.get(
+
+        let allRecords = await axios.get(
             dataPageUri
         );
         console.log(`Get GUID Status ${recordName} =============>`, allRecords.status);
@@ -447,6 +447,13 @@ class ApiCoreUtil {
         return newRecord;
     }
 
+    async getDocumentForProcessDetails(docName: string): Promise<AxiosResponse> {
+        const documentDetails = await axios.get(
+            newDocumentUri + "/" + docName
+        );
+        return documentDetails;
+    }
+
     async createProcessForAutoTaskTemplate(jsonBody): Promise<AxiosResponse> {
         const newRecord = await axios.post(
             processDefUri,
@@ -479,10 +486,10 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
-    async isRelationshipPresent(relationshipName: string, relationshipType:string): Promise<boolean> {
+    async isRelationshipPresent(relationshipName: string, relationshipType: string): Promise<boolean> {
         let allRecords = await this.getGuid("com.bmc.dsm.shared-services-lib:Relationship Type");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
-            return obj[450000152] === relationshipName  && obj[450000153] === relationshipType;
+            return obj[450000152] === relationshipName && obj[450000153] === relationshipType;
         });
         return entityObj.length >= 1;
     }

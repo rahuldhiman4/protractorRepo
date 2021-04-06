@@ -436,11 +436,11 @@ describe('Login and create case from API', () => {
                 let response = await axios.get(
                     'api/rx/application/datapage?dataPageType=com.bmc.arsys.rx.application.namedlist.datapage.NamedListDataPageQuery&pageSize=-1&startIndex=0&namedlistdefinition=com.bmc.dsm.shared-services-lib%3ALine%20of%20Business%20-%20Active%20And%20Deprecated%20Status'
                 );
-                if(response.data.totalSize == 0) userArrayWithNoLOB.push(userArray[i]);
+                if (response.data.totalSize == 0) userArrayWithNoLOB.push(userArray[i]);
             }
             catch (ex) { userArrayWithNoLOB.push(userArray[i]); }
         }
-        console.log('User with no LOB access' ,userArrayWithNoLOB);
-        console.log('User doesnt exist' ,userArrayWithNoAccess);
+        console.log('User with no LOB access', userArrayWithNoLOB);
+        console.log('User doesnt exist', userArrayWithNoAccess);
     });
 });

@@ -14,6 +14,7 @@ import { CASE_TEMPLATE_IDENTITY_UPDATE_PAYLOAD, CASE_TEMPLATE_PAYLOAD, CASE_TEMP
 import { ADD_TO_WATCHLIST } from '../data/api/case/case.watchlist.api';
 import * as COMPLEX_SURVEY from '../data/api/case/complex-survey.api';
 import { FLOWSET_TEMPLATE } from '../data/api/case/flowset.api';
+import { CASE_ACCESS_CHILD_SECURITY, CASE_ACCESS_COMMAND } from '../data/api/case/update.case.access.api';
 import { CASE_STATUS_CHANGE, UPDATE_CASE, UPDATE_CASE_ASSIGNMENT } from '../data/api/case/update.case.api';
 import { COGNITIVE_CATEGORY_DATASET, COGNITIVE_CATEGORY_DATASET_MAPPING, COGNITIVE_LICENSE, COGNITIVE_TEMPLATE_DATASET, COGNITIVE_TEMPLATE_DATASET_MAPPING } from '../data/api/cognitive/cognitive.config.api';
 import { EMAIL_OUTGOING, EMAIL_PROFILE, INCOMINGMAIL_DEFAULT, MAILBOX_CONFIG, UPDATE_EMAIL_PROFILE_ON_LOB } from '../data/api/email/email.configuration.data.api';
@@ -31,7 +32,7 @@ import { KNOWLEDEGESET_ASSOCIATION, KNOWLEDGE_SET } from '../data/api/knowledge/
 import { KNOWLEDGE_ARTICLE_PAYLOAD, UPDATE_KNOWLEDGE_ARTICLE_PAYLOAD } from '../data/api/knowledge/knowledge.article.api';
 import * as actionableNotificationPayloads from '../data/api/notification/actionable.notification.supporting.api';
 import { ARTCILE_DUE_DATE, EMAIL_ALERT_SUBJECT_BODY, NOTIFICATION_EVENT_ACTIVE, NOTIFICATION_TEMPLATE } from '../data/api/notification/notification-config.api';
-import { COMMON_CONFIG_PAYLOAD, CREATE_COMMON_CONFIG, COMMON_CONFIG_GET } from '../data/api/shared-services/common.configurations.api';
+import { COMMON_CONFIG_GET, COMMON_CONFIG_PAYLOAD, CREATE_COMMON_CONFIG } from '../data/api/shared-services/common.configurations.api';
 import * as processes from '../data/api/shared-services/create-new-process.api';
 import { ACTIONABLE_NOTIFICATIONS_ENABLEMENT_SETTING, NOTIFICATIONS_EVENT_STATUS_CHANGE } from '../data/api/shared-services/enabling.actionable.notifications.api';
 import { MENU_ITEM } from '../data/api/shared-services/menu.item.api';
@@ -42,7 +43,7 @@ import { NOTES_TEMPLATE } from '../data/api/social/notes.template.api';
 import { POST_ACTIVITY, POST_ACTIVITY_WITH_ATTACHMENT } from '../data/api/social/post.activity.api';
 import { ADHOC_TASK_PAYLOAD, REGISTER_ADHOC_TASK, TASK_CREATION_FROM_TEMPLATE, UPDATE_TASK, UPDATE_TASK_STATUS } from '../data/api/task/task.creation.api';
 import { AUTO_TASK_TEMPLATE_PAYLOAD, DOC_FOR_AUTO_TASK_TEMPLATE, EXTERNAL_TASK_TEMPLATE_PAYLOAD, MANUAL_TASK_TEMPLATE_PAYLOAD, PROCESS_FOR_AUTO_TASK_TEMPLATE } from '../data/api/task/task.template.api';
-import { DRDMV_15000, ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL_PARALLEL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
+import { DRDMV_15000, DYNAMIC_DATA_DEFINITION, ONE_TASKFLOW, PROCESS_DOCUMENT, THREE_TASKFLOW_SEQUENTIAL, THREE_TASKFLOW_SEQUENTIAL_PARALLEL, TWO_TASKFLOW_PARALLEL, TWO_TASKFLOW_SEQUENTIAL } from '../data/api/task/taskflow.process.data.api';
 import { DOC_LIB_DRAFT, DOC_LIB_PUBLISH, DOC_LIB_READ_ACCESS } from '../data/api/ticketing/document-library.data.api';
 import { DOCUMENT_TEMPLATE } from '../data/api/ticketing/document-template.data.api';
 import * as DYNAMIC from '../data/api/ticketing/dynamic.data.api';
@@ -57,7 +58,6 @@ import { ICreateSVT, ICreateSVTGoalType, ICreateSVTGroup } from '../data/interfa
 import { IAdhocTask, ITaskUpdate } from '../data/interface/task.interface';
 import { ICaseTemplate, IEmailTemplate, INotesTemplate, ITaskTemplate } from '../data/interface/template.interface';
 import loginPage from "../pageobject/common/login.po";
-import { CASE_ACCESS_COMMAND, CASE_ACCESS_CHILD_SECURITY } from '../data/api/case/update.case.access.api';
 
 let fs = require('fs');
 
@@ -1132,6 +1132,7 @@ class ApiHelper {
 
     async associateCaseTemplateWithOneTaskTemplate(caseTemplateId: string, taskTemplateId: string): Promise<boolean> {
         let oneTaskFlowProcess = cloneDeep(ONE_TASKFLOW);
+        let caseTemplateGuid = await apiCoreUtil.getCaseTemplateGuid(caseTemplateId);
         let taskTemplateGuid = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId);
         let randomString: string = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         // give new name to process
@@ -1154,8 +1155,19 @@ class ApiHelper {
         // create process
         let processGuid = await apiCoreUtil.createProcess(oneTaskFlowProcess);
         console.log('New Process Created =============>', oneTaskFlowProcess.name, "=====GUID:", processGuid);
+
+        // get new document details
+        let newDocDetails: AxiosResponse = await apiCoreUtil.getDocumentForProcessDetails(docData.name);
+
+        // create DynamicDataDefinition
+        let dynamicDataDefinitionPayload = cloneDeep(DYNAMIC_DATA_DEFINITION);
+        dynamicDataDefinitionPayload.fieldInstances[450000153].value = newDocDetails.data.guid;
+        dynamicDataDefinitionPayload.fieldInstances[450000154].value = caseTemplateGuid;
+        dynamicDataDefinitionPayload.fieldInstances[450000159].value = docData.name;
+        let dynamicDataDefinition = await apiCoreUtil.createRecordInstance(dynamicDataDefinitionPayload);
+        console.log('Create DynamicDataDefinition =============>', dynamicDataDefinition.status);
+
         // link task flow process to case template
-        let caseTemplateGuid = await apiCoreUtil.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = oneTaskFlowProcess.name;
         let associateCaseTemplateWithOneTaskTemplateResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
@@ -1171,6 +1183,7 @@ class ApiHelper {
         if (order.toLocaleLowerCase() === 'parallel')
             twoTaskFlowProcess = cloneDeep(TWO_TASKFLOW_PARALLEL);
 
+        let caseTemplateGuid = await apiCoreUtil.getCaseTemplateGuid(caseTemplateId);
         let taskTemplateGuid1 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId2);
         // give new name to process
@@ -1200,8 +1213,19 @@ class ApiHelper {
         // create process
         let processGuid = await apiCoreUtil.createProcess(twoTaskFlowProcess);
         console.log('New Process Created =============>', twoTaskFlowProcess.name, "=====GUID:", processGuid);
+
+        // get new document details
+        let newDocDetails: AxiosResponse = await apiCoreUtil.getDocumentForProcessDetails(docData.name);
+
+        // create DynamicDataDefinition
+        let dynamicDataDefinitionPayload = cloneDeep(DYNAMIC_DATA_DEFINITION);
+        dynamicDataDefinitionPayload.fieldInstances[450000153].value = newDocDetails.data.guid;
+        dynamicDataDefinitionPayload.fieldInstances[450000154].value = caseTemplateGuid;
+        dynamicDataDefinitionPayload.fieldInstances[450000159].value = docData.name;
+        let dynamicDataDefinition = await apiCoreUtil.createRecordInstance(dynamicDataDefinitionPayload);
+        console.log('Create DynamicDataDefinition =============>', dynamicDataDefinition.status);
+
         // link task flow process to case template
-        let caseTemplateGuid = await apiCoreUtil.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = twoTaskFlowProcess.name;
         let associateCaseTemplateWithTwoTaskTemplateResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
@@ -1217,6 +1241,7 @@ class ApiHelper {
         else if (structure == 'THREE_TASKFLOW_SEQUENTIAL_PARALLEL') {
             threeTaskFlowProcess = cloneDeep(THREE_TASKFLOW_SEQUENTIAL_PARALLEL);
         }
+        let caseTemplateGuid = await apiCoreUtil.getCaseTemplateGuid(caseTemplateId);
         let taskTemplateGuid1 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId1);
         let taskTemplateGuid2 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId2);
         let taskTemplateGuid3 = await apiCoreUtil.getTaskTemplateGuid(taskTemplateId3);
@@ -1253,8 +1278,19 @@ class ApiHelper {
         // create process
         let processGuid = await apiCoreUtil.createProcess(threeTaskFlowProcess);
         console.log('New Process Created =============>', threeTaskFlowProcess.name, "=====GUID:", processGuid);
+
+        // get new document details
+        let newDocDetails: AxiosResponse = await apiCoreUtil.getDocumentForProcessDetails(docData.name);
+
+        // create DynamicDataDefinition
+        let dynamicDataDefinitionPayload = cloneDeep(DYNAMIC_DATA_DEFINITION);
+        dynamicDataDefinitionPayload.fieldInstances[450000153].value = newDocDetails.data.guid;
+        dynamicDataDefinitionPayload.fieldInstances[450000154].value = caseTemplateGuid;
+        dynamicDataDefinitionPayload.fieldInstances[450000159].value = docData.name;
+        let dynamicDataDefinition = await apiCoreUtil.createRecordInstance(dynamicDataDefinitionPayload);
+        console.log('Create DynamicDataDefinition =============>', dynamicDataDefinition.status);
+
         // link task flow process to case template
-        let caseTemplateGuid = await apiCoreUtil.getCaseTemplateGuid(caseTemplateId);
         let caseTemplateJsonData = await apiCoreUtil.getRecordInstanceDetails("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid);
         caseTemplateJsonData.fieldInstances[450000165].value = threeTaskFlowProcess.name;
         let associateCaseTemplateWithThreeTaskTemplateResponse: AxiosResponse = await apiCoreUtil.updateRecordInstance("com.bmc.dsm.case-lib:Case Template", caseTemplateGuid, caseTemplateJsonData);
@@ -2001,14 +2037,14 @@ class ApiHelper {
         let KnowledgeSetAccessPayload = {
             "processDefinitionName": "com.bmc.dsm.knowledge:Knowledge Set - Set Access",
             "processInputValues": {
-              "Operation": "ADD",
-              "Type": "GROUP",
-              "Value": 2000000004,
-              "Security Type": "READ",
-              "Record Instance ID": "AGGADGGYC3VHQAQQVMYWQQVMYW8CK2"
+                "Operation": "ADD",
+                "Type": "GROUP",
+                "Value": 2000000004,
+                "Security Type": "READ",
+                "Record Instance ID": "AGGADGGYC3VHQAQQVMYWQQVMYW8CK2"
             },
             "resourceType": "com.bmc.arsys.rx.application.process.command.StartProcessInstanceCommand"
-          };
+        };
         KnowledgeSetAccessPayload['processInputValues']['Record Instance ID'] = knowledgeSetInfo.id;
         const knowledgeSetAccessResponse = await axios.post(commandUri, KnowledgeSetAccessPayload);
         console.log('Read Access Doc Lib API Status =============>', knowledgeSetAccessResponse.status);
@@ -2796,7 +2832,7 @@ class ApiHelper {
             }
             default: {
                 commonConfigPayload.processInputValues["Boolean Value"] = configValue;
-                if(configValue == '1') commonConfigPayload.processInputValues["Value"] = "false";
+                if (configValue == '1') commonConfigPayload.processInputValues["Value"] = "false";
                 else commonConfigPayload.processInputValues["Value"] = "true";
                 break;
             }
@@ -3110,7 +3146,7 @@ class ApiHelper {
             headers: {
                 'request-overlay-group': '0'
             }
-          };
+        };
         const reviewOverdueNotifyUpdateResponse = await axios.put(
             url,
             ARTCILE_DUE_DATE,
@@ -3248,13 +3284,13 @@ class ApiHelper {
         relationship.fieldInstances[450000156].value = reverseRelationshipName;
         relationship.fieldInstances[450000156].valueByLocale["en-US"] = reverseRelationshipName;
         relationship.fieldInstances[450000153].value = relationship.fieldInstances[450000153].value + relationshipType;
-        if(await apiCoreUtil.isRelationshipPresent(relationshipName, relationship.fieldInstances[450000153].value)) {
+        if (await apiCoreUtil.isRelationshipPresent(relationshipName, relationship.fieldInstances[450000153].value)) {
             console.log("Relationship already present");
             return true;
         }
         else {
             let relationshipResponse: AxiosResponse = await apiCoreUtil.createRecordInstance(relationship);
-            console.log('Relationship status =============> ', relationshipResponse.status);  
+            console.log('Relationship status =============> ', relationshipResponse.status);
             return relationshipResponse.status == 201;
         }
     }
