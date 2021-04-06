@@ -820,8 +820,8 @@ describe("Quick Case", () => {
     describe('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
         let articleData, unPublishedKA, publishedKA, publishKA_GUID;
         let randomStr = [...Array(5)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
-        let unPublishedKA_Name = randomStr + ' UnPublished KA';
-        let publishedKA_Name = randomStr + ' Published KA';
+        let unPublishedKA_Name = randomStr + 'UnPublishedKA';
+        let publishedKA_Name = randomStr + 'PublishedKA';
         beforeAll(async () => {
             articleData = {
                 "knowledgeSet": "HR",
@@ -853,7 +853,7 @@ describe("Quick Case", () => {
             expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "Draft")).toBeTruthy("Article with Draft status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "SMEReview", "KMills", 'GB Support 2', 'Petramco')).toBeTruthy("Article with SME Review status not updated.");
             expect(await apiHelper.updateKnowledgeArticleStatus(publishKA_GUID, "PublishApproval")).toBeTruthy("Article with Published status not updated.");
-            await browser.sleep(5000); // hardwait to get KA indexed
+            await browser.sleep(8000); // hardwait to get KA indexed
         });
         it('[6436]: [Quick Case] Knowledge article search in Resources', async () => {
             // search draft article, should not find

@@ -115,7 +115,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
     //skhobrag Defect DRDMV-26009
     describe('[3708]: Verify the functionality of Edit article with Minor Edit button', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;
@@ -562,6 +562,7 @@ describe('Knowledge Articles - Versioning Tests', () => {
           "GB Support 2",
           "Petramco",
           "Kane Williamson",
+          "Qianru Tao"
         ];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
@@ -1145,8 +1146,8 @@ describe('Knowledge Articles - Versioning Tests', () => {
     //skhobrag-Defect DRDMV-26009
     describe('[3701]: Verify the behavior when the article with current version is canceled and user tries to create a new version after canceled operation', () => {
         let knowledgeTitleStr = 'Versioning for article' + "_" + randomStr;
-        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson'];
-        let updatedArticleAccessPermission: string[] = ['GB Support 2', 'Employee Relations', 'Petramco', 'Kane Williamson'];
+        let articleAccessPermission: string[] = ['GB Support 2', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
+        let updatedArticleAccessPermission: string[] = ['GB Support 2', 'Employee Relations', 'Petramco', 'Kane Williamson', 'Qianru Tao'];
         let articleAttachments = ['articleStatus.png'];
         let articleAccessPermissionUser: string[] = ['Kane Williamson'];
         let updatedArticleTitle = "updated article title" + "_" + randomStr;

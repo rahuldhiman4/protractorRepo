@@ -39,8 +39,6 @@ describe("Notifications", () => {
         beforeAll(async () => {
             await navigationPage.signOut();
             await loginPage.login('mcarney');
-            await apiHelper.apiLogin('tadmin');
-            // await apiHelper.setDefaultNotificationForUser('idphylum1', "Alert");
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Status Configuration', BWF_PAGE_TITLES.CASE_MANAGEMENT.STATUS_CONFIGURATION);
             await statusConfig.setCompanyDropdown('Phylum', 'case');
@@ -63,7 +61,6 @@ describe("Notifications", () => {
             }
             let response = await apiHelper.createCase(caseData);
             await navigationPage.gotoCaseConsole();
-            await apiHelper.apiLogin('mcarney');
             await utilityGrid.searchRecord(response.displayId);
             await utilityGrid.clickCheckBoxOfValueInGrid(response.displayId);
             await caseConsole.clickOnAddToWatchlist();
