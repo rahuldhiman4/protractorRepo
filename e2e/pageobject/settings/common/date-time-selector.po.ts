@@ -116,14 +116,11 @@ class DateTimeSelector {
                 await $$(this.selectors.selectedTimeValue).get(0).click();
                 await $$(this.selectors.selectedTimeValue).get(0).sendKeys(protractor.Key.ARROW_DOWN);
             }
-
         }
     }
 
-    async setMinute(minute: number): Promise<void> {
-        await $$(this.selectors.selectedTimeValue).get(1).click();
-        await $$(this.selectors.selectedTimeValue).get(1).sendKeys(protractor.Key.BACK_SPACE);
-        await $$(this.selectors.selectedTimeValue).get(1).sendKeys(protractor.Key.BACK_SPACE, minute);
+    async setMinute(minute: string): Promise<void> {
+        await $$(this.selectors.selectedTimeValue).get(1).sendKeys(minute);
     }
 
     //AM or PM

@@ -296,35 +296,32 @@ describe("Create Case", () => {
     // passed
     describe('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', () => {
         it('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
-            expect(await navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed1 ");
-            expect(await navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
-            expect(await navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            expect(await navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            expect(await navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-            expect(await navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");// this validates case console displayed
+            await navigationPage.gotoTaskConsole(); // task console displayed
+            await navigationPage.gotoKnowledgeConsole(); // knowledge console displayed
+            await navigationPage.gotoCreateCase(); // Create Case displayed
+            await navigationPage.gotoCreateKnowledge(); // Create knowledge displayed
+            await navigationPage.gotoQuickCase(); // Quick Case displayed
 
             await navigationPage.signOut();
             await loginPage.login('qtao');
-            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            expect(await navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed2 ");
-            expect(await navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
-            expect(await navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            expect(await navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            expect(await navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-            expect(await navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");// this validates case console displayed
+            await navigationPage.gotoTaskConsole(); // task console displayed
+            await navigationPage.gotoKnowledgeConsole(); // knowledge console displayed
+            await navigationPage.gotoCreateCase(); // Create Case displayed
+            await navigationPage.gotoCreateKnowledge(); // Create knowledge displayed
+            await navigationPage.gotoQuickCase(); // Quick Case displayed
         });
 
         it('[5591]: [Permissions] [Global navigation] Access to the shell menu items for different roles', async () => {
             await navigationPage.signOut();
             await loginPage.login('qdu');
-            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");
-            expect(await navigationPage.isCaseConsoleDisplayed()).toBeTruthy("Case Console is not displayed3 ");
-            expect(await navigationPage.isTaskConsoleDisplayed()).toBeTruthy("task Console is not displayed ");
-            expect(await navigationPage.isKnowledgeConsoleDisplayed()).toBeTruthy("Knowledge Console is not displayed ");
-            expect(await navigationPage.isCreateCaseDisplayed()).toBeTruthy("Create Case is not displayed ");
-            expect(await navigationPage.isCreateKnowledgeDisplayed()).toBeTruthy("Create knowledge is not displayed ");
-            expect(await navigationPage.isQuickCaseDisplayed()).toBeTruthy('Quick case is not displayed');
+            expect((await caseConsolePage.getCaseTitle()).trim()).toBe('Cases', "Case title is not displayed in Case Console Page");// this validates case console displayed
+            await navigationPage.gotoTaskConsole(); // task console displayed
+            await navigationPage.gotoKnowledgeConsole(); // knowledge console displayed
+            await navigationPage.gotoCreateCase(); // Create Case displayed
+            await navigationPage.gotoCreateKnowledge(); // Create knowledge displayed
+            await navigationPage.gotoQuickCase(); // Quick Case displayed
         });
 
         afterAll(async () => {

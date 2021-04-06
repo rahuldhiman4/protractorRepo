@@ -106,9 +106,9 @@ class ApiHelper {
 
     async createCaseFromDwp(data: ICreateCaseDWP): Promise<IIDs> {
         let caseData = cloneDeep(CASE_FROM_DWP);
-        caseData.processInputValues.Requester = await apiCoreUtil.getPersonGuid(data.requester);
+        caseData.processInputValues.Requester = data.requester;
         caseData.processInputValues.Summary = data.summary;
-
+        if (data["Service Request Display ID"]) caseData.processInputValues["Service Request Display ID"] = data["Service Request Display ID"];
         const newCase = await axios.post(
             commandUri,
             caseData

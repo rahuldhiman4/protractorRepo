@@ -592,12 +592,12 @@ describe('Global Search All Category', () => {
             await dateTimeSelectorPo.selectTimeToggle();
 
             await dateTimeSelectorPo.setHour('12');
-            await dateTimeSelectorPo.setMinute(1);
+            await dateTimeSelectorPo.setMinute('1');
             await dateTimeSelectorPo.clickMeridianValue("AM");
 
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.setHour('11');
-            await dateTimeSelectorPo.setMinute(59);
+            await dateTimeSelectorPo.setMinute('59');
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
 
@@ -647,12 +647,12 @@ describe('Global Search All Category', () => {
             await utilityGrid.clickFilterField("Modified Date");
             await dateTimeSelectorPo.selectTimeToggle();
             await dateTimeSelectorPo.setHour('12');
-            await dateTimeSelectorPo.setMinute(1);
+            await dateTimeSelectorPo.setMinute('1');
             await dateTimeSelectorPo.clickMeridianValue("AM");
 
             await dateTimeSelectorPo.clickEndDateTab();
             await dateTimeSelectorPo.setHour('11');
-            await dateTimeSelectorPo.setMinute(59);
+            await dateTimeSelectorPo.setMinute('59');
             await dateTimeSelectorPo.clickMeridianValue("PM");
             await $('body').sendKeys(protractor.Key.ESCAPE);
             expect(await searchPo.getDate()).toBe(modifiedDate, 'Modified Date is missing');

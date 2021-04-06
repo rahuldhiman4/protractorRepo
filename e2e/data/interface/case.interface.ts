@@ -24,6 +24,7 @@ export interface ICreateCaseDWP {
     requester: string;
     summary: string;
     "Line of Business"?: string;
+    "Service Request Display ID"?: string;
 }
 
 export interface ICreateCase {
