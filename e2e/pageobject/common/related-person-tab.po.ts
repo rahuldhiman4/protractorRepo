@@ -31,7 +31,7 @@ class RelatedPersonPage {
     }
 
     async isPersonRelatedHasCorrectRelation(relatedName: string, relation: string): Promise<boolean> {
-        await browser.wait(this.EC.visibilityOf($(this.selectors.allRelatedPersons)), 6000);
+        await browser.wait(this.EC.visibilityOf(await element(by.cssContainingText('.list-group-item a.person-link', relatedName))), 6000);
         let status: boolean = false;
         let allPersonNum: number = await $$(this.selectors.allRelatedPersons).count();
         for (let i = 0; i < allPersonNum; i++) {
@@ -157,6 +157,7 @@ class RelatedPersonPage {
     }
 
     async removeRelatedPerson(personName: string): Promise<void> {
+        await browser.wait(this.EC.visibilityOf(await element(by.cssContainingText('.list-group-item a.person-link', personName))), 6000);
         let allCasesNum: number = await $$(this.selectors.allRelatedPersons).count();
         for (let i = 0; i < allCasesNum; i++) {
             let person = await $$(this.selectors.allRelatedPersons).get(i);

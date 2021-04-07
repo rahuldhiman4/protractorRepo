@@ -399,25 +399,23 @@ describe('Person Profile test', () => {
         });
         it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.gotoPersonProfile();
-            await relatedTabPage.addRelatedPerson();
-            await addRelatedPopupPage.addPerson('qfeng', 'Parent');
-            await relatedTabPage.clickRelatedPersonName('Qiao Feng');
+            await relatedTabPage.clickRelatedPersonName('Hannah Haas');
             await utilityCommon.switchToNewTab(1);
             await activityTabPage.addActivityNote("4128");
             await activityTabPage.clickOnPostButton();
             await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
-            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on qfeng's activity");
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on hhaas's activity");
             await utilityCommon.switchToDefaultWindowClosingOtherTabs();
             await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Elizabeth cannot see post on his own activity");
         });
         it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.signOut();
-            await loginPage.login("qfeng");
+            await loginPage.login("hannah");
 
             await navigationPage.gotoPersonProfile();
-            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Qiao Feng cannot see post on his own activity");
+            expect(await activityTabPage.isTextPresentInNote("4128")).toBeTruthy("Hannah Haas cannot see post on his own activity");
         });
         it('[4128]: Check agent can view notes to own Person profile in agent work history tab', async () => {
             await navigationPage.signOut();
@@ -478,7 +476,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
         });
         it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
-            await loginPage.login('franz');
+            await loginPage.login('hannah');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
