@@ -25,10 +25,8 @@ class AddField {
     }
 
     async navigateToDynamicFieldInTaskTemplate(fromTemplate: string) {
-        let option = await element(by.cssContainingText(this.selectors.parentFields, 'Additional Fields from Task Template'));
-        await option.click();
-        let templateName = await element(by.cssContainingText(this.selectors.parentFields, fromTemplate));
-        await templateName.click();
+        await $('.data-dictionary-container input[role="searchbox"]').clear();
+        await $('.data-dictionary-container input[role="searchbox"]').sendKeys(fromTemplate);
     }
 
     async clickOnCase(): Promise<void> {

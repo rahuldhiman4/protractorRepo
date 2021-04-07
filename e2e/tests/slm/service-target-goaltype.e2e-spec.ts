@@ -170,7 +170,7 @@ describe('Service Level Management - Goal Type Tests', () => {
             await editGoalType.selectGoalTypeStatus('Inactive');
             await editGoalType.clickCloseGoalTypeButton();
             expect(await utilityCommon.isWarningDialogBoxDisplayed()).toBeTruthy('Warning Dialog Box is not displayed.');
-            expect(await utilityCommon.getWarningDialogTitle()).toBe('Warning!');
+            expect(await utilityCommon.getWarningDialogTitle()).toContain('Warning');
             expect(await utilityCommon.getWarningDialogMsg()).toBe('You have unsaved data. Do you want to continue without saving?');
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await browser.sleep(2000); // sleep added for pop up message display since it takes some time to get pop up there
