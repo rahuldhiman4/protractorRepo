@@ -149,6 +149,14 @@ class ApiCoreUtil {
         return entityObj.length >= 1 ? entityObj[0]['379'] || null : null;
     }
 
+    async getSupportGroupPermissionID(supportGroupName: string): Promise<number> {
+        let allRecords = await this.getGuid("CTM:Support Group Permission DomainTag");
+        let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {
+            return obj[1000000015] === supportGroupName;
+        });
+        return entityObj.length >= 1 ? entityObj[0]['1000001579'] || null : null;
+    }
+
     async getFlowsetGuid(flowsetName: string): Promise<string> {
         let allRecords = await this.getGuid("com.bmc.dsm.flowsets-lib:Flowsets");
         let entityObj: any = allRecords.data.data.filter(function (obj: string[]) {

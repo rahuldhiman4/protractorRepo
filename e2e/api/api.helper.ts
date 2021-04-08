@@ -1986,10 +1986,7 @@ class ApiHelper {
     async giveReadAccessToDocLib(docLibInfo: IIDs, orgName: string): Promise<boolean> {
         let readAccessDocLibPayload = cloneDeep(DOC_LIB_READ_ACCESS);
         readAccessDocLibPayload['processInputValues']['Record Instance ID'] = docLibInfo.id;
-        let orgId = orgName;
-        if (orgId == null) { orgId = orgName; }
-        if (orgId == null) { orgId = orgName; }
-        readAccessDocLibPayload['processInputValues']['Value'] = orgId;
+        readAccessDocLibPayload['processInputValues']['Value'] = await apiCoreUtil.getSupportGroupPermissionID(orgName); // need to implement if orgName is company
         const readAccessDocLibResponse = await axios.post(commandUri, readAccessDocLibPayload);
         console.log('Read Access Doc Lib API Status =============>', readAccessDocLibResponse.status);
         return readAccessDocLibResponse.status == 201;
