@@ -69,7 +69,7 @@ describe("Task Approval UI Validations", () => {
                 "assignee": "qkatawazi"
             }
             caseData = {
-                "Requester": "Fritz",
+                "Requester": "qdu",
                 "Summary": "Test case for inProgress task",
                 "Assigned Company": "Petramco",
                 "Business Unit": "United States Support",
@@ -222,6 +222,7 @@ describe("Task Approval UI Validations", () => {
         });
 
         afterAll(async () => {
+            await utilityCommon.closeAllBlades();
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.deleteApprovalMapping(taskModule);
         });

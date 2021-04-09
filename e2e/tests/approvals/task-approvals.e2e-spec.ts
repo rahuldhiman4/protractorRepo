@@ -125,8 +125,8 @@ describe("Task Approval Tests", () => {
             await updateStatusBladePo.changeStatus('In Progress');
             await updateStatusBladePo.clickSaveStatus();
             expect(await viewCasePo.getTextOfStatus()).toBe('In Progress');
-            await viewCasePo.clickOnTaskLink(autoTaskTemplateData.templateSummary);
-            automatedTaskDisplayId = await viewTask.getTaskID();
+            await navigationPage.gotoTaskConsole();
+            await utilityGrid.searchAndOpenHyperlink(autoTaskTemplateData.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Pending");
         });
 

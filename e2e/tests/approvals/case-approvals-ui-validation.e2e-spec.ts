@@ -737,10 +737,16 @@ describe("Case Approval UI Validations", () => {
             expect(await viewCasePo.getShowPendingApproversInfo()).toContain('Pending Approval :1');
             expect(await viewCasePo.isApprovalButtonsPresent("Approve")).toBeTruthy();
             expect(await viewCasePo.isApprovalButtonsPresent("Reject")).toBeTruthy();
-            await viewCasePo.clickOnApproveLink();
+            await navigationPage.signOut();
+            await loginPage.login('qliu');
+            await navigationPage.switchToApplication('Approval');
+            await approvalConsolePage.searchCaseOnApprovalConsole(caseData.Summary, 'Approve');
+            await navigationPage.signOut();
+            await loginPage.login('qkatawazi');
             await navigationPage.gotoCaseConsole();
             await utilityGrid.searchAndOpenHyperlink(caseId);
             expect(await viewCasePo.getTextOfStatus()).toBe("In Progress");
+            await activityTabPage.clickOnRefreshButton();
             await activityTabPage.clickOnFilterButton();
             await activityTabPage.selectFilterCheckBox('Approvals');
             await activityTabPage.clickOnFilterApplyButton();

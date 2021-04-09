@@ -11,7 +11,7 @@ import showApproversBladePo from "../../pageobject/common/show-approvers-list-ta
 import updateStatusBladePo from '../../pageobject/common/update.status.blade.po';
 import approvalConfigurationPage from "../../pageobject/settings/approval/approval-configuration.po";
 import activityTabPage from '../../pageobject/social/activity-tab.po';
-import { BWF_BASE_URL, BWF_PAGE_TITLES } from '../../utils/constants';
+import { BWF_BASE_URL, BWF_PAGE_TITLES, operation, type,security } from '../../utils/constants';
 import utilityCommon from '../../utils/utility.common';
 import utilityGrid from '../../utils/utility.grid';
 
@@ -249,7 +249,7 @@ describe("Case General Approval Tests", () => {
         let caseData = undefined;
         let caseId: string;
         let approvalMappingData = undefined;
-
+        let caseAccessData;
         beforeAll(async () => {
 
             // Create Case Template through API
@@ -289,6 +289,13 @@ describe("Case General Approval Tests", () => {
                 "Summary": "Automated One must Approval Case" + randomStr,
                 "Origin": "Agent",
                 "Case Template ID": caseTemplateDisplayId
+            }
+            //Write access to qtao
+            caseAccessData = {
+                "operation": operation['addAccess'],
+                "type": type['user'],
+                "security": security['witeAccess'],
+                "username": 'qliu'
             }
         });
 
@@ -333,6 +340,7 @@ describe("Case General Approval Tests", () => {
         it('[5150]:Create a case and verify Show Approvers Blade information', async () => {
             await apiHelper.apiLogin('qfeng');
             let response = await apiHelper.createCase(caseData);
+            await apiHelper.updateCaseAccess(response.id, caseAccessData);
             caseId = response.displayId;
             await navigationPage.signOut();
             await loginPage.login('qfeng');
@@ -368,8 +376,8 @@ describe("Case General Approval Tests", () => {
         it('[5150]:Reject the case and verify the case details', async () => {
             await navigationPage.signOut();
             await loginPage.login('qliu');
-            await navigationPage.switchToApplication('Approval');
-            await approvalConsolePage.searchCaseOnApprovalConsole(caseSummary, 'Reject');
+            await utilityGrid.searchAndOpenHyperlink(caseId);
+            await viewCasePo.clickOnRejectLink();
             await navigationPage.signOut();
             await loginPage.login('qfeng');
             await utilityGrid.searchAndOpenHyperlink(caseId);

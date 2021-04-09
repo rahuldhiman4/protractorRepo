@@ -166,6 +166,9 @@ describe("Case Read Access", () => {
             await createCaseTemplate.setCaseSummary(caseTemplateSummary1);
             await createCaseTemplate.setFlowsetValue(flowsetGlobalFieldsData.flowsetName);
             await createCaseTemplate.setTemplateStatusDropdownValue('Active');
+            await createCaseTemplate.setOwnerCompanyValue('Petramco');
+            await createCaseTemplate.setOwnerOrgDropdownValue("United States Support");
+            await createCaseTemplate.setOwnerGroupDropdownValue("US Support 3");
             await createCaseTemplate.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             expect(await viewCaseTemplate.getCaseCompanyValue()).toBe('- Global -');

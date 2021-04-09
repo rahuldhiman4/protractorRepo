@@ -1109,7 +1109,6 @@ describe("Quick Case", () => {
             expect(await casePreviewPo.isCaseTemplateDisplayed(templateData2.templateName)).toBeTruthy('Case Template is missing');
             await casePreviewPo.clickGoToCaseButton();
         });
-
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await navigationPo.signOut();
             await loginPo.login('qkatawazi');
@@ -1150,10 +1149,6 @@ describe("Quick Case", () => {
             await loginPo.login('elizabeth');
 
             await navigationPo.gotoQuickCase();
-            await quickCasePo.selectRequesterName("qdu");
-            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is present');
-            await quickCasePo.clickStartOverButton
-
             await quickCasePo.selectRequesterName("qdu");
             expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is present');
         });
@@ -1206,14 +1201,8 @@ describe("Quick Case", () => {
             await navigationPo.gotoQuickCase();
             await quickCasePo.selectRequesterName("qdu");
             expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is not present');
-            await quickCasePo.clickStartOverButton
-
-            await quickCasePo.selectRequesterName("qdu");
-            expect(await quickCasePo.selectCaseTemplate(templateData1.templateName)).toBeTruthy('template is not present');
         });
-
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
-            await viewCasetemplatePo.clickBackArrowBtn();
             await navigationPo.signOut();
             await loginPo.login('fritz');
             await navigationPo.gotoQuickCase();
@@ -1284,7 +1273,6 @@ describe("Quick Case", () => {
             expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('US Support 3')).toBeTruthy('Support Group does not have read access');
             expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeTruthy('Support Group does not have write access');
         });
-
         it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             // Verify With Remove LOB
             await navigationPo.signOut();
@@ -1310,7 +1298,8 @@ describe("Quick Case", () => {
             await templateAccessTabPo.deleteTemplateAccess('Human Resource');
             expect(await templateAccessTabPo.isSupportGroupOrAgentWriteAccessDisplayed('Compensation and Benefits')).toBeFalsy('Support Group does not have read access');
             expect(await templateAccessTabPo.isSupportGroupOrAgentReadAccessDisplayed('Human Resource')).toBeFalsy('Support Group does not have read access');
-
+        });
+        it('[3434,3435]: Verify Case Template access while Creating case for Global and Petramco Company', async () => {
             await viewCasetemplatePo.clickEditTemplateMetaData();
             await editCaseTemplatePo.changeTemplateStatusDropdownValue('Active');
             await editCaseTemplatePo.clickOnSaveCaseTemplateMetadata();
