@@ -81,8 +81,6 @@ describe('Case Activity Multi Logs', () => {
             await utilityCommon.closePopUpMessage();
             await activityTabPage.clickOnRefreshButton();
             await browser.sleep(3000);//taking time to refliect show more button
-            await utilityCommon.closePopUpMessage();
-            await activityTabPage.clickOnRefreshButton();
             expect(await activityTabPage.clickShowMoreLinkInActivity(1)).toBeTruthy('FailureMsg4: Show more link is displayed');
             expect(await activityTabPage.isAddNoteTextDisplayedInActivity(addNoteBodyText2, 1)).toBeTruthy('FailureMsg5: BodyText is missing');
             expect(await activityTabPage.clickShowLessLinkInActivity(1)).toBeTruthy('FailureMsg6: Show less missing for body text');
