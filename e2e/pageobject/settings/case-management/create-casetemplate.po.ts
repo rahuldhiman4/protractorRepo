@@ -38,7 +38,7 @@ class CreateCaseTemplate {
         resolutionCode: 'f5b64175-c39b-4b6b-a6c4-956038a232b3',
         resolutionDescription: '8f8159e2-d647-4c46-ae71-ff56f1a81a0b',
         supportCompany: 'a370b52e-3949-429a-b49c-e10200f7ab2c',
-        ownerCompany: '84efe67b-c540-4fd9-9a7a-724e9390656a',
+        ownerCompany: '67ba805d-dda3-4131-9c74-4f6c9a375583',
         ownerOrgDropdown: 'c0d483a9-75ae-4eb3-a65e-96f1f1bb61ec',
         departmentDropdown: '70778256-c238-4a16-a24f-86b71cc3da87',
         ownerGroupDropdown: 'a6e62e56-9bda-40af-8bce-29ad062b76f5',

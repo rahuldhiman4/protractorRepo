@@ -153,7 +153,7 @@ describe('Create Case Task', () => {
             await taskTemplate.setNewProcessName(`Get Request Status Data2 ${randomStr}`);
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 1');
-            await taskTemplate.selectLabel('Benefits');
+            await taskTemplate.selectLabel_v('Benefits');
             await taskTemplate.selectTaskCategoryTier1('Employee Relations');
             await taskTemplate.selectTaskCategoryTier2_v('Compensation');
             await taskTemplate.selectTaskCategoryTier3_v('Bonus');

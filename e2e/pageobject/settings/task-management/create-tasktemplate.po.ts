@@ -20,7 +20,7 @@ class CreateTaskTemplatePage {
         changeAssignmentButton: '[rx-view-component-id="0bd0a580-775d-491f-be52-87c14a8b6e2d"] button',
         taskDescriptionGuid: 'b9b752cf-8cef-4598-9a8d-85748b13f0d7',
         templateStatus: '09db292a-212a-433e-8c20-a92f8c4e5168',
-        ownerCompany: '87ec3995-3350-4e3f-ab19-0f1e7846fbd7',
+        ownerCompany: '440fe8fe-bf1e-4bb9-bee4-12ce466e9394',
         buisnessUnit: 'd4b7f9fd-5a48-4e56-be28-40133acaae54',
         department: '5ae20516-9fd9-47f1-9f16-93726cd33de4',
         ownerGroup: 'e5794ca0-c022-475f-95e3-132221b19e3b',
@@ -83,6 +83,12 @@ class CreateTaskTemplatePage {
 
     async selectLabel(label: string): Promise<void> {
         await utilityCommon.selectDropDown(this.selectors.label, label);
+    }
+
+    async selectLabel_v(category2: string): Promise<void> {
+        await $('[rx-view-component-id="3f5aeaec-5b37-49a2-ad51-b2f5910612ec"] .dropdown-toggle').click();
+        await browser.sleep(3000);
+        await (await element(by.cssContainingText('[rx-view-component-id="3f5aeaec-5b37-49a2-ad51-b2f5910612ec"] button.dropdown-item', category2))).click();
     }
 
     async selectTaskCategoryTier1(category1: string): Promise<void> {

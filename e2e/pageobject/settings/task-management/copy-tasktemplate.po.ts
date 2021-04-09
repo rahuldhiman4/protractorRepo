@@ -17,7 +17,7 @@ class Copytaskpage {
         taskSummary: '[rx-view-component-id="c19d336e-7339-4970-b69a-100108d672fd"] input',
         sourceProcessNameValue: '[rx-view-component-id="9f29e10e-dedf-4bab-8372-5b40002d999a"] input',
         companyGiud: 'f62bd26b-c464-4dff-ab7b-e4446d1cbf99',
-        ownerCompanyGiud: '87ec3995-3350-4e3f-ab19-0f1e7846fbd7',
+        ownerCompanyGiud: '440fe8fe-bf1e-4bb9-bee4-12ce466e9394',
         ownerGroupGuid: 'e5794ca0-c022-475f-95e3-132221b19e3b',
         ownerGroupValueOnCopy: '[rx-view-component-id="e5794ca0-c022-475f-95e3-132221b19e3b"] .dropdown-toggle',
         ownerBusinessUnitGuid: 'd4b7f9fd-5a48-4e56-be28-40133acaae54',

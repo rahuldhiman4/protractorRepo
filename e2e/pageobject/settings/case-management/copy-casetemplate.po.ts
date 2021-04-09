@@ -27,7 +27,7 @@ class CopyCaseTemplate {
         copyInstruction: '[rx-view-component-id="162ce9d1-22d1-42a6-8360-f3d1c8dc3a20"] ul span',
         companyDropDown: '127214a1-bfc0-4a8c-acb7-cd2be137fa3c',
         cancelButton: '[rx-view-component-id="be371341-8b3f-4433-93fa-33d242984010"] button',
-        OwnerCompanyValueOnCopy: '[rx-view-component-id="a611e56c-cf79-482b-81dc-4c591d2a8843"] .dropdown-toggle',
+        OwnerCompanyValueOnCopy: '[rx-view-component-id="67ba805d-dda3-4131-9c74-4f6c9a375583"] .dropdown-toggle',
         ownerGroupValueOnCopy: '[rx-view-component-id="a6e62e56-9bda-40af-8bce-29ad062b76f5"] button',
         ownerGroupDropdown: 'a6e62e56-9bda-40af-8bce-29ad062b76f5',
         departmentValueOnCopy: '[rx-view-component-id="6c570cf5-7f7b-4141-bd17-755e202e7095"] .dropdown-toggle',

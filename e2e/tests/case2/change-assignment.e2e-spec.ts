@@ -444,7 +444,7 @@ describe("Change Assignment", () => {
         expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Qadim')).toBeTruthy('Assignee is not searchable with First Name');
         expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Katawazi')).toBeTruthy('Assignee is not searchable with Last Name');
         expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'qkatawazi')).toBeTruthy('Assignee is not searchable with login id');
-        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'qkatawazi@petramco.com')).toBeFalsy('Assignee is not searchable with email');
+        expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'qkatawazi@petramco.com')).toBeTruthy('Assignee is not searchable with email');
         expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'adim')).toBeTruthy('Assignee is not searchable with Last 4 characters of Name');
         expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'Qad')).toBeTruthy('Assignee is not searchable with first 3 characters of Name');
         expect(await changeAssignmentPage.isValuePresentInDropDown("Assignee", 'tawaz')).toBeTruthy('Assignee is not searchable with middle characters');

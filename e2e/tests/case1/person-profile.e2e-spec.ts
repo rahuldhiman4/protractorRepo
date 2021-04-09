@@ -461,7 +461,7 @@ describe('Person Profile test', () => {
         });
         it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
             await navigationPage.signOut();
-            await loginPage.login('qheroux');
+            await loginPage.login('qyuan');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
@@ -476,7 +476,7 @@ describe('Person Profile test', () => {
             await navigationPage.signOut();
         });
         it('[4126]: Check one agent can view the notes added on other agent in agent work history tab for which he has "Person Profile read access"', async () => {
-            await loginPage.login('hannah');
+            await loginPage.login('jbarnes');
             await navigationPage.gotoPersonProfile();
             await relatedTabPage.addRelatedPerson();
             await addRelatedPopupPage.addPerson('Quin Strong', 'Guardian');
@@ -718,6 +718,7 @@ describe('Person Profile test', () => {
         it('[59946]: Verify whether Requesters sub organization details are displayed on person profile when case agent clicks on requesters name from case / task', async () => {
             await navigationPage.signOut();
             await loginPage.login('qfeng');
+            await browser.sleep(5000); //Adding Extra wait due to Performace issue in search case
             await utilityGrid.searchAndOpenHyperlink(caseResponse.displayId);
             await viewCasePage.clickRequsterName();
             await utilityCommon.switchToNewTab(1);
@@ -1027,8 +1028,7 @@ describe('Person Profile test', () => {
             await browser.sleep(3000); //Takes time to redirect to person profile on new tab
             try {
                 await utilityCommon.switchToNewTab(1);
-                await personProfile.clickOnTab("Related Cases");
-                await personProfile.clickOnTab("Related Persons");
+                await browser.sleep(2000); // validation in loop needs wait time, can be removed if not needed
                 expect(await relatedTabPage.isPersonRelatedHasCorrectRelation('Elizabeth Peters', 'Related to')).toBeTruthy('Related to is not available');
             }
             catch (ex) { throw ex; }
