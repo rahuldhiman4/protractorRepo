@@ -346,6 +346,7 @@ describe('Knowledge Console Preset Filter', () => {
 
             //Create article in Published status and mark it as External
             assignToMeVar.title = title + "_Published";
+            await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
             let knowledgeArticleData13 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData13.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData13.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
@@ -354,6 +355,7 @@ describe('Knowledge Console Preset Filter', () => {
 
             //Create article in Published status
             assignToMeVar.title = title + "_Published";
+            await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
             let knowledgeArticleData8 = await apiHelper.createKnowledgeArticle(assignToMeVar);
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData8.id, 'Draft');
             await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData8.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
@@ -396,6 +398,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         //Create article in Published status
         assignToMeVar.title = title + "_Published";
+        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
@@ -404,6 +407,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         //Create article in Published status
         assignToMeVar.title = title + "_Published";
+        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
@@ -447,6 +451,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         //Create article in Published status and update the created date below 1 month
         assignToMeVar.title = title + "_Published";
+        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
@@ -471,6 +476,7 @@ describe('Knowledge Console Preset Filter', () => {
 
         //Create article in Published status and update the created date below 1 month
         assignToMeVar.title = title + "_Published";
+        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');

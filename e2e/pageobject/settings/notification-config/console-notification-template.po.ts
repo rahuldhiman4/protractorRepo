@@ -73,7 +73,7 @@ class NotificationTemplateGridPage {
 
     async clearTemplateNamePresentInCopyTempWindow() {
       //  await $(this.selectors.tempNameCopyTempWindow).clear();
-        for (let j: number = 0; j < 17; j++) {
+        for (let j: number = 0; j < 22; j++) {
             await $(this.selectors.tempNameCopyTempWindow).sendKeys(protractor.Key.BACK_SPACE);
              }
     }

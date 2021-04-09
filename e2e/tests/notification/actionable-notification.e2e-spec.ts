@@ -302,10 +302,10 @@ describe("Actionable Notifications", () => {
         await caseConsole.clickOnAddToWatchlist();
         await caseWatchlist.addWatchlistEvent('Case Group Assignment Changes');
         await caseWatchlist.saveEvents();
-        await navigationPage.signOut();
-        await loginPage.login('qkatawazi');
         await apiHelper.apiLogin('qkatawazi');
         await apiHelper.changeCaseAssignment(response.id, 'United States Support', 'US Support 2');
+        await navigationPage.signOut();
+        await loginPage.login('qkatawazi');
 
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem(manageNotificationTempNavigation, BWF_PAGE_TITLES.NOTIFICATION_CONFIGURATION.MANAGE_TEMPLATES);

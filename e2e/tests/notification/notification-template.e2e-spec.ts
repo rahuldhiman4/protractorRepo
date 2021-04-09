@@ -35,7 +35,7 @@ describe("Notification Template", () => {
         let notificationTemplateNameUpdated = '3898_CopiedTemplate_Updated' + randomStr;
         it('[3898]: [Copy Notification] - UI behavior when copying a notification template', async () => {
             await expect(notificationTempGridPage.isCopyTemplateButtonDisabled()).toBeTruthy();
-            await utilityGrid.searchAndSelectGridRecord("Task SLA Missed");
+            await utilityGrid.searchAndSelectGridRecord("Article Review Overdue");
             await notificationTempGridPage.clickCopyTemplate();
             //Validate 'Copy Template' Window title and fields present
             expect(await notificationTempGridPage.getTitleCopyNotificationTemplateWindow()).toBe("Copy Template");

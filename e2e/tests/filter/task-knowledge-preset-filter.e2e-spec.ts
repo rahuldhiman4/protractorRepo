@@ -435,7 +435,7 @@ describe('Task and Knowledge Console Filter Combinations', () => {
         let knowledgeArticleData2;
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
-            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', '1_MINUTE');
+            await apiHelper.addCommonConfig('NEXT_REVIEW_PERIOD', '2_MINUTE');
             await apiHelper.deleteApprovalMapping('Knowledge');
             await apiHelper.apiLogin('elizabeth');
 

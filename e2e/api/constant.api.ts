@@ -107,6 +107,7 @@ export enum ApplicationConfigurationsGuid {
 export enum ApplicationConfigurationsValue {
     '1_MONTH' = '2629743',
     '1_MINUTE' = '60',
+    '2_MINUTE' = '120',
     'ENFORCED' = 2,
     'OPTIONAL' = 1,
     'NONE' = 0
