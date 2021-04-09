@@ -664,7 +664,7 @@ describe('Case Data Store', () => {
 
     //ptidke
     describe('[4832]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
-        let templateData, tasktemplate, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let caseTemplateData , templateData, tasktemplate, randomStr = [...Array(4)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         beforeAll(async () => {
             await apiHelper.apiLogin('tadmin');
             await apiHelper.deleteDynamicFieldAndGroup();
@@ -680,6 +680,18 @@ describe('Case Data Store', () => {
             await apiHelper.apiLogin('qkatawazi');
             tasktemplate = await apiHelper.createManualTaskTemplate(templateData);
             await apiHelper.createDynamicDataOnTemplate(tasktemplate.id, 'TASK_TEMPLATE_WITH_CONFIDENTIAL');
+             caseTemplateData = {
+                "templateName": 'caseTemplateName4832' + randomStr,
+                "templateSummary": 'caseTemplateName4832' + randomStr,
+                "templateStatus": "Draft",
+                "resolveCaseonLastTaskCompletion": "1",
+                "company": "Petramco",
+                "ownerBU": "United States Support",
+                "ownerGroup": "US Support 3"
+            }
+            await apiHelper.apiLogin('qkatawazi');
+            let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
+            await apiHelper.associateCaseTemplateWithOneTaskTemplate(casetemplateddetails.displayId, tasktemplate.displayId);
         });
         it('[4832]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
             await navigationPage.gotoCreateCase();
@@ -704,18 +716,7 @@ describe('Case Data Store', () => {
             await manageTaskBladePo.clickCloseButton();
         });
         it('[4832]: [Dynamic Data] [UI] - Dynamic fields and groups display on Task Template preview	', async () => {
-            let caseTemplateData = {
-                "templateName": 'caseTemplateName4832' + randomStr,
-                "templateSummary": 'caseTemplateName4832' + randomStr,
-                "templateStatus": "Draft",
-                "resolveCaseonLastTaskCompletion": "1",
-                "company": "Petramco",
-                "ownerBU": "United States Support",
-                "ownerGroup": "US Support 3"
-            }
-            await apiHelper.apiLogin('qkatawazi');
-            let casetemplateddetails = await apiHelper.createCaseTemplate(caseTemplateData);
-            await apiHelper.associateCaseTemplateWithOneTaskTemplate(casetemplateddetails.displayId, tasktemplate.displayId);
+            
             await navigationPage.gotoSettingsPage();
             await navigationPage.gotoSettingsMenuItem('Case Management--Templates', BWF_PAGE_TITLES.CASE_MANAGEMENT.TEMPLATES);
             await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
@@ -723,6 +724,7 @@ describe('Case Data Store', () => {
             await viewCasetemplatePo.clickBackArrowBtn();
             await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
             await utilityCommon.refresh();//DRDMV-25404 DUE TO THIS DEFECT IT MAY TAKE TIME
+            await utilityGrid.searchAndOpenHyperlink(caseTemplateData.templateSummary);
             await viewCasetemplatePo.clickOnTaskBox(templateData.templateName);
             expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskGroupLocalCaseTemplate')).toBeTruthy();
             expect(await previewTaskTemplateCasesPo.isDynamicGroupDisplayed('TaskPulishCaseTemplateData')).toBeTruthy();

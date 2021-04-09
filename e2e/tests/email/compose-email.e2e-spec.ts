@@ -493,7 +493,7 @@ describe("Compose Email", () => {
             emailTemplateDataForTest1 = await emailTemplateData['emailTemplateWithMandatoryField'];
             emailTemplateDataForTest1.TemplateName = randomString+'TemplateWithMandatoryField' ;
             emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
-            emailTemplateDataForTest2.TemplateName = 'TemplateForSalary' + randomString;
+            emailTemplateDataForTest2.TemplateName = randomString+'TemplateForSalary' ;
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
             await apiHelper.createEmailTemplate(emailTemplateDataForTest2);

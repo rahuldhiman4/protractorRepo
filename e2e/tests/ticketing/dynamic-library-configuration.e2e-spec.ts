@@ -881,6 +881,7 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicGroupLibraryConfigPo.setDynamicFieldName(dynamicFieldText);
             await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
             expect(await createDynamicGroupLibraryConfigPo.isSaveButtonDisabled()).toBeTruthy();
+            await utilityCommon.closePopUpMessage();
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupCancelButton();
             await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
@@ -899,8 +900,8 @@ describe('Dynamic Library Configuration', () => {
             await createDynamicGroupLibraryConfigPo.setDynamicFieldDesc(dynamicFieldDesc);
             await createDynamicGroupLibraryConfigPo.clickOnDynamicGroupSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy('Record saved successfully confirmation message not displayed.');
+            await utilityCommon.closePopUpMessage();
             expect(await utilityGrid.isGridRecordPresent(dynamicGrpText)).toBeTruthy('Dynamic Group is not present of grid.');
-
             await utilityGrid.selectLineOfBusiness('Human Resource');
         });
 
