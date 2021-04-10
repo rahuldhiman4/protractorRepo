@@ -279,11 +279,11 @@ describe('Dynamic Confidentials Data', () => {
             await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.searchAndselectCaseTemplate(randomStr + 'caseTemplateName');
             await consoleCasetemplatePo.clickOnCopyCaseTemplate();
-            await copyCasetemplatePo.setTemplateName(randomStr + "Copy Case Template");
+            await copyCasetemplatePo.setTemplateName(randomStr + "CopyCaseTemplate");
             await copyCasetemplatePo.clickSaveCaseTemplate();
             await utilityCommon.closePopUpMessage();
             await viewCasetemplatePo.clickBackArrowBtn();
-            await consoleCasetemplatePo.searchAndselectCaseTemplate(randomStr + "Copy Case Template");
+            await consoleCasetemplatePo.searchAndClickOnCaseTemplate(randomStr + "CopyCaseTemplate");
             await viewCasetemplatePo.selectTab('Case Access');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 1', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');
             expect(await accessTabPo.isAccessTypeOfEntityDisplayed('IN Support 2', 'Read')).toBeTruthy('FailuerMsg1: Support Group is missing');

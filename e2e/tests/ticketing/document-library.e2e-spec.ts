@@ -264,6 +264,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectOwnerGroup('Compensation and Benefits');
             await createDocumentLibraryPo.clickOnSaveButton();
             await utilityCommon.closePopUpMessage();
+            await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await viewDocumentLibraryPo.clickOnEditDocument();
             expect(await editDocumentLibraryPo.isSaveButtonDisplayed()).toBeTruthy('Save button is not displayed');
@@ -356,7 +357,10 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.clickOnSaveButton();
             expect(await utilityCommon.isPopUpMessagePresent('Saved successfully.')).toBeTruthy("Success message absent");
             // verify LOB on edit page
-            await utilityGrid.searchAndOpenHyperlink(titleRandVal);
+        });
+        it('[4884]: create same name record in different LOB', async () => {
+            await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
+            await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await viewDocumentLibraryPo.clickOnEditDocument();
             expect(await editDocumentLibraryPo.getLobValue()).toBe("Facilities");
             await editDocumentLibraryPo.clickOnCancelButton();
@@ -388,6 +392,7 @@ describe('Document Library', () => {
             await utilityCommon.closePopUpMessage();
         });
         it('[4915]: Verify Support Group Level Read access of Document	', async () => {
+            await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             await documentLibraryConsolePo.searchAndOpenDocumentLibrary(titleRandVal);
             await viewDocumentLibraryPo.clickOnEditReadAccess();
             await docLibReadAccessTab.clickOnSupportGroupAccessButton();
@@ -449,6 +454,7 @@ describe('Document Library', () => {
             await createDocumentLibraryPo.selectSupportOrg('United States Support');
             await createDocumentLibraryPo.selectOwnerGroup('US Support 3');
             await createDocumentLibraryPo.clickOnSaveButton();
+            await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             await documentLibraryConsolePo.searchOnGridConsole(titleRandVal);
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Title')).toBe(titleRandVal, 'Title is missing');
             expect(await documentLibraryConsolePo.getSelectedGridRecordValue('Status')).toBe('Draft', 'Draft Status is missing');

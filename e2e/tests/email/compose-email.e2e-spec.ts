@@ -488,12 +488,13 @@ describe("Compose Email", () => {
     //kgaikwad
     describe('[5283]: Email template Update', async () => {
         let randomString = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
+        let randomString1 = [...Array(10)].map(i => (~~(Math.random() * 36)).toString(36)).join('');
         let newCase, emailTemplateDataForTest1, emailTemplateDataForTest2;
         beforeAll(async () => {
             emailTemplateDataForTest1 = await emailTemplateData['emailTemplateWithMandatoryField'];
             emailTemplateDataForTest1.TemplateName = randomString+'TemplateWithMandatoryField' ;
             emailTemplateDataForTest2 = await emailTemplateData['emailTemplateForSalary'];
-            emailTemplateDataForTest2.TemplateName = randomString+'TemplateForSalary' ;
+            emailTemplateDataForTest2.TemplateName = randomString1+'TemplateForSalary' ;
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createEmailTemplate(emailTemplateDataForTest1);
             await apiHelper.createEmailTemplate(emailTemplateDataForTest2);

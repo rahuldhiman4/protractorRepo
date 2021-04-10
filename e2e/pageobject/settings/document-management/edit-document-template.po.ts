@@ -12,7 +12,7 @@ class EditDocumentTemplatePage {
         description: '[rx-view-component-id="c5ac0f65-e850-43aa-8040-00434db0acc9"] input',
         saveButton: '[rx-view-component-id="0afac686-fde8-4877-854b-7b8da0f3a9fa"] button',
         cancelButton: '[rx-view-component-id="55363c3b-863f-4f6c-b8c4-fe78e55208dc"] button',
-        labelDropDown: '[rx-view-component-id="e02e7ad6-7315-44a6-8c0a-c55e16b7a787"] button',
+        labelDropDown: '[rx-view-component-id="e02e7ad6-7315-44a6-8c0a-c55e16b7a787"] button div.rx-select__search-button-title',
         labelDropDownGuid: 'e02e7ad6-7315-44a6-8c0a-c55e16b7a787',
         pageHeader: '.modal-title',
         documentBodyImg: '[rx-view-component-id="f6baa44c-1e91-49be-9164-1c56077900d8"] .cke_contents_ltr img',
