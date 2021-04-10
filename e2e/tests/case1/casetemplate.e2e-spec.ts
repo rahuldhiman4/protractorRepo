@@ -49,6 +49,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCompanyName(ALL_FIELD.company);
             await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
             await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
+            await createCaseTemplate.setOwnerCompanyValue('Petramco');
             await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
             await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
             await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
@@ -101,6 +102,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCompanyName(ALL_FIELD.company);
             await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
             await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
+            await createCaseTemplate.setOwnerCompanyValue('Petramco');
             await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
             await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
             await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
@@ -173,6 +175,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(ALL_FIELD.company);
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
+        await createCaseTemplate.setOwnerCompanyValue('Petramco');
         await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
@@ -209,6 +212,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
         expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain('None');
+        await createCaseTemplate.setOwnerCompanyValue('Petramco');
         await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setAssignmentMethodValue("Round");
@@ -235,6 +239,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
         expect(await copyCasetemplatePo.getValueOfAssignementMethod()).toContain('None');
+        await createCaseTemplate.setOwnerCompanyValue('Petramco');
         await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
@@ -1631,6 +1636,7 @@ describe('Case Template', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewTaskPo.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await viewCasePo.getCaseStatusValue()).toContain('In Progress');
         });
         it('[3797]: Case behavior when Case Template is changed', async () => {
@@ -1648,6 +1654,7 @@ describe('Case Template', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewTaskPo.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             expect(await viewCasePo.getCaseStatusValue()).toContain('Resolved');
         });
     });

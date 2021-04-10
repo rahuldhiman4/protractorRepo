@@ -968,7 +968,9 @@ describe('Create Case Task', () => {
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerGroup": "US Support 1",
+                "supportGroup": "US Support 1",
+                "assignee": "qfeng"
             }
 
             templateData2 = {
@@ -978,7 +980,9 @@ describe('Create Case Task', () => {
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerGroup": "US Support 1",
+                "supportGroup": "US Support 1",
+                "assignee": "qfeng"
             }
 
             templateData3 = {
@@ -988,7 +992,9 @@ describe('Create Case Task', () => {
                 "taskCompany": 'Petramco',
                 "ownerCompany": "Petramco",
                 "ownerBusinessUnit": "United States Support",
-                "ownerGroup": "US Support 1"
+                "ownerGroup": "US Support 1",
+                "supportGroup": "US Support 1",
+                "assignee": "qfeng"
             }
             await apiHelper.apiLogin('qkatawazi');
             await apiHelper.createManualTaskTemplate(templateData1);
@@ -1015,14 +1021,17 @@ describe('Create Case Task', () => {
             await manageTaskBladePo.clickTaskLink(templateData1.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(templateData2.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(templateData3.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5561]: Verify status of task after updating of case', async () => {
             await updateStatusBladePo.changeStatus('In Progress');
@@ -1037,12 +1046,14 @@ describe('Create Case Task', () => {
             await updateStatusBladePo.clickSaveStatus();
             await utilityCommon.closePopUpMessage();
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
         });
         it('[5561]: verify second and third status of task', async () => {
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(templateData2.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Assigned");
             await viewTask.clickOnViewCase();
+            await utilityCommon.clickOnApplicationWarningYesNoButton('Yes');
             await viewCasePage.clickAddTaskButton();
             await manageTaskBladePo.clickTaskLink(templateData3.templateSummary);
             expect(await viewTask.getTaskStatusValue()).toBe("Staged");
