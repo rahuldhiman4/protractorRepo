@@ -61,6 +61,7 @@ describe('Create Task Template', () => {
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
             await taskTemplate.selectTemplateStatus('Active');
+            await taskTemplate.selectOwnerCompany('Petramco');
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 3');
             await taskTemplate.clickOnSaveTaskTemplate();
@@ -656,6 +657,7 @@ describe('Create Task Template', () => {
             await taskTemplate.setTaskSummary('manualTaskSummary' + randomStr);
             await taskTemplate.setTaskDescription('Description in manual task');
             await taskTemplate.selectCompanyByName('Petramco');
+            await taskTemplate.selectOwnerCompany("Petramco");
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 3');
             await taskTemplate.clickOnSaveTaskTemplate();

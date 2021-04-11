@@ -391,7 +391,6 @@ describe('Knowledge Console Preset Filter', () => {
 
     it('[3665]: Validate the All Externally Published Articles filter after applying and removing the filter', async () => {
         let assignToMeVar = cloneDeep(ARTICLE_DATA_ASSIGNTOME);
-        await apiHelper.apiLogin(userIdKnowledgeCoach, passwordKnowledgeCoach);
         let knowledgeId: string[] = [];
         let title = 'KnowledgeArticle';
         assignToMeVar.knowledgeSet = knowledgeSetTitle;
@@ -402,7 +401,8 @@ describe('Knowledge Console Preset Filter', () => {
         let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
-        await apiHelper.approverAction(knowledgeArticleData2.id, 'Approved');
+        try { await apiHelper.approverAction(knowledgeArticleData2.id, 'Approved'); }
+        catch (ex) { console.log("Already in published status"); }
         knowledgeId.push(knowledgeArticleData2.displayId);
 
         //Create article in Published status
@@ -411,7 +411,8 @@ describe('Knowledge Console Preset Filter', () => {
         let knowledgeArticleData1 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData1.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
-        await apiHelper.approverAction(knowledgeArticleData1.id, 'Approved');
+        try { await apiHelper.approverAction(knowledgeArticleData1.id, 'Approved'); }
+        catch (ex) { console.log("Already in published status"); }
         knowledgeId.push(knowledgeArticleData1.displayId);
 
         await apiHelper.updateKnowledgeArticleExternalFlag(knowledgeArticleData2.id, true);
@@ -455,7 +456,8 @@ describe('Knowledge Console Preset Filter', () => {
         let knowledgeArticleData2 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData2.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
-        await apiHelper.approverAction(knowledgeArticleData2.id, 'Approved');
+        try { await apiHelper.approverAction(knowledgeArticleData2.id, 'Approved'); }
+        catch (ex) { console.log("Already in published status"); }
         let displayId2 = knowledgeArticleData2.displayId;
         knowledgeId.push(displayId2);
 
@@ -480,7 +482,8 @@ describe('Knowledge Console Preset Filter', () => {
         let knowledgeArticleData4 = await apiHelper.createKnowledgeArticle(assignToMeVar);
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'Draft');
         await apiHelper.updateKnowledgeArticleStatus(knowledgeArticleData4.id, 'PublishApproval', userIdKnowledgeCoach, 'Phylum Support Group1', 'Phylum');
-        await apiHelper.approverAction(knowledgeArticleData4.id, 'Approved');
+        try { await apiHelper.approverAction(knowledgeArticleData4.id, 'Approved'); }
+        catch (ex) { console.log("Already in published status"); }
         let displayId4 = knowledgeArticleData4.displayId;
         knowledgeId.push(displayId4);
 

@@ -1,6 +1,6 @@
 
 
-import { $, by, element, protractor, ProtractorExpectedConditions } from "protractor";
+import { $, by, element, protractor, ProtractorExpectedConditions, browser } from "protractor";
 import utilityCommon from '../../../utils/utility.common';
 
 class EditDocumentTemplatePage {
@@ -73,6 +73,7 @@ class EditDocumentTemplatePage {
     }
 
     async isLabelValueDisplayed(companyName: string): Promise<boolean> {
+        await browser.sleep(2000); // lable populates slowly, remove if needed
         let getText = await $(this.selectors.labelDropDown).getText();
         return getText == companyName ? true : false
     }

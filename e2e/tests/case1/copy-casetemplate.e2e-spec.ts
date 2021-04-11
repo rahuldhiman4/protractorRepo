@@ -657,7 +657,6 @@ describe('Copy Case Template', () => {
             await utilityCommon.closePopUpMessage();
             await copyCaseTemplate.clickCancelCaseTemplate();
             await utilityCommon.clickOnApplicationWarningYesNoButton("Yes");
-            await viewCasetemplatePo.clickBackArrowBtn();
             await consoleCasetemplatePo.removeColumnFromGrid(column1);
         });
         afterAll(async () => {

@@ -374,6 +374,7 @@ describe('Case Manager Read-only Config', () => {
         await navigationPage.gotoSettingsPage();
         await navigationPage.gotoSettingsMenuItem('Service Level Management--Service Target', BWF_PAGE_TITLES.SERVICE_LEVEL_MANAGEMENT.SERVICE_TARGET);
         expect(await serviceTargetConsolePage.isAddSVTButtonVisible()).toBeFalsy('Add SVT button is enabled');
+        await browser.sleep(3000); // hardwait for SVT to appear, may not be removed
         await utilityGrid.searchAndOpenHyperlink("DRDMV18170" + randomStr);
         expect(await editServiceTargetConfigPage.isStatusFieldDisabled()).toBeTruthy('Status field is enabled');
         expect(await editServiceTargetConfigPage.isBuildExpressionButtonDisabled()).toBeTruthy('Build Expression button is enabled');

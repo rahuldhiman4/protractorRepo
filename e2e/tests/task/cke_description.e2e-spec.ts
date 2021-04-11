@@ -184,6 +184,7 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
             await createCaseTemplate.setPriorityValue(caseTemplateAllFields.casePriority);
+            await createCaseTemplate.setOwnerCompanyValue("Petramco");
             await createCaseTemplate.setOwnerOrgDropdownValue("United States Support");
             await createCaseTemplate.setOwnerGroupDropdownValue("US Support 3");
             await createCaseTemplate.setTemplateStatusDropdownValue(caseTemplateAllFields.templateStatus);
@@ -453,7 +454,10 @@ describe('CKE Description', () => {
             await ckeditorOpsPo.clickInTableCell(1, 2, 'tableSummary');
             await ckeditorOpsPo.clickOnRightAlignIcon();
             await ckeditorOpsPo.setDataInTable(1, 2, randomString, 'tableSummary');
-            await createTasktemplatePo.selectTemplateStatus('Active')
+            await createTasktemplatePo.selectTemplateStatus('Active');
+            await createTasktemplatePo.selectOwnerCompany('Petramco');
+            await createTasktemplatePo.selectBuisnessUnit('United States Support');
+            await createTasktemplatePo.selectOwnerGroup('US Support 3');
             await createTasktemplatePo.clickOnSaveTaskTemplate();
         });
         it('[3526,3525,3524,3516] Verify detail on view task template', async () => {

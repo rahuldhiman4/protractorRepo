@@ -137,6 +137,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectCompanyByName('Petramco')
             await taskTemplate.setNewProcessName(`Get Request Status Data1 ${randomStr}`);
             await taskTemplate.selectTemplateStatus('Active');
+            await taskTemplate.selectOwnerCompany("Petramco");
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.clickOnSaveTaskTemplate();
@@ -151,6 +152,7 @@ describe('Create Case Task', () => {
             await taskTemplate.setTaskSummary(automationTaskSummaryWithallField);
             await taskTemplate.setTaskDescription('All field get added in this task template');
             await taskTemplate.setNewProcessName(`Get Request Status Data2 ${randomStr}`);
+            await taskTemplate.selectOwnerCompany("Petramco");
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.selectLabel_v('Benefits');
@@ -368,6 +370,7 @@ describe('Create Case Task', () => {
             await taskTemplate.selectTaskCategoryTier3_v('Bonus');
             await taskTemplate.selectCompanyByName('Global');
             await taskTemplate.selectTemplateStatus('Active');
+            await taskTemplate.selectOwnerCompany("Petramco");
             await taskTemplate.selectBuisnessUnit('United States Support');
             await taskTemplate.selectOwnerGroup('US Support 1');
             await taskTemplate.clickOnSaveTaskTemplate();

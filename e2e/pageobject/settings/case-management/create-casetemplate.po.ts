@@ -3,7 +3,6 @@ import { $, protractor, ProtractorExpectedConditions } from "protractor";
 import { ICaseTemplateUI } from "../../../data/interface/template.interface";
 import caseTemplateGrid from "../../../pageobject/settings/case-management/console-casetemplate.po";
 import utilityCommon from '../../../utils/utility.common';
-import changeAssignemetOldBlade from '../../common/change-assignment-old-blade.po';
 import { flowsetMandatoryFields } from '../../../data/ui/flowset/flowset.ui';
 import { cloneDeep } from 'lodash';
 import { DropDownType } from '../../../utils/constants';

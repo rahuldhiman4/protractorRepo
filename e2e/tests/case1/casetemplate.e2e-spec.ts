@@ -73,6 +73,7 @@ describe('Case Template', () => {
         await createCaseTemplate.setCompanyName(ALL_FIELD.company);
         await createCaseTemplate.setCaseSummary(ALL_FIELD.templateSummary);
         await createCaseTemplate.setPriorityValue(ALL_FIELD.casePriority);
+        await createCaseTemplate.setOwnerCompanyValue("Petramco");
         await createCaseTemplate.setOwnerOrgDropdownValue(ALL_FIELD.ownerBusinessUnit);
         await createCaseTemplate.setOwnerGroupDropdownValue(ALL_FIELD.ownerGroup);
         await createCaseTemplate.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
@@ -731,6 +732,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCaseSummary(caseTemplateCompany + ' summary');
             await createCaseTemplate.setPriorityValue('High');
             await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
+            await createCaseTemplate.setOwnerCompanyValue("Petramco");
             await createCaseTemplate.setOwnerOrgDropdownValue('India Support');
             await createCaseTemplate.setOwnerGroupDropdownValue('IN Support 3');
             await createCaseTemplate.setTemplateStatusDropdownValue('Draft')
@@ -746,6 +748,7 @@ describe('Case Template', () => {
             await createCaseTemplate.setCaseSummary(caseTemplateGlobal + ' summary');
             await createCaseTemplate.setPriorityValue('Low');
             await createCaseTemplate.isResolveCaseOnLastTaskCompletion(true);
+            await createCaseTemplate.setOwnerCompanyValue("Petramco");
             await createCaseTemplate.setOwnerOrgDropdownValue('United States Support');
             await createCaseTemplate.setOwnerGroupDropdownValue('US Support 3');
             await createCaseTemplate.setTemplateStatusDropdownValue('Active')

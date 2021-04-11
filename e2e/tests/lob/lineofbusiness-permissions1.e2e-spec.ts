@@ -1001,7 +1001,7 @@ xdescribe('Line of Business Permission Tests', () => {
             await createCasetemplatePo.setCompanyName(ALL_FIELD.company);
             await createCasetemplatePo.setCaseSummary(ALL_FIELD.templateSummary);
             await createCasetemplatePo.setPriorityValue(ALL_FIELD.casePriority);
-            await createCasetemplatePo.setOwnerCompanyValue('Petramco')
+            await createCasetemplatePo.setOwnerCompanyValue('Petramco');
             await createCasetemplatePo.setOwnerOrgDropdownValue('Facilities Support');
             await createCasetemplatePo.setOwnerGroupDropdownValue('Facilities');
             await createCasetemplatePo.setTemplateStatusDropdownValue(ALL_FIELD.templateStatus);
